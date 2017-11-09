@@ -172,6 +172,8 @@
           <Property Name="ParHeaderField_Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ParFieldType_Id" Type="int" Nullable="false" />
           <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Evaluation" Type="int" />
+          <Property Name="Sample" Type="int" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -710,6 +712,8 @@
           <Property Name="AllowEditWeightOnLevel3" Type="bit" />
           <Property Name="ShowInTablet" Type="bit" />
           <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
+          <Property Name="IsRecravacao" Type="bit" />
+          <Property Name="ShowScorecard" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -839,6 +843,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
+          <Property Name="IsPointLess" Type="bit" />
+          <Property Name="AllowNA" Type="bit" />
+          <Property Name="OrderColumn" Type="int" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -3507,94 +3514,17 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <EntitySet Name="EmailContent" EntityType="SgqDbModel.EmailContent" />
-          <EntitySet Name="ParLevel1" EntityType="SgqDbModel.ParLevel1" />
           <AssociationSet Name="FK_CollectionLevel2_CollectionLevel2" Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2">
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="CollectionLevel21" EntitySet="CollectionLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2_ParLevel1" Association="SgqDbModel.FK_CollectionLevel2_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
           </AssociationSet>
           <AssociationSet Name="FK_CorrectiveAction_CollectionLevel2" Association="SgqDbModel.FK_CorrectiveAction_CollectionLevel2">
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
-          <AssociationSet Name="FK_Defect_ParLevel1" Association="SgqDbModel.FK_Defect_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="Defect" EntitySet="Defect" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
-            <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCounterLocal_ParLevel1" Association="SgqDbModel.FK_ParCounterLocal_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SgqDbModel.FK_ParLevel1_ParFrequency">
-            <End Role="ParFrequency" EntitySet="ParFrequency" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParGoal_ParLevel1" Association="SgqDbModel.FK_ParGoal_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParGoal" EntitySet="ParGoal" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParLe__4E3E9311" Association="SgqDbModel.FK__VolumeCep__ParLe__4E3E9311">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="VolumeCepDesossa" EntitySet="VolumeCepDesossa" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParLe__5026DB83" Association="SgqDbModel.FK__VolumeCep__ParLe__5026DB83">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VolumePcc__ParLe__520F23F5" Association="SgqDbModel.FK__VolumePcc__ParLe__520F23F5">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="VolumePcc1b" EntitySet="VolumePcc1b" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VolumeVac__ParLe__56D3D912" Association="SgqDbModel.FK__VolumeVac__ParLe__56D3D912">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level2Level1_ParLevel1" Association="SgqDbModel.FK_Level2Level1_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParScoreType" Association="SgqDbModel.FK_ParLevel1_ParScoreType">
-            <End Role="ParScoreType" EntitySet="ParScoreType" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XHeaderField_ParLevel1" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel1" Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel1" Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParLevel1" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParRelapse_ParLevel1" Association="SgqDbModel.FK_ParRelapse_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParRelapse" EntitySet="ParRelapse" />
-          </AssociationSet>
           <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
           <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="SgqDbModel.FK_ConsolidationLevel1_Department">
             <End Role="Department" EntitySet="Department" />
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="SgqDbModel.FK_ConsolidationLevel1_Level1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
           </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel1_ParCompany" Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany">
@@ -3630,6 +3560,83 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="Result_Level3_Photos" EntityType="SgqDbModel.Result_Level3_Photos" />
+          <EntitySet Name="ParLevel1" EntityType="SgqDbModel.ParLevel1" />
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel1" Association="SgqDbModel.FK_CollectionLevel2_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="SgqDbModel.FK_ConsolidationLevel1_Level1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Defect_ParLevel1" Association="SgqDbModel.FK_Defect_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="Defect" EntitySet="Defect" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
+            <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCounterLocal_ParLevel1" Association="SgqDbModel.FK_ParCounterLocal_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SgqDbModel.FK_ParLevel1_ParFrequency">
+            <End Role="ParFrequency" EntitySet="ParFrequency" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParGoal_ParLevel1" Association="SgqDbModel.FK_ParGoal_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParGoal" EntitySet="ParGoal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VolumeCep__ParLe__674A37FD" Association="SgqDbModel.FK__VolumeCep__ParLe__674A37FD">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="VolumeCepDesossa" EntitySet="VolumeCepDesossa" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VolumeCep__ParLe__6932806F" Association="SgqDbModel.FK__VolumeCep__ParLe__6932806F">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VolumePcc__ParLe__6B1AC8E1" Association="SgqDbModel.FK__VolumePcc__ParLe__6B1AC8E1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="VolumePcc1b" EntitySet="VolumePcc1b" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VolumeVac__ParLe__6D031153" Association="SgqDbModel.FK__VolumeVac__ParLe__6D031153">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Level2Level1_ParLevel1" Association="SgqDbModel.FK_Level2Level1_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParScoreType" Association="SgqDbModel.FK_ParLevel1_ParScoreType">
+            <End Role="ParScoreType" EntitySet="ParScoreType" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XHeaderField_ParLevel1" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel1" Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel1" Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParLevel1" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParRelapse_ParLevel1" Association="SgqDbModel.FK_ParRelapse_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParRelapse" EntitySet="ParRelapse" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -3753,6 +3760,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType" FromRole="CollectionLevel2XParHeaderField" ToRole="ParFieldType" />
           <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="CollectionLevel2XParHeaderField" ToRole="ParHeaderField" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2XParHeaderField" ToRole="CollectionLevel2" />
+          <Property Name="Evaluation" Type="Int32" />
+          <Property Name="Sample" Type="Int32" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -4218,6 +4227,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterXLocal" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="ParLevel3" ToRole="Result_Level3" />
           <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
+          <Property Name="IsPointLess" Type="Boolean" />
+          <Property Name="AllowNA" Type="Boolean" />
+          <Property Name="OrderColumn" Type="Int32" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -4522,7 +4534,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" FromRole="VolumeCepDesossa" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumeCep__ParLe__4E3E9311" FromRole="VolumeCepDesossa" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumeCep__ParLe__674A37FD" FromRole="VolumeCepDesossa" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="VolumeCepRecortes">
           <Key>
@@ -4549,7 +4561,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" FromRole="VolumeCepRecortes" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumeCep__ParLe__5026DB83" FromRole="VolumeCepRecortes" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumeCep__ParLe__6932806F" FromRole="VolumeCepRecortes" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="VolumePcc1b">
           <Key>
@@ -4574,7 +4586,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" FromRole="VolumePcc1b" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumePcc__ParLe__520F23F5" FromRole="VolumePcc1b" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumePcc__ParLe__6B1AC8E1" FromRole="VolumePcc1b" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="VolumeVacuoGRD">
           <Key>
@@ -4595,7 +4607,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" FromRole="VolumeVacuoGRD" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumeVac__ParLe__56D3D912" FromRole="VolumeVacuoGRD" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VolumeVac__ParLe__6D031153" FromRole="VolumeVacuoGRD" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1VariableProduction">
           <Key>
@@ -5771,9 +5783,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
           <NavigationProperty Name="CollectionLevel21" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel21" />
           <NavigationProperty Name="CollectionLevel22" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel21" ToRole="CollectionLevel2" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CorrectiveAction" />
           <Property Name="EndPhaseEvaluation" Type="Int32" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
           <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
@@ -5900,69 +5912,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ParLevel1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParConsolidationType_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParFrequency_Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="HasSaveLevel2" Type="Boolean" Nullable="false" />
-          <Property Name="HasNoApplicableLevel2" Type="Boolean" Nullable="false" />
-          <Property Name="HasGroupLevel2" Type="Boolean" Nullable="false" />
-          <Property Name="HasAlert" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecific" Type="Boolean" />
-          <Property Name="IsSpecificHeaderField" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificNumberEvaluetion" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificNumberSample" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificLevel3" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificGoal" Type="Boolean" />
-          <Property Name="IsRuleConformity" Type="Boolean" Nullable="false" />
-          <Property Name="IsFixedEvaluetionNumber" Type="Boolean" Nullable="false" />
-          <Property Name="IsLimitedEvaluetionNumber" Type="Boolean" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="Level2Number" Type="Int32" />
-          <Property Name="hashKey" Type="Int32" />
-          <Property Name="haveRealTimeConsolidation" Type="Boolean" />
-          <Property Name="RealTimeConsolitationUpdate" Type="Int32" />
-          <Property Name="IsPartialSave" Type="Boolean" />
-          <Property Name="HasCompleteEvaluation" Type="Boolean" />
-          <Property Name="ParScoreType_Id" Type="Int32" />
-          <Property Name="IsChildren" Type="Boolean" />
-          <Property Name="ParLevel1Origin_Id" Type="Int32" />
-          <Property Name="PointsDestiny" Type="Boolean" />
-          <Property Name="ParLevel1Destiny_Id" Type="Int32" />
-          <Property Name="EditLevel2" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="ParLevel1" ToRole="CollectionLevel2" />
-          <NavigationProperty Name="Defect" Relationship="SgqDbModel.FK_Defect_ParLevel1" FromRole="ParLevel1" ToRole="Defect" />
-          <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
-          <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel1" FromRole="ParLevel1" ToRole="ParCounterXLocal" />
-          <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
-          <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParLevel1" ToRole="ParGoal" />
-          <NavigationProperty Name="VolumeCepDesossa" Relationship="SgqDbModel.FK__VolumeCep__ParLe__4E3E9311" FromRole="ParLevel1" ToRole="VolumeCepDesossa" />
-          <NavigationProperty Name="VolumeCepRecortes" Relationship="SgqDbModel.FK__VolumeCep__ParLe__5026DB83" FromRole="ParLevel1" ToRole="VolumeCepRecortes" />
-          <NavigationProperty Name="VolumePcc1b" Relationship="SgqDbModel.FK__VolumePcc__ParLe__520F23F5" FromRole="ParLevel1" ToRole="VolumePcc1b" />
-          <NavigationProperty Name="VolumeVacuoGRD" Relationship="SgqDbModel.FK__VolumeVac__ParLe__56D3D912" FromRole="ParLevel1" ToRole="VolumeVacuoGRD" />
-          <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2Level1" />
-          <NavigationProperty Name="ParScoreType" Relationship="SgqDbModel.FK_ParLevel1_ParScoreType" FromRole="ParLevel1" ToRole="ParScoreType" />
-          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
-          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
-          <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2ControlCompany" />
-          <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
-          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
-          <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
-          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
-          <Property Name="ParGroupLevel1_Id" Type="Int32" />
-          <Property Name="AllowAddLevel3" Type="Boolean" />
-          <Property Name="AllowEditPatternLevel3Task" Type="Boolean" />
-          <Property Name="AllowEditWeightOnLevel3" Type="Boolean" />
-          <Property Name="ShowInTablet" Type="Boolean" />
-          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
-        </EntityType>
         <Association Name="FK_CollectionLevel2_CollectionLevel2">
           <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
           <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel21" Multiplicity="0..1" />
@@ -5975,18 +5924,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CollectionLevel2_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CorrectiveAction_CollectionLevel2">
           <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
           <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
@@ -5996,210 +5933,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="CollectionLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Defect_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.Defect" Role="Defect" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Defect">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParConsolidationType">
-          <End Type="SgqDbModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParConsolidationType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParConsolidationType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCounterLocal_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParCounterXLocal" Role="ParCounterXLocal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCounterXLocal">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParFrequency">
-          <End Type="SgqDbModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParFrequency">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParFrequency_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParGoal_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParGoal" Role="ParGoal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParGoal">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VolumeCep__ParLe__4E3E9311">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.VolumeCepDesossa" Role="VolumeCepDesossa" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VolumeCepDesossa">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VolumeCep__ParLe__5026DB83">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.VolumeCepRecortes" Role="VolumeCepRecortes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VolumeCepRecortes">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VolumePcc__ParLe__520F23F5">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.VolumePcc1b" Role="VolumePcc1b" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VolumePcc1b">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VolumeVac__ParLe__56D3D912">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.VolumeVacuoGRD" Role="VolumeVacuoGRD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VolumeVacuoGRD">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level2Level1_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel2Level1" Role="ParLevel2Level1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel2Level1">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParScoreType">
-          <End Type="SgqDbModel.ParScoreType" Role="ParScoreType" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParScoreType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParScoreType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1XCluster_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XCluster">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1XHeaderField_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XHeaderField">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel2ControlCompany_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParLevel2ControlCompany" Role="ParLevel2ControlCompany" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel2ControlCompany">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel3Level2Level1_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel3Level2Level1" Role="ParLevel3Level2Level1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3Level2Level1">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParNotConformityRuleXLevel_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParNotConformityRuleXLevel">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParRelapse_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParRelapse" Role="ParRelapse" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParRelapse">
-              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6231,10 +5964,10 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Shift" Type="Int32" />
           <Property Name="Period" Type="Int32" />
           <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ConsolidationLevel1" ToRole="ParCompany" />
           <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
           <Property Name="ReauditLevel" Type="Int32" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
         </EntityType>
         <Association Name="FK_ConsolidationLevel1_Department">
           <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
@@ -6245,18 +5978,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ConsolidationLevel1">
               <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel1_Level1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6445,6 +6166,299 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
         </EntityType>
+        <EntityType Name="ParLevel1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParConsolidationType_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParFrequency_Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HasSaveLevel2" Type="Boolean" Nullable="false" />
+          <Property Name="HasNoApplicableLevel2" Type="Boolean" Nullable="false" />
+          <Property Name="HasGroupLevel2" Type="Boolean" Nullable="false" />
+          <Property Name="HasAlert" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecific" Type="Boolean" />
+          <Property Name="IsSpecificHeaderField" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecificNumberEvaluetion" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecificNumberSample" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecificLevel3" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecificGoal" Type="Boolean" />
+          <Property Name="IsRuleConformity" Type="Boolean" Nullable="false" />
+          <Property Name="IsFixedEvaluetionNumber" Type="Boolean" Nullable="false" />
+          <Property Name="IsLimitedEvaluetionNumber" Type="Boolean" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Level2Number" Type="Int32" />
+          <Property Name="hashKey" Type="Int32" />
+          <Property Name="haveRealTimeConsolidation" Type="Boolean" />
+          <Property Name="RealTimeConsolitationUpdate" Type="Int32" />
+          <Property Name="IsPartialSave" Type="Boolean" />
+          <Property Name="HasCompleteEvaluation" Type="Boolean" />
+          <Property Name="ParScoreType_Id" Type="Int32" />
+          <Property Name="ParGroupLevel1_Id" Type="Int32" />
+          <Property Name="IsChildren" Type="Boolean" />
+          <Property Name="ParLevel1Origin_Id" Type="Int32" />
+          <Property Name="PointsDestiny" Type="Boolean" />
+          <Property Name="ParLevel1Destiny_Id" Type="Int32" />
+          <Property Name="EditLevel2" Type="Boolean" Nullable="false" />
+          <Property Name="AllowAddLevel3" Type="Boolean" />
+          <Property Name="AllowEditPatternLevel3Task" Type="Boolean" />
+          <Property Name="AllowEditWeightOnLevel3" Type="Boolean" />
+          <Property Name="ShowInTablet" Type="Boolean" />
+          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
+          <Property Name="IsRecravacao" Type="Boolean" />
+          <Property Name="ShowScorecard" Type="Boolean" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="ParLevel1" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
+          <NavigationProperty Name="Defect" Relationship="SgqDbModel.FK_Defect_ParLevel1" FromRole="ParLevel1" ToRole="Defect" />
+          <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
+          <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel1" FromRole="ParLevel1" ToRole="ParCounterXLocal" />
+          <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
+          <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParLevel1" ToRole="ParGoal" />
+          <NavigationProperty Name="VolumeCepDesossa" Relationship="SgqDbModel.FK__VolumeCep__ParLe__674A37FD" FromRole="ParLevel1" ToRole="VolumeCepDesossa" />
+          <NavigationProperty Name="VolumeCepRecortes" Relationship="SgqDbModel.FK__VolumeCep__ParLe__6932806F" FromRole="ParLevel1" ToRole="VolumeCepRecortes" />
+          <NavigationProperty Name="VolumePcc1b" Relationship="SgqDbModel.FK__VolumePcc__ParLe__6B1AC8E1" FromRole="ParLevel1" ToRole="VolumePcc1b" />
+          <NavigationProperty Name="VolumeVacuoGRD" Relationship="SgqDbModel.FK__VolumeVac__ParLe__6D031153" FromRole="ParLevel1" ToRole="VolumeVacuoGRD" />
+          <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2Level1" />
+          <NavigationProperty Name="ParScoreType" Relationship="SgqDbModel.FK_ParLevel1_ParScoreType" FromRole="ParLevel1" ToRole="ParScoreType" />
+          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
+          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
+          <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2ControlCompany" />
+          <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
+          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
+          <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel2_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Level1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Defect_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.Defect" Role="Defect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Defect">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1_ParConsolidationType">
+          <End Type="SgqDbModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParConsolidationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParConsolidationType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCounterLocal_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParCounterXLocal" Role="ParCounterXLocal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCounterXLocal">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1_ParFrequency">
+          <End Type="SgqDbModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParGoal_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParGoal" Role="ParGoal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParGoal">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VolumeCep__ParLe__674A37FD">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.VolumeCepDesossa" Role="VolumeCepDesossa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumeCepDesossa">
+              <PropertyRef Name="ParLevel1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VolumeCep__ParLe__6932806F">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.VolumeCepRecortes" Role="VolumeCepRecortes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumeCepRecortes">
+              <PropertyRef Name="ParLevel1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VolumePcc__ParLe__6B1AC8E1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.VolumePcc1b" Role="VolumePcc1b" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumePcc1b">
+              <PropertyRef Name="ParLevel1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VolumeVac__ParLe__6D031153">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.VolumeVacuoGRD" Role="VolumeVacuoGRD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumeVacuoGRD">
+              <PropertyRef Name="ParLevel1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Level2Level1_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel2Level1" Role="ParLevel2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2Level1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1_ParScoreType">
+          <End Type="SgqDbModel.ParScoreType" Role="ParScoreType" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParScoreType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParScoreType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XHeaderField_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XHeaderField">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel2ControlCompany" Role="ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2Level1_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2Level1" Role="ParLevel3Level2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2Level1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParNotConformityRuleXLevel_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParNotConformityRuleXLevel">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParRelapse_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParRelapse" Role="ParRelapse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParRelapse">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6532,6 +6546,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="CollectionLevel2XParHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2XParHeaderField">
               <MappingFragment StoreEntitySet="CollectionLevel2XParHeaderField">
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="ParFieldType_Id" ColumnName="ParFieldType_Id" />
                 <ScalarProperty Name="ParHeaderField_Name" ColumnName="ParHeaderField_Name" />
@@ -6957,6 +6973,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParLevel3">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3">
               <MappingFragment StoreEntitySet="ParLevel3">
+                <ScalarProperty Name="OrderColumn" ColumnName="OrderColumn" />
+                <ScalarProperty Name="AllowNA" ColumnName="AllowNA" />
+                <ScalarProperty Name="IsPointLess" ColumnName="IsPointLess" />
                 <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -7664,51 +7683,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel1">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
-              <MappingFragment StoreEntitySet="ParLevel1">
-                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
-                <ScalarProperty Name="ShowInTablet" ColumnName="ShowInTablet" />
-                <ScalarProperty Name="AllowEditWeightOnLevel3" ColumnName="AllowEditWeightOnLevel3" />
-                <ScalarProperty Name="AllowEditPatternLevel3Task" ColumnName="AllowEditPatternLevel3Task" />
-                <ScalarProperty Name="AllowAddLevel3" ColumnName="AllowAddLevel3" />
-                <ScalarProperty Name="ParGroupLevel1_Id" ColumnName="ParGroupLevel1_Id" />
-                <ScalarProperty Name="EditLevel2" ColumnName="EditLevel2" />
-                <ScalarProperty Name="ParLevel1Destiny_Id" ColumnName="ParLevel1Destiny_Id" />
-                <ScalarProperty Name="PointsDestiny" ColumnName="PointsDestiny" />
-                <ScalarProperty Name="ParLevel1Origin_Id" ColumnName="ParLevel1Origin_Id" />
-                <ScalarProperty Name="IsChildren" ColumnName="IsChildren" />
-                <ScalarProperty Name="ParScoreType_Id" ColumnName="ParScoreType_Id" />
-                <ScalarProperty Name="HasCompleteEvaluation" ColumnName="HasCompleteEvaluation" />
-                <ScalarProperty Name="IsPartialSave" ColumnName="IsPartialSave" />
-                <ScalarProperty Name="RealTimeConsolitationUpdate" ColumnName="RealTimeConsolitationUpdate" />
-                <ScalarProperty Name="haveRealTimeConsolidation" ColumnName="haveRealTimeConsolidation" />
-                <ScalarProperty Name="hashKey" ColumnName="hashKey" />
-                <ScalarProperty Name="Level2Number" ColumnName="Level2Number" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="IsLimitedEvaluetionNumber" ColumnName="IsLimitedEvaluetionNumber" />
-                <ScalarProperty Name="IsFixedEvaluetionNumber" ColumnName="IsFixedEvaluetionNumber" />
-                <ScalarProperty Name="IsRuleConformity" ColumnName="IsRuleConformity" />
-                <ScalarProperty Name="IsSpecificGoal" ColumnName="IsSpecificGoal" />
-                <ScalarProperty Name="IsSpecificLevel3" ColumnName="IsSpecificLevel3" />
-                <ScalarProperty Name="IsSpecificNumberSample" ColumnName="IsSpecificNumberSample" />
-                <ScalarProperty Name="IsSpecificNumberEvaluetion" ColumnName="IsSpecificNumberEvaluetion" />
-                <ScalarProperty Name="IsSpecificHeaderField" ColumnName="IsSpecificHeaderField" />
-                <ScalarProperty Name="IsSpecific" ColumnName="IsSpecific" />
-                <ScalarProperty Name="HasAlert" ColumnName="HasAlert" />
-                <ScalarProperty Name="HasGroupLevel2" ColumnName="HasGroupLevel2" />
-                <ScalarProperty Name="HasNoApplicableLevel2" ColumnName="HasNoApplicableLevel2" />
-                <ScalarProperty Name="HasSaveLevel2" ColumnName="HasSaveLevel2" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
-                <ScalarProperty Name="ParConsolidationType_Id" ColumnName="ParConsolidationType_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ConsolidationLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
               <MappingFragment StoreEntitySet="ConsolidationLevel1">
@@ -7837,6 +7811,53 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Photo_Thumbnaills" ColumnName="Photo_Thumbnaills" />
                 <ScalarProperty Name="Result_Level3_Id" ColumnName="Result_Level3_Id" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel1">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
+              <MappingFragment StoreEntitySet="ParLevel1">
+                <ScalarProperty Name="ShowScorecard" ColumnName="ShowScorecard" />
+                <ScalarProperty Name="IsRecravacao" ColumnName="IsRecravacao" />
+                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
+                <ScalarProperty Name="ShowInTablet" ColumnName="ShowInTablet" />
+                <ScalarProperty Name="AllowEditWeightOnLevel3" ColumnName="AllowEditWeightOnLevel3" />
+                <ScalarProperty Name="AllowEditPatternLevel3Task" ColumnName="AllowEditPatternLevel3Task" />
+                <ScalarProperty Name="AllowAddLevel3" ColumnName="AllowAddLevel3" />
+                <ScalarProperty Name="EditLevel2" ColumnName="EditLevel2" />
+                <ScalarProperty Name="ParLevel1Destiny_Id" ColumnName="ParLevel1Destiny_Id" />
+                <ScalarProperty Name="PointsDestiny" ColumnName="PointsDestiny" />
+                <ScalarProperty Name="ParLevel1Origin_Id" ColumnName="ParLevel1Origin_Id" />
+                <ScalarProperty Name="IsChildren" ColumnName="IsChildren" />
+                <ScalarProperty Name="ParGroupLevel1_Id" ColumnName="ParGroupLevel1_Id" />
+                <ScalarProperty Name="ParScoreType_Id" ColumnName="ParScoreType_Id" />
+                <ScalarProperty Name="HasCompleteEvaluation" ColumnName="HasCompleteEvaluation" />
+                <ScalarProperty Name="IsPartialSave" ColumnName="IsPartialSave" />
+                <ScalarProperty Name="RealTimeConsolitationUpdate" ColumnName="RealTimeConsolitationUpdate" />
+                <ScalarProperty Name="haveRealTimeConsolidation" ColumnName="haveRealTimeConsolidation" />
+                <ScalarProperty Name="hashKey" ColumnName="hashKey" />
+                <ScalarProperty Name="Level2Number" ColumnName="Level2Number" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="IsLimitedEvaluetionNumber" ColumnName="IsLimitedEvaluetionNumber" />
+                <ScalarProperty Name="IsFixedEvaluetionNumber" ColumnName="IsFixedEvaluetionNumber" />
+                <ScalarProperty Name="IsRuleConformity" ColumnName="IsRuleConformity" />
+                <ScalarProperty Name="IsSpecificGoal" ColumnName="IsSpecificGoal" />
+                <ScalarProperty Name="IsSpecificLevel3" ColumnName="IsSpecificLevel3" />
+                <ScalarProperty Name="IsSpecificNumberSample" ColumnName="IsSpecificNumberSample" />
+                <ScalarProperty Name="IsSpecificNumberEvaluetion" ColumnName="IsSpecificNumberEvaluetion" />
+                <ScalarProperty Name="IsSpecificHeaderField" ColumnName="IsSpecificHeaderField" />
+                <ScalarProperty Name="IsSpecific" ColumnName="IsSpecific" />
+                <ScalarProperty Name="HasAlert" ColumnName="HasAlert" />
+                <ScalarProperty Name="HasGroupLevel2" ColumnName="HasGroupLevel2" />
+                <ScalarProperty Name="HasNoApplicableLevel2" ColumnName="HasNoApplicableLevel2" />
+                <ScalarProperty Name="HasSaveLevel2" ColumnName="HasSaveLevel2" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
+                <ScalarProperty Name="ParConsolidationType_Id" ColumnName="ParConsolidationType_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

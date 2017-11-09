@@ -164,30 +164,10 @@
         <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_Result_Level3_ParLevel3" />
         <EntityTypeShape EntityType="SgqDbModel.EmailContent" Width="1.5" PointX="15.375" PointY="0.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel1" Width="1.5" PointX="25.625" PointY="27.5" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_Defect_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParConsolidationType" />
-        <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParFrequency" />
-        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK__VolumeCep__ParLe__4E3E9311" />
-        <AssociationConnector Association="SgqDbModel.FK__VolumeCep__ParLe__5026DB83" />
-        <AssociationConnector Association="SgqDbModel.FK__VolumePcc__ParLe__520F23F5" />
-        <AssociationConnector Association="SgqDbModel.FK__VolumeVac__ParLe__56D3D912" />
-        <AssociationConnector Association="SgqDbModel.FK_Level2Level1_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParScoreType" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel1" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel1" Width="1.5" PointX="27.875" PointY="34.125" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Department" />
-        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Level1" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionLevel02" Width="1.5" PointX="21.75" PointY="18.75" />
@@ -200,6 +180,26 @@
         <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="7.375" PointY="15.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.Result_Level3_Photos" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel1" Width="1.5" PointX="22.625" PointY="32.75" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Level1" />
+        <AssociationConnector Association="SgqDbModel.FK_Defect_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParConsolidationType" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParFrequency" />
+        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK__VolumeCep__ParLe__674A37FD" />
+        <AssociationConnector Association="SgqDbModel.FK__VolumeCep__ParLe__6932806F" />
+        <AssociationConnector Association="SgqDbModel.FK__VolumePcc__ParLe__6B1AC8E1" />
+        <AssociationConnector Association="SgqDbModel.FK__VolumeVac__ParLe__6D031153" />
+        <AssociationConnector Association="SgqDbModel.FK_Level2Level1_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParScoreType" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

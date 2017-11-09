@@ -86,6 +86,8 @@ namespace DTO.DTO.Params
 
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
+        public bool ShowScorecard { get; set; } = true;
+        
         public bool HasTakePhoto { get; set; } = false;
         public bool IsPartialSave { get; set; } = false;
 

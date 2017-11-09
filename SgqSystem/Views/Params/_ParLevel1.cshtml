@@ -151,6 +151,10 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
 
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowScorecard, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.show_scorecard), Table.PosicaoLabel.left, null, null)
+                        </tr>
+
                         @*<tr class="row">
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                             </tr>*@

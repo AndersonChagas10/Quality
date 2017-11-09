@@ -33,6 +33,13 @@
         },
         adiciona: function (o, idTable, tdsName) {
 
+            
+            if (o.IntervalMin == null && o.IntervalMax != null) {
+                tdsName[5] = "value_is_acceptable_less_than";
+            } else if (o.IntervalMax == null && o.IntervalMin != null) {
+                tdsName[5] = "value_is_acceptable_greater";
+            }
+
             var tr = "";
             var objData = {};
 

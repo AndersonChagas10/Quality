@@ -40,6 +40,7 @@ namespace SGQDBContext
 
         public bool HasGroupLevel2 { get; set; }
         public bool HasTakePhoto { get; set; }
+        public bool ShowScorecard { get; set; }
 
         public ParLevel1()
         {
