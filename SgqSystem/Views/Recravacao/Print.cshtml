@@ -327,8 +327,13 @@
                             <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
                                 ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
                                 ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
-
+                                colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+                                @*1 Binário ok
+                                    2   Número de defeitos ok
+                                    3   Intervalos ok
+                                    4   Calculado
+                                    5   Texto
+                                    99  NOVO CALCULADO POR OUTRO*@
                                 <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
                                     <span>
                                         <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true" >
@@ -452,21 +457,18 @@
             function ($scope, $http, $timeout) {
                 let vm = $scope
 
-                //$scope.timerRunning = true;
+                vm.dev = true
+                vm.jbsBrasil = false
 
-                //$scope.startTimer = function () {
-                //    $scope.$broadcast('timer-start');
-                //    $scope.timerRunning = true;
-                //};
-
-                //$scope.stopTimer = function () {
-                //    $scope.$broadcast('timer-stop');
-                //    $scope.timerRunning = false;
-                //};
-
-                //$scope.$on('timer-stopped', function (event, data) {
-                //    console.log('Timer Stopped - data = ', data);
-                //});
+                vm.mercado = 1
+                vm.limInferiorEspessura
+                vm.limSuperiorEspessura
+                vm.valorEt
+                vm.valorEc
+                //vm.idEC = 3320
+                //vm.idET = 3319
+                //vm.idEspessura = 3314
+                //vm.idOVERLAP = 3327
 
                 vm.linhas = [{}]
                 vm.produtos = [{}]
@@ -1307,6 +1309,22 @@
                     vm.selectIndicador(null, true)
                 };
                
+                function init() {
+
+                    if (vm.dev) {
+                        vm.idEC = 1263
+                        vm.idET = 1264
+                        vm.idEspessura = 1254
+                        vm.idOVERLAP = 1262
+                    } if (vm.jbsBrasil) {
+                        vm.idEC = 3320
+                        vm.idET = 3319
+                        vm.idEspessura = 3314
+                        vm.idOVERLAP = 3327
+                    }
+                }
+                init();
+
                 vm.$watch('$viewContentLoaded',
                     function () {
                         setTimeout(function () {

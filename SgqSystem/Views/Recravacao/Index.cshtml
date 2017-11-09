@@ -11,8 +11,12 @@
         font-weight: bold !important;
     }
 
+    .page-header.navbar.navbar-fixed-top, .page-header.navbar.navbar-static-top {
+        z-index: 1030 !important;
+    }
+
     .modal {
-        z-index: 9998 !important;
+        /*z-index: 9998;*/
         outline: 0;
     }
 
@@ -165,7 +169,8 @@
             ng-class="{'btn-success': (seletedLinha.ExcedidoTempoLimite == false), 'btn-danger': (seletedLinha.ExcedidoTempoLimite == true)}"
             title="Para / Reinicia a Linha">
         <span class="glyphicon glyphicon-time" aria-hidden="true">
-            <span style="font-family:'Open Sans',sans-serif">&nbsp; Parar / Reiniciar a Linha. Linha parada a {{seletedLinha.LinhaParadaTimer}}</span>
+            @*<span style="font-family:'Open Sans',sans-serif">&nbsp; Anotações / Observações {{seletedLinha.LinhaParadaTimer}}</span>*@
+            <span style="font-family:'Open Sans',sans-serif">&nbsp; Anotações / Observações {{ProximaLataTimer}}</span>
         </span>
     </button>
 
@@ -248,7 +253,7 @@
 
     <div class="col-lg-12 col-md-12 col-sm-12"
          ng-init="seletedLinha.IsStoped = false">
-        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index" tables>
+        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index; item.Name = item.Name" tables>
             <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata}}</span></div>
 
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
@@ -309,7 +314,7 @@
                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
                             ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
@@ -352,8 +357,9 @@
                                   ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
                                 <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                             </span>
-                            <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"  
-                                  ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
+                            <span class="label validate"
+                                  ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
+                                  ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(item.ResultValue[ParLevel3.Id][($index +1)]) , bgRed: bgRedEspessura(item.ResultValue[ParLevel3.Id][($index +1)]) }">
                                 <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                             </span>
                             @*4 Calculado*@
@@ -448,6 +454,8 @@
                            placeholder=""
                            ng-model="selectedLata.HoraDaRetiradaDaLata">
                     <br />
+
+                  
                     <table style="width: 100%">
                         <tbody>
 
@@ -524,7 +532,7 @@
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                             <input style="width:100%;"
                                                    type="text"
-                                                   @*title="{{selectedLlata.espessuraTT}}"*@
+                                                   title="{{selectedLata.espessuraTT}}"
                                                    ng-model="selectedLata.ResultValue[ParLevel3.Id][($index +1)]"
                                                    ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (selectedLata.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(selectedLata.ResultValue[ParLevel3.Id][($index +1)]) , bgRed: bgRedEspessura(selectedLata.ResultValue[ParLevel3.Id][($index +1)])}"
                                                    ng-disabled="selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
@@ -628,7 +636,26 @@
                 </div>
 
                 <div class="modal-footer">
-                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>*@
+
+                    <button id="correctiveActionBtn"
+                            type="button" class="btn btn-danger btn-sm"
+                            data-toggle="modal"
+                            data-target="#modalCorrectiveAction"
+                            title="Gerar Ação Corretiva para {{selectedLata.Name}}"
+                            ng-show="selectedLata.showCorrectiveAction"
+                            ng-click="newCorrectiveAction()">
+                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    </button>
+                    <button class="btn btn-success btn-sm"
+                            data-toggle="modal"
+                            data-target="#modalAssinaturaFinalizaLata"
+                            title="Assinar {{selectedLata.Name}}"
+                            type="button"
+                            ng-show="selectedLata.liberaAssinaturaLata && !selectedLata.finalizado && selectedLata.HoraDaRetiradaDaLata.length == 5 && selectedLata.correctiveAction.IsAssinada"
+                            ng-click="">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-success" @*data-dismiss="modal"*@ ng-click="executeDocReady(true, true)">Salvar</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="executeDocReady(true, true)">Fechar</button>
                 </div>
 
@@ -773,7 +800,7 @@
 
     @*modalCorrectiveAction*@
     <div class="modal fade" id="modalCorrectiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -786,31 +813,35 @@
                 <div class="modal-body" style="overflow-x:auto">
                     <form role="form" name="formCA" class="ng-pristine ng-valid">
 
-                        <div class="{{formDefault12}}">
+                        <div class="{{formDefault6}}">
                             <label>Horário de parada da linha</label>
                             <input type="text" class="time form-control" title="Horário de parada da linha" ng-model="seletedLinha.correctiveAction.HorarioDeParada" />
                         </div>
+                        <div class="{{formDefault6}}">
+                            <label>Horário de liberação da linha</label>
+                            <input type="text"
+                                   class="time form-control"
+                                   title="Horário de liberação da linha"
+                                   ng-model="seletedLinha.correctiveAction.HorarioDeLiberacao" />
+                        </div>
+                        <div class="{{formDefault12}}">
+                            @*<span ng-if="!formCA.DescriptionFailure.$valid" class="redDot">* Campo Obrigatório</span>*@
+                            <br />
+                            <label>Deficiência:</label>
+                            <textarea @*ng-disabled="selectedLata.correctiveAction.IsAssinada"*@
+                                      ng-model="selectedLata.correctiveAction.DescriptionFailure"
+                                      ng-required="true"
+                                      class="form-control custom-control"
+                                      name="DescriptionFailure"
+                                      rows="3"
+                                      style="resize:none"></textarea>
+                        </div>
 
                         <div class="clearfix"></div>
-
-                        <div class="alert alert-warning">
+                        <div class="alert alert-warning {{formDefault}}">
                             <h3>Ação Corretiva</h3>
-                            <div class="{{formDefault12}}">
-                                <span ng-if="!formCA.DescriptionFailure.$valid" class="redDot">* Campo Obrigatório</span>
-                                <br />
-                                <label>Descrição da Falha:</label>
-                                <textarea ng-disabled="selectedLata.correctiveAction.IsAssinada"
-                                          ng-model="selectedLata.correctiveAction.DescriptionFailure"
-                                          ng-required="true"
-                                          class="form-control custom-control"
-                                          name="DescriptionFailure"
-                                          rows="3"
-                                          style="resize:none"></textarea>
-                            </div>
-                            <div class="{{formDefault12}}">
-                                <span ng-if="!formCA.ImmediateCorrectiveAction.$valid" class="redDot">* Campo Obrigatório</span>
-                                <br />
-                                <label>Ação Corretiva Imediata:</label>
+                            <div>
+                                <label>Ação Corretiva:</label><span ng-if="!formCA.ImmediateCorrectiveAction.$valid" class="redDot">* Campo Obrigatório</span>
                                 <label ng-show="seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada:</label>
                                 <textarea ng-disabled="selectedLata.correctiveAction.IsAssinada"
                                           ng-model="selectedLata.correctiveAction.ImmediateCorrectiveAction"
@@ -821,7 +852,7 @@
                                           style="resize:none"></textarea>
                             </div>
 
-                            <div class="{{formDefault12}}">
+                            <div>
                                 <div ng-show="selectedLata.correctiveAction.IsAssinada">
                                     <button type="button"
                                             class="btn btn-primary"
@@ -834,7 +865,8 @@
                                     <input type="password" class="form-control" ng-model="selectedLata.correctiveAction.Assinatura.Password" placeholder="Senha" />
                                     <button type="button"
                                             class="btn btn-primary"
-                                            ng-disabled="(!(selectedLata.correctiveAction.DescriptionFailure) || !(selectedLata.correctiveAction.ImmediateCorrectiveAction))"
+                                            title="Preencha o campo Ação Corretiva para liberar a Assinatura"
+                                            ng-disabled="(!(selectedLata.correctiveAction.ImmediateCorrectiveAction))"
                                             ng-click="AssinaCorrectiveAction1()">
                                         Assinar Ação Corretiva
                                     </button>
@@ -843,9 +875,9 @@
                             <div class="clearfix"></div>
                         </div>
 
-                        <div class="alert alert-success">
+                        <div class="alert alert-success {{formDefault}}">
                             <h3>Ação Preventiva</h3>
-                            <div class="{{formDefault12}}">
+                            <div>
                                 <label>Acão Preventiva:</label>
                                 <textarea ng-disabled="selectedLata.PreventiveAction.IsAssinada"
                                           ng-model="selectedLata.PreventiveAction.PreventativeMeasure"
@@ -853,7 +885,7 @@
                                           rows="3"
                                           style="resize:none"></textarea>
                             </div>
-                            <div class="{{formDefault12}}">
+                            <div>
                                 <div ng-show="selectedLata.PreventiveAction.IsAssinada">
                                     <button type="button"
                                             class="btn btn-primary"
@@ -861,11 +893,13 @@
                                         Editar Ação Preventiva
                                     </button>
                                 </div>
-                                <div ng-hide="(selectedLata.PreventiveAction.IsAssinada || !selectedLata.PreventiveAction.PreventativeMeasure)">
+                                <div ng-show="!selectedLata.PreventiveAction.IsAssinada">
                                     <input type="text" class="form-control" ng-model="selectedLata.PreventiveAction.Assinatura.Name" placeholder="Nome de Usuário" />
                                     <input type="password" class="form-control" ng-model="selectedLata.PreventiveAction.Assinatura.Password" placeholder="Senha" />
                                     <button type="button"
                                             class="btn btn-primary"
+                                            title="Preencha o campo Ação Preventiva para liberar a Assinatura"
+                                            ng-disabled="(selectedLata.PreventiveAction.IsAssinada || !selectedLata.PreventiveAction.PreventativeMeasure)"
                                             ng-click="AssinaPreventiveAction()">
                                         Assinar Ação Preventiva
                                     </button>
@@ -875,13 +909,7 @@
                         </div>
 
 
-                        <div class="{{formDefault12}}">
-                            <label>Horário de liberação da linha</label>
-                            <input type="text"
-                                   class="time form-control"
-                                   title="Horário de liberação da linha"
-                                   ng-model="seletedLinha.correctiveAction.HorarioDeLiberacao" />
-                        </div>
+
                     </form>
                 </div>
 
@@ -1003,43 +1031,28 @@
 
 
                 //TUDO MOCK MOCK
-               
 
-                vm.idEC = 1263
-                vm.idET = 1264
-                vm.idEspessura = 1254
-                vm.idOVERLAP = 1262
+                vm.dev = true
+                vm.jbsBrasil = false
+
                 vm.mercado = 1
                 vm.limInferiorEspessura
                 vm.limSuperiorEspessura
                 vm.valorEt
                 vm.valorEc
-                //vm.idEC = 3320
-                //vm.idET = 3319
-                //vm.idEspessura = 3314
-                //vm.idOVERLAP = 3327
                 vm.espessuraTT = function () {
                     let lata = vm.selectedLata
                     if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) 
-                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
+                            lata.espessuraTT = `Lim. Inferior ${lata["limInferiorEspessura"]}, lim. superior ${lata["limSuperiorEspessura"]}`
+                            //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
                         else
-                            lata.espessuraTT =`Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
-                }
-                vm.calcularEspessura = function (lata) {
-                    //if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
-                    //    let valorEc = lata.ResultValue[vm.idEC.toString()]
-                    //    let valorEt = lata.ResultValue[vm.idET.toString()]
-                    //    lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                    //    lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
-                    //}
-                    //console.log(vm.limInferiorEspessura)
-                    //console.log(vm.limSuperiorEspessura)
+                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
                 }
                 vm.bgGreenEspessura = function (value) {
                     let lata = vm.selectedLata
                     if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
                             let valorEc = lata.ResultValue[vm.idEC.toString()]
                             let valorEt = lata.ResultValue[vm.idET.toString()]
                             lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
@@ -1053,7 +1066,7 @@
                 vm.bgRedEspessura = function (value) {
                     let lata = vm.selectedLata
                     if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
                             let valorEc = lata.ResultValue[vm.idEC.toString()]
                             let valorEt = lata.ResultValue[vm.idET.toString()]
                             lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
@@ -1067,6 +1080,7 @@
                 //FIM TUDO MOCK MOCK
 
                 vm.formDefault = 'form-group float-label-control col-lg-6 col-md-12 col-sm-12'
+                vm.formDefault6 = 'form-group float-label-control col-lg-6 col-md-6 col-sm-6'
                 vm.formDefault12 = 'form-group float-label-control col-lg-12 col-md-12 col-sm-12'
 
                 vm.linhas = [{}]
@@ -1523,7 +1537,12 @@
                     if (isNaN(result)) {
                         return ""
                     } else {
-                        let floatValue = parseFloat(result.toFixed(2))
+
+                        let floatValue
+                        if (expressaoArr[0] && expressaoArr[0].UnidadeMedidaText && expressaoArr[0].UnidadeMedidaText.indexOf('%') >= 0)
+                            floatValue = parseFloat(result.toFixed(0)) + ' %'
+                        else
+                            floatValue = parseFloat(result.toFixed(2))
 
                         if (vm.selectedLata.ResultValue[parlevel3Name] == undefined)
                             vm.selectedLata.ResultValue[parlevel3Name] = {}
@@ -1676,11 +1695,22 @@
                     })
 
                     $(".time").inputmask({
-                        alias: 'hh:mm t',
-                        showMaskOnHover: false,
-                        showMaskOnFocus: false,
-                        //oncomplete: function(){  },
-                    })
+                        mask: "23:59"
+                    , placeholder: "hh:mm"
+                    , definitions: {
+                        '5': { validator: "[0-5]" }
+                        , '3': { validator: "[0-9]" }
+                        , '2': { validator: "[0-2]" }
+                    }
+                    });
+                    $(".time").attr('placeholder', 'hh:mm')
+
+                    //{
+                    //    alias: 'hh:mm t',
+                    //    showMaskOnHover: false,
+                    //    showMaskOnFocus: false,
+                    //    //oncomplete: function(){  },
+                    //})
 
                     if (executaVerificacaoParaAcao) {
                         vm.seletedLinha.HaveCorrectiveAction = false
@@ -1842,27 +1872,27 @@
                 }
 
                 vm.TimerOn = function (isLoadData, cb) {
-                    if (isLoadData) {
-                        vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
-                    } else if (vm.seletedLinha.IsStoped) {
-                        vm.seletedLinha.ExcedidoTempoLimite = false
-                        vm.seletedLinha.StartParadaDeLinha = moment();
-                        vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
-                    }
-                    if (cb)
-                        cb()
+                    //if (isLoadData) {
+                    //    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                    //} else if (vm.seletedLinha.IsStoped) {
+                    //    vm.seletedLinha.ExcedidoTempoLimite = false
+                    //    vm.seletedLinha.StartParadaDeLinha = moment();
+                    //    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                    //}
+                    //if (cb)
+                    //    cb()
                 }
 
                 vm.TimerOff = function () {
-                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
-                    let duration = moment.duration(diffTime);
-                    let //years = duration.years(),
-                        days = duration.days(),
-                        hrs = duration.hours(),
-                      mins = duration.minutes(),
-                      secs = duration.seconds();
-                    vm.seletedLinha.TempoDeLinhaParada = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
-                    $timeout.cancel(vm.seletedLinha.mytimeout);
+                    //let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
+                    //let duration = moment.duration(diffTime);
+                    //let //years = duration.years(),
+                    //    days = duration.days(),
+                    //    hrs = duration.hours(),
+                    //  mins = duration.minutes(),
+                    //  secs = duration.seconds();
+                    //vm.seletedLinha.TempoDeLinhaParada = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    //$timeout.cancel(vm.seletedLinha.mytimeout);
                 }
 
                 $scope.onTimeout = function () {
@@ -1936,6 +1966,25 @@
                             vm.print()
                         }
                     });
+                    $(document).on('show.bs.modal', '.modal', function (event) {
+                        var zIndex = 1040 + (10 * $('.modal:visible').length);
+                        $(this).css('z-index', zIndex);
+                        setTimeout(function () {
+                            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+                        }, 0);
+                    });
+
+                    if (vm.dev) {
+                        vm.idEC = 1263
+                        vm.idET = 1264
+                        vm.idEspessura = 1254
+                        vm.idOVERLAP = 1262
+                    } if (vm.jbsBrasil) {
+                        vm.idEC = 3320
+                        vm.idET = 3319
+                        vm.idEspessura = 3314
+                        vm.idOVERLAP = 3327
+                    }
                 }
                 init();
 
@@ -2032,5 +2081,5 @@
             }])
 
     })();
-
+   
 </script>
