@@ -151,6 +151,10 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
 
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowScorecard, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.show_scorecard), Table.PosicaoLabel.left, null, null)
+                        </tr>
+
                         @*<tr class="row">
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                             </tr>*@
@@ -381,9 +385,11 @@
                                                     <th style="width:17%">@Resources.Resource.name</th>
                                                     <th style="width:15%">@Resources.Resource.type</th>
                                                     <th style="width:10%">@Resources.Resource.preview</th>
-                                                    <th style="width:5%"></th>
+                                                    
                                                     <th style="width:15%">@Resources.Resource.required</th>
+                                                    
                                                     <th style="width:15%">@Resources.Resource.pattern</th>
+                                                    <th style="width:5%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -509,9 +515,7 @@
                                                                     </button>
                                                                 </td>
                                                             }
-                                                            <td>
-                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                            </td>
+                                                            
                                                             <td>
                                                                 <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
@@ -534,6 +538,7 @@
                                                                     }
                                                                 </select>
                                                             </td>
+                                                            
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
@@ -558,6 +563,9 @@
                                                                     </div>
                                                                 }
 
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                             </td>
 
                                                         </tr>
@@ -866,7 +874,8 @@
                 'ParFieldType_Id': tipoVal,
                 'ParLevelDefinition_Id': nivelDoCampoVal,
                 'IsDefaultOption' : false,
-                'PunishmentValue': valor
+                'PunishmentValue': valor,
+                'IsRequired' : null
             });
 
             /*Table*/
@@ -915,14 +924,28 @@
             <tr><th>Tipo</th></tr>
             <tr><th>Preview</th></tr>
             <tr><th></th></tr>*/
+            if ($('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state')) {
+                statusText = "Sim";
+            } else {
+                statusText = "Não";
+            }
+
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
+                '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
+                '<option value="-1">"@Resources.Resource.select"</option> ';
+
+
+            @*var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
                           '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
-                          '<option value="-1">"@Resources.Resource.select"</option> ';
+                          '<option value="-1">"@Resources.Resource.select"</option> ';*@
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
+                Cabecalhos.ParMultiplaEscolhaOpcoes[c].IsRequired =  $('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state');
             });
             example += '</select>';
 
@@ -942,8 +965,10 @@
                     example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key + '"     value="' + o[key] + '" />';
                 }
             });
-
+           
             example += '</td>'
+            example += '<td> <label>' + statusText + '</label></td>'; // obrigatoriedade;
+            example += '<td> <label> &nbsp; </label></td>'; //padrão em branco quando insere;
             example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
@@ -1155,8 +1180,9 @@
             example += '</td>';
 
             example += '<td>';
+            example += '<td></td>' //obrigatoriedade ""
+            example += '<td></td>' //padrão
             example += '' +  Cabecalhos.BtnExcluir();
-            //example += '</div>';
             example += '</td>';
 
             $('#tableCabecalhosPreview').append(example);
@@ -1212,7 +1238,8 @@
                 }
             });
             example += '</td>';
-
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
             $('#tableCabecalhosPreview').append(example);
@@ -1299,7 +1326,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
-
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' +  Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1380,6 +1408,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1457,6 +1487,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';

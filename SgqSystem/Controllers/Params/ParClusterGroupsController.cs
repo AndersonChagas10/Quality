@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers.Params
 {
-    public class ParClusterGroupsController : Controller
+    public class ParClusterGroupsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
@@ -48,6 +48,16 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,ParClusterGroupParent_Id,AddDate,AlterDate,IsActive")] ParClusterGroup parClusterGroup)
         {
+            if (parClusterGroup.Name == null)
+            {
+                ModelState.AddModelError("Name", Resources.Resource.fill_the_name);
+            }
+
+            if (parClusterGroup.Description == null)
+            {
+                ModelState.AddModelError("Description", Resources.Resource.fill_the_description);
+            }
+
             if (ModelState.IsValid)
             {
                 parClusterGroup.IsActive = true;
@@ -82,6 +92,17 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,ParClusterGroupParent_Id,AddDate,AlterDate,IsActive")] ParClusterGroup parClusterGroup)
         {
+
+            if (parClusterGroup.Name == null)
+            {
+                ModelState.AddModelError("Name", Resources.Resource.fill_the_name);
+            }
+
+            if (parClusterGroup.Description == null)
+            {
+                ModelState.AddModelError("Description", Resources.Resource.fill_the_description);
+            }
+
             if (ModelState.IsValid)
             {
                 parClusterGroup.IsActive = true;
@@ -128,5 +149,6 @@ namespace SgqSystem.Controllers.Params
             }
             base.Dispose(disposing);
         }
+
     }
 }

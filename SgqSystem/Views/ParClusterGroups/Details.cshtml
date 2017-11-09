@@ -14,7 +14,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParClusters")">@Resources.Resource.cluster_group</a>
+                    <a href="@Url.Action("Index", "ParClusterGroups")">@Resources.Resource.cluster_group</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -72,7 +72,7 @@
                                         </dd>*@
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.AddDate)
+                                            @Resources.Resource.add_date
                                         </dt>
 
                                         <dd>
@@ -80,20 +80,20 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.AlterDate)
+                                            @Resources.Resource.alter_date
                                         </dt>
 
                                         <dd>
                                             @Html.DisplayFor(model => model.AlterDate)
                                         </dd>
 
-                                        <dt>
+                                        @*<dt>
                                             @Html.DisplayNameFor(model => model.IsActive)
                                         </dt>
 
                                         <dd>
                                             @Html.DisplayFor(model => model.IsActive)
-                                        </dd>
+                                        </dd>*@
 
                                     </dl>
                                 </div>

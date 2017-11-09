@@ -2238,4 +2238,16 @@
   <data name="include_information" xml:space="preserve">
     <value>Include Information Text</value>
   </data>
+  <data name="fill_the_name" xml:space="preserve">
+    <value>Fill the Name</value>
+  </data>
+  <data name="fill_the_description" xml:space="preserve">
+    <value>Fill the Description</value>
+  </data>
+  <data name="show_scorecard" xml:space="preserve">
+    <value>Active in scorecard</value>
+  </data>
+  <data name="value_is_acceptable_greater" xml:space="preserve">
+    <value>the value is acceptable greater than</value>
+  </data>
 </root>

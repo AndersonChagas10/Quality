@@ -2232,4 +2232,16 @@
   <data name="include_information" xml:space="preserve">
     <value>Incluir campo Informação</value>
   </data>
+  <data name="fill_the_name" xml:space="preserve">
+    <value>Preencha o Nome</value>
+  </data>
+  <data name="fill_the_description" xml:space="preserve">
+    <value>Preencha a Descrição</value>
+  </data>
+  <data name="show_scorecard" xml:space="preserve">
+    <value>Ativo no Scorecard</value>
+  </data>
+  <data name="value_is_acceptable_greater" xml:space="preserve">
+    <value>O valor aceitável é maior que </value>
+  </data>
 </root>
