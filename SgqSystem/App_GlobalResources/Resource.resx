@@ -2241,4 +2241,7 @@
   <data name="fill_the_name" xml:space="preserve">
     <value>Fill the Name</value>
   </data>
+  <data name="fill_the_description" xml:space="preserve">
+    <value>Fill the Description</value>
+  </data>
 </root>

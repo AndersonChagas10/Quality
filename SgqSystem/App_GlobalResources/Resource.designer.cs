@@ -1978,6 +1978,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill the Description.
+        /// </summary>
+        internal static string fill_the_description {
+            get {
+                return ResourceManager.GetString("fill_the_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fill the equipaments field.
         /// </summary>
         internal static string fill_the_equipaments {

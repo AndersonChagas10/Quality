@@ -53,6 +53,11 @@ namespace SgqSystem.Controllers.Params
                 ModelState.AddModelError("Name", Resources.Resource.fill_the_name);
             }
 
+            if (parClusterGroup.Description == null)
+            {
+                ModelState.AddModelError("Description", Resources.Resource.fill_the_description);
+            }
+
             if (ModelState.IsValid)
             {
                 parClusterGroup.IsActive = true;
@@ -91,6 +96,11 @@ namespace SgqSystem.Controllers.Params
             if (parClusterGroup.Name == null)
             {
                 ModelState.AddModelError("Name", Resources.Resource.fill_the_name);
+            }
+
+            if (parClusterGroup.Description == null)
+            {
+                ModelState.AddModelError("Description", Resources.Resource.fill_the_description);
             }
 
             if (ModelState.IsValid)
