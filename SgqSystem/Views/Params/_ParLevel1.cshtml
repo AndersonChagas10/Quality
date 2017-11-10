@@ -381,6 +381,18 @@
                                         </div>
                                     </div>
 
+                                    <script>
+                                                                        function changeColor(a){
+
+                                                                            if($(a).hasClass("btn btn-success")){
+                                                                                $(a).removeClass("btn btn-success");
+                                                                                $(a).addClass("btn btn-danger");
+                                                                            }else{
+                                                                                $(a).removeClass("btn btn-danger");
+                                                                                $(a).addClass("btn btn-success");
+                                                                            }
+                                                                        }
+                                    </script>
 
                                     @*Cabecalho Preview inclusao*@
                                     <div id="cabecalhoPreview" class="table">
@@ -407,7 +419,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name 
+                                                                
+                                                                    <br>
+                                                                    
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+                                                            
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
@@ -422,7 +452,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name 
+                                                            
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+                                                            
+                                                                </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
 
@@ -438,7 +486,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Name
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
@@ -456,7 +522,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Name
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
@@ -470,7 +554,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Name
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     <input type="number" class="fixed-width form-control input-sm" />
@@ -484,7 +586,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Name
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     <input type="text" class="dataInput active form-control input-sm">
@@ -497,7 +617,25 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Name
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     <input type="time" class="active form-control input-sm">
@@ -510,10 +648,28 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Name
+                                                                    <br>
+
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                    {
+                                                                        <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-duplicate"></span>   Clone
+                                                                        </button>
+                                                                    }
+
+                                                            </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    <input type="number" class="fixed-width form-control input-sm" />
+                                                                    @parLevel1XHeaderField.ParHeaderField.Description
 
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                     <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
@@ -544,32 +700,7 @@
                                                                     }
                                                                 </select>
 
-                                                                <script>
-                                                                        function changeColor(a){
-
-                                                                            if($(a).hasClass("btn btn-success")){
-                                                                                $(a).removeClass("btn btn-success");
-                                                                                $(a).addClass("btn btn-danger");
-                                                                            }else{
-                                                                                $(a).removeClass("btn btn-danger");
-                                                                                $(a).addClass("btn btn-success");
-                                                                            }
-                                                                        }
-                                                                </script>
-
-                                                                @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
-                                                                {
-                                                                    <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-duplicate"></span>
-                                                                    </button>
-                                                                    
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-duplicate"></span>
-                                                                    </button>
-                                                                }
+                                                                
 
 
                                                             </td>
