@@ -212,9 +212,8 @@
                     ID: Body
                 </div>
                 <div class="modal-footer">
-
+                    <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary">Salvar</button>
                     <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">Fechar</button>
-
                 </div>
             </div>
         </div>
@@ -1415,8 +1414,6 @@
 
         $('#Fechar').show();
         $('#Salvar').hide();
-        ///*Fim Botões*/
-
     }
     var controle = 0;
     function addValores() {
