@@ -668,6 +668,7 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsRequired" Type="bit" />
+          <Property Name="duplicate" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
@@ -3157,7 +3158,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParFieldType" EntityType="SgqDbModel.ParFieldType" />
           <EntitySet Name="ParFrequency" EntityType="SgqDbModel.ParFrequency" />
           <EntitySet Name="ParGoal" EntityType="SgqDbModel.ParGoal" />
-          <EntitySet Name="ParHeaderField" EntityType="SgqDbModel.ParHeaderField" />
           <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="SgqDbModel.ParLevel1XHeaderField" />
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
@@ -3197,10 +3197,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParFieldType" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType">
             <End Role="ParFieldType" EntitySet="ParFieldType" />
-            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParHeaderField" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField">
-            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
             <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
           </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="SgqDbModel.FK_ConsolidationLevel01_Department">
@@ -3243,10 +3239,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParEvaluation" EntitySet="ParEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParHeaderField_ParFieldType" Association="SgqDbModel.FK_ParHeaderField_ParFieldType">
-            <End Role="ParFieldType" EntitySet="ParFieldType" />
-            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
-          </AssociationSet>
           <AssociationSet Name="FK_ParLevel2_ParFrequency" Association="SgqDbModel.FK_ParLevel2_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel2" EntitySet="ParLevel2" />
@@ -3254,18 +3246,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK_ParRelapse_ParFrequency" Association="SgqDbModel.FK_ParRelapse_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParRelapse" EntitySet="ParRelapse" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParHeaderField_ParLevelDefinition" Association="SgqDbModel.FK_ParHeaderField_ParLevelDefinition">
-            <End Role="ParLevelDefiniton" EntitySet="ParLevelDefiniton" />
-            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XHeaderField_ParHeaderField" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField">
-            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
-            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParMultipleValues_ParHeaderField" Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField">
-            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
-            <End Role="ParMultipleValues" EntitySet="ParMultipleValues" />
           </AssociationSet>
           <AssociationSet Name="FK_Level2Level1_ParLevel2" Association="SgqDbModel.FK_Level2Level1_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
@@ -3637,6 +3617,27 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParRelapse" EntitySet="ParRelapse" />
           </AssociationSet>
+          <EntitySet Name="ParHeaderField" EntityType="SgqDbModel.ParHeaderField" />
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParHeaderField" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParHeaderField_ParFieldType" Association="SgqDbModel.FK_ParHeaderField_ParFieldType">
+            <End Role="ParFieldType" EntitySet="ParFieldType" />
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParHeaderField_ParLevelDefinition" Association="SgqDbModel.FK_ParHeaderField_ParLevelDefinition">
+            <End Role="ParLevelDefiniton" EntitySet="ParLevelDefiniton" />
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XHeaderField_ParHeaderField" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParMultipleValues_ParHeaderField" Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParMultipleValues" EntitySet="ParMultipleValues" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -3758,10 +3759,10 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParFieldType_Id" Type="Int32" Nullable="false" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType" FromRole="CollectionLevel2XParHeaderField" ToRole="ParFieldType" />
-          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="CollectionLevel2XParHeaderField" ToRole="ParHeaderField" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2XParHeaderField" ToRole="CollectionLevel2" />
           <Property Name="Evaluation" Type="Int32" />
           <Property Name="Sample" Type="Int32" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="CollectionLevel2XParHeaderField" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -4098,26 +4099,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParGoal" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParGoal" ToRole="ParLevel1" />
         </EntityType>
-        <EntityType Name="ParHeaderField">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParFieldType_Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParLevelDefinition_Id" Type="Int32" Nullable="false" />
-          <Property Name="LinkNumberEvaluetion" Type="Boolean" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsRequired" Type="Boolean" />
-          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="CollectionLevel2XParHeaderField" />
-          <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParHeaderField" ToRole="ParFieldType" />
-          <NavigationProperty Name="ParLevelDefiniton" Relationship="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" FromRole="ParHeaderField" ToRole="ParLevelDefiniton" />
-          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="ParLevel1XHeaderField" />
-          <NavigationProperty Name="ParMultipleValues" Relationship="SgqDbModel.FK_ParMultipleValues_ParHeaderField" FromRole="ParHeaderField" ToRole="ParMultipleValues" />
-        </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
             <PropertyRef Name="Id" />
@@ -4144,10 +4125,10 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
           <Property Name="IsRequired" Type="Boolean" />
           <Property Name="DefaultSelected" Type="Boolean" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1XHeaderField" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -4676,18 +4657,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CollectionLevel2XParHeaderField_ParHeaderField">
-          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParHeaderField">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2XParHeaderField">
-              <PropertyRef Name="ParHeaderField_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ConsolidationLevel01_Department">
           <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
           <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
@@ -4808,18 +4777,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParHeaderField_ParFieldType">
-          <End Type="SgqDbModel.ParFieldType" Role="ParFieldType" Multiplicity="1" />
-          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParFieldType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParHeaderField">
-              <PropertyRef Name="ParFieldType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ParLevel2_ParFrequency">
           <End Type="SgqDbModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="*" />
@@ -4841,42 +4798,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParRelapse">
               <PropertyRef Name="ParFrequency_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParHeaderField_ParLevelDefinition">
-          <End Type="SgqDbModel.ParLevelDefiniton" Role="ParLevelDefiniton" Multiplicity="1" />
-          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevelDefiniton">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParHeaderField">
-              <PropertyRef Name="ParLevelDefinition_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1XHeaderField_ParHeaderField">
-          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParHeaderField">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XHeaderField">
-              <PropertyRef Name="ParHeaderField_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParMultipleValues_ParHeaderField">
-          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
-          <End Type="SgqDbModel.ParMultipleValues" Role="ParMultipleValues" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParHeaderField">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParMultipleValues">
-              <PropertyRef Name="ParHeaderField_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6459,6 +6380,87 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParHeaderField">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParFieldType_Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParLevelDefinition_Id" Type="Int32" Nullable="false" />
+          <Property Name="LinkNumberEvaluetion" Type="Boolean" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsRequired" Type="Boolean" />
+          <Property Name="duplicate" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="CollectionLevel2XParHeaderField" />
+          <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParHeaderField" ToRole="ParFieldType" />
+          <NavigationProperty Name="ParLevelDefiniton" Relationship="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" FromRole="ParHeaderField" ToRole="ParLevelDefiniton" />
+          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="ParLevel1XHeaderField" />
+          <NavigationProperty Name="ParMultipleValues" Relationship="SgqDbModel.FK_ParMultipleValues_ParHeaderField" FromRole="ParHeaderField" ToRole="ParMultipleValues" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel2XParHeaderField_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParHeaderField_ParFieldType">
+          <End Type="SgqDbModel.ParFieldType" Role="ParFieldType" Multiplicity="1" />
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFieldType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParHeaderField">
+              <PropertyRef Name="ParFieldType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParHeaderField_ParLevelDefinition">
+          <End Type="SgqDbModel.ParLevelDefiniton" Role="ParLevelDefiniton" Multiplicity="1" />
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevelDefiniton">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParHeaderField">
+              <PropertyRef Name="ParLevelDefinition_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XHeaderField_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XHeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParMultipleValues_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.ParMultipleValues" Role="ParMultipleValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParMultipleValues">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6876,22 +6878,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="PercentValue" ColumnName="PercentValue" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParHeaderField">
-            <EntityTypeMapping TypeName="SgqDbModel.ParHeaderField">
-              <MappingFragment StoreEntitySet="ParHeaderField">
-                <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="LinkNumberEvaluetion" ColumnName="LinkNumberEvaluetion" />
-                <ScalarProperty Name="ParLevelDefinition_Id" ColumnName="ParLevelDefinition_Id" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParFieldType_Id" ColumnName="ParFieldType_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -7857,6 +7843,23 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
                 <ScalarProperty Name="ParConsolidationType_Id" ColumnName="ParConsolidationType_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParHeaderField">
+            <EntityTypeMapping TypeName="SgqDbModel.ParHeaderField">
+              <MappingFragment StoreEntitySet="ParHeaderField">
+                <ScalarProperty Name="duplicate" ColumnName="duplicate" />
+                <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="LinkNumberEvaluetion" ColumnName="LinkNumberEvaluetion" />
+                <ScalarProperty Name="ParLevelDefinition_Id" ColumnName="ParLevelDefinition_Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParFieldType_Id" ColumnName="ParFieldType_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

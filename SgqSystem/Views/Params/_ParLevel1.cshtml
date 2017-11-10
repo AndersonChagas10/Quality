@@ -3,6 +3,12 @@
 @using DTO
 <!--MODAL-->
 
+@{
+
+    var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
+
+}
+
 
 
 <div id="newLevel1Modal">
@@ -537,8 +543,37 @@
                                                                         <option value="1">@Resources.Resource.yes</option>
                                                                     }
                                                                 </select>
+
+                                                                <script>
+                                                                        function changeColor(a){
+
+                                                                            if($(a).hasClass("btn btn-success")){
+                                                                                $(a).removeClass("btn btn-success");
+                                                                                $(a).addClass("btn btn-danger");
+                                                                            }else{
+                                                                                $(a).removeClass("btn btn-danger");
+                                                                                $(a).addClass("btn btn-success");
+                                                                            }
+                                                                        }
+                                                                </script>
+
+                                                                @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                {
+                                                                    <button type="button" class="btn btn-success" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-duplicate"></span>
+                                                                    </button>
+                                                                    
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" class="btn btn-danger" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-duplicate"></span>
+                                                                    </button>
+                                                                }
+
+
                                                             </td>
-                                                            
+
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
@@ -1810,5 +1845,21 @@
         }
 
     });
+
+    var urlHeaderLevel1 = '@Html.Raw(@urlHeaderLevel1)';
+
+    var HeaderLevel1 = {
+        object: {
+            Id: 0
+        },
+        Add: function(idHeader, button){
+            HeaderLevel1.object.Id = idHeader;
+
+            $.post(urlHeaderLevel1, HeaderLevel1.object, function(r){
+                
+            });
+        }
+    }
+
 
 </script>

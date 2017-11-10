@@ -158,6 +158,7 @@ namespace DTO.DTO.Params
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
 
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
+
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
         /*Props novas*/

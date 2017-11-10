@@ -5,6 +5,7 @@ using DTO;
 using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+//using SGQDBContext;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -295,6 +296,58 @@ namespace SgqSystem.Controllers.Api.Params
         public ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField)
         {
             return _paramdDomain.AddRemoveParHeaderLevel2(parLevel2XHeaderField);
+        }
+
+        public class objHeaderField
+        {
+            public int Id { get; set; }
+        }
+
+        /*
+         * novo metodo getConsolidation
+         * Autor: Gabriel Nunes
+         * Data: 2017 04 28
+         */
+        public partial class ResultadoUmaColuna
+        {
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            public string retorno { get; set; }
+
+        }
+
+        [HttpPost]
+        [Route("AddRemoveParHeaderDuplicate")]
+
+        public void AddRemoveParHeaderDuplicate(objHeaderField parHeaderField_id)
+        {
+
+            ParHeaderField parHeaderField;
+            using (var db = new SgqDbDevEntities())
+            {
+                parHeaderField = db.ParHeaderField.FirstOrDefault(r => r.Id == parHeaderField_id.Id);
+
+                string sql = "SELECT CAST(duplicate AS VARCHAR) as retorno FROM ParHeaderField WHERE Id = " + parHeaderField_id.Id.ToString();
+            
+                List<ResultadoUmaColuna> Lista1 = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+
+                if (Lista1.Count > 0)
+                {
+                    if (Lista1[0].retorno == "0")
+                    {
+                        db.Database.ExecuteSqlCommand("UPDATE ParHeaderField SET duplicate = 1 where id = " + parHeaderField_id.Id.ToString());
+               
+                    }
+                    else
+                    {
+                        db.Database.ExecuteSqlCommand("UPDATE ParHeaderField SET duplicate = 0 where id = " + parHeaderField_id.Id.ToString());
+                      
+                    }
+                }
+
+            }
+
+
         }
 
         [HttpGet]

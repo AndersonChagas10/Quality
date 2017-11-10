@@ -10,7 +10,7 @@
 <style>
 
     /*Não quebra a linha nos campos de cabeçalho*/
-    #results>tbody>tr:last-child > td:last-child{
+    #resultsApontamentos>tbody>tr:last-child > td:last-child{
         white-space: nowrap;
     }
 </style>
@@ -30,7 +30,20 @@
 
         <div id="load"></div>
         <div id="divTable">
-            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+            <table id="resultsApontamentos" class="display" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>titulo 1</th>
+                        <th>titulo 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -64,7 +77,7 @@
 
         function Send(toggle) {
             $btn.button('loading');
-            $('#results').empty();
+            $('#resultsApontamentos').empty();
 
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
@@ -118,9 +131,9 @@
                 //Fim
 
                 $('#divTable').show();
-                var table = $('#results').empty().DataTable({
+                var table = $('#resultsApontamentos').empty().DataTable({
                     data: retornoArray,
-                    columns: [
+                    @*columns: [
                         { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
                         { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
@@ -152,7 +165,42 @@
                         Tipo2,
                         { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
 
+                    ],*@
+
+                    columns: [
+
+
+
+                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
+                        { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                        { title: "@Resources.Resource.shift", mData: "Turno" },
+                        { title: "@Resources.Resource.period", mData: "Periodo" },
+                        { title: "@Resources.Resource.auditor", mData: "Auditor"},
+                        { title: "@Resources.Resource.date", mData: "_Data" },
+                        { title: "@Resources.Resource.time", mData: "_Hora" },
+                        { title: "@Resources.Resource.audit", mData: "Indicador" },
+                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                        { title: "@Resources.Resource.task", mData: "Tarefa" },
+                        { title: "@Resources.Resource.weight", mData: "Peso" },
+                        {
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo"
+                        },
+                        {
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo"
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
+
+
                     ],
+
                     scrollX: true,
                     lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "@Resources.Resource.all"]],
                     pageLength: 10,
@@ -164,13 +212,13 @@
                     initComplete: function () {
                         $('#loading').hide();
                         setTimeout(function (e) {
-                            var oTable = $('#results').dataTable();
+                            var oTable = $('#resultsApontamentos').dataTable();
                             if (oTable.length > 0) {
                                 oTable.fnAdjustColumnSizing();
                             }
                         }, 100);
 
-                        $('#results tbody').on('click', 'button', function (data, a, b) {
+                        $('#resultsApontamentos tbody').on('click', 'button', function (data, a, b) {
 
                             var data = table.row($(this).parents('tr')).data();
                             //console.log(data);

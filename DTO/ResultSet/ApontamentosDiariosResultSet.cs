@@ -97,8 +97,8 @@ public class ApontamentosDiariosResultSet
                 " \n ,case when isnull(R3.ValueText, '') = 'undefined' OR isnull(R3.ValueText, '') = 'null' THEN '' ELSE isnull(R3.ValueText, '') END AS ValueText       " +
                 " \n ,C2.EvaluationNumber AS 'Avaliacao'    " +
                 " \n ,C2.Sample AS 'Amostra'                " +
-                " \n ,C2.Sequential AS 'Sequencial'         " +
-                " \n ,C2.Side as 'Banda'                    " +
+                " \n ,ISNULL(C2.Sequential,0) AS 'Sequencial'         " +
+                " \n ,ISNULL(C2.Side,0) as 'Banda'                    " +
                 " \n ,STR(C2.[Shift]) as 'Turno'            " +
                 " \n ,STR(C2.Period) as 'Periodo'           " +
                 " \n ,UN.Name AS 'Unidade'                  " +
