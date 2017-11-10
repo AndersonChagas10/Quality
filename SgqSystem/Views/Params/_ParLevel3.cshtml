@@ -54,13 +54,10 @@
                                 <table class="table-erp">
                                     <tr class="row">
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
-                         , @Html.Label(Resources.Resource.data_type_entry)
-                         , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
-
+                                         , @Html.Label(Resources.Resource.data_type_entry)
+                                         , Table.PosicaoLabel.top
+                                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
                                     </tr>
-
-
                                     <tr class="row ParIntervalos" style="display: none;">
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                                         @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
@@ -417,11 +414,13 @@
             });
 
         },
-        carregaDadosDoDb: function(){
+        carregaDadosDoDb: function () {
+            //console.log(o["IntervalMin"] );
             var id = level3Value.level + ' #' + level3Value.idTable;
             var tdNamess = level3Value.tdsNames;
             if( level3Value.listObjSalvo != null){ /*Carrega regras de NC*/
-                level3Value.listObjSalvo.forEach(function(o, c){
+                level3Value.listObjSalvo.forEach(function (o, c) {
+                    console.log('aquii');
                     o["ParLevel3InputType_Name"] = o.ParLevel3InputType.Name;
 
                     if(o.ParCompany_Id > 0)
@@ -441,20 +440,25 @@
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    }else if (o.ParLevel3InputType_Id == 3){
+                    } else if (o.ParLevel3InputType_Id == 3) {                      
+                        o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
+                        o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    }else if(o.ParLevel3InputType_Id == 4){
+                        o["AcceptableValueBetween_Name"] = o.IntervalMin == null ? "@Resources.Resource.acceptable_value_less_than " + o.IntervalMax :
+                            (o.IntervalMax == null ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
+                            (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
+                        
+                    } else if (o.ParLevel3InputType_Id == 4) {                        
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMinCalculado + " @Resources.Resource.and " + o.IntervalMaxCalculado : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMinCalculado + " @Resources.Resource.or_greater_than " + o.IntervalMaxCalculado;
-                        o["IntervalMin"] = o.IntervalMinCalculado;
-                        o["IntervalMinCalculado"] = o.IntervalMinCalculado;
-                        o["IntervalMax"] = o.IntervalMaxCalculado;
-                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado;
+                        o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
+                        o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
+                        o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
+                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;                     
                     }else if(o.ParLevel3InputType_Id == 5){
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
@@ -526,8 +530,7 @@
             value = $('#selectUnidadeDeMedidas :selected').text();
 
         if ($("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
-            var options =''
-            "<option value='0'>" +
+            var options = "<option value='0'>" +
                 Resources('acceptable_value_equal_or_greater_than')
                 + " "
                 + $("#parLevel3Value_IntervalMax").val() + " " + value +
@@ -583,8 +586,7 @@
             value = $('#crudNxNEdit #selectUnidadeDeMedidas :selected').text();
 
         if ($("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            var options =''
-            "<option value='0'>" +
+            var options = "<option value='0'>" +
                 Resources('acceptable_value_equal_or_greater_than')
                 + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()+" "+ value+
             "</option>";
@@ -594,13 +596,13 @@
             $("#crudNxNEdit #parIntervalosType").parents("td").show();
 
         }
-
+        
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && $("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
                     Resources('acceptable_value_equal_or_greater_than')
                     + " "
-                    + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
+                    + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + "  " + value +
                 "</option>";
 
             $('#crudNxNEdit #parIntervalosType').empty();
@@ -608,18 +610,18 @@
             $("#crudNxNEdit #parIntervalosType").parents("td").show();
 
         }
-
+           
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
                     Resources('value_is_acceptable_between')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() +
+                    + "&nbsp;" + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() 
                     + " " + Resources('and')
                     + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>" +
                 "<option value='1'>" +
                     Resources('value_is_acceptable_less_than')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() +
+                    + " "+ $("#crudNxNEdit #parLevel3Value_IntervalMin").val() 
                     + " " + Resources('and_greater_than')
                     + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()
                     + " " + value +
