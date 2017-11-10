@@ -20,6 +20,8 @@ namespace Dominio
         public string ParHeaderField_Name { get; set; }
         public int ParFieldType_Id { get; set; }
         public string Value { get; set; }
+        public Nullable<int> Evaluation { get; set; }
+        public Nullable<int> Sample { get; set; }
     
         public virtual ParFieldType ParFieldType { get; set; }
         public virtual ParHeaderField ParHeaderField { get; set; }

@@ -23,9 +23,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -46,41 +46,43 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource._new, "Create")
                                 </p>
-                                <table class="table">
-                                    <tr>
-                                        <th>
-                                            @Resources.Resource.username
-                                        </th>
-                                        <th>
-                                            @Resources.Resource.name
-                                        </th>
-                                        <th>
-                                            @Resources.Resource.email
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table tableIndex">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.FullName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Email)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) 
-                                                @*|
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, htmlAttributes) |
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })*@
-                                            </td>
+                                            <th>
+                                                @Resources.Resource.username
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.name
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.email
+                                            </th>
+                                            <th></th>
                                         </tr>
-                                    }
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.FullName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Email)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id })
+                                                    @*|
+                                                        @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, htmlAttributes) |
+                                                        @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -96,6 +98,5 @@
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
-    navbarSelect("navbar15");
-
+    navbarSelect("navbar15");   
 </script>

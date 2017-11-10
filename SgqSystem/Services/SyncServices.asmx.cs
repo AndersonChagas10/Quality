@@ -4566,8 +4566,12 @@ namespace SgqSystem.Services
                     case 7:
                         form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
+                    //Infomações
+                    case 8:                     
+                        form_control = "<br><div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"color: white; font-size: 16px; background: #5353c6;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0; padding: 10px 20px 20px 20px;\"><div style=\"float:right; cursor: pointer;\" class=\"btn btn-default\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\";'>X</div><br><br>" + header.ParHeaderField_Description + "</div></div><button style=\"padding-left: 5px;padding-right: 5px; padding-bottom: 0px; padding-top: 0px;\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;font-size: 28px;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
+                        break;
                 }
-
+                
                 //Incrementar valor para o pai do elemento para Ytoara.
                 id = id + 1;
 
@@ -5381,8 +5385,28 @@ namespace SgqSystem.Services
             else if (parLevel3.ParLevel3InputType_Id == 3)
             {
                 classInput = " interval";
+
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                if(valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }else if(valorMaximo == ""){
+                    valorCompleto = valorMinimo;
+                }else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
+
                 labels = html.div(
-                                           outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
+                                           
+                                                                  
+
+                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "levelName"
                                        //style: "margin-top:7px;"
                                        );
@@ -5426,8 +5450,26 @@ namespace SgqSystem.Services
                 ///Campo interval está repetindo , falta o campo defeitos
                 classInput = " interval";
 
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
                 labels = html.div(
-                                    outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
+                                    outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,  //"<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
                                     classe: "levelName"
                                 //style: "margin-top:7px;"
                                 );

@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Dominio.ParCluster>
+﻿@model IEnumerable<Dominio.ParClusterGroup>
 
 @{
-    ViewBag.Title = Resources.Resource.clusters;
+    ViewBag.Title = Resources.Resource.cluster_group;
 }
 
 <div class="page-content-wrapper">
@@ -16,15 +16,15 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.cluster</span>
+                    <span>@Resources.Resource.cluster_group</span>
                 </li>
             </ul>
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -35,17 +35,16 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.clusters</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cluster_group</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                
+
                                 <p>
                                     @Html.ActionLink(Resources.Resource._new, "Create")
                                 </p>
-
                                 <table class="table">
                                     <tr>
                                         <th>
@@ -54,9 +53,18 @@
                                         <th>
                                             @Resources.Resource.description
                                         </th>
-                                        <th>
-                                            @Resources.Resource.cluster_group
+                                        @*<th>
+                                            @Html.DisplayNameFor(model => model.ParClusterGroupParent_Id)
                                         </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.AddDate)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.AlterDate)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.IsActive)
+                                        </th>*@
                                         <th></th>
                                     </tr>
 
@@ -69,19 +77,27 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Description)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParClusterGroup.Name)
+                                            @*<td>
+                                                @Html.DisplayFor(modelItem => item.ParClusterGroupParent_Id)
                                             </td>
                                             <td>
+                                                @Html.DisplayFor(modelItem => item.AddDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AlterDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>*@
+                                            <td>
                                                 @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) 
-                                                @*| @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })*@
+                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
+                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
                                             </td>
                                         </tr>
                                     }
 
                                 </table>
-
                             </div>
 
                         </div>

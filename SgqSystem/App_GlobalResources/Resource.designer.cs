@@ -1978,6 +1978,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill the Description.
+        /// </summary>
+        internal static string fill_the_description {
+            get {
+                return ResourceManager.GetString("fill_the_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fill the equipaments field.
         /// </summary>
         internal static string fill_the_equipaments {
@@ -2001,6 +2010,15 @@ namespace Resources {
         internal static string fill_the_integration_field_name {
             get {
                 return ResourceManager.GetString("fill_the_integration_field_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill the Name.
+        /// </summary>
+        internal static string fill_the_name {
+            get {
+                return ResourceManager.GetString("fill_the_name", resourceCulture);
             }
         }
         
@@ -2451,6 +2469,15 @@ namespace Resources {
         internal static string inactive_for {
             get {
                 return ResourceManager.GetString("inactive_for", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include Information Text.
+        /// </summary>
+        internal static string include_information {
+            get {
+                return ResourceManager.GetString("include_information", resourceCulture);
             }
         }
         
@@ -3522,6 +3549,15 @@ namespace Resources {
         internal static string new_cluster {
             get {
                 return ResourceManager.GetString("new_cluster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Cluster Group.
+        /// </summary>
+        internal static string new_cluster_group {
+            get {
+                return ResourceManager.GetString("new_cluster_group", resourceCulture);
             }
         }
         

@@ -346,6 +346,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -526,6 +527,7 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\ClusterGroupCluster.js" />
     <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
@@ -1421,6 +1423,11 @@
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
+    <Content Include="Views\ParClusterGroups\Create.cshtml" />
+    <Content Include="Views\ParClusterGroups\Delete.cshtml" />
+    <Content Include="Views\ParClusterGroups\Details.cshtml" />
+    <Content Include="Views\ParClusterGroups\Edit.cshtml" />
+    <Content Include="Views\ParClusterGroups\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -32,7 +32,53 @@ CREATE TABLE Result_Level3_Photos (
 CREATE NONCLUSTERED INDEX [CollectionLevel2Photos]
 ON [dbo].[CollectionLevel2] ([ParLevel1_Id],[ParLevel2_Id],[EvaluationNumber],[Sample],[CollectionDate])
 
-07 11 2017 
+--------------------------------------------------------------------------------------09 11 2017 - LETICIA  ------------------------------------- Status Down
 
-ALTER TABLE CollectionLevel2XParHeaderField ADD Evaluation int;
-ALTER TABLE CollectionLevel2XParHeaderField ADD Sample int;
+IF COL_LENGTH('ParLevel1','IsRecravacao') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1 add IsRecravacao bit default (0)
+    EXEC ('update ParLevel1 set IsRecravacao = 0')
+    END
+
+IF COL_LENGTH('ParLevel1','ShowScorecard') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1 add ShowScorecard bit default (0)
+    EXEC ('update ParLevel1 set ShowScorecard = 0')
+    END
+
+IF COL_LENGTH('ParLevel3','IsPointLess') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel3 add IsPointLess bit default (0)
+    EXEC ('update ParLevel3 set IsPointLess = 0')
+    END
+
+IF COL_LENGTH('ParLevel3','OrderColumn') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel3 add OrderColumn bit default (0)
+    EXEC ('update ParLevel3 set OrderColumn = 0')
+    END
+
+IF COL_LENGTH('ParLevel3','AllowNA') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel3 add AllowNA bit default (0)
+    EXEC ('update ParLevel3 set AllowNA = 0')
+    END
+
+IF COL_LENGTH('CollectionLevel2XParHeaderField','Evaluation') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CollectionLevel2XParHeaderField add Evaluation int default (null)
+    EXEC ('update CollectionLevel2XParHeaderField set Evaluation = null')
+    END
+
+IF COL_LENGTH('CollectionLevel2XParHeaderField','Sample') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CollectionLevel2XParHeaderField add Sample int default (null)
+    EXEC ('update CollectionLevel2XParHeaderField set Sample = null')
+    END
