@@ -762,6 +762,9 @@
     <Content Include="Global.asax" />
     <Content Include="Imagens\Brazil.png" />
     <Content Include="Imagens\chart.png" />
+    <Content Include="Imagens\if_check_406783.png" />
+    <Content Include="Imagens\if_tablet_406729.png" />
+    <Content Include="Imagens\if_target_406854.png" />
     <Content Include="Imagens\Logo.png" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />

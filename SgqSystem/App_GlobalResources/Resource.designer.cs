@@ -2671,7 +2671,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JBS and GRT Application.
+        ///   Looks up a localized string similar to GRT Application.
         /// </summary>
         internal static string jbs_and_grt_aplication {
             get {
@@ -5416,6 +5416,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active in scorecard.
+        /// </summary>
+        internal static string show_scorecard {
+            get {
+                return ResourceManager.GetString("show_scorecard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Side.
         /// </summary>
         internal static string side_banda {
@@ -6222,6 +6231,15 @@ namespace Resources {
         internal static string value_is_acceptable_between {
             get {
                 return ResourceManager.GetString("value_is_acceptable_between", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the value is acceptable greater than.
+        /// </summary>
+        internal static string value_is_acceptable_greater {
+            get {
+                return ResourceManager.GetString("value_is_acceptable_greater", resourceCulture);
             }
         }
         
