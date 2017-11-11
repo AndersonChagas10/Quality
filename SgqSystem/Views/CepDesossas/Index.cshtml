@@ -124,6 +124,10 @@
 @Scripts.Render("~/Scripts/angular.js")
 <script>
 
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+
     var enviar = {};
 
     $(".sidebar-toggler").removeClass("hide");

@@ -130,7 +130,7 @@
         {
             <li class="nav-item" id="updateAllTablet">
                 <a href="#" onclick="atualziarAllTablets();" class="nav-link nav-toggle">
-                    <i class="fa fa-tablet" aria-hidden="true"></i>
+                    <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
                     <span class="title">@Resources.Resource.update_tablet_all</span>
                 </a>
             </li>
@@ -139,7 +139,7 @@
 
     <li class="nav-item" id="RoleLink4">
         <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
-            <i class="fa fa-mobile" aria-hidden="true"></i>
+            <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
             <span class="title">@Resources.Resource.update_tablet</span>
             <span class="selected"></span>
         </a>
@@ -228,17 +228,18 @@
                         </a>
 
                         <ul class="sub-menu">
-                            <li class="nav-item" id="RoleLink8">
-                                <a href="@Url.Action("Index", "ParClusterGroups")" class="nav-link nav-toggle">
-                                    <i class="fa fa-cube" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.cluster_group</span>
-
-                                </a>
-                            </li>
+                            
                             <li class="nav-item" id="RoleLink8">
                                 <a href="@Url.Action("Index2", "ParCompany")" class="nav-link nav-toggle">
                                     <i class="fa fa-sitemap" aria-hidden="true"></i>
                                     <span class="title">@Resources.Resource.company_structure</span>
+
+                                </a>
+                            </li>
+                            <li class="nav-item" id="RoleLink8">
+                                <a href="@Url.Action("Index", "ParClusterGroups")" class="nav-link nav-toggle">
+                                    <i class="fa fa-cube" aria-hidden="true"></i>
+                                    <span class="title">@Resources.Resource.cluster_group</span>
 
                                 </a>
                             </li>

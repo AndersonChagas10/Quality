@@ -19,12 +19,12 @@
                     </tr>
                     <tr class="row">
 
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm"})
                          , @Html.Label(Resources.Resource.level3_name)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
 
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm"})
                          , @Html.Label(Resources.Resource.level3_description)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
@@ -89,7 +89,7 @@
                                 <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="@Resources.Resource.edit_input_data_type">
                                     <thead>
                                         <tr>
-                                            <th>@Resources.Resource.data_type_entry</th>
+                                            <th">@Resources.Resource.data_type_entry</th>
                                             <th>@Resources.Resource.company</th>
                                             <th>@Resources.Resource.measurement_unit</th>
                                             <th>@Resources.Resource.minimum_range</th>
@@ -97,10 +97,10 @@
                                             <th>@Resources.Resource.values_between</th>
                                             <th>@Resources.Resource.negative_value</th>
                                             <th>@Resources.Resource.positive_value</th>
-                                            <th style="min-width: 65px;"></th>
+                                            <th style="min-width: 80px;max-width: 80px;>@Resources.Resource.action</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody style="font-size:xx-small;"></tbody>
                                 </table>
 
                             </div>
