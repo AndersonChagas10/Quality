@@ -1429,6 +1429,7 @@
     <Content Include="Views\ParClusterGroups\Details.cshtml" />
     <Content Include="Views\ParClusterGroups\Edit.cshtml" />
     <Content Include="Views\ParClusterGroups\Index.cshtml" />
+    <Content Include="Views\Params\_ParLevel3Value.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
