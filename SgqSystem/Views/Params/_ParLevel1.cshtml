@@ -327,11 +327,19 @@
 
                                                     <tr class="row">
 
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
+                                                        <td style="padding:5px;">Detector de Metais</td>
+                                                        <td style="padding:5px;">@Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })</td>
+
+                                                    </tr>
+
+                                                    @*<tr class="row">
+
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
                                                         <td style="padding:5px;">Produtos</td>
                                                         <td style="padding:5px;"></td>
 
-                                                    </tr>
+                                                    </tr>*@
 
                                                 </tbody>
                                             </table>
@@ -1500,6 +1508,9 @@
                     break;
                 case "integracaoPontoDeColetaValor":
                     description = $('#integracaoPontoDeColetaList').val();
+                    break;
+                case "integracaoRaioXValor":
+                    description = $('#integracaoRaioXList').val();
                     break;
                 case "integracaoProduto":
                     description = "Produto";
