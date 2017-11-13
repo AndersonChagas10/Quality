@@ -422,27 +422,9 @@
     function dirtForm(oldForm, newForm){
         var o = oldForm.serialize().toString();
         var n = newForm.serialize().toString();
-        //if (o != n) {
-        //    return true;
-        //}
         return false;
     }
-
-    //$.fn.isDirty = function () {
-    //    var a = this.serializeArray();
-    //    for(var i = 0; i < a.length; i++){
-    //        if (a[i].value != "" && a[i].value != "0" && a[i].value != 0
-    //            && a[i].value != "-1" && a[i].value != -1
-    //            && a[i].value != "false" && a[i].value != "true") {
-    //            //break;
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //};
-
-    //$.fn.dirty = false;
-
+    
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
@@ -1417,15 +1399,18 @@
     }
     var controle = 0;
     function addValores() {
-        var divAdd = '<div class="row" id="row'+controle+'"><div class="col-md-1"';
-        divAdd += '<label>Option</label><br /></div><div class="col-md-2">';
-        divAdd += '<input class="input-sm form-control" id="adName'+controle+'" />';
+        var divAdd = '<div class="row" id="row' + controle + '">';
+        divAdd += '<div class="col-md-4">';
+        divAdd += '<label>' + Resources('option') + '</label>';
+        divAdd += '<input class="input-sm form-control" id="adName' + controle + '" />';
         divAdd += '</div>';
-        divAdd += '<div class="col-md-2">';
-        divAdd += '<label>Value</label><br /></div><div class="col-md-2">';
-        divAdd += '<input class="input-sm form-control" id="adValue'+controle+'">';
-        divAdd += '</div><div class="col-md-2">';
-        divAdd += '<button class="btn btn-danger" id="rem'+controle+'" type="button" onclick="removeCampoNovo('+controle+')">Remover Novo Campo</button></div>'
+        divAdd += '<div class="col-md-4">';
+        divAdd += '<label>' + Resources('value') + '</label>';
+        divAdd += '<input class="input-sm form-control" id="adValue' + controle + '">';
+        divAdd += '</div>';
+        divAdd += '<div class="col-md-4">';
+        divAdd += '<button class="btn btn-danger margin-top" id="rem'+controle+'" type="button" onclick="removeCampoNovo('+controle+')">Remover Novo Campo</button>'
+        divAdd += '</div>';
         divAdd += '</div>';
         $('#multiplaEscolha').append(divAdd);
         controle++;

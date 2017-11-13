@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-<div id="ediCab" class="container" >
+<div id="ediCab">
     @using (Html.BeginForm())
     {
         <div class="row">
@@ -12,13 +12,13 @@
                     @Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParLevelDefinition_Id, Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     @Html.Label(Resources.Resource.type)
                     @Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParFieldType_Id, Model.paramsDdl.DdlParFieldType, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     @Html.Label(Resources.Resource.field_name)
                     @Html.TextBoxFor(m => Model.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control" })
@@ -26,7 +26,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    @Html.Label(Resources.Resource.link_number_evaluation)<br />
+                    @Html.Label(Resources.Resource.link_number_evaluation)
                     @Html.CheckBoxFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "" })
                 </div>
             </div>
@@ -42,7 +42,7 @@
                         <div class="col-xs-4">
                             <div class="form-group">
                                 @Html.Label(Resources.Resource.option)
-                                @Html.EditorFor(r => i.Name, new { @class = "form-control" })
+                                @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
                         <div class="col-xs-4">
@@ -72,7 +72,7 @@
                             <div class="col-xs-5">
                                 <div class="form-group">
                                     @Html.Label(Resources.Resource.option)
-                                    @Html.EditorFor(r => i.Name, new { @class = "form-control" })
+                                    @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>                                
                             </div>
                             <div class="col-xs-5">
