@@ -81,7 +81,6 @@ namespace SgqSystem.Controllers.Api.App
         [Route("UpdateTelaDoTablet/{UnitId}")]
         public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
         {
-            DateTime dtStart = DateTime.Now;
             CommonLog.SaveReport(UnitId, "Update_GetTela");
 
             if (GlobalConfig.PaginaDoTablet == null)
@@ -90,16 +89,15 @@ namespace SgqSystem.Controllers.Api.App
             using (var service = new SyncServices())
             {
                 var atualizado = service.getAPPLevels(56, UnitId, DateTime.Now);/*Cria tela atualizada*/
-                double sec = (DateTime.Now - dtStart).TotalMilliseconds;
                 try
                 {
                     if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))/*Se ja existir atualiza*/
                     {
-                        GlobalConfig.PaginaDoTablet[UnitId] = sec.ToString();// atualizado;
+                        GlobalConfig.PaginaDoTablet[UnitId] = atualizado;
                     }
                     else/*Se nao existir cria*/
                     {
-                        GlobalConfig.PaginaDoTablet.Add(UnitId, sec.ToString()/*atualizado*/);
+                        GlobalConfig.PaginaDoTablet.Add(UnitId, atualizado);
                         GlobalConfig.ParamsDisponiveis += UnitId.ToString();
                     }
                 }
@@ -109,8 +107,7 @@ namespace SgqSystem.Controllers.Api.App
                 }
             }
 
-            GetTela(UnitId);
-            return null;
+            return GetTela(UnitId);
 
         }
 
@@ -210,7 +207,7 @@ namespace SgqSystem.Controllers.Api.App
 
             Queue<Thread> threadBuffer = new Queue<Thread>();
 
-            Pool = new Semaphore(20,20);
+            Pool = new Semaphore(5,5);
 
             foreach(int i in listUnitIds)
             {
