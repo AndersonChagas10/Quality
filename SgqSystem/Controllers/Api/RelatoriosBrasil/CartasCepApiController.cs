@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             List<Cep> _ceps = new List<Cep>();
 
-            bool x = false;
+            bool x = true;
             var query1 = "";
 
             //decimal[] dados1 = { 4.11M, 4.2M, 3.93M, 3.24M, 3.5M };

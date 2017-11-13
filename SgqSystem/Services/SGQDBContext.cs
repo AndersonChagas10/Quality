@@ -1490,10 +1490,34 @@ namespace SGQDBContext
                 sql = "\n SELECT nCdProduto Id, cast(nCdProduto as varchar) + ' | ' + cNmProduto as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
                       "\n FROM Produto  With (nolock) ";
             }
-            else if (valores[0] == "Novo")
+            else if (valores[0] == "familiaProduto")
             {
-                sql = "\n SELECT Id as Id, Name as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
-                      "\n FROM UserSgq With (nolock) ";
+                //sql = "\n SELECT Id as Id, Name as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
+                //      "\n FROM UserSgq With (nolock) ";
+
+                sql = @"SELECT 
+                        TT.cNrClassificacao as Id,
+                        TT.cNmClassificacao as Name,
+                        0 as  PunishmentValue,
+                        0 as IsDefaultOption
+                        FROM
+                        (
+                        SELECT CL.*, P.* FROM ClassificacaoProduto CP
+                        INNER JOIN (
+                        SELECT CC.cNmClassificacao as Grupo, C.*, C.nCdClassificacao as cod FROM Classificacao C
+                        INNER JOIN (
+	                        SELECT * FROM Classificacao 
+	                        WHERE LEN(cNrClassificacao) = 5
+                        ) CC
+                        ON left(C.cNrClassificacao,5) = CC.cNrClassificacao
+                        ) CL
+                        ON CL.cod = CP.nCdClassificacao
+                        INNER JOIN PRODUTO P
+                        ON P.nCdProduto = CP.nCdProduto
+                        ) TT
+                        WHERE Grupo = 'FAMILIA'
+                        GROUP BY TT.cNrClassificacao, cNmClassificacao
+                        ORDER BY 2";
             }
 
             var multipleValues = db.Query<ParFieldType>(sql);
