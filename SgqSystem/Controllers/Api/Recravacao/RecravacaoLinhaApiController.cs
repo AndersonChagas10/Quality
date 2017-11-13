@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api
         }
 
         // GET: api/RecravacaoLinhaApi
-        public HttpResponseMessage Get(int Company, int level1Id)
+        public HttpResponseMessage Get(int Company, int level1Id, int linhaId)
         {
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.ValidateOnSaveEnabled = false;
@@ -45,7 +45,7 @@ namespace SgqSystem.Controllers.Api
             {
                 var query = string.Format(@"SELECT * FROM ParRecravacao_Linhas WHERE 
                         ParCompany_Id = {0} 
-                        and ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} and isactive = 1)", Company, level1Id);
+                        and ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1)", Company, level1Id);
                 var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
                 return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de Linhas Concluída", model = listLinhasDoLevel1 });
             }
