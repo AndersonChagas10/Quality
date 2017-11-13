@@ -363,6 +363,7 @@
     }
 
     var progress = new LoadingOverlayProgress();
+    var acumulador = 0;
     function atualziarAllTablets() {
         bootbox.confirm(@Html.Raw(Json.Encode(Resources.Resource.update_all_tablet_message)), function (result) {
             if(result){
@@ -376,9 +377,11 @@
                 $.get(root + '/api/AppParams/GetUnits', {}, function (unidadesIds) {
                     var total = unidadesIds.length;
                     var passo = 100/unidadesIds.length;
-                    var acumulador = passo;
+                    acumulador = passo
 
-                    getTelaByTablet(progress, total, passo, acumulador,unidadesIds);
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(0, total/3));
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3, total/3*2));
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3*2, unidadesIds.length-1));
 
                 });
 
@@ -386,7 +389,7 @@
         });
     }
 
-    function getTelaByTablet(progress, total, passo, acumulador, unidadesIds){
+    function getTelaByTablet(progress, total, passo, unidadesIds){
         $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidadesIds[0], {}, function (r) {
             acumulador += parseInt(passo)
             progress.Update(acumulador.toFixed(0));
@@ -395,7 +398,7 @@
 
             unidadesIds.splice(0, 1);
             if(unidadesIds.length > 0)
-                getTelaByTablet(progress, total, passo, acumulador, unidadesIds);
+                getTelaByTablet(progress, total, passo, unidadesIds);
         });
     }
 

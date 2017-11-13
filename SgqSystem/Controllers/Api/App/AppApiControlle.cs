@@ -7,6 +7,7 @@ using SgqSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.App
@@ -80,6 +81,7 @@ namespace SgqSystem.Controllers.Api.App
         [Route("UpdateTelaDoTablet/{UnitId}")]
         public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
         {
+            DateTime dtStart = DateTime.Now;
             CommonLog.SaveReport(UnitId, "Update_GetTela");
 
             if (GlobalConfig.PaginaDoTablet == null)
@@ -88,15 +90,16 @@ namespace SgqSystem.Controllers.Api.App
             using (var service = new SyncServices())
             {
                 var atualizado = service.getAPPLevels(56, UnitId, DateTime.Now);/*Cria tela atualizada*/
+                double sec = (DateTime.Now - dtStart).TotalMilliseconds;
                 try
                 {
                     if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))/*Se ja existir atualiza*/
                     {
-                        GlobalConfig.PaginaDoTablet[UnitId] = atualizado;
+                        GlobalConfig.PaginaDoTablet[UnitId] = sec.ToString();// atualizado;
                     }
                     else/*Se nao existir cria*/
                     {
-                        GlobalConfig.PaginaDoTablet.Add(UnitId, atualizado);
+                        GlobalConfig.PaginaDoTablet.Add(UnitId, sec.ToString()/*atualizado*/);
                         GlobalConfig.ParamsDisponiveis += UnitId.ToString();
                     }
                 }
@@ -106,7 +109,8 @@ namespace SgqSystem.Controllers.Api.App
                 }
             }
 
-            return GetTela(UnitId);
+            GetTela(UnitId);
+            return null;
 
         }
 
@@ -146,7 +150,7 @@ namespace SgqSystem.Controllers.Api.App
             retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
             return retorno;
         }
-        
+
         [HttpGet]
         [Route("UpdateDbRemoto/{UnitId}")]
         public void UpdateDbRemoto(int UnitId)
@@ -159,7 +163,7 @@ namespace SgqSystem.Controllers.Api.App
                 //var listaDeUsuarios = UpdateListaDeUsuarios(UnitId);
                 var tela = GetTela(UnitId);
                 dbADO.InsertUpdateData(tela);
-                
+
             }
         }
 
@@ -170,18 +174,97 @@ namespace SgqSystem.Controllers.Api.App
             return db.ParCompany.AsNoTracking().Select(r => r.Id).ToList();
         }
 
-            //[HttpGet]
-            //[Route("UpdateListaDeUsuarios/{UnitId}")]
-            //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
-            //{
-            //    using (var service = new SyncServices())
-            //    {
-            //        service.getCompanyUsers(UnitId.ToString()));
-            //    }
-            //    return retorno;
-            //}
+        //[HttpGet]
+        //[Route("UpdateListaDeUsuarios/{UnitId}")]
+        //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
+        //{
+        //    using (var service = new SyncServices())
+        //    {
+        //        service.getCompanyUsers(UnitId.ToString()));
+        //    }
+        //    return retorno;
+        //}
 
+
+        [HttpGet]
+        [Route("GetGeneratedUnits")]
+        public Dictionary<int,string> GetGeneratedUnits()
+        {
+            return GlobalConfig.PaginaDoTablet;//?.Select(u => u.Key).ToList();
         }
+
+        private static Semaphore Pool;
+
+        [HttpGet]
+        [Route("UpdateGetTelaThread")]
+        public void UpdateGetTelaThread()
+        {
+            //_runningThread = 0;
+            int index = 0;
+            List<int> listUnitIds = GetUnits();
+
+            for (int i = 0; i < GlobalConfig.PaginaDoTablet?.Count; i++)
+                GlobalConfig.PaginaDoTablet[i] = string.Empty;
+
+            //listUnitIds.ForEach(u => new Thread(() => this.ThreadManager(u)).Start());
+
+            Queue<Thread> threadBuffer = new Queue<Thread>();
+
+            Pool = new Semaphore(20,20);
+
+            foreach(int i in listUnitIds)
+            {
+                Thread thread = new Thread(() => this.ThreadManager(i));
+                threadBuffer.Enqueue(thread);
+            }
+
+            while (threadBuffer.Count > 0)
+            {
+                Thread t = threadBuffer.Dequeue();
+                t.Start();
+            }
+        }
+
+        private void ThreadManager(int id)
+        {
+            try
+            {
+                Pool.WaitOne();
+                UpdateTelaDoTablet(id);
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                Pool.Release();
+            }
+
+            /*bool run;
+            while (true)
+            {
+                run = false;
+                Thread.Sleep(new Random().Next(200, 500));
+                if (_maxRunningThread > _runningThread)
+                {
+                    ++_runningThread;
+                    run = true;
+                }
+
+                if (run)
+                {
+                    UpdateTelaDoTablet(id);
+                    --_runningThread;
+                    return;
+                }else
+                {
+                    Thread.Sleep(new Random().Next(500, 1000));
+                }
+            }*/
+        }
+
+    }
+
 
     /// <summary>
     /// Objeto de auxilio para retorno.
