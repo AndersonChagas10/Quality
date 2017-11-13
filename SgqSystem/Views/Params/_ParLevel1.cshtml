@@ -39,27 +39,27 @@
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
 
-                        
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
                         </tr>
 
-                       
-                        
-                        
 
-                        
+
+
+
+
 
                         <tr class="row">
                             <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.standard, new { @class = "" }), Table.PosicaoLabel.left, null, null)
                         </tr>
-                        
 
 
-       
 
-                        
+
+
+
 
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
@@ -122,8 +122,8 @@
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                                     </tr>
                                     @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none" >
-                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-            </tr>*@
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                                        </tr>*@
                                     <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allows_less_privileged_users_to_edit_the_tasks_samples)
                                     </tr>
@@ -335,15 +335,15 @@
 
                                                     @*<tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
-                                                        <td style="padding:5px;">Produtos</td>
-                                                        <td style="padding:5px;"></td>
+                                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
+                                                            <td style="padding:5px;">Produtos</td>
+                                                            <td style="padding:5px;"></td>
 
-                                                    </tr>*@
+                                                        </tr>*@
 
                                                     <tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto"  value="integracaoFamiliaProduto"></td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
                                                         <td style="padding:5px;">Família de Produtos</td>
                                                         <td style="padding:5px;"></td>
 
@@ -491,8 +491,34 @@
                                                             {
 
                                                                 <td style="font-size:xx-small;">
+                                                                   
+                                                                    @{ var tipo = "";
 
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id, @style = "font-size:xx-small;" })
+                                                                        switch (parLevel1XHeaderField.ParHeaderField.Description)
+                                                                        {
+                                                                            case ("Equipamento|"):
+                                                                                tipo = "Equipamento";
+                                                                                break;
+                                                                            case ("Câmara|"):
+                                                                                tipo = "Câmara";
+                                                                                break;
+                                                                            case ("Ponto de Coleta|"):
+                                                                                tipo = "Ponto de Coleta de Água";
+                                                                                break;
+                                                                            case ("Detector de Metais|"):
+                                                                                tipo = "Detector de Metais";
+                                                                                break;
+                                                                            case ("familiaProduto"):
+                                                                                tipo = "Família de Produtos";
+                                                                                break;
+                                                                            default:
+                                                                                tipo = "";
+                                                                                break;
+                                                                        }
+                                                                    }
+
+                                                                    @tipo;
+
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
 
                                                                 </td>
@@ -822,6 +848,7 @@
             $('#btnIncluirIntegracoes').hide();
             $('#salvarCabecalho1Div').hide();
             $('#objIntegracoes').hide();
+            $('#objInformacoes').hide();
 
             /*Esconde mensagens*/
             Cabecalhos.EscondeMensagemValidacaoCabecalho();
@@ -1252,8 +1279,8 @@
 
             example += '<td>';
             example += '<td></td>' //obrigatoriedade ""
-            example += '<td></td>' //padrão
-            example += '' +  Cabecalhos.BtnExcluir();
+            example += '<td>' //padrão
+            example += Cabecalhos.BtnExcluir();
             example += '</td>';
 
             $('#tableCabecalhosPreview').append(example);
@@ -1549,14 +1576,38 @@
         },
         AtualizaPreviewCampoIntegracoes: function (o) {
 
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var tipo = $('input[name=integracaoRB]:checked').val();
+
+            switch (tipo){
+                case "integracaoEquipamentoValor":
+                    tipo = "Equipamentos";
+                    break;
+                case "integracaoCamaraValor":
+                    tipo = "Câmaras";
+                    break;
+                case "integracaoPontoDeColetaValor":
+                    tipo = "Ponto de Coleta de Água";
+                    break;
+                case "integracaoRaioXValor":
+                    tipo = "Detector de Metais";
+                    break;
+                case "integracaoFamiliaProduto":
+                    tipo = "Família de Produtos";
+                    break;
+                default:
+                    tipo = "";
+                    break;
+            }
+
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class=""> ' + $('.equipamentos').val() + '</label></td>' + // nome
+            example += '<td id=""><label class=""> ' + nome + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            example += '<input class="form-control input-sm" type="number" />';//Input
+            example += tipo;//Input
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
