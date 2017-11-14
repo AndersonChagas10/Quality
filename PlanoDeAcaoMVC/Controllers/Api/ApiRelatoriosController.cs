@@ -126,6 +126,31 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                  "\n AND QuandoInicio > '" + DateTime.Now.AddMonths(-6).ToString("yyyy-MM-dd 00:00:00") + "'" +
                 "\n group by  DATEPART(mm,QuandoInicio)";
 
+            //var query = @"create table #seismeses (
+            //            mes int null
+            //            )
+
+            //            insert #seismeses select month(dateadd(month, -6, getdate()))
+            //            insert #seismeses select month(dateadd(month, -5, getdate()))
+            //            insert #seismeses select month(dateadd(month, -4, getdate()))
+            //            insert #seismeses select month(dateadd(month, -3, getdate()))
+            //            insert #seismeses select month(dateadd(month, -2, getdate()))
+            //            insert #seismeses select month(dateadd(month, -1, getdate()))
+            //            insert #seismeses select month(getdate())
+
+            //            select SS.mes as Mes, isnull(Quantidade,0) as Quantidade from #seismeses SS
+            //            left join (
+            //            SELECT DATEPART(mm,QuandoInicio) as Mes,
+            //            Count(id) as Quantidade 
+            //            FROM  [Pa_Acao] 
+            //            where [Status] in (4,3)
+            //            AND QuandoInicio > dateadd(month, -6, getdate())
+            //            group by  DATEPART(mm,QuandoInicio)
+            //            ) CS
+            //            ON SS.mes = CS.Mes
+
+            //            drop table #seismeses";
+
             var items = QueryNinja(db, query);
 
             return items;
@@ -144,6 +169,34 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                          "\n AND QuandoInicio > '" + DateTime.Now.AddMonths(-6).ToString("yyyy-MM-dd 00:00:00") + "'" +
                         "group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
 
+            //var query = @"create table #seismeses (
+            //                mes int null
+            //                )
+
+            //                insert #seismeses select month(dateadd(month, -6, getdate()))
+            //                insert #seismeses select month(dateadd(month, -5, getdate()))
+            //                insert #seismeses select month(dateadd(month, -4, getdate()))
+            //                insert #seismeses select month(dateadd(month, -3, getdate()))
+            //                insert #seismeses select month(dateadd(month, -2, getdate()))
+            //                insert #seismeses select month(dateadd(month, -1, getdate()))
+            //                insert #seismeses select month(getdate())
+
+            //                select * from #seismeses SS
+            //                left join (
+
+            //                SELECT A.*, isnull(B.MesConcluidas,A.MesIniciadas) as MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc
+            //                FROM
+            //                (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM [Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A
+            //                LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM [Pa_Acao] where[Status] in (4, 3) 
+            //                AND QuandoInicio > dateadd(month, -6, getdate()) 
+            //                group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas
+            //                ) CS
+            //                ON SS.mes = CS.MesConcluidas
+
+            //                drop table #seismeses
+
+            //                ";
+
             var items = QueryNinja(db, query);
 
             return items;
@@ -155,12 +208,38 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             dynamic teste = form;
 
-            var query = "SELECT A.*, B.MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc, 20 as Meta" +
-                        "\n FROM" +
-                        "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM [Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
-                        "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM [Pa_Acao] where[Status] in (4, 3) " +
-                          "\n AND QuandoInicio > '" + DateTime.Now.AddMonths(-6).ToString("yyyy-MM-dd 00:00:00") + "'" +
-                         "\n group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
+            //var query = "SELECT A.*, B.MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc, 20 as Meta" +
+            //            "\n FROM" +
+            //            "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM [Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
+            //            "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM [Pa_Acao] where[Status] in (4, 3) " +
+            //              "\n AND QuandoInicio > '" + DateTime.Now.AddMonths(-6).ToString("yyyy-MM-dd 00:00:00") + "'" +
+            //             "\n group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
+
+            var query = @"create table #seismeses (
+                        mes int null
+                        )
+
+                        insert #seismeses select month(dateadd(month, -6, getdate()))
+                        insert #seismeses select month(dateadd(month, -5, getdate()))
+                        insert #seismeses select month(dateadd(month, -4, getdate()))
+                        insert #seismeses select month(dateadd(month, -3, getdate()))
+                        insert #seismeses select month(dateadd(month, -2, getdate()))
+                        insert #seismeses select month(dateadd(month, -1, getdate()))
+                        insert #seismeses select month(getdate())
+
+                        select CS.* from #seismeses SS
+                        left join (
+                        SELECT A.*, isnull(B.MesConcluidas,A.MesIniciadas) as MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc, 20 as Meta
+                                                FROM
+                                                (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM [Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A
+                                                 LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM [Pa_Acao] where[Status] in (4, 3) 
+                                                  AND QuandoInicio > dateadd(month, -6, getdate())
+                                                  group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas
+
+                        ) CS
+                        ON SS.mes = CS.MesConcluidas
+
+                        drop table #seismeses";
 
             var items = QueryNinja(db, query);
 

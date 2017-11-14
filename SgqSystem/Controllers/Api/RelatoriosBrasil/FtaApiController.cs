@@ -66,8 +66,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //auditorId
             //auditorName
             dynamic retorno = new JObject();
-            //retorno.url = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao//NewFTA?";
-            retorno.url = "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
+            retorno.url = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao//NewFTA?";
+            //retorno.url = "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
             //retorno.url = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao//NewFTA?";
 
             retorno.MetaFTA += "MetaFTA=" + form.MetaFTA.ToString();
