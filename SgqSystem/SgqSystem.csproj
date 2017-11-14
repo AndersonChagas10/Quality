@@ -554,6 +554,14 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap-responsive.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap.min.css" />
+    <Content Include="Content\BootStrapRecravacao\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\BootStrapRecravacao\img\glyphicons-halflings.png" />
+    <Content Include="Content\BootStrapRecravacao\js\bootstrap.js" />
+    <Content Include="Content\BootStrapRecravacao\js\bootstrap.min.js" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\select2.css" />
@@ -1087,6 +1095,7 @@
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\humanizeduration\humanize-duration.js" />
+    <Content Include="Scripts\humanize\humanize-duration.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />
@@ -1118,6 +1127,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqueryeasing\jquery.easing.min.js" />
     <Content Include="Scripts\lib-typedarrays.js" />
     <Content Include="Scripts\loadingoverlay.min.js" />
     <Content Include="Scripts\loadingoverlay_progress.min.js" />
@@ -1187,6 +1197,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Scripts\lodash\lodash.js" />
     <Content Include="Scripts\Math\math.js" />
     <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -1442,6 +1453,7 @@
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="obj\" />
+    <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />

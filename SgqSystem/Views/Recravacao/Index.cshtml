@@ -1,8 +1,9 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     var urlHome = Url.Action("Index", "Home");
 }
+@*<link href="~/Content/BootStrapRecravacao/css/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Content/BootStrapRecravacao/js/bootstrap.min.js"></script>*@
 <style>
     .level3NameDestacado td:first-child {
         color: red !important;
@@ -130,6 +131,7 @@
     }
 </style>
 
+<script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
 <div ng-controller="reencravationCtrl as r" class="container page-content " style="min-height: 600px;width:100%;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
@@ -161,13 +163,11 @@
             class="floatinBottonButton btn btn-success btn-sm"
             data-toggle="modal"
             data-target="#modalParadaDeLinha"
-            ng-init="seletedLinha.ExcedidoTempoLimite = false; TimerOn(true)"
-            ng-class="{'btn-success': (seletedLinha.ExcedidoTempoLimite == false), 'btn-danger': (seletedLinha.ExcedidoTempoLimite == true)}"
-            title="Para / Reinicia a Linha">
-        <span class="glyphicon glyphicon-time" aria-hidden="true">
-            @*<span style="font-family:'Open Sans',sans-serif">&nbsp; Anotações / Observações {{seletedLinha.LinhaParadaTimer}}</span>*@
-            <span style="font-family:'Open Sans',sans-serif">&nbsp; Anotações / Observações {{ProximaLataTimer}}</span>
-        </span>
+            ng-class="{'btn-success': (timeLimitOver == false), 'btn-danger': (timeLimitOver == true)}"
+            title="Adicionar Observações">
+        <span style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: left;">&nbsp; Anotações / Observações </span> 
+        <span ng-show="ProximaLataTimer" style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: right;">Horário da ultima coleta: {{ProximaLataTimer}}</span>
+        <span class="glyphicon glyphicon-time" aria-hidden="true" style="color: #333; float: right; padding: 0px 5px;"></span>
     </button>
 
     <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
@@ -272,11 +272,11 @@
                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 </button>
                 @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(seletedLinha, $index)">
-                        <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
-                    </button>*@
+                <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+                </button>*@
                 @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
-                        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-                    </button>*@
+                <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                </button>*@
                 <button type="button"
                         class="btn btn-warning btn-sm"
                         data-toggle="modal"
@@ -318,11 +318,11 @@
                             colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
 
                             @*1 Binário ok
-                                2   Número de defeitos ok
-                                3   Intervalos ok
-                                4   Calculado
-                                5   Texto
-                                99  NOVO CALCULADO POR OUTRO*@
+                            2   Número de defeitos ok
+                            3   Intervalos ok
+                            4   Calculado
+                            5   Texto
+                            99  NOVO CALCULADO POR OUTRO*@
 
                             @*1 Binário*@
                             <span style="text-align: center;"
@@ -405,21 +405,21 @@
         </button>
 
         @*<button ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" style="margin: 35px;" class="btn btn-primary btn-sm">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
-            </button>
-            <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
-                Atualizar Parametrização / Nova Coleta
-            </button>*@
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
+        </button>
+        <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
+        Atualizar Parametrização / Nova Coleta
+        </button>*@
     </div>
     @*<button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
-            <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST LINHA
-        </button> *@
+    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST LINHA
+    </button> *@
     @*<button type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
-            <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
-        </button>*@
+    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
+    </button>*@
     @*<button type="button" ng-click="getParametrizacaoZeraColeta()" class="btn btn-sucsdfcess btn-lg">
-            <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
-        </button>*@
+    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
+    </button>*@
     <hr />
 
     <!-- Modal Edit-->
@@ -435,7 +435,7 @@
                 </div>
 
                 <div class="modal-body" style="overflow-x:auto">
-                    <span>Horário em que a lata foi retirada da linha</span>
+                    <span>Horário daretirada da linha</span>
                     <input type="time"
                            class="form-control"
                            placeholder=""
@@ -443,7 +443,7 @@
                     <br />
 
 
-                    <table style="width: 100%">
+                    <table style="width: 100%" id="edit">
                         <tbody>
 
                             <tr>
@@ -462,11 +462,11 @@
                                     colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
 
                                     @*1 Binário ok
-                                        2   Número de defeitos ok
-                                        3   Intervalos ok
-                                        4   Calculado
-                                        5   Texto
-                                        99  NOVO CALCULADO POR OUTRO*@
+                                    2   Número de defeitos ok
+                                    3   Intervalos ok
+                                    4   Calculado
+                                    5   Texto
+                                    99  NOVO CALCULADO POR OUTRO*@
 
                                     @*3 Intervalos NAO EC ET Espessura*@
                                     <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura))">
@@ -575,7 +575,7 @@
                 </div>
 
                 <div class="modal-footer"
-                     @*ng-mouseover="executeDocReadyComLoader(true)"*@
+                     @*ng-mouseover="executeDocReadyComLoader(true)" *@
                      ng-mouseover="executeDocReady(true)">
 
                     <button id="correctiveActionBtn"
@@ -594,11 +594,11 @@
                             data-target="#modalAssinaturaFinalizaLata"
                             title="Assinar {{selectedLata.Name}}"
                             type="button"
-                            @*ng-blur="executeDocReadyComLoader(true)"*@
+                            @*ng-blur="executeDocReadyComLoader(true)" *@
                             ng-show="verifyShowAssinaturaLata()">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assinar
                     </button>
-                    <button type="button" class="btn btn-success btn-sm" @*data-dismiss="modal"*@ ng-click="executeDocReady(true, true)">Salvar</button>
+                    <button type="button" class="btn btn-success btn-sm" ng-click="executeDocReady(true, true)">Salvar</button>
                     <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="executeDocReady(true, true)">Fechar</button>
                 </div>
 
@@ -804,7 +804,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="preventiveAction">Parada na linha: {{seletedLinha.Name}}</h5>
+                    <h5 class="modal-title" id="preventiveAction">Observações da linha: {{seletedLinha.Name}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -818,7 +818,7 @@
                                 <br />
                                 <label>{{item.adDate}} - Observação:</label>
                                 <textarea ng-model="item.DescriptionFailure"
-                                          ng-required="true"
+                                          ng-required="false"
                                           class="form-control custom-control"
                                           name="DescriptionFailure"
                                           rows="3"
@@ -829,7 +829,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="ObservacoesList.push({ adDate: Date })">Adicionar Observação</button>
+                    <button type="button" class="btn btn-success" ng-disabled="" data-dismiss="modal" ng-click="ObservacoesList.push({ adDate: Date, IsAtrasado: timeLimitOver }); saveObservacao();">Salvar Observação</button>
                     <button type="button" class="btn btn-secondary" ng-click="saveState();" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
@@ -837,7 +837,7 @@
     </div>
 
 </div>
-
+<script src="~/Scripts/lodash/lodash.js"></script>
 <script>
     (function () {
         'use strict';
@@ -883,10 +883,80 @@
         /*
         START ANGULAR MODULE
         */
-        app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
-            function ($scope, $http, $timeout) {
+        app.controller('reencravationCtrl', ['$scope', '$http', '$timeout', '$interval',
+            function ($scope, $http, $timeout, $interval) {
                 let vm = $scope
 
+                //timer test
+                var intervalId;
+                vm.counter = 0;
+                vm.horas = 1
+                vm.initialCountdown = 0 * vm.horas;
+                vm.countdown = $scope.initialCountdown;
+                vm.startTime = new Date()
+                vm.myTotal = 3600000 * vm.horas
+                $scope.timeLimitOver = false
+                $scope.modalObsAberto = false
+                $scope.firstLataInAftherObs = false
+
+                vm.timer = function (noFlag) {
+                    if (intervalId)
+                        $interval.cancel(intervalId);
+                    vm.startTime = new Date();
+                    if (vm.seletedLinha.latas && vm.seletedLinha.latas.length) {
+                        let hm = _.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata
+                        var ajustaHora = new Date()
+                        ajustaHora.setHours(hm.getHours())
+                        ajustaHora.setMinutes(hm.getMinutes())
+                        vm.startTime = new Date(ajustaHora)
+                    }
+                    intervalId = $interval(function () {
+                        vm.diffTime = moment().diff(vm.startTime)
+                        vm.duration = moment.duration(vm.diffTime);
+                        let //years = duration.years(),
+                            days = vm.duration.days(),
+                            hrs = vm.duration.hours(),
+                          mins = vm.duration.minutes(),
+                          secs = vm.duration.seconds();
+                        vm.ProximaLataTimer = (/*years + ' years ' + Dias + ' days ' +*/ hrs + ':' + mins + ':' + secs + '');
+
+                        $scope.counter = vm.duration._milliseconds //Math.floor((new Date - vm.startTime) / 1000);
+                        $scope.countdown = $scope.myTotal - $scope.counter;
+                        $scope.timeLimitOver = $scope.countdown < 0
+                        if ($scope.timeLimitOver) {
+                            if (!$scope.modalObsAberto) {
+                                $('#modalParadaDeLinha').modal()
+                                $scope.modalObsAberto = true
+                            }
+                        } else {
+                            $scope.modalObsAberto = false
+                        }
+                    }, 1000);
+                };
+
+                vm.$watch('countdown', function (countdown) {
+                    if (countdown === 0) {
+                        $scope.stop();
+                    }
+                });
+
+                vm.start = function () {
+                    $scope.timer();
+                };
+
+                vm.stop = function () {
+                    $interval.cancel(intervalId);
+                };
+
+                vm.saveObservacao = function (item) {
+                    if ($scope.timeLimitOver) {
+                        $scope.firstLataInAftherObs = true
+                        vm.newLata(vm.seletedLinha);
+                        vm.executeDocReady(true)
+                    }
+                    saveState();
+                }
+                //f timer test
 
 
                 //TUDO MOCK MOCK
@@ -988,7 +1058,7 @@
                 vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
 
                 vm.verifyShowAssinaturaLata = function (item) {
-                    
+
                     let selectedLata = vm.selectedLata
                     if (item)
                         selectedLata = item
@@ -1042,7 +1112,6 @@
                               }
                           });
                 }
-
 
                 vm.selectIndicador = function (item) {
                     vm.indicadorSelecionado = item
@@ -1191,6 +1260,8 @@
                         })
                         linha.counterDeLatas++
                     }
+                    vm.selectedLata = _.last(vm.seletedLinha.latas)
+                    $('#editModal').modal()
                 }
                 vm.cloneLataALot = function (linha, index, repeat) {
 
@@ -1223,6 +1294,7 @@
                     let model = vm.linhas.filter(function (s) {
                         return s.Id == vm.activeInLine
                     })[0]
+                    vm.TimerOn()
                     if (salvoParaInserirNovaLinha)
                         model['SalvoParaInserirColeta'] = true
                     else
@@ -1231,7 +1303,7 @@
 
                     model['User'] = vm.userAuditor
                     model['ParLevel1_Id'] = vm.indicadorSelecionado.Id.toString()
-
+                    vm.start()
                     $http({ method: 'POST', url: vm.saveStateUrl, data: model, showLoader: notShowLoader ? false : true })
                         .then(function (r) {
                             if (r.data.errors) {
@@ -1404,9 +1476,10 @@
 
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
-
+                                vm.TimerOn()
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
+                                vm.timer()
                             }
                         });
                 }
@@ -1622,7 +1695,7 @@
                             }
                         });
                     })
-                    
+
                     //Esta mascara tem 1 bug. CG
                     $(".time").inputmask({
                         mask: "23:59"
@@ -1669,7 +1742,7 @@
                     };
 
                     $(document).ready(function () {
-                        $('input').off('keyup').on('keyup', function (e) {
+                        $('#edit').find('input').off('keyup').on('keyup', function (e) {
                             if (e.which == keyCodes.rigth) {
                                 if ($(this).closest('td').next().find('input').length)
                                     $(this).closest('td').next().find('input').focus().select()
@@ -1763,11 +1836,11 @@
                                toastr.success("Usuário validado com sucesso!")
                                r.data.Retorno.ParCompanyXUserSgq = []
                                item.IsAssinada = true
-                               vm.saveState()
                                //$('.modal').modal('hide')
                                vm.seletedLinha.IsStoped = true;
-                               vm.TimerOn(false, vm.saveState(true, true))
+                               //vm.TimerOn(false, vm.saveState(true, true))
                                item.Assinatura = { Name: null, Password: null }
+                               vm.saveState()
                            }
                            else {
                                item.IsAssinada = false
@@ -1788,11 +1861,11 @@
                                toastr.success("Usuário validado com sucesso!")
                                r.data.Retorno.ParCompanyXUserSgq = []
                                vm.selectedLata.PreventiveAction.IsAssinada = true
-                               vm.saveState()
                                //$('.modal').modal('hide')
                                vm.seletedLinha.IsStoped = true;
-                               vm.TimerOn(false, vm.saveState(true, true))
+                               //vm.TimerOn(false, vm.saveState(true, true))
                                vm.selectedLata.PreventiveAction.Assinatura = { Name: null, Password: null }
+                               vm.saveState()
                            }
                            else {
                                vm.selectedLata.PreventiveAction.IsAssinada = false
@@ -1804,7 +1877,6 @@
                        });
                 }
 
-
                 vm.fechaCorrectiveAction = function (item) {
                     if (!vm.selectedLata.correctiveAction.IsAssinada) {
                         //vm.selectedLata.correctiveAction.ImmediateCorrectiveAction = ""
@@ -1813,55 +1885,58 @@
                 }
 
                 vm.TimerOn = function (isLoadData, cb) {
-                    //if (isLoadData) {
-                    //    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
-                    //} else if (vm.seletedLinha.IsStoped) {
-                    //    vm.seletedLinha.ExcedidoTempoLimite = false
-                    //    vm.seletedLinha.StartParadaDeLinha = moment();
-                    //    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
-                    //}
+                    //if (vm.seletedLinha.latas)
+                    //    vm.startTime = new Date(_.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    //else
+                    //    vm.startTime = new Date()
+                    //vm.ExcedidoTempoLimite = false
+                    //vm.StartColetaDeLata = moment();
+                    //vm.TimeoutProximaLata = $timeout($scope.onTimeout, 1000);
+
                     //if (cb)
                     //    cb()
                 }
 
                 vm.TimerOff = function () {
-                    //let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
-                    //let duration = moment.duration(diffTime);
-                    //let //years = duration.years(),
-                    //    days = duration.days(),
-                    //    hrs = duration.hours(),
-                    //  mins = duration.minutes(),
-                    //  secs = duration.seconds();
-                    //vm.seletedLinha.TempoDeLinhaParada = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
-                    //$timeout.cancel(vm.seletedLinha.mytimeout);
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.duration = moment.duration(vm.diffTime);
+                    let //years = duration.years(),
+                        days = vm.duration.days(),
+                        hrs = vm.duration.hours(),
+                      mins = vm.duration.minutes(),
+                      secs = vm.duration.seconds();
+                    vm.ProximaLataTimer = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    $timeout.cancel(vm.mytimeout);
                 }
 
+                vm.diffTime
+                vm.duration
                 $scope.onTimeout = function () {
-                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
-                    let duration = moment.duration(diffTime);
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.duration = moment.duration(vm.diffTime);
                     let //years = duration.years(),
-                        days = duration.days(),
-                        hrs = duration.hours(),
-                      mins = duration.minutes(),
-                      secs = duration.seconds();
+                        days = vm.duration.days(),
+                        hrs = vm.duration.hours(),
+                      mins = vm.duration.minutes(),
+                      secs = vm.duration.seconds();
 
                     //if (hrs > 1)
                     //    vm.seletedLinha.ExcedidoTempoLimite = true
 
                     //SEM MOCK
-                    if (hrs > 1 || days > 0)
-                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    if (hrs > 1 || days > 1)
+                        vm.ExcedidoTempoLimite = true
                     else
-                        vm.seletedLinha.ExcedidoTempoLimite = false
+                        vm.ExcedidoTempoLimite = false
 
                     //MOCK PARA Testes
-                    if (secs > 10)
-                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    if (secs > 20 || mins > 1 || hrs > 1 || days > 1)
+                        vm.ExcedidoTempoLimite = true
                     else
-                        vm.seletedLinha.ExcedidoTempoLimite = false
+                        vm.ExcedidoTempoLimite = false
 
-                    vm.seletedLinha.LinhaParadaTimer = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
-                    vm.seletedLinha.mytimeout = $timeout($scope.onTimeout, 1000);
+                    vm.ProximaLataTimer = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                    vm.mytimeout = $timeout($scope.onTimeout, 1000);
                 }
 
                 vm.generateIdParaOutroCalculado = function (ParLevel3, index) {
@@ -2132,13 +2207,35 @@
                                         <input type="radio" style="width:100%; max-width: 65px;"
                                                 ng-value="false"
                                                 ng-model="lata.ResultValue[params.Id][(index +1)]" />
-                                        {{params.ParLevel3Value[0].ParLevel3BoolFalse.Name}} 
+                                        {{params.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
                                         &nbsp<span ng-if="params.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lata.ResultValue[params.Id][(index +1)]" /> NA </span>
                                     </span>
                                 </span>`
                 }
             })
-    
+            .directive("progressbar", function () {
+                return {
+                    restrict: "A",
+                    scope: {
+                        total: "=",
+                        current: "="
+                    },
+                    link: function (scope, element) {
+
+                        scope.$watch("current", function (value) {
+                            element.css("width", scope.current / scope.total * 100 + "%");
+                        });
+                        scope.$watch("total", function (value) {
+                            element.css("width", scope.current / scope.total * 100 + "%");
+                        })
+                    }
+                };
+            })
+            .filter('secondsToDateTime', [function () {
+                return function (seconds) {
+                    return new Date(1970, 0, 1).setSeconds(seconds);
+                };
+            }])
 
     })();
 
