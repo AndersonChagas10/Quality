@@ -333,13 +333,13 @@
 
                                                     </tr>
 
-                                                    @*<tr class="row">
+                                                    <tr class="row">
 
-                                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
+                                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto" value="integracaoProduto"></td>
                                                             <td style="padding:5px;">Produtos</td>
                                                             <td style="padding:5px;"></td>
 
-                                                        </tr>*@
+                                                        </tr>
 
                                                     <tr class="row">
 
@@ -510,6 +510,9 @@
                                                                                 break;
                                                                             case ("familiaProduto"):
                                                                                 tipo = "Família de Produtos";
+                                                                                break;
+                                                                            case ("Produto"):
+                                                                                tipo = "Produto";
                                                                                 break;
                                                                             default:
                                                                                 tipo = "";
@@ -1594,6 +1597,9 @@
                     break;
                 case "integracaoFamiliaProduto":
                     tipo = "Família de Produtos";
+                    break;
+                case "integracaoProduto":
+                    tipo = "Produtos";
                     break;
                 default:
                     tipo = "";

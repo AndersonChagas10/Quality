@@ -191,7 +191,7 @@ namespace SgqSystem.Services
                     {
                         connection.Open();
 
-                        
+
 
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
@@ -203,9 +203,9 @@ namespace SgqSystem.Services
                             return 0;
                         }
 
-                        
+
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close(); 
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -261,10 +261,10 @@ namespace SgqSystem.Services
                 }
                 //A key não está sendo utilizada
                 string key = "111111";
-                
+
                 //Converto o Objeto Json e prepara para extrair os dados do Level02
                 ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
-                
+
                 //Gera um array
                 string[] arrayObj = ObjResultJSon.Split('@');
                 //Instanciamos a linha que gera a query
@@ -282,7 +282,7 @@ namespace SgqSystem.Services
                         string[] result = arrayObj[i].Split(';');
 
                         string[] resultCopy = result;
-                        while(!resultCopy[22].Contains("<level03>") && resultCopy.Count() > 23)
+                        while (!resultCopy[22].Contains("<level03>") && resultCopy.Count() > 23)
                         {
                             resultCopy = RemoveFrom(resultCopy, 22);
                         }
@@ -304,7 +304,7 @@ namespace SgqSystem.Services
                         //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
 
                         var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
-                        
+
                         string indicadorPai = "SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                               "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                               "\n  on p321.ParLevel1_Id = p1.id " +
@@ -370,7 +370,7 @@ namespace SgqSystem.Services
                         //Id do Level01
                         string level01Id = DefaultValueReturn(result[0], "0");
 
-                        if(level01Id == "0")
+                        if (level01Id == "0")
                         {
                             string p1Undefined = "SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                                  "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
@@ -383,7 +383,7 @@ namespace SgqSystem.Services
                                                  "\n  and p32.IsActive = 1";
                             using (var db = new Dominio.SgqDbDevEntities())
                             {
-                                
+
                                 level01Id = db.Database.SqlQuery<ResultadoUmaColuna>(p1Undefined).FirstOrDefault().retorno;
                             }
                         }
@@ -665,7 +665,7 @@ namespace SgqSystem.Services
                             }
 
                         }
-                        
+
                     }
 
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
@@ -759,8 +759,8 @@ namespace SgqSystem.Services
                     //}
 
                     var l3Temp = c.Level03ResultJSon.Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", "");
-                    
-                    if(l3Temp.Count() < 16)
+
+                    if (l3Temp.Count() < 16)
                     {
                         c.Level03ResultJSon = null;
                     }
@@ -793,11 +793,12 @@ namespace SgqSystem.Services
                         {
                             DateTime dataPhase = DateCollectConvert(StartPhase);
                             StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
-                        }catch(Exception e)
+                        }
+                        catch (Exception e)
                         {
                             StartPhase = "CAST(N'" + DateTime.Now.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
                         }
-                        
+
                     }
 
 
@@ -921,7 +922,7 @@ namespace SgqSystem.Services
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey);
-                    
+
                     if (CollectionLevel2Id == 2627)
                     {
                         int jsonUpdate = updateJsonDuplicated(c.Id);
@@ -935,16 +936,16 @@ namespace SgqSystem.Services
 
                         using (var db = new Dominio.SgqDbDevEntities())
                         {
-                            
+
                             var BEA = db.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == c.level01_Id);
-                            if(BEA != null)
+                            if (BEA != null)
                                 IsBEA = BEA.ParLevel1VariableProduction_Id;
 
                         }
 
 
                         if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42)
-                                ReconsolidationToLevel3(CollectionLevel2Id.ToString());
+                            ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
                         if (!string.IsNullOrEmpty(headersContadores))
@@ -1663,7 +1664,7 @@ namespace SgqSystem.Services
 
                 sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation], [EndPhaseEvaluation]) " +
              "VALUES " +
-             "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), GETDATE(),'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '"+startphaseevaluation+"', '"+endphaseevaluation+"') ";
+             "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), GETDATE(),'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "', '" + endphaseevaluation + "') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
 
@@ -1673,7 +1674,7 @@ namespace SgqSystem.Services
             {
                 ///podemos melhorar a verificação para Id zero, id null e id not null
                 //Caso contrário  é u Update
-                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', ReauditLevel=" + reauditLevel + ", HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" + defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + ", StartPhaseEvaluation="+startphaseevaluation+ ", EndPhaseEvaluation="+endphaseevaluation+" WHERE Id='" + id + "'";
+                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', ReauditLevel=" + reauditLevel + ", HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" + defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + ", StartPhaseEvaluation=" + startphaseevaluation + ", EndPhaseEvaluation=" + endphaseevaluation + " WHERE Id='" + id + "'";
 
                 sql += " SELECT '" + id + "' AS 'Identity'";
             }
@@ -1933,8 +1934,8 @@ namespace SgqSystem.Services
                 arrayResults[i] = arrayResults[i].Replace("sebo  , suporte", "sebo e suporte");
                 arrayResults[i] = arrayResults[i].Replace("sebo%20%20%2C%20suporte", "sebo%20%20e%20suporte");
 
-                        //Gera o array com o resultado
-                        var result = arrayResults[i].Split(',');
+                //Gera o array com o resultado
+                var result = arrayResults[i].Split(',');
 
                 //Instancia as variáveis para preencher o script
                 string Level03Id = result[0];
@@ -1957,7 +1958,7 @@ namespace SgqSystem.Services
                         var ListaindicadorFilha = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == collectionLevel2Filha.ParLevel1_Id);
 
 
-                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive && ListaindicadorFilha.Any(z => z.ParLevel3Level2_Id == r.Id) ); //&& r.ParLevel2_Id == level02
+                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3 && r.IsActive && ListaindicadorFilha.Any(z => z.ParLevel3Level2_Id == r.Id)); //&& r.ParLevel2_Id == level02
                     }
                 }
 
@@ -2033,9 +2034,9 @@ namespace SgqSystem.Services
                 string evaluation = "1";
 
                 string WeiEvaluation = "1";
-                if(result.Count() > 15)
+                if (result.Count() > 15)
                     WeiEvaluation = result[15].Replace(",", ".");
-                
+
                 if (filho)
                     WeiEvaluation = tarefaFilha.Weight.ToString().Replace(",", ".");
 
@@ -2046,7 +2047,7 @@ namespace SgqSystem.Services
                 string hasPhoto = BoolConverter(result.Count() > 17 ? result[17] : "false");
 
                 if (filho)
-                WeiDefects = (tarefaFilha.Weight * Decimal.Parse(defects)).ToString().Replace(",", ".");
+                    WeiDefects = (tarefaFilha.Weight * Decimal.Parse(defects)).ToString().Replace(",", ".");
 
                 //decimal defeitos = Convert.ToDecimal(defects.ToString().Replace(".", ","));
                 //decimal punicao = Convert.ToDecimal(punishimentValue.ToString().Replace(".", ","));
@@ -2075,7 +2076,7 @@ namespace SgqSystem.Services
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
                            "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
-                    
+
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
                 }
@@ -2137,9 +2138,9 @@ namespace SgqSystem.Services
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
                 return 0;
             }
-            
+
         }
-        
+
         #endregion
 
         #region WeiEvaluation
@@ -2643,7 +2644,7 @@ namespace SgqSystem.Services
             using (var db = new Dominio.SgqDbDevEntities())
             {
                 string sql = "EXEC grtSP_getConsolidation '" + dataIni + "', " + ParCompany_Id;
-                    
+
                 var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
 
                 for (var i = 0; i < list.Count(); i++)
@@ -3331,9 +3332,9 @@ namespace SgqSystem.Services
             {
                 culture = "en-us";
             }
-            
+
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Audit\"></ol>";
-            
+
             string selectPeriod = html.option("1", CommonData.getResource("period").Value.ToString() + " 1") +
                               html.option("2", CommonData.getResource("period").Value.ToString() + " 2") +
                               html.option("3", CommonData.getResource("period").Value.ToString() + " 3") +
@@ -3361,8 +3362,8 @@ namespace SgqSystem.Services
 
             buttons += " <button id=\"btnSaveAllTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
 
-            buttons += " <button id=\"btnCA\" class=\"btn btn-lg btn-danger hide\">"+ Resources.Resource.corrective_action + "</button>";
-            
+            buttons += " <button id=\"btnCA\" class=\"btn btn-lg btn-danger hide\">" + Resources.Resource.corrective_action + "</button>";
+
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
                              "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
@@ -4449,6 +4450,13 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
+            SGQDBContext.Generico listaProdutos = new Generico(db);
+
+            var listaProdutosJSON = listaProdutos.getProdutos();
+
+
+
+
             int id = 0;
 
             foreach (var header in list) //LOOP7
@@ -4512,26 +4520,70 @@ namespace SgqSystem.Services
                         break;
                     //Integrações
                     case 2:
-                        var listIntegration = ParFieldTypeDB.getIntegrationValues(header.ParHeaderField_Id, header.ParHeaderField_Description, ParCompany_id);
-                        var optionsIntegration = "";
-                        bool hasDefaultIntegration = false;
 
-                        foreach (var value in listIntegration) //LOOP8
+                        /* Se for produto que digito o código e busco em uma lista*/
+                        if (header.ParHeaderField_Description == "Produto")
                         {
-                            if (value.IsDefaultOption == 1)
-                            {
-                                optionsIntegration += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
-                                hasDefaultIntegration = true;
-                            }
-                            else
-                            {
-                                optionsIntegration += "<option value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
-                            }
-                        }
-                        if (!hasDefaultIntegration)
-                            optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
+                            form_control = " <script> " +
+                                           "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
+                                           
+                                           " </script>                                           ";
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
+                            form_control += @" <script>
+                                             function buscarProduto(a,valor){
+                                                for (var j=0; j < listaProdutosJson.length; j++) {
+                                                   if (listaProdutosJson[j].id == valor) {
+
+		                                                $(a).next().html(listaProdutosJson[j].nome);
+                    
+                                                      return;
+                                                   }		                                               
+                                                }
+                                                $(a).next().html('Nenhum produto');
+                                            }
+
+                                            function validaProduto(a,valor){
+                                                for (var j=0; j < listaProdutosJson.length; j++) {
+                                                   if (listaProdutosJson[j].id == valor) {
+
+		                                                //alert(listaProdutosJson[j].nome);
+                    
+                                                      return;
+                                                   }
+                                                                                                       
+                                                }
+                                                $(a).val('');
+                                            }
+                                            </script> ";
+
+                            form_control += " <input class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \">";
+                            form_control += " <label></label>";
+                            form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('integer');</script>";
+                        }
+                        /* se for um combobox integrado*/
+                        else
+                        {
+                            var listIntegration = ParFieldTypeDB.getIntegrationValues(header.ParHeaderField_Id, header.ParHeaderField_Description, ParCompany_id);
+                            var optionsIntegration = "";
+                            bool hasDefaultIntegration = false;
+
+                            foreach (var value in listIntegration) //LOOP8
+                            {
+                                if (value.IsDefaultOption == 1)
+                                {
+                                    optionsIntegration += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
+                                    hasDefaultIntegration = true;
+                                }
+                                else
+                                {
+                                    optionsIntegration += "<option value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
+                                }
+                            }
+                            if (!hasDefaultIntegration)
+                                optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
+
+                            form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
+                        }
                         break;
                     //Binário
                     case 3:
@@ -4568,16 +4620,16 @@ namespace SgqSystem.Services
                         form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Infomações
-                    case 8:                     
+                    case 8:
                         form_control = "<br><div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"color: white; font-size: 16px; background: #5353c6;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0; padding: 10px 20px 20px 20px;\"><div style=\"float:right; cursor: pointer;\" class=\"btn btn-default\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\";'>X</div><br><br>" + header.ParHeaderField_Description + "</div></div><button style=\"padding-left: 5px;padding-right: 5px; padding-bottom: 0px; padding-top: 0px;\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;font-size: 28px;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
                         break;
                 }
-                
+
                 //Incrementar valor para o pai do elemento para Ytoara.
                 id = id + 1;
 
                 var form_group = html.div(
-                                            outerhtml: label + form_control ,
+                                            outerhtml: label + form_control,
                                             classe: "form-group header",
                                             tags: header.IsRequired == 1 ? "required" : "",
                                             style: "margin-bottom: 4px;"
@@ -4712,7 +4764,7 @@ namespace SgqSystem.Services
 
                 var tituloLabel = "Animais Avaliados";
 
-                if(ParLevel1.Id == 42)
+                if (ParLevel1.Id == 42)
                 {
                     tituloLabel = "Total Bloqueado (Kg)";
                 }
@@ -5392,20 +5444,23 @@ namespace SgqSystem.Services
 
                 string valorCompleto = "";
 
-                if(valorMinimo == "")
+                if (valorMinimo == "")
                 {
                     valorCompleto = valorMaximo;
-                }else if(valorMaximo == ""){
+                }
+                else if (valorMaximo == "")
+                {
                     valorCompleto = valorMinimo;
-                }else
+                }
+                else
                 {
                     valorCompleto = valorMinimo + " ~ " + valorMaximo;
                 }
 
 
                 labels = html.div(
-                                           
-                                                                  
+
+
 
                                             outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "levelName"
@@ -5883,7 +5938,7 @@ namespace SgqSystem.Services
                 string ParLevel2_Id = deviation[2];
                 string Evaluation = deviation[3];
 
-                if(Evaluation == "undefined")
+                if (Evaluation == "undefined")
                 {
                     Evaluation = "0";
                 }
@@ -6933,7 +6988,7 @@ namespace SgqSystem.Services
                 "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
                 "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
 
-                 //"\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
+                //"\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
 
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3  WITH (NOLOCK) where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +

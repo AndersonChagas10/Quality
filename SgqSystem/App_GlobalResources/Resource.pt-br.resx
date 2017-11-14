@@ -2244,4 +2244,16 @@
   <data name="value_is_acceptable_greater" xml:space="preserve">
     <value>O valor aceitável é maior que </value>
   </data>
+  <data name="textHomeColeta" xml:space="preserve">
+    <value />
+    <comment>Coletar os dados na planta, com um computador ou um tablet, trabalhando até o sol nascer.</comment>
+  </data>
+  <data name="textHomeGestao" xml:space="preserve">
+    <value />
+    <comment>Veja se você bateu a Meta! &lt;br /&gt; Gerenciamento com o método PDCA. Dashboards diversos para analise do negócio.</comment>
+  </data>
+  <data name="textHomeParams" xml:space="preserve">
+    <value />
+    <comment>Parametros de Indicadores, Monitoramentos e tarefas, suas frequencias de coleta, responsáveis e limites.</comment>
+  </data>
 </root>

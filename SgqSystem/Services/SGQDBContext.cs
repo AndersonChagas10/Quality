@@ -1526,6 +1526,33 @@ namespace SGQDBContext
         }
     }
 
+
+
+    public partial class Generico
+    {
+        public string id { get; set; }
+        public string nome { get; set; }
+
+        private SqlConnection db { get; set; }
+        public Generico() { }
+        public Generico(SqlConnection _db)
+        {
+            db = _db;
+        }
+
+        public List<Generico> getProdutos()
+        {
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            db = new SqlConnection(conexaoBR);
+
+            var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
+
+            var lista = db.Query<Generico>(sql).ToList();
+
+            return lista;
+        }
+    }
+
     public partial class ParRelapse
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

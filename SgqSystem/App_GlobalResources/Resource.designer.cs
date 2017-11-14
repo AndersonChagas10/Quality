@@ -5767,6 +5767,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string textHomeColeta {
+            get {
+                return ResourceManager.GetString("textHomeColeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string textHomeGestao {
+            get {
+                return ResourceManager.GetString("textHomeGestao", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string textHomeParams {
+            get {
+                return ResourceManager.GetString("textHomeParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no data for this Level / Unit.
         /// </summary>
         internal static string there_are_no_data_for_this_indicador_unit {
