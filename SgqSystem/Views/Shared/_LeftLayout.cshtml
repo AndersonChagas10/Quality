@@ -107,51 +107,57 @@
                         <ul class="sub-menu">
                             <li class="nav-item">
                                 <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
-                                @*<a href="#" class="nav-link">*@
-                            <span class="title">@Resources.Resource.control_charts  (Em Desenvolvimento)</span>
-                        </a>
+                                    @*<a href="#" class="nav-link">*@
+                                    <span class="title">@Resources.Resource.control_charts  (Em Desenvolvimento)</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>
-        </ul>
-    </li>
 
-    <li class="nav-item" id="RoleLink4">
-        <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
-            <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
-            <span class="title">@Resources.Resource.customization</span>
-            <span class="selected"></span>
-        </a>
-    </li>
-
-    @if (ViewBag.IsAdmin != null)
-    {
-        if (ViewBag.IsAdmin == true)
-        {
-            <li class="nav-item" id="updateAllTablet">
-                <a href="#" onclick="atualziarAllTablets();" class="nav-link nav-toggle">
-                    <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
-                    <span class="title">@Resources.Resource.update_tablet_all</span>
+            <li class="nav-item" id="RoleLink4">
+                <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
+                    <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.customization</span>
+                    <span class="selected"></span>
                 </a>
             </li>
-        }
-    }
 
-    <li class="nav-item" id="RoleLink4">
-        <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
-            <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
-            <span class="title">@Resources.Resource.update_tablet</span>
-            <span class="selected"></span>
-        </a>
-    </li>
+            @if (ViewBag.IsAdmin != null)
+            {
+                if (ViewBag.IsAdmin == true)
+                {
+                    <li class="nav-item" id="updateAllTablet">
+                        <a href="#" onclick="atualziarAllTablets();" class="nav-link nav-toggle">
+                            <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                            <span class="title">@Resources.Resource.update_tablet_all</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="updateAllTabletModal">
+                        <a href="#" class="nav-link nav-toggle" data-toggle="modal" data-target=".update-all-modal-lg">
+                            <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                            <span class="title">@Resources.Resource.update_tablet_all</span>
+                        </a>
+                    </li>
+                }
+            }
 
-    @*<li class="nav-item" id="RoleLink5">
-            <a href="@Url.Action("LeftControlRole", "Role")" class="nav-link nav-toggle">
-                <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                <span class="title">@Resources.Resource.left_menu_control</span>
-                <span class="arrow"></span>
-            </a>
-        </li>*@
+            <li class="nav-item" id="RoleLink4">
+                <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
+                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.update_tablet</span>
+                    <span class="selected"></span>
+                </a>
+            </li>
+
+            @*<li class="nav-item" id="RoleLink5">
+                    <a href="@Url.Action("LeftControlRole", "Role")" class="nav-link nav-toggle">
+                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                        <span class="title">@Resources.Resource.left_menu_control</span>
+                        <span class="arrow"></span>
+                    </a>
+                </li>*@
 
             @if (!GlobalConfig.Eua && !GlobalConfig.Ytoara)
             {
@@ -228,7 +234,7 @@
                         </a>
 
                         <ul class="sub-menu">
-                            
+
                             <li class="nav-item" id="RoleLink8">
                                 <a href="@Url.Action("Index2", "ParCompany")" class="nav-link nav-toggle">
                                     <i class="fa fa-sitemap" aria-hidden="true"></i>
@@ -303,7 +309,127 @@
     </div>
 </div>
 
+<div class="modal fade update-all-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalUpdateAllTablets" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <table class="table" id="tableAllUnitTelaTablet">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>Data Inicio</td>
+                        <td>Data Fim</td>
+                        <td>Unidade</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
 <script>
+    $(document).ready(function() {
+
+        var things = {'ListUnits':[1,2,3,4,5,6,7]};
+
+        things = JSON.stringify( things );
+
+        $('a[data-target=".update-all-modal-lg"]').on('click',function(){
+            $.ajax(
+               {
+                   type: "POST",
+                   url: /*root + */'http://localhost:57506/api/AppParams/GetGeneratedUnits',
+                   data: things,
+                   dataType: "JSON",
+                   contentType: "application/json; charset=utf-8",
+                   success: function (response) {
+                       getDataTable(response);
+                   }
+               });
+        });
+
+        var getDataTable = function(response){
+            $('#tableAllUnitTelaTablet').empty();
+
+            var list = [];
+            $.each(response, function( index, value ) {
+                if(value != null){
+                    list.push(["",index,value.DataInicio,value.DataFim, value.StatusStr])
+                }else{
+                    list.push(["",index,"","",""])
+                }
+            });
+
+            var table = $('#tableAllUnitTelaTablet').html('').DataTable( {
+                data: list,
+                paging: false,
+                destroy: true,
+                columns: [
+                    { title: "Ação" },
+                    { title: "ID" },
+                    { title: "Data Inicio" },
+                    { title: "Data Fim" },
+                    { title: "Status" },
+                ],
+                select:  {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                columnDefs: [ {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets:   0
+                } ],
+                order: [[ 2, 'asc' ]],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: 'Get selected data',
+                        action: function () {
+                            var rows = table.rows( { selected: true } );
+
+                            var listId = [];
+                            $.each(rows[0], function( index, value ) {
+                                listId.push(parseInt(table.row( value ).data()[1]));//Pega a coluna do ID
+                            });
+
+                            requestAllSelectedUnits(listId)
+
+                            //alert( '<div>'+rows.count()+' row(s) selected</div>' );
+
+                        }
+                    }
+                ]
+            } );
+        };
+
+        var requestAllSelectedUnits = function(listId){
+
+            var data = JSON.stringify( {'ListUnits':listId} );
+            $.ajax(
+               {
+                   type: "POST",
+                   url: /*root + */'http://localhost:57506/api/AppParams/UpdateGetTelaThread',
+                   data: data,
+                   dataType: "JSON",
+                   contentType: "application/json; charset=utf-8",
+                   success: function (response) {
+                   }
+               });
+        }
+
+    } );
 
 
     var RequestRoleLink = {

@@ -26,11 +26,21 @@ namespace DTO
         public bool MockEmail { get; set; }
     }
 
+    public class HtmlDoTablet
+    {
+        public string Html { get; set; }
+        public DateTime? DataInicio { get; set; }
+        public DateTime? DataFim { get; set; }
+        public enum StatusType { ERROR, SUCESSO, PROCESSANDO };
+        public StatusType Status { get; set; } = StatusType.PROCESSANDO;
+        public string StatusStr { get { return Status.ToString()/*Status == StatusType.SUCESSO? "SUCESSO":"ERROR"*/; } }
+    }
+
 
     public static class GlobalConfig
     {
 
-        public static Dictionary<int, string> PaginaDoTablet { get; set; }
+        public static Dictionary<int, HtmlDoTablet> PaginaDoTablet { get; set; }
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
         public static bool MockOn { get; set; }
