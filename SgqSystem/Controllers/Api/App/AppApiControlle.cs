@@ -158,7 +158,7 @@ namespace SgqSystem.Controllers.Api.App
             retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value.Html;
             return retorno;
         }
-        
+
         [HttpGet]
         [Route("UpdateDbRemoto/{UnitId}")]
         public void UpdateDbRemoto(int UnitId)
@@ -171,7 +171,7 @@ namespace SgqSystem.Controllers.Api.App
                 //var listaDeUsuarios = UpdateListaDeUsuarios(UnitId);
                 var tela = GetTela(UnitId);
                 dbADO.InsertUpdateData(tela);
-                
+
             }
         }
 
@@ -283,6 +283,7 @@ namespace SgqSystem.Controllers.Api.App
 
 
     }
+
 
     /// <summary>
     /// Objeto de auxilio para retorno.

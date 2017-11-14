@@ -312,7 +312,7 @@
 <div class="modal fade update-all-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalUpdateAllTablets" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <table class="table" id="tableAllUnitTelaTablet">
+            <table class="table col-sm-12" id="tableAllUnitTelaTablet">
                 <thead>
                     <tr>
                         <td></td>
@@ -345,7 +345,8 @@
 
         things = JSON.stringify( things );
 
-        $('a[data-target=".update-all-modal-lg"]').on('click',function(){
+        $('a[data-target=".update-all-modal-lg"]').on('click',
+            function(){
             $.ajax(
                {
                    type: "POST",
@@ -412,6 +413,12 @@
                     }
                 ]
             } );
+            
+            setInterval(function(){ 
+                if($('div.update-all-modal-lg').css('display') != "none"){
+                    $('a[data-target=".update-all-modal-lg"]').click();
+                }
+            }, 5000);
         };
 
         var requestAllSelectedUnits = function(listId){
@@ -490,6 +497,7 @@
     }
 
     var progress = new LoadingOverlayProgress();
+    var acumulador = 0;
     function atualziarAllTablets() {
         bootbox.confirm(@Html.Raw(Json.Encode(Resources.Resource.update_all_tablet_message)), function (result) {
             if(result){
@@ -503,9 +511,11 @@
                 $.get(root + '/api/AppParams/GetUnits', {}, function (unidadesIds) {
                     var total = unidadesIds.length;
                     var passo = 100/unidadesIds.length;
-                    var acumulador = passo;
+                    acumulador = passo
 
-                    getTelaByTablet(progress, total, passo, acumulador,unidadesIds);
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(0, total/3));
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3, total/3*2));
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3*2, unidadesIds.length-1));
 
                 });
 
@@ -513,7 +523,7 @@
         });
     }
 
-    function getTelaByTablet(progress, total, passo, acumulador, unidadesIds){
+    function getTelaByTablet(progress, total, passo, unidadesIds){
         $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidadesIds[0], {}, function (r) {
             acumulador += parseInt(passo)
             progress.Update(acumulador.toFixed(0));
@@ -522,7 +532,7 @@
 
             unidadesIds.splice(0, 1);
             if(unidadesIds.length > 0)
-                getTelaByTablet(progress, total, passo, acumulador, unidadesIds);
+                getTelaByTablet(progress, total, passo, unidadesIds);
         });
     }
 
