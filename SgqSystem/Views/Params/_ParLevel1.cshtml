@@ -103,24 +103,27 @@
                                             @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
                                         </td>
                                     </tr>
-
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
+                                    </tr>
                                     <tr class="row">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.EditLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.has_edit_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_edit_level2)
                                         <td>
                                             @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
                                         </td>
                                     </tr>
-
                                     <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowScorecard, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.show_scorecard), Table.PosicaoLabel.left, null, null)
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
                                     </tr>
-
+                                    <!--Partial Save-->
                                     <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)
                                     </tr>
                                     <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                                     </tr>
+                                   
+                                   
                                     @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none" >
                                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                                         </tr>*@
@@ -130,10 +133,12 @@
                                     <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_level3_connection, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_edition_of_the_level3_connection_popover)
                                     </tr>
-
+                                    
                                     <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_less_privileged_users_to_edit_the_monitoring)
                                     </tr>
+                                    
+                                    
 
                                     @if (GlobalConfig.Brasil)
                                     {
@@ -154,16 +159,11 @@
                                         @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task)
                                     }
 
-                                    <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
-                                    </tr>
+                                    
 
-                                    <!--Partial Save-->
-                                    <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)
-                                    </tr>
+                                    
 
-
+                                    
 
                                     <tr class="row" style="display:none;">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
@@ -181,16 +181,13 @@
 
                                     <tr class="row">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_group_level2)
-                                    </tr>
-
-
-
-                                    <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
-                                    </tr>
+                                    </tr>                               
 
                                     <tr id="registerTotalEv" class="row">
                                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.register_total_evaluated, new { @class = "" }), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                                     </tr>
 
                                     <tr class="row">
@@ -198,6 +195,9 @@
                                         <td>
                                             @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
                                         </td>
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowScorecard, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.show_scorecard), Table.PosicaoLabel.left, null, null)
                                     </tr>
                                     <tr class="row groupChildren padding-left" style="display:none">
                                         @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Origin_Id, Model.paramsDdl.DdlparLevel1Active, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_origin, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
