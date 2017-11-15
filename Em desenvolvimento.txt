@@ -82,3 +82,10 @@ IF COL_LENGTH('CollectionLevel2XParHeaderField','Sample') IS NULL
     Alter table CollectionLevel2XParHeaderField add Sample int default (null)
     EXEC ('update CollectionLevel2XParHeaderField set Sample = null')
     END
+
+14 11 2017 - Para o Filtro de Shift no Relatorio de NC funcionar (USA)
+
+SET IDENTITY_INSERT Shift ON
+insert into [Shift](Id, Description, AddDate, AlterTime) values (1, 'Shift A', GETDATE(), GETDATE()), (2, 'Shift B', GETDATE(), GETDATE())
+delete [Shift] where id in (3, 4)
+SET IDENTITY_INSERT [Shift] OFF
