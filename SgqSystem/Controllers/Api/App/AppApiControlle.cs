@@ -86,14 +86,9 @@ namespace SgqSystem.Controllers.Api.App
             if (GlobalConfig.PaginaDoTablet == null)
                 GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
 
-            if (!GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
-            {
-                GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() { Html = null, DataFim = null, DataInicio = DateTime.Now });
-            }
-            else
-            {
-                GlobalConfig.PaginaDoTablet[UnitId] = new HtmlDoTablet() { Html = null, DataFim = null, DataInicio = DateTime.Now };
-            }
+            CreateItemIfNotExist(UnitId);
+            GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.PROCESSANDO;
+            GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
             using (var service = new SyncServices())
             {
@@ -193,7 +188,10 @@ namespace SgqSystem.Controllers.Api.App
         //    return retorno;
         //}
 
-        public class GeneratedUnit{
+        #region Nova Proposta Get Tela
+
+        public class GeneratedUnit
+        {
             public List<int> ListUnits { get; set; }
         }
 
@@ -230,13 +228,11 @@ namespace SgqSystem.Controllers.Api.App
 
             if (generatedUnit.ListUnits != null && generatedUnit.ListUnits.Count > 0)
             {
-                List<int> listUnitIds = generatedUnit.ListUnits;
-
                 Queue<Thread> threadBuffer = new Queue<Thread>();
 
-                Pool = new Semaphore(3, 5);
+                Pool = new Semaphore(5, 5);
 
-                foreach (int i in listUnitIds)
+                foreach (int i in generatedUnit.ListUnits)
                 {
                     Thread thread = new Thread(() => this.ThreadManager(i));
                     threadBuffer.Enqueue(thread);
@@ -254,11 +250,13 @@ namespace SgqSystem.Controllers.Api.App
         {
             try
             {
+                CreateItemIfNotExist(id);
+
                 Pool.WaitOne();
                 if (GlobalConfig.PaginaDoTablet != null
-                    && 
-                    ((GlobalConfig.PaginaDoTablet[id] != null 
-                        && 
+                    &&
+                    ((GlobalConfig.PaginaDoTablet[id] != null
+                        &&
                         (GlobalConfig.PaginaDoTablet[id].DataFim != null
                         || GlobalConfig.PaginaDoTablet[id].DataInicio == null))
                     ||
@@ -269,10 +267,10 @@ namespace SgqSystem.Controllers.Api.App
             }
             catch (Exception ex)
             {
-                if (GlobalConfig.PaginaDoTablet[id] != null)
+                if (GlobalConfig.PaginaDoTablet.ContainsKey(id) && GlobalConfig.PaginaDoTablet[id] != null)
                 {
                     GlobalConfig.PaginaDoTablet[id].DataFim = DateTime.Now;
-                    GlobalConfig.PaginaDoTablet[id].Status = HtmlDoTablet.StatusType.ERROR; 
+                    GlobalConfig.PaginaDoTablet[id].Status = HtmlDoTablet.StatusType.ERROR;
                 }
             }
             finally
@@ -280,6 +278,20 @@ namespace SgqSystem.Controllers.Api.App
                 Pool.Release();
             }
         }
+
+        private void CreateItemIfNotExist(int id)
+        {
+            if (!GlobalConfig.PaginaDoTablet.ContainsKey(id))
+            {
+                GlobalConfig.PaginaDoTablet.Add(id, new HtmlDoTablet() { });
+            }
+            else
+            {
+                GlobalConfig.PaginaDoTablet[id] = new HtmlDoTablet() { };
+            }
+        }
+
+        #endregion
 
 
     }

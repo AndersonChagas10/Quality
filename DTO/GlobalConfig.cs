@@ -30,9 +30,11 @@ namespace DTO
     {
         public string Html { get; set; }
         public DateTime? DataInicio { get; set; }
+        public string DataInicioStr { get { return DataInicio == null ? null : DataInicio.Value.ToShortDateString() + " " + DataInicio.Value.ToShortTimeString(); } }
         public DateTime? DataFim { get; set; }
-        public enum StatusType { ERROR, SUCESSO, PROCESSANDO };
-        public StatusType Status { get; set; } = StatusType.PROCESSANDO;
+        public string DataFimStr { get { return DataFim == null ? null : DataFim.Value.ToShortDateString() + " " + DataFim.Value.ToShortTimeString(); } }
+        public enum StatusType { ERROR, SUCESSO, PROCESSANDO, PENDENTE };
+        public StatusType Status { get; set; } = StatusType.PENDENTE;
         public string StatusStr { get { return Status.ToString()/*Status == StatusType.SUCESSO? "SUCESSO":"ERROR"*/; } }
     }
 
