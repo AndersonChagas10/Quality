@@ -242,7 +242,7 @@
                     name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0],//.toFixed(2),
                     data: valorAbsoluto.lcsData,
                     visible: (valorAbsoluto.lcs != 0) ? true : false,
-                    color: "red",
+                    color: "black",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -259,7 +259,7 @@
                     name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0],//.toFixed(2),
                     data: valorAbsoluto.lciData,
                     visible: (valorAbsoluto.lci != 0) ? true : false,
-                    color: "red",
+                    color: "black",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -283,10 +283,10 @@
                 //Limites de controle
                 {
                     //Superior
-                    name: "LSE: ",
+                    name: "LSE: " + parseFloat(valorAbsoluto.lcs).toFixed(2),
                     data: valorAbsoluto.lcs,
                     visible: (valorAbsoluto.lcs != 0) ? true : false,
-                    color: "black",
+                    color: "red",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -301,10 +301,10 @@
                 },
                 {
                     //Inferior
-                    name: "LIE: ",
+                    name: "LIE: " + parseFloat(valorAbsoluto.lci).toFixed(2),
                     data: valorAbsoluto.lci,
                     visible: (valorAbsoluto.lci != 0) ? true : false,
-                    color: "black",
+                    color: "red",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -316,6 +316,7 @@
                             }
                         }
                     }
+
                 }
                 @*//Nivel 1
                 {
