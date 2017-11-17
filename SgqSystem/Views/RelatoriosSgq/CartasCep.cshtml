@@ -34,12 +34,36 @@
         $(".page-sidebar-wrapper").removeClass("hide");
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
+            
+        $('#tipoCEP').change(function (a) {
+            if(($('#tipoCEP').val()) == "1")
+            {
+                $('#level3Id').parent().show();
+            }else if(($('#tipoCEP').val()) == "2")
+            {
+                $('#level3Id').val("").trigger('change.select2');
+                $('#level3Id').parent().hide();
+            }
+        })
+
+
 
         $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                $('#unitId').change();
+                Send(true);
+            });
+
             formControl.showFullCallendar();
             formControl.showUnit();
+            formControl.showTipoCEP();
             formControl.showLevel1();
             closeLeftSidebar();
+
+            //Remove o 'Todos' da unidade
+            $("#unitId option[value='']").remove();
+            $("#tipoCEP option[value='']").remove();
 
             $("#btnSend").click(function (e) {
                 Send(true);
@@ -56,17 +80,40 @@
 
             $('#divMensagemAlerta').hide();
 
-            //if (!ValidaDadosParaEnvio()) {
-            //    $btn.button('reset');
-            //    return;
-            //}
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
 
             enviar["auditorId"] = GetUsuarioId();
 
             EasyAjax(urlGet, enviar, GerarGrafico, "load", toggle);//AJAX
         };
 
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta('@Resources.Resource.select_the_unit_first');//"Por favor selecione uma unidade.");
+                return false;
+            }
+
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
         function GerarGrafico(valorAbsoluto) {
+
+            var indicador = $("#level1Id option:selected").text();
+            var monitoramento = $("#level2Id option:selected").val() == '' ? '' : ' - ' + $("#level2Id option:selected").text();
+            var tarefa = $("#level3Id option:selected").val() == '' ? '' : ' - ' + $("#level3Id option:selected").text();
+
+            var tipoCarta = $("#tipoCEP option:selected").text();
 
             //MapeiaValorParaHC(objectList, "");
 
@@ -78,8 +125,12 @@
                     zoomType: 'x,y'
                 },
                 title: {
-                    text: "Carta CEP",
-                    x: -20 //center
+                    text: "Carta CEP " + tipoCarta,
+                    //x: -20 //center
+                },
+
+                subtitle: {
+                    text: indicador + monitoramento + tarefa
                 },
                 xAxis: {
                     categories: valorAbsoluto.amostras,
@@ -191,7 +242,7 @@
                     name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0],//.toFixed(2),
                     data: valorAbsoluto.lcsData,
                     visible: (valorAbsoluto.lcs != 0) ? true : false,
-                    color: "red",
+                    color: "black",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -208,7 +259,7 @@
                     name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0],//.toFixed(2),
                     data: valorAbsoluto.lciData,
                     visible: (valorAbsoluto.lci != 0) ? true : false,
-                    color: "red",
+                    color: "black",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -232,10 +283,10 @@
                 //Limites de controle
                 {
                     //Superior
-                    name: "LSE: ",
+                    name: "LSE: " + parseFloat(valorAbsoluto.lcs).toFixed(2),
                     data: valorAbsoluto.lcs,
                     visible: (valorAbsoluto.lcs != 0) ? true : false,
-                    color: "black",
+                    color: "red",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -250,10 +301,10 @@
                 },
                 {
                     //Inferior
-                    name: "LIE: ",
+                    name: "LIE: " + parseFloat(valorAbsoluto.lci).toFixed(2),
                     data: valorAbsoluto.lci,
                     visible: (valorAbsoluto.lci != 0) ? true : false,
-                    color: "black",
+                    color: "red",
                     type: 'line',
                     marker: {
                         enabled: false
@@ -265,6 +316,7 @@
                             }
                         }
                     }
+
                 }
                 @*//Nivel 1
                 {

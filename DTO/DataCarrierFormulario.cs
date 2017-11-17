@@ -106,5 +106,7 @@ namespace DTO
 
         public int departmentId { get; set; }
         public string departmentName { get; set; }
+
+        public string tipoCEP { get; set; }
     }
 }

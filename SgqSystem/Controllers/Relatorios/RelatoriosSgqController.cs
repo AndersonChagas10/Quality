@@ -25,10 +25,20 @@ namespace SgqSystem.Controllers
         private FormularioParaRelatorioViewModel form;
 
 
+
+
         public RelatoriosSgqController(IRelatorioColetaDomain relatorioColetaDomain)
         {
 
             form = new FormularioParaRelatorioViewModel();
+
+            var list = new[]
+               {
+                    new SelectListItem { Value = "1", Text = "X" },
+                    new SelectListItem { Value = "2", Text = "P" },
+                };
+
+            ViewBag.ListaCEP = new SelectList(list, "Value", "Text");
 
         }
 
@@ -148,9 +158,9 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
-        [FormularioPesquisa(filtraUnidadeDoUsuario = true, parLevel1e2 = true)]
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
         public ActionResult CartasCep()
-        {
+        {  
             return View(form);
         }
 
@@ -231,7 +241,7 @@ namespace SgqSystem.Controllers
             tabela.CallBackTableX = form.CallBackTableX;
             tabela.Title = form.Title;
             return View(tabela);
-        }
+        }       
 
         public TabelaDinamicaResultados GetTbl1(DataCarrierFormulario form)
         {
@@ -978,9 +988,9 @@ namespace SgqSystem.Controllers
             //Dados das colunas do corpo da tabela de dados central
             var query1 = " SELECT 1 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
-                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
-                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
-                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '100' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > 100 then 0 else 100 - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > 100 then 0 else (100 - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / 100 * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -1008,7 +1018,7 @@ namespace SgqSystem.Controllers
             var query2 =
            " SELECT 2 AS QUERY,  PP1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
-                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '100' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
@@ -3183,7 +3193,7 @@ namespace SgqSystem.Controllers
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
-                    "\n where Reg.ParStructureParent_Id = 1 "+
+                    "\n where Reg.ParStructureParent_Id = 1 " +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                     "\n ORDER BY 1";
 

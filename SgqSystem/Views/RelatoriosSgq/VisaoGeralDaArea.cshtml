@@ -1,6 +1,7 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Visão Geral da Área";
+
     var url = Url.Action("Index", "Home");
     var urlTabela1 = Url.Action("GetTable", "RelatoriosSgq");
     var urlTabela2 = Url.Action("GetTable", "RelatoriosSgq");
@@ -12,13 +13,10 @@
     var urlGraficoEvolutivoEmpresa = Url.Action("GraficoEvolutivoEmpresa", "api/VisaoGeralDaArea");
     var urlGraficoEvolutivoRegional = Url.Action("GraficoEvolutivoRegional", "api/VisaoGeralDaArea");
     var urlGraficoEvolutivoUnidade = Url.Action("GraficoEvolutivoUnidade", "api/VisaoGeralDaArea");
-
     var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
     var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
     var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidade");
-
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
-
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
 }
 
@@ -147,6 +145,16 @@
     <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+        <div id="loaderNCGeral"></div>
+        <div class="totalNC" id="NCGeral" hidden>
+            <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert" style="height:250px; padding-top:75px;">
+                <hh>0 %</hh>
+                <br />
+                <span>Scorecard</span>
+            </div>
+            <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
+        </div>
 
         <div id="graficoEvolutivoEmpresa" style="max-height:250px;"></div>
 
@@ -541,6 +549,10 @@
         var urlGraficoTarefa = @Html.Raw(Json.Encode(urlGraficoTarefa));
         var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
 
+        var UrlGraficoHistoricoGeral = '@Html.Raw(Url.Action("GetHistoricoScore", "api/RelatorioDeResultados"))';
+        var UrlGraficoHistoricoGeralNumero = '@Html.Raw(Url.Action("GetHistoricoScoreNumero", "api/RelatorioDeResultados"))';
+        var UrlGraficoHistoricoGeralMensal = '@Html.Raw(Url.Action("GetHistoricoScoreMensal", "api/RelatorioDeResultados"))';
+
         var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
 
         var $btn = $('#btnSend');
@@ -549,6 +561,14 @@
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         function Send(toggle) {
+
+            /*Colocando o grafico de histórico geral*/
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+            EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
+
+
+
+            //EasyAjax(UrlGraficoHistoricoGeralMensal, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
             $('#graficoEvolutivoEmpresa').empty();
             $('#grafico1').empty();
@@ -585,6 +605,8 @@
             //enviar["Query"] = "GetTbl1SemGrupos";
             enviar["Query"] = "GetTbl1";
             enviar["Title"] = "Pacotes por Regional";
+
+
 
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
@@ -1121,7 +1143,7 @@
                     point: {
                         events: {
                             click: function () {
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);                           
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
                         }
                     },
@@ -2020,7 +2042,7 @@
             }
             EasyAjax(urlGraficoEvolutivoUnidade, enviar, CallAjaxUnidade, "grafico2");
         }
-        
+
         function CallAjaxUnidade(data)
         {
             console.log(data);
@@ -2146,6 +2168,173 @@
 
             });
 
+        }
+
+        function GerarGraficoHistoricoGeral(data){
+
+            if (data.length > 0) {
+
+                var dia = MapeiaValorParaHC(data, "_date");
+                var nc = MapeiaValorParaHC(data, "nc");
+                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "av");
+                var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+                var sumav = qtdAv.reduce(function(a, b){return a+b;});
+                var sumnc = nc.reduce(function(a, b){return a+b;});
+
+                let TituloGrafico1 = "";
+                let UnidadeId = $("#unitIdV option:selected").val();
+                let UnidadeName = $("#unitIdV option:selected").text();
+                let MonitoramentoId = $("#level2Idv option:selected").val();
+                let MonitoramentoName = $("#level2Idv option:selected").text();
+                let IndicadorId = $("#level1Idv option:selected").val();
+                let IndicadorName = $("#level1Idv option:selected").text();
+                let RegionalId = $("#structureId option:selected").val();
+                let RegionalName = $("#structureId option:selected").text();
+                let ProcessoId = $("#clusterId option:selected").val();
+                let ProcessoName = $("#clusterId option:selected").text();
+
+                if (UnidadeId != "" && UnidadeId != undefined) {
+                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("unit") + ": " + UnidadeName;
+                }else if (IndicadorId != "" && RegionalId != "" && IndicadorId != undefined && RegionalId != undefined) {
+                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("level1") + ": " + IndicadorName + " | " + Resources("structure") + ": " + RegionalName;
+                }else if (MonitoramentoId != "" && MonitoramentoId != undefined) {
+                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("level2") + ": " + MonitoramentoName;
+                }else if (IndicadorId != "" && IndicadorId != undefined) {
+                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("level1") + ": " + IndicadorName;
+                }else if (RegionalId != "" && RegionalId != undefined) {
+                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("structure") + ": " + RegionalName;
+                }else if (ProcessoId != "" && ProcessoId != undefined) {
+                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("cluster") + ": " + ProcessoName;
+                }else{
+                    TituloGrafico1 = Resources("consolidated_history") + " | JBS";
+                }
+
+                if (sumav != 0 && sumnc != 0) {
+
+                    var porcPeriodo = sumnc/sumav * 100;
+
+                    $('#GraficoHistoricoGeral').removeClass('loader');
+
+                    $('#GraficoHistoricoGeral').empty();
+
+                    chartHistoricoGeral = Highcharts.chart('GraficoHistoricoGeral', {
+                        credits: {
+                            enabled: false
+                        },
+                        chart: {
+                            type: 'column',
+                            zoomType: 'x,y',
+                            height: 250
+                        },
+                        title: {
+                            //text: data[0].ChartTitle + " " + Resources("from") + " " + data[0].UnidadeName
+                            text: TituloGrafico1
+                        },
+                        xAxis: {
+                            categories: dia,
+                            title: {
+                                text: 'Data',
+                            },
+                        },
+                        yAxis: [
+                            {
+                                //min: 0,
+                                title: {
+                                    text: Resources("quantity")
+
+                                },
+                                labels: {
+                                    format: '{value}',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[1]
+                                    }
+                                },
+                            }, {
+                                //min: 0,
+                                labels: {
+                                    format: '{value} %',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[1]
+                                    }
+                                },
+                                title: {
+                                    text: '% NC',
+                                },
+                                opposite: true
+                            }],
+                        legend: {
+                            shadow: false
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            shared: true,
+                            format: '{point.y:.2f}',
+                            format: '{point:.2f}',
+                        },
+                        plotOptions: {
+                            column: {
+                                grouping: false,
+                                shadow: false,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            name: 'Scorecard',
+                            color: 'rgba(77,143,189,1)',
+                            data: nc,
+                            yAxis: 0,
+                            type: 'line',
+                            marker: {
+                                enabled: false
+                            },
+                            pointPadding: 0.2,
+                            //pointPlacement: -0.2,
+                            point: {
+                                events: {
+                                    click: function () {
+
+                                        //FTA2(enviar, this)
+                                        //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                    }
+                                }
+                            },
+                            dataLabels: {
+                                //enabled: true,
+                                enabled: false,
+                                color: 'black',
+                                align: 'center',
+                                format: '{point.y:.2f}',
+                                style: {
+                                    fontSize: '10px',
+                                }
+                            },
+                            tooltip: {
+                                valueDecimals: 2,
+                                valueSuffix: '',
+                                format: '{point.y:.2f}',
+                                format: '{point:.2f}',
+                            }
+                        }]
+                    });
+
+                    chartHistoricoGeral.reflow();
+
+                }
+            }
+        }
+
+        function GerarGraficoHistoricoGeralNumero(data){
+
+            if (data.length > 0) {
+
+                var porcPeriodo = data[0].nc;
+                $('#showNCGeral > hh').css("font-size", "40px")
+                $('#showNCGeral > hh').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                $('#NCGeral').show();
+
+            }
         }
 
     </script>

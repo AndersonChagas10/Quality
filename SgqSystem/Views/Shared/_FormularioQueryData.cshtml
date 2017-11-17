@@ -331,6 +331,14 @@
         </li>
 
         <li>
+            <div id="showTipoCEP" style="display:none">
+                <span class="redLabel">@Resources.Resource.letters_cep</span>
+
+                @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
             <div id="showModulo" style="display:none">
                 <span class="redLabel">Módulo</span>
 
@@ -809,6 +817,10 @@
             enviar['unitId'] = $('#unitId option:selected').val();
         });
 
+        $('#tipoCEP').on('change', function (e) {
+            enviar['tipoCEP'] = $('#tipoCEP option:selected').val();
+        });
+
         //$('#onlyunitId').on('change', function (e) {
         //    enviar['onlyunitId'] = $('#onlyunitId option:selected').val();
         //});
@@ -1031,6 +1043,9 @@
         },
         showUnit: function () {
             $('#showUnit').show();
+        },
+        showTipoCEP: function () {
+            $('#showTipoCEP').show();
         },
         showProcesso: function () {
             $('#showProcesso').show();

@@ -24,7 +24,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             List<Cep> _ceps = new List<Cep>();
 
             bool x = true;
-            var query1 = "";
+
+            if(form.tipoCEP == "1")
+            {
+                x = true;
+            }
+            else if (form.tipoCEP == "2")
+            {
+                x = false;
+            }
+
+                var query1 = "";
 
             //decimal[] dados1 = { 4.11M, 4.2M, 3.93M, 3.24M, 3.5M };
             //string[] dataAv1 = { "10/05/2015 18:33:56", "10/05/2015 18:34:30", "10/05/2015 18:35:04", "10/05/2015 18:35:36", "10/05/2015 18:36:21" };
@@ -61,64 +71,125 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     "\n                                                                                                                              " +
                     "\n                                                                                                                              " +
                     "\n /* Média */                                                                                                                  " +
-                    "\n --select @MEDIA = AVG(media.VALOR)  from                                                                                     " +
-                    "\n select @MEDIA = AVG(media.DEFEITOS)  from                                                          " +
-                    "\n (                                                                                                                            " +
-                    "\n /* vetor CEP */                                                                                                              " +
-                    "\n SELECT                                                                                                                       " +
-                    "\n TB1.*,                                                                                                                       " +
-                    "\n CASE WHEN TB2.defeitos IS NULL THEN NULL                                                                                     " +
-                    "\n       WHEN TB1.defeitos IS NULL THEN TB2.defeitos                                                                            " +
-                    "\n                                                                                                                              " +
-                    "\n       ELSE abs(TB2.defeitos - TB1.defeitos) end AM                                                                           " +
-                    "\n FROM                                                                                                                         " +
-                    "\n (                                                                                                                            " +
-                    "\n select                                                                                                                       " +
-                    "\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#                                                    " +
-                    "\n , CL.CollectionDate DATA                                                                                                     " +
-                    "\n                                                                                                                              " +
-                    "\n , ISNULL((cast(R3.IntervalMin as decimal(30, 10))), 0) IntervalMin                                                        " +
-                    "\n , ISNULL((cast(R3.IntervalMax as decimal(30, 10))), 0) IntervalMax                                                        " +
-                    "\n                                                                                                                              " +
-                    "\n ,ISNULL((cast(R3.Value as decimal(30, 10))),0) DEFEITOS                                                                   " +
-                    "\n ,ISNULL((cast(R3.Value as decimal(30, 10))) / @N,0) AS VALOR                                                              " +
-                    "\n from CollectionLevel2 CL                                                                                                     " +
-                    "\n inner                                                                                                                        " +
-                    "\n join Result_Level3 R3                                                                                                        " +
-                    "\n on R3.CollectionLevel2_Id = CL.id                                                                                            " +
-                    "\n where CAST(CL.CollectionDate as date) BETWEEN @DATA_INI and @DATA_FIM                                                             " +
-                    "\n and CL.UnitId = @UNIDADE                                                                                                     " +
-                    "\n and CL.ParLevel1_Id = @INDICADOR                                                                                             " +
-                    "\n and CL.ParLevel2_Id = @MONITORAMENTO                                                                                         " +
-                    "\n and R3.ParLevel3_Id = @TAREFA                                                                                                " +
-                    "\n -- group by CL.CollectionDate                                                                                                   " +
-                    "\n ) TB1                                                                                                                        " +
-                    "\n FULL JOIN                                                                                                                    " +
-                    "\n (                                                                                                                            " +
-                    "\n select                                                                                                                       " +
-                    "\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#                                                    " +
-                    "\n , CL.CollectionDate DATA                                                                                                     " +
+
+                    "\n                     select @MEDIA = AVG(media.DEFEITOS), @MEDIAAM = avg(abs(media2.valor - media.valor))  from               " +
+                    "\n  (                                                                                                                           " +
+                    "\n  /* vetor CEP */                                                                                                             " +
+                    "\n  SELECT                                                                                                                      " +
+                    "\n  TB1.*,                                                                                                                      " +
+                    "\n  CASE WHEN TB2.defeitos IS NULL THEN NULL                                                                                    " +
+                    "\n        WHEN TB1.defeitos IS NULL THEN TB2.defeitos                                                                           " +
                     "\n                                                                                                                              " +
                     "\n                                                                                                                              " +
-                    "\n , ISNULL((cast(R3.IntervalMin as decimal(30, 10))), 0) IntervalMin                                                        " +
-                    "\n ,ISNULL((cast(R3.IntervalMax as decimal(30, 10))),0) IntervalMax                                                          " +
+                    "\n        ELSE abs(TB2.defeitos - TB1.defeitos) end AM                                                                          " +
+                    "\n  FROM                                                                                                                        " +
+                    "\n  (                                                                                                                           " +
+                    "\n  select                                                                                                                      " +
+                    "\n   ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#                                                   " + 
+                    "\n  , CL.CollectionDate DATA                                                                                                    " +
                     "\n                                                                                                                              " +
-                    "\n ,ISNULL((cast(R3.Value as decimal(30, 10))),0) DEFEITOS                                                                   " +
-                    "\n ,ISNULL((cast(R3.Value as decimal(30, 10))) / @N,0) AS VALOR                                                              " +
-                    "\n from CollectionLevel2 CL                                                                                                     " +
-                    "\n inner                                                                                                                        " +
-                    "\n join Result_Level3 R3                                                                                                        " +
-                    "\n on R3.CollectionLevel2_Id = CL.id                                                                                            " +
-                    "\n where CAST(CL.CollectionDate as date) BETWEEN @DATA_INI and @DATA_FIM                                                        " +
-                    "\n and CL.UnitId = @UNIDADE                                                                                                     " +
-                    "\n and CL.ParLevel1_Id = @INDICADOR                                                                                             " +
-                    "\n and CL.ParLevel2_Id = @MONITORAMENTO                                                                                         " +
-                    "\n and R3.ParLevel3_Id = @TAREFA                                                                                                " +
-                    "\n -- group by CL.CollectionDate                                                                                                   " +
-                    "\n ) TB2                                                                                                                        " +
-                    "\n ON TB1.Row# = (TB2.Row#)                                                                                                     " +
-                    "\n ) media                                                                                                                      " +
+                    "\n  , ISNULL((cast(R3.IntervalMin as decimal(30, 10))), 0) IntervalMin                                                          " +
+                    "\n  , ISNULL((cast(R3.IntervalMax as decimal(30, 10))), 0) IntervalMax                                                          " +
+                    "\n                                                                                                                              " + 
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))),0) DEFEITOS                                                                     " +
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))) / @N,0) AS VALOR                                                                " +
+                    "\n  from CollectionLevel2 CL                                                                                                    " +
+                    "\n  inner                                                                                                                       " +
+                    "\n  join Result_Level3 R3                                                                                                       " +
+                    "\n  on R3.CollectionLevel2_Id = CL.id                                                                                           " +
+                    "\n  where CAST(CL.CollectionDate as date) BETWEEN @DATA_INI and @DATA_FIM                                                       " +
+                    "\n  and CL.UnitId = @UNIDADE                                                                                                    " +
+                    "\n  and CL.ParLevel1_Id = @INDICADOR                                                                                            " +
+                    "\n  and CL.ParLevel2_Id = @MONITORAMENTO                                                                                        " +
+                    "\n  and R3.ParLevel3_Id = @TAREFA                                                                                               " +
+                    "\n  -- group by CL.CollectionDate                                                                                               " +
+                    "\n  ) TB1                                                                                                                       " +
+                    "\n  FULL JOIN                                                                                                                   " +
+                    "\n  (                                                                                                                           " +
+                    "\n  select                                                                                                                      " +
+                    "\n   ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#                                                   " + 
+                    "\n  , CL.CollectionDate DATA                                                                                                    " +
                     "\n                                                                                                                              " +
+                    "\n                                                                                                                              " +
+                    "\n  , ISNULL((cast(R3.IntervalMin as decimal(30, 10))), 0) IntervalMin                                                          " +
+                    "\n  ,ISNULL((cast(R3.IntervalMax as decimal(30, 10))),0) IntervalMax                                                            " +
+                    "\n                                                                                                                              " + 
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))),0) DEFEITOS                                                                     " +
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))) / @N,0) AS VALOR                                                                " +
+                    "\n  from CollectionLevel2 CL                                                                                                    " +
+                    "\n  inner                                                                                                                       " +
+                    "\n  join Result_Level3 R3                                                                                                       " +
+                    "\n  on R3.CollectionLevel2_Id = CL.id                                                                                           " +
+                    "\n  where CAST(CL.CollectionDate as date) BETWEEN @DATA_INI and @DATA_FIM                                                       " +
+                    "\n  and CL.UnitId = @UNIDADE                                                                                                    " +
+                    "\n  and CL.ParLevel1_Id = @INDICADOR                                                                                            " +
+                    "\n  and CL.ParLevel2_Id = @MONITORAMENTO                                                                                        " +
+                    "\n  and R3.ParLevel3_Id = @TAREFA                                                                                               " +
+                    "\n  -- group by CL.CollectionDate                                                                                               " +
+                    "\n  ) TB2                                                                                                                       " +
+                    "\n  ON TB1.Row# = (TB2.Row#)                                                                                                    " + 
+                    "\n  ) media                                                                                                                     " +
+                    "\n                                                                                                                              " +
+                    "\n  LEFT JOIN                                                                                                                   " +
+                    "\n                                                                                                                              " +
+                    "\n  (                                                                                                                           " +
+                    "\n  /* vetor CEP */                                                                                                             " +
+                    "\n  SELECT                                                                                                                      " +
+                    "\n  TB1.*,                                                                                                                      " +
+                    "\n  CASE WHEN TB2.defeitos IS NULL THEN NULL                                                                                    " +
+                    "\n        WHEN TB1.defeitos IS NULL THEN TB2.defeitos                                                                           " +
+                    "\n                                                                                                                              " +
+                    "\n                                                                                                                              " +
+                    "\n        ELSE abs(TB2.defeitos - TB1.defeitos) end AM                                                                          " +
+                    "\n  FROM                                                                                                                        " +
+                    "\n  (                                                                                                                           " +
+                    "\n  select                                                                                                                      " +
+                    "\n   ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#                                                   " + 
+                    "\n  , CL.CollectionDate DATA                                                                                                    " +
+                    "\n                                                                                                                              " +
+                    "\n  , ISNULL((cast(R3.IntervalMin as decimal(30, 10))), 0) IntervalMin                                                          " +
+                    "\n  , ISNULL((cast(R3.IntervalMax as decimal(30, 10))), 0) IntervalMax                                                          " +
+                    "\n                                                                                                                              " + 
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))),0) DEFEITOS                                                                     " +
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))) / @N,0) AS VALOR                                                                " +
+                    "\n  from CollectionLevel2 CL                                                                                                    " +
+                    "\n  inner                                                                                                                       " +
+                    "\n  join Result_Level3 R3                                                                                                       " +
+                    "\n  on R3.CollectionLevel2_Id = CL.id                                                                                           " +
+                    "\n  where CAST(CL.CollectionDate as date) BETWEEN @DATA_INI and @DATA_FIM                                                       " +
+                    "\n  and CL.UnitId = @UNIDADE                                                                                                    " +
+                    "\n  and CL.ParLevel1_Id = @INDICADOR                                                                                            " +
+                    "\n  and CL.ParLevel2_Id = @MONITORAMENTO                                                                                        " +
+                    "\n  and R3.ParLevel3_Id = @TAREFA                                                                                               " +
+                    "\n  -- group by CL.CollectionDate                                                                                               " +
+                    "\n  ) TB1                                                                                                                       " +
+                    "\n  FULL JOIN                                                                                                                   " +
+                    "\n  (                                                                                                                           " +
+                    "\n  select                                                                                                                      " +
+                    "\n   ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#                                                   " + 
+                    "\n  , CL.CollectionDate DATA                                                                                                    " +
+                    "\n                                                                                                                              " +
+                    "\n                                                                                                                              " +
+                    "\n  , ISNULL((cast(R3.IntervalMin as decimal(30, 10))), 0) IntervalMin                                                          " +
+                    "\n  ,ISNULL((cast(R3.IntervalMax as decimal(30, 10))),0) IntervalMax                                                            " +
+                    "\n                                                                                                                              " + 
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))),0) DEFEITOS                                                                     " +
+                    "\n  ,ISNULL((cast(R3.Value as decimal(30, 10))) / @N,0) AS VALOR                                                                " +
+                    "\n  from CollectionLevel2 CL                                                                                                    " +
+                    "\n  inner                                                                                                                       " +
+                    "\n  join Result_Level3 R3                                                                                                       " +
+                    "\n  on R3.CollectionLevel2_Id = CL.id                                                                                           " +
+                    "\n  where CAST(CL.CollectionDate as date) BETWEEN @DATA_INI and @DATA_FIM                                                       " +
+                    "\n  and CL.UnitId = @UNIDADE                                                                                                    " +
+                    "\n  and CL.ParLevel1_Id = @INDICADOR                                                                                            " +
+                    "\n  and CL.ParLevel2_Id = @MONITORAMENTO                                                                                        " +
+                    "\n  and R3.ParLevel3_Id = @TAREFA                                                                                               " +
+                    "\n  -- group by CL.CollectionDate                                                                                               " +
+                    "\n  ) TB2                                                                                                                       " +
+                    "\n  ON TB1.Row# = (TB2.Row#)                                                                                                    " + 
+                    "\n  ) media2                                                                                                                    " +
+                    "\n  ON media.Row# = (media2.Row#-1)                                                                                             " +
+
                     "\n                                                                                                                              " +
                     "\n SET @UCL = @MEDIA + (3 * (@MEDIAAM / 1.128))                                                                                 " +
                     "\n                                                                                                                              " +
@@ -226,10 +297,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n                                                                                                                                         " +
                 "\n /* Média */                                                                                                                             " +
-                "\n select @MEDIA = AVG(media.VALOR) * 100 from                                                                                                  " +
+                "\n select @MEDIA = AVG(media.VALOR) * 100, @N = avg(N) from                                                                                                  " +
                 "\n --select @MEDIA = AVG(media.DEFEITOS)  from                                                                                             " +
                 "\n (                                                                                                                                       " +
-                "\n select sum(WeiDefects) DEFEITOS, SUM(WeiDefects) / @N AS VALOR from CollectionLevel2                                                          " +
+                "\n select sum(WeiDefects) DEFEITOS, SUM(WeiDefects) / @N AS VALOR, count(WeiDefects) N from CollectionLevel2                                                          " +
 
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
                 "\n AND UnitId = @UNIDADE                                                                                                                   " +

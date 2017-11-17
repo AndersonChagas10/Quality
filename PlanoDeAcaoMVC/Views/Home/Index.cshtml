@@ -1260,7 +1260,7 @@
         //var realizado = MapeiaValorParaHC(dados, "Acc", true);
 
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.MesConcluidas]);
+            meses.push(moment.monthsShort()[o.MesConcluidas-1]);
         });
 
         Highcharts.chart('divIndicador', {
