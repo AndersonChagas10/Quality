@@ -3,34 +3,38 @@
 }
 
 <style type="text/css">
+    table.footerCA {
+        width: 100%;
+        margin-bottom: 5px;
+        position: absolute;
+        bottom: 0;
+    }
+
+        table.footerCA td {
+            border: 1px solid black;
+            width: 33.3%;
+            text-align: left;
+        }
+
+    table.headerCA {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+        table.headerCA td {
+            text-align: left;
+            border: 1px solid black;
+            width: 100%;
+        }
+
     a.active {
         background-color: rgba(128, 128, 128, 0.17);
     }
 
-
-
     td {
-        /*position: relative;*/
         text-align: center;
         font-size: 8px;
     }
-
-    /*td > span.label {
-            position: absolute;
-            top: 1px;
-            bottom: 1px;
-            left: 1px;
-            right: 1px;
-            color: black;
-        }*/
-
-    /*td > span.label:after {
-                content: '';
-                height: 100%;
-                display: inline-block;
-                vertical-align: middle;
-                color: black;
-            }*/
 
     .redDot {
         color: red;
@@ -50,18 +54,18 @@
         .tg td {
             font-family: Arial, sans-serif;
             font-size: 7px;
-            /*padding: 10px 5px;*/
             border-style: solid;
             border-width: 1px;
             overflow: hidden;
             word-break: normal;
+            text-align: left;
         }
 
         .tg th {
             font-family: Arial, sans-serif;
             font-size: 7px;
             font-weight: normal;
-            padding: 2px 1px;
+            padding: 0px 1px;
             border-style: solid;
             border-width: 1px;
             overflow: hidden;
@@ -86,11 +90,15 @@
     }
 
     #rcorners2 {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
         border-radius: 25px;
         border: 2px solid #000000;
         padding: 10px;
         width: 100%;
-        height: 50px;
+        height: 40px;
         display: inline-block;
     }
 
@@ -100,9 +108,8 @@
         margin: 0;
         padding: 0;
         background-color: #FAFAFA;
-        /*font: 6pt Georgia, "Times New Roman", Times, serif !important;*/
         font-family: Georgia, ‘Times New Roman’, serif;
-        font-size: 8pt; 
+        font-size: 8pt;
         line-height: 1.0;
         background: rgb(204,204,204);
     }
@@ -110,24 +117,6 @@
     * {
         box-sizing: border-box;
         -moz-box-sizing: border-box;
-    }
-
-    .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .subpage {
-        padding: 1cm;
-        border: 5px red solid;
-        height: 257mm;
-        outline: 2cm #FFEAEA solid;
     }
 
     ul {
@@ -146,10 +135,19 @@
         box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     }
 
+    page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+
         page[size="A4"] {
             width: 21cm;
-            height: 29.7cm;
-            margin: 0;
+            height: 30cm;
+            position: relative;
+            margin-bottom: 0.5cm;
         }
 
             page[size="A4"][layout="portrait"] {
@@ -178,60 +176,61 @@
             }
 
     @@media print {
+
         body, page {
             margin: 0;
             box-shadow: 0;
         }
+    }
+
+    div.divided {
+        width: 50%;
+        float: left;
+    }
+
+    div.divided33 {
+        width: 33%;
+        float: left;
+    }
 
 
-        .page {
-            margin: 0;
-            border: initial;
-            border-radius: initial;
-            width: initial;
-            min-height: initial;
-            box-shadow: initial;
-            background: initial;
-            page-break-after: always;
+    /*#div1 { background: #DDD; }
+    #div2 { background: #AAA; }
+    #div3 { background: #777; }
+    #div4 { background: #444; }*/
+
+    .divLabel {
+        font-weight: bold;
+        font-size: 8px;
+    }
+
+    .assinaturaValidacao {
+        text-align: left;
+        padding-top: 3px;
+        position: absolute;
+        bottom: 39px;
+        width: 100%;
+        left: 0;
+        padding: -4px;
+        width: 100%;
+        height: 17px;
+        display: inline-block;
+    }
+
+    .formulas {
+        position: absolute;
+        bottom: 2px;
+        width: 100%;
+    }
+
+        .formulas td {
+            text-align: left;
         }
-    }
-
-    .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    div.divided { width: 50%; float: left; }
-/*#div1 { background: #DDD; }
-#div2 { background: #AAA; }
-#div3 { background: #777; }
-#div4 { background: #444; }*/
-
 </style>
 
 <html xmlns="">
 <head>
     <title>Print Recravação</title>
-    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">*@
-    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/toastr.min.css" rel="stylesheet" />
-    <link href="~/Content/select2.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
-
-    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
-    <script src="~/Scripts/inputmask/jquery.inputmask.bundle.js"></script>
-    <script src="~/Scripts/angular.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/select2.min.js"></script>
-    <script src="~/Scripts/moment-with-locales.min.js"></script>
-    <script src="~/Scripts/toastr.min.js"></script>
-    <script src="~/Scripts/loadingoverlay.min.js"></script>*@
 
     @Styles.Render("~/bundles/RecravacaoPrintCss")
     @Scripts.Render("~/bundles/RecravacaoPrintJs")
@@ -262,18 +261,17 @@
             </ul>
 
         </div>
-
-        <section size="A4" >
+        <page size="A4" ng-repeat="begin in begins" ng-if="(seletedLinha.latas[begin] != undefined)">
             <table class="tg" style="table-layout: fixed; width: 100%">
                 <colgroup>
                     <col style="width: 41px">
-                    <col style="width: 41px">
-                    <col style="width: 646px">
-                    <col style="width: 88px">
+                    <col style="width: 75px;">
+                    <col style="width: 561px;">
+                    <col style="width: 75px;">
                 </colgroup>
                 <tr>
-                    <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /></th>
-                    <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}}</strong></th>
+                    <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /> </th>
+                    <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}} </strong></th>
                     <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
                 </tr>
                 <tr></tr>
@@ -284,11 +282,10 @@
                     <td class="tg-yw4l"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
                 </tr>
             </table>
-            <br />
             <table class="tg" style="width: 100%">
                 <tbody>
                     <tr>
-                        <td>Produto</td>
+                        <td class="textLeft">Produto</td>
                         <td>{{seletedLinha.form.Produto.Name}}</td>
                         <td>Hora do início da Produção</td>
                         <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
@@ -314,8 +311,15 @@
 
                 </tbody>
             </table>
-            <br />
-            <div id="div{{($index +1)}}" class="divided"  ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+            <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+                <div style="text-align: left; padding-top: 3px;">
+                    <div class="divLabel" style="float:left; margin-left: 5px;">
+                        {{item.Name}}
+                    </div>
+                    <div class="divLabel" style="float:right; margin-right: 5px;">
+                        Visto / Data: {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
+                    </div>
+                </div>
                 <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                     <tbody>
                         <tr>
@@ -323,7 +327,13 @@
                             <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
                         </tr>
                         <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
-                            <td style="border:1px solid #cccccc; padding: 2px;">{{ParLevel3.Name}}</td>
+                            <td style="border:1px solid #cccccc; padding: 2px;">
+                                {{ParLevel3.Name}}
+                                <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText"
+                                      style="font-size:6px!important;font-weight: 100 !important;">
+                                    ({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
+                                </span>
+                            </td>
                             <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
                                 ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
                                 ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
@@ -336,45 +346,170 @@
                                     99  NOVO CALCULADO POR OUTRO*@
                                 <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
                                     <span>
-                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true" >
+                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
                                             {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
                                         </span>
-                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false"  >
+                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false">
                                             {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
                                         </span>
                                     </span>
                                 </span>
                                 <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                    <span  >{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
+                                    <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
                                 </span>
                                 <span class="validate"
                                       ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                    <span  >{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                    <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                                 </span>
                                 <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                                     {{item.ResultValue[ParLevel3.Id][($index +1)]}}
                                 </label>
                                 <span class="validate"
                                       ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                    <span  >{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
+                                    <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
                                 </span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-         
 
-            <div id="rcorners2">
-                @*<p><label>Espaço Livre</label></p><br />
-                    <p><label>Escareação</label></p><br />
-                    <p><label>Altura</label></p><br />
-                    <p><label>Gancho Corpo</label></p><br />
-                    <p><label>Gancho Tampa</label></p><br />
-                    <p><label>Junção</label></p><br />
-                    <p><label>Teste de ar</label></p>*@
             </div>
-        </section>
+            <div class="assinaturaValidacao">
+                <div class="divLabel" style="float:left; margin-left: 5px;">
+                    Linha Finalizada por {{seletedLinha.userFinish.Name}}, na Data/Hora: {{seletedLinha.dataUserFinish}}
+                </div>
+                <div class="divLabel" style="float:right; margin-right: 5px;">
+                    Linha Validada por {{seletedLinha.userValidacao.Name}}, na Data/Hora: {{seletedLinha.dataUserValidacao}}
+                </div>
+            </div>
+            <div id="rcorners2">
+                <table class="formulas">
+                    <tr>
+                        <td>
+                            <small>
+                                <b>Espaço Livre: </b>0,05 - 0,23 mm <br>
+                                <b>Escareação: </b>Mínimo igual Altura <br>
+                                <b>Altura: </b>2,67 - 3,30 mm <br>
+                                <b>Gancho Corpo: </b>1,78 - 2,23 mm <br>
+                                <small>
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <small>
+                                <b>Gancho Tampa: </b>1,78 - 2,23 mm <br>
+                                <b>Junção: </b>Mínimo 50% <br>
+                                <b>Teste de ar: </b>Ausência (0% de Vazamento) <br>
+                                <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
+                                <small>
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <small>
+                                <b>GC Butting</b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                x 100=% <br>
+                                <u>&nbsp;&nbsp; GC - 1.1 EC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>
+                                ALT - (2,2 ET + 1,1 EC)<br>
+                                Valor Mínimo = 70%
+                            </small>
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <small>
+                                <b>Procentagem Overlap </b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                x 100 = % <br>
+                                <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp; </u><br>
+                                ALT - (2,2 ET + 1,1 EC) <br>
+                                Valor Mínimo = 45%
+                                <small>
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <small>
+                                <b>Overlap Calculado </b> <br>
+                                <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp;</u> <br>
+                                Valor Mínimo = 1,02
+                                <small>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </page>
+        <page size="A4">
+            <table class="headerCA">
+                <tr>
+                    <td colspan="3">
+                        AÇÃO CORRETIVA : Ações corretivas adotadas conforme CRF 9 Part 417.3 </br>
+                        1. Identificar o desvio e eliminá-lo: <u>Caso o overlap esteja abaixo de 1,02mm</u> paralisando e solicitando ajuste do equipamento de recravação ao responsável pelo processo. Se o defeito for causado pela lata de segregar o lote de latas vazias para análise e pos</br>
+                        2. Assegurar que o PCC estará sob controle após a ação corretiva: verificar a eficácia da ação corretiva adotada monitorando novamente o PCC previamente ao reinicio da operação;</br>
+                        3. Estabelecer medidas para previnir recorrência: informando o desvio ao responsável pelo processo para tomada de ações prevetivas.</br>
+                        4. Assegurar que qualquer produto eventualmente adulterado como resultado do desvio não seja comercializado: sequestrar as latas produzidas desde o último monitoriamento para revisão e/ou abertura (descarte - vazamento ou retrabalho para outros defeitos). Registrar a ação no relatório de monitoriamento do APPCC, indicar horário da ocorrência, ação corretiva e rubricar.</br>
+                        Responsável: Monitor GQ
+                    </td>
+                </tr>
+            </table>
+            <div ng-repeat="lata in seletedLinha.latas track by $index">
+                <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
+                    <table class="tg" style="table-layout: fixed; width: 100%">
+                        <colgroup>
+                            <col style="width: 15%">
+                            <col style="width: 28.3%;">
+                            <col style="width: 28.3%;">
+                            <col style="width: 28.3%;">
+                        </colgroup>
+                        <tr>
+                            <th class="tg-031e" colspan="1" rowspan="1">Hora (1)</th>
+                            <th class="tg-s6z2" colspan="1" rowspan="1">DEFICIÊNCIA (2)</th>
+                            <th class="tg-s6z2" colspan="1" rowspan="1">AÇÃO CORRETIVA (3)</th>
+                            <th class="tg-s6z2" colspan="1" rowspan="1">AÇÃO PREVENTIVA (4)</th>
+                        </tr>
+                        <tr>
+                            <td style="height:55px;">
+                                <strong>{{acoes.AddDate}}</strong>
+                            </td>
+                            <td style="height:55px;">
+                                <strong>{{acoes.correctiveAction.ImmediateCorrectiveAction}}</strong>
+                            </td>
+                            <td style="height:55px;">
+                                <strong>{{acoes.correctiveAction.DescriptionFailure}}</strong>
+                            </td>
+                            <td style="height:55px;">
+                                <strong>{{acoes.PreventiveAction.PreventativeMeasure}}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>VISTO</strong>
+                            </td>
+                            <td>
+                                {{acoes.correctiveAction.Assinatura.Name}}
+                            </td>
+                            <td>
+                                <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{lata.correctiveAction.HorarioDeLiberacao}}
+                            </td>
+                            <td>
+                                <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
+                            </td>
+                        </tr>
+                    </table>
+                    @*<div></div>
+                        <div></div>
+                        <div>{{acoes.correctiveAction.ImmediateCorrectiveAction}}</div>
+                        <div>{{acoes.correctiveAction.Assinatura.Name}}</div>
+                        <div>{{acoes.PreventiveAction.PreventativeMeasure}}</div>
+                        <div>{{acoes.PreventiveAction.Assinatura.Name}}</div>*@
+                </div>
+            </div>
+            <table class="footerCA">
+                <tr style="vertical-align: top;">
+                    <td height="70"><small>Monitor</small></td>
+                    <td height="70"><small>Rep. Setor Enlatamento</small></td>
+                    <td height="70"><small>Garantia de Qualidade</small></td>
+                </tr>
+            </table>
+
+        </page>
     </div>
 </body>
 </html>
@@ -456,9 +591,20 @@
         app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
             function ($scope, $http, $timeout) {
                 let vm = $scope
-
                 vm.dev = true
                 vm.jbsBrasil = false
+
+
+                vm.limit = 6
+                vm.begins = [0, 6, 12, 18, 24, 30, 36, 42]
+                $scope.getNumber = function(num) {
+                    if(vm.seletedLinha)
+                        if(vm.seletedLinha.latas)
+                            if(vm.seletedLinha.latas.length)
+                                return new Array(Math.round(parseFloat(vm.seletedLinha.latas.length/vm.limit)));
+
+                    return new Array(0);
+                }
 
                 vm.mercado = 1
                 vm.limInferiorEspessura
@@ -507,7 +653,7 @@
                 }
 
                 vm.carregaIndicadores = function (showMensagem) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=0" })
+                    $http({ method: 'GET', url:  vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=0&linhaId=0" })
                           .then(function (r) {
                               if (r.data.errors) {
                                   r.data.errors.forEach(function (o) {
@@ -566,7 +712,7 @@
                                            vm.activeInLine = linhaId
                                            vm.getLinha(null, linhaId, false)
                                        }
-                                }
+                               }
                            });
                     })
 
@@ -781,7 +927,7 @@
                 /*GET Todas as linhas cadastradas*/
 
                 vm.getParametrizacaoLinhas = function (idLevel1, loadLinha) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -804,7 +950,7 @@
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: `${vm.saveStateUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}` })
+                    $http({ method: 'GET', url: `${vm.saveStateUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -860,7 +1006,7 @@
 
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
-                                setTimeout(function () { window.print()}, 1000)
+                                setTimeout(function () { /*window.print()*/}, 1000)
                             }
                         });
                 }
@@ -1308,7 +1454,7 @@
                     // and fire search in case its value is not empty
                     vm.selectIndicador(null, true)
                 };
-               
+
                 function init() {
 
                     if (vm.dev) {
@@ -1410,6 +1556,101 @@
                     }
                 };
             }])
+            .directive('correctiveaction', function () {
+                return {
+                    scope: {
+                        ca: '=lataca'
+                    },
+                    template: `<div class="alert alert-warning {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
+                                <h3>Ação Corretiva</h3>
+                                <div>
+                                    <label>Ação Corretiva: </label><span ng-show="!(ca.ImmediateCorrectiveAction)" class="redDot">* Campo Obrigatório</span>
+                                    <label ng-show="$parent.seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada: </label>
+                                    <textarea ng-disabled="ca.IsAssinada"
+                                              ng-model="ca.ImmediateCorrectiveAction"
+                                              class="form-control custom-control"
+                                              rows="3"
+                                              style="resize:none; overflow-x: hidden"></textarea>
+                                </div>
+                                <div>
+                                    <div ng-show="ca.IsAssinada">
+                                        <button type="button"
+                                                style="margin-top: 67px;"
+                                                class="btn btn-primary"
+                                                ng-click="ca.IsAssinada = false">
+                                            Editar Ação Corretiva
+                                        </button>
+                                    </div>
+                                    <div ng-hide="ca.IsAssinada">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Nome de Usuário"
+                                               ng-model="ca.Assinatura.Name" />
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Senha"
+                                               ng-model="ca.Assinatura.Password" />
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                title="Preencha o campo Ação Corretiva para liberar a Assinatura"
+                                                ng-disabled="(!(ca.ImmediateCorrectiveAction))"
+                                                ng-click="$parent.AssinaCorrectiveAction1(ca)">
+                                            Assinar Ação Corretiva
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>`
+                }
+            })
+            .directive('preventiveaction', function () {
+                return {
+                    scope: {
+                        pa: '=latapa'
+                    },
+                    template: `<div class="alert alert-success {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
+                                <h3>Ação Preventiva</h3>
+                                <div>
+                                    <label>Acão Preventiva:</label>
+                                    <textarea ng-disabled="pa.IsAssinada"
+                                              ng-model="pa.PreventativeMeasure"
+                                              class="form-control custom-control"
+                                              rows="3"
+                                              style="resize:none; overflow-x: hidden"></textarea>
+                                </div>
+                                <div>
+                                    <div ng-show="pa.IsAssinada">
+                                        <button type="button"
+                                                style="margin-top: 67px;"
+                                                class="btn btn-primary"
+                                                ng-click="pa.IsAssinada = false">
+                                            Editar Ação Preventiva
+                                        </button>
+                                    </div>
+                                    <div ng-show="!pa.IsAssinada">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Nome de Usuário"
+                                               ng-model="pa.Assinatura.Name" />
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Senha"
+                                               ng-model="pa.Assinatura.Password" />
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                title="Preencha o campo Ação Preventiva para liberar a Assinatura"
+                                                ng-disabled="(pa.IsAssinada || !pa.PreventativeMeasure)"
+                                                ng-click="$parent.AssinaPreventiveAction()">
+                                            Assinar Ação Preventiva
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>`
+                }
+            })
 
     })();
 </script>
