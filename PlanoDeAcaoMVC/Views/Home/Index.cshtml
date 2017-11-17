@@ -1853,7 +1853,7 @@
 
         $.post(urlGetPessoasEnvolvidas, enviar, function (rPessoas) {
             resultPessoasEnvolvidas = rPessoas;
-            $('#pessoasEnvolvidas').text(resultPessoasEnvolvidas.length);
+            $('#pessoasEnvolvidas').text(MapeiaValorParaHC(resultPessoasEnvolvidas, 'Responsavel').filter(onlyUnique).length);
         });
         $.post(urlGetGrafico, enviar, function (r) {
             resultGetGrafico = r;
