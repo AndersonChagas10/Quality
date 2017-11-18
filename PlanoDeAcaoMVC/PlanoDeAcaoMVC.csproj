@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -208,6 +209,7 @@
     <Compile Include="Controllers\Api\ApiGerenciarController.cs" />
     <Compile Include="Controllers\Api\ApiSgqController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
+    <Compile Include="Controllers\Home2Controller.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
@@ -537,12 +539,17 @@
     <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
+    <None Include="Properties\PublishProfiles\PlanoDeAcao.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcaoServidor.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.js" />
+    <Content Include="Scripts\lodash.core.js" />
+    <Content Include="Scripts\lodash.core.min.js" />
+    <Content Include="Scripts\lodash.js" />
+    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -906,6 +913,7 @@
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <Content Include="Views\Gerenciar\Index.cshtml" />
+    <Content Include="Views\Home2\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

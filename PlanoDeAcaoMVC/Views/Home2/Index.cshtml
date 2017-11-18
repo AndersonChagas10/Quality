@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/lodash.min.js"></script>
+
+<script type="text/javascript">
+
+    var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+    var dados = [];
+
+    $(function () {
+        console.log("ready!");
+        GetDataTable()
+    });
+
+    function GetDataTable() {
+        $.post(urlGetPlanejamentoAcao, {}, function (r) { dados = r; })
+    }
+
+    /**
+     *
+     * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
+     * ['Nome','Idade'] arrColuna
+     */
+    function FiltraColunas(array,arrFiltro) {
+
+        let novoArr = [];
+
+        array.forEach(function (o, c) {
+
+            obj = {};
+
+            arrFiltro.forEach(function (oo, cc) {
+
+                obj[oo] =  o[oo]
+            });
+
+            novoArr.push(obj);
+        });
+
+        return novoArr;
+    }
+
+    /**
+     *
+     * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
+     * ['Nome','Idade'] arrColuna
+     * ['Renan',25] arrValue
+     */
+    function FiltraLinhas(array, arrColuna, arrValue) {
+
+        let novoArr = []
+
+        array.forEach(function (o, c) {
+
+            var flag = true;
+
+            arrColuna.forEach(function (oo, cc) {
+
+                if (o[oo] != arrValue[cc]) {
+                    flag = false;
+                }
+            });
+
+            if (flag) {
+                novoArr.push(o)
+            }
+        });
+
+        return novoArr;
+    }
+
+</script>
+
