@@ -305,7 +305,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <select id="filtroPizza">
-                    <option value="0">Selecione...</option>
+                    @*<option value="0">Selecione...</option>*@
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
                     <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
@@ -328,6 +328,10 @@
                     <option value="Indicador">Indicador</option>
                     <option value="Monitoramento">Monitoramento</option>
                     <option value="Tarefa">Tarefa</option>
+                </select>
+
+                <select id="seriesFiltroPizza" data-width="30%">
+                    <option value="0">Selecione...</option>
                 </select>
             </div>
             <div id="divPizza" style="height:240px;"></div>
@@ -572,7 +576,7 @@
 
 
             eixoY.forEach(function (oo, cc) {
-                console.log(oo);
+                //console.log(oo);
                 serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
             })
             serie.push(serieData);
@@ -877,21 +881,29 @@
         });
     }
 
-    function GraficoPizza2(privotY) {
+    function GraficoPizza2(privotY, privotValue) {
         var r = resultGetGrafico
         var title = privotY;
         var result = r;
         var series = [];
         var serie = [];
-        var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+        //var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
         //var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
 
-        eixoY.forEach(function (o, c) {
+        if (privotValue != "" && privotValue != null) {
+            //Filtra os dados
+            var r = $.grep(r, function (o) {
+                return o[privotY] == privotValue;
+            });
+
+        }
+
+        listaStatus.forEach(function (o, c) {
 
             var qtdeAcoes = 0;
 
             r.forEach(function (oo, cc) {
-                if (oo[privotY] == o) {
+                if (oo.Status == o) {
                     qtdeAcoes++;
                 }
             });
@@ -899,7 +911,7 @@
             serie.push({
                 name: o,
                 y: qtdeAcoes,
-                //visible: false
+                visible: qtdeAcoes > 0 ? true : false
             });
 
         });
@@ -1862,6 +1874,7 @@
             $('#filtroBar2').trigger('change');
             $('#filtroPizza').trigger('change');
             $('#filtroBarInd').trigger('change');
+            $('#seriesFiltroPizza').trigger('change');
 
             $('#acoesConcluidas').text($.grep(resultGetGrafico, function (a, b) {
                 return a.Status == "Concluído";
@@ -1987,7 +2000,28 @@
         });
 
         $('#filtroPizza').on('change', function () {
-            GraficoPizza2($('#filtroPizza :selected').val())
+            //GraficoPizza2($('#filtroPizza :selected').val())
+
+            let Filtro = $('#filtroPizza :selected').val();
+
+            $('#seriesFiltroPizza').empty();
+            $('#seriesFiltroPizza').html('<option value="">Selecione...</option>');
+
+            let ListaFiltros = MapeiaValorParaHC(resultGetGrafico, Filtro).filter(onlyUnique)
+
+            ListaFiltros.forEach(function (o) {
+                $('#seriesFiltroPizza').append($('<option>', {
+                    value: o,
+                    text: o
+                }));
+            });
+
+            //$('#seriesFiltroPizza').change();
+
+        });
+
+        $('#seriesFiltroPizza').on('change', function () {
+            GraficoPizza2($('#filtroPizza :selected').val(), $('#seriesFiltroPizza :selected').val());
         });
 
         $('#filtroBarInd, #seriesBarInd').on('change', function () {
@@ -1998,6 +2032,7 @@
         $('#filtroBar2').trigger('change');
         $('#filtroPizza').trigger('change');
         $('#filtroBarInd').trigger('change');
+        $('#seriesFiltroPizza').trigger('change');
 
         $('#Unidade_Id, #Indicador_Id, #Mes_Id').on('change', function () {
 
