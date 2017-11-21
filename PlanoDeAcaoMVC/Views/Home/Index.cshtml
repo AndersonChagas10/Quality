@@ -15,11 +15,11 @@
 }
 <script>
     //JBS
-    //var UrlPa = 'http://mtzsvmqsc/PlanoDeAcao/';
-    //var UrlSgq = 'http://mtzsvmqsc/Sgq/';
+    var UrlPa = 'http://mtzsvmqsc/PlanoDeAcao/';
+    var UrlSgq = 'http://mtzsvmqsc/Sgq/';
     //GRT
-    var UrlPa = 'http://192.168.25.200/PlanoAcao/';
-    var UrlSgq = 'http://192.168.25.200/SgqBr/';
+    //var UrlPa = 'http://192.168.25.200/PlanoAcao/';
+    //var UrlSgq = 'http://192.168.25.200/SgqBr/';
     //Local
     //var UrlPa = 'http://localhost:59907/';
     //var UrlSgq = 'http://192.168.25.200/SgqBr/';
@@ -115,7 +115,7 @@
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <!--<i class="fa fa-thumbs-up fa-3" aria-hidden="true" style="font-size:30px; color: green"></i>-->
-                                    <img src="@Url.Content(" ~/Imagens/Thumbs-Up-24.png")" />
+                                    <img src="@Url.Content("Imagens/Thumbs-Up-24.png")" />
                                 </div>
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <span id="acoesConcluidas" style="font-size:25px; font-weight:bold; color:#444;"></span>
@@ -135,7 +135,7 @@
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <!--<i class="fa fa-thumbs-down fa-3" aria-hidden="true" style="font-size:30px; color:red"></i>-->
-                                    <img src="@Url.Content(" ~/Imagens/Thumbs-Down-24.png")" />
+                                    <img src="@Url.Content("Imagens/Thumbs-Down-24.png")" />
                                 </div>
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <span id="acoesAtrasadas" style="font-size:25px; font-weight:bold; color:#444;"></span>
@@ -203,7 +203,8 @@
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
                     <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
-                    @*
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
+                            @*
                         <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*
@@ -245,6 +246,7 @@
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
                     <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
                         <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
@@ -269,6 +271,7 @@
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
                     <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
                         <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
@@ -296,6 +299,7 @@
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
                     <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
                         <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
@@ -322,6 +326,7 @@
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
                     <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
                         <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
@@ -390,6 +395,7 @@
                             <option value="Grupo Causa">Grupo Causa</option>
                             <option value="Causa Genérica">Causa Genérica</option>
                             <option value="Ação Genérica">Ação Genérica</option>
+                            <option value="Projeto Iniciativa">Projeto / Iniciativa</option>
                             @*
                                 <option value="7">Projeto / Iniciativa</option>*@
                             <option value="Unidade">Unidade</option>
@@ -868,7 +874,8 @@
                     showInLegend: true,
                     dataLabels: {
                         enabled: true,
-                        format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
+                        format: '{point.percentage:.1f} %',
+                        distance: 0,
                         style: {
                             color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
                             fontSize: '10px',
@@ -958,7 +965,8 @@
                     cursor: 'pointer',
                     dataLabels: {
                         enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        format: '{point.percentage:.1f} %',
+                        distance: 0,
                         style: {
                             color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                         }
@@ -2180,11 +2188,13 @@
             concluidas = $.grep(resultGetGrafico, function (a, b) {
                 return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
             });
-        } else if (query == 'Concluído') {
+        }
+        else if (query == 'Concluído') {
             concluidas = $.grep(resultGetGrafico, function (a, b) {
                 return a.Status == "Concluído" || a.Status == "Concluído com atraso";
             });
-        } else {
+        }
+        else {
             concluidas = $.grep(resultGetGrafico, function (a, b) {
                 return a.Status == query;
             });

@@ -55,7 +55,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 "\n  ISNULL(Acao.UnidadeName, 'Não possui Unidade') as 'Unidade', " +
                 "\n  ISNULL(Acao.Level1Name, 'Não possui Indicador') as 'Indicador', " +
                 "\n  ISNULL(Acao.Level2Name, 'Não possui Monitoramento') as 'Monitoramento', " +
-                "\n  ISNULL(Acao.Level3Name, 'Não possui Tarefa') as 'Tarefa' ";
+                "\n  ISNULL(Acao.Level3Name, 'Não possui Tarefa') as 'Tarefa',"+
+                "\n  ISNULL(Inici.Name, 'Não possui Projeto / Iniciativa') AS 'Projeto Iniciativa'";
             }
 
             query += "\n FROM Pa_Acao AS Acao" +
@@ -73,6 +74,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             "\n LEFT JOIN Pa_Dimensao Dimens ON Dimens.Id = PlanEstrategy.Dimensao_Id" +
             "\n LEFT JOIN Pa_Gerencia Gere ON Gere.Id = PlanTatico.Gerencia_Id" +
             "\n LEFT JOIN Pa_Coordenacao Coord ON Coord.Id = PlanTatico.Coordenacao_Id" +
+            "\n LEFT JOIN Pa_Iniciativa Inici ON Inici.Id = PlanTatico.Iniciativa_Id" +
             "\n WHERE Acao.AddDate BETWEEN ('" + dtInit + "') AND('" + dtFim + "')";
 
             var results = QueryNinja(db, query);
@@ -370,7 +372,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
                 "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
                 "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
-                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'";
+                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'," +
+                "\n  ISNULL(Inici.Name, 'Não possui Projeto / Iniciativa') AS 'Projeto Iniciativa'";
             }
 
             query += "\n FROM Pa_Acao AS Acao" +
@@ -388,6 +391,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             "\n LEFT JOIN Pa_Dimensao Dimens ON Dimens.Id = PlanEstrategy.Dimensao_Id" +
             "\n LEFT JOIN Pa_Gerencia Gere ON Gere.Id = PlanTatico.Gerencia_Id" +
             "\n LEFT JOIN Pa_Coordenacao Coord ON Coord.Id = PlanTatico.Coordenacao_Id" +
+            "\n LEFT JOIN Pa_Iniciativa Inici ON Inici.Id = PlanTatico.Iniciativa_Id" +
             "\n WHERE Acao.AddDate BETWEEN ('" + dtInit + "') AND('" + dtFim + "') AND Acao.TipoIndicador = 2";
 
 
