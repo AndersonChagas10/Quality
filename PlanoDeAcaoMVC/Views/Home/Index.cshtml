@@ -93,7 +93,7 @@
 
 <div class="row">
 
-    <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:500px;">
+    <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:600px;">
 
         <div class="panel panel-primary">
             <div class="panel-heading" style="text-align:center;">
@@ -188,6 +188,46 @@
                     </div>
                 </div>
             </div>
+
+            @*<div class="col-xs-12 col-sm-6 col-lg-4">*@
+            @*<div class="panel panel-default">*@
+            <div class="panel-body">
+                <select id="filtroPizza" data-width="80%">
+                    @*<option value="0">Selecione...</option>*@
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz" selected>Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    @*
+                        <option value="7">Projeto / Iniciativa</option>*@
+                    <option value="Unidade">Unidade</option>
+                    @*
+                        <option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status">Status</option>
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Indicador">Indicador</option>
+                    <option value="Monitoramento">Monitoramento</option>
+                    <option value="Tarefa">Tarefa</option>
+                </select>
+
+                <select id="seriesFiltroPizza" data-width="80%">
+                    <option value="0">Selecione...</option>
+                </select>
+
+                <div id="divPizza" style="height:240px;"></div>
+            </div>
+
+            @*</div>
+                </div>*@
+
         </div>
     </div>
 
@@ -238,7 +278,7 @@
                     <option value="Status" selected>Status</option>
                 </select>
             </div>
-            <div id="divGrafico1" style="height:240px;"></div>
+            <div id="divGrafico1" style="height:400px;"></div>
         </div>
     </div>
 
@@ -297,46 +337,11 @@
                     <option value="Tarefa">Tarefa</option>
                 </select>
             </div>
-            <div id="divCol" style="height:240px;"></div>
+            <div id="divCol" style="height:400px;"></div>
         </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <select id="filtroPizza">
-                    @*<option value="0">Selecione...</option>*@
-                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
-                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
-                    <option class="showAsEstrategy" value="Indicadores Diretriz" selected>Indicadores / Diretriz</option>
-                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
-                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
-                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
-                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
-                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
-                    @*
-                        <option value="7">Projeto / Iniciativa</option>*@
-                    <option value="Unidade">Unidade</option>
-                    @*
-                        <option value="9">Indicador Operacional</option>*@
-                    <option value="Responsavel">Quem</option>
-                    <option value="Status">Status</option>
-                    <option value="Responsavel">Quem</option>
-                    <option value="Status">Status</option>
-                    <option value="Regional">Regional</option>
-                    <option value="Indicador">Indicador</option>
-                    <option value="Monitoramento">Monitoramento</option>
-                    <option value="Tarefa">Tarefa</option>
-                </select>
 
-                <select id="seriesFiltroPizza" data-width="30%">
-                    <option value="0">Selecione...</option>
-                </select>
-            </div>
-            <div id="divPizza" style="height:240px;"></div>
-        </div>
-    </div>
 
 </div>
 
@@ -615,7 +620,8 @@
                 enabled: false
             },
             chart: {
-                type: 'bar'
+                type: 'bar',
+                zoomType: 'xy'
             },
             title: {
                 text: title,
@@ -722,7 +728,8 @@
                 enabled: false
             },
             chart: {
-                type: 'bar'
+                type: 'bar',
+                zoomType: 'y'
             },
             title: {
                 text: title,
@@ -1060,7 +1067,7 @@
         var meses = [];
         var valores = MapeiaValorParaHC(dados, "Quantidade", true);
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.Mes]);
+            meses.push(moment.monthsShort()[o.Mes - 1]);
         });
 
         Highcharts.chart('divEstoque1', {
@@ -1159,7 +1166,7 @@
         var meses = [];
         var valores = MapeiaValorParaHC(dados, "Quantidade", true);
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.Mes]);
+            meses.push(moment.monthsShort()[o.Mes - 1]);
         });
 
         Highcharts.chart('divEstoque2', {
@@ -1268,7 +1275,7 @@
         });
 
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.MesIniciadas]);
+            meses.push(moment.monthsShort()[o.MesIniciadas - 1]);
 
         });
 
@@ -1877,7 +1884,7 @@
             $('#seriesFiltroPizza').trigger('change');
 
             $('#acoesConcluidas').text($.grep(resultGetGrafico, function (a, b) {
-                return a.Status == "Concluído";
+                return a.Status == "Concluído" || a.Status == "Concluído com atraso";
             }).length);
 
             $('#acoesAtrasadas').text($.grep(resultGetGrafico, function (a, b) {
@@ -2173,9 +2180,13 @@
             concluidas = $.grep(resultGetGrafico, function (a, b) {
                 return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
             });
+        } else if (query == 'Concluído') {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return a.Status == "Concluído" || a.Status == "Concluído com atraso";
+            });
         } else {
             concluidas = $.grep(resultGetGrafico, function (a, b) {
-                return a.Status == query
+                return a.Status == query;
             });
         }
 
