@@ -314,10 +314,11 @@
             <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
                 <div style="text-align: left; padding-top: 3px;">
                     <div class="divLabel" style="float:left; margin-left: 5px;">
-                        {{item.Name}}
+                        Horário daretirada da linha: {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
                     </div>
                     <div class="divLabel" style="float:right; margin-right: 5px;">
                         Visto / Data: {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
+                        {{item.Name}}
                     </div>
                 </div>
                 <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
@@ -451,6 +452,7 @@
             </table>
             <div ng-repeat="lata in seletedLinha.latas track by $index">
                 <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
+@*{{acoes}}*@
                     <table class="tg" style="table-layout: fixed; width: 100%">
                         <colgroup>
                             <col style="width: 15%">
@@ -469,10 +471,10 @@
                                 <strong>{{acoes.AddDate}}</strong>
                             </td>
                             <td style="height:55px;">
-                                <strong>{{acoes.correctiveAction.ImmediateCorrectiveAction}}</strong>
+                                <strong>{{acoes.DescriptionFailure}}</strong>
                             </td>
                             <td style="height:55px;">
-                                <strong>{{acoes.correctiveAction.DescriptionFailure}}</strong>
+                                <strong>{{acoes.correctiveAction.ImmediateCorrectiveAction}}</strong>
                             </td>
                             <td style="height:55px;">
                                 <strong>{{acoes.PreventiveAction.PreventativeMeasure}}</strong>
@@ -593,7 +595,8 @@
                 let vm = $scope
                 vm.dev = true
                 vm.jbsBrasil = false
-
+                //vm.dev = false
+                //vm.jbsBrasil = true
 
                 vm.limit = 6
                 vm.begins = [0, 6, 12, 18, 24, 30, 36, 42]
@@ -1006,7 +1009,9 @@
 
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
-                                setTimeout(function () { /*window.print()*/}, 1000)
+                                setTimeout(function () { 
+                                    window.print()
+                                }, 1000)
                             }
                         });
                 }
