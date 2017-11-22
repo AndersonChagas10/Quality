@@ -38,7 +38,7 @@
 
     td {
         text-align: center;
-        font-size: 8px;
+        font-size: 10px;
     }
 
     .redDot {
@@ -79,6 +79,7 @@
 
         .tg .tg-s6z2 {
             text-align: center;
+            font-size: 11px;
         }
 
         .tg .tg-baqh {
@@ -91,17 +92,17 @@
     }
 
     #rcorners2 {
-       position: absolute;
-    bottom: 3px;
-    width: 100%;
-    left: 0;
-    border-radius: 25px;
-    border: 2px solid #000000;
-    padding: 12px;
-    width: 99%;
-    height: 40px;
-    display: inline-block;
-    margin-left: 3px;
+        position: absolute;
+        bottom: 3px;
+        width: 100%;
+        left: 0;
+        border-radius: 25px;
+        border: 2px solid #000000;
+        padding: 12px;
+        width: 99%;
+        height: 40px;
+        display: inline-block;
+        margin-left: 3px;
     }
 
     body {
@@ -180,9 +181,11 @@
     @@media print {
 
         body, page {
-            margin: 8px;
+            margin: 0.5cm;
             padding-top: 0.2cm;
             padding-bottom: 0.2cm;
+            page-break-after: avoid;
+            page-break-before: avoid;
             /*margin-left: 4px !important;
             margin-right: 8px !important;
             padding-top: 6px !important;
@@ -194,15 +197,18 @@
 
     @@page {
         size: auto; /* auto is the initial value */
-        margin: 8px;
+        margin: 0.5cm;
         padding-top: 0.2cm;
         padding-bottom: 0.2cm;
+        page-break-after: avoid;
+        page-break-before: avoid;
         /*margin-left: 4px !important;
         margin-right: 8px !important;
         padding-top: 6px !important;
         padding-right: 6px !important;
         padding-bottom: 0px !important;*/
     }
+
 
     div.divided {
         width: 50%;
@@ -237,7 +243,7 @@
         text-align: left;
         padding-top: 3px;
         position: absolute;
-        bottom: 39px;
+        bottom: 46px;
         width: 100%;
         left: 5px;
         padding: -4px;
@@ -254,6 +260,7 @@
 
         .formulas td {
             text-align: left;
+            font-size: 8px;
         }
 </style>
 
@@ -266,7 +273,7 @@
 
         .tableForm td {
             font-family: verdana, arial, sans-serif;
-            font-size: 8px;
+            /*font-size: 12px;*/
             text-align: left;
         }
 
@@ -312,7 +319,7 @@
             padding: 2px;
             text-align: right;
             font-weight: bold;
-            width: 88px;
+            width: 110px;
         }
 
         .tablePontos td.pontoIndex {
@@ -321,6 +328,10 @@
             text-align: center;
             font-weight: bold;
             background-color: #dddddd;
+        }
+
+        .tablePontos td {
+            line-height: 7px;
         }
 </style>
 
@@ -340,7 +351,7 @@
         .tableCorrectiveAction td,
         .tableCorrectiveAction th {
             font-family: verdana, arial, sans-serif;
-            font-size: 8px;
+            font-size: 10px;
             text-align: left;
         }
 
@@ -465,15 +476,15 @@
                 <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
                     <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                         <tr>
-                            <td style="border:1px solid #cccccc; padding: 2px; text-align: left; font-weight: bold; width:50%; border-right:0px; border-bottom: 0px;">
-                                <strong>{{item.Name}}</strong>&nbsp;&nbsp;&nbsp; Horário daretirada da linha: {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
+                            <td style="border:1px solid #cccccc; padding: 2px; text-align: left; width:50%; border-right:0px; border-bottom: 0px; font-size: 8px;">
+                                <strong>{{item.Name}}&nbsp;&nbsp;&nbsp; Horário daretirada da linha:</strong> {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
                             </td>
-                            <td style="border:1px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:50%; border-left:0px; border-bottom: 0px;">
-                                Visto / Data: {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
+                            <td style="border:1px solid #cccccc; padding: 2px; text-align: right; width:50%; border-left:0px; border-bottom: 0px; font-size: 8px;">
+                                <strong>Visto / Data:</strong> {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
                             </td>
                         </tr>
                     </table>
-                    <table ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="tableFirstLeft tablePontos">
+                    <table ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="tableFirstLeft tablePontos" style="table-layout:fixed">
                         <tbody>
 
                             <tr>
@@ -514,6 +525,9 @@
                                     <span class="validate"
                                           ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                                         <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        <span style="font-size:9px">
+                                            {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}
+                                        </span>
                                     </span>
                                     <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                                         {{item.ResultValue[ParLevel3.Id][($index +1)]}}
@@ -521,6 +535,9 @@
                                     <span class="validate"
                                           ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
                                         <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
+                                        <span style="font-size:9px">
+                                            {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
+                                        </span>
                                     </span>
                                 </td>
                             </tr>
@@ -541,10 +558,10 @@
 
                 <div class="assinaturaValidacao">
                     <div class="divLabel" style="float:left; margin-left: 5px;">
-                        Linha Finalizada por {{seletedLinha.userFinish.Name}}, na Data/Hora: {{seletedLinha.dataUserFinish}}
+                        <span style="font-size: 12px;">Linha Finalizada por {{seletedLinha.userFinish.Name}}, na Data/Hora: {{seletedLinha.dataUserFinish}}</span>
                     </div>
                     <div class="divLabel" style="float:right; margin-right: 5px;">
-                        Linha Validada por {{seletedLinha.userValidacao.Name}}, na Data/Hora: {{seletedLinha.dataUserValidacao}}
+                        <span style="font-size: 12px;">Linha Validada por {{seletedLinha.userValidacao.Name}}, na Data/Hora: {{seletedLinha.dataUserValidacao}}</span>
                     </div>
                 </div>
 
