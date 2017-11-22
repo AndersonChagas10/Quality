@@ -3,8 +3,13 @@
 }
 
 <style type="text/css">
+    .tableFirstLeft td,
+    .tableFirstLeft th {
+        text-align: left;
+    }
+
     table.footerCA {
-        width: 100%;
+        width: 98%;
         margin-bottom: 5px;
         position: absolute;
         bottom: 0;
@@ -81,25 +86,22 @@
             vertical-align: top;
         }
 
-        .tg .tg-yw4l {
-            vertical-align: top;
-        }
-
     .recravacao {
         margin-bottom: 0;
     }
 
     #rcorners2 {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        left: 0;
-        border-radius: 25px;
-        border: 2px solid #000000;
-        padding: 10px;
-        width: 100%;
-        height: 40px;
-        display: inline-block;
+       position: absolute;
+    bottom: 3px;
+    width: 100%;
+    left: 0;
+    border-radius: 25px;
+    border: 2px solid #000000;
+    padding: 12px;
+    width: 99%;
+    height: 40px;
+    display: inline-block;
+    margin-left: 3px;
     }
 
     body {
@@ -145,7 +147,7 @@
 
         page[size="A4"] {
             width: 21cm;
-            height: 30cm;
+            height: 29.7cm;
             position: relative;
             margin-bottom: 0.5cm;
         }
@@ -178,19 +180,46 @@
     @@media print {
 
         body, page {
-            margin: 0;
+            margin: 8px;
+            padding-top: 0.2cm;
+            padding-bottom: 0.2cm;
+            /*margin-left: 4px !important;
+            margin-right: 8px !important;
+            padding-top: 6px !important;
+            padding-right: 6px !important;
+            padding-bottom: 0px !important;*/
             box-shadow: 0;
         }
+    }
+
+    @@page {
+        size: auto; /* auto is the initial value */
+        margin: 8px;
+        padding-top: 0.2cm;
+        padding-bottom: 0.2cm;
+        /*margin-left: 4px !important;
+        margin-right: 8px !important;
+        padding-top: 6px !important;
+        padding-right: 6px !important;
+        padding-bottom: 0px !important;*/
     }
 
     div.divided {
         width: 50%;
         float: left;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        /*padding-left: 4px;
+        padding-right: 4px;*/
     }
 
     div.divided33 {
         width: 33%;
         float: left;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        /*padding-left: 4px;
+        padding-right: 4px;*/
     }
 
 
@@ -210,9 +239,9 @@
         position: absolute;
         bottom: 39px;
         width: 100%;
-        left: 0;
+        left: 5px;
         padding: -4px;
-        width: 100%;
+        width: 98%;
         height: 17px;
         display: inline-block;
     }
@@ -228,12 +257,130 @@
         }
 </style>
 
+<style>
+    /*Tabela de formulário*/
+    .tableForm {
+        margin-top: 4px;
+        margin-bottom: 7px;
+    }
+
+        .tableForm td {
+            font-family: verdana, arial, sans-serif;
+            font-size: 8px;
+            text-align: left;
+        }
+
+            .tableForm td.title {
+                font-weight: bold;
+            }
+
+        .tableForm th,
+        .tableForm td {
+            padding: 4px 4px 4px 4px;
+        }
+
+        .tableForm th {
+            border-bottom: 2px solid #333333;
+        }
+
+        .tableForm td {
+            border-bottom: 1px dotted #999999;
+        }
+
+        .tableForm tfoot td {
+            border-bottom-width: 0px;
+            border-top: 2px solid #333333;
+            padding-top: 20px;
+        }
+
+    .divSection {
+        margin: 0px;
+        margin-left: 2px;
+        margin-right: 2px;
+        padding-top: 2px;
+    }
+</style>
+
+<style>
+    /*Tabela Pontos*/
+    .tablePontos {
+        width: 100%;
+    }
+
+        .tablePontos td.pontosLabel {
+            border: 1px solid #cccccc;
+            padding: 2px;
+            text-align: right;
+            font-weight: bold;
+            width: 88px;
+        }
+
+        .tablePontos td.pontoIndex {
+            border: 1px solid #cccccc;
+            padding: 2px;
+            text-align: center;
+            font-weight: bold;
+            background-color: #dddddd;
+        }
+</style>
+
+<style>
+    .divTableCorrectiveAction {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .tableCorrectiveAction {
+        margin-top: 4px;
+        margin-bottom: 7px;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .tableCorrectiveAction td,
+        .tableCorrectiveAction th {
+            font-family: verdana, arial, sans-serif;
+            font-size: 8px;
+            text-align: left;
+        }
+
+        .tableCorrectiveAction th {
+            border-bottom: 2px solid #333333;
+        }
+
+        .tableCorrectiveAction td.title {
+            font-weight: bold;
+        }
+
+
+        .tableCorrectiveAction td {
+            border-bottom: 1px dotted #999999;
+            border-width: 1px;
+            border-style: dotted;
+        }
+
+        .tableCorrectiveAction tfoot td {
+            border-bottom-width: 0px;
+            border-top: 2px solid #333333;
+            padding-top: 20px;
+        }
+
+        .tableCorrectiveAction td.tbodyTd {
+            height: 35px;
+        }
+</style>
+
+<style type="text/scss">
+
+</style>
 <html xmlns="">
 <head>
     <title>Print Recravação</title>
 
     @Styles.Render("~/bundles/RecravacaoPrintCss")
     @Scripts.Render("~/bundles/RecravacaoPrintJs")
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>*@
 
 </head>
 <body ng-app="sgqSystem">
@@ -261,199 +408,220 @@
             </ul>
 
         </div>
+        @*LATAS*@
         <page size="A4" ng-repeat="begin in begins" ng-if="(seletedLinha.latas[begin] != undefined)">
-            <table class="tg" style="table-layout: fixed; width: 100%">
-                <colgroup>
-                    <col style="width: 41px">
-                    <col style="width: 75px;">
-                    <col style="width: 561px;">
-                    <col style="width: 75px;">
-                </colgroup>
-                <tr>
-                    <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /> </th>
-                    <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}} </strong></th>
-                    <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
-                </tr>
-                <tr></tr>
-                <tr>
-                    <td class="tg-031e"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
-                </tr>
-                <tr>
-                    <td class="tg-yw4l"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
-                </tr>
-            </table>
-            <table class="tg" style="width: 100%">
-                <tbody>
+            <div class="divSection">
+                <table class="tg" style="table-layout: fixed; width: 98%">
+                    <colgroup>
+                        <col style="width: 41px">
+                        <col style="width: 75px;">
+                        <col style="width: 561px;">
+                        <col style="width: 75px;">
+                    </colgroup>
                     <tr>
-                        <td class="textLeft">Produto</td>
-                        <td>{{seletedLinha.form.Produto.Name}}</td>
-                        <td>Hora do início da Produção</td>
-                        <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
-                        <td>Hora do final da Produção</td>
-                        <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
+                        <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /> </th>
+                        <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}} </strong></th>
+                        <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td class="tg-s6z2"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
                     </tr>
                     <tr>
-                        <td>Código do produto</td>
-                        <td>{{seletedLinha.form.CodProduto}}</td>
-                        <td>Data do recebimento das latas</td>
-                        <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
-                        <td>Fornecedor da Lata</td>
-                        <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                        <td class="tg-s6z2"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
                     </tr>
-                    <tr>
-                        <td>Data do recebimento das tampas/fundos das latas</td>
-                        <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
-                        <td>Fornecedor das tampas/fundos das latas</td>
-                        <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                        <td>Tipo da Lata</td>
-                        <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
-                    </tr>
+                </table>
 
-                </tbody>
-            </table>
-            <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
-                <div style="text-align: left; padding-top: 3px;">
-                    <div class="divLabel" style="float:left; margin-left: 5px;">
-                        Horário daretirada da linha: {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
-                    </div>
-                    <div class="divLabel" style="float:right; margin-right: 5px;">
-                        Visto / Data: {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
-                        {{item.Name}}
-                    </div>
-                </div>
-                <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
+                <table class="tableForm" style="width: 100%">
                     <tbody>
                         <tr>
-                            <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                            <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                            <td class="title">Produto</td>
+                            <td>{{seletedLinha.form.Produto.Name}}</td>
+                            <td class="title">Hora do início da Produção</td>
+                            <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
+                            <td class="title">Hora do final da Produção</td>
+                            <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
                         </tr>
-                        <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
-                            <td style="border:1px solid #cccccc; padding: 2px;">
-                                {{ParLevel3.Name}}
-                                <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText"
-                                      style="font-size:6px!important;font-weight: 100 !important;">
-                                    ({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
-                                </span>
-                            </td>
-                            <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
-                                ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
-                                ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
-                                @*1 Binário ok
-                                    2   Número de defeitos ok
-                                    3   Intervalos ok
-                                    4   Calculado
-                                    5   Texto
-                                    99  NOVO CALCULADO POR OUTRO*@
-                                <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                                    <span>
-                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
-                                            {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                                        </span>
-                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false">
-                                            {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                    <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
-                                </span>
-                                <span class="validate"
-                                      ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                    <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                </span>
-                                <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                    {{item.ResultValue[ParLevel3.Id][($index +1)]}}
-                                </label>
-                                <span class="validate"
-                                      ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                    <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
-                                </span>
-                            </td>
+                        <tr>
+                            <td class="title">Código do produto</td>
+                            <td>{{seletedLinha.form.CodProduto}}</td>
+                            <td class="title">Data do recebimento das latas</td>
+                            <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                            <td class="title">Fornecedor da Lata</td>
+                            <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
                         </tr>
+                        <tr>
+                            <td class="title">Data do recebimento das tampas/fundos das latas</td>
+                            <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
+                            <td class="title">Fornecedor das tampas/fundos das latas</td>
+                            <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                            <td class="title">Tipo da Lata</td>
+                            <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
+                        </tr>
+
                     </tbody>
                 </table>
 
-            </div>
-            <div class="assinaturaValidacao">
-                <div class="divLabel" style="float:left; margin-left: 5px;">
-                    Linha Finalizada por {{seletedLinha.userFinish.Name}}, na Data/Hora: {{seletedLinha.dataUserFinish}}
+                <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+                    <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
+                        <tr>
+                            <td style="border:1px solid #cccccc; padding: 2px; text-align: left; font-weight: bold; width:50%; border-right:0px; border-bottom: 0px;">
+                                <strong>{{item.Name}}</strong>&nbsp;&nbsp;&nbsp; Horário daretirada da linha: {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
+                            </td>
+                            <td style="border:1px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:50%; border-left:0px; border-bottom: 0px;">
+                                Visto / Data: {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
+                            </td>
+                        </tr>
+                    </table>
+                    <table ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="tableFirstLeft tablePontos">
+                        <tbody>
+
+                            <tr>
+                                <td class="pontosLabel"> Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                <td class="pontoIndex" style="" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                            </tr>
+                            <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
+                                <td style="border:1px solid #cccccc; padding: 2px;">
+                                    {{ParLevel3.Name}}
+                                    <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText"
+                                          style="font-size:6px!important;font-weight: 100 !important;">
+                                        ({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
+                                    </span>
+                                </td>
+                                <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
+                                    ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                                    ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                    colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+                                    @*1 Binário ok
+                                        2   Número de defeitos ok
+                                        3   Intervalos ok
+                                        4   Calculado
+                                        5   Texto
+                                        99  NOVO CALCULADO POR OUTRO*@
+                                    <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                        <span>
+                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
+                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                            </span>
+                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false">
+                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                        <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
+                                    </span>
+                                    <span class="validate"
+                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                                        <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                    </span>
+                                    <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                        {{item.ResultValue[ParLevel3.Id][($index +1)]}}
+                                    </label>
+                                    <span class="validate"
+                                          ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                        <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    @*<div style="text-align: left; padding-top: 3px;">
+                            <div class="divLabel" style="float:left; margin-left: 5px;">
+                                Horário daretirada da linha: {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
+                            </div>
+                            <div class="divLabel" style="float:right; margin-right: 5px;">
+                                Visto / Data: {{item.userValidacao.Name}} - {{item.dataUserValidacao}}
+                                {{item.Name}}
+                            </div>
+                        </div>*@
+                    <div class="clearfix"></div>
                 </div>
-                <div class="divLabel" style="float:right; margin-right: 5px;">
-                    Linha Validada por {{seletedLinha.userValidacao.Name}}, na Data/Hora: {{seletedLinha.dataUserValidacao}}
+
+                <div class="assinaturaValidacao">
+                    <div class="divLabel" style="float:left; margin-left: 5px;">
+                        Linha Finalizada por {{seletedLinha.userFinish.Name}}, na Data/Hora: {{seletedLinha.dataUserFinish}}
+                    </div>
+                    <div class="divLabel" style="float:right; margin-right: 5px;">
+                        Linha Validada por {{seletedLinha.userValidacao.Name}}, na Data/Hora: {{seletedLinha.dataUserValidacao}}
+                    </div>
+                </div>
+
+                <div id="rcorners2">
+                    <table class="formulas">
+                        <tr>
+                            <td>
+                                <small>
+                                    <b>Espaço Livre: </b>0,05 - 0,23 mm <br>
+                                    <b>Escareação: </b>Mínimo igual Altura <br>
+                                    <b>Altura: </b>2,67 - 3,30 mm <br>
+                                    <b>Gancho Corpo: </b>1,78 - 2,23 mm <br>
+                                    <small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>Gancho Tampa: </b>1,78 - 2,23 mm <br>
+                                    <b>Junção: </b>Mínimo 50% <br>
+                                    <b>Teste de ar: </b>Ausência (0% de Vazamento) <br>
+                                    <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
+                                    <small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>GC Butting</b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    x 100=% <br>
+                                    <u>&nbsp;&nbsp; GC - 1.1 EC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>
+                                    ALT - (2,2 ET + 1,1 EC)<br>
+                                    Valor Mínimo = 70%
+                                </small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>Procentagem Overlap </b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    x 100 = % <br>
+                                    <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp; </u><br>
+                                    ALT - (2,2 ET + 1,1 EC) <br>
+                                    Valor Mínimo = 45%
+                                    <small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>Overlap Calculado </b> <br>
+                                    <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp;</u> <br>
+                                    Valor Mínimo = 1,02
+                                    <small>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div id="rcorners2">
-                <table class="formulas">
+        </page>
+        @*CA/OBS*@
+        <page size="A4">
+            <div class="divSection">
+                <table class="headerCA">
                     <tr>
-                        <td>
-                            <small>
-                                <b>Espaço Livre: </b>0,05 - 0,23 mm <br>
-                                <b>Escareação: </b>Mínimo igual Altura <br>
-                                <b>Altura: </b>2,67 - 3,30 mm <br>
-                                <b>Gancho Corpo: </b>1,78 - 2,23 mm <br>
-                                <small>
-                        </td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <small>
-                                <b>Gancho Tampa: </b>1,78 - 2,23 mm <br>
-                                <b>Junção: </b>Mínimo 50% <br>
-                                <b>Teste de ar: </b>Ausência (0% de Vazamento) <br>
-                                <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
-                                <small>
-                        </td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <small>
-                                <b>GC Butting</b>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                x 100=% <br>
-                                <u>&nbsp;&nbsp; GC - 1.1 EC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>
-                                ALT - (2,2 ET + 1,1 EC)<br>
-                                Valor Mínimo = 70%
-                            </small>
-                        </td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <small>
-                                <b>Procentagem Overlap </b>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                x 100 = % <br>
-                                <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp; </u><br>
-                                ALT - (2,2 ET + 1,1 EC) <br>
-                                Valor Mínimo = 45%
-                                <small>
-                        </td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <small>
-                                <b>Overlap Calculado </b> <br>
-                                <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp;</u> <br>
-                                Valor Mínimo = 1,02
-                                <small>
+                        <td colspan="3">
+                            AÇÃO CORRETIVA : Ações corretivas adotadas conforme CRF 9 Part 417.3 </br>
+                            1. Identificar o desvio e eliminá-lo: <u>Caso o overlap esteja abaixo de 1,02mm</u> paralisando e solicitando ajuste do equipamento de recravação ao responsável pelo processo. Se o defeito for causado pela lata de segregar o lote de latas vazias para análise e pos</br>
+                            2. Assegurar que o PCC estará sob controle após a ação corretiva: verificar a eficácia da ação corretiva adotada monitorando novamente o PCC previamente ao reinicio da operação;</br>
+                            3. Estabelecer medidas para previnir recorrência: informando o desvio ao responsável pelo processo para tomada de ações prevetivas.</br>
+                            4. Assegurar que qualquer produto eventualmente adulterado como resultado do desvio não seja comercializado: sequestrar as latas produzidas desde o último monitoriamento para revisão e/ou abertura (descarte - vazamento ou retrabalho para outros defeitos). Registrar a ação no relatório de monitoriamento do APPCC, indicar horário da ocorrência, ação corretiva e rubricar.</br>
+                            Responsável: Monitor GQ
                         </td>
                     </tr>
                 </table>
-            </div>
-        </page>
-        <page size="A4">
-            <table class="headerCA">
-                <tr>
-                    <td colspan="3">
-                        AÇÃO CORRETIVA : Ações corretivas adotadas conforme CRF 9 Part 417.3 </br>
-                        1. Identificar o desvio e eliminá-lo: <u>Caso o overlap esteja abaixo de 1,02mm</u> paralisando e solicitando ajuste do equipamento de recravação ao responsável pelo processo. Se o defeito for causado pela lata de segregar o lote de latas vazias para análise e pos</br>
-                        2. Assegurar que o PCC estará sob controle após a ação corretiva: verificar a eficácia da ação corretiva adotada monitorando novamente o PCC previamente ao reinicio da operação;</br>
-                        3. Estabelecer medidas para previnir recorrência: informando o desvio ao responsável pelo processo para tomada de ações prevetivas.</br>
-                        4. Assegurar que qualquer produto eventualmente adulterado como resultado do desvio não seja comercializado: sequestrar as latas produzidas desde o último monitoriamento para revisão e/ou abertura (descarte - vazamento ou retrabalho para outros defeitos). Registrar a ação no relatório de monitoriamento do APPCC, indicar horário da ocorrência, ação corretiva e rubricar.</br>
-                        Responsável: Monitor GQ
-                    </td>
-                </tr>
-            </table>
-            <div ng-repeat="lata in seletedLinha.latas track by $index">
-                <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
-@*{{acoes}}*@
-                    <table class="tg" style="table-layout: fixed; width: 100%">
+
+                <div class="divTableCorrectiveAction">
+
+                    <table class="tableCorrectiveAction">
                         <colgroup>
                             <col style="width: 15%">
                             <col style="width: 28.3%;">
@@ -461,56 +629,73 @@
                             <col style="width: 28.3%;">
                         </colgroup>
                         <tr>
-                            <th class="tg-031e" colspan="1" rowspan="1">Hora (1)</th>
-                            <th class="tg-s6z2" colspan="1" rowspan="1">DEFICIÊNCIA (2)</th>
-                            <th class="tg-s6z2" colspan="1" rowspan="1">AÇÃO CORRETIVA (3)</th>
-                            <th class="tg-s6z2" colspan="1" rowspan="1">AÇÃO PREVENTIVA (4)</th>
-                        </tr>
-                        <tr>
-                            <td style="height:55px;">
-                                <strong>{{acoes.AddDate}}</strong>
-                            </td>
-                            <td style="height:55px;">
-                                <strong>{{acoes.DescriptionFailure}}</strong>
-                            </td>
-                            <td style="height:55px;">
-                                <strong>{{acoes.correctiveAction.ImmediateCorrectiveAction}}</strong>
-                            </td>
-                            <td style="height:55px;">
-                                <strong>{{acoes.PreventiveAction.PreventativeMeasure}}</strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>VISTO</strong>
-                            </td>
-                            <td>
-                                {{acoes.correctiveAction.Assinatura.Name}}
-                            </td>
-                            <td>
-                                <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{lata.correctiveAction.HorarioDeLiberacao}}
-                            </td>
-                            <td>
-                                <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
-                            </td>
+                            <th>Hora (1)</th>
+                            <th>DEFICIÊNCIA (2)</th>
+                            <th>AÇÃO CORRETIVA (3)</th>
+                            <th>AÇÃO PREVENTIVA (4)</th>
                         </tr>
                     </table>
-                    @*<div></div>
-                        <div></div>
-                        <div>{{acoes.correctiveAction.ImmediateCorrectiveAction}}</div>
-                        <div>{{acoes.correctiveAction.Assinatura.Name}}</div>
-                        <div>{{acoes.PreventiveAction.PreventativeMeasure}}</div>
-                        <div>{{acoes.PreventiveAction.Assinatura.Name}}</div>*@
                 </div>
-            </div>
-            <table class="footerCA">
-                <tr style="vertical-align: top;">
-                    <td height="70"><small>Monitor</small></td>
-                    <td height="70"><small>Rep. Setor Enlatamento</small></td>
-                    <td height="70"><small>Garantia de Qualidade</small></td>
-                </tr>
-            </table>
 
+                <div class="divTableCorrectiveAction" ng-repeat="lata in seletedLinha.latas track by $index">
+                    <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
+
+                        <table class="tableCorrectiveAction">
+                            <colgroup>
+                                <col style="width: 15%">
+                                <col style="width: 28.3%;">
+                                <col style="width: 28.3%;">
+                                <col style="width: 28.3%;">
+                            </colgroup>
+                            @*<tr>
+                                    <th>Hora (1)</th>
+                                    <th>DEFICIÊNCIA (2)</th>
+                                    <th>AÇÃO CORRETIVA (3)</th>
+                                    <th>AÇÃO PREVENTIVA (4)</th>
+                                </tr>*@
+                            <tr>
+                                <td class="tbodyTd">
+                                    {{acoes.AddDate}}
+                                </td>
+                                <td class="tbodyTd">
+                                    {{acoes.DescriptionFailure}}
+                                </td>
+                                <td class="tbodyTd">
+                                    {{acoes.correctiveAction.ImmediateCorrectiveAction}}
+                                </td>
+                                <td class="tbodyTd">
+                                    {{acoes.PreventiveAction.PreventativeMeasure}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>VISTO</strong>
+                                </td>
+                                <td>
+                                    {{acoes.correctiveAction.Assinatura.Name}}
+                                </td>
+                                <td>
+                                    <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{lata.correctiveAction.HorarioDeLiberacao}}
+                                </td>
+                                <td>
+                                    <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
+                                </td>
+                            </tr>
+
+                        </table>
+
+
+                    </div>
+                </div>
+
+                <table class="footerCA">
+                    <tr style="vertical-align: top;">
+                        <td height="70"><small>Monitor</small></td>
+                        <td height="70"><small>Rep. Setor Enlatamento</small></td>
+                        <td height="70"><small>Garantia de Qualidade</small></td>
+                    </tr>
+                </table>
+            </div>
         </page>
     </div>
 </body>
@@ -1009,8 +1194,9 @@
 
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
-                                setTimeout(function () { 
-                                    window.print()
+                                setTimeout(function () {
+                                    if(vm.jbsBrasil)
+                                        window.print()
                                 }, 1000)
                             }
                         });
