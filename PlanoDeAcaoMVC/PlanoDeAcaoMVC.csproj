@@ -539,6 +539,7 @@
     <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
+    <None Include="Properties\PublishProfiles\Plano de Acao Local.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcao.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcaoServidor.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
