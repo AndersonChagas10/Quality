@@ -92,11 +92,11 @@
                 var list = [];
                 //Gera a lista
                 $.each(response, function( index, value ) {
-                    var row = $('tr[data-unit-id='+index+']').children();
+                    var row = $('tr[data-unit-id='+value.Key+']').children();
                     if(value != null){
-                        list.push([index,value.DataInicioStr,value.DataFimStr, value.StatusStr])
+                        list.push([value.Key,value.DataInicioStr,value.DataFimStr, value.StatusStr])
                     }else{
-                        list.push([index,"-","-","-"])
+                        list.push([value.Key,"-","-","-"])
                     }
                 });
 

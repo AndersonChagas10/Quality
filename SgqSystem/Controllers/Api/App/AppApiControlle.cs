@@ -111,6 +111,7 @@ namespace SgqSystem.Controllers.Api.App
                 {
                     new CreateLog(e, UnitId);
                 }
+                System.GC.Collect();
             }
 
             return GetTela(UnitId);
@@ -197,7 +198,7 @@ namespace SgqSystem.Controllers.Api.App
 
         [HttpPost]
         [Route("GetGeneratedUnits")]
-        public Dictionary<int, HtmlDoTablet> GetGeneratedUnits([FromBody]GeneratedUnit generatedUnit)
+        public object GetGeneratedUnits([FromBody]GeneratedUnit generatedUnit)
         {
             if (GlobalConfig.PaginaDoTablet == null)
                 GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
@@ -211,7 +212,7 @@ namespace SgqSystem.Controllers.Api.App
                         GlobalConfig.PaginaDoTablet.Add(temp, null);
                     }
                 }
-                return GlobalConfig.PaginaDoTablet;//.Select(t=>new {ID = t.Key, DataInicio = t.Value.DataInicio, DataFim = t.Value.DataFim, Html = t.Value.Html });
+                return GlobalConfig.PaginaDoTablet.Select(pt => new { pt.Key, pt.Value?.DataFimStr, pt.Value?.DataInicioStr, pt.Value?.StatusStr });//.Select(t=>new {ID = t.Key, DataInicio = t.Value.DataInicio, DataFim = t.Value.DataFim, Html = t.Value.Html });
 
             }
             return null;
