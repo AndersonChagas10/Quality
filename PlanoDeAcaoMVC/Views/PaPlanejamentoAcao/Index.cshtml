@@ -4,13 +4,12 @@
 }
 
 <style>
-
     .select2-container {
-      width: 278px;
+        width: 278px;
     }
 
     select {
-        min-width:278px
+        min-width: 278px;
     }
 
     .hideEmail {
@@ -217,19 +216,39 @@
             <div class="modal-body" id="novoBody">
                 <form>
                     <div class="form-group">
-                        <div style="display:none" id="encadeado">
-                            <label style="min-width: 450px;" id="labelPredecessora">Predecessor: </label>
-                        </div>
-                        <div>
-                            <label>Novo item:</label><input style="min-width: 371px;" type="text" class="form-control" id="newItem">
+                        <div class="col-sm-6">
+                            <div style="display:none" id="encadeado">
+                                <label style="min-width: 450px;" id="labelPredecessora">Predecessor: </label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label>Item:</label><input style="min-width: 371px;" type="text" class="form-control" id="newItem">
+                                <input type="hidden" id="newIdItem"/>
+                            </div>
+                            <br />
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
+                                <button type="button" class="btn btn-success hide" id="btnEditarNovo"  onclick="EditarNovo();">Editar</button>
+                                <button type="button" class="btn btn-danger hide" id="btnDeletarNovo"  onclick="DeletarNovo();">Deletar</button>
+                                <button type="button" class="btn btn-default hide" id="btnCancelarNovo" >Cancelar</button>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-sm-6">
+                        <table id="tableNovo">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </form>
+                <div class="clearfix"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" onclick="SalvarNovo();">Salvar</button>
-
             </div>
         </div>
     </div>
@@ -243,12 +262,12 @@
     <script src="~/Scripts/DataTableRowsGroup.js"></script>*@
 
 @section Scripts {
-
     <script>
         $(document).ready(function () {
             var zero =0;
         });
 
+        var tableModalNovo;
         var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
         var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
         var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
@@ -284,6 +303,8 @@
         var urlGetPlanejamento = '@Url.Action("GET", "api/Pa_Planejamento")';
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+        var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
+        var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
         var AcaoDetalhes = '@Url.Action("Details","Pa_Acao")'
@@ -409,7 +430,7 @@
         //Verificando
         function SalvarPlanejamento(form) {
             console.log(SalvarPlanejamento);
-            
+
             if (!isClickedTaticoVinculado){
                 isClickedEstrategico = true;
             }
@@ -419,7 +440,7 @@
             let isValid = $('#Planejamento').find('.error').length == 0
             if(!isValid)  {
                 alert("Campos obrigatórios")
-                return 
+                return
             }
 
             if (isClickedTaticoVinculado)
@@ -459,7 +480,7 @@
             let isValid = ($(form).find('.error:visible').length == 0)
             if(!isValid)  {
                 alert("Campos obrigatórios")
-                return 
+                return
             }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
@@ -608,18 +629,18 @@
             });
 
             //if(edit == undefined){
-                $('#Dimensao_Id').val(change1).change();
-                //$.LoadingOverlay('show')
-                if (v2 != undefined) {
-                    setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
-                } else {
-                    //$('#Objetivo_Id').val(change2).change();
-                    setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
-                }
+            $('#Dimensao_Id').val(change1).change();
+            //$.LoadingOverlay('show')
+            if (v2 != undefined) {
+                setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
+            } else {
+                //$('#Objetivo_Id').val(change2).change();
+                setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
+            }
 
-                if (v3 != undefined) {
-                    setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },4000)
-                }
+            if (v3 != undefined) {
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },4000)
+            }
             //}
         }
 
@@ -867,7 +888,7 @@
             let isValid = $('.Acao').find('.error').length == 0
             if(!isValid)  {
                 alert("Campos obrigatórios")
-                return 
+                return
             }
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
@@ -952,7 +973,9 @@
             $('#body').find('select').select2()
             $('#body').find('select').select2('destroy')
 
-            $('#encadeado').show()
+            //Mantem invisivel o campo de Predecessor
+            //$('#encadeado').show()
+
             /*Limpa caso haja DDL denrto do modal.*/
             if ($('#encadeado').find('select').length) {
                 $('#encadeado').find('select').remove();
@@ -969,7 +992,7 @@
             $('#novoHeader').html("Incluir novo: " + label);
 
             if (encadeado != undefined) {
-                $('#encadeado').show();
+                //$('#encadeado').show();
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
 
@@ -995,6 +1018,33 @@
 
             /*Ajax*/
             $.post(urlSalvarNovoItem, {val: param1, param: param2, predecessor: param3}, function (r) {
+                $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
+                $(tempInput).val(r).change();
+                $('#modalNovo').modal('hide');
+                tempInput = undefined;
+                tempName = undefined;
+                /*Limpa caso haja DDL denrto do modal.*/
+                if ($('#encadeado').find('select').length) {
+                    $('#encadeado').find('select').remove();
+                }
+            });
+
+        }
+
+        function EditarNovo() {
+            /*validação*/
+
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
+            }
+            var param4 = $('#newIdItem').val();
+
+            /*Ajax*/
+            $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
                 $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
                 $(tempInput).val(r).change();
                 $('#modalNovo').modal('hide');
@@ -1814,7 +1864,70 @@
 
         $(function() {
             console.log( "ready!" );
-            GetDataTable()
+            GetDataTable();
+
+            $('#modalNovo').on('shown.bs.modal', function (e) {
+
+                $('#btnCancelarNovo').on('click', function () {
+                    $("#newIdItem").val('');
+                    $("#newItem").val('');
+                    $('#btnSalvarNovo').removeClass('hide');
+                    $('#btnEditarNovo').addClass('hide');
+                    $('#btnDeletarNovo').addClass('hide');
+                    $('#btnCancelarNovo').addClass('hide');
+                });
+
+                $('#btnCancelarNovo').click();
+
+                /*Dados*/
+                var param1 = $('#newItem').val();
+                var param2 = tempName.split('_Id')[0];
+                var param3 = 0;
+                if ($('#encadeado').find('select').length) {
+                    param3 = $('#encadeado').find('select').val();
+                }
+
+                /*Ajax*/
+                $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
+                    console.log(response);
+                    $("#tableNovo").html('');
+
+                    //Gera a lista
+                    var list = [];
+                    $.each(response, function( index, value ) {
+                        list.push([value.Id,value.Name])
+                    });
+
+                    tableModalNovo = $('#tableNovo').DataTable( {
+                        data: list,
+                        destroy:true,
+                        lengthChange: false,
+                        pageLength: 5,
+                        columns: [
+                            { title: "ID"},
+                            { title: "Nome" },
+                            {
+                                "className":      'options',
+                                "data":           null,
+                                "render": function(data, type, full, meta){
+                                    return '<spam class="btn btn-mini btn-primary pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</spam>';
+                                }
+                            }
+                        ],
+                        initComplete: function () {}
+                    } );
+
+                    $('#tableNovo tbody').on('click', 'spam', function () {
+                        $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
+                        $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
+                        $('#btnSalvarNovo').addClass('hide');
+                        $('#btnEditarNovo').removeClass('hide');
+                        $('#btnDeletarNovo').removeClass('hide');
+                        $('#btnCancelarNovo').removeClass('hide');
+                    });
+                });
+
+            })
         });
         /*Table*/
 

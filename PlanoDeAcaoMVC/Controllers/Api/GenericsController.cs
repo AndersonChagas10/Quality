@@ -1,4 +1,6 @@
 ﻿using PlanoAcaoCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
@@ -15,7 +17,64 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var table = string.Empty;
             string fk = string.Empty;
 
-            switch (valores.param)
+            SwitchParam(valores.param, ref table, ref fk);
+
+            if (valores.predecessor > 0)
+                retorno = Pa_BaseObject.GenericInsertOrUpdate(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
+            else
+                retorno = Pa_BaseObject.GenericInsert(valores.val, table);
+
+            return retorno;
+
+        }
+        [HttpPost]
+        [Route("Update")]
+        public int Update(GenericUpdatePa valores)
+        {
+            var retorno = 0;
+            var table = string.Empty;
+            string fk = string.Empty;
+
+            SwitchParam(valores.param, ref table, ref fk);
+
+            if (valores.predecessor > 0)
+                retorno = Pa_BaseObject.GenericInsertOrUpdate(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
+            else
+                retorno = Pa_BaseObject.GenericInsert(valores.val, table);
+
+            return retorno;
+
+        }
+
+
+        [HttpPost]
+        [Route("Get")]
+        public List<Pa_BaseObject.Generico> Get(GenericInsertPa valores)
+        {
+            var table = string.Empty;
+            string fk = string.Empty;
+
+            SwitchParam(valores.param, ref table, ref fk);
+
+            var retorno = new List<Pa_BaseObject.Generico>();
+            if (valores.predecessor > 0)
+                retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
+                    $@"SELECT [Id],[Name] FROM [dbo].[{ table }] 
+                    WHERE { fk } = {valores.predecessor.GetValueOrDefault()}"
+                    ).ToList();
+            else
+                retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
+                    $@"SELECT [Id],[Name] FROM [dbo].[{ table }] "
+                    ).ToList();
+
+            return retorno;
+
+        }
+
+        private void SwitchParam(string param, ref string table, ref string fk)
+        {
+
+            switch (param)
             {
                 case "TemaAssunto":
                     table = "Pa_TemaAssunto";
@@ -45,14 +104,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 default:
                     break;
             }
-
-            if(valores.predecessor > 0)
-                retorno = Pa_BaseObject.GenericInsert(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
-            else
-                retorno = Pa_BaseObject.GenericInsert(valores.val, table);
-
-            return retorno;
-
         }
 
         public class GenericInsertPa
@@ -60,6 +111,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             public string val { get; set; }
             public string param { get; set; }
             public int? predecessor { get; set; } = 0;
+        }
+
+        public class GenericUpdatePa
+        {
+            public string val { get; set; }
+            public string param { get; set; }
+            public int? predecessor { get; set; } = 0;
+            public int id { get; set; } = 0;
         }
     }
 

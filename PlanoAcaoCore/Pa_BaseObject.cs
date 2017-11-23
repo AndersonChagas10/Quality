@@ -111,13 +111,59 @@ namespace PlanoAcaoCore
             return SalvarStatic(cmd);
         }
 
+        public static int GenericUpdate(string valor, string table, int predecessor, string fk, int id)
+        {
+            string query;
+            SqlCommand cmd;
+
+            query = $@"UPDATE [dbo].[{ table }]
+                    SET [Name] = @Name, [{fk}] = @predecessor
+                    WHERE Id = @Id
+                    SELECT @Id";
+
+            cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@Name", valor);
+            cmd.Parameters.AddWithValue("@predecessor", predecessor);
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            return SalvarStatic(cmd);
+        }
+
+        public static int GetIdGenerico(string valor, string table, int predecessor, string fk)
+        {
+                string query;
+
+                query = $@"SELECT TOP 1 [Id] FROM [dbo].[{ table }] 
+                    WHERE [Name] = '{valor}' AND { fk } = {predecessor}";
+
+                return GetGenerico<Generico>(query)?.Id ?? 0;
+        }
+
+        public static int GenericInsertOrUpdate(string valor, string table, int predecessor, string fk)
+        {
+            int id = GetIdGenerico(valor, table, predecessor, fk);
+            if (id > 0)
+            {
+                return GenericUpdate(valor, table, predecessor, fk, id);
+            }else
+            {
+                return GenericInsert(valor, table, predecessor, fk);
+            }
+        }
+
+        public class Generico
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
         public static int ExecutarSql(string sql)
         {
             var retorno = 0;
             using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 retorno = db.ExecuteSql(sql);
             return retorno;
-        } 
+        }
 
         #endregion
 
