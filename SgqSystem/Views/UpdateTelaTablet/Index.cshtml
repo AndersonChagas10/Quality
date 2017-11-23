@@ -9,11 +9,12 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content monitor-get-tela" style="min-height: 600px;">
 
-        <h2>Monitor de Get Tela</h2>
+        <h2>Atualizar Parametrização</h2>
 
-        <button class="btn btn-primary" id="updateTablets">Gerar unidades selecionadas</button>
-        <button class="btn btn-success" id="refreshStatus">Atualizar</button>
+        <button class="btn btn-default" id="updateTablets">Atualizar Unidades Selecionadas</button>
+        @*<button class="btn btn-success" id="refreshStatus">Atualizar</button>*@
         <button class="btn btn-info" id="checkAll">Selecionar Todos</button>
+        <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
 
         @if (ViewBag.UnidadesUsuario != null)
             {
@@ -65,7 +66,7 @@
             things = JSON.stringify( things );
 
             var refreshStatus = function(){
-                $('#refreshStatus').LoadingOverlay("show");
+                $('#spamLoading').LoadingOverlay("show");
                 $.ajax(
                {
                    type: "POST",
@@ -75,7 +76,7 @@
                    contentType: "application/json; charset=utf-8",
                    success: function (response) {
                        getDataTable(response);
-                       $('#refreshStatus').LoadingOverlay("hide");
+                       $('#spamLoading').LoadingOverlay("hide");
                        
 
                        setTimeout(function(){
@@ -146,7 +147,7 @@
                 selectedAll =! selectedAll;
             });
 
-            $('#refreshStatus').on('click',refreshStatus);
+            //$('#refreshStatus').on('click',refreshStatus);
 
             refreshStatus();
 
