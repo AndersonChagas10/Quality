@@ -20,9 +20,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             SwitchParam(valores.param, ref table, ref fk);
 
             if (valores.predecessor > 0)
-                retorno = Pa_BaseObject.GenericInsertOrUpdate(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
+                retorno = Pa_BaseObject.GenericInsertIfNotExists(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
             else
-                retorno = Pa_BaseObject.GenericInsert(valores.val, table);
+                retorno = Pa_BaseObject.GenericInsertIfNotExists(valores.val, table);
 
             return retorno;
 
@@ -32,15 +32,19 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public int Update(GenericUpdatePa valores)
         {
             var retorno = 0;
+
+            if(!(valores.id > 0))
+                return retorno;
+
             var table = string.Empty;
             string fk = string.Empty;
 
             SwitchParam(valores.param, ref table, ref fk);
 
             if (valores.predecessor > 0)
-                retorno = Pa_BaseObject.GenericInsertOrUpdate(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
+                retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.predecessor.GetValueOrDefault(), fk, valores.id);
             else
-                retorno = Pa_BaseObject.GenericInsert(valores.val, table);
+                retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.id);
 
             return retorno;
 
@@ -66,6 +70,22 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
                     $@"SELECT [Id],[Name] FROM [dbo].[{ table }] "
                     ).ToList();
+
+            return retorno;
+
+        }
+
+
+        [HttpPost]
+        [Route("Delete")]
+        public int Delete(GenericInsertPa valores)
+        {
+            var table = string.Empty;
+            string fk = string.Empty;
+
+            SwitchParam(valores.param, ref table, ref fk);
+
+            var retorno = 0;
 
             return retorno;
 

@@ -215,21 +215,27 @@
             </div>
             <div class="modal-body" id="novoBody">
                 <form>
-                    <div class="form-group">
-                        <div class="col-sm-6">
+                    <div class="col-sm-6">
+                        <div class="form-group">
                             <div style="display:none" id="encadeado">
-                                <label style="min-width: 450px;" id="labelPredecessora">Predecessor: </label>
+                                <label id="labelPredecessora">Predecessor: </label>
+                            </div>
+                            <div class="col-sm-12" id="divPredecessora">
+                                <label>Predecessor:</label>
+                                <label id="labelPredecessoraValue"></label>
+                                <br />
                             </div>
                             <div class="col-sm-12">
-                                <label>Item:</label><input style="min-width: 371px;" type="text" class="form-control" id="newItem">
-                                <input type="hidden" id="newIdItem"/>
+                                <label>Nome do Item:</label>
+                                <textarea style="min-width: 371px;" type="text" class="form-control" id="newItem"></textarea>
+                                <input type="hidden" id="newIdItem" />
                             </div>
                             <br />
                             <div class="col-sm-12">
                                 <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
-                                <button type="button" class="btn btn-success hide" id="btnEditarNovo"  onclick="EditarNovo();">Editar</button>
-                                <button type="button" class="btn btn-danger hide" id="btnDeletarNovo"  onclick="DeletarNovo();">Deletar</button>
-                                <button type="button" class="btn btn-default hide" id="btnCancelarNovo" >Cancelar</button>
+                                <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="EditarNovo();">Editar</button>
+                                <button type="button" class="btn btn-danger hide" id="btnDeletarNovo" onclick="DeletarNovo();">Deletar</button>
+                                <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -304,6 +310,7 @@
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
         var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
+        var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
         var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
@@ -989,7 +996,7 @@
             var label = $(btn).parents('tr').find('label').html();
             $('#newItem').val("");
             $('#modalNovo').modal();
-            $('#novoHeader').html("Incluir novo: " + label);
+            $('#novoHeader').html("Gerenciar: " + label);
 
             if (encadeado != undefined) {
                 //$('#encadeado').show();
@@ -1000,7 +1007,7 @@
                 $('#modalNovo select').select2('destroy');
                 $('#modalNovo select').select2();
 
-                $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change()
+                $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
             $('#body').find('select').select2()
         }
@@ -1054,6 +1061,28 @@
                 if ($('#encadeado').find('select').length) {
                     $('#encadeado').find('select').remove();
                 }
+            });
+
+        }
+
+        function DeletarNovo() {
+            /*validação*/
+
+            if (confirm("Deseja apagar este item?") == false)
+                return;
+
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
+            }
+            var param4 = $('#newIdItem').val();
+
+            /*Ajax*/
+            $.post(urlDeletarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
+
             });
 
         }
@@ -1886,6 +1915,13 @@
                 if ($('#encadeado').find('select').length) {
                     param3 = $('#encadeado').find('select').val();
                 }
+                $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+
+                if(param3 != 0){
+                    $('#divPredecessora').removeClass('hide');
+                }else{
+                    $('#divPredecessora').addClass('hide');
+                }
 
                 /*Ajax*/
                 $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
@@ -1902,7 +1938,8 @@
                         data: list,
                         destroy:true,
                         lengthChange: false,
-                        pageLength: 5,
+                        pageLength: 3,
+                        "bInfo" : false,
                         columns: [
                             { title: "ID"},
                             { title: "Nome" },
