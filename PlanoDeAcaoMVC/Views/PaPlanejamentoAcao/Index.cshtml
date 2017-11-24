@@ -1104,13 +1104,14 @@
 
                 $(tempInput).append('<option value=' + r.Id + '> ' + $('#newItem').val() + '</option>');
                 //$(tempInput).val(r).change();
-                tempInput = undefined;
-                tempName = undefined;
+                //tempInput = undefined;
+                //tempName = undefined;
                 /*Limpa caso haja DDL denrto do modal.*/
                 /*if ($('#encadeado').find('select').length) {
                     $('#encadeado').find('select').remove();
                 }*/
-
+        
+                $('#btnCancelarNovo').click();
                 refreshDataTable();
             });
 
