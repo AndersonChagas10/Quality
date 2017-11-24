@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>SgqSystem</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>ef4a17a1-123e-4fc4-a75e-35abbc39db21</ProjectGuid>
+  <FullPath>C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\SgqSystem\SgqSystem.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\.sonarqube\out\\SgqSystem_2846\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\SgqSystem\bin\SgqSystem.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\.sonarqube\out\\SgqSystem_2846</Property>
+    <Property Name="sonar.stylecop.projectFilePath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\SgqSystem\SgqSystem.csproj</Property>
+  </AnalysisSettings>
+</ProjectInfo>

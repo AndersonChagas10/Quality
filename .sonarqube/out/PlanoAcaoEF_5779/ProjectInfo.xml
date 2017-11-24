@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>PlanoAcaoEF</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>2901b555-2f1a-4b5a-be9d-1d50844e0f2a</ProjectGuid>
+  <FullPath>C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\PlanoAcaoEF\PlanoAcaoEF.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\.sonarqube\out\\PlanoAcaoEF_5779\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\PlanoAcaoEF\bin\Debug\PlanoAcaoEF.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\.sonarqube\out\\PlanoAcaoEF_5779</Property>
+    <Property Name="sonar.stylecop.projectFilePath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\PlanoAcaoEF\PlanoAcaoEF.csproj</Property>
+  </AnalysisSettings>
+</ProjectInfo>

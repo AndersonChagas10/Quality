@@ -179,7 +179,15 @@
             }
 
     @@media print {
-
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+        table.divFooter {
+            position: fixed;
+            bottom: 0px;
+        }
         body, page {
             margin: 0.5cm;
             padding-top: 0.2cm;
@@ -202,6 +210,7 @@
         padding-bottom: 0.2cm;
         page-break-after: avoid;
         page-break-before: avoid;
+
         /*margin-left: 4px !important;
         margin-right: 8px !important;
         padding-top: 6px !important;
@@ -381,9 +390,6 @@
         }
 </style>
 
-<style type="text/scss">
-
-</style>
 <html xmlns="">
 <head>
     <title>Print Recravação</title>
@@ -621,8 +627,9 @@
             </div>
         </page>
         @*CA/OBS*@
-        <page size="A4">
+        <page size="A4" class="hasFooter">
             <div class="divSection">
+                @*HEADER*@
                 <table class="headerCA">
                     <tr>
                         <td colspan="3">
@@ -636,7 +643,8 @@
                     </tr>
                 </table>
 
-                <div class="divTableCorrectiveAction">
+                @*ACAO*@
+                <div class="divTableCorrectiveAction" style="padding-top: 20px;">
 
                     <table class="tableCorrectiveAction">
                         <colgroup>
@@ -705,7 +713,46 @@
                     </div>
                 </div>
 
-                <table class="footerCA">
+                @*OBS*@
+                <div class="divTableCorrectiveAction" style="padding-top: 20px;">
+
+                    <table class="tableCorrectiveAction">
+                        <colgroup>
+                            <col style="width: 20%">
+                            <col style="width: 80%;">
+                        </colgroup>
+                        <tr>
+                            <th>Hora</th>
+                            <th>OBSERVAÇÃO</th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div ng-repeat="item in seletedLinha.ObservacoesList | limitTo:999 track by $index">
+
+                        <table class="tableCorrectiveAction" ng-if="item.DescriptionFailure">
+                            <colgroup>
+                                <col style="width: 20%">
+                                <col style="width: 80%;">
+                            </colgroup>
+                            <tr>
+                                <td class="tbodyTd">
+                                    {{item.adDate}}
+                                </td>
+                                <td class="tbodyTd">
+                                    <label ng-if="item.LataComAtraso">
+                                        Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso:
+                                    </label>
+                                    <br  ng-if="item.LataComAtraso">
+                                    <span>{{item.DescriptionFailure}}</span>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                @*FOOTER*@
+                <table class="footerCA divFooter">
                     <tr style="vertical-align: top;">
                         <td height="70"><small>Monitor</small></td>
                         <td height="70"><small>Rep. Setor Enlatamento</small></td>
