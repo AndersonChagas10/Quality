@@ -227,7 +227,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <label>Nome do Item:</label>
-                                <textarea style="min-width: 371px;" type="text" class="form-control" id="newItem"></textarea>
+                                <textarea style="min-width: 371px; height:150px;" type="text" class="form-control" id="newItem"></textarea>
                                 <input type="hidden" id="newIdItem" />
                             </div>
                             <br />
@@ -980,6 +980,11 @@
             $('#body').find('select').select2()
             $('#body').find('select').select2('destroy')
 
+            //Remove select caso exista
+            if ($('#encadeado').find('select').length) {
+                $('#encadeado').find('select').remove();
+            }
+
             //Mantem invisivel o campo de Predecessor
             //$('#encadeado').show()
 
@@ -1025,15 +1030,22 @@
 
             /*Ajax*/
             $.post(urlSalvarNovoItem, {val: param1, param: param2, predecessor: param3}, function (r) {
-                $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
-                $(tempInput).val(r).change();
-                $('#modalNovo').modal('hide');
+                
+                if(r.resposta != null){
+                    alert(r.resposta);
+                    return;
+                }
+
+                $(tempInput).append('<option value=' + r.Id + '> ' + $('#newItem').val() + '</option>');
+                //$(tempInput).val(r).change();
                 tempInput = undefined;
                 tempName = undefined;
                 /*Limpa caso haja DDL denrto do modal.*/
-                if ($('#encadeado').find('select').length) {
+                /*if ($('#encadeado').find('select').length) {
                     $('#encadeado').find('select').remove();
-                }
+                }*/
+                
+                refreshDataTable();
             });
 
         }
@@ -1052,15 +1064,22 @@
 
             /*Ajax*/
             $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
-                $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
-                $(tempInput).val(r).change();
-                $('#modalNovo').modal('hide');
-                tempInput = undefined;
-                tempName = undefined;
-                /*Limpa caso haja DDL denrto do modal.*/
-                if ($('#encadeado').find('select').length) {
-                    $('#encadeado').find('select').remove();
+                
+                if(r.resposta != null){
+                    alert(r.resposta);
+                    return;
                 }
+
+                $(tempInput).find("option[value= "+ r.Id + "]").html($('#newItem').val())
+                //$(tempInput).find("select option[value= "+ r + "]").text($('#newItem').val());
+                //$(tempInput).val(r).change();
+                tempInput = undefined;
+                /*Limpa caso haja DDL denrto do modal.*/
+                /*if ($('#encadeado').find('select').length) {
+                    $('#encadeado').find('select').remove();
+                }*/
+                $('#btnCancelarNovo').click();
+                refreshDataTable();
             });
 
         }
@@ -1891,9 +1910,69 @@
             counter--;
         });
 
+        var refreshDataTable = function(){
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
+            }
+            $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+
+            if(param3 != 0){
+                $('#divPredecessora').removeClass('hide');
+            }else{
+                $('#divPredecessora').addClass('hide');
+            }
+
+            /*Ajax*/
+            $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
+                console.log(response);
+                $("#tableNovo").html('');
+
+                //Gera a lista
+                var list = [];
+                $.each(response, function( index, value ) {
+                    list.push([value.Id,value.Name])
+                });
+
+                tableModalNovo = $('#tableNovo').DataTable( {
+                    data: list,
+                    destroy:true,
+                    lengthChange: false,
+                    pageLength: 3,
+                    "bInfo" : false,
+                    columns: [
+                        { title: "ID"},
+                        { title: "Name"},
+                        {
+                            "className":      'options',
+                            "data":           null,
+                            "render": function(data, type, full, meta){
+                                return '<spam class="btn btn-mini btn-primary pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</spam>';
+                            }
+                        }
+                    ],
+                    initComplete: function () {}
+                } );
+
+                $('#tableNovo tbody').on('click', 'spam', function () {
+                    $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
+                    $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
+                    $('#btnSalvarNovo').addClass('hide');
+                    $('#btnEditarNovo').removeClass('hide');
+                    $('#btnDeletarNovo').removeClass('hide');
+                    $('#btnCancelarNovo').removeClass('hide');
+                });
+            })
+        };
+
         $(function() {
             console.log( "ready!" );
             GetDataTable();
+
+
 
             $('#modalNovo').on('shown.bs.modal', function (e) {
 
@@ -1908,63 +1987,9 @@
 
                 $('#btnCancelarNovo').click();
 
-                /*Dados*/
-                var param1 = $('#newItem').val();
-                var param2 = tempName.split('_Id')[0];
-                var param3 = 0;
-                if ($('#encadeado').find('select').length) {
-                    param3 = $('#encadeado').find('select').val();
-                }
-                $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+                refreshDataTable();
 
-                if(param3 != 0){
-                    $('#divPredecessora').removeClass('hide');
-                }else{
-                    $('#divPredecessora').addClass('hide');
-                }
-
-                /*Ajax*/
-                $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
-                    console.log(response);
-                    $("#tableNovo").html('');
-
-                    //Gera a lista
-                    var list = [];
-                    $.each(response, function( index, value ) {
-                        list.push([value.Id,value.Name])
-                    });
-
-                    tableModalNovo = $('#tableNovo').DataTable( {
-                        data: list,
-                        destroy:true,
-                        lengthChange: false,
-                        pageLength: 3,
-                        "bInfo" : false,
-                        columns: [
-                            { title: "ID"},
-                            { title: "Nome" },
-                            {
-                                "className":      'options',
-                                "data":           null,
-                                "render": function(data, type, full, meta){
-                                    return '<spam class="btn btn-mini btn-primary pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</spam>';
-                                }
-                            }
-                        ],
-                        initComplete: function () {}
-                    } );
-
-                    $('#tableNovo tbody').on('click', 'spam', function () {
-                        $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
-                        $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
-                        $('#btnSalvarNovo').addClass('hide');
-                        $('#btnEditarNovo').removeClass('hide');
-                        $('#btnDeletarNovo').removeClass('hide');
-                        $('#btnCancelarNovo').removeClass('hide');
-                    });
-                });
-
-            })
+            });
         });
         /*Table*/
 
