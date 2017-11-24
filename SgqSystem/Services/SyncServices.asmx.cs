@@ -17,6 +17,7 @@ using SgqSystem.Helpers;
 using SGQDBContextYTOARA;
 using SgqSystem.Controllers.Api.App;
 using System.Data;
+using System.Text;
 
 namespace SgqSystem.Services
 {
@@ -3727,9 +3728,9 @@ namespace SgqSystem.Services
 
             //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
             //Esses itens podem ser transformados funções menores
-            string listlevel1 = null;
-            string listLevel2 = null;
-            string listLevel3 = null;
+            System.Text.StringBuilder listlevel1 = new System.Text.StringBuilder();
+            System.Text.StringBuilder listLevel2 = new System.Text.StringBuilder();
+            System.Text.StringBuilder listLevel3 = new System.Text.StringBuilder();
 
             string excecao = null;
             #endregion
@@ -3741,9 +3742,9 @@ namespace SgqSystem.Services
                 #region instancia
 
                 //Instanciamos uma variável level01GroupList
-                string level01GroupList = null;
+                System.Text.StringBuilder level01GroupList = new System.Text.StringBuilder();
                 //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
-                string parLevel1 = null;
+                System.Text.StringBuilder parLevel1 = new System.Text.StringBuilder();
                 //Instanciamos uma variável para verificar o nome do ParCriticalLevel
                 string nameParCritialLevel = null;
                 //Percorremos a Lista dos Agrupamento 
@@ -3880,23 +3881,23 @@ namespace SgqSystem.Services
                                                      IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                      listParRelapse: listParRelapse);
                         //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters);
+                        parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters));
                     }
                     else
                     {
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name, classe: excecao);
+                        parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name, classe: excecao));
                     }
                     //Instancia variável para receber todos os level3
-                    string level3Group = null;
+                    StringBuilder level3Group = new StringBuilder();
 
                     #endregion
 
                     //Busca os Level2 e reforna no level3Group;
-                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
+                    listLevel2.Append(GetLevel02(parlevel1, ParCompany_Id, dateCollect, level3Group));
 
                     //Incrementa Level3Group
-                    listLevel3 += level3Group;
+                    listLevel3.Append(level3Group);
                     //counter++;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
@@ -3918,37 +3919,40 @@ namespace SgqSystem.Services
                         color = Html.bootstrapcolor.info;
                     }
                     //Adicionamos os itens em um acordeon
-                    parLevel1 = html.accordeon(
+                    parLevel1 = new System.Text.StringBuilder(html.accordeon(
                                                 id: parLevel1Group.Key.ToString() + "critivalLevel",
                                                 label: nameParCritialLevel,
                                                 color: color,
-                                                outerhtml: parLevel1,
-                                                aberto: true);
+                                                outerhtml: parLevel1.ToString(),
+                                                aberto: true));
                 }
                 else
                 {
                     //Adicionamos os itens e um listgroup
-                    level01GroupList = html.listgroup(
-                                                   outerhtml: parLevel1
-                                                );
+                    level01GroupList = new System.Text.StringBuilder(html.listgroup(
+                                                   outerhtml: parLevel1.ToString()
+                                                ));
                 }
                 //Adicionar a lista de level01 agrupados ou não a lsita geral
-                listlevel1 += parLevel1;
+                listlevel1.Append(parLevel1);
             }
             //Retona as lista
             //Podemos gerar uma verificação de atualizações
-            return html.div(
-                            outerhtml: listlevel1,
-                            classe: "level1List"
-                            ) +
-                   html.div(
-                            outerhtml: listLevel2,
-                            classe: "level2List col-xs-12 hide"
-                           ) +
-                   html.div(
-                            outerhtml: listLevel3,
-                            classe: "level3List  List col-xs-12 hide"
-                           );
+            html.div(true,
+                    outerhtml: listlevel1,
+                    classe: "level1List"
+                    );
+            html.div(true,
+                     outerhtml: listLevel2,
+                     classe: "level2List col-xs-12 hide"
+                    );
+            html.div(true,
+                     outerhtml: listLevel3,
+                     classe: "level3List  List col-xs-12 hide"
+                    );
+            listlevel1.Append(listLevel2);
+            listlevel1.Append(listLevel3);
+            return listlevel1.ToString();
 
         }
         /// <summary>
@@ -3958,7 +3962,7 @@ namespace SgqSystem.Services
         /// <param name="ParCompany_Id"></param>
         /// <param name="level3Group"></param>
         /// <returns></returns>
-        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, ref string level3Group)
+        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, StringBuilder level3Group)
         {
 
             #region Parametros e "Instancias"
@@ -4012,8 +4016,8 @@ namespace SgqSystem.Services
             int evaluateGroup = 0;
             int sampleGroup = 0;
 
-            string groupLevel3Level2 = null;
-            string painelLevel3 = null;
+            StringBuilder groupLevel3Level2 = new StringBuilder();
+            StringBuilder painelLevel3 = new StringBuilder();
 
             #endregion
 
@@ -4232,7 +4236,7 @@ namespace SgqSystem.Services
 
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, ref painelLevel3);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, painelLevel3);
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
@@ -4260,11 +4264,11 @@ namespace SgqSystem.Services
                                                     othersTags: othersTags
                                                 );
 
-                    groupLevel3Level2 += groupLevel3;
+                    groupLevel3Level2.Append(groupLevel3);
                 }
                 else
                 {
-                    level3Group += groupLevel3;
+                    level3Group.Append(groupLevel3);
                 }
 
             }
@@ -4341,7 +4345,7 @@ namespace SgqSystem.Services
                                                         );
 
 
-                if (!string.IsNullOrEmpty(groupLevel3Level2))
+                if (!string.IsNullOrEmpty(groupLevel3Level2.ToString()))
                 {
                     parLevel3Group = html.div(
                                                classe: "level3Group",
@@ -4353,7 +4357,7 @@ namespace SgqSystem.Services
                                                           groupLevel3Level2
                                              );
 
-                    level3Group += parLevel3Group;
+                    level3Group.Append(parLevel3Group);
                 }
 
                 //headerList = null;
@@ -4666,7 +4670,7 @@ namespace SgqSystem.Services
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, ref string painellevel3)
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, StringBuilder painellevel3)
         {
             var html = new Html();
 
@@ -4784,13 +4788,13 @@ namespace SgqSystem.Services
                                                 );
 
                 //string HeaderLevel02 = null;
-                painellevel3 = html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItem(
                                                      outerhtml: avaliacoes +
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml,
 
-                                        classe: "painel painelLevel03 row") +
-                              html.painelCounters(listCounter);
+                                        classe: "painel painelLevel03 row"));
+                painellevel3.Append(html.painelCounters(listCounter));
                 //          +
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -5026,14 +5030,14 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                painellevel3 = html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row") +
+                                               classe: "painel painelLevel03 row"));
 
-                               html.painelCounters(listCounter);
+                painellevel3.Append(html.painelCounters(listCounter));
                 //+
                 //                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -5174,11 +5178,11 @@ namespace SgqSystem.Services
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
 
-                painellevel3 = html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
-                                               classe: "painel painelLevel03 row") +
+                                               classe: "painel painelLevel03 row"));
 
-                              html.painelCounters(listCounter);
+                painellevel3.Append(html.painelCounters(listCounter));
                 //+
                 //                  +
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
@@ -5201,7 +5205,7 @@ namespace SgqSystem.Services
             else
             {
                 //Instancia uma veriavel para gerar o agrupamento
-                string parLevel3Group = null;
+                StringBuilder parLevel3Group = new StringBuilder();
 
                 var parlevel3GroupByLevel2 = parlevel3List.GroupBy(p => p.ParLevel3Group_Id);
 
@@ -5209,7 +5213,7 @@ namespace SgqSystem.Services
                 {
                     string accordeonName = null;
                     string acoordeonId = null;
-                    string level3Group = null;
+                    StringBuilder level3Group = new StringBuilder();
 
                     foreach (var parLevel3 in parLevel3GroupLevel2)//LOOP5
                     {
@@ -5231,7 +5235,7 @@ namespace SgqSystem.Services
                             string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
                             string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
-                            level3Group += level3List;
+                            level3Group.Append(level3List);
 
                             Last_Id = parLevel3.Id;
                         }
@@ -5240,12 +5244,12 @@ namespace SgqSystem.Services
                     if (!string.IsNullOrEmpty(acoordeonId))
                     {
                         haveAccordeon = true;
-                        level3Group = html.accordeon(
+                        level3Group = new StringBuilder(html.accordeon(
                                                         id: acoordeonId + "Level3",
                                                         label: accordeonName,
-                                                        outerhtml: level3Group,
+                                                        outerhtml: level3Group.ToString(),
                                                         classe: "row"
-                                                    );
+                                                    ));
                     }
 
                     //*inserir contador
@@ -5255,7 +5259,7 @@ namespace SgqSystem.Services
                         painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level3_header"));
                     }
 
-                    parLevel3Group += level3Group;
+                    parLevel3Group.Append(level3Group);
 
                 }
 
@@ -5297,8 +5301,8 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                var painelLevel3HeaderListHtml = GetHeaderHtml(
-                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.Id, ParLevel2.Id, ParLevelHeaderDB, ParCompany_Id);
+                var painelLevel3HeaderListHtml = new StringBuilder(GetHeaderHtml(
+                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.Id, ParLevel2.Id, ParLevelHeaderDB, ParCompany_Id));
 
                 //string HeaderLevel02 = null;
 
@@ -5334,12 +5338,12 @@ namespace SgqSystem.Services
                             {
                                 foreach (var p in listaPeriod)
                                 {
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                                    painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>");
                                     //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
+                                    painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>");
 
                                     if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
-                                        painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+                                        painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>");
 
                                 }
 
@@ -5354,11 +5358,11 @@ namespace SgqSystem.Services
                             {
                                 foreach (var p in listaPeriod)
                                 {
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+                                    painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>");
+                                    painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>");
 
                                     if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
-                                        painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+                                        painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>");
                                 }
 
                             }
@@ -5366,12 +5370,12 @@ namespace SgqSystem.Services
                     }
                 }
 
-                painellevel3 = html.listgroupItem(outerhtml: avaliacoes +
+                painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
                                                              painelLevel3HeaderListHtml,
-                                                  classe: "painel painelLevel03 row") +
-                              html.painelCounters(listCounter);
+                                                  classe: "painel painelLevel03 row"));
+painellevel3.Append(html.painelCounters(listCounter));
 
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -5388,17 +5392,17 @@ namespace SgqSystem.Services
                                                     );
 
                 //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
+                if (!string.IsNullOrEmpty(parLevel3Group.ToString()) && ParLevel1.HasGroupLevel2 != true)
                 {
-                    parLevel3Group = html.div(
+                    parLevel3Group = new StringBuilder(html.div(
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
                                                outerhtml: reauditFlag +
                                                           painellevel3 + panelButton +
-                                                          parLevel3Group
-                                             );
+                                                          parLevel3Group.ToString()
+                                             ));
                 }
-                return parLevel3Group;
+                return parLevel3Group.ToString();
             }
 
 

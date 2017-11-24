@@ -340,6 +340,7 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -1430,6 +1431,7 @@
     <Content Include="Views\ParClusterGroups\Edit.cshtml" />
     <Content Include="Views\ParClusterGroups\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel3Value.cshtml" />
+    <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
