@@ -335,6 +335,7 @@
             var zero =0;
         });
 
+        var selectPredecessor;
         var tableModalNovo;
         var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
         var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
@@ -1038,6 +1039,8 @@
         /*Novo item*/
         function Novo(btn, encadeado) {
             console.log("Novo")
+
+            selectPredecessor = encadeado;
 
             $('#body').find('select').select2()
             $('#body').find('select').select2('destroy')
@@ -2054,8 +2057,10 @@
         $(function() {
             console.log( "ready!" );
             GetDataTable();
-
-
+            
+            $('#modalNovo').on('hidden.bs.modal', function () {
+                $("#"+selectPredecessor).change();
+            })
 
             $('#modalNovo').on('shown.bs.modal', function (e) {
 
