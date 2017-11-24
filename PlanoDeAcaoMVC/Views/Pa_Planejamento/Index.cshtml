@@ -146,19 +146,6 @@
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.ObjetivoGerencial_Id, htmlAttributes: new { @class = "control-label " })
-                    <i style="color:red">*</i>
-                </td>
-                <td>
-                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required tatico  " })
-                </td>
-                <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">Gerenciar</button>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
                     @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, htmlAttributes: new { @class = "control-label " })
                     
                 </td>
@@ -167,6 +154,19 @@
                 </td>
                 <td>
                     <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Iniciativa_Id')">Gerenciar</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ObjetivoGerencial_Id, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
+                </td>
+                <td>
+                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required tatico  " })
+                </td>
+                <td>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">Gerenciar</button>
                 </td>
             </tr>
 
