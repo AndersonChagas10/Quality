@@ -1,0 +1,156 @@
+﻿@using DTO.DTO.Params
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content monitor-get-tela" style="min-height: 600px;">
+
+        <h2>Atualizar Parametrização</h2>
+
+        <button class="btn btn-primary" style="color:white" id="updateTablets">Atualizar Unidades Selecionadas</button>
+        @*<button class="btn btn-success" id="refreshStatus">Atualizar</button>*@
+        <button class="btn btn-info" id="checkAll">Selecionar Todos</button>
+        <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
+
+        @if (ViewBag.UnidadesUsuario != null)
+            {
+            <table class="table" id="tableAllUnitTelaTablete">
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Data Inicio</th>
+                        <th>Data Final</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (ParCompanyDTO v in ViewBag.UnidadesUsuario)
+                    {
+                        <tr data-unit-id="@v.Id">
+                            <td><input type="checkbox" value="@v.Id" name="unitId" /></td>
+                            <td>@v.Id</td>
+                            <td>@v.Name</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        closeLeftSidebar();;
+
+        $(document).ready(function() {
+
+            var things = {'ListUnits':@Html.Raw(Json.Encode(ViewBag.IdUnidadesUsuario))};
+
+            things = JSON.stringify( things );
+
+            var refreshStatus = function(){
+                $('#spamLoading').LoadingOverlay("show");
+                $.ajax(
+               {
+                   type: "POST",
+                   url: root + '/api/AppParams/GetGeneratedUnits',
+                   data: things,
+                   dataType: "JSON",
+                   contentType: "application/json; charset=utf-8",
+                   success: function (response) {
+                       getDataTable(response);
+                       $('#spamLoading').LoadingOverlay("hide");
+                       
+
+                       setTimeout(function(){
+                           refreshStatus();
+                       }, 3000);
+                   }
+               });
+            };
+
+
+            var getDataTable = function(response){
+                $('#tableAllUnitTelaTablet').empty();
+
+                var list = [];
+                //Gera a lista
+                $.each(response, function( index, value ) {
+                    var row = $('tr[data-unit-id='+value.Key+']').children();
+                    if(value != null){
+                        list.push([value.Key,value.DataInicioStr,value.DataFimStr, value.StatusStr])
+                    }else{
+                        list.push([value.Key,"-","-","-"])
+                    }
+                });
+
+                //Atualiza Html
+                $.each(list, function( index, value ) {
+                    var row = $('tr[data-unit-id='+value[0]+']').children();
+                    $(row[1]).html(value[0]);
+                    $(row[3]).html(value[1]);
+                    $(row[4]).html(value[2]);
+                    $(row[5]).html(value[3]);
+                });
+            };
+
+            $('#updateTablets').on('click', function(){
+                $.LoadingOverlay("show");
+
+                var listId = [];
+                $("input:checkbox[name=unitId]:checked").each(function(){
+                    listId.push($(this).val());
+                });
+
+                var data = JSON.stringify( {'ListUnits':listId} );
+                $.ajax(
+                   {
+                       type: "POST",
+                       url: root + '/api/AppParams/UpdateGetTelaThread',
+                       data: data,
+                       dataType: "JSON",
+                       contentType: "application/json; charset=utf-8",
+                       success: function (response) {
+                           $.LoadingOverlay("hide");
+                       }
+                   });
+
+                $('#updateTablets').LoadingOverlay("show");
+
+                setTimeout(function(){
+                    $('#updateTablets').LoadingOverlay("hide");
+                }, 8000);
+
+                $('.monitor-get-tela input:checkbox').prop('checked', false);
+            });
+
+            var selectedAll = false;
+            $('#checkAll').on('click', function(){
+                $('.monitor-get-tela input:checkbox').prop('checked', !selectedAll);
+                selectedAll =! selectedAll;
+            });
+
+            //$('#refreshStatus').on('click',refreshStatus);
+
+            refreshStatus();
+
+        } );
+    </script>
+}

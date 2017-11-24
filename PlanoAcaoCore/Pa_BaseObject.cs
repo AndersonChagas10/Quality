@@ -78,11 +78,11 @@ namespace PlanoAcaoCore
         {
             string query;
 
-            query = " INSERT INTO [dbo].[" + table + "] " +
-                    "\n       ([Name])                  " +
-                    "\n VALUES                          " +
-                    "\n       (@Name)                   " +
-                    "\n       SELECT CAST(scope_identity() AS int) ";
+            query = $@"INSERT INTO [dbo].[{ table }] 
+                          ([Name], IsActive)                  
+                    VALUES                          
+                          (@Name, 1)                    
+                          SELECT CAST(scope_identity() AS int) ";
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
@@ -91,17 +91,47 @@ namespace PlanoAcaoCore
             return SalvarStatic(cmd);
         }
 
+        public static int GenericUpdate(string valor, string table, bool isActive, int id)
+        {
+            string query;
+            SqlCommand cmd;
+
+            query = $@"UPDATE [dbo].[{ table }]
+                    SET [Name] = @Name, [IsActive] = @IsActive
+                    WHERE Id = @Id
+                    SELECT @Id";
+
+            cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@Name", valor);
+            cmd.Parameters.AddWithValue("@IsActive", isActive);
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            return SalvarStatic(cmd);
+        }
+
+        public static int GetIdGenerico(string valor, string table)
+        {
+            string query;
+
+            query = $@"SELECT TOP 1 [Id] FROM [dbo].[{ table }] 
+                    WHERE [Name] = '{valor}'";
+
+            return GetGenerico<Generico>(query)?.Id ?? 0;
+        }
+
         public static int GenericInsert(string valor, string table, int predecessor, string fk)
         {
             string query;
 
-            query = " INSERT INTO [dbo].[" + table + "] " +
-                    "\n       ([Name],                  " +
-                    "\n        " + fk + "     )          " +
-                    "\n VALUES                          " +
-                    "\n       (@Name,                   " +
-                    "\n        @predecessor)            " +
-                    "\n       SELECT CAST(scope_identity() AS int) ";
+            query = $@"INSERT INTO [dbo].[{ table }] 
+                          ([Name],                  
+                           { fk },
+                            IsActive)         
+                    VALUES                          
+                          (@Name,                   
+                           @predecessor,
+                            1)             
+                          SELECT CAST(scope_identity() AS int) ";
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
@@ -111,13 +141,87 @@ namespace PlanoAcaoCore
             return SalvarStatic(cmd);
         }
 
+        public static int GenericUpdate(string valor, string table, bool isActive, int predecessor, string fk, int id)
+        {
+            string query;
+            SqlCommand cmd;
+
+            query = $@"UPDATE [dbo].[{ table }]
+                    SET [Name] = @Name, [{fk}] = @predecessor, [IsActive] = @IsActive
+                    WHERE Id = @Id
+                    SELECT @Id";
+
+            cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@Name", valor);
+            cmd.Parameters.AddWithValue("@predecessor", predecessor);
+            cmd.Parameters.AddWithValue("@IsActive", isActive);
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            return SalvarStatic(cmd);
+        }
+
+        public static int GetIdGenerico(string valor, string table, int predecessor, string fk)
+        {
+            string query;
+
+            query = $@"SELECT TOP 1 [Id] FROM [dbo].[{ table }] 
+                    WHERE [Name] = '{valor}' AND { fk } = {predecessor}";
+
+            return GetGenerico<Generico>(query)?.Id ?? 0;
+        }
+
+        public static int GenericInsertIfNotExists(string valor, string table)
+        {
+            if (!(GetIdGenerico(valor, table) > 0))
+            {
+                return GenericInsert(valor, table);
+            }
+            return 0;
+        }
+
+        public static int GenericInsertIfNotExists(string valor, string table, int predecessor, string fk)
+        {
+            if (!(GetIdGenerico(valor, table, predecessor, fk) > 0))
+            {
+                return GenericInsert(valor, table, predecessor, fk);
+            }
+            return 0;
+        }
+
+        public static int GenericUpdateIfUnique(string valor, string table, bool isActive, int id)
+        {
+            int auxId = GetIdGenerico(valor, table);
+            if (auxId == id || auxId == 0)
+            {
+                return GenericUpdate(valor, table, isActive, id);
+            }
+            return 0;
+        }
+
+        public static int GenericUpdateIfUnique(string valor, string table, bool isActive, int predecessor, string fk, int id)
+        {
+            int auxId = GetIdGenerico(valor, table, predecessor, fk);
+            if (auxId == id || auxId == 0)
+            {
+                return GenericUpdate(valor, table, isActive, predecessor, fk, id);
+            }
+            return 0;
+        }
+
+        public class Generico
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public bool IsActive { get; set; }
+        }
+
         public static int ExecutarSql(string sql)
         {
             var retorno = 0;
             using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 retorno = db.ExecuteSql(sql);
             return retorno;
-        } 
+        }
 
         #endregion
 
