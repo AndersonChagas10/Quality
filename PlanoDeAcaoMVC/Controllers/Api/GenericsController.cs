@@ -73,9 +73,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 SwitchParam(valores.param, ref table, ref fk);
 
                 if (valores.predecessor > 0)
-                    retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.predecessor.GetValueOrDefault(), fk, valores.id);
+                    retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.isActive, valores.predecessor.GetValueOrDefault(), fk, valores.id);
                 else
-                    retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.id);
+                    retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.isActive, valores.id);
 
 
                 if (retorno == 0)
@@ -106,12 +106,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new List<Pa_BaseObject.Generico>();
             if (valores.predecessor > 0)
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
-                    $@"SELECT [Id],[Name] FROM [dbo].[{ table }] 
+                    $@"SELECT [Id],[Name],[IsActive] FROM [dbo].[{ table }] 
                     WHERE { fk } = {valores.predecessor.GetValueOrDefault()}"
                     ).ToList();
             else
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
-                    $@"SELECT [Id],[Name] FROM [dbo].[{ table }] "
+                    $@"SELECT [Id],[Name],[IsActive] FROM [dbo].[{ table }] "
                     ).ToList();
 
             return retorno;
@@ -177,6 +177,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         public class GenericUpdatePa : GenericInsertPa
         {
+            public bool isActive { get; set; }
             public int id { get; set; } = 0;
         }
     }

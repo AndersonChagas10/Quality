@@ -89,3 +89,13 @@ SET IDENTITY_INSERT Shift ON
 insert into [Shift](Id, Description, AddDate, AlterTime) values (1, 'Shift A', GETDATE(), GETDATE()), (2, 'Shift B', GETDATE(), GETDATE())
 delete [Shift] where id in (3, 4)
 SET IDENTITY_INSERT [Shift] OFF
+
+24 11 2017 - Incluido coluna 'IsActive' nas tabelas abaixo (Plano de Ação)
+
+alter table Pa_TemaAssunto add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_Objetivo add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_Indicadores add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_ObjetivoGeral add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_IndicadoresDeProjeto add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_IndicadoresDiretriz add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_Iniciativa add IsActive BIT NOT NULL DEFAULT 1;

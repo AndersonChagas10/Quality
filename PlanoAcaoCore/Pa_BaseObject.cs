@@ -78,11 +78,11 @@ namespace PlanoAcaoCore
         {
             string query;
 
-            query = " INSERT INTO [dbo].[" + table + "] " +
-                    "\n       ([Name])                  " +
-                    "\n VALUES                          " +
-                    "\n       (@Name)                   " +
-                    "\n       SELECT CAST(scope_identity() AS int) ";
+            query = $@"INSERT INTO [dbo].[{ table }] 
+                          ([Name], IsActive)                  
+                    VALUES                          
+                          (@Name, 1)                    
+                          SELECT CAST(scope_identity() AS int) ";
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
@@ -91,18 +91,19 @@ namespace PlanoAcaoCore
             return SalvarStatic(cmd);
         }
 
-        public static int GenericUpdate(string valor, string table, int id)
+        public static int GenericUpdate(string valor, string table, bool isActive, int id)
         {
             string query;
             SqlCommand cmd;
 
             query = $@"UPDATE [dbo].[{ table }]
-                    SET [Name] = @Name
+                    SET [Name] = @Name, [IsActive] = @IsActive
                     WHERE Id = @Id
                     SELECT @Id";
 
             cmd = new SqlCommand(query);
             cmd.Parameters.AddWithValue("@Name", valor);
+            cmd.Parameters.AddWithValue("@IsActive", isActive);
             cmd.Parameters.AddWithValue("@Id", id);
 
             return SalvarStatic(cmd);
@@ -122,13 +123,15 @@ namespace PlanoAcaoCore
         {
             string query;
 
-            query = " INSERT INTO [dbo].[" + table + "] " +
-                    "\n       ([Name],                  " +
-                    "\n        " + fk + "     )          " +
-                    "\n VALUES                          " +
-                    "\n       (@Name,                   " +
-                    "\n        @predecessor)            " +
-                    "\n       SELECT CAST(scope_identity() AS int) ";
+            query = $@"INSERT INTO [dbo].[{ table }] 
+                          ([Name],                  
+                           { fk },
+                            IsActive)         
+                    VALUES                          
+                          (@Name,                   
+                           @predecessor,
+                            1)             
+                          SELECT CAST(scope_identity() AS int) ";
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
@@ -138,19 +141,20 @@ namespace PlanoAcaoCore
             return SalvarStatic(cmd);
         }
 
-        public static int GenericUpdate(string valor, string table, int predecessor, string fk, int id)
+        public static int GenericUpdate(string valor, string table, bool isActive, int predecessor, string fk, int id)
         {
             string query;
             SqlCommand cmd;
 
             query = $@"UPDATE [dbo].[{ table }]
-                    SET [Name] = @Name, [{fk}] = @predecessor
+                    SET [Name] = @Name, [{fk}] = @predecessor, [IsActive] = @IsActive
                     WHERE Id = @Id
                     SELECT @Id";
 
             cmd = new SqlCommand(query);
             cmd.Parameters.AddWithValue("@Name", valor);
             cmd.Parameters.AddWithValue("@predecessor", predecessor);
+            cmd.Parameters.AddWithValue("@IsActive", isActive);
             cmd.Parameters.AddWithValue("@Id", id);
 
             return SalvarStatic(cmd);
@@ -184,22 +188,22 @@ namespace PlanoAcaoCore
             return 0;
         }
 
-        public static int GenericUpdateIfUnique(string valor, string table, int id)
+        public static int GenericUpdateIfUnique(string valor, string table, bool isActive, int id)
         {
             int auxId = GetIdGenerico(valor, table);
             if (auxId == id || auxId == 0)
             {
-                return GenericUpdate(valor, table, id);
+                return GenericUpdate(valor, table, isActive, id);
             }
             return 0;
         }
 
-        public static int GenericUpdateIfUnique(string valor, string table, int predecessor, string fk, int id)
+        public static int GenericUpdateIfUnique(string valor, string table, bool isActive, int predecessor, string fk, int id)
         {
             int auxId = GetIdGenerico(valor, table, predecessor, fk);
             if (auxId == id || auxId == 0)
             {
-                return GenericUpdate(valor, table, predecessor, fk, id);
+                return GenericUpdate(valor, table, isActive, predecessor, fk, id);
             }
             return 0;
         }
@@ -208,6 +212,7 @@ namespace PlanoAcaoCore
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public bool IsActive { get; set; }
         }
 
         public static int ExecutarSql(string sql)

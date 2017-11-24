@@ -102,7 +102,7 @@
                     @Html.ValidationMessageFor(model => model.Objetivo_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Dimensao_Id')">Novo</button>
+                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Dimensao_Id')">Gerenciar</button>
                 </td>
             </tr>
             <tr>
@@ -114,7 +114,7 @@
                     @Html.ValidationMessageFor(model => model.IndicadoresDiretriz_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Objetivo_Id')">Novo</button>
+                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Objetivo_Id')">Gerenciar</button>
                 </td>
             </tr>
            
@@ -140,7 +140,7 @@
                     @Html.DropDownList("Iniciativa_Id", new SelectList(ViewBag.Iniciativa, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required tatico " })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this);">Novo</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this);">Gerenciar</button>
                 </td>
             </tr>
 
@@ -153,7 +153,7 @@
                     @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required tatico  " })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">Novo</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">Gerenciar</button>
                 </td>
             </tr>
 
@@ -166,7 +166,7 @@
                     @Html.DropDownList("IndicadoresDeProjeto_Id", new SelectList(ViewBag.IndicadoresDeProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm   " })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Iniciativa_Id')">Novo</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Iniciativa_Id')">Gerenciar</button>
                 </td>
             </tr>
 
