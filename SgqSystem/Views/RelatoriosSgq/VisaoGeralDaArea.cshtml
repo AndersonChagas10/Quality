@@ -136,6 +136,14 @@
     #colUieFim1::-webkit-scrollbar-thumb {
         background: #383434; /*#bf0d0e;*/
     }
+
+    #showNCGeral {
+        /*height: 250px;
+        padding-top: 75px;*/
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
 </style>
 
 <div class="page-content" style="min-height: 600px;">
@@ -148,7 +156,7 @@
 
         <div id="loaderNCGeral"></div>
         <div class="totalNC" id="NCGeral" hidden>
-            <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert" style="height:250px; padding-top:75px;">
+            <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
                 <hh>0 %</hh>
                 <br />
                 <span>Scorecard</span>
@@ -581,6 +589,8 @@
             $('#funcoesPorUnidade').empty();
             $('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
+            $('#GraficoHistoricoGeral').empty();
+            $('#showNCGeral').hide();
 
             $btn.button('loading');
 
@@ -2174,6 +2184,8 @@
 
             if (data.length > 0) {
 
+                $('#showNCGeral').show();
+
                 var dia = MapeiaValorParaHC(data, "_date");
                 var nc = MapeiaValorParaHC(data, "nc");
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
@@ -2332,8 +2344,7 @@
                 var porcPeriodo = data[0].nc;
                 $('#showNCGeral > hh').css("font-size", "40px")
                 $('#showNCGeral > hh').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
-                $('#NCGeral').show();
-
+                $('#NCGeral').show();               
             }
         }
 
