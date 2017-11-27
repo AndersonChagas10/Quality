@@ -263,38 +263,40 @@ namespace PlanoAcaoCore
             get
             {
               
-                return "\nSELECT Pl.* ,             " +
-                        "\nINI.Name AS Inciativa,                          " +
-                        "\nDIR.Name AS Diretoria,                          " +
-                        "\nGER.Name AS Gerencia,                           " +
-                        "\nCORD.Name AS Coordenacao,                       " +
-                        "\nMISS.Name AS Missao,                            " +
-                        "\nVIS.Name AS Visao,                              " +
-                        "\nTEM.Name AS TemaAssunto,                        " +
-                        "\nINDIC.Name AS IndicadoresDiretriz,              " +
-                        "\nINDICProj.Name AS IndicadoresDeProjeto,         " +
-                        "\nOBJT.Name AS ObjetivoGerencial,                 " +
-                        "\nDIME.Name AS Dimensao,                          " +
-                        "\nINICI.Name AS Iniciativa,                       " +
-                        "\nOBJ.Name AS Objetivo                            " +
-                        " FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id, Pl2.IsTatico, Pl2.Tatico_Id, Pl1.IsFta FROM Pa_Planejamento Pl1 " +
-                        "  INNER JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id " +
-                        "  UNION ALL " +
-                        "  SELECT DISTINCT pl1.* FROM Pa_Planejamento Pl1 LEFT JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null " +
-                        "  ) Pl " +
-                        "\nLEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id " +
-                        "\nLEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id " +
-                        "\nLEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id " +
-                        "\nLEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id " +
-                        "\nLEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id " +
-                        "\nLEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id " +
-                        "\nLEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id " +
-                        "\nLEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id " +
-                        "\nLEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDICProj.Id = Pl.IndicadoresDeProjeto_Id " +
-                        "\nLEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id " +
-                        "\nLEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id " +
-                        "\nLEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id " +
-                        "\nLEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id";
+                return $@"SELECT Pl.* ,             
+                        INI.Name AS Inciativa,     
+                        DIR.Name AS Diretoria,     
+                        GER.Name AS Gerencia,      
+                        CORD.Name AS Coordenacao,  
+                        MISS.Name AS Missao,       
+                        VIS.Name AS Visao,         
+                        TEM.Name AS TemaAssunto,        
+                        INDIC.Name AS IndicadoresDiretriz,             
+                        INDICProj.Name AS IndicadoresDeProjeto,        
+                        OBJT.Name AS ObjetivoGerencial,                
+                        DIME.Name AS Dimensao,                         
+                        INICI.Name AS Iniciativa,                      
+                        OBJ.Name AS Objetivo                               
+                         FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id, Pl2.IsTatico, Pl2.Tatico_Id, Pl1.IsFta FROM Pa_Planejamento Pl1 
+                          INNER JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id 
+                          UNION ALL 
+                          SELECT DISTINCT pl1.* FROM Pa_Planejamento Pl1 LEFT JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null 
+                          ) Pl 
+                        LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id 
+                        LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id 
+                        LEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id 
+                        LEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id 
+                        LEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id 
+                        LEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id 
+                        LEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id 
+                        LEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id 
+                        LEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDICProj.Id = Pl.IndicadoresDeProjeto_Id 
+                        LEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id 
+                        LEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id 
+                        LEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id 
+                        LEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id
+                        
+                        ";
 
             }
         }
@@ -393,6 +395,7 @@ namespace PlanoAcaoCore
                             k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
                         else
                             k._QuandoFim = string.Empty;
+
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
@@ -406,6 +409,92 @@ namespace PlanoAcaoCore
             }
 
             //retorno.RemoveAll(r => remover.Any(c => c == r.Id));
+
+            return retorno;
+        }
+
+        public static List<Pa_Planejamento> GetPlanejamentoAcao(string dataInit, string dataFim)
+        {
+            var retorno = new List<Pa_Planejamento>();
+            var planejamentos = Listar();
+            var acoes = Pa_Acao.Listar();
+            var remover = new List<int>();
+
+
+            foreach (var i in planejamentos)
+            {
+                //$
+                if (i.UnidadeDeMedida_Id == 1)
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = "R$ " + i.ValorDe.ToString("0.##");
+                    if (i.ValorPara > 0)
+                        i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
+                }
+                //Percentual
+                if (i.UnidadeDeMedida_Id == 2)
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = i.ValorDe.ToString("0.##") + " %";
+                    if (i.ValorPara > 0)
+                        i._ValorPara = i.ValorPara.ToString("0.##") + " %";
+                }
+                //if(i.Estrategico_Id.GetValueOrDefault() >0)
+                //{
+                //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
+                //}
+                if (i.DataInicio.GetValueOrDefault() != DateTime.MinValue)
+                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+                else
+                    i._DataInicio = string.Empty;
+
+                if (i.DataFim.GetValueOrDefault() != DateTime.MinValue)
+                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+                else
+                    i._DataFim = string.Empty;
+
+                var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
+                if (acoesTmp.Count() > 0)
+                {
+                    foreach (var k in acoesTmp)
+                    {
+                        var planTemp = new Pa_Planejamento();
+                        foreach (var pt in planTemp.GetType().GetProperties())
+                            try
+                            {
+                                pt.SetValue(planTemp, i.GetType().GetProperty(pt.Name).GetValue(i));
+                            }
+                            catch (Exception)
+                            {
+                                //throw;
+                            }
+
+                        if (k.QuandoInicio != DateTime.MinValue)
+                            k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                        else
+                            k._QuandoFim = string.Empty;
+
+                        if (k.QuandoFim != DateTime.MinValue)
+                            k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                        else
+                            k._QuandoFim = string.Empty;
+
+                        planTemp.Acao = k;
+                        retorno.Add(planTemp);
+                    }
+                }
+                else
+                {
+                    i.Acao = new Pa_Acao();
+
+                    retorno.Add(i);
+                }
+            }
+
+            var dtInit = DTO.Helpers.Guard.ParseDateToSqlV2(dataInit, DTO.Helpers.Guard.CultureCurrent.BR);
+            var dtFim = DTO.Helpers.Guard.ParseDateToSqlV2(dataFim, DTO.Helpers.Guard.CultureCurrent.BR);
+
+            retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
 
             return retorno;
         }
