@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -340,6 +340,7 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -1051,7 +1052,6 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
     <None Include="Properties\PublishProfiles\master2.pubxml" />
@@ -1070,6 +1070,7 @@
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQYtoara.pubxml" />
     <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />
@@ -1430,6 +1431,7 @@
     <Content Include="Views\ParClusterGroups\Edit.cshtml" />
     <Content Include="Views\ParClusterGroups\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel3Value.cshtml" />
+    <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1520,7 +1522,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
