@@ -334,12 +334,23 @@
             <div id="showTipoCEP" style="display:none">
                 <span class="redLabel">@Resources.Resource.letters_cep</span>
 
-                @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                @if (ViewBag.ListaCEP != null)
+                {
+                    Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" });
+                }
             </div>
+
+
         </li>
 
+
+
         <li>
+
+
             <div id="showModulo" style="display:none">
+
+
                 <span class="redLabel">Módulo</span>
 
                 @*@Html.DropDownList("moduloId", new SelectList(ViewBag.Modulos, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })*@

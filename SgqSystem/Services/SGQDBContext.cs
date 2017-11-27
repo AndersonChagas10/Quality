@@ -2170,7 +2170,7 @@ namespace SGQDBContext
     public partial class CollectionJson
     {
         public int Id { get; set; }
-        public int Unit_Id { get; }
+        public int Unit_Id { get; set; }
         public int Shift { get; set; }
         public int Period { get; set; }
         public int level01_Id { get; set; }
@@ -2195,7 +2195,7 @@ namespace SGQDBContext
         public bool IsProcessed { get; set; }
         public string Device_Mac { get; set; }
         public DateTime AddDate { get; set; }
-        public DateTime? AlterDate { get; set; }
+        public DateTime? AlterDate { get; }
         public string Key { get; set; }
         public string TTP { get; set; }
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

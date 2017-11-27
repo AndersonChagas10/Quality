@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
+using System.Text;
 using System.Threading;
 using System.Web;
 
@@ -66,6 +67,30 @@ namespace SgqSystem.Services
                 outerhtml += outerAngular;
 
             return "<div id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\"" + tags + ">" + outerhtml + "</div>";
+        }
+
+        /// <summary>
+        /// Retorna uma div
+        /// </summary>
+        /// <param name="id">Atributo Id</param>
+        /// <param name="classe">Atributo Classe</param>
+        /// <param name="name">Atributo Name</param>
+        /// <param name="outerhtml">Conteudo</param>
+        /// <param name="style">Styles</param>
+        /// <param name="tags">Tags</param>
+        /// <returns></returns>
+        public void div(bool t, StringBuilder outerhtml, string id = null, string classe = null, string name = null,string style = null, string tags = null, string outerAngular = null)
+        {
+
+            if (!string.IsNullOrEmpty(tags))
+            {
+                tags = " " + tags;
+            }
+            if (!string.IsNullOrEmpty(outerAngular))
+                outerhtml.Append(outerAngular);
+
+            outerhtml.Insert(0, "<div id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\"" + tags + ">");
+            outerhtml.Append("</div>");
         }
         /// <summary>
         /// Retorna um span
@@ -229,7 +254,7 @@ namespace SgqSystem.Services
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null , string totalDefeitos = null)
+        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null)
         {
             classe += " list-group-item";
 
@@ -239,7 +264,7 @@ namespace SgqSystem.Services
                 tags = tags.Trim();
             }
 
-            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='"+ totalDefeitos + "'>" + outerhtml + "</li>";
+            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
         }
 
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0, string othersTags = null)
@@ -560,7 +585,7 @@ namespace SgqSystem.Services
                              bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse)
         {
 
-            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower()+"\"";
+            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower()+"\"");
 
             string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
             string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");
@@ -570,7 +595,7 @@ namespace SgqSystem.Services
                 var i = 1;
                 foreach (var parRelapse in listParRelapse)
                 {
-                    tags += " phase" + i + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + ";"+ parRelapse.NcNumber+"' ";
+                    tags.Append(" phase" + i + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + ";"+ parRelapse.NcNumber+"' ");
                     i++;
                 }
             }
@@ -579,7 +604,7 @@ namespace SgqSystem.Services
                                 id: ParLevel1.Id.ToString(),
                                 classe: "level1 col-xs-7 " + tipoTela,
                                 //Aqui vai as tags do level01
-                                tags: tags,
+                                tags: tags.ToString(),
                                 outerhtml: span(outerhtml: ParLevel1.Name, classe: "levelName")
                                 );
             //Adiciona Div Lateral

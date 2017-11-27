@@ -1,7 +1,9 @@
 ﻿using PlanoAcaoCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
@@ -10,43 +12,84 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     {
         [HttpPost]
         [Route("Save")]
-        public int Save(GenericInsertPa valores)
+        public GenericInsertPa Save(GenericInsertPa valores)
         {
+            try
+            {
 
-            var retorno = 0;
-            var table = string.Empty;
-            string fk = string.Empty;
+                if (String.IsNullOrEmpty(valores.val))
+                {
+                    valores.resposta = "Valor informado é invalido.";
+                    return valores;
+                }
 
-            SwitchParam(valores.param, ref table, ref fk);
+                var retorno = 0;
+                var table = string.Empty;
+                string fk = string.Empty;
 
-            if (valores.predecessor > 0)
-                retorno = Pa_BaseObject.GenericInsertIfNotExists(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
-            else
-                retorno = Pa_BaseObject.GenericInsertIfNotExists(valores.val, table);
+                SwitchParam(valores.param, ref table, ref fk);
 
-            return retorno;
+                if (valores.predecessor > 0)
+                    retorno = Pa_BaseObject.GenericInsertIfNotExists(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
+                else
+                    retorno = Pa_BaseObject.GenericInsertIfNotExists(valores.val, table);
+
+                if (retorno == 0)
+                {
+                    valores.resposta = "Valor informado já existe. Não pode ser duplicado.";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                valores.resposta = "Ocorreu um erro durante a tentativa de processar o dado.";
+            }
+
+            return valores;
 
         }
         [HttpPost]
         [Route("Update")]
-        public int Update(GenericUpdatePa valores)
+        public GenericUpdatePa Update(GenericUpdatePa valores)
         {
-            var retorno = 0;
+            try
+            {
+                var retorno = 0;
 
-            if(!(valores.id > 0))
-                return retorno;
+                if (String.IsNullOrEmpty(valores.val))
+                {
+                    valores.resposta = "Valor informado é invalido.";
+                    return valores;
+                }
+                if (!(valores.id > 0))
+                {
+                    valores.resposta = "Valor do ID é inválido.";
+                    return valores;
+                }
 
-            var table = string.Empty;
-            string fk = string.Empty;
+                var table = string.Empty;
+                string fk = string.Empty;
 
-            SwitchParam(valores.param, ref table, ref fk);
+                SwitchParam(valores.param, ref table, ref fk);
 
-            if (valores.predecessor > 0)
-                retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.predecessor.GetValueOrDefault(), fk, valores.id);
-            else
-                retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.id);
+                if (valores.predecessor > 0)
+                    retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.isActive, valores.predecessor.GetValueOrDefault(), fk, valores.id);
+                else
+                    retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.isActive, valores.id);
 
-            return retorno;
+
+                if (retorno == 0)
+                {
+                    valores.resposta = "Valor informado já existe. Não pode ser duplicado.";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                valores.resposta = "Ocorreu um erro durante a tentativa de processar o dado.";
+            }
+
+            return valores;
 
         }
 
@@ -63,12 +106,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new List<Pa_BaseObject.Generico>();
             if (valores.predecessor > 0)
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
-                    $@"SELECT [Id],[Name] FROM [dbo].[{ table }] 
+                    $@"SELECT [Id],[Name],[IsActive] FROM [dbo].[{ table }] 
                     WHERE { fk } = {valores.predecessor.GetValueOrDefault()}"
                     ).ToList();
             else
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
-                    $@"SELECT [Id],[Name] FROM [dbo].[{ table }] "
+                    $@"SELECT [Id],[Name],[IsActive] FROM [dbo].[{ table }] "
                     ).ToList();
 
             return retorno;
@@ -78,16 +121,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         [HttpPost]
         [Route("Delete")]
-        public int Delete(GenericInsertPa valores)
+        public GenericInsertPa Delete(GenericInsertPa valores)
         {
             var table = string.Empty;
             string fk = string.Empty;
 
             SwitchParam(valores.param, ref table, ref fk);
 
-            var retorno = 0;
-
-            return retorno;
+            return valores;
 
         }
 
@@ -131,16 +172,15 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             public string val { get; set; }
             public string param { get; set; }
             public int? predecessor { get; set; } = 0;
+            public string resposta { get; set; }
         }
 
-        public class GenericUpdatePa
+        public class GenericUpdatePa : GenericInsertPa
         {
-            public string val { get; set; }
-            public string param { get; set; }
-            public int? predecessor { get; set; } = 0;
+            public bool isActive { get; set; }
             public int id { get; set; } = 0;
         }
     }
 
-  
+
 }

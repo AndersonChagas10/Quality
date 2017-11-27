@@ -5089,7 +5089,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string ChartTitle { get; set; }
         public decimal? companyScorecard { get; set; }
         public string companySigla { get; set; }
-        public DateTime date { get; set; }
+        public DateTime? date { get; set; }
         public int level1Id { get; set; }
         public string level1Name { get; set; }
         public int level2Id { get; set; }
@@ -5107,7 +5107,14 @@ DROP TABLE #AMOSTRATIPO4a  ";
         {
             get
             {
-                return date.ToString("dd/MM/yyyy");
+                if (date.HasValue)
+                {
+                    return date.Value.ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                    return string.Empty;
+                }
             }
         }
         public bool haveHistorico { get; set; }
@@ -5118,7 +5125,19 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }
         public decimal? Meta { get; set; }
-        public string _dateEUA { get { return date.ToString("yyyy-MM-dd"); } }
+        public string _dateEUA {
+            get {
+
+                if (date.HasValue)
+                {
+                    return date.Value.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
     }
 
    

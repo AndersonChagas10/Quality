@@ -158,6 +158,56 @@
         right: 1px;
         z-index: 9999;
     }
+
+
+    /*Datatable*/
+    ul.pagination {
+        margin: 0px;
+    }
+
+    .pagination > .active > a,
+    .pagination > .active > span,
+    .pagination > .active > a:hover,
+    .pagination > .active > span:hover,
+    .pagination > .active > a:focus,
+    .pagination > .active > span:focus {
+        background-color: #428bca !important;
+        border-color: #428bca !important;
+    }
+
+    .pagination > li > a, .pagination > li > span {
+        color: #666;
+    }
+
+    .dataTables_wrapper input {
+        border: 1px solid #666;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button, 
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+    .dataTables_wrapper .dataTables_paginate span span {
+        background: transparent !important;
+        margin: 0px !important;
+        border: 1px solid #ddd;
+        color: #666 !important;
+        padding-top:7px !important;
+        padding-bottom:7px !important;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+            color: #666 !important;
+            background: #ddd !important;
+            border: 1px solid #ddd;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
+            background: #428bca !important;
+            border-color: #428bca !important;
+            color: #fff !important;
+        }
 </style>
 
 
@@ -211,54 +261,65 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
-                <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
+                @*<button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>*@
                 <h4 class="modal-title" id="novoHeader"></h4>
             </div>
             <div class="modal-body" id="novoBody">
-                <form>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <div style="display:none" id="encadeado">
-                                <label id="labelPredecessora">Predecessor: </label>
-                            </div>
-                            <div class="col-sm-12" id="divPredecessora">
-                                <label>Predecessor:</label>
-                                <label id="labelPredecessoraValue"></label>
-                                <br />
-                            </div>
-                            <div class="col-sm-12">
-                                <label>Nome do Item:</label>
-                                <textarea style="min-width: 371px;" type="text" class="form-control" id="newItem"></textarea>
-                                <input type="hidden" id="newIdItem" />
-                            </div>
-                            <br />
-                            <div class="col-sm-12">
-                                <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
-                                <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="EditarNovo();">Editar</button>
-                                <button type="button" class="btn btn-danger hide" id="btnDeletarNovo" onclick="DeletarNovo();">Deletar</button>
-                                <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
-                            </div>
+
+                <div class="col-sm-5">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Formulário de <span id="nomeItemNovo"></span></div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="form-group">
+                                    <div style="display:none" id="encadeado">
+                                        <label id="labelPredecessora">Predecessor: </label>
+                                    </div>
+                                    <div class="col-sm-12" id="divPredecessora">
+                                        <label>Predecessor:</label>
+                                        <label id="labelPredecessoraValue"></label>
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label>Nome do Item:</label>
+                                        <textarea style="min-width: 95%; height:150px;" type="text" class="form-control" id="newItem"></textarea>
+                                        <input type="hidden" id="newIdItem" />
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-12" id="divIsActive">
+                                        <label for="newIsActiveItem">Ativo:</label>
+                                        <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
+                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="EditarNovo();">Editar</button>
+                                        @*<button type="button" class="btn btn-danger hide" id="btnDeletarNovo" onclick="DeletarNovo();">Deletar</button>*@
+                                        <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
+                                    </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <table id="tableNovo">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </form>
-                <div class="clearfix"></div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <div class="col-sm-7">
+                <table id="tableNovo" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
         </div>
     </div>
+</div>
 </div>
 
 <div class="minmaxCon"></div>
@@ -269,11 +330,13 @@
     <script src="~/Scripts/DataTableRowsGroup.js"></script>*@
 
 @section Scripts {
+
     <script>
         $(document).ready(function () {
             var zero =0;
         });
 
+        var selectPredecessor;
         var tableModalNovo;
         var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
         var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
@@ -311,7 +374,7 @@
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
         var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
-        var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
+        //var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
         var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
@@ -978,8 +1041,15 @@
         function Novo(btn, encadeado) {
             console.log("Novo")
 
+            selectPredecessor = encadeado;
+
             $('#body').find('select').select2()
             $('#body').find('select').select2('destroy')
+
+            //Remove select caso exista
+            if ($('#encadeado').find('select').length) {
+                $('#encadeado').find('select').remove();
+            }
 
             //Mantem invisivel o campo de Predecessor
             //$('#encadeado').show()
@@ -998,6 +1068,7 @@
             $('#newItem').val("");
             $('#modalNovo').modal();
             $('#novoHeader').html("Gerenciar: " + label);
+            $('#nomeItemNovo').html(label)
 
             if (encadeado != undefined) {
                 //$('#encadeado').show();
@@ -1026,15 +1097,23 @@
 
             /*Ajax*/
             $.post(urlSalvarNovoItem, {val: param1, param: param2, predecessor: param3}, function (r) {
-                $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
-                $(tempInput).val(r).change();
-                $('#modalNovo').modal('hide');
-                tempInput = undefined;
-                tempName = undefined;
-                /*Limpa caso haja DDL denrto do modal.*/
-                if ($('#encadeado').find('select').length) {
-                    $('#encadeado').find('select').remove();
+
+                if(r.resposta != null){
+                    alert(r.resposta);
+                    return;
                 }
+
+                $(tempInput).append('<option value=' + r.Id + '> ' + $('#newItem').val() + '</option>');
+                //$(tempInput).val(r).change();
+                //tempInput = undefined;
+                //tempName = undefined;
+                /*Limpa caso haja DDL denrto do modal.*/
+                /*if ($('#encadeado').find('select').length) {
+                    $('#encadeado').find('select').remove();
+                }*/
+        
+                $('#btnCancelarNovo').click();
+                refreshDataTable();
             });
 
         }
@@ -1050,43 +1129,51 @@
                 param3 = $('#encadeado').find('select').val();
             }
             var param4 = $('#newIdItem').val();
+            var param5 = $('#newIsActiveItem:checked').length == 1;
 
             /*Ajax*/
-            $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
-                $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
-                $(tempInput).val(r).change();
-                $('#modalNovo').modal('hide');
-                tempInput = undefined;
-                tempName = undefined;
-                /*Limpa caso haja DDL denrto do modal.*/
-                if ($('#encadeado').find('select').length) {
-                    $('#encadeado').find('select').remove();
+            $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4, isActive: param5}, function (r) {
+
+                if(r.resposta != null){
+                    alert(r.resposta);
+                    return;
                 }
+
+                $(tempInput).find("option[value= "+ r.Id + "]").html($('#newItem').val())
+                //$(tempInput).find("select option[value= "+ r + "]").text($('#newItem').val());
+                //$(tempInput).val(r).change();
+                tempInput = undefined;
+                /*Limpa caso haja DDL denrto do modal.*/
+                /*if ($('#encadeado').find('select').length) {
+                    $('#encadeado').find('select').remove();
+                }*/
+                $('#btnCancelarNovo').click();
+                refreshDataTable();
             });
 
         }
 
-        function DeletarNovo() {
-            /*validação*/
+        //function DeletarNovo() {
+        //    /*validação*/
 
-            if (confirm("Deseja apagar este item?") == false)
-                return;
+        //    if (confirm("Deseja apagar este item?") == false)
+        //        return;
 
-            /*Dados*/
-            var param1 = $('#newItem').val();
-            var param2 = tempName.split('_Id')[0];
-            var param3 = 0;
-            if ($('#encadeado').find('select').length) {
-                param3 = $('#encadeado').find('select').val();
-            }
-            var param4 = $('#newIdItem').val();
+        //    /*Dados*/
+        //    var param1 = $('#newItem').val();
+        //    var param2 = tempName.split('_Id')[0];
+        //    var param3 = 0;
+        //    if ($('#encadeado').find('select').length) {
+        //        param3 = $('#encadeado').find('select').val();
+        //    }
+        //    var param4 = $('#newIdItem').val();
 
-            /*Ajax*/
-            $.post(urlDeletarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
+        //    /*Ajax*/
+        //    $.post(urlDeletarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
 
-            });
+        //    });
 
-        }
+        //}
         /*Fim Novo item*/
         //var btnEditar = '<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
 
@@ -1892,9 +1979,90 @@
             counter--;
         });
 
+        var refreshDataTable = function(){
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
+            }
+            $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+
+            if(param3 != 0){
+                $('#divPredecessora').removeClass('hide');
+            }else{
+                $('#divPredecessora').addClass('hide');
+            }
+
+            /*Ajax*/
+            $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
+                console.log(response);
+                $("#tableNovo").html('');
+
+                //Gera a lista
+                var list = [];
+                $.each(response, function( index, value ) {
+                    list.push([value.Id,value.Name,value.IsActive])
+                });
+
+                tableModalNovo = $('#tableNovo').DataTable( {
+                    data: list,
+                    destroy:true,
+                    lengthChange: false,
+                    pageLength: 3,
+                    "bInfo" : false,
+                    "language": {
+                        "sSearch": "Buscar",
+                        "paginate": {
+                            "previous": "Anterior",
+                            "next": "Próximo"
+                        }
+                    },
+                    columns: [
+                        { title: "ID"},
+                        { title: "Name"},
+                        {
+                            title: "Ativo",
+                            "data":           null,
+                            "render": function(data, type, full, meta){
+                                if(data[2] == true){
+                                    return "ATIVO";
+                                }
+                                return "INATIVO";
+                            }
+                        },
+                        {
+                            "className":      'options',
+                            "data":           null,
+                            "render": function(data, type, full, meta){
+                                return '<span class="btn btn-mini btn-info pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</span>';
+                            }
+                        }
+                    ],
+                    initComplete: function () {}
+                } );
+
+                $('#tableNovo tbody').on('click', 'span', function () {
+                    $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
+                    $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
+                    $("#newIsActiveItem").prop('checked',tableModalNovo.row($(this).parents('tr')).data()[2]);
+                    $('#btnSalvarNovo').addClass('hide');
+                    $('#btnEditarNovo').removeClass('hide');
+                    //$('#btnDeletarNovo').removeClass('hide');
+                    $('#btnCancelarNovo').removeClass('hide');
+                    $('#divIsActive').removeClass('hide');
+                });
+            })
+        };
+
         $(function() {
             console.log( "ready!" );
             GetDataTable();
+            
+            $('#modalNovo').on('hidden.bs.modal', function () {
+                $("#"+selectPredecessor).change();
+            })
 
             $('#modalNovo').on('shown.bs.modal', function (e) {
 
@@ -1903,69 +2071,17 @@
                     $("#newItem").val('');
                     $('#btnSalvarNovo').removeClass('hide');
                     $('#btnEditarNovo').addClass('hide');
-                    $('#btnDeletarNovo').addClass('hide');
+                    //$('#btnDeletarNovo').addClass('hide');
                     $('#btnCancelarNovo').addClass('hide');
+                    $('#divIsActive').addClass('hide');
+
                 });
 
                 $('#btnCancelarNovo').click();
 
-                /*Dados*/
-                var param1 = $('#newItem').val();
-                var param2 = tempName.split('_Id')[0];
-                var param3 = 0;
-                if ($('#encadeado').find('select').length) {
-                    param3 = $('#encadeado').find('select').val();
-                }
-                $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+                refreshDataTable();
 
-                if(param3 != 0){
-                    $('#divPredecessora').removeClass('hide');
-                }else{
-                    $('#divPredecessora').addClass('hide');
-                }
-
-                /*Ajax*/
-                $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
-                    console.log(response);
-                    $("#tableNovo").html('');
-
-                    //Gera a lista
-                    var list = [];
-                    $.each(response, function( index, value ) {
-                        list.push([value.Id,value.Name])
-                    });
-
-                    tableModalNovo = $('#tableNovo').DataTable( {
-                        data: list,
-                        destroy:true,
-                        lengthChange: false,
-                        pageLength: 3,
-                        "bInfo" : false,
-                        columns: [
-                            { title: "ID"},
-                            { title: "Nome" },
-                            {
-                                "className":      'options',
-                                "data":           null,
-                                "render": function(data, type, full, meta){
-                                    return '<spam class="btn btn-mini btn-primary pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</spam>';
-                                }
-                            }
-                        ],
-                        initComplete: function () {}
-                    } );
-
-                    $('#tableNovo tbody').on('click', 'spam', function () {
-                        $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
-                        $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
-                        $('#btnSalvarNovo').addClass('hide');
-                        $('#btnEditarNovo').removeClass('hide');
-                        $('#btnDeletarNovo').removeClass('hide');
-                        $('#btnCancelarNovo').removeClass('hide');
-                    });
-                });
-
-            })
+            });
         });
         /*Table*/
 
