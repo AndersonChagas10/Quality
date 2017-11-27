@@ -3,6 +3,19 @@
 }
 
 <style type="text/css">
+    .jbsLogo {
+    }
+
+    .lataPtImg {
+        margin: 0 auto;
+        display: block;
+        height: 118px;
+        padding-top: 5px;
+        width: 16%;
+        padding-bottom: 5px;
+
+    }
+
     .tableFirstLeft td,
     .tableFirstLeft th {
         text-align: left;
@@ -11,7 +24,7 @@
     table.footerCA {
         width: 98%;
         margin-bottom: 5px;
-        position: absolute;
+        /*position: absolute;*/
         bottom: 0;
     }
 
@@ -179,15 +192,33 @@
             }
 
     @@media print {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+        table {
+            page-break-after: auto;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
+
         table.divFooter {
             position: fixed;
             bottom: 0px;
         }
+
         body, page {
             margin: 0.5cm;
             padding-top: 0.2cm;
@@ -210,7 +241,6 @@
         padding-bottom: 0.2cm;
         page-break-after: avoid;
         page-break-before: avoid;
-
         /*margin-left: 4px !important;
         margin-right: 8px !important;
         padding-top: 6px !important;
@@ -428,7 +458,7 @@
         @*LATAS*@
         <page size="A4" ng-repeat="begin in begins" ng-if="(seletedLinha.latas[begin] != undefined)">
             <div class="divSection">
-                <table class="tg" style="table-layout: fixed; width: 98%">
+                <table class="tg" style="table-layout: fixed; width: 65%">
                     <colgroup>
                         <col style="width: 41px">
                         <col style="width: 75px;">
@@ -448,37 +478,38 @@
                         <td class="tg-s6z2"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
                     </tr>
                 </table>
+                <div class="" style="width:100%">
+                    <table class="tableForm" style="width: 75%;float:left;">
+                        <tbody>
+                            <tr>
+                                <td class="title">Produto</td>
+                                <td>{{seletedLinha.form.Produto.Name}}</td>
+                                <td class="title">Hora do início da Produção</td>
+                                <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
+                                <td class="title">Hora do final da Produção</td>
+                                <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Código do produto</td>
+                                <td>{{seletedLinha.form.CodProduto}}</td>
+                                <td class="title">Data do recebimento das latas</td>
+                                <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                                <td class="title">Fornecedor da Lata</td>
+                                <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="title">Data do recebimento das tampas/fundos das latas</td>
+                                <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
+                                <td class="title">Fornecedor das tampas/fundos das latas</td>
+                                <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                                <td class="title">Tipo da Lata</td>
+                                <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
+                            </tr>
 
-                <table class="tableForm" style="width: 100%">
-                    <tbody>
-                        <tr>
-                            <td class="title">Produto</td>
-                            <td>{{seletedLinha.form.Produto.Name}}</td>
-                            <td class="title">Hora do início da Produção</td>
-                            <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
-                            <td class="title">Hora do final da Produção</td>
-                            <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
-                        </tr>
-                        <tr>
-                            <td class="title">Código do produto</td>
-                            <td>{{seletedLinha.form.CodProduto}}</td>
-                            <td class="title">Data do recebimento das latas</td>
-                            <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
-                            <td class="title">Fornecedor da Lata</td>
-                            <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                        </tr>
-                        <tr>
-                            <td class="title">Data do recebimento das tampas/fundos das latas</td>
-                            <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
-                            <td class="title">Fornecedor das tampas/fundos das latas</td>
-                            <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                            <td class="title">Tipo da Lata</td>
-                            <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-
+                        </tbody>
+                    </table>
+                    <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
+                </div>
                 <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
                     <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                         <tr>
@@ -730,29 +761,29 @@
 
                 <div ng-repeat="item in seletedLinha.ObservacoesList | limitTo:999 track by $index">
 
-                        <table class="tableCorrectiveAction" ng-if="item.DescriptionFailure">
-                            <colgroup>
-                                <col style="width: 20%">
-                                <col style="width: 80%;">
-                            </colgroup>
-                            <tr>
-                                <td class="tbodyTd">
-                                    {{item.adDate}}
-                                </td>
-                                <td class="tbodyTd">
-                                    <label ng-if="item.LataComAtraso">
-                                        Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso:
-                                    </label>
-                                    <br  ng-if="item.LataComAtraso">
-                                    <span>{{item.DescriptionFailure}}</span>
-                                </td>
-                            </tr>
-                        </table>
+                    <table class="tableCorrectiveAction" ng-if="item.DescriptionFailure">
+                        <colgroup>
+                            <col style="width: 20%">
+                            <col style="width: 80%;">
+                        </colgroup>
+                        <tr>
+                            <td class="tbodyTd">
+                                {{item.adDate}}
+                            </td>
+                            <td class="tbodyTd">
+                                <label ng-if="item.LataComAtraso">
+                                    Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso:
+                                </label>
+                                <br ng-if="item.LataComAtraso">
+                                <span>{{item.DescriptionFailure}}</span>
+                            </td>
+                        </tr>
+                    </table>
 
-                    </div>
+                </div>
 
                 @*FOOTER*@
-                <table class="footerCA divFooter">
+                <table class="footerCA">
                     <tr style="vertical-align: top;">
                         <td height="70"><small>Monitor</small></td>
                         <td height="70"><small>Rep. Setor Enlatamento</small></td>
@@ -842,8 +873,8 @@
         app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
             function ($scope, $http, $timeout) {
                 let vm = $scope
-                vm.dev = true
-                vm.jbsBrasil = false
+                vm.dev = false
+                vm.jbsBrasil = true
                 //vm.dev = false
                 //vm.jbsBrasil = true
 

@@ -775,6 +775,10 @@
     <Content Include="Imagens\chart.png" />
     <Content Include="Imagens\JBS_logo.jpg" />
     <Content Include="Imagens\Logo.png" />
+    <Content Include="Imagens\Recravacao\10pts.jpg" />
+    <Content Include="Imagens\Recravacao\11pts.png" />
+    <Content Include="Imagens\Recravacao\3pts.jpg" />
+    <Content Include="Imagens\Recravacao\9pts.jpg" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
