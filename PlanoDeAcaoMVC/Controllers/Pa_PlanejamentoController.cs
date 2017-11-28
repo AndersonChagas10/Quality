@@ -119,6 +119,8 @@ namespace PlanoDeAcaoMVC.Controllers
                 model._ValorDe = model.ValorDe.ToString("G29");
             if (model.ValorPara > 0)
                 model._ValorPara = model.ValorPara.ToString("G29");
+            if(model.Gerencia_Id > 0)
+                ViewBag.Coordenacao = Pa_Coordenacao.Listar().Where(r=> r.GERENCIA_ID == model.Gerencia_Id);
 
             return PartialView("Index", model);
         }
