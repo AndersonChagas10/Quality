@@ -1550,7 +1550,7 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
   left join ParCompany C
   on C.Id = CS.ParCompany_Id
   left join ParLevel1 P1
-  on 1 = 1
+  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
   LEFT JOIN ParGroupParLevel1XParLevel1 PP
   ON PP.ParLevel1_Id = P1.Id
   LEFT JOIN ParGroupParLevel1 PP1
@@ -1754,7 +1754,7 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
                      " \n , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
                      " \n FROM CollectionLevel2 C2 (nolock) " +
                      " \n INNER JOIN ParLevel1 L1 (nolock) " +
-                     " \n ON L1.Id = C2.ParLevel1_Id " +
+                     " \n ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1 " +
                      " \n INNER JOIN ParCompany C (nolock) " +
                      " \n ON C.Id = C2.UnitId " +
                      " \n where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
@@ -1777,7 +1777,7 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
                          " \n LEFT JOIN Result_Level3 C3 (nolock) " +
                          " \n ON C3.CollectionLevel2_Id = C2.Id " +
                          " \n WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                         " \n AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 (nolock) where Hashkey = 1) " +
+                         " \n AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 (nolock) where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1) " +
                          " \n AND C2.UnitId = @UNIDADE " +
                          " \n AND IsNotEvaluate = 1 " +
                          " \n GROUP BY C2.ID " +
@@ -1866,7 +1866,7 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
 
                          " \n LEFT JOIN ParLevel1 IND (nolock) " +
 
-                         " \n ON IND.Id = CL1.ParLevel1_Id AND IND.Name = '" + form.ParametroTableRow[1] + "' " +
+                         " \n ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1 AND IND.Name = '" + form.ParametroTableRow[1] + "' " +
 
                          " \n LEFT JOIN ParCompany UNI (nolock) " +
 
@@ -1893,7 +1893,7 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
 
                               " \n LEFT JOIN ParLevel1 IND (nolock) " +
 
-                              " \n ON IND.Id = CL1.ParLevel1_Id--AND IND.ID = 1 " +
+                              " \n ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1--AND IND.ID = 1 " +
 
                              " \n LEFT JOIN ParCompany UNI (nolock) " +
 

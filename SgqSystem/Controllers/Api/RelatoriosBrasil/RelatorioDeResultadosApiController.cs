@@ -142,7 +142,7 @@ INSERT INTO #AMOSTRATIPO4
 			END DEF_AM
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
-			ON L1.Id = C2.ParLevel1_Id
+			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
             AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
@@ -179,7 +179,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -287,7 +287,7 @@ FROM (SELECT
 			AS Meta
 		FROM ConsolidationLevel1 CL1 (NOLOCK)
 		INNER JOIN ParLevel1 IND (NOLOCK)
-			ON IND.Id = CL1.ParLevel1_Id
+			ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
             AND IND.Id <> 43
 		INNER JOIN ParCompany UNI (NOLOCK)
 			ON UNI.Id = CL1.UnitId
@@ -398,7 +398,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -466,7 +466,7 @@ FROM (SELECT
 	INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
 		ON CL1.Id = CL2.ConsolidationLevel1_Id
 	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = CL1.ParLevel1_Id
+		ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = CL2.ParLevel2_Id
@@ -573,7 +573,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -636,7 +636,7 @@ FROM (SELECT
 	INNER JOIN ParCompany UNI (NOLOCK)
 		ON UNI.Id = C2.UnitId
 	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = C2.ParLevel1_Id
+		ON IND.Id = C2.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
@@ -780,7 +780,7 @@ INSERT INTO #AMOSTRATIPO4
 			END DEF_AM
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
-			ON L1.Id = C2.ParLevel1_Id
+			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
             AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
@@ -817,7 +817,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -920,7 +920,7 @@ FROM (SELECT
 			AS Meta
 		FROM ConsolidationLevel1 CL1 (NOLOCK)
 		INNER JOIN ParLevel1 IND (NOLOCK)
-			ON IND.Id = CL1.ParLevel1_Id
+			ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
             AND IND.Id <> 43
 		INNER JOIN ParCompany UNI (NOLOCK)
 			ON UNI.Id = CL1.UnitId
@@ -1028,7 +1028,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -1093,7 +1093,7 @@ FROM (SELECT
 	INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
 		ON CL1.Id = CL2.ConsolidationLevel1_Id
 	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = CL1.ParLevel1_Id
+		ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = CL2.ParLevel2_Id
@@ -1200,7 +1200,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -1265,7 +1265,7 @@ FROM (SELECT
 	INNER JOIN ParCompany UNI (NOLOCK)
 		ON UNI.Id = C2.UnitId
 	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = C2.ParLevel1_Id
+		ON IND.Id = C2.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
@@ -1420,7 +1420,7 @@ ORDER BY 8 DESC ";
                 //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
                 "\n     FROM CollectionLevel2 C2 (nolock) " +
                 "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
-                "\n     ON L1.Id = C2.ParLevel1_Id " +
+                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1" +
 
                 "\n     INNER JOIN ParCompany C (nolock)  " +
                 "\n     ON C.Id = C2.UnitId " +
@@ -1548,7 +1548,7 @@ ORDER BY 8 DESC ";
 "\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
 "\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
 "\n                WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           						                                           " +
-"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                                                                                                                                             						                                           " +
+"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
 "\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
 "\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
 "\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
@@ -1928,7 +1928,7 @@ ORDER BY 8 DESC ";
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      ParLevel1 L1     (nolock)                                                                                                                                                                                                                                           " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -2081,7 +2081,7 @@ ORDER BY 8 DESC ";
                     "\n  left join ParCompany C " +
                     "\n  on C.Id = CS.ParCompany_Id " +
                     "\n  left join ParLevel1 P1 " +
-                    "\n  on 1=1 " +
+                    "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
                     "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
@@ -2202,7 +2202,7 @@ ORDER BY 8 DESC ";
                 //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
                 "\n     FROM CollectionLevel2 C2 (nolock) " +
                 "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
-                "\n     ON L1.Id = C2.ParLevel1_Id " +
+                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1 " +
 
                 "\n     INNER JOIN ParCompany C (nolock)  " +
                 "\n     ON C.Id = C2.UnitId " +
@@ -2330,7 +2330,7 @@ ORDER BY 8 DESC ";
 "\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
 "\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
 "\n                WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           						                                           " +
-"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                                                                                                                                             						                                           " +
+"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
 "\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
 "\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
 "\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
@@ -2695,7 +2695,7 @@ ORDER BY 8 DESC ";
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      ParLevel1 L1     (nolock)                                                                                                                                                                                                                                           " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -2847,7 +2847,7 @@ ORDER BY 8 DESC ";
                     "\n  left join ParCompany C " +
                     "\n  on C.Id = CS.ParCompany_Id " +
                     "\n  left join ParLevel1 P1 " +
-                    "\n  on 1=1 " +
+                    "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
                     "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
@@ -2969,7 +2969,7 @@ ORDER BY 8 DESC ";
                 //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
                 "\n     FROM CollectionLevel2 C2 (nolock) " +
                 "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
-                "\n     ON L1.Id = C2.ParLevel1_Id " +
+                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1" +
 
                 "\n     INNER JOIN ParCompany C (nolock)  " +
                 "\n     ON C.Id = C2.UnitId " +
@@ -3097,7 +3097,7 @@ ORDER BY 8 DESC ";
 "\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
 "\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
 "\n                WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           						                                           " +
-"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                                                                                                                                             						                                           " +
+"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
 "\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
 "\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
 "\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
@@ -3477,7 +3477,7 @@ ORDER BY 8 DESC ";
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      ParLevel1 L1     (nolock)                                                                                                                                                                                                                                           " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -3630,7 +3630,7 @@ ORDER BY 8 DESC ";
                     "\n  left join ParCompany C " +
                     "\n  on C.Id = CS.ParCompany_Id " +
                     "\n  left join ParLevel1 P1 " +
-                    "\n  on 1=1 " +
+                    "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
                     "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
@@ -3740,7 +3740,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @ParCompany_Id
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -3807,7 +3807,7 @@ FROM (SELECT
 	INNER JOIN ParCompany UNI (NOLOCK)
 		ON UNI.Id = C2.UnitId
 	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = C2.ParLevel1_Id
+		ON IND.Id = C2.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
@@ -3879,7 +3879,7 @@ INSERT INTO #AMOSTRATIPO4a
 			END DEF_AM
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
-			ON L1.Id = C2.ParLevel1_Id
+			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
             AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
@@ -3908,7 +3908,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1(nolock)
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @UNIDADE
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -4052,6 +4052,7 @@ FROM (SELECT
 				ON CL2.ConsolidationLevel1_Id = CL1.Id
 			LEFT JOIN ParLevel1 IND (NOLOCK)
 				ON IND.Id = CL1.ParLevel1_Id
+                AND ISNULL(IND.ShowScorecard, 1) = 1
 				AND IND.Id = " + form.level1Id + @"
                 -- AND IND.Id <> 43
             LEFT JOIN ParLevel2 MON (NOLOCK)
@@ -4080,7 +4081,7 @@ FROM (SELECT
 				LEFT JOIN ConsolidationLevel2 CL2 (NOLOCK)
 					ON CL2.ConsolidationLevel1_Id = CL1.Id
 				LEFT JOIN ParLevel1 IND (NOLOCK)
-					ON IND.Id = CL1.ParLevel1_Id
+					ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
                     AND IND.Id <> 43
 				LEFT JOIN ParLevel2 MON (NOLOCK)
 					ON MON.Id = CL2.ParLevel2_Id
@@ -4165,7 +4166,7 @@ INSERT INTO #AMOSTRATIPO4a
 			END DEF_AM
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
-			ON L1.Id = C2.ParLevel1_Id
+			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
             AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
@@ -4194,7 +4195,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1(nolock)
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	AND C2.UnitId = @UNIDADE
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -4329,7 +4330,7 @@ FROM (SELECT
 				AND UnitId <> 12341614) CL1
 				ON DD.Data_ = CL1.ConsolidationDate
 			LEFT JOIN ParLevel1 IND (NOLOCK)
-				ON IND.Id = CL1.ParLevel1_Id
+				ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
 				AND IND.Id = " + form.level1Id + @"
                 --AND IND.Id <> 43
 			LEFT JOIN ParCompany UNI (NOLOCK)
@@ -4351,7 +4352,7 @@ FROM (SELECT
 					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 					AND UnitId <> 11514) CL1
 				LEFT JOIN ParLevel1 IND (NOLOCK)
-					ON IND.Id = CL1.ParLevel1_Id
+					ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
 					AND IND.Id <> 43 
 				LEFT JOIN ParCompany UNI (NOLOCK)
 					ON UNI.Id = CL1.UnitId
@@ -4479,7 +4480,7 @@ INSERT INTO #AMOSTRATIPO4a
 			END DEF_AM
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
-			ON L1.Id = C2.ParLevel1_Id
+			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
             AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
@@ -4508,7 +4509,7 @@ FROM (SELECT
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1(nolock)
-		WHERE Hashkey = 1)
+		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
 	" + where1 + @"
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
@@ -4642,7 +4643,7 @@ FROM (SELECT
 				AND UnitId <> 12341614) CL1
 				ON DD.Data_ = CL1.ConsolidationDate
 			LEFT JOIN ParLevel1 IND (NOLOCK)
-				ON IND.Id = CL1.ParLevel1_Id
+				ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
 				" + where5 + @"
                 --AND IND.Id <> 43
 			LEFT JOIN ParCompany UNI (NOLOCK)
@@ -4664,7 +4665,7 @@ FROM (SELECT
 					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 					AND UnitId <> 11514) CL1
 				LEFT JOIN ParLevel1 IND (NOLOCK)
-					ON IND.Id = CL1.ParLevel1_Id
+					ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
 					AND IND.Id <> 43 
 				LEFT JOIN ParCompany UNI (NOLOCK)
 					ON UNI.Id = CL1.UnitId
@@ -5089,7 +5090,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string ChartTitle { get; set; }
         public decimal? companyScorecard { get; set; }
         public string companySigla { get; set; }
-        public DateTime date { get; set; }
+        public DateTime? date { get; set; }
         public int level1Id { get; set; }
         public string level1Name { get; set; }
         public int level2Id { get; set; }
@@ -5107,7 +5108,14 @@ DROP TABLE #AMOSTRATIPO4a  ";
         {
             get
             {
-                return date.ToString("dd/MM/yyyy");
+                if (date.HasValue)
+                {
+                    return date.Value.ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                    return string.Empty;
+                }
             }
         }
         public bool haveHistorico { get; set; }
@@ -5118,7 +5126,19 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }
         public decimal? Meta { get; set; }
-        public string _dateEUA { get { return date.ToString("yyyy-MM-dd"); } }
+        public string _dateEUA {
+            get {
+
+                if (date.HasValue)
+                {
+                    return date.Value.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
     }
 
    

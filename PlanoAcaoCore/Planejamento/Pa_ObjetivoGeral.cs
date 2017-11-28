@@ -8,7 +8,8 @@ namespace PlanoAcaoCore
         public string Name { get; set; }
         public string Description { get; set; }
         public int Order { get; set; }
-
+        public int? Pa_IndicadoresDeProjeto_Id { get; set; }
+        
         public void IsValid()
         {
             Name = Guard.CheckStringFullSimple(Name);

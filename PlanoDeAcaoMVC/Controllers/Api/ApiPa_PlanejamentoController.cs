@@ -26,6 +26,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
         [HttpGet]
+        [Route("GetPlanejamentoAcaoRange")]
+        public IEnumerable<Pa_Planejamento> GetPlanejamentoAcaoRange(string startDate, string endDate)
+        {
+            return Pa_Planejamento.GetPlanejamentoAcao(startDate, endDate);
+        }
+
+        [HttpGet]
         [Route("GET")]
         public Pa_Planejamento Get(int id)
         {

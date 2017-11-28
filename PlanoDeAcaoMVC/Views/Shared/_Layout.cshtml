@@ -9,6 +9,7 @@
     @Styles.Render("~/bundles/hcstyle")
     @Styles.Render("~/Content/Tables")
     @Styles.Render("~/Content/select2css")
+    @Styles.Render("~/Content/DatePikerContentCss")
 
     @Scripts.Render("~/bundles/modernizr")
 
@@ -271,7 +272,7 @@
                     $(o).addClass('error')
                     $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
                 }
-            })
+            });
 
             $(this).find('input.required').each(function (c, o) {
                 $(o).addClass('error')
@@ -301,6 +302,7 @@
                 }
             });
 
+            $(this).find('.error:hidden').removeClass('error');
 
             return o;
         };

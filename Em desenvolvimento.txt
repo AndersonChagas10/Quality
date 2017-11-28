@@ -99,3 +99,13 @@ alter table Pa_ObjetivoGeral add IsActive BIT NOT NULL DEFAULT 1;
 alter table Pa_IndicadoresDeProjeto add IsActive BIT NOT NULL DEFAULT 1;
 alter table Pa_IndicadoresDiretriz add IsActive BIT NOT NULL DEFAULT 1;
 alter table Pa_Iniciativa add IsActive BIT NOT NULL DEFAULT 1;
+
+
+---------------------------------------------------------------------- 14 11 2017 - CELSO GEA JIRA https://grtsolucoes.atlassian.net/browse/JBS-82
+
+IF COL_LENGTH('PA_COORDENACAO','GERENCIA_ID') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table PA_COORDENACAO add GERENCIA_ID int default (null)
+    EXEC ('update PA_COORDENACAO set GERENCIA_ID = null')
+    END
