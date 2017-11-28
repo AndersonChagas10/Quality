@@ -292,7 +292,7 @@
                                     </div>
                                     <div class="col-sm-12">
                                         <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
-                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="EditarNovo();">Editar</button>
+                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="EditarNovo();">Salvar Edição</button>
                                         @*<button type="button" class="btn btn-danger hide" id="btnDeletarNovo" onclick="DeletarNovo();">Deletar</button>*@
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
                                     </div>
@@ -734,20 +734,16 @@
 
             $('#Iniciativa_Id').off('change').on('change', function () {
                 var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
-                if(Iniciativa_Id == 0){
-                    $('#IndicadoresDeProjeto_Id').parents('tr').find('.novoItem').attr('disabled', true)
-                    $('#IndicadoresDeProjeto_Id').parents('tr').find('.novoItem').attr('title', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa')
-                }
-                else{
-                    $('#IndicadoresDeProjeto_Id').parents('tr').find('.novoItem').attr('disabled', false)
-                    $('#IndicadoresDeProjeto_Id').parents('tr').find('.novoItem').attr('title', 'Gerenciar Indicadores do Projeto / Iniciativa')
-                }
+                manageButton(Iniciativa_Id,'IndicadoresDeProjeto_Id','Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
                 
                 $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
                     $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
                     //$('#IndicadoresDeProjeto_Id').remove();
                     $('#IndicadoresDeProjeto_Id').off('change').on('change', function () {
+
                         var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
+                        manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+                
                         $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
@@ -798,6 +794,17 @@
                         masterCB()
                 })
             })
+        }
+
+        function manageButton(id, idChildren, messageDisabled, messageEnabled){
+            if(id == 0){
+                $('#'+idChildren).parents('tr').find('.novoItem').attr('disabled', true)
+                $('#'+idChildren).parents('tr').find('.novoItem').attr('title', messageDisabled)
+            }
+            else{
+                $('#'+idChildren).parents('tr').find('.novoItem').attr('disabled', false)
+                $('#'+idChildren).parents('tr').find('.novoItem').attr('title', messageEnabled)
+            }
         }
 
         /*Fim Planejamento*/

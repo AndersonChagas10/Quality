@@ -67,9 +67,9 @@
             $("#unitId option[value='']").remove();
             $("#tipoCEP option[value='']").remove();
 
-            $("#btnSend").click(function (e) {
-                Send(true);
-            });
+            //$("#btnSend").click(function (e) {
+            //    Send(true);
+            //});
         });
 
         var $btn = $('#btnSend');
@@ -80,7 +80,7 @@
 
             $('#results').empty();
             $('#divMensagemVazio').hide();
-
+            $('#container').empty();
             $('#divMensagemAlerta').hide();
 
             if (!ValidaDadosParaEnvio()) {
@@ -121,7 +121,7 @@
 
             }
 
-            
+
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();
@@ -221,7 +221,8 @@
                                         var data = new Date(ssl[2], ssl[1] - 1, ssl[0]);
                                         var ss = data.getDay();
                                         var dataEHora = valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)].split(" ");
-                                        dia = '<b>Data: </b>' + $.date(valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)]) + "<l>, " + dias_semana[ss] + "<br/> <b>Horário:</b> " + dataEHora[1] + ".</l>";
+                                        var hora = getHora(new Date(Date.parse(dataEHora)));
+                                        dia = '<b>Data: </b>' + $.date(valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)]) + "<l>, " + dias_semana[ss] + "<br/> <b>Horário:</b> " + hora + ".</l>";
                                     }
 
                                 if (this.series.name.indexOf("Series") != 0) {
@@ -472,6 +473,21 @@
 
             return date;
         };
+
+        function addZero(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function getHora(d) {
+
+            var h = addZero(d.getHours());
+            var m = addZero(d.getMinutes());
+            var s = addZero(d.getSeconds());
+            return h + ":" + m + ":" + s;
+        }
 
     </script>
 
