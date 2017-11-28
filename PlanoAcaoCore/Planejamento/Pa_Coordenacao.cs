@@ -16,5 +16,13 @@ namespace PlanoAcaoCore
             var query = "SELECT * FROM Pa_Coordenacao WHERE Id = " + Id;
             return GetGenerico<Pa_Coordenacao>(query);
         }
+
+        public static List<Pa_Coordenacao> GetCoordenacaoByGerencia(int Id)
+        {
+            var query = "SELECT * FROM Pa_Coordenacao WHERE GERENCIA_ID = " + Id;
+            return ListarGenerico<Pa_Coordenacao>(query);
+        }
+        
+
     }
 }

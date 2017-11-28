@@ -35,7 +35,9 @@
                     @Html.DropDownList("Gerencia_Id", new SelectList(ViewBag.Gerencia, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required tatico " })
                     @Html.ValidationMessageFor(model => model.Gerencia_Id, "", new { @class = "text-danger" })
                 </td>
-                <td></td>
+                <td>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this)">Gerenciar</button>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -45,7 +47,9 @@
                     @Html.DropDownList("Coordenacao_Id", new SelectList(ViewBag.Coordenacao, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Coordenacao_Id, "", new { @class = "text-danger" })
                 </td>
-                <td></td>
+                <td>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Gerencia_Id')">Gerenciar</button>
+                </td>
             </tr>
             <tr>
                 <td>

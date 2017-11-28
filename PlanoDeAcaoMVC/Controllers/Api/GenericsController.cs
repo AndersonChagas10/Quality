@@ -162,6 +162,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 case "Iniciativa":
                     table = "Pa_Iniciativa";
                     break;
+                case "Gerencia":
+                    table = "PA_GERENCIA";
+                    break;
+                case "Coordenacao":
+                    table = "PA_COORDENACAO";
+                    fk = "GERENCIA_ID";
+                    break;
                 default:
                     break;
             }

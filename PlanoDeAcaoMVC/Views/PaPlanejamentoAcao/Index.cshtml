@@ -183,7 +183,7 @@
         border: 1px solid #666;
     }
 
-    .dataTables_wrapper .dataTables_paginate .paginate_button, 
+    .dataTables_wrapper .dataTables_paginate .paginate_button,
     .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
     .dataTables_wrapper .dataTables_paginate span span {
         background: transparent !important;
@@ -366,6 +366,7 @@
         var GETObjetivo = '@Url.Action("GETObjetivo", "Pa_Planejamento")';
         var GETIndicadoresDiretriz = '@Url.Action("GETIndicadoresDiretriz", "Pa_Planejamento")';
         var GETIndicadoresProjetoIniciativa = '@Url.Action("GETIndicadoresProjetoIniciativa", "Pa_Planejamento")';
+        var GETCoordenacaoByGerencia = '@Url.Action("GETCoordenacaoByGerencia", "Pa_Planejamento")';
         var GETObjetivosGerenciais = '@Url.Action("GETObjetivosGerenciais", "Pa_Planejamento")';
         var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
         var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
@@ -716,6 +717,13 @@
 
         function DdlChangeTatico() {
 
+            changeChainJsWithHTMLResponseGET('Gerencia_Id', GETCoordenacaoByGerencia, 'Coordenacao_Id', function() { })
+
+            //changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
+            //    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'ObjetivoGerencial_Id', function (r) {
+            //        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
+            //    })
+            //})
 
             $('#Iniciativa_Id').off('change').on('change', function () {
                 var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
@@ -746,7 +754,33 @@
                 });
             });
             $('#Iniciativa_Id').change();
+            $('#Gerencia_Id').change();
 
+        }
+
+        /*
+            Exemplos:
+                 changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
+                    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'IndicadoresDeProjeto_Id', function (r) {
+                        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                    })
+                })
+        */
+        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB){
+            let masterEl = $('#' + idMaster)
+            masterEl.off('change').on('change', function () {
+                let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
+                $.get(urlGETChildren, { id: seletedId }, function (response) {
+                    let childrenEl = $('#' + idChildren)
+                    childrenEl.parent().html('').append(response);
+                    childrenEl.remove();
+                    //if($(childrenEl).data('select2'))
+                    //    childrenEl.select2('destroy')
+                    //childrenEl.select2()
+                    if(masterCB)
+                        masterCB()
+                })
+            })
         }
 
         /*Fim Planejamento*/
@@ -1110,7 +1144,7 @@
                 /*if ($('#encadeado').find('select').length) {
                     $('#encadeado').find('select').remove();
                 }*/
-        
+
                 $('#btnCancelarNovo').click();
                 refreshDataTable();
             });
@@ -2058,7 +2092,7 @@
         $(function() {
             console.log( "ready!" );
             GetDataTable();
-            
+
             $('#modalNovo').on('hidden.bs.modal', function () {
                 $("#"+selectPredecessor).change();
             })

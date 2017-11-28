@@ -183,6 +183,24 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("_DdlGenerica");
         }
 
+        public ActionResult GETCoordenacaoByGerencia(int id)
+        {
+            if (id > 0)
+                ViewBag.Disabled = "false";
+            else
+                ViewBag.Disabled = "true";
+            ViewBag.DdlName = "Coordenacao_Id";
+
+            var results = Pa_Coordenacao.GetCoordenacaoByGerencia(id);
+            if (results == null)
+                results = new List<Pa_Coordenacao>();
+
+            ViewBag.Ddl = new SelectList(results, "Id", "Name");
+
+            return PartialView("_DdlGenerica");
+        }
+
+
         public ActionResult GETObjetivosGerenciais(int id)
         {
             if (id > 0)
