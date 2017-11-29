@@ -131,6 +131,8 @@
         var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
         var popoverMain;
         var UnidadeAux;
+        var subtitle = "";
+        var pathDirect = 0; // sum 1 se user optao por departamento, se continuar 0 ele optou por indicador e pulou um método
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -201,12 +203,14 @@
 
         function GetGraficoIndicadorDepartamento(departamento){
             enviar["departmentName"] = departamento;
+            pathDirect = 1;
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
         }
 
         function GetGraficoIndicadorUnidade(unidade) {
             $("#PanelFull0").hide();
             enviar["unitName"] = unidade;
+            pathDirect = 0;
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
         };
 
@@ -265,6 +269,7 @@
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(setNameTitulos(Grafico1)),
+                subtitle: Chart.Subtitulo(setNameSubtitulos(Grafico1)),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -302,8 +307,8 @@
 
         }
 
-        function GraficoDepartamento(data){
-
+        function GraficoDepartamento(data) {
+            pathDirect = 1;
             var dataX = MapeiaValorParaHC(data, "DepartamentoName");
             var Nc = MapeiaValorParaHC(data, "Nc");
             var Av = MapeiaValorParaHC(data, "Av");
@@ -313,7 +318,8 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(Resources("defects_per_deparment"), enviar["unitName"]),
+                title: Chart.Titulo(Resources("defects_per_deparment")),
+                subtitle: Chart.Subtitulo(Resources("unit"), enviar["unitName"]),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -338,7 +344,41 @@
             })
         }
 
+        function pathChart(data, nameChart) {
+            Subtitle = "";
+            if (nameChart == "Unidade") {
+                Subtitle += Resources("unit") + ": " + data[0].UnidadeName + " | ";
+            }
+            if (data.unitId != '' && data.unitId != undefined) {
+                Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+            }
+            if (data.structureId != '' && data.structureId != undefined) {
+                Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+            }
+            if (data.auditorId != '' && data.auditorId != undefined) {
+                if (!$('#auditorId :selected').text() == "All")
+                    Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+            }
+            if (data.criticalLevelId != '' && data.criticalLevelId != undefined) {
+                Subtitle += Resources("criticalLevel") + ": " + $('#criticalLevelId :selected').text() + " | ";
+            }
+            if (data.level1Id != '' && data != undefined && !isNaN(data.level1Id)) {
+                Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+            }
+            if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+                Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+            }
+            if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+                Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+            }
+        }
+
         function GraficoIndicadorUnidade(data) {
+            
+            if (pathDirect == 1)
+                subtitle = Resources("unit") + ": " + enviar["unitName"] + " | " + Resources("department") + ": " + enviar["departmentName"];
+            else
+                subtitle = Resources("unit") + ": " + enviar["unitName"];
 
             var nc = MapeiaValorParaHC(data, "Nc");
             var nome = MapeiaValorParaHC(data, "IndicadorName");
@@ -349,12 +389,16 @@
             //var id = MapeiaValorParaHC(data, "UnidadeName")
             enviar["level1names"] = nome
             enviar.isLevel = 1
+
             //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
             //     insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(setNameTitulos(GraficoIndic), enviar["unitName"]),
+                title: Chart.Titulo(GraficoIndic),
+                subtitle: {
+                    text: subtitle
+                },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -396,13 +440,23 @@
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
             enviar["level2names"] = nome
-            enviar.isLevel = 2
+            enviar.isLevel = 2;
+            if (pathDirect == 1)
+                subtitle = Resources('unit') + ": " + enviar["unitName"] + " | " +
+                    Resources('department') + ": " + enviar["departmentName"] + " | " +
+                    Resources('level1') + ": " + enviar["level1Name"];
+            else
+                subtitle = Resources('unit') + ": " + enviar["unitName"] + " | " +
+                    Resources('level1') + ": " + enviar["level1Name"];  
             //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
             //     insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(setNameTitulos(GraficoMon), enviar["level1Name"]),
+                title: Chart.Titulo(GraficoMon),
+                subtitle: {
+                    text: subtitle 
+                },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -441,7 +495,11 @@
             var porc = MapeiaValorParaHC(data, "Proc")
             var selector = "RGMonitoramentosGrafico";
             enviar["level3names"] = nome
-            enviar.isLevel = 3
+            enviar.isLevel = 3;
+            subtitle = Resources('unit') + ": " + enviar["unitName"] + " | "+
+                Resources('department') + ": " + enviar["departmentName"] +" | " +
+                Resources('level1') + ": " + enviar["level1Name"] +" | " +
+                Resources('level2') + ": " + enviar["level2Name"];
             //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
             //    //Preenche label x Axys com FTA
@@ -461,7 +519,10 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoTarefa, enviar["level2Name"]),
+                title: Chart.Titulo(GraficoTarefa),
+                subtitle: {
+                    text: subtitle
+                },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -611,6 +672,17 @@
             }
         }
 
+        function setNameSubtitulos(NomeGrafico) {
+
+            if (parseInt(enviar.departmentId) > 0) {
+                return Resources('Department') + ": " + $('#departmentId option:selected').text();
+            } else if (enviar['departmentName'] != "" && enviar['departmentName'] != undefined && enviar['departmentName'] != null) {
+                return Resources('Department') + ": " + enviar['departmentName'];
+            } else {
+                return "";
+            }
+        }
+
         //http://jsfiddle.net/highcharts/3bDMe/1/
         $('#sort').click(function(chart) {
             chart.series[0].data.sort(function(a, b) {
@@ -735,6 +807,18 @@
 
                 if(!!sufix)
                     data = data + " | " + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+            Subtitulo: function (data, sufix) {
+
+                if (!!sufix)
+                    data = data + ": " + sufix;
 
                 return {
 

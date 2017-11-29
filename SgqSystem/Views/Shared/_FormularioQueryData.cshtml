@@ -379,7 +379,7 @@
         {
             <li>
                 <div id="showDepartment" style="display:none">
-                    <span class="redLabel">@Resources.Resource.department</span>
+                    <span class="redLabel">Teste@*@Resources.Resource.department*@</span>
 
                     @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
                 </div>

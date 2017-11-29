@@ -30,7 +30,7 @@
         </div>
         @*Este campo está sendo utilizado como departamento para a JBS EUA na seguinte data 25/10/2017*@
         <div>
-            <span class="redLabel">@Resources.Resource.criticalLevel</span>
+            <span class="redLabel">@Resources.Resource.department</span>
             <select id="criticalLevelId" data-ng-model="criticalLevelValue"
                     data-ng-options="cl.Id as cl.Name for cl in criticalLevel | orderBy:'Name' track by cl.Id"
                     data-ng-change="GetLevel1ByCriticalLevel()" class="form-control" style="width:210px">
