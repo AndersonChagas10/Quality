@@ -1104,18 +1104,10 @@
             $('#body').find('select').select2('destroy')
 
             //Remove select caso exista
-            if ($('#encadeado').find('select').length) {
-                $('#encadeado').find('select').remove();
-            }
+            $('#encadeado').find('select').remove();
 
             //Mantem invisivel o campo de Predecessor
             //$('#encadeado').show()
-
-            /*Limpa caso haja DDL denrto do modal.*/
-            if ($('#encadeado').find('select').length) {
-                $('#encadeado').find('select').remove();
-                $('#encadeado').hide()
-            }
             if(encadeado == undefined)
                 $('#encadeado').hide()
 
