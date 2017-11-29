@@ -85,7 +85,7 @@ namespace Dominio.Services
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
-           
+
             try
             {
                 UserSgq userByName;
@@ -99,13 +99,41 @@ namespace Dominio.Services
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
 
-                if(!userDto.IsWeb)
+                if (!userDto.IsWeb)
                     DescriptografaSenha(userDto);
 
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
+                {
                     isUser = LoginBrasil(userDto, userByName);
+
+                    #region HARDCODE - Verifica se o usuario tem identificador 366 e atribui a Role para 'backdate'
+                    try
+                    {
+                        var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id && r.Role == "366");
+                        if (isProfile366)
+                            using (var db = new SgqDbDevEntities())
+                            {
+                                var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
+                                db.UserSgq.Attach(atualizarUsuario);
+                                if (atualizarUsuario.Role == null || !atualizarUsuario.Role.Contains("backdate"))
+                                {
+                                    if (!string.IsNullOrEmpty(atualizarUsuario.Role))
+                                        atualizarUsuario.Role += ",";
+                                    else
+                                        atualizarUsuario.Role = string.Empty;
+                                    atualizarUsuario.Role += "backdate";
+
+                                    db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
+                    }
+                    catch (Exception e)
+                    { }
+                    #endregion
+                }
 
                 /*Se for Brasil executa RN do Sistema EUA*/
                 if (GlobalConfig.Eua)
@@ -114,8 +142,6 @@ namespace Dominio.Services
                 /*Login SGQ Puro*/
                 if (GlobalConfig.Ytoara || GlobalConfig.Santander)
                     isUser = LoginSgq(userDto, userByName);
-
-            
 
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
@@ -138,7 +164,7 @@ namespace Dominio.Services
                     //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
                     using (var db = new SgqDbDevEntities())
                     {
-                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r=> r.Id == isUser.Id);
+                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
                         atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
                         db.UserSgq.Attach(atualizarUsuario);
                         db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
@@ -164,7 +190,7 @@ namespace Dominio.Services
         /// <param name="userDto"></param>
         private void DescriptografaSenha(UserDTO userDto)
         {
-             userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            userDto.Password = Guard.DecryptStringAES(userDto.Password);
         }
 
         /// <summary>
@@ -239,7 +265,7 @@ namespace Dominio.Services
 
             return CheckUserAndPassDataBase(userDto);
 
-        } 
+        }
 
         #endregion
 
@@ -284,7 +310,7 @@ namespace Dominio.Services
             /*1*/
             if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
-              
+
 
                 /*1.1*/
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
@@ -438,7 +464,7 @@ namespace Dominio.Services
 
             #endregion
 
-          
+
 
 
             UserSgq isUser = CheckUserAndPassDataBase(userDto);
@@ -497,6 +523,12 @@ namespace Dominio.Services
                     {
                         usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
                         rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
+
+                        #region Força deletar todos os vinculos com unidades e atualizar os mesmos
+                        _baseParCompanyXUserSgq.RemoveAll(rolesSgqGlobal);
+                        rolesSgqGlobal = new List<ParCompanyXUserSgq>();
+                        #endregion
+
                         allCompanySgqGlobal = _baseParCompany.GetAll();
                     }
                     catch (Exception e)
@@ -577,7 +609,8 @@ namespace Dominio.Services
                             {
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
-                                //Email = existenteNoDbAntigo.cEMail,
+                                Phone = existenteNoDbAntigo.cCelular ?? existenteNoDbAntigo.cTelefone,
+                                Email = existenteNoDbAntigo.cEMail,
                                 Password = Guard.EncryptStringAES(userDto.Password)
                             };
                         }
