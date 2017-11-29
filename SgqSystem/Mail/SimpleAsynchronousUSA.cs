@@ -54,18 +54,7 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = string.Empty;
-                    if (GlobalConfig.Brasil)
-                    {
-                        url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
-                    }
-                    else if (GlobalConfig.Eua)
-                    {
-                        //url = "http://sgqtest.jbssa.com/hmlusa/api/hf/SendMail";
-                        url = "http://sgq.jbssa.com/sgq/api/hf/SendMail";
-                    }
-                    //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                    //var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
+                    var url = GlobalConfig.UrlEmailAlertas;
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }

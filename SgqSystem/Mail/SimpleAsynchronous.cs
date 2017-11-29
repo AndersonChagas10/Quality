@@ -40,10 +40,8 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    //var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
-                    //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                    //var url = "http://localhost:8090/SgqSystem/" + "api/hf/SendMail";
-                    var url = "http://mtzsvmqsc/Robo/api/hf/SendMail";
+                    var url = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR"];
+                    
                     client.Timeout = TimeSpan.FromMinutes(10);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
@@ -63,7 +61,7 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                    var url = GlobalConfig.UrlEmailAlertas;
                     //var url = "http://localhost:57506/" + "api/hf/Reconsolidacao";
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
