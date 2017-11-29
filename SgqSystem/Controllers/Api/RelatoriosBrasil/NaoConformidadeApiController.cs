@@ -26,6 +26,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var whereDepartment = "";
             var whereShift = "";
+            var whereCluster = "";
 
             if (form.departmentId != 0)
             {
@@ -35,6 +36,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.shift != 0)
             {
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id = { form.clusterSelected_Id })";
             }
 
             var query = "" +
@@ -1409,8 +1415,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return list;
         }
 
+        private string GetUserUnits(int User)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
+            }
+        }
+
     }
+
 }
+
 
 public class NaoConformidadeResultsSet
 {
