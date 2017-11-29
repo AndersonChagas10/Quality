@@ -58,7 +58,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
         closeLeftSidebar();;
-
+        const refreshStatus = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
+        const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
         $(document).ready(function() {
 
             var things = {'ListUnits':@Html.Raw(Json.Encode(ViewBag.IdUnidadesUsuario))};
@@ -70,14 +71,14 @@
                 $.ajax(
                {
                    type: "POST",
-                   url: root + '/api/AppParams/GetGeneratedUnits',
+                   url: refreshStatus,
                    data: things,
                    dataType: "JSON",
                    contentType: "application/json; charset=utf-8",
                    success: function (response) {
                        getDataTable(response);
                        $('#spamLoading').LoadingOverlay("hide");
-                       
+
 
                        setTimeout(function(){
                            refreshStatus();
@@ -120,10 +121,11 @@
                 });
 
                 var data = JSON.stringify( {'ListUnits':listId} );
+
                 $.ajax(
                    {
                        type: "POST",
-                       url: root + '/api/AppParams/UpdateGetTelaThread',
+                       url: urlUpdateTablets,
                        data: data,
                        dataType: "JSON",
                        contentType: "application/json; charset=utf-8",

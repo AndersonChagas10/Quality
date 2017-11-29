@@ -4456,9 +4456,7 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
-            SGQDBContext.Generico listaProdutos = new Generico(db);
-
-            var listaProdutosJSON = listaProdutos.getProdutos();
+            
 
 
 
@@ -4530,6 +4528,9 @@ namespace SgqSystem.Services
                         /* Se for produto que digito o código e busco em uma lista*/
                         if (header.ParHeaderField_Description == "Produto")
                         {
+                            SGQDBContext.Generico listaProdutos = new Generico(db);
+                            var listaProdutosJSON = listaProdutos.getProdutos();
+
                             form_control = " <script> " +
                                            "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
                                            

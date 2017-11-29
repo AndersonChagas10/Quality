@@ -119,6 +119,12 @@ namespace PlanoDeAcaoMVC.Controllers
                 model._ValorDe = model.ValorDe.ToString("G29");
             if (model.ValorPara > 0)
                 model._ValorPara = model.ValorPara.ToString("G29");
+            if(model.Gerencia_Id > 0)
+                ViewBag.Coordenacao = Pa_Coordenacao.Listar().Where(r=> r.GERENCIA_ID == model.Gerencia_Id);
+            if (model.Iniciativa_Id > 0)
+                ViewBag.IndicadoresDeProjeto = Pa_IndicadoresDeProjeto.Listar().Where(r => r.Pa_Iniciativa_Id == model.Iniciativa_Id);
+            if (model.IndicadoresDeProjeto_Id > 0)
+                ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar().Where(r => r.Pa_IndicadoresDeProjeto_Id == model.IndicadoresDeProjeto_Id);
 
             return PartialView("Index", model);
         }

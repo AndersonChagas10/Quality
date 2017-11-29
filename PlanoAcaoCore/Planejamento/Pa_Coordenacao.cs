@@ -5,6 +5,8 @@ namespace PlanoAcaoCore
     public class Pa_Coordenacao : Pa_BaseObject
     {
         public string Name { get; set; }
+        public int? GERENCIA_ID { get; set; }
+
         public static List<Pa_Coordenacao> Listar()
         {
             var query = "SELECT * FROM Pa_Coordenacao";

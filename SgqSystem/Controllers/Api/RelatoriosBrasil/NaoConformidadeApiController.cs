@@ -849,12 +849,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         , UNI.Name       AS Unidade " +
                 "\n         , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.WeiEvaluation) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiEvaluation) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.EvaluatedResult) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.AM)" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.WeiEvaluation) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.WeiEvaluation) " +
 
 
                 "\n         ELSE 0 " +
@@ -862,33 +862,33 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n       , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.EvaluateTotal) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiEvaluation) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.EvaluatedResult) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.AM)" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.EvaluateTotal) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.EvaluateTotal) " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
                 "\n         , CASE " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.WeiDefects) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiDefects) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.WeiDefects) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.TotalLevel3WithDefects) " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
 
                 "\n         , CASE " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.DefectsTotal) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.DefectsTotal) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.DefectsTotal) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.TotalLevel3WithDefects) " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +
@@ -923,10 +923,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereDepartment +
                 whereShift +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
-
+                "\n         GROUP BY  IND.ParConsolidationType_Id, IND.HashKey, IND.Id, IND.IsRuleConformity, IND.Name, UNI.Id, UNI.Name, CL1.ParLevel1_Id, CL1.UnitId " + 
                 "\n     ) S1 " +
 
-                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id, IsRuleConformity  " +
+                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id, IsRuleConformity    " +
 
                 "\n ) S2 " +
                 "\n WHERE nc > 0 " +

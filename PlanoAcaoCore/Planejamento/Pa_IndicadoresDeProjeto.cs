@@ -6,6 +6,7 @@ namespace PlanoAcaoCore
     public class Pa_IndicadoresDeProjeto : Pa_BaseObject
     {
         public string Name { get; set; }
+        public int? Pa_Iniciativa_Id { get; set; }
         public static List<Pa_IndicadoresDeProjeto> Listar()
         {
             var query = "SELECT * FROM Pa_IndicadoresDeProjeto WHERE IsActive = 1";

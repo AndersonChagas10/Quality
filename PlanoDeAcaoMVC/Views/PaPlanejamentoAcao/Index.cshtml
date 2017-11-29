@@ -620,7 +620,7 @@
                         }
 
                         $('.novoTatico').show();
-                        DdlChangeTatico();
+                        DdlChangeTatico(model);
                     } else {
 
                         $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
@@ -661,6 +661,8 @@
         }
 
         function DdlChangeEstrategico(v1, v2, v3, edit ) {
+
+
 
             var change1 = v1 != undefined ? v1 : "";
             var change2 = v2 != undefined ? v2 : "";
@@ -715,10 +717,15 @@
             //}
         }
 
-        function DdlChangeTatico() {
+        function DdlChangeTatico(model) {
+            changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function() {
+                
+            })
+            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function() { 
+            })
 
-            changeChainJsWithHTMLResponseGET('Gerencia_Id', GETCoordenacaoByGerencia, 'Coordenacao_Id', function() { })
-
+            console.log('DdlChangeTatico',model)
+            
             //changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
             //    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'ObjetivoGerencial_Id', function (r) {
             //        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
@@ -759,7 +766,7 @@
                 });
             });
             $('#Iniciativa_Id').change();
-            //$('#Gerencia_Id').change();
+            
 
         }
 
@@ -771,12 +778,13 @@
                     })
                 })
         */
-        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB){
-            let masterEl = $('#' + idMaster)
+        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected){
+            let masterEl = $(idMaster)
+            let masterElVal = $(idMaster).val()
             masterEl.off('change').on('change', function () {
                 let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
                 $.get(urlGETChildren, { id: seletedId }, function (response) {
-                    let childrenEl = $('#' + idChildren)
+                    let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
                     childrenEl.remove();
                     //if($(childrenEl).data('select2'))
@@ -1854,6 +1862,7 @@
                 $('#modalLindo').find('.modal-body .content1').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
+                
                 //}
 
                 //else {
@@ -1930,7 +1939,7 @@
                              function (r) {
                                  TesteRenan(r, 'Estrategico', data);
                                  $('#modalNovo > div > div > div.modal-footer > button').show()
-
+                                 
                                  //HideForOperacional();
                              }
                         );
@@ -1941,6 +1950,43 @@
                              function (r) {
                                  TesteRenan(r, 'Tatico', data);
                                  $('#modalNovo > div > div > div.modal-footer > button').show()
+
+                                 //DDLs ENCADEADAS da PARTIAL VIEW
+                                 changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function() { })
+
+                                 $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
+                                     var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+                                     manageButton(Iniciativa_Id,'IndicadoresDeProjeto_Id','Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                
+                                     $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+                                         $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+                                         //$('#IndicadoresDeProjeto_Id').remove();
+                                         $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+
+                                             var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $(' #formEditTatico#IndicadoresDeProjeto_Id').val() : 0;
+                                             manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+                
+                                             $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                                                 $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
+                                                 //$('#ObjetivoGerencial_Id').remove();
+
+                                                 $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+
+                                                 try {
+                                                     $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
+                                                 } catch(e){
+                                                 }
+                                                 finally {
+                                                     $('#formEditTatico #modalLindo select').select2();
+                                                 }
+
+                                             });
+                                         });
+                                         $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+
+                                     });
+                                 });
                                  //HideForOperacional();
                              }
                         );
