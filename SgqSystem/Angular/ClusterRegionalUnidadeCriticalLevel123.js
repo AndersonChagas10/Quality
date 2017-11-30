@@ -4,21 +4,30 @@
 
             $http({
                 method: 'POST',
-                url: GetListCluster,
-                data: UnitList
+                url: GetListClusterGroup,
+                data: GetUsuarioId()
             }).
-            then(function (r) {
-                $scope.cluster = r.data;
-            });
+                then(function (r) {
+                    $scope.clusterGroup = r.data;
+                });
+
+            $http({
+                method: 'POST',
+                url: GetListCluster,
+                data: JSON.stringify({ "UserId": GetUsuarioId() })
+            }).
+                then(function (r) {
+                    $scope.cluster = r.data;
+                });
 
             $http({
                 method: 'POST',
                 url: GetListStructure,
-                data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue })
+                data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue })
             }).
-            then(function (r) {
-                $scope.structure = r.data;
-            });
+                then(function (r) {
+                    $scope.structure = r.data;
+                });
 
             $scope.unit = UnitList;
 
@@ -26,77 +35,92 @@
                 method: 'POST',
                 url: GetListLevel1
             }).
-            then(function (r) {
-                $scope.level1 = r.data;
-            });
+                then(function (r) {
+                    $scope.level1 = r.data;
+                });
 
             if (exibeTodosLevels) {
                 $http({
                     method: 'POST',
                     url: GetListLevel2
                 }).
-                then(function (r) {
-                    $scope.level2 = r.data;
-                });
+                    then(function (r) {
+                        $scope.level2 = r.data;
+                    });
 
                 $http({
                     method: 'POST',
                     url: GetListLevel3
                 }).
-                then(function (r) {
-                    $scope.level3 = r.data;
-                });
+                    then(function (r) {
+                        $scope.level3 = r.data;
+                    });
             }
 
-            $scope.GetListStructureVinculadoCluster = function () {              
+            $scope.GetListClusterVinculadoClusterGroup = function () {
+                //if ($scope.clusterGroupValue) {
+
+                $http({
+                    method: 'POST',
+                    url: GetListCluster,
+                    data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterGroup": $scope.clusterGroupValue })
+                }).
+                    then(function (r) {
+                        $scope.cluster = r.data;
+                    });
+
+                //}
+            }
+
+            $scope.GetListStructureVinculadoCluster = function () {
 
                 if ($scope.clusterValue) {
 
                     $http({
                         method: 'POST',
                         url: GetListStructure,
-                        data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue })
                     }).
-                    then(function (r) {
-                        $scope.structure = r.data;
-                    });
+                        then(function (r) {
+                            $scope.structure = r.data;
+                        });
 
 
                     if (!$scope.structureValue) {
                         $http({
                             method: 'POST',
                             url: GetListUnitVinculado,
-                            data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue, "Structure": $scope.structureValue })
+                            data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue, "Structure": $scope.structureValue })
                         }).
-                        then(function (r) {
-                            $scope.unit = r.data;
-                        });
+                            then(function (r) {
+                                $scope.unit = r.data;
+                            });
                     }
 
 
                     $http({
                         method: 'POST',
                         url: GetListCriticalLevelVinculadoCluster,
-                        data: JSON.stringify({ "UnitList": 0, "Cluster": $scope.clusterValue })
+                        data: JSON.stringify({ "Cluster": $scope.clusterValue })
                     }).
-                    then(function (r) {
-                        $scope.criticalLevel = r.data;
-                    });
+                        then(function (r) {
+                            $scope.criticalLevel = r.data;
+                        });
 
                 }
                 else {
                     $http({
                         method: 'POST',
                         url: GetListStructure,
-                        data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue })
                     }).
-                   then(function (r) {
-                       $scope.structure = r.data;
+                        then(function (r) {
+                            $scope.structure = r.data;
 
-                       if (!$scope.structureValue) {
-                           $scope.unit = UnitList;
-                       }
-                   });
+                            if (!$scope.structureValue) {
+                                $scope.unit = UnitList;
+                            }
+                        });
 
                     $scope.criticalLevel = [];
                 }
@@ -110,11 +134,11 @@
                     $http({
                         method: 'POST',
                         url: GetListUnitVinculado,
-                        data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue })
                     }).
-                    then(function (r) {
-                        $scope.unit = r.data;
-                    });
+                        then(function (r) {
+                            $scope.unit = r.data;
+                        });
                 }
 
                 else if ($scope.structureValue && $scope.clusterValue) {
@@ -122,21 +146,21 @@
                     $http({
                         method: 'POST',
                         url: GetListUnitVinculado,
-                        data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue, "Structure": $scope.structureValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue, "Structure": $scope.structureValue })
                     }).
-                    then(function (r) {
-                        $scope.unit = r.data;
-                    });
+                        then(function (r) {
+                            $scope.unit = r.data;
+                        });
                 }
                 else if ($scope.structureValue) {
                     $http({
                         method: 'POST',
                         url: GetListUnitVinculado,
-                        data: JSON.stringify({ "UnitList": UnitList, "Cluster": $scope.clusterValue, "Structure": $scope.structureValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "Cluster": $scope.clusterValue, "Structure": $scope.structureValue })
                     }).
-                then(function (r) {
-                    $scope.unit = r.data;
-                });
+                        then(function (r) {
+                            $scope.unit = r.data;
+                        });
 
                 } else {
                     $scope.unit = UnitList;
@@ -158,9 +182,9 @@
                         url: GetListLevel1VinculadoCriticalLevel,
                         data: JSON.stringify({ "Cluster": $scope.clusterValue, "CriticalLevel": $scope.criticalLevelValue })
                     }).
-                    then(function (r) {
-                        $scope.level1 = r.data;
-                    });
+                        then(function (r) {
+                            $scope.level1 = r.data;
+                        });
                 }
             }
 
@@ -171,9 +195,9 @@
                         url: GetListLevel2VinculadoLevel1 + "/" + $scope.level1Value,
                         //data: JSON.stringify({ Id: $scope.level1Value })
                     }).
-                    then(function (r) {
-                        $scope.level2 = r.data;
-                    });
+                        then(function (r) {
+                            $scope.level2 = r.data;
+                        });
                 }
                 else {
                     if (exibeTodosLevels) {
@@ -181,9 +205,9 @@
                             method: 'POST',
                             url: GetListLevel2
                         }).
-                       then(function (r) {
-                           $scope.level2 = r.data;
-                       });
+                            then(function (r) {
+                                $scope.level2 = r.data;
+                            });
                     } else {
                         $scope.level2 = [];
                     }
@@ -198,20 +222,20 @@
                         url: GetListLevel3VinculadoLevel2 + "/" + $scope.level2Value,
                         //data: JSON.stringify({ Id: $scope.level2Value })
                     }).
-                    then(function (r) {
-                        $scope.level3 = r.data;
-                    });
+                        then(function (r) {
+                            $scope.level3 = r.data;
+                        });
                 }
-                    //Defining the $http service for getting Level3 By Level2 and Level1
+                //Defining the $http service for getting Level3 By Level2 and Level1
                 else if ($scope.level2Value && $scope.level1Value) {
                     $http({
                         method: 'POST',
                         url: GetListLevel3VinculadoLevel2Level1 + "/" + $scope.level1Value + "/" + $scope.level2Value,
                         //data: JSON.stringify({ Id:  } + { Id:  })
                     }).
-                    then(function (r) {
-                        $scope.level3 = r.data;
-                    });
+                        then(function (r) {
+                            $scope.level3 = r.data;
+                        });
                 }
                 else {
                     if (exibeTodosLevels) {
@@ -219,9 +243,9 @@
                             method: 'POST',
                             url: GetListLevel3
                         }).
-                       then(function (r) {
-                           $scope.level3 = r.data;
-                       });
+                            then(function (r) {
+                                $scope.level3 = r.data;
+                            });
                     } else {
                         $scope.level3 = [];
                     }
