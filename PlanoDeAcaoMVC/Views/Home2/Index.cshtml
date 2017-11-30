@@ -1,76 +1,2514 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<script src="~/Scripts/lodash.min.js"></script>
+﻿@{ Layout = null;}
 
-<script type="text/javascript">
+<!--
+PROTÓTIPO DE DASHBOARD
+DATE: 2017-11-19
+AUTHOR: GABRIEL CRUZ NUNES
+-->
 
-    var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
-    var dados = [];
+<head>
 
-    $(function () {
-        console.log("ready!");
-        GetDataTable()
-    });
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/PANovo/css/bootstrap-select.min.css">
+    <link href="~/Content/PANovo/css/jquery.dataTables.min.css" rel="stylesheet">
 
-    function GetDataTable() {
-        $.post(urlGetPlanejamentoAcao, {}, function (r) { dados = r; })
+    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/style.css" />
+
+
+    <style>
+        /*table {
+
+            table-layout: fixed;
+            word-wrap: break-word;
+        }*/
+
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+            *margin-left: -100px; /*ie7*/
+        }
+
+        .fix {
+            position: absolute;
+            *position: relative; /*ie7*/
+            margin-left: -100px;
+            width: 100px;
+        }
+
+        .outer {
+            position: relative;
+        }
+
+        .inner {
+
+            width: 100%;
+
+        }
+
+        .defaultDiv {
+            padding: 3px;
+        }
+
+        .defaultDivInternal {
+            background-color: #fff;
+            padding: 5px;
+        }
+
+        .defaultSizeMin {
+            height: 250px;
+        }
+
+        .defaultSizeMinPanel {
+            height: 150px;
+            width: 100%;
+        }
+
+        .defaultSizeMed {
+            height: 270px;
+        }
+
+        .defaultSizeMedPanel {
+            height: 190px;
+            width: 100%;
+        }
+
+        .defaultSizeMax {
+            height: 540px;
+            font-size: xx-small;
+        }
+
+        .defaultSizeMaxPanel {
+            height: 500px;
+            width: 100%;
+        }
+
+        .defaultGroupTitle {
+            float: left;
+            /*width: 100%;*/
+        }
+
+        .defaultTitle {
+            font-weight: bold;
+            font-size: 14px;
+            float: left;
+        }
+
+        .defaultSubtitle {
+            font-weight: normal;
+            font-size: 8px;
+            text-transform: uppercase;
+            float: left;
+        }
+
+        .defaultFilter {
+            float: left;
+            border-bottom: 1px dotted #ccc;
+            margin-bottom:5px;
+            width:100%;
+            padding:2px;
+        }
+
+        .defaultDivFilter {
+            background-color: #06304e;
+            color: #FFF;
+            position: fixed;
+            z-index: 9999;
+            top:50px;
+        }
+
+        .btn-filter {
+            font-size: 12px;
+            height:26px;
+            width:23px;
+            padding:0;
+        }
+
+        .dropdown-menu open{
+            width:150px;
+        }
+
+        /*tbody > tr > td {
+            word-break: break-all;
+        }*/
+    </style>
+
+    <script type="text/javascript">
+
+        //var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
+
+        //var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
+
+        //var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
+        var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+
+
+
+        var dados = [];
+        var dadosPie2 = [];
+        function GetDataTable(campo, filtro) {
+            $.get(urlGetPlanejamentoAcao, enviar, function (r) {
+                dados = r;
+                if (campo == "")
+                    campo = "Todos";
+
+                if (campo != "Todos" && filtro != "Todos") {
+                    dados = FiltraLinhas(dados, [campo], [filtro]);
+                }
+
+
+                //gera o gráfico de Pizza
+                geraData1();
+                //GERAL GRAFICO POR PESSOAS ENVOLVIDAS
+                geraData2(dados);
+
+                distinctFilter(dados, $('#campo1Panel5').val(), 'valor1Panel5');
+                distinctFilter(dados, $('#campo2Panel5').val(), 'valor2Panel5');
+                distinctFilter(dados, $('#campo1Panel6').val(), 'valor1Panel6');
+                distinctFilter(dados, $('#campo2Panel6').val(), 'valor2Panel6');
+
+                graficoEstoque();
+
+                //celso
+
+                $('#btnFiltroPie2').click();
+                $('#btnpanel5').click();
+                $('#btnpanel6').click();
+
+                json = dados;
+
+                MountDataTable(json);
+            });
+        }
+
+        function MountDataTable(json) {
+            $('#example').DataTable({
+                destroy: true,
+                "aaData": json,
+                "bAutoWidth": false,
+                "aoColumns": [
+                    { "mData": "Diretoria" },
+                    { "mData": "Missao" },
+                    { "mData": "Visao" },
+                    { "mData": "Dimensao" },
+                    { "mData": "Objetivo" }, //ver diretriz
+                    { "mData": "IndicadoresDiretriz" },
+                    { "mData": "Responsavel_Diretriz_Quem.Name" },
+                    { "mData": "Gerencia" },
+                    { "mData": "Coordenacao" },
+                    { "mData": "Iniciativa" },
+                    { "mData": "IndicadoresDeProjeto" },
+                    { "mData": "ObjetivoGerencial" },
+                    { "mData": "_ValorDe" },
+                    { "mData": "ValorPara" },
+                    { "mData": "_DataInicio" },
+                    { "mData": "_DataFim" },
+                    { "mData": "Responsavel_Projeto_Quem.Name" },
+                    { "mData": "Acao.Regional" },
+                    { "mData": "Acao.UnidadeName" },
+                    { "mData": "Acao.Level1Name" },
+                    { "mData": "Acao.Level2Name" },
+                    { "mData": "Acao.Level3Name" },
+                    { "mData": "IndicadoresDeProjeto" }, // VER INDICADOR OPERACIONAL*
+                    { "mData": "Acao._CausaGenerica" },
+                    { "mData": "Acao._GrupoCausa" },
+                    { "mData": "Acao._ContramedidaGenerica" },
+                    { "mData": "Acao.ContramedidaEspecifica" },
+                    { "mData": "Acao.CausaEspecifica" },
+                    { "mData": "Acao._Quem" },
+                    { "mData": "Acao._QuandoInicio" },
+                    { "mData": "Acao._QuandoFim" },
+                    { "mData": "TemaAssunto" },
+                    { "mData": "Acao.PraQue" },
+                    { "mData": "Acao.QuantoCusta" },
+                    { "mData": "Acao._StatusName" },
+                    { "mData": "Acao._Prazo" }
+                ],
+
+                'aoColumnDefs': [
+                    { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
+                    { "sTitle": "Missão", "aTargets": [1], "width": "200px" },
+                    { "sTitle": "Visão", "aTargets": [2], "width": "200px" },
+                    { "sTitle": "Dimensão", "aTargets": [3], "width": "50px" },
+                    { "sTitle": "Diretrizes", "aTargets": [4], "width": "200px" }, // ver diretriz
+                    { "sTitle": "Indicadores Diretriz", "aTargets": [5], "width": "200px" },
+                    { "sTitle": "Responsável pela Diretriz", "aTargets": [6], "width": "200px" },
+                    { "sTitle": "Gerência", "aTargets": [7], "width": "200px" },
+                    { "sTitle": "Coordenação", "aTargets": [8], "width": "200px" },
+                    { "sTitle": "Iniciativa", "aTargets": [9], "width": "200px" },
+                    { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [10], "width": "200px" },
+                    { "sTitle": "Objetivo Gerencial", "aTargets": [11], "width": "200px" },
+                    { "sTitle": "Valor de", "aTargets": [12], "width": "200px" },
+                    { "sTitle": "Valor para", "aTargets": [13], "width": "200px" },
+                    { "sTitle": "Data Início", "aTargets": [14], "width": "200px" },
+                    { "sTitle": "Data Fim", "aTargets": [5], "width": "200px" },
+                    { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [15], "width": "200px" },
+                    { "sTitle": "Regional", "aTargets": [16], "width": "200px" },
+                    { "sTitle": "Unidade", "aTargets": [17], "width": "200px" },
+                    { "sTitle": "Indicador SGQ", "aTargets": [18], "width": "200px" },
+                    { "sTitle": "Monitoramento SGQ", "aTargets": [19], "width": "200px" },
+                    { "sTitle": "Tarefa SGQ", "aTargets": [20] },
+                    { "sTitle": "Indicadores Operacional", "aTargets": [21], "width": "200px" }, // ver indicador operacional*
+                    { "sTitle": "Causa Genérica", "aTargets": [22], "width": "200px" },
+                    { "sTitle": "Grupo Causa", "aTargets": [23], "width": "200px" },
+                    { "sTitle": "Ação Genérica", "aTargets": [24], "width": "200px" },
+                    { "sTitle": "Causa Específica", "aTargets": [25], "width": "200px" },
+                    { "sTitle": "Ação Específica", "aTargets": [26], "width": "200px" },
+                    { "sTitle": "Quem", "aTargets": [27], "width": "200px" },
+                    { "sTitle": "Quando (Início)", "aTargets": [28], "width": "200px" },
+                    { "sTitle": "Quando (Fim)", "aTargets": [29], "width": "200px" },
+                    { "sTitle": "Como Pontos Importantes", "aTargets": [30], "width": "200px" },
+                    { "sTitle": "Pra que", "aTargets": [31], "width": "200px" },
+                    { "sTitle": "Quanto custa", "aTargets": [32], "width": "200px" },
+                    { "sTitle": "Status", "aTargets": [33], "width": "200px" },
+                    { "sTitle": "Prazo", "aTargets": [34], "width": "200px" },
+                    { "sTitle": "", "aTargets": [35], "width": "200px" }
+                ],
+
+                responsive: true,
+                //"bFilter": false,
+                "scrollY": 370,
+                "scrollX": 500,
+                "bLengthChange": false,
+
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel',
+                    //'colvis'
+                ],
+
+
+                "language": {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+
+            });
+
+            $('#virtualBody').css('width', '100%');
+
+            //Filtros por coluna
+
+            $('.dataTable thead th').each(function (i) {
+                var title = $('.dataTable thead th').eq($(this).index()).text();
+                $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+            });
+
+            $('.dataTable thead th').css('text-align', 'center');
+
+            $('.dataTables_filter').hide();
+
+            // DataTable
+            var table = $('.dataTable').DataTable();
+
+            // Filter event handler
+            $(table.table().container()).on('keyup', 'thead input', function () {
+                table
+                    .column($(this).data('index'))
+                    .search(this.value)
+                    .draw();
+            });
+
+            table.draw();
+
+
+
+        }
+
+        /**
+         *
+         * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
+         * ['Nome','Idade'] arrColuna
+         */
+        function FiltraColunas(array, arrFiltro) {
+
+            let novoArr = [];
+
+            array.forEach(function (o, c) {
+
+                obj = {};
+                objt = {};
+                arrFiltro.forEach(function (oo, cc) {
+
+                    obj[oo] = o[oo];
+                    objt[oo] = o.Acao[oo];
+                });
+
+                novoArr.push(obj);
+                novoArr.push(objt);
+            });
+
+            return novoArr;
+        }
+
+        /**
+         *
+         * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
+         * ['Nome','Idade'] arrColuna
+         * ['Renan',25] arrValue
+         */
+        function FiltraLinhas(array, arrColuna, arrValue) {
+
+            let novoArr = []
+
+            array.forEach(function (o, c) {
+
+                var flag = true;
+
+                ///////////
+
+                if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
+                    || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
+                    || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name") {
+
+                    arrColuna.forEach(function (oo, cc) {
+
+                        if (o.Acao[oo] != arrValue[cc]) {
+                            flag = false;
+                        }
+                    });
+
+                } else {
+                    arrColuna.forEach(function (oo, cc) {
+
+                        if (o[oo] != arrValue[cc]) {
+                            flag = false;
+                        }
+                    });
+                }
+
+
+                //////////
+
+                //arrColuna.forEach(function (oo, cc) {
+
+                //    if (o[oo] != arrValue[cc]) {
+                //        flag = false;
+                //    }
+                //});
+
+                if (flag) {
+                    novoArr.push(o)
+                }
+            });
+
+            return novoArr;
+        }
+
+        function FiltraLinhasComTodos(array, arrColuna, arrValue) {
+
+            let novoArr = []
+
+            array.forEach(function (o, c) {
+                var flag = true;
+                if (arrValue != "Todos" ) {
+                    if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
+                        || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
+                        || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name") {
+
+                        arrColuna.forEach(function (oo, cc) {
+
+                            if (o.Acao[oo] != arrValue[cc]) {
+                                flag = false;
+                            }
+                        });
+
+                    } else {
+                        arrColuna.forEach(function (oo, cc) {
+
+                            if (o[oo] != arrValue[cc]) {
+                                flag = false;
+                            }
+                        });
+                    }
+                }
+
+
+                if (flag) {
+                    novoArr.push(o)
+                }
+            });
+
+            return novoArr;
+        }
+
+
+
+        function getDateRange(campo) { //$("input[name='daterange']").val()
+            var datas = campo.split(' - ');
+            var dataPTInicio = datas[0].split("/");
+            var dataPTFim = datas[1].split("/");
+
+            dataInicio = new Date(dataPTInicio[2] + ' ' + dataPTInicio[1] + ' ' + dataPTInicio[0]);
+            dataFim = new Date(dataPTFim[2] + ' ' + dataPTFim[1] + ' ' + dataPTFim[0]);
+        }
+
+        function getDateUSA(campo) { //$("input[name='daterange']").val()
+            var dataPTInicio = campo.split("/");
+            data = new Date(dataPTInicio[2] + ' ' + dataPTInicio[1] + ' ' + dataPTInicio[0]);
+            if (data != 'Invalid Date') {
+                return data;
+            }
+        }
+
+
+    </script>
+
+   
+
+    <script>
+
+        var atrasadaColor = '#ff6666';
+        var concluidoColor = 'lightgreen';
+        var andamentoColor = 'lightblue';
+
+        var dataInicio;
+        var dataFim;
+
+        /*
+        var data1 = [
+            { name: 'Concluídas', y: 22, color: concluidoColor },
+            { name: 'Atrasadas', y: 10, color: atrasadaColor },
+            { name: 'Em Andamento', y: 18, color: andamentoColor },
+        ];
+        */
+
+        var categories2 = ['Camila', 'Miriã', 'Ana', 'Adão', 'Diego'];
+
+        var data2 = [{
+            name: 'Concluídas',
+            data: [5, 3, 4, 7, 2],
+            color: concluidoColor
+        }, {
+            name: 'Atrasadas',
+            data: [2, 2, 3, 2, 1],
+            color: atrasadaColor
+        }, {
+            name: 'Em Andamento',
+            data: [3, 4, 4, 2, 5],
+            color: andamentoColor
+        }];
+
+        var data3 = [{
+            id: 'A',
+            name: 'Atrasadas',
+            color: atrasadaColor
+        }, {
+            id: 'B',
+            name: 'Concluídas',
+            color: concluidoColor
+        }, {
+            id: 'O',
+            name: 'Em Andamento',
+            color: andamentoColor
+        }, {
+            name: 'Qualidade',
+            parent: 'A',
+            value: 5
+        }, {
+            name: 'Operação',
+            parent: 'A',
+            value: 3
+        }, {
+            name: 'Qualidade',
+            parent: 'B',
+            value: 4
+        }, {
+            name: 'Operação',
+            parent: 'B',
+            value: 10
+        }, {
+            name: 'Qualidade',
+            parent: 'O',
+            value: 1
+        }, {
+            name: 'Operação',
+            parent: 'O',
+            value: 3
+        }];
+
+        var categories4 = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'];
+
+        var data4 = [{
+            type: 'column',
+            name: 'Abertas',
+            data: [3, 2, 5, 3, 3],
+            color: andamentoColor
+        }, {
+            type: 'column',
+            name: 'Fechada',
+            data: [2, 3, 2, 1, 6],
+            color: concluidoColor
+        }, {
+            type: 'spline',
+            name: 'Estoque',
+            data: [1, 0, 3, 5, 2],
+            color: atrasadaColor,
+            marker: {
+                lineWidth: 2,
+                lineColor: atrasadaColor,
+                fillColor: atrasadaColor
+            }
+        }];
+
+        var categories5 = []; //['Qualidade', 'Operação', 'Industria'];
+
+        var data5 = [];
+        //    [{
+        //    name: 'Atrasado',
+        //    data: [4, 2, 6],
+        //    color: atrasadaColor
+        //}, {
+        //    name: 'Concluido',
+        //    data: [5, 4, 1],
+        //    color: concluidoColor
+        //}, {
+        //    name: 'Em Andamento',
+        //    data: [6, 2, 4],
+        //    color: andamentoColor
+        //}];
+
+        var categories6 = []; //categories2
+
+        var data6 = [];
+        //[{
+        //    name: 'Atrasado',
+        //    data: [4, 2, 6.2, 2],
+        //    color: atrasadaColor
+        //}, {
+        //    name: 'Concluido',
+        //    data: [5, 4, 1, 4, 2],
+        //    color: concluidoColor
+        //}, {
+        //    name: 'Em Andamento',
+        //    data: [6, 2, 4, 1, 0],
+        //    color: andamentoColor
+        //}];
+
+        var json = [{
+            "tempoNS": 4251649,
+            "tempoMS": 4,
+            "tamanhoArray": 1999,
+            "nome": "Bubble iterativo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+
+        }, {
+            "tempoNS": 3064749,
+            "tempoMS": 3,
+            "tamanhoArray": 1999,
+            "nome": "Bubble recursivo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 994920,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "Insertion iterativo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 908287,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "Insertion recursivo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 1500831,
+            "tempoMS": 1,
+            "tamanhoArray": 1999,
+            "nome": "Selection iterativo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 1461891,
+            "tempoMS": 1,
+            "tamanhoArray": 1999,
+            "nome": "Selection recursivo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 176888,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "Merge iterativo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 187754,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "Merge recursivo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 105348,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "Quick recursivo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 160588,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "Heap recursivo",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }, {
+            "tempoNS": 100217,
+            "tempoMS": 0,
+            "tamanhoArray": 1999,
+            "nome": "CombSort Sem Otimização",
+            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
+            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
+
+        }
+        ];
+
+        json = FiltraColunas(dados, ["Diretoria",
+            "Missao",
+            "Visao",
+            "Dimensao",
+            "Objetivo",
+            "IndicadoresDiretriz",
+            "Responsavel_Diretriz_Quem.Name",
+            "Gerencia",
+            "Coordenacao",
+            "Iniciativa",
+            "IndicadoresDeProjeto",
+            "ObjetivoGerencial",
+            "_ValorDe",
+            "ValorPara",
+            "_DataInicio",
+            "_DataFim",
+            "Responsavel_Projeto_Quem.Name",
+            "Acao.Regional",
+            "Acao.UnidadeName",
+            "Acao.Level1Name",
+            "Acao.Level2Name",
+            "Acao.Level3Name",
+            "IndicadoresDeProjeto",
+            "Acao._CausaGenerica",
+            "Acao._GrupoCausa",
+            "Acao._ContramedidaGenerica",
+            "Acao.ContramedidaEspecifica",
+            "Acao.CausaEspecifica",
+            "Acao._Quem",
+            "Acao._QuandoInicio",
+            "Acao._QuandoFim",
+            "TemaAssunto",
+            "Acao.PraQue",
+            "Acao.QuantoCusta",
+            "Acao._StatusName",
+            "Acao._Prazo"]);
+    </script>
+
+</head>
+
+<body style="background-color:#ccc;padding-top:86px;">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="/Imagens/Logo.png" style="height:45px;"> </div>
+
+                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
+
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active">
+                        <a href="#">By GRJ Soluções</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Home/LogOut">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="/">Relatórios</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="/PaPlanejamentoAcao">Gerenciar</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <!--MENU DE FILTROS-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDivInternal defaultDivFilter">
+            <div class="defaultGroupTitle" style="width:auto; float:left; background-color:transparent;">
+                <span class="defaultTitle" style="line-height:27px;">Filtros</span>
+            </div>
+            <div class="defaultFilter input-group" style="width:auto; float:right; background-color:transparent; border-bottom: 0px; margin-bottom:0px;">
+                <div class="input-group-btn" style="width: 100px;">
+                    <input type="text" class="form-control" name="daterange" value="01/01/2017 - 31/01/2017" />
+                </div>
+                &nbsp;
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="_GrupoCausa">Grupo Causa</option>
+                    <option value="_CausaGenerica">Causa Genérica</option>
+                    <option value="_ContramedidaGenerica">Ação Genérica</option>
+                    <option value="UnidadeName">Unidade</option>
+                    <option value="_Quem">Quem</option>
+                    <option value="_StatusName">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Level1Name">Indicador</option>
+                    <option value="Level2Name">Monitoriamento</option>
+                    <option value="Level3Name">Tarefa</option>
+
+                </select>
+                &nbsp;
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1Filtro">
+                    <option>Todos</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnTop"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+
+        </div>
+    </div>
+    <!--FIM MENU DE FILTROS-->
+
+    <!--LINHA 1-->
+    <!--<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Status das Ações</span>
+                <br />
+                <span class="defaultSubtitle">Total de ações por Status</span>
+            </div>
+            <div id="panel1" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>-->
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultFilter ">
+
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="_GrupoCausa">Grupo Causa</option>
+                    <option value="_CausaGenerica">Causa Genérica</option>
+                    <option value="_ContramedidaGenerica">Ação Genérica</option>
+                    <option value="UnidadeName">Unidade</option>
+                    <option value="_Quem">Quem</option>
+                    <option value="_StatusName">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Level1Name">Indicador</option>
+                    <option value="Level2Name">Monitoriamento</option>
+                    <option value="Level3Name">Tarefa</option>
+                </select>
+                &nbsp;
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1FiltroPie2">
+                    <option>Todos</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnFiltroPie2"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Tarefas vs Status</span>
+                <br />
+                <span class="defaultSubtitle" id="spanPie2">Todas</span><span class="defaultSubtitle">&nbsp;por status</span><br />
+            </div>
+            <div id="panel2" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Estoque de Ações</span>
+                <br />
+                <span class="defaultSubtitle">Formação do Estoque de Ações</span>
+            </div>
+            <div id="panel4" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+
+    <!--FIM LINHA 1-->
+    <!--LINHA 2-->
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed ">
+            <div class="defaultFilter">
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
+
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao" selected>Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName">Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" id="valor1Panel5"></select>
+
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName" selected>Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" id="valor2Panel5"></select>
+                <button class="btn btn-warning btn-filter" id="btnpanel5"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel5','campo2Panel5','panel5', this.id);" id="btnOrderFilterPanel5"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Ordem por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Comparativo</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel5">Status </span>
+                <span class="defaultSubtitle">&nbsp;por&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel5"> por Gerência</span>
+            </div>
+            <div id="panel5" class="defaultSizeMedPanel"></div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv Panel6">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
+            <div class="defaultFilter">
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia" selected>Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName">Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1Panel6"></select>
+
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName" selected>Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor2Panel6"></select>
+
+                <button class="btn btn-warning btn-filter" id="btnpanel6"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel6','campo2Panel6','panel6', this.id);" id="btnOrderFilterPanel6"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Orderm por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Comparativo</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel6">Status</span>
+                <span class="defaultSubtitle">&nbsp;por&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel6">Pessoa</span>
+            </div>
+            <div id="panel6" class="defaultSizeMedPanel"></div>
+        </div>
+    </div>
+
+    <!--FIM LINHA 2-->
+    <!--LINHA 3-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Gerenciador de Tarefas</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">Todas as tarefas para filtrar</span>
+            </div>
+
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FIM LINHA 3-->
+
+</body>
+
+<footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://code.jquery.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/jquery-1.12.4.js"></script>
+
+    <script src="~/Scripts/PANovo/js/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/PANovo/js/highcharts.js"></script>
+    <script src="~/Scripts/PANovo/js/treemap.js"></script>
+    <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/daterangepicker.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/jszip.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/pt-br.js"></script>
+
+</footer>
+
+<script owner="CelsoGea">
+
+        //Graficos Instancia
+
+        //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
+        function graficoEstoque() {
+            //MOCK Acompanhamento
+            dados.forEach(function (o, c) {
+                if (c < 5)
+                    o.Acao['Acompanhamento'] = { AddDate: "2017-11-08T14:43:19.3044096" }
+                else if (c > 5 && c < 8)
+                    o.Acao['Acompanhamento'] = { AddDate: "2017-10-08T14:43:19.3044096" }
+                else
+                    o.Acao['Acompanhamento'] = { AddDate: "2017-09-08T14:43:19.3044096" }
+            })
+            //FIM MOCK Acompanhamento
+
+            let groups = _.groupBy(dados, function (o) {
+                return moment(o.Acao.Acompanhamento.AddDate).startOf('mounth').format();
+            });
+
+            let categoriesArr = _.map(groups, function (group, day) {
+                return moment(day).format('MMM')
+            })
+
+            let serieArrFinal = [{
+                type: 'column',
+                name: 'Abertas',
+                data: _.map(groups, function (group, day) {
+                    return getRegistrosNaoConcluidos(group).length
+                }),
+                color: andamentoColor
+            }, {
+                type: 'column',
+                name: 'Fechada',
+                data: _.map(groups, function (group, day) {
+                    return getRegistrosConcluidos(group).length
+                }),
+                color: concluidoColor
+            }, {
+                type: 'spline',
+                name: 'Estoque',
+                data: _.map(groups, function (group, day) {
+                    return getRegistrosNaoConcluidos(group).length - getRegistrosConcluidos(group).length
+                }),
+                color: atrasadaColor,
+                marker: {
+                    lineWidth: 2,
+                    lineColor: atrasadaColor,
+                    fillColor: atrasadaColor
+                }
+            }];
+
+            makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
+                //plotOptions: {
+                //    series: {
+                //        //stacking: 'normal',
+                //        events: {
+                //            click: function (event) {
+                //                filterBar1ForDataTable(event.point.name, event.point.category)
+                //            }
+                //        }
+                //    },
+                //    bar: {
+                //        dataLabels: {
+                //            enabled: false
+                //        }
+                //    }
+                //},
+            })
+
+        }
+
+        function sortFunction(a, b) {
+            if (a[0] === b[0]) {
+                return 0;
+            }
+            else {
+                return (a[0] < b[0]) ? -1 : 1;
+            }
+        }
+
+        //Criar arrays para graficos Panel5 e 6, os filtros devem ser inseridos antes do makechart
+        function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilterVal, order, id, optionsDef) {
+            let hasFilter = categoriesFilterVal && seriesFilterVal
+            if (hasFilter) {
+                var categoriesArr = [];
+                if (id == 'panel5') {
+                    if ($('#valor1Panel5 option:selected').text() == "Todas")
+                        categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
+                    else
+                        categoriesArr.push($('#valor1Panel5 option:selected').text());
+                } else if (id == 'panel6') {
+                    if ($('#valor1Panel6 option:selected').text() == "Todas")
+                        categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
+                    else
+                        categoriesArr.push($('#valor1Panel6 option:selected').text());
+                }
+                
+
+                var categoriesArrOrder = [];
+
+                categoriesArr.sort();
+
+                var serieArrFinal = filtraAgrupaXY(categoriesArr, seriesFilterVal, categoriesFilterVal, dados, true, id)
+
+                if (order == "Asc") {
+                    //segue o fluxo!
+                } else {
+
+                    //ordenarção por quantidade de ações
+                    var soma = [];
+                    jQuery.each(serieArrFinal, function (i, val) {
+
+                        for (j = 0; j < serieArrFinal[i].data.length; j++) {
+                            if (i == 0) {
+                                soma.push([]);
+                            }
+                            if (soma[j][0] == undefined) {
+                                soma[j][0] = 0;
+                            }
+                            soma[j][0] = soma[j][0] + serieArrFinal[i].data[j];
+                        }
+                    });
+                    jQuery.each(soma, function (i, val) {
+                        soma[i][1] = i;
+                    });
+                    btnOrder
+                    soma.sort(sortFunction);
+                    soma.reverse();
+
+                    var oldSerieArrFinal = JSON.parse(JSON.stringify(serieArrFinal));
+                    var oldCategoriesArr = JSON.parse(JSON.stringify(categoriesArr));
+
+                    jQuery.each(oldSerieArrFinal, function (i, val) {
+                        for (j = 0; j < soma.length; j++) {
+                            serieArrFinal[i].data[j] = (oldSerieArrFinal[i].data[soma[j][1]]);
+                        }
+                    });
+
+                    jQuery.each(soma, function (i, val) {
+                        categoriesArr[i] = oldCategoriesArr[soma[i][1]].slice();
+                    });
+                    //fim ordenarção por quantidade de ações
+                }
+
+                makeChart(id, categoriesArr, serieArrFinal, 'bar', categoriesFilterVal)
+            } else
+                makeChart(id, categoriesArr, serieArrFinal, 'bar', categoriesFilterVal)
+        }
+
+        //FIM Graficos Instancia
+
+        //Aux
+
+        //Agrupa o arr dados por mes, devolve um Objeto, se mapped = true devolve um array
+        function agrupaPorMes() {
+            var groups = _.groupBy(dados, function (o) {
+                return moment(o.Acao.Acompanhamento.AddDate).startOf('mounth').format();
+            });
+            return groups
+        }
+        //Busca no arr de dados registros concluídos, filtro = return
+        function getRegistrosConcluidos(arr) {
+            return _.filter(arr, function (o) {
+                return o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0;
+            });
+        }
+        //Busca no arr de dados registros não concluídos, filtro = return
+        function getRegistrosNaoConcluidos(arr) {
+            return _.filter(arr, function (o) {
+                return !(o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0 && o.Acao._StatusName.indexOf('Cancelada') < 0);
+            });
+        }
+        //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
+        function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
+            let options = {
+                chart: {
+                    type: type
+                },
+                title: {
+                    text: false,
+                },
+                subtitle: {
+                    text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+                },
+                xAxis: {
+                    
+                    categories: categoriesArr,
+                    title: {
+                        text: null
+                    },
+                    labels: {
+
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    },
+                    tickInterval: 2
+                },
+                yAxis: {
+                    min: 0,
+                    max: 30,
+                    title: {
+                        text: yAxisTitle,
+                        align: 'high',
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    },
+                    labels: {
+                        overflow: 'justify',
+
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        events: {
+                            click: function (event) {
+                                filterBar1ForDataTable(this.name, event.point.category, id)
+
+                            }
+                        }
+
+                    },
+                    bar: {
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    floating: false,
+                    itemStyle: {
+                        fontSize: '8px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                /*
+                    {name: 'Concluídas', y: 56.33, color: concluidoColor },
+                    {name: 'Atrasadas', y: 10.38, color: atrasadaColor },
+                    {name: 'Em Andamento', y: 4.77, color: andamentoColor },
+                    */
+                series: seriesArr
+            }
+
+            if (optionsDef)
+                Object.assign(options, optionsDef);
+
+            Highcharts.chart(id, options);
+        }
+        //Distinct usage: MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique)
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+        //Desc pendente
+        function MapeiaValorParaHC(array, prop, isInteger) {
+            var arrayRetorno = $.map(array, function (o, c) {
+                if (isInteger) {
+                    var valor = parseInt(o[prop]);
+                    if (isNaN(valor)) return 0;
+                    return valor;
+                }
+                var propArray = prop.split('.');
+                if (propArray.length == 2) {
+                    return o[propArray[0]][propArray[1]];
+                } else {
+                    return o[prop];
+                }
+            });
+            return arrayRetorno;
+        }
+        //Desc pendente
+        function orderArray(array) {
+
+            array.sort(function (a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
+
+                return 0;
+            });
+
+            return array;
+        }
+        //Desc pendente
+        function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
+            var filtroEixoX = [];
+            if (id == 'panel5') {
+                if ($('#valor2Panel5 option:selected').text() == "Todas")
+                    filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
+                else {
+                    filtroEixoX.push($('#valor2Panel5 option:selected').text());
+
+                }
+            } else if (id == 'panel6'){
+                if ($('#valor2Panel6 option:selected').text() == "Todas")
+                    filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
+                else {
+                    filtroEixoX.push($('#valor2Panel6 option:selected').text());
+
+                }
+            }
+            
+
+            let seriesAux = filtroEixoX;
+            let serieArrFinal = []
+            seriesAux.forEach(function (o, c) {
+                var serieData = {};
+                serieData["name"] = o;
+                serieData["data"] = [];
+                categoriesArr.forEach(function (oo, cc) {
+                    serieData["data"].push($.grep(dados, function (e) {
+
+                        var retornoSeries;
+                        var retornoCategorias;
+
+                        var propArray = seriesFilter.split('.');
+                        if (propArray.length == 2) {
+                            retornoSeries = e[propArray[0]][propArray[1]];
+                        } else {
+                            retornoSeries = e[seriesFilter];
+                        }
+
+                        var propArray = categoriesFilter.split('.');
+                        if (propArray.length == 2) {
+                            retornoCategorias = e[propArray[0]][propArray[1]];
+                        } else {
+                            retornoCategorias = e[categoriesFilter];
+                        }
+
+                        return retornoSeries == o && retornoCategorias == categoriesArr[cc];
+                    }).length)
+                })
+                serieArrFinal.push(serieData);
+            });
+            if (verifyStatus)
+                pintaStatus(seriesFilter, serieArrFinal)
+            return serieArrFinal
+        }
+        //Desc pendente
+        function pintaStatus(seriesFilter, serieArrFinal) {
+            if (seriesFilter == 'Status' && serieArrFinal != '') {
+
+                Highcharts.setOptions({
+                    colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+                });
+
+                var serieAux;
+                var listaVazia;
+                var aux = 0;
+                serieAux = orderArray(serie);
+                serie = [];
+
+                for (var i = 0; i < listaStatus.length; i++) {
+                    if (serieAux[aux].name == listaStatus[i]) {
+                        serie.push(serieAux[aux]);
+                        if (serieAux.length > aux + 1) {
+                            aux++;
+                        }
+                    } else {
+                        listaVazia = { name: listaStatus[i], data: null, visible: false };
+                        serie.push(listaVazia);
+                    }
+                }
+                return serie
+            } else
+                return serieArrFinal
+        }
+
+        //Fim Aux
+
+        //DATEPICKER
+
+        //GLOBAL
+        var enviar = {};
+        var start = moment().add('month', -1);
+        var end = moment();
+
+        //DatePicker Config / Instance
+        $(function () {
+
+            var rangesBR = {
+                'Hoje': [moment(), moment()],
+                'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+                'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+                'Este mês': [moment().startOf('month'), moment().endOf('month')],
+                'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+
+            moment.locale("Pt-Br");
+            moment.defaultFormat = "DD/MM/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "de",
+                "toLabel": "até",
+                "customRangeLabel": "Customizado",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Dom",
+                    "Seg",
+                    "Ter",
+                    "Qua",
+                    "Qui",
+                    "Sex",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+                //"firstDay": 0
+            });
+
+            rangesCalendar = rangesBR;
+
+            $.fn.daterangepicker('ranges', rangesCalendar);
+
+            //Start config datepickerrange full
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format() + ' - ' + end.format());
+                enviar['startDate'] = start.format();
+                enviar['endDate'] = end.format();
+            }
+            var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
+            var configCallendar = {};
+            if (configQueryData) {
+                $('input[name="daterange"]').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    //opens: "left",
+                    //autoApply: false,
+                    locale: {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "Aplicar",
+                        "cancelLabel": "Cancelar",
+                        "customRangeLabel": "Seleção",
+                    },
+                    alwaysShowCalendars: true,
+                    showDropdowns: true,
+                    ranges: rangesCalendar,
+                    linkedCalendars: false
+                }, cb);
+            } else {
+                $('input[name="daterange"]').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    //autoApply: false,
+                    locale: {
+                        "format": "MM/DD/YYYY",
+                        "separator": " - ",
+                    },
+                    alwaysShowCalendars: true,
+                    showDropdowns: true,
+                    ranges: rangesCalendar,
+                    linkedCalendars: false
+                }, cb);
+            }
+
+            cb(start, end);
+            //End config datepickerrange full
+
+            enviar['startDate'] = moment().add('month', -1).format();
+            enviar['endDate'] = moment().format();
+
+            //$('input[name="daterange"]').daterangepicker();
+
+        });
+
+</script>
+
+<script>
+    var btnOrderFilter = "";
+    var option = "";
+    var campo1Panel5Selected = "";
+    function filterEixoY(selectId) {
+
+        if (campo1Panel5Selected != $('#campo1Panel5 option:selected').val()) {
+            campo1Panel5Selected = $('#campo1Panel5 option:selected').val();
+            var valores = MapeiaValorParaHC(dados, $('#campo1Panel5 option:selected').val()).filter(onlyUnique);
+            option = "";
+            option += "<option name = \"todos\" value = \"\">Todos</option>";
+            valores.forEach(logArrayElements);
+
+            $('#' + selectId).empty();
+            $('#' + selectId).append(option);
+            $('#' + selectId).selectpicker('refresh');
+
+        }
+
     }
 
-    /**
-     *
-     * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
-     * ['Nome','Idade'] arrColuna
-     */
-    function FiltraColunas(array,arrFiltro) {
+    function logArrayElements(element, index, array) {
+        var auxElement = element.replace(" ", "")
+        option += "<option value=\"" + index + "\" name=\"y\" >" + element + "</option>";
+
+    }
+
+    function btnOrder(campo1, campo2, painel, btn) {
+
+        if (btnOrderFilter == "Asc")
+            btnOrderFilter = "";
+        else if (btnOrderFilter == "")
+            btnOrderFilter = "Asc";
+
+        var titleSpan = "";
+        var classSpan = "";
+        switch (btnOrderFilter) {
+            case "":
+                classSpan = "glyphicon glyphicon-sort-by-attributes-alt";
+                titleSpan = "Ordem por Valor";
+                break;
+            case "Asc":
+                titleSpan = "Ordem Alfabética";
+                classSpan = "glyphicon glyphicon-sort-by-alphabet";
+                break;
+        }
+        $('#' + btn + ' span').removeClass().addClass(classSpan);
+        document.getElementById(btn).title = titleSpan;
+
+        filtraDadosParaGerarGraficoPanel5Panel6($('#' + campo1 + ' option:selected').val(), $('#' + campo2 + ' option:selected').val(), btnOrderFilter, painel)
+
+    }
+
+    function distinctFilter(lista, filtro, selectId) {
+
+        lista = FiltraColunas(lista, [filtro]);
+
+        var l = [];
+        var retorno = [];
+
+        jQuery.each(lista, function (i, val) {
+
+
+            l.push(lista[i][filtro]);
+
+
+        })
+
+        l.sort();
+
+        jQuery.each(l, function (i, val) {
+
+            if (l[0] == undefined) {
+                retorno.push(l[i]);
+            } else if (retorno[retorno.length - 1] == l[i]) {
+
+            } else {
+                retorno.push(l[i]);
+            }
+        });
+
+        $('#' + selectId).children('option').remove();
+
+        $('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+        $('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+        $('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+        $('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+ 
+
+        $.each(retorno, function (key, value) {
+
+            if (value != null) {
+
+                $('#' + selectId)
+
+                    .append($("<option></option>")
+
+                        .attr("value", key)
+
+                        .text(value));
+            }
+
+        });
+
+        $('#' + selectId).selectpicker('refresh');
+
+    }
+
+    function geraData1() {
+
+        data1 = [];
+
+        dados.sort(function (a, b) {
+            return a.Acao.Status - b.Acao.Status;
+        });
+
+        //jQuery.each(dados, function (i, val) {
+        //    console.log(dados[i].Acao.Status);
+        //});
+
+        jQuery.each(dados, function (i, val) {
+
+            var campo = '';
+            var cor = '';
+
+            switch (dados[i].Acao.Status) {
+                case 0:
+                    campo = 'Sem Status';
+                    cor = '#fdffb2';
+                    break;
+                case 1:
+                    campo = 'Atrasado';
+                    cor = atrasadaColor;
+                    break;
+                case 2:
+                    campo = 'Cancelado';
+                    cor = 'green';
+                    break;
+                case 3:
+                    campo = 'Concluído';
+                    cor = concluidoColor;
+                    break;
+                case 4:
+                    campo = 'Concluído com atraso';
+                    cor = 'pink';
+                    break;
+                case 5:
+                    campo = 'Em Andamento';
+                    cor = andamentoColor;
+                    break;
+                case 6:
+                    campo = 'Retorno';
+                    cor = 'pink';
+                    break;
+                case 7:
+                    campo = 'Finalizada';
+                    cor = 'pink';
+                    break;
+                case 8:
+                    campo = 'Finalizada com atraso';
+                    cor = 'pink';
+                    break;
+                default:
+                    campo = 'Status';
+                    cor = 'black';
+                    break;
+
+            }
+
+            if (data1[0] == undefined) {
+                if (dados[i].Acao.Status != 0) {
+                    data1.push({ name: campo, y: 1, color: cor })
+                }
+            } else if (data1[data1.length - 1].name == campo) {
+                data1[data1.length - 1].y = data1[data1.length - 1].y + 1;
+            } else if (dados[i].Acao.Status != 0) {
+                data1.push({ name: campo, y: 1, color: cor })
+            }
+        });
+
+        //getGraphPanel1(data1);
+    }
+
+    function geraData2(dadosFiltrados) {
+
+        data1 = [];
+
+        dadosFiltrados.sort(function (a, b) {
+            return a.Acao.Status - b.Acao.Status;
+        });
+
+
+        jQuery.each(dadosFiltrados, function (i, val) {
+
+            var campo = '';
+            var cor = '';
+
+            switch (dadosFiltrados[i].Acao.Status) {
+                case 0:
+                    campo = 'Sem Status';
+                    cor = '#fdffb2';
+                    break;
+                case 1:
+                    campo = 'Atrasado';
+                    cor = atrasadaColor;
+                    break;
+                case 2:
+                    campo = 'Cancelado';
+                    cor = 'green';
+                    break;
+                case 3:
+                    campo = 'Concluído';
+                    cor = concluidoColor;
+                    break;
+                case 4:
+                    campo = 'Concluído com atraso';
+                    cor = 'pink';
+                    break;
+                case 5:
+                    campo = 'Em Andamento';
+                    cor = andamentoColor;
+                    break;
+                case 6:
+                    campo = 'Retorno';
+                    cor = 'pink';
+                    break;
+                case 7:
+                    campo = 'Finalizada';
+                    cor = 'pink';
+                    break;
+                case 8:
+                    campo = 'Finalizada com atraso';
+                    cor = 'pink';
+                    break;
+                default:
+                    campo = 'Status';
+                    cor = 'black';
+                    break;
+
+            }
+
+            if (data1[0] == undefined) {
+                if (dadosFiltrados[i].Acao.Status != 0) {
+                    data1.push({ name: campo, y: 1, color: cor })
+                }
+            } else if (data1[data1.length - 1].name == campo) {
+                data1[data1.length - 1].y = data1[data1.length - 1].y + 1;
+            } else if (dadosFiltrados[i].Acao.Status != 0) {
+                data1.push({ name: campo, y: 1, color: cor })
+            }
+        });
+
+        getGraphPanel2(data1);
+    }
+
+    function atualizarTopFilters() {
+        $('.dropdown-toggle').css('font-size', 'xx-small');
+    }
+
+    function getGraphPanel1(meuDado) {
+        Highcharts.chart('panel1', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            credits: {
+                enabled: false,
+            },
+            title: {
+                text: false,
+            },
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.1f} %',
+                        distance: -10,
+                        style: {
+                            //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'white',
+                            color: 'black',
+                            fontSize: '10px',
+                        },
+                        connectorColor: 'silver'
+                    }
+                },
+                series: {
+                    cursor: 'pointer',
+                    events: {
+                        click: function (event) {
+                            filterPieForDataTable(event.point.name)
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: '',
+                data: meuDado
+            }]
+        });
+    }
+
+    function getGraphPanel2(meuDado) {
+        Highcharts.chart('panel2', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            credits: {
+                enabled: false,
+            },
+            title: {
+                text: false,
+            },
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.1f} %',
+                        distance: -10,
+                        style: {
+                            //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'white',
+                            color: 'black',
+                            fontSize: '10px',
+                        },
+                        connectorColor: 'silver'
+                    }
+                },
+                series: {
+                    cursor: 'pointer',
+                    events: {
+                        click: function (event) {
+                            filterPie2ForDataTable(event.point.name)
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: '',
+                data: meuDado
+            }]
+        });
+    }
+
+    //filtro de grafico Pie2 para tabela
+    function filterPie2ForDataTable(name) {
+        var dadosAux = "";
+
+        if (dadosPie2 == "") {
+            dadosAux = dados;
+        } else
+            dadosAux = dadosPie2;
+
+        var arrayfilter = FiltraColunasOfClickPie(dadosAux, "_StatusName", name);
+        MountDataTable(arrayfilter);
+
+    }
+
+    //filtro de grafico Pie para tabela
+    function filterPieForDataTable(name) {
+        var arrayfilter = FiltraColunasOfClickPie(dados, "_StatusName", name);
+        MountDataTable(arrayfilter);
+
+    }
+
+    //monta arrau com o filtro do status passado
+    function FiltraColunasOfClickPie(array, Atribute, name) {
 
         let novoArr = [];
 
         array.forEach(function (o, c) {
 
-            obj = {};
+            if (Atribute == "_Quem" || Atribute == "_GrupoCausa" || Atribute == "_CausaGenerica" || Atribute == "_ContramedidaGenerica"
+                || Atribute == "UnidadeName" || Atribute == "_StatusName" || Atribute == "Regional"
+                || Atribute == "Level1Name" || Atribute == "Level2Name" || Atribute == "Level3Name") {
 
-            arrFiltro.forEach(function (oo, cc) {
-
-                obj[oo] =  o[oo]
-            });
-
-            novoArr.push(obj);
-        });
-
-        return novoArr;
-    }
-
-    /**
-     *
-     * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
-     * ['Nome','Idade'] arrColuna
-     * ['Renan',25] arrValue
-     */
-    function FiltraLinhas(array, arrColuna, arrValue) {
-
-        let novoArr = []
-
-        array.forEach(function (o, c) {
-
-            var flag = true;
-
-            arrColuna.forEach(function (oo, cc) {
-
-                if (o[oo] != arrValue[cc]) {
-                    flag = false;
+                if (o.Acao[Atribute] == name) {
+                    novoArr.push(o);
                 }
-            });
 
-            if (flag) {
-                novoArr.push(o)
+            } else {
+
+                if (o[Atribute] == name) {
+                    novoArr.push(o);
+                }
+
             }
         });
-
         return novoArr;
     }
 
-</script>
+    function filterBar1ForDataTable(name, category, idPanel) {
+        var retorno = '';
+        if (idPanel == 'panel5') {
+            var arrayfilter = FilterColumnOfClickBar(dados, $('#campo1Panel5 option:selected').val(), ($('#campo2Panel5 option:selected').val()).replace("Acao.", ""), category, name);
+            retorno = $('#campo1Panel5 option:selected').text() + ': ' + category + ' | ' + $('#campo2Panel5 option:selected').text() + ': ' + name;
+        } else if (idPanel == 'panel6') {
+            var arrayfilter = FilterColumnOfClickBar(dados, $('#campo1Panel6 option:selected').val(), ($('#campo2Panel6 option:selected').val()).replace("Acao.", ""), category, name);
+            retorno = $('#campo1Panel6 option:selected').text() + ': ' + category + ' | ' + $('#campo2Panel6 option:selected').text() + ': ' + name;
+        } else if (idPanel == 'panel4') {
+            var arrayfilter = FilterColumnOfClickBar(dados, "", "", "", name);
+            retorno = $('#campo1Panel6 option:selected').text() + ': ' + category + ' | ' + $('#campo2Panel6 option:selected').text() + ': ' + name;
+        }
+        MountDataTable(arrayfilter);
 
+        $('#spanSubTable').text(retorno);
+    }
+
+    function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
+
+        let novoArr = [];
+        if (categoryY != "" && categoryY != "" && Atribute != "") {
+
+
+            array.forEach(function (o, c) {
+
+                if (categoryX == "_Quem" || categoryX == "_GrupoCausa" || categoryX == "_CausaGenerica" || categoryX == "_ContramedidaGenerica"
+                    || categoryX == "UnidadeName" || categoryX == "_StatusName" || categoryX == "Regional"
+                    || categoryX == "Level1Name" || categoryX == "Level2Name" || categoryX == "Level3Name") {
+
+                    if (o.Acao[categoryX] == name) {
+
+                        if (o[categoryY] == Atribute) {
+
+                            novoArr.push(o);
+                        }
+                    }
+                } else {
+
+                    if (o[categoryX] == name) {
+                        if (o[categoryY] == Atribute) {
+                            novoArr.push(o);
+                        }
+                    }
+                }
+            });
+        } else {
+            
+            switch (name) {
+                case "Abertas":
+                    novoArr = getRegistrosNaoConcluidos(dados);                        
+                    break;
+                case "Fechada":
+                    novoArr = getRegistrosConcluidos(dados);
+                    break;
+                case "Estoque":
+                    novoArr = "";
+                    break;
+            }            
+          }
+        
+        return novoArr;
+    }
+
+    Highcharts.chart('panel4', {
+        title: {
+            text: false,
+        },
+        legend: {
+            enabled: true,
+            verticalAlign: 'top',
+            itemStyle: {
+                fontSize: '8px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        },
+        credits: {
+            enabled: false,
+        },
+        xAxis: {
+            tickInterval: 1,
+            
+            categories: categories4,
+            labels: {
+
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            enabled: false,
+            min: 0,
+            title: {
+                text: false,
+            },
+            labels: {
+
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal',
+                events: {
+                    click: function (event) {
+                        filterBar1ForDataTable(event.point.name, event.point.category)
+                    }
+                }
+            },
+            bar: {
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        /*
+        { name: 'Concluídas', y: 56.33, color: concluidoColor },
+        { name: 'Atrasadas', y: 10.38, color: atrasadaColor },
+        { name: 'Em Andamento', y: 4.77, color: andamentoColor },
+        */
+        series: data4
+    });
+
+    Highcharts.chart('panel5', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: false,
+        },
+        subtitle: {
+            text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+        },
+        xAxis: {
+            tickInterval: 1,
+            
+            categories: categories5,
+            title: {
+                text: null
+            },
+            labels: {
+
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Número de Ações',
+                align: 'high',
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                },
+                allowDecimals: false
+            },
+            labels: {
+                overflow: 'justify',
+
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+
+            }
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal',
+                events: {
+                    click: function (event) {
+                        filterBar1ForDataTable(event.point.name, event.point.category)
+                    }
+                }
+            },
+            bar: {
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
+            floating: false,
+            itemStyle: {
+                fontSize: '8px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        /*
+            { name: 'Concluídas', y: 56.33, color: concluidoColor },
+            { name: 'Atrasadas', y: 10.38, color: atrasadaColor },
+            { name: 'Em Andamento', y: 4.77, color: andamentoColor },
+            */
+        series: data5
+    });
+
+    Highcharts.chart('panel6', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: false,
+        },
+        subtitle: {
+            text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+        },
+        xAxis: {
+            tickInterval: 1,            
+            categories: categories6,
+            title: {
+                text: null
+            },
+            labels: {
+
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            },
+            allowDecimals: false
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Número de Ações',
+                align: 'high',
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            },
+            labels: {
+                overflow: 'justify',
+
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+
+            }
+        },
+        tooltip: {
+            valueSuffix: ' millions'
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            },
+            bar: {
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
+            floating: false,
+            itemStyle: {
+                fontSize: '8px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        /*
+            { name: 'Concluídas', y: 56.33, color: concluidoColor },
+            { name: 'Atrasadas', y: 10.38, color: atrasadaColor },
+            { name: 'Em Andamento', y: 4.77, color: andamentoColor },
+            */
+        series: data6
+    });
+
+    $('#btnpanel5').click(function () {
+        //alert($('#campo1Panel5').val() + '|' + $('#valor1Panel5').val() + '|' + $('#campo2Panel5').val() + '|' + $('#valor2Panel5').val());
+    })
+
+    $('#btnpanel6').click(function () {
+        alert($('#campo1Panel6').val() + '|' + $('#valor1Panel6').val() + '|' + $('#campo2Panel6').val() + '|' + $('#valor2Panel6').val());
+    })
+
+    $('#btnTop').click(function () {
+
+        getDateRange($("input[name='daterange']").val());
+
+        GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+    })
+
+    $('#btnFiltroPie2').click(function () {
+        var arrayColuna = [];
+        arrayColuna.push($('#campo1FiltroPie2 option:selected').val());
+        var arrayValor = [];
+        arrayValor.push($('#valor1FiltroPie2 option:selected').text());
+
+        dadosPie2 = FiltraLinhasComTodos(dados, arrayColuna, arrayValor);
+
+        geraData2(dadosPie2);
+        $('#spanPie2').html($('#campo1FiltroPie2 option:selected').text());
+    })
+
+
+
+    //Celso
+    $('#btnpanel5').off('click').on('click', function () {
+
+        var nameY = [];
+        if ($('#filtroY option:selected').val() != "") {
+            nameY.push($('#filtroY option:selected').text());
+        }
+
+        filtraDadosParaGerarGraficoPanel5Panel6($('#campo1Panel5 option:selected').val(), $('#campo2Panel5 option:selected').val(), nameY, 'panel5')
+        $('#FirstParamPanel5').html($('#campo1Panel5 option:selected').text());
+        $('#LastParamPanel5').html($('#campo2Panel5 option:selected').text());
+    })
+
+    $('#btnpanel6').off('click').on('click', function () {
+        filtraDadosParaGerarGraficoPanel5Panel6($('#campo1Panel6 option:selected').val(), $('#campo2Panel6 option:selected').val(), [], 'panel6');
+        $('#FirstParamPanel6').html($('#campo1Panel6 option:selected').text());
+        $('#LastParamPanel6').html($('#campo2Panel6 option:selected').text());
+    })
+   
+
+    $(document).ready(function () {
+
+        console.log("ready!");
+        GetDataTable();
+
+        
+
+        $('.defaultFilter').css('color', '#000000');
+
+        $("input[name='daterange']").css('font-size', 'xx-small');
+        $("input[name='daterange']").css('width', '140px');
+        $("input[name='daterange']").css('height', '25px');
+
+        setTimeout(atualizarTopFilters, 100);
+
+    });
+
+
+
+</script>
