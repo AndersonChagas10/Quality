@@ -103,7 +103,7 @@ namespace DTO
 
         public int clusterSelected_Id { get; set; }
         public int structureId { get; set; }
-
+        public int clusterGroupId { get; set; }
         public int departmentId { get; set; }
         public string departmentName { get; set; }
 

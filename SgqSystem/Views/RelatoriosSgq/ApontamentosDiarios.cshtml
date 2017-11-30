@@ -183,10 +183,32 @@
                         { title: "@Resources.Resource.task", mData: "Tarefa" },
                         { title: "@Resources.Resource.weight", mData: "Peso" },
                         {
-                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo"
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
                         },
                         {
-                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo"
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
                         },
                         { title: "@Resources.Resource.value", mData: "Lancado" },
                         { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
