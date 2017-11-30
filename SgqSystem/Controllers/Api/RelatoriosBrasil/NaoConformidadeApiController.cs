@@ -26,6 +26,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var whereDepartment = "";
             var whereShift = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            var whereCriticalLevel = "";
+            var whereClusterGroup = "";
 
             if (form.departmentId != 0)
             {
@@ -37,171 +42,212 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
-            var query = "" +
+            if (form.unitId > 0)
+            {
+                whereUnit = $@"AND UNI.Id = { form.unitId }";
+            }
+            else
+            {
+                whereUnit = $@"AND UNI.Id IN (SELECT
+                				ParCompany_Id
+                			FROM ParCompanyXUserSgq
+                			WHERE UserSgq_Id = { form.auditorId })";
+            }
 
-                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
-                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id = { form.clusterGroupId }";
+            }
 
-                 "\n DECLARE @VOLUMEPCC int                                                  " +
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id = { form.clusterSelected_Id } AND PCC.Active = 1)";
+            }
 
-                "\n CREATE TABLE #AMOSTRATIPO4 ( " +
+            if (form.structureId > 0)
+            {
+                whereStructure = $@"AND UNI.Id IN(SELECT PXS.ParCompany_Id FROM ParCompanyXStructure PXS WHERE PXS.ParStructure_Id = { form.structureId } AND PXS.Active = 1)";
+            }
 
-                "\n UNIDADE INT NULL, " +
-                "\n INDICADOR INT NULL, " +
-                "\n AM INT NULL, " +
-                "\n DEF_AM INT NULL " +
-                "\n ) " +
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
 
-                "\n INSERT INTO #AMOSTRATIPO4 " +
-
-                "\n SELECT " +
-                "\n  UNIDADE, INDICADOR, " +
-                "\n COUNT(1) AM " +
-                "\n ,SUM(DEF_AM) DEF_AM " +
-                "\n FROM " +
-                "\n ( " +
-                "\n     SELECT " +
-                "\n     cast(C2.CollectionDate as DATE) AS DATA " +
-                "\n     , C.Id AS UNIDADE " +
-                "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n     , C2.EvaluationNumber AS AV " +
-                "\n     , C2.Sample AS AM " +
-                "\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
-                "\n     FROM CollectionLevel2 C2 (nolock) " +
-                "\n     INNER JOIN ParLevel1 L1 (nolock) " +
-                "\n     ON L1.Id = C2.ParLevel1_Id " +
-
-                "\n     INNER JOIN ParCompany C (nolock) " +
-                "\n     ON C.Id = C2.UnitId " +
-                "\n     where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n     and C2.NotEvaluatedIs = 0 " +
-                "\n     and C2.Duplicated = 0 " +
-                "\n     and L1.ParConsolidationType_Id = 4 " +
-                "\n     group by C.Id, ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
-                "\n ) TAB " +
-                "\n GROUP BY UNIDADE, INDICADOR " +
-
-
-                "\n SELECT " +
-
-                "\n Unidade as UnidadeName" +
-                "\n ,CONVERT(varchar(153), Unidade_Id) as Unidade_Id" +
-                "\n ,ProcentagemNc as [proc] " +
-
-                "\n ,nc" +
-                "\n ,av " +
-                "\n FROM " +
-                "\n ( " +
-                "\n     SELECT " +
-                "\n       Unidade  " +
-                "\n     , Unidade_Id " +
-                "\n     , sum(avSemPeso) as av " +
-                "\n     , sum(ncSemPeso) as nc " +
-                "\n     , CASE WHEN sum(AV) IS NULL OR sum(AV) = 0 THEN 0 ELSE sum(NC) / sum(AV) * 100 END AS ProcentagemNc " +
-
-                "\n     FROM " +
-                "\n     ( " +
-                "\n         SELECT " +
-                "\n          IND.Id         AS level1_Id " +
-                "\n         , IND.Name       AS Level1Name " +
-                "\n         , UNI.Id         AS Unidade_Id " +
-                "\n         , UNI.Name       AS Unidade " +
-                "\n         , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation " +
-
-                "\n         ELSE 0 " +
-                "\n        END AS Av " +
-
-                "\n       , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal " +
-
-
-                "\n         ELSE 0 " +
-                "\n        END AS AvSemPeso " +
-
-                "\n         , CASE " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects " +
-
-                "\n         ELSE 0 " +
-
-                "\n         END AS NC " +
-
-                "\n         , CASE " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects " +
-
-                "\n         ELSE 0 " +
-
-                "\n         END AS NCSemPeso " +
-
-
-                               "\n  ,                                                                                                                                                                                                                                                                  " +
-               "\n  CASE                                                                                                                                                                                                                                                               " +
-               "\n                                                                                                                                                                                                                                                                     " +
-               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
-               "\n                                                                                                                                                                                                                                                                     " +
-               "\n     ELSE                                                                                                                                                                                                                                                            " +
-               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
-               "\n  END                                                                                                                                                                                                                                                                " +
-               "\n  AS Meta                                                                                                                                                                                                                                                            " +
-
-
-                "\n         FROM ConsolidationLevel1 CL1 (nolock) " +
-                "\n         INNER JOIN ParLevel1 IND (nolock) " +
-                "\n         ON IND.Id = CL1.ParLevel1_Id " +
-                "\n         INNER JOIN ParCompany UNI  (nolock)" +
-                "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         --INNER JOIN ParCompanyXUserSgq CU(nolock) " +
-                "\n         --ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " +
-                "\n         LEFT JOIN #AMOSTRATIPO4 A4 (nolock) " +
-                "\n         ON A4.UNIDADE = UNI.Id " +
-                "\n         AND A4.INDICADOR = IND.ID " +
-
-                "\n         INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)        " +
-                "\n             ON CL2.ConsolidationLevel1_id = CL1.Id              " +
-                "\n         INNER JOIN ParLevel2 L2 WITH(NOLOCK)                    " +
-                "\n             ON CL2.ParLevel2_id = L2.Id                         " +
-                "\n         INNER JOIN ParDepartment D WITH(NOLOCK)                 " +
-                "\n             ON L2.ParDepartment_Id = D.Id                       " +
-
-                "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                            whereDepartment +
-                            whereShift +
-                "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
-                "\n             AND UNI.Id IN (SELECT       " +
-                "\n           ParCompany_Id                 " +
-                "\n        FROM ParCompanyXUserSgq          " +
-                "\n        WHERE UserSgq_Id = " + form.auditorId + ")           " +
-                "\n     ) S1 " +
-
-                "\n     GROUP BY Unidade, Unidade_Id " +
-
-                "\n ) S2 " +
-                "\n WHERE nc > 0 " +
-                "\n ORDER BY 3 DESC" +
-                "\n  DROP TABLE #AMOSTRATIPO4 ";
+            var query = $@"
+                 DECLARE @DATAINICIAL DATETIME = '{ form._dataInicioSQL }'
+                 DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL }'
+                 DECLARE @VOLUMEPCC int
+                                                                  
+                 CREATE TABLE #AMOSTRATIPO4 ( 
+                 UNIDADE INT NULL, 
+                 INDICADOR INT NULL, 
+                 AM INT NULL, 
+                 DEF_AM INT NULL 
+                 )
+                INSERT INTO #AMOSTRATIPO4
+                	SELECT
+                		UNIDADE
+                	   ,INDICADOR
+                	   ,COUNT(1) AM
+                	   ,SUM(DEF_AM) DEF_AM
+                	FROM (SELECT
+                			CAST(C2.CollectionDate AS DATE) AS DATA
+                		   ,C.Id AS UNIDADE
+                		   ,C2.ParLevel1_Id AS INDICADOR
+                		   ,C2.EvaluationNumber AS AV
+                		   ,C2.Sample AS AM
+                		   ,CASE
+                				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+                				ELSE 1
+                			END DEF_AM
+                		FROM CollectionLevel2 C2 (NOLOCK)
+                		INNER JOIN ParLevel1 L1 (NOLOCK)
+                			ON L1.Id = C2.ParLevel1_Id
+                		INNER JOIN ParCompany C (NOLOCK)
+                			ON C.Id = C2.UnitId
+                		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+                		AND C2.NotEvaluatedIs = 0
+                		AND C2.Duplicated = 0
+                		AND L1.ParConsolidationType_Id = 4
+                		GROUP BY C.Id
+                				,ParLevel1_Id
+                				,EvaluationNumber
+                				,Sample
+                				,CAST(CollectionDate AS DATE)) TAB
+                	GROUP BY UNIDADE
+                			,INDICADOR
+                SELECT
+                	Unidade AS UnidadeName
+                   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
+                   ,ProcentagemNc AS [proc]
+                   ,nc
+                   ,av
+                FROM (SELECT
+                		Unidade
+                	   ,Unidade_Id
+                	   ,SUM(avSemPeso) AS av
+                	   ,SUM(ncSemPeso) AS nc
+                	   ,CASE
+                			WHEN SUM(AV) IS NULL OR
+                				SUM(AV) = 0 THEN 0
+                			ELSE SUM(NC) / SUM(AV) * 100
+                		END AS ProcentagemNc
+                	FROM (SELECT
+                			IND.Id AS level1_Id
+                		   ,IND.Name AS Level1Name
+                		   ,UNI.Id AS Unidade_Id
+                		   ,UNI.Name AS Unidade
+                		   ,CASE
+                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
+                							SUM(Quartos)
+                						FROM VolumePcc1b
+                						WHERE ParCompany_id = UNI.Id
+                						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
+                				ELSE 0
+                			END AS Av
+                		   ,CASE
+                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
+                							SUM(Quartos)
+                						FROM VolumePcc1b
+                						WHERE ParCompany_id = UNI.Id
+                						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
+                				ELSE 0
+                			END AS AvSemPeso
+                		   ,CASE
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+                				ELSE 0
+                			END AS NC
+                		   ,CASE
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+                				ELSE 0
+                			END AS NCSemPeso
+                		   ,CASE
+                
+                				WHEN (SELECT
+                							COUNT(1)
+                						FROM ParGoal G
+                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+                						AND (G.ParCompany_id = CL1.UnitId
+                						OR G.ParCompany_id IS NULL)
+                						AND G.AddDate <= @DATAFINAL)
+                					> 0 THEN (SELECT TOP 1
+                							ISNULL(G.PercentValue, 0)
+                						FROM ParGoal G
+                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+                						AND (G.ParCompany_id = CL1.UnitId
+                						OR G.ParCompany_id IS NULL)
+                						AND G.AddDate <= @DATAFINAL
+                						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+                
+                				ELSE (SELECT TOP 1
+                							ISNULL(G.PercentValue, 0)
+                						FROM ParGoal G
+                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+                						AND (G.ParCompany_id = CL1.UnitId
+                						OR G.ParCompany_id IS NULL)
+                						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                			END
+                			AS Meta
+                		FROM ConsolidationLevel1 CL1 (NOLOCK)
+                		INNER JOIN ParLevel1 IND (NOLOCK)
+                			ON IND.Id = CL1.ParLevel1_Id
+                		INNER JOIN ParCompany UNI (NOLOCK)
+                			ON UNI.Id = CL1.UnitId
+                		--INNER JOIN ParCompanyXUserSgq CU(nolock) 
+                		--ON CU.UserSgq_Id = { form.auditorId } and CU.ParCompany_Id = UNI.Id 
+                		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
+                			ON A4.UNIDADE = UNI.Id
+                			AND A4.INDICADOR = IND.ID
+                		INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
+                			ON CL2.ConsolidationLevel1_id = CL1.Id
+                		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
+                			ON CL2.ParLevel2_id = L2.Id
+                		INNER JOIN ParDepartment D WITH (NOLOCK)
+                			ON L2.ParDepartment_Id = D.Id
+                        LEFT JOIN ParCompanyCluster PCC
+		                	ON PCC.ParCompany_Id = UNI.Id
+		                LEFT JOIN ParCluster PC
+		                	ON PCC.ParCluster_Id = PC.Id
+		                LEFT JOIN ParClusterGroup PCG
+		                	ON PC.ParClusterGroup_Id = PCG.Id
+                		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                        { whereDepartment }
+                        { whereShift }
+                		-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
+                        { whereUnit }
+                		{ whereCluster }
+                        { whereStructure } 
+                        { whereCriticalLevel }
+                        { whereClusterGroup }
+                		) S1
+                	GROUP BY Unidade
+                			,Unidade_Id) S2
+                WHERE nc > 0
+                ORDER BY 3 DESC
+                DROP TABLE #AMOSTRATIPO4";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -218,6 +264,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var whereDepartment = "";
             var whereShift = "";
+            var whereCriticalLevel = "";
 
             if (form.departmentId != 0)
             {
@@ -232,6 +279,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.shift != 0)
             {
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = @"
@@ -444,6 +496,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			AND UNI.Name = '" + form.unitName + @"'
                         " + whereDepartment + @"
                         " + whereShift + @"
+                        " + whereCriticalLevel + @"
             		--AND D.Id = 2
             		) S1
             		GROUP BY Unidade
@@ -719,220 +772,245 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var whereDepartment = "";
             var whereShift = "";
+            var whereCriticalLevel = "";
 
 
             if (form.departmentId != 0)
             {
-                whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+                whereDepartment = $@"AND L2.ParDepartment_Id = { form.departmentId } ";
             }
 
             if (form.departmentName != "" && form.departmentName != null)
             {
-                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+                whereDepartment = $@"AND D.Name = '{ form.departmentName }'";
             }
 
             if (form.shift != 0)
             {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+                whereShift = $@"AND CL1.Shift = { form.shift } ";
             }
 
-            var query = "" +
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
 
-                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
-                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
+            var query = $@"
+ DECLARE @DATAINICIAL DATETIME = '{ form._dataInicioSQL }'
+                                                                                                                                                                                                                    
+ DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL }'
+                                                                                                                                                                                                                    
+ DECLARE @VOLUMEPCC int
+                                                  
+ DECLARE @ParCompany_id INT
+SELECT
+	@ParCompany_id = ID
+FROM PARCOMPANY
+WHERE NAME = '{ form.unitName }'
+ CREATE TABLE #AMOSTRATIPO4 ( 
+ UNIDADE INT NULL, 
+ INDICADOR INT NULL, 
+ AM INT NULL, 
+ DEF_AM INT NULL 
+ )
+INSERT INTO #AMOSTRATIPO4
+	SELECT
+		UNIDADE
+	   ,INDICADOR
+	   ,COUNT(1) AM
+	   ,SUM(DEF_AM) DEF_AM
+	FROM (SELECT
+			CAST(C2.CollectionDate AS DATE) AS DATA
+		   ,C.Id AS UNIDADE
+		   ,C2.ParLevel1_Id AS INDICADOR
+		   ,C2.EvaluationNumber AS AV
+		   ,C2.Sample AS AM
+		   ,CASE
+				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+				ELSE 1
+			END DEF_AM
+		FROM CollectionLevel2 C2 (NOLOCK)
+		INNER JOIN ParLevel1 L1 (NOLOCK)
+			ON L1.Id = C2.ParLevel1_Id
+		INNER JOIN ParCompany C (NOLOCK)
+			ON C.Id = C2.UnitId
+		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+		AND C2.NotEvaluatedIs = 0
+		AND C2.Duplicated = 0
+		AND L1.ParConsolidationType_Id = 4
+		GROUP BY C.Id
+				,ParLevel1_Id
+				,EvaluationNumber
+				,Sample
+				,CAST(CollectionDate AS DATE)) TAB
+	GROUP BY UNIDADE
+			,INDICADOR
+--------------------------------                                                                                                                     
 
-                "\n DECLARE @VOLUMEPCC int                                                  " +
-                "\n DECLARE @ParCompany_id INT                                              " +
-
-                "\n SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '" + form.unitName + "'" +
-
-                "\n CREATE TABLE #AMOSTRATIPO4 ( " +
-
-                "\n UNIDADE INT NULL, " +
-                "\n INDICADOR INT NULL, " +
-                "\n AM INT NULL, " +
-                "\n DEF_AM INT NULL " +
-                "\n ) " +
-
-                "\n INSERT INTO #AMOSTRATIPO4 " +
-
-                "\n SELECT " +
-                "\n  UNIDADE, INDICADOR, " +
-                "\n COUNT(1) AM " +
-                "\n ,SUM(DEF_AM) DEF_AM " +
-                "\n FROM " +
-                "\n ( " +
-                "\n     SELECT " +
-                "\n     cast(C2.CollectionDate as DATE) AS DATA " +
-                "\n     , C.Id AS UNIDADE " +
-                "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n     , C2.EvaluationNumber AS AV " +
-                "\n     , C2.Sample AS AM " +
-                "\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
-                "\n     FROM CollectionLevel2 C2  (nolock)" +
-                "\n     INNER JOIN ParLevel1 L1  (nolock)" +
-                "\n     ON L1.Id = C2.ParLevel1_Id " +
-
-                "\n     INNER JOIN ParCompany C  (nolock)" +
-                "\n     ON C.Id = C2.UnitId " +
-                "\n     where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n     and C2.NotEvaluatedIs = 0 " +
-                "\n     and C2.Duplicated = 0 " +
-                "\n     and L1.ParConsolidationType_Id = 4 " +
-                "\n     group by C.Id, ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
-                "\n ) TAB " +
-                "\n GROUP BY UNIDADE, INDICADOR " +
-
-                "\n --------------------------------                                                                                                                     " +
-                "\n                                                                                                                                                      " +
-                "\n  SELECT TOP 1 @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n                                                                                                                                                      " +
-                "\n                                                                                                                                                      " +
-                "\n  DECLARE @NAPCC INT                                                                                                                                  " +
-                "\n                                                                                                                                                      " +
-                "\n                                                                                                                                                      " +
-                "\n  SELECT                                                                                                                                              " +
-                "\n         @NAPCC =                                                                                                                                     " +
-                "\n           COUNT(1)                                                                                                                                   " +
-                "\n           FROM                                                                                                                                       " +
-                "\n      (                                                                                                                                               " +
-                "\n               SELECT                                                                                                                                 " +
-                "\n               COUNT(1) AS NA                                                                                                                         " +
-                "\n               FROM CollectionLevel2 C2(nolock)                                                                                                       " +
-                "\n               LEFT JOIN Result_Level3 C3(nolock)                                                                                                     " +
-                "\n               ON C3.CollectionLevel2_Id = C2.Id                                                                                                      " +
-                "\n               WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                             " +
-                "\n               AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                               " +
-                "\n               AND C2.UnitId = @ParCompany_Id                                                                                                         " +
-                "\n               AND IsNotEvaluate = 1                                                                                                                  " +
-                "\n               GROUP BY C2.ID                                                                                                                         " +
-                "\n           ) NA                                                                                                                                       " +
-                "\n           WHERE NA = 2                                                                                                                               " +
-                "\n  --------------------------------                                                                                                                    " +
+SELECT TOP 1
+	@VOLUMEPCC = SUM(Quartos)
+FROM VolumePcc1b(nolock)
+WHERE ParCompany_id = @ParCompany_id
+AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+ 
+                                                                                                                                                      
+                                                                                                                                                      
+  DECLARE @NAPCC INT
 
 
+SELECT
+	@NAPCC =
+	COUNT(1)
+FROM (SELECT
+		COUNT(1) AS NA
+	FROM CollectionLevel2 C2 (NOLOCK)
+	LEFT JOIN Result_Level3 C3 (NOLOCK)
+		ON C3.CollectionLevel2_Id = C2.Id
+	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+	AND C2.ParLevel1_Id = (SELECT TOP 1
+			id
+		FROM Parlevel1
+		WHERE Hashkey = 1)
+	AND C2.UnitId = @ParCompany_Id
+	AND IsNotEvaluate = 1
+	GROUP BY C2.ID) NA
+WHERE NA = 2
+--------------------------------                                                                                                                    
+SELECT
+	CONVERT(VARCHAR(153), Unidade) AS UnidadeName
+   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
+   ,CONVERT(VARCHAR(153), level1_Id) AS Indicador_Id
+   ,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
+   ,ProcentagemNc AS [proc]
+   ,(CASE
+		WHEN IsRuleConformity = 1 THEN (100 - META)
+		ELSE Meta
+	END) AS Meta
+   ,NC
+   ,Av
+FROM (SELECT
+		Unidade
+	   ,IsRuleConformity
+	   ,Unidade_Id
+	   ,Level1Name
+	   ,level1_Id
+	   ,SUM(avSemPeso) AS av
+	   ,SUM(ncSemPeso) AS nc
+	   ,CASE
+			WHEN SUM(AV) IS NULL OR
+				SUM(AV) = 0 THEN 0
+			ELSE SUM(NC) / SUM(AV) * 100
+		END AS ProcentagemNc
+	   ,MAX(Meta) AS Meta
+	FROM (SELECT
+			IND.Id AS level1_Id
+		   ,IND.IsRuleConformity
+		   ,IND.Name AS Level1Name
+		   ,UNI.Id AS Unidade_Id
+		   ,UNI.Name AS Unidade
+		   ,CASE
+				WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.EvaluatedResult)
+				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.AM)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.WeiEvaluation)
+				ELSE 0
+			END AS Av
+		   ,CASE
+				WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.EvaluateTotal)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.EvaluatedResult)
+				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.AM)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.EvaluateTotal)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.EvaluateTotal)
+				ELSE 0
+			END AS AvSemPeso
+		   ,CASE
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.WeiDefects)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiDefects)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult)
+				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.WeiDefects)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.TotalLevel3WithDefects)
+				ELSE 0
+			END AS NC
+		   ,CASE
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult)
+				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.TotalLevel3WithDefects)
+				ELSE 0
+			END AS NCSemPeso
+		   ,CASE
 
-                "\n SELECT " +
+				WHEN (SELECT
+							COUNT(1)
+						FROM ParGoal G
+						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+						AND (G.ParCompany_id = CL1.UnitId
+						OR G.ParCompany_id IS NULL)
+						AND G.AddDate <= @DATAFINAL)
+					> 0 THEN (SELECT TOP 1
+							ISNULL(G.PercentValue, 0)
+						FROM ParGoal G
+						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+						AND (G.ParCompany_id = CL1.UnitId
+						OR G.ParCompany_id IS NULL)
+						AND G.AddDate <= @DATAFINAL
+						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
 
-                "\n  CONVERT(varchar(153), Unidade) as UnidadeName" +
-                "\n ,CONVERT(varchar(153), Unidade_Id) as Unidade_Id" +
-                "\n ,CONVERT(varchar(153), level1_Id) as Indicador_Id" +
-                "\n ,CONVERT(varchar(153), Level1Name) as IndicadorName" +
+				ELSE (SELECT TOP 1
+							ISNULL(G.PercentValue, 0)
+						FROM ParGoal G
+						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+						AND (G.ParCompany_id = CL1.UnitId
+						OR G.ParCompany_id IS NULL)
+						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+			END
+			AS Meta
+		FROM ConsolidationLevel1 CL1 (NOLOCK)
+		INNER JOIN ParLevel1 IND (NOLOCK)
+			ON IND.Id = CL1.ParLevel1_Id
+		INNER JOIN ParCompany UNI (NOLOCK)
+			ON UNI.Id = CL1.UnitId
+		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
+			ON A4.UNIDADE = UNI.Id
+			AND A4.INDICADOR = IND.ID
+		INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
+			ON CL2.ConsolidationLevel1_id = CL1.Id
+		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
+			ON CL2.ParLevel2_id = L2.Id
+		INNER JOIN ParDepartment D WITH (NOLOCK)
+			ON L2.ParDepartment_Id = D.Id
+		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+		AND UNI.Name = '{form.unitName }'
+        {whereDepartment}
+        {whereShift}
+        {whereCriticalLevel}
+        -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
+		GROUP BY IND.ParConsolidationType_Id
+				,IND.HashKey
+				,IND.Id
+				,IND.IsRuleConformity
+				,IND.Name
+				,UNI.Id
+				,UNI.Name
+				,CL1.ParLevel1_Id
+				,CL1.UnitId) S1
+	GROUP BY Unidade
+			,Unidade_Id
+			,Level1Name
+			,level1_Id
+			,IsRuleConformity) S2
+WHERE nc > 0
+ORDER BY 5 DESC
+DROP TABLE #AMOSTRATIPO4 ";
 
-
-                "\n ,ProcentagemNc as [proc] " +
-
-               "\n ,(case when IsRuleConformity = 1 THEN (100 - META) ELSE Meta END) AS Meta  " +
-               "\n ,NC " +
-               "\n ,Av " +
-                "\n FROM " +
-                "\n ( " +
-                "\n     SELECT " +
-                "\n       Unidade  " +
-                "\n     , IsRuleConformity " +
-                "\n     , Unidade_Id " +
-                "\n     , Level1Name " +
-                "\n     , level1_Id " +
-
-                "\n     , sum(avSemPeso) as av " +
-                "\n     , sum(ncSemPeso) as nc " +
-                "\n     , CASE WHEN sum(AV) IS NULL OR sum(AV) = 0 THEN 0 ELSE sum(NC) / sum(AV) * 100 END AS ProcentagemNc " +
-                "\n     , max(Meta) as Meta" +
-
-                "\n     FROM " +
-                "\n     ( " +
-                "\n         SELECT " +
-                "\n          IND.Id         AS level1_Id " +
-                "\n         , IND.IsRuleConformity " +
-                "\n         , IND.Name       AS Level1Name " +
-                "\n         , UNI.Id         AS Unidade_Id " +
-                "\n         , UNI.Name       AS Unidade " +
-                "\n         , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation " +
-
-
-                "\n         ELSE 0 " +
-                "\n        END AS Av " +
-
-                "\n       , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal " +
-                "\n         ELSE 0 " +
-                "\n        END AS AvSemPeso " +
-
-                "\n         , CASE " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects " +
-                "\n         ELSE 0 " +
-
-                "\n         END AS NC " +
-
-                "\n         , CASE " +
-                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult " +
-                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects " +
-                "\n         ELSE 0 " +
-
-                "\n         END AS NCSemPeso " +
-               "\n  ,                                                                                                                                                                                                                                                                  " +
-               "\n  CASE                                                                                                                                                                                                                                                               " +
-               "\n                                                                                                                                                                                                                                                                     " +
-               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
-               "\n                                                                                                                                                                                                                                                                     " +
-               "\n     ELSE                                                                                                                                                                                                                                                            " +
-               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
-               "\n  END                                                                                                                                                                                                                                                                " +
-               "\n  AS Meta                                                                                                                                                                                                                                                            " +
-                "\n         FROM ConsolidationLevel1 CL1  (nolock)" +
-                "\n         INNER JOIN ParLevel1 IND  (nolock)" +
-                "\n         ON IND.Id = CL1.ParLevel1_Id " +
-                "\n         INNER JOIN ParCompany UNI  (nolock)" +
-                "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         LEFT JOIN #AMOSTRATIPO4 A4  (nolock)" +
-                "\n         ON A4.UNIDADE = UNI.Id " +
-                "\n         AND A4.INDICADOR = IND.ID " +
-
-                "\n         INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)    " +
-                "\n         ON CL2.ConsolidationLevel1_id = CL1.Id              " +
-                "\n         INNER JOIN ParLevel2 L2 WITH(NOLOCK)                " +
-                "\n         ON CL2.ParLevel2_id = L2.Id                         " +
-                "\n         INNER JOIN ParDepartment D WITH(NOLOCK)             " +
-                "\n          ON L2.ParDepartment_Id = D.Id                      " +
-
-                "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n         AND UNI.Name = '" + form.unitName + "'" +
-                whereDepartment +
-                whereShift +
-                "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
-
-                "\n     ) S1 " +
-
-                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id, IsRuleConformity  " +
-
-                "\n ) S2 " +
-                "\n WHERE nc > 0 " +
-                "\n ORDER BY 5 DESC" +
-
-                "\n  DROP TABLE #AMOSTRATIPO4 ";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -1409,8 +1487,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return list;
         }
 
+        private string GetUserUnits(int User)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
+            }
+        }
+
     }
+
 }
+
 
 public class NaoConformidadeResultsSet
 {

@@ -57,6 +57,12 @@ namespace SgqSystem
             }
 
             ScriptFull = string.Empty;
+
+            //EXEMPLO
+            //DATA - Responsavel - Breve desc
+            //VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
+
+
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "IsRecravacao", "bit", "default (0)", "IsRecravacao = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowAddLevel3", "bit", "default (0)", "AllowAddLevel3 = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditPatternLevel3Task", "bit", "default (0)", "AllowEditPatternLevel3Task = 0");
@@ -88,10 +94,16 @@ namespace SgqSystem
             VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Evaluation", "int", "default (null)", "Evaluation = null");
             VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
 
+          
+         
+
         }
 
         /// <summary>
-        /// Verifica se coluna existe se não ele cria, para eveitar conflito entre clientes.
+        /// Verifica se coluna existe se não ele cria, gera arquivo de scripts em LOCA: ScriptFull, para evitar conflito entre clientes.
+        /// EXEMPLO:
+        ///  DATA - Responsavel - Breve desc
+        ///  VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
         /// </summary>
         /// <param name="table">Ex: "ParLevel1"</param>
         /// <param name="colmun">Ex: "IsRecravacao"</param>

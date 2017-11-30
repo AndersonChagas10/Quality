@@ -141,8 +141,12 @@
             $("#btnSend").click(function (e) {
                 Send(true);
             });
+
+            $('.levels').hide();
+
             formControl.showFullCallendar();
             formControl.showShift();
+            formControl.showClustRegUnitCriticalLevel123();
             //formControl.showDepartment();
             //formControl.showUnit();
 
@@ -154,6 +158,8 @@
             }
 
             popoverMain = $('#CustomPopover').addClass('hide');
+
+            $('.sidebar-nav select').select2();
         });
 
         function Send(toggle) {
