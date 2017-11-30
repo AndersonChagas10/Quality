@@ -4351,7 +4351,7 @@ namespace SgqSystem.Services
                                                outerhtml: reauditFlag +
                                                           painelLevel3 +
                                                           panelAccordeon +
-                                                          groupLevel3Level2
+                                                          groupLevel3Level2.ToString()
                                              );
 
                     level3Group.Append(parLevel3Group);
@@ -4803,7 +4803,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group BEA",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 +
+                                               outerhtml: painellevel3.ToString() +
                                                           parLevel3Group
                                              );
                 }
@@ -5046,7 +5046,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group VF",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                                   outerhtml: painellevel3 +
+                                                   outerhtml: painellevel3.ToString() +
                                                               parLevel3Group
                                                  );
                 }
@@ -5192,7 +5192,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group PCC1B",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 +
+                                               outerhtml: painellevel3.ToString() +
                                                           parLevel3Group
                                              );
                 }
@@ -5371,9 +5371,9 @@ namespace SgqSystem.Services
                 painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
-                                                             painelLevel3HeaderListHtml,
+                                                             painelLevel3HeaderListHtml.ToString(),
                                                   classe: "painel painelLevel03 row"));
-painellevel3.Append(html.painelCounters(listCounter));
+                painellevel3.Append(html.painelCounters(listCounter));
 
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -5396,7 +5396,7 @@ painellevel3.Append(html.painelCounters(listCounter));
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
                                                outerhtml: reauditFlag +
-                                                          painellevel3 + panelButton +
+                                                          painellevel3.ToString() + panelButton +
                                                           parLevel3Group.ToString()
                                              ));
                 }
