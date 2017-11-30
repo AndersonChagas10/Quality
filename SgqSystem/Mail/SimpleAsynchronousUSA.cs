@@ -85,12 +85,16 @@ namespace SgqSystem.Mail
                         GlobalConfig.emailPort = 587;
                         GlobalConfig.emailSSL = true;
 
-                        url = "http://localhost/SgqSystem" + "/api/hf/SendMail";
+                        url = "http://192.168.25.200/sgqusa" + "/api/hf/SendMail";
                     }
-                    else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Desenvolvimento.ToString()))
-                        url = "https://sgqtest.jbssa.com/HMLUSA/" + "/api/hf/SendMail";
-                    else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Desenvolvimento.ToString()))
-                        url = "https://sgq.jbssa.com/SGQ/" + "/api/hf/SendMail";
+                    else
+                    {
+                        url = GlobalConfig.urlPreffixAppColleta + "/api/hf/SendMail";
+                    }
+                    //else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Homologacao.ToString()))
+                    //    url = "https://sgqtest.jbssa.com/HMLUSA/" + "/api/hf/SendMail";
+                    //else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Producao.ToString()))
+                    //    url = "https://sgq.jbssa.com/SGQ/" + "/api/hf/SendMail";
 
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
