@@ -1,6 +1,14 @@
 ﻿@using DTO
 <li>
     <div data-ng-controller="CtrlClstRegUnitCriticalLevel123" id="showClustRegUnitCriticalLevel123" style="display:none; margin-left:0px!important">
+        <div id="showModulo2">
+            <span class="redLabel">@Resources.Resource.cluster_group</span>
+            <select id="clusterGroupId" data-ng-model="clusterGroupValue"
+                    data-ng-options="c.Id as c.Name for c in clusterGroup |orderBy:'Name' track by c.Id"
+                    data-ng-change="GetListClusterVinculadoClusterGroup()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
         <div>
             <span class="redLabel">@Resources.Resource.cluster</span>
             <select id="clusterId" data-ng-model="clusterValue"
@@ -37,7 +45,7 @@
                 <option value="">@Resources.Resource.select</option>
             </select>
         </div>
-        <div>
+        <div class="levels">
             <span class="redLabel">@Resources.Resource.level1</span>
             <select id="level1Idv" data-ng-model="level1Value"
                     data-ng-options="s.Id as s.Name for s in level1 | filter:({ShowScorecard: true} || {ShowScorecard: null}) | orderBy:'Name'"
@@ -46,7 +54,7 @@
             </select>
         </div>
 
-        <div>
+        <div class="levels">
             <span class="redLabel">@Resources.Resource.level2</span>
             <select id="level2Idv" data-ng-model="level2Value"
                     data-ng-options="s.Id as s.Name for s in level2 | orderBy:'Name'"
@@ -55,7 +63,7 @@
             </select>
         </div>
 
-        <div style="display:none">
+        <div  class="levels" style="display:none">
             <span class="redLabel">@Resources.Resource.level3</span>
             <select id="level3Idv" data-ng-model="level3Value"
                     data-ng-options="s.Id as s.Name for s in level3 | orderBy:'Name'"
@@ -67,8 +75,9 @@
 </li>
 
 <script>
-
-    var UnitList = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));
+    //var UserId = GetUsuarioId();
+    var UnitList = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));   
+    var GetListClusterGroup = @Html.Raw(Json.Encode(Url.Action("GetParClusterGroup", "api/SelectVinculadoApi")));
     var GetListCluster = @Html.Raw(Json.Encode(Url.Action("GetParCluster", "api/SelectVinculadoApi")));
     var GetListStructure = @Html.Raw(Json.Encode(Url.Action("GetParStructure", "api/SelectVinculadoApi")));
     var GetListUnitVinculado = @Html.Raw(Json.Encode(Url.Action("GetParCompany", "api/SelectVinculadoApi")));
@@ -80,6 +89,7 @@
     var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2VinculadoLevel1", "api/ParamsApi")));
     var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2", "api/ParamsApi")));
     var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2Level1", "api/ParamsApi")));
+    
 
 
     $(document).ready(function () {
