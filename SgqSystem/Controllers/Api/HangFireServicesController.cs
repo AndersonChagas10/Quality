@@ -37,7 +37,7 @@ namespace SgqSystem.Controllers.Api
             }
             else if (GlobalConfig.Eua)
             {
-                SimpleAsynchronousUSA.SendMailUSA(GetWebConfigSettings("EnderecoEmailAlertaUSA"));
+                SimpleAsynchronousUSA.SendMailUSA();
             }
         }
 

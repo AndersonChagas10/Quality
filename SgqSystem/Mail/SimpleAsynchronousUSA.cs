@@ -54,7 +54,44 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = GlobalConfig.UrlEmailAlertas;
+                    var url = string.Empty;
+                    if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Desenvolvimento.ToString()))
+                    {
+                        //GlobalConfig.emailFrom = "grtservicos@hotmail.com";
+                        //GlobalConfig.emailPass = Guard.EncryptStringAES("1qazmko0");
+                        //GlobalConfig.emailSmtp = "smtp-mail.outlook.com";//"smtp.live.com";
+                        //GlobalConfig.emailPort = 587;
+                        //GlobalConfig.emailSSL = true;
+
+                        GlobalConfig.emailFrom = "celsogea@hotmail.com";
+                        GlobalConfig.emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+                        GlobalConfig.emailSmtp = "smtp.live.com";
+                        GlobalConfig.emailPort = 587;
+                        GlobalConfig.emailSSL = true;
+
+                        url = "http://localhost/SgqSystem" + "/api/hf/SendMail";
+                    }
+                    else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.DesenvolvimentoDeployServidorGrtParaTeste.ToString()))
+                    {
+                        //GlobalConfig.emailFrom = "grtservicos@hotmail.com";
+                        //GlobalConfig.emailPass = Guard.EncryptStringAES("1qazmko0");
+                        //GlobalConfig.emailSmtp = "smtp-mail.outlook.com";//"smtp.live.com";
+                        //GlobalConfig.emailPort = 587;
+                        //GlobalConfig.emailSSL = true;
+
+                        GlobalConfig.emailFrom = "celsogea@hotmail.com";
+                        GlobalConfig.emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+                        GlobalConfig.emailSmtp = "smtp.live.com";
+                        GlobalConfig.emailPort = 587;
+                        GlobalConfig.emailSSL = true;
+
+                        url = "http://localhost/SgqSystem" + "/api/hf/SendMail";
+                    }
+                    else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Desenvolvimento.ToString()))
+                        url = "https://sgqtest.jbssa.com/HMLUSA/" + "/api/hf/SendMail";
+                    else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Desenvolvimento.ToString()))
+                        url = "https://sgq.jbssa.com/SGQ/" + "/api/hf/SendMail";
+
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
@@ -80,7 +117,7 @@ namespace SgqSystem.Mail
                 ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 
             if (ListaDeMail != null && ListaDeMail.Count() > 0)
-                foreach (var i in ListaDeMail.Take(tamanhoDoPool).ToList())
+                foreach (var i in ListaDeMail.Take(tamanhoDoPool).Distinct().ToList())
                 {
                     Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));//ENVIA EMAILS NA EMAILCONTENT
                 }
@@ -164,7 +201,7 @@ namespace SgqSystem.Mail
 + " \n                                                                                                                                                                          "
 + " \n     ) vaiLaJesus                                                                                                                                                         "
 + " \n INNER JOIN correctiveaction CA ON CA.Id = vaiLaJesus.Id                                                                                                                  "
-+ " \n order by 1 ASC";                                                                                                                                                         
++ " \n order by 1 ASC";
 
                         var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveActionEmail>(sql).ToList();
 
@@ -223,7 +260,7 @@ namespace SgqSystem.Mail
             }
 
         }
-      
+
         /// <summary>
         /// Envia para destinatários de acordo com documento na pasta desta classe
         /// </summary>
@@ -240,9 +277,9 @@ namespace SgqSystem.Mail
 
                 if (d.AlertNumber == 1)
                     query += "'%Alert1%' \n AND ParCompany_Id = " + d.ParCompany_Id + ") \n  ";
-                else 
+                else
                     query += "'%Alert1%' AND ParCompany_Id = " + d.ParCompany_Id + ") OR [role] like '%Alert2%' \n  ";
-                   
+
                 query += "\n AND Email IS NOT NULL";
                 query += "\n AND Email <> ''";
 
@@ -383,7 +420,7 @@ namespace SgqSystem.Mail
             public DateTime CollectionDate { get; set; }
         }
 
-        
+
 
     }
 

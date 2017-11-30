@@ -202,11 +202,19 @@ namespace DTO.DTO
                     return string.Empty;
 
 
-                    var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
+                var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
                 if (GlobalConfig.Eua)
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
                     body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span> Beef, Est. <span id='estCode'>" + Unit.Code + "</span></div>";
+                }
                 if (GlobalConfig.Brasil)
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
                     body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span><span id='estCode'>" + Unit.Code + "</span></div>";
+                }
 
                 body += "    <div>" + Resources.Resource.safe_program_audit_form + "</div>" +
                 "    <div>" + Resources.Resource.corrective_action + "</div>" +
@@ -246,18 +254,19 @@ namespace DTO.DTO
                 "        <h4 style='margin-top:0'>" + Resources.Resource.preventative_measure + "</h4>" +
                 "        <div id='PreventativeMeasure'>" + PreventativeMeasure + "</div>" +
                 "    </div>" +
-                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px; height: 90px;margin-bottom:15px;'>" +
-                "        <div class='SlaugtherSignature ' style='width:50%; float: left;' id='Slaugther' userid=''>" +
-                "            <h5 style='margin-top:0;font-weight:bold'>" + Resources.Resource.slaughter_signature + "</h5>" +
+
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;'>" +
+                "             <h4 style='margin-top:0'>" + Resources.Resource.slaughter_signature + "</h4>" +
                 "            <div class='name'>" + NameSlaughter + "</div>" +
                 "            <div class='date'>" + DateTimeSlaughterFarmatado + "</div>" +
-                "        </div>" +
-                "        <div class='TechnicaSignature' style='width:49%; float: right;' id='Technical' userid=''>" +
-                "            <h5 style='margin-top:0;font-weight:bold'>" + Resources.Resource.technical_signature + "</h5>" +
+                "    </div>" +
+
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;'>" +
+                "             <h4 style='margin-top:0'>" + Resources.Resource.technical_signature + "</h4>" +
                 "            <div class='name'>" + NameTechinical + "</div>" +
                 "            <div class='date'>" + DateTimeTechinicalFarmatado + "</div>" +
-                "        </div>" +
                 "    </div>" +
+
                 "</div>"; /*+
                 "    <div class='col-xs-4'>" +
                 "        <div>Origination Date: January 30, 2014</div> <!--O que fazer com a Data?-->" +

@@ -154,7 +154,8 @@ namespace DTO
         public enum Ambiets {
             Homologacao,
             Producao,
-            Desenvolvimento
+            Desenvolvimento,
+            DesenvolvimentoDeployServidorGrtParaTeste
         }
         public static string UrlEmailAlertas { get; set; }
 

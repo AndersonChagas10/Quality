@@ -38,12 +38,12 @@ namespace SgqSystem
 
             SetGlobalConfigAmbient();
 
-            if (GlobalConfig.Brasil)
-                GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
-            else if (GlobalConfig.Eua)
-                GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaEUA" + GlobalConfig.Ambient];
-            else if (GlobalConfig.Ytoara)
-                GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
+            //if (GlobalConfig.Brasil)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
+            //else if (GlobalConfig.Eua)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaEUA" + GlobalConfig.Ambient];
+            //else if (GlobalConfig.Ytoara)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
 
 #if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;

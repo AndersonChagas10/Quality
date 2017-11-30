@@ -61,8 +61,7 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = GlobalConfig.UrlEmailAlertas;
-                    //var url = "http://localhost:57506/" + "api/hf/Reconsolidacao";
+                    var url = GlobalConfig.urlPreffixAppColleta + "/api/hf/SendMail";
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
