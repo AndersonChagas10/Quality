@@ -35,9 +35,19 @@ namespace SgqSystem
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
             GlobalConfig.VerifyConfig("DbContextSgqEUA");
-            #if DEBUG
+
+            SetGlobalConfigAmbient();
+
+            //if (GlobalConfig.Brasil)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
+            //else if (GlobalConfig.Eua)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaEUA" + GlobalConfig.Ambient];
+            //else if (GlobalConfig.Ytoara)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
+
+#if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
-            #endif
+#endif
             var options = new SqlServerStorageOptions
             {
                 PrepareSchemaIfNecessary = false,
@@ -94,9 +104,14 @@ namespace SgqSystem
             VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Evaluation", "int", "default (null)", "Evaluation = null");
             VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
 
-          
-         
 
+
+
+        }
+
+        private static void SetGlobalConfigAmbient()
+        {
+            GlobalConfig.Ambient = System.Configuration.ConfigurationManager.AppSettings["BuildEm"];
         }
 
         /// <summary>

@@ -46,6 +46,7 @@ namespace DTO
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
         public static bool MockOn { get; set; }
+        
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
@@ -149,6 +150,15 @@ namespace DTO
         public static string Verifica { get; set; }
         public static Dictionary<int, string> UsuariosUnidades { get; set; }
 
+        public static string Ambient { get; set; }
+        public enum Ambiets {
+            Homologacao,
+            Producao,
+            Desenvolvimento,
+            DesenvolvimentoDeployServidorGrtParaTeste
+        }
+        public static string UrlEmailAlertas { get; set; }
+
         /// <summary>
         /// Recebe parametros do DB e Configura arquivo de config do web site.
         /// </summary>
@@ -212,6 +222,7 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
+            
             //pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
             //pathFTA = "http://localhost:59907/Pa_Acao/NewFTA?";
             pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";

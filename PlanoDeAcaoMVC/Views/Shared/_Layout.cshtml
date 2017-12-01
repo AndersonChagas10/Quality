@@ -267,7 +267,7 @@
             //var tipo = "estrategico";
 
             $(this).find('.error').removeClass('error')
-            $(this).find('select.required' + tipo).each(function (c, o) {
+            $(this).find('select.required:visible' + tipo).each(function (c, o) {
                 if ($(o).find('option:selected').val().length == 0) {
                     $(o).addClass('error')
                     $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');

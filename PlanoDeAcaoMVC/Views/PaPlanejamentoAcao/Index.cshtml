@@ -598,6 +598,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
                         if (model != undefined) {
 
                             //$('#Id').val(model.Id);
@@ -608,14 +609,17 @@
                                 $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
                             if (model.Visao_Id > 0)
                                 $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                            if (model.TemaAssunto_Id > 0)   
+                                $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.TemaAssunto_Id);
                             if (model.Dimensao_Id > 0)
-                                $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
+                                $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Dimensao_Id);
                             if (model.Objetivo_Id > 0)
-                                $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
+                                $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.Objetivo_Id);
                             if (model.IndicadoresDiretriz_Id > 0)
-                                $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                                $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.IndicadoresDiretriz_Id);
                             if (model.Responsavel_Diretriz > 0)
-                                $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
+                                $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').val(model.Responsavel_Diretriz);
+                          
                         }
 
                         $('.novoTatico').show();
@@ -628,13 +632,13 @@
                         $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
                         DdlChangeEstrategico();
                     }
                 } else {
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
@@ -643,6 +647,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
                 }
 
                 InitDatePiker();
@@ -1873,7 +1878,7 @@
 
             var form = $(r); //$('#Planejamento')
 
-            $('.novoItem ').hide();
+            //form.find('.novoItem ').hide();
 
             if (tipo == 'Tatico') { //Novo tatico
 

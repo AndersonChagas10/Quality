@@ -40,10 +40,8 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    //var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
-                    //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                    //var url = "http://localhost:8090/SgqSystem/" + "api/hf/SendMail";
-                    var url = "http://mtzsvmqsc/Robo/api/hf/SendMail";
+                    var url = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR"];
+                    
                     client.Timeout = TimeSpan.FromMinutes(10);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
@@ -63,8 +61,7 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
-                    //var url = "http://localhost:57506/" + "api/hf/Reconsolidacao";
+                    var url = GlobalConfig.urlPreffixAppColleta + "/api/hf/SendMail";
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
@@ -372,7 +369,7 @@ namespace SgqSystem.Mail
                                 Project = "SGQApp"
                             };
                             var model = controller.GetCorrectiveActionById(ca.Id);
-                            newMail.Body = subject + "<br><br>" + model.SendMeByMail;
+                            newMail.Body = subject + "<br><br>" + model.EmailBodyCorrectiveAction;
                             db.EmailContent.Add(newMail);
                             db.SaveChanges();
 
