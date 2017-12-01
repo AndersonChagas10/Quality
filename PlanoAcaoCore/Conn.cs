@@ -35,10 +35,10 @@
         //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         //public static string user { get { return "sa"; } }
         //public static string pass { get { return "1qazmko0"; } }
-        //public static string catalog { get { return "PlanoDeAcao"; } }
-        //public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
-        //public static string user { get { return "sa"; } }
-        //public static string pass { get { return "betsy1"; } }
+        public static string catalog { get { return "PlanoDeAcao"; } }
+        public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
+        public static string user { get { return "sa"; } }
+        public static string pass { get { return "betsy1"; } }
 
         ////Remoto SGQ
         //public static string catalog2 { get { return "dbGQualidade"; } }
@@ -62,19 +62,19 @@
         //public static string user2 { get { return "sa"; } }
         //public static string pass2 { get { return "betsy1"; } }
         //Remoto SGQ
-        //public static string catalog2 { get { return "dbGQualidade"; } }
-        //public static string dataSource2 { get { return @"DESKTOP-6M17EOF"; } }
-        //public static string user2 { get { return "sa"; } }
-        //public static string pass2 { get { return "betsy1"; } }
+        public static string catalog2 { get { return "dbGQualidade"; } }
+        public static string dataSource2 { get { return @"DESKTOP-6M17EOF"; } }
+        public static string user2 { get { return "sa"; } }
+        public static string pass2 { get { return "betsy1"; } }
 
-        //public static string selfRoot { get { return "http://localhost/PlanoAcao/"; } }
-        //public static string SgqHost { get { return "http://localhost/SgqSystem/api/User/AuthenticationLogin"; } }
+        public static string selfRoot { get { return "http://localhost/PlanoAcao/"; } }
+        public static string SgqHost { get { return "http://localhost/SgqSystem/api/User/AuthenticationLogin"; } }
 
-        //public static string emailFrom = "celsogea@hotmail.com";
-        //public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-        //public static string emailSmtp = "smtp.live.com";
-        //public static int emailPort = 587;
-        //public static bool emailSSL = true;
+        public static string emailFrom = "celsogea@hotmail.com";
+        public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+        public static string emailSmtp = "smtp.live.com";
+        public static int emailPort = 587;
+        public static bool emailSSL = true;
 
         //Config para dev GRT UTILIZAÇÃO LOCAL
         //Local Db GRT UTILIZAÇÃO LOCAL
@@ -155,24 +155,24 @@
         //public static string pass2 { get { return "Mi3UpU0J35<_"; } }
 
         //Utilizar para JBS
-        //DB Local
-        public static string catalog { get { return "dbGQualidadeTeste"; } }
-        public static string dataSource { get { return @"10.255.0.41"; } }
-        public static string user { get { return "UserGQualidade"; } }
-        public static string pass { get { return "grJsoluco3s"; } }
-        ////Remoto SGQ
-        public static string catalog2 { get { return "dbGQualidade"; } }
-        public static string dataSource2 { get { return @"10.255.5.93"; } }
-        public static string user2 { get { return "UserGQualidade"; } }
-        public static string pass2 { get { return "grJsoluco3s"; } }
+        ////DB Local
+        //public static string catalog { get { return "dbGQualidadeTeste"; } }
+        //public static string dataSource { get { return @"10.255.0.41"; } }
+        //public static string user { get { return "UserGQualidade"; } }
+        //public static string pass { get { return "grJsoluco3s"; } }
+        //////Remoto SGQ
+        //public static string catalog2 { get { return "dbGQualidade"; } }
+        //public static string dataSource2 { get { return @"10.255.5.93"; } }
+        //public static string user2 { get { return "UserGQualidade"; } }
+        //public static string pass2 { get { return "grJsoluco3s"; } }
 
-        public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
-        public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
+        //public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
 
-        public static string emailFrom = "sgq@jbs.com.br";
-        public static string emailPass = "Bvkw+iUcPJGZQe0tPxQDjg==";
-        public static string emailSmtp = "correio.jbs.com.br";
-        public static int emailPort = 587;
-        public static bool emailSSL = false;
+        //public static string emailFrom = "sgq@jbs.com.br";
+        //public static string emailPass = "Bvkw+iUcPJGZQe0tPxQDjg==";
+        //public static string emailSmtp = "correio.jbs.com.br";
+        //public static int emailPort = 587;
+        //public static bool emailSSL = false;
     }
 }
