@@ -1787,9 +1787,13 @@
                 Send(true);
             });
 
+            $('.levels').hide();
+
             formControl.showFullCallendar();
+            formControl.showClustRegUnitCriticalLevel123();
             //formControl.showUnit();
 
+            $('.sidebar-nav select').select2();
         });
 
         var ajaxCount = 0;

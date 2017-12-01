@@ -1499,6 +1499,37 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// </summary>
         private void CriaMockG1(DataCarrierFormulario form)
         {
+            var whereClusterGroup = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var whereUnit = "";
+
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+            }
+
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@"AND C.ID IN (SELECT DISTINCT c.id FROM Parcompany c Left Join ParCompanyCluster PCC with (nolock) on c.id= pcc.ParCompany_Id WHERE PCC.ParCluster_Id = { form.clusterSelected_Id } and PCC.Active = 1)";
+            }
+
+            if (form.structureId > 0)
+            {
+                whereStructure = $@"AND reg.id = { form.structureId }";
+            }
+
+            if (form.unitId > 0)
+            {
+                whereUnit = $@"AND C.Id = { form.unitId }";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
             //_mock = new List<VisaoGeralDaAreaResultSet>();
 
             //_mock.Add(new VisaoGeralDaAreaResultSet()
@@ -1559,6 +1590,11 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
   on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id
   WHERE 1 = 1
   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
+ { whereClusterGroup }
+ { whereCluster }
+ { whereStructure }
+ { whereCriticalLevel }
+ { whereUnit }
  GROUP BY Reg.Name , Reg.id
  ORDER BY 4 DESC ";
 
@@ -1585,6 +1621,38 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
         /// </summary>
         private void CriaMockG2(DataCarrierFormulario form)
         {
+
+            var whereClusterGroup = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var whereUnit = "";
+
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = $@" AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+            }
+
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@" AND C.ID IN (SELECT DISTINCT c.id FROM Parcompany c Left Join ParCompanyCluster PCC with (nolock) on c.id= pcc.ParCompany_Id WHERE PCC.ParCluster_Id = { form.clusterSelected_Id } and PCC.Active = 1)";
+            }
+
+            if (form.structureId > 0)
+            {
+                whereStructure = $@" AND reg.id = { form.structureId }";
+            }
+
+            if (form.unitId > 0)
+            {
+                whereUnit = $@"AND C.Id = { form.unitId }";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
             //_mock = new List<VisaoGeralDaAreaResultSet>();
 
             //_mock.Add(new VisaoGeralDaAreaResultSet()
@@ -1626,14 +1694,17 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
 "\n  left join #SCORE S  " +
 "\n  on C.Id = S.ParCompany_Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id  " +
 "\n  where Reg.Id = '" + form.Query.ToString() + "' AND pC.IsActive = 1 " +
+     whereClusterGroup +
+     whereCluster +
+     whereStructure  +
+     whereCriticalLevel +
+     whereUnit +
 "\n  GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials ORDER BY 2 DESC ";
 
             using (var db = new SgqDbDevEntities())
             {
                 _list = db.Database.SqlQuery<VisaoGeralDaAreaResultSet>(query).ToList();
             }
-
-
 
         }
 
@@ -1653,6 +1724,36 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
         {
             var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
             var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
+
+            var whereClusterGroup = "";
+            var whereCluster = "";
+            var whereCriticalLevel = "";
+            var whereUnit = "";
+
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = $@" AND UNI.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+            }
+
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@" AND UNI.ID IN (SELECT DISTINCT c.id FROM Parcompany c Left Join ParCompanyCluster PCC with (nolock) on c.id= pcc.ParCompany_Id WHERE PCC.ParCluster_Id = { form.clusterSelected_Id } and PCC.Active = 1)";
+            }
+
+            //if (form.structureId > 0)
+            //{
+            //    whereStructure = $@" AND reg.id = { form.structureId }";
+            //}
+
+            if (form.unitId > 0)
+            {
+                whereUnit = $@"AND UNI.Id = { form.unitId }";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"  AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
 
             //_mock = new List<VisaoGeralDaAreaResultSet>();
 
@@ -1904,8 +2005,11 @@ $@" SELECT Reg.Name as regName, Reg.id as regId,
                              " \n ON A4.UNIDADE = UNI.Id " +
 
                              " \n AND A4.INDICADOR = IND.ID " +
-
-
+                             "\n WHERE 1 = 1 " +
+                             whereClusterGroup +
+                             whereCluster +
+                             whereUnit +
+                             whereCriticalLevel +
                              " \n GROUP BY " +
 
                              " \n IND.ID, " +
