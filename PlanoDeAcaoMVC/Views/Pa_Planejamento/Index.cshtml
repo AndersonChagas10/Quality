@@ -73,7 +73,7 @@
                 </td>
                 <td></td>
             </tr>
-            @*<tr>
+            <tr>
                 <td>
                     @Html.LabelFor(model => model.TemaAssunto_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -82,9 +82,9 @@
                     @Html.ValidationMessageFor(model => model.TemaAssunto_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this)">Novo</button>
+                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this)">Gerenciar</button>
                 </td>
-            </tr>*@
+            </tr>
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Dimensao_Id, htmlAttributes: new { @class = "control-label " })

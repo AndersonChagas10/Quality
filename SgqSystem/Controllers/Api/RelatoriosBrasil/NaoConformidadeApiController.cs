@@ -1172,7 +1172,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
 
             "\n  GROUP BY Level2Name " +
-            "\n  HAVING sum(NC) > 0 " +
+            "\n  HAVING sum(NCSemPeso) > 0 " +
             "\n  ORDER BY 4 DESC ";
 
             using (var db = new SgqDbDevEntities())
