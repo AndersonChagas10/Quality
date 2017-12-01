@@ -305,7 +305,7 @@ namespace SgqSystem.Controllers.Api
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var queryGrafico1 = $@"
@@ -498,7 +498,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var queryGraficoTendencia = $@" 
@@ -748,7 +748,7 @@ DROP TABLE #AMOSTRATIPO4";
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var queryGrafico3 = $@"
@@ -897,7 +897,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var queryGraficoTarefasAcumuladas = $@"
@@ -950,7 +950,7 @@ ORDER BY 9 DESC";
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ID FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var queryGrafico4 = $@"SELECT
@@ -982,7 +982,7 @@ WHERE 1 = 1
 AND UNI.Id = { form.unitId }
 AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
 AND IND.Id IN (SELECT
-		P1XC.ID
+		P1XC.ParLevel1_Id
 	FROM ParLevel1XCluster P1XC
 	WHERE P1XC.ParCriticalLevel_Id = 3)
 GROUP BY IND.Id
