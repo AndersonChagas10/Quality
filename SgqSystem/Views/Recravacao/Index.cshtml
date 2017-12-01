@@ -132,7 +132,7 @@
 </style>
 
 <script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
-<div ng-controller="reencravationCtrl as r" class="container page-content " style="min-height: 600px;width:100%;">
+<div ng-controller="recravacaoController as r" class="container page-content " style="min-height: 600px;width:100%;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul class="nav navbar-nav ulIndicador">
@@ -144,11 +144,10 @@
         </ul>
 
         <ul class="nav navbar-nav ulLinha">
-            <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'">
-                <a href="#" ng-class="{active: seletedLinha.Name == item.Name}">
+            <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" ng-show="item.IsActive == 'True'">
+                <a href="#" ng-class="{active: linhaSelecionada.Name == item.Name}">
                     <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
                     <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
-                    <span ng-if="item.IsStoped" class="glyphicon glyphicon-time" aria-hidden="true"></span>
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
@@ -158,85 +157,85 @@
 
     <br />
 
-    <button ng-if="(seletedLinha.Id > 0)" id="btnStartStop"
+    <button ng-if="(linhaSelecionada.Id > 0)" id="btnStartStop"
             type="button"
             class="floatinBottonButton btn btn-success btn-sm"
             data-toggle="modal"
             data-target="#modalParadaDeLinha"
-            ng-class="{'btn-success': (timeLimitOver == false), 'btn-danger': (timeLimitOver == true)}"
+            ng-class="{'btn-success': (tempoEntreColetaDeLatasExpirado == false), 'btn-danger': (tempoEntreColetaDeLatasExpirado == true)}"
             title="Adicionar Observações">
         <span style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: left;">&nbsp; Anotações / Observações </span>
-        <span ng-show="ProximaLataTimer" style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: right;">Horário da ultima coleta: {{ProximaLataTimer}}</span>
+        <span ng-show="timerDaProximaLata" style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: right;">Horário da ultima coleta: {{timerDaProximaLata}}</span>
         <span class="glyphicon glyphicon-time" aria-hidden="true" style="color: #333; float: right; padding: 0px 5px;"></span>
     </button>
 
-    <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
+    <div ng-show="linhaSelecionada.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
 
-        <form role="form" class="ng-pristine ng-valid">
+        <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
             <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
                 <label for="" class="">Produto</label>
                 <br />
-                <select ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="seletedLinha.form.Produto" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <select ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
             <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
                 <label for="">Hora do início da Produção</label>
                 <br />
-                <input ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="seletedLinha.form.HoraInicioProducao">
+                <input  ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="linhaSelecionada.form.HoraInicioProducao">
             </div>
             <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
                 <label for="">Hora do final da Produção</label>
                 <br />
-                <input ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
+                <input  ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="linhaSelecionada.form.HoraFimProducao">
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
                 <label for="" class="">Código do produto</label>
                 <br />
-                <input type="text" ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" ng-model="seletedLinha.form.CodProduto" class="form-control" style="width:100%!important" />
+                <input type="text"  ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.CodProduto" class="form-control" style="width:100%!important" />
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Data do recebimento das latas</label>
                 <br />
-                <input ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
+                <input  ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Fornecedor da Lata</label>
                 <br />
-                <select ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <select  ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Data do recebimento das tampas/fundos das latas</label>
                 <br />
-                <input ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
+                <input  ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Fornecedor das tampas/fundos das latas</label>
                 <br />
-                <select ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <select  ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Tipo da Lata</label>
                 <br />
-                <select ng-change="saveState(true, true); $event.stopPropagation();" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="seletedLinha.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <select  ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="linhaSelecionada.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
 
             <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
 
                 <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                    <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                    <button ng-disabled="linhaSelecionada.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
                     </button>
-                    <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
+                    <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userFinish.Name}}
                     &nbsp;
-                    <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
+                    <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserFinish}}
                 </div>
 
-                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="seletedLinha.finalizado">
-                    <button ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="linhaSelecionada.finalizado">
+                    <button ng-disabled="linhaSelecionada.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
                     </button>
-                    <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
+                    <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userValidacao.Name}}
                     &nbsp;
-                    <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
+                    <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserValidacao}}
                 </div>
             </div>
         </form>
@@ -248,8 +247,8 @@
     </button>
 
     <div class="col-lg-12 col-md-12 col-sm-12"
-         ng-init="seletedLinha.IsStoped = false">
-        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index; item.Name = item.Name" tables>
+         ng-init="linhaSelecionada.IsStoped = false">
+        <div ng-show="linhaSelecionada.Id > 0 && linhaSelecionada.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in linhaSelecionada.latas track by $index" ng-init="lataIndex = $index; item.Name = item.Name" tables>
             <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata | date: 'HH:mm'}}</span></div>
 
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
@@ -271,10 +270,10 @@
                         ng-show="item.finalizado">
                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 </button>
-                <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(seletedLinha, $index)">
+                <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(linhaSelecionada, $index)">
                     <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
                 </button>
-                @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
+                @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(linhaSelecionada, $index, 30)">
                     <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
                     </button>*@
                 <button type="button"
@@ -288,7 +287,7 @@
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" title="Remover {{item.Name}}"
                         ng-show="!item.finalizado"
-                        ng-click="deleteLata(seletedLinha, $index)">
+                        ng-click="deleteLata(linhaSelecionada, $index)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
                 <button class="btn btn-success btn-sm"
@@ -307,15 +306,15 @@
 
                     <tr>
                         <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:32%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
                     </tr>
 
                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align:left !important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span> </td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                            ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
                             ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+                            colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
 
                             @*1 Binário ok
                                 2   Número de defeitos ok
@@ -393,33 +392,24 @@
 
         <br />
 
-        <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" ng-click="newLata(seletedLinha); executeDocReady(true)" title="Adicionar Lata" class="btn btn-lg btn-warning btnFloatCircleAdd">
+        <button ng-show="linhaSelecionada.Id > 0 && !linhaSelecionada.finalizado" ng-click="newLata(linhaSelecionada); executeDocReady(true)" title="Adicionar Lata" class="btn btn-lg btn-warning btnFloatCircleAdd">
             <i id="saveIcon" class="fa fa-plus"></i>
             <i id="loadIcon" class="fa fa-circle-o-notch fa-spin" style="display:none;"></i>
         </button>
-        <button ng-show="seletedLinha.Id > 0" ng-click="updateParamsNewLine(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
+        <button ng-show="linhaSelecionada.Id > 0" ng-click="updateParamsNewLine(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
             <i id="saveIcon" class="fa fa-undo"></i>
         </button>
-        <button ng-show="seletedLinha.Id > 0" ng-click="print()" title="Imprimir" class="btn btn-lg btn-info btnFloatCirclePrint">
+        <button ng-show="linhaSelecionada.Id > 0" ng-click="print()" title="Imprimir" class="btn btn-lg btn-info btnFloatCirclePrint">
             <i id="saveIcon" class="fa fa-print"></i>
         </button>
 
-        @*<button ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" style="margin: 35px;" class="btn btn-primary btn-sm">
+        @*<button ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" style="margin: 35px;" class="btn btn-primary btn-sm">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
             </button>
-            <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
+            <button type="button" ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
             Atualizar Parametrização / Nova Coleta
             </button>*@
     </div>
-    @*<button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST LINHA
-        </button> *@
-    @*<button type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
-        </button>*@
-    @*<button type="button" ng-click="getParametrizacaoZeraColeta()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
-        </button>*@
     <hr />
 
     <!-- Modal Edit-->
@@ -448,18 +438,18 @@
 
                             <tr>
                                 <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:20%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                                <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                             </tr>
                             @*MOCK*@
-                            <tr ng-repeat="ParLevel3 in seletedLinha.ListParlevel3 | orderBy : sorterFunc track by $index" ng-init="parLevel3IndexME = $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
+                            <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy : sorterFunc track by $index" ng-init="parLevel3IndexME = $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
 
 
                                 <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align: left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
                                 <td style="border:1px solid #cccccc; padding: 2px; max-width:65px;"
-                                    ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                                    ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
                                     ng-init="pontoIndexME = $index"
                                     ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                    colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+                                    colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
 
                                     @*1 Binário ok
                                         2   Número de defeitos ok
@@ -518,7 +508,7 @@
                                                    type="text"
                                                    title="{{selectedLata.espessuraTT}}"
                                                    ng-model="selectedLata.ResultValue[ParLevel3.Id][($index +1)]"
-                                                   ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (selectedLata.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (seletedLinha.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(seletedLinha.latas[seletedLinha.latas.indexOf(this.selectedLata)].ResultValue[ParLevel3.Id][($index +1)], seletedLinha.latas[seletedLinha.latas.indexOf(this.selectedLata)]) , bgRed: bgRedEspessura(seletedLinha.latas[seletedLinha.latas.indexOf(this.selectedLata)].ResultValue[ParLevel3.Id][($index +1)], seletedLinha.latas[seletedLinha.latas.indexOf(this.selectedLata)]) }"
+                                                   ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (selectedLata.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.selectedLata)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.selectedLata)]) , bgRed: bgRedEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.selectedLata)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.selectedLata)]) }"
                                                    ng-disabled="selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
                                                    id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
                                                    ng-change="calcularEspessura(selectedLata)"
@@ -564,7 +554,7 @@
                                           title="{{ParLevel3.ParLevel3Value_OuterList[0].AceitavelEntreText}}"
                                           ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')"
                                           ng-class="{bgWhite:  (selectedLata.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (selectedLata.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Id][($index +1)] && selectedLata.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (selectedLata.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Id][($index +1)] && selectedLata.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}">
-                                        {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, seletedLinha.latas.indexOf(selectedLata), ParLevel3.Id)}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && selectedLata.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
+                                        {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, linhaSelecionada.latas.indexOf(selectedLata), ParLevel3.Id)}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && selectedLata.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
                                     </span>
                                 </td>
 
@@ -792,7 +782,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" ng-click="newCorrectiveAction(true)">Adicionar Ação Corretiva</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="saveState(true, true)">Fechar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="salvaLinha(true, true)">Fechar</button>
                 </div>
             </div>
         </div>
@@ -804,18 +794,18 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="preventiveAction">Observações da linha: {{seletedLinha.Name}}</h5>
-                    <button ng-hide="timeLimitOver" ng-click="saveObservacao(seletedLinha.ObservacoesList[seletedLinha.ObservacoesList.length -1]);" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="preventiveAction">Observações da linha: {{linhaSelecionada.Name}}</h5>
+                    <button ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 <form role="form" class="ng-pristine ng-valid col-lg-12 col-md-12 col-sm-12">
-                    <div scroll-to-bottom="seletedLinha.ObservacoesList" class="modal-body" style="height: 500px;overflow-y: scroll;">
-                        <div class="{{formDefault12}}" ng-repeat="item in seletedLinha.ObservacoesList track by $index"
+                    <div scroll-to-bottom="linhaSelecionada.ObservacoesList" class="modal-body" style="height: 500px;overflow-y: scroll;">
+                        <div class="{{formDefault12}}" ng-repeat="item in linhaSelecionada.ObservacoesList track by $index"
                              ng-class="{'alert alert-info': !(item.LataComAtraso),'alert alert-danger': (item.LataComAtraso)}">
                             <div style="margin-bottom: 10px;">
-                                <button ng-if="!item.LataComAtraso" type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="seletedLinha.ObservacoesList.length > 1" ng-click="seletedLinha.ObservacoesList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
+                                <button ng-if="!item.LataComAtraso" type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="linhaSelecionada.ObservacoesList.length > 1" ng-click="linhaSelecionada.ObservacoesList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
                                 <br />
                                 <label ng-if="item.LataComAtraso">{{item.adDate}} - Observação: Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso</label>
                                 <label ng-if="!item.LataComAtraso">{{item.adDate}} - Observação: </label>
@@ -831,8 +821,8 @@
                 </form>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" ng-show="timeLimitOver" ng-disabled="!seletedLinha.ObservacoesList[seletedLinha.ObservacoesList.length -1].DescriptionFailure" ng-click="saveObservacao(seletedLinha.ObservacoesList[seletedLinha.ObservacoesList.length -1]);">Salvar</button>
-                    <button type="button" class="btn btn-success" ng-hide="timeLimitOver" ng-click="saveObservacao(seletedLinha.ObservacoesList[seletedLinha.ObservacoesList.length -1]);" data-dismiss="modal">Salvar e fechar</button>
+                    <button type="button" class="btn btn-success" ng-show="tempoEntreColetaDeLatasExpirado" ng-disabled="!linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1].DescriptionFailure" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);">Salvar</button>
+                    <button type="button" class="btn btn-success" ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" data-dismiss="modal">Salvar e fechar</button>
                 </div>
             </div>
         </div>
@@ -882,10 +872,14 @@
             $httpProvider.interceptors.push('loadingOverlay');
         }]);
 
+        app.config(function ($httpProvider) {
+            $httpProvider.useApplyAsync(true);
+        });
+
         /*
         START ANGULAR MODULE
         */
-        app.controller('reencravationCtrl', ['$scope', '$http', '$timeout', '$interval',
+        app.controller('recravacaoController', ['$scope', '$http', '$timeout', '$interval',
             function ($scope, $http, $timeout, $interval) {
                 let vm = $scope
                 vm.dev = true
@@ -899,16 +893,20 @@
                 vm.countdown = $scope.initialCountdown;
                 vm.startTime = new Date()
                 vm.myTotal = 3600000 * vm.horas
-                $scope.timeLimitOver = false
+                $scope.tempoEntreColetaDeLatasExpirado = false
                 $scope.modalObsAberto = false
                 $scope.firstLataInAftherObs = false
+
+                //$scope.$watchCollection('formularioLinha', function () {
+                //    console.log('form model has been changed');
+                //}, true);
 
                 vm.timer = function (noFlag) {
                     if (intervalId)
                         $interval.cancel(intervalId);
                     vm.startTime = new Date();
-                    if (vm.seletedLinha.latas && vm.seletedLinha.latas.length) {
-                        let hm = _.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata
+                    if (vm.linhaSelecionada.latas && vm.linhaSelecionada.latas.length) {
+                        let hm = _.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata
                         var ajustaHora = new Date()
                         if (hm) {
                             ajustaHora.setHours(hm.getHours())
@@ -924,13 +922,13 @@
                             hrs = vm.duration.hours(),
                           mins = vm.duration.minutes(),
                           secs = vm.duration.seconds();
-                        vm.ProximaLataTimer = (/*years + ' years ' + Dias + ' days ' +*/ hrs + ' hrs ' + mins + ' min ' + secs + ' seg');
+                        vm.timerDaProximaLata = (/*years + ' years ' + Dias + ' days ' +*/ hrs + ' hrs ' + mins + ' min ' + secs + ' seg');
 
                         $scope.counter = vm.duration._milliseconds //Math.floor((new Date - vm.startTime) / 1000);
                         $scope.countdown = $scope.myTotal - $scope.counter;
-                        $scope.timeLimitOver = $scope.countdown < 0
-                        if (vm.seletedLinha.isValidated == undefined || vm.seletedLinha.isValidated == false) {
-                            if ($scope.timeLimitOver) {
+                        $scope.tempoEntreColetaDeLatasExpirado = $scope.countdown < 0
+                        if (vm.linhaSelecionada.isValidated == undefined || vm.linhaSelecionada.isValidated == false) {
+                            if ($scope.tempoEntreColetaDeLatasExpirado) {
                                 if (!$scope.modalObsAberto) {
                                     $('#modalParadaDeLinha').modal()
                                     $scope.modalObsAberto = true
@@ -941,8 +939,8 @@
                                 $scope.modalObsAberto = false
                             }
                         } else {
-                            vm.ProximaLataTimer = "Linha Finalizada / Validada"
-                            $scope.timeLimitOver = false
+                            vm.timerDaProximaLata = "Linha Finalizada / Validada"
+                            $scope.tempoEntreColetaDeLatasExpirado = false
                             vm.stop()
                         }
                     }, 1000);
@@ -964,15 +962,15 @@
 
                 vm.saveObservacao = function (item) {
 
-                    if ($scope.timeLimitOver) {
+                    if ($scope.tempoEntreColetaDeLatasExpirado) {
                         item.LataComAtraso = true
-                        item.tempoDeAtraso = vm.ProximaLataTimer
-                        vm.newLata(vm.seletedLinha);
+                        item.tempoDeAtraso = vm.timerDaProximaLata
+                        vm.newLata(vm.linhaSelecionada);
                         item.Lata = vm.selectedLata.Name
                         vm.executeDocReady(true)
                     }
-                    vm.seletedLinha.ObservacoesList.push({ adDate: vm.Date });
-                    vm.saveState();
+                    vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
+                    vm.salvaLinha();
                 }
                 //f timer test
 
@@ -1057,7 +1055,7 @@
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
                 vm.fornecedorTampaLata = [{}]
-                vm.seletedLinha = { Id: 0 }
+                vm.linhaSelecionada = { Id: 0 }
                 vm.selectedLata = {}
                 vm.activeInLine = 0
                 vm.getUser = function () {
@@ -1131,14 +1129,14 @@
 
                 vm.selectIndicador = function (item) {
                     vm.indicadorSelecionado = item
-                    vm.seletedLinha = {}
+                    vm.linhaSelecionada = {}
                     vm.getParametrizacaoLinhas(item.Id)
                 }
 
                 //vm.company = GetUnidadeUsuario()
                 vm.getAllLinha = function (index, needFindIndex, showMensagem) {
-                    //vm.seletedLinha = vm.linhas[index]
-                    //vm.activeInLine = vm.seletedLinha.Id
+                    //vm.linhaSelecionada = vm.linhas[index]
+                    //vm.activeInLine = vm.linhaSelecionada.Id
                     //if (needFindIndex)
                     //    index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
                     vm.linhas.forEach(function (o, c) {
@@ -1157,7 +1155,7 @@
                                    vm.linhas[c]["latas"] = []
                                    vm.activeInLine = vm.linhas[c].Id
                                    //vm.executeDocReady(true)
-                                   //vm.seletedLinha = { Id: 0 }
+                                   //vm.linhaSelecionada = { Id: 0 }
                                    //vm.getState()
                                }
                            });
@@ -1176,7 +1174,7 @@
                         lata["listPreventiveAction"].push({ AddDate: moment().format("DD/MM/YYYY HH:mm"), Content: lata.preventiveAction })
                         lata.preventiveAction = ''
                         vm.selectedLata = lata
-                        vm.saveState()
+                        vm.salvaLinha()
                     }
                 }
 
@@ -1202,12 +1200,12 @@
                 }
 
                 vm.getParansLinha = function (index, needFindIndex, showMensagem, novaLinha) {
-                    //vm.seletedLinha = vm.linhas[index]
-                    //vm.activeInLine = vm.seletedLinha.Id
+                    //vm.linhaSelecionada = vm.linhas[index]
+                    //vm.activeInLine = vm.linhaSelecionada.Id
                     //if (needFindIndex)
 
-                    index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
-                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.seletedLinha })
+                    index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
+                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.linhaSelecionada })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1220,11 +1218,11 @@
                                     toastr.success('Recuperada linha parametrizada \n da base de dados')
                                 vm.linhas[index] = r.data.model[0]
                                 vm.linhas[index]["latas"] = []
-                                vm.seletedLinha = vm.linhas[index]
-                                vm.activeInLine = vm.seletedLinha.Id
-                                vm.saveState(undefined, undefined, novaLinha)
+                                vm.linhaSelecionada = vm.linhas[index]
+                                vm.activeInLine = vm.linhaSelecionada.Id
+                                vm.salvaLinha(undefined, undefined, novaLinha)
                                 //vm.executeDocReady(true)
-                                //vm.seletedLinha = { Id: 0 }
+                                //vm.linhaSelecionada = { Id: 0 }
                                 //vm.getState()
                             }
                         });
@@ -1232,17 +1230,17 @@
                     //vm.$apply()
                 }
 
-                vm.getLinha = function (index, needFindIndex, showMensagem) {
+                vm.selectLinha = function (index, needFindIndex, showMensagem) {
                     //$.LoadingOverlay("show");
                     if (needFindIndex)
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
 
-                    vm.seletedLinha = vm.linhas[index]
-                    if (vm.seletedLinha['StartAuditTime'])
-                        vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
+                    vm.linhaSelecionada = vm.linhas[index]
+                    if (vm.linhaSelecionada['StartAuditTime'])
+                        vm.linhaSelecionada['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
 
 
-                    vm.activeInLine = vm.seletedLinha.Id
+                    vm.activeInLine = vm.linhaSelecionada.Id
 
                     //vm.executeDocReady(true)
                     vm.getState()
@@ -1251,7 +1249,7 @@
                 }
 
                 vm.selectLata = function (index, haveErr) {
-                    vm.selectedLata = vm.seletedLinha.latas[index]
+                    vm.selectedLata = vm.linhaSelecionada.latas[index]
                     if (haveErr)
                         vm.selectedLata.haveErrors = haveErr
                     else
@@ -1278,7 +1276,7 @@
                         })
                         linha.counterDeLatas++
                     }
-                    vm.selectedLata = _.last(vm.seletedLinha.latas)
+                    vm.selectedLata = _.last(vm.linhaSelecionada.latas)
                     $('#editModal').modal()
                 }
                 vm.cloneLataALot = function (linha, index, repeat) {
@@ -1308,8 +1306,8 @@
                     vm.timer()
                 }
 
-                vm.saveStateUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
-                vm.saveState = function (notShowLabel, notShowLoader, salvoParaInserirNovaLinha) {
+                vm.salvaLinhaUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
+                vm.salvaLinha = function (notShowLabel, notShowLoader, salvoParaInserirNovaLinha) {
                     let model = vm.linhas.filter(function (s) {
                         return s.Id == vm.activeInLine
                     })[0]
@@ -1322,7 +1320,7 @@
                     model['User'] = vm.userAuditor
                     model['ParLevel1_Id'] = vm.indicadorSelecionado.Id.toString()
                     vm.start()
-                    $http({ method: 'POST', url: vm.saveStateUrl, data: model, showLoader: notShowLoader ? false : true })
+                    $http({ method: 'POST', url: vm.salvaLinhaUrl, data: model, showLoader: notShowLoader ? false : true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1434,7 +1432,7 @@
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: `${vm.saveStateUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
+                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1446,7 +1444,7 @@
                                 let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
                                 let novaLinha = []
                                 //vm.linhas.forEach(function (o, c) {
-                                let o = vm.seletedLinha
+                                let o = vm.linhaSelecionada
 
                                 /*Recebe objeto salvo no banco de dados compara se é ativo na parametrização e subistiu caso seja ativo.*/
                                 var objetoSalvo = linhasSalvas.filter(function (objArr) {
@@ -1467,39 +1465,39 @@
 
                                 /**/
 
-                                vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
+                                vm.linhaSelecionada = JSON.parse(JSON.stringify(novaLinha))[0]
 
-                                vm.seletedLinha.latas.forEach(function (o, c) {
+                                vm.linhaSelecionada.latas.forEach(function (o, c) {
                                     o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
                                     if (o.HoraDaRetiradaDaLata == 'Invalid Date')
                                         o.HoraDaRetiradaDaLata = ''
                                 })
 
-                                if (vm.seletedLinha.form) {
+                                if (vm.linhaSelecionada.form) {
 
 
-                                    if (vm.seletedLinha.form.HoraInicioProducao)
-                                        vm.seletedLinha.form.HoraInicioProducao = new Date(vm.seletedLinha.form.HoraInicioProducao)
+                                    if (vm.linhaSelecionada.form.HoraInicioProducao)
+                                        vm.linhaSelecionada.form.HoraInicioProducao = new Date(vm.linhaSelecionada.form.HoraInicioProducao)
 
-                                    if (vm.seletedLinha.form.HoraFimProducao)
-                                        vm.seletedLinha.form.HoraFimProducao = new Date(vm.seletedLinha.form.HoraFimProducao)
+                                    if (vm.linhaSelecionada.form.HoraFimProducao)
+                                        vm.linhaSelecionada.form.HoraFimProducao = new Date(vm.linhaSelecionada.form.HoraFimProducao)
 
-                                    if (vm.seletedLinha.form.DataRecebimentoLatas)
-                                        vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
+                                    if (vm.linhaSelecionada.form.DataRecebimentoLatas)
+                                        vm.linhaSelecionada.form.DataRecebimentoLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoLatas)
 
-                                    if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
-                                        vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
+                                    if (vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
+                                        vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
                                 }
 
-                                let index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
-                                vm.linhas[index] = vm.seletedLinha
+                                let index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
+                                vm.linhas[index] = vm.linhaSelecionada
 
-                                vm.seletedLinha = vm.linhas[index]
+                                vm.linhaSelecionada = vm.linhas[index]
 
-                                if (vm.seletedLinha.ObservacoesList == undefined || vm.seletedLinha.ObservacoesList == [])
-                                    vm.seletedLinha.ObservacoesList = [{ adDate: vm.Date }]
+                                if (vm.linhaSelecionada.ObservacoesList == undefined || vm.linhaSelecionada.ObservacoesList == [])
+                                    vm.linhaSelecionada.ObservacoesList = [{ adDate: vm.Date }]
 
-                                vm.activeInLine = vm.seletedLinha.Id
+                                vm.activeInLine = vm.linhaSelecionada.Id
                                 vm.TimerOn()
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
@@ -1591,14 +1589,14 @@
                     //console.log(item)
                     //item["liberaAssinaturaLata"] = false
                     let vmItem = item
-                    let index = vm.seletedLinha.latas.indexOf(item)
-                    let numeroDePontos = vm.seletedLinha.TipoDeLata.NumberOfPoints
+                    let index = vm.linhaSelecionada.latas.indexOf(item)
+                    let numeroDePontos = vm.linhaSelecionada.TipoDeLata.NumberOfPoints
 
-                    vm.saveState()
+                    vm.salvaLinha()
                     return true
 
                     item = vmItem
-                    vm.saveState()
+                    vm.salvaLinha()
                     return true
                 }
 
@@ -1616,7 +1614,7 @@
                                 vm.selectedLata.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
                                 vm.selectedLata.finalizado = !vm.selectedLata.finalizado
                                 $('.modal').modal('hide')
-                                vm.saveState()
+                                vm.salvaLinha()
                             }
                             else {
                                 toastr.error("Usuário ou Senha Inválidos")
@@ -1633,17 +1631,17 @@
                                 vm.user = { Name: "", Password: "" }
                                 toastr.success("Usuário validado com sucesso!")
                                 r.data.Retorno.ParCompanyXUserSgq = []
-                                vm.seletedLinha.userValidacao = r.data.Retorno
-                                vm.seletedLinha.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
-                                vm.seletedLinha.isValidated = true
-                                vm.seletedLinha.obs = vm.user.Obs
+                                vm.linhaSelecionada.userValidacao = r.data.Retorno
+                                vm.linhaSelecionada.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.linhaSelecionada.isValidated = true
+                                vm.linhaSelecionada.obs = vm.user.Obs
                                 $('.modal').modal('hide')
-                                let naoFinalizados = vm.seletedLinha.latas.filter(r=> { return !r.finalizado })
+                                let naoFinalizados = vm.linhaSelecionada.latas.filter(r=> { return !r.finalizado })
                                 naoFinalizados.forEach(function (o, c) {
-                                    vm.deleteLata(vm.seletedLinha, vm.seletedLinha.latas.indexOf(o))
+                                    vm.deleteLata(vm.linhaSelecionada, vm.linhaSelecionada.latas.indexOf(o))
                                 })
                                 vm.stop()
-                                vm.saveState()
+                                vm.salvaLinha()
 
                             }
                             else {
@@ -1661,12 +1659,12 @@
                                 vm.user = { Name: "", Password: "" }
                                 toastr.success("Usuário validado com sucesso!")
                                 r.data.Retorno.ParCompanyXUserSgq = []
-                                vm.seletedLinha.userFinish = r.data.Retorno
-                                vm.seletedLinha.dataUserFinish = moment().format("DD/MM/YYYY HH:mm")
-                                vm.seletedLinha.finalizado = true
-                                vm.seletedLinha.obs = vm.user.Obs
+                                vm.linhaSelecionada.userFinish = r.data.Retorno
+                                vm.linhaSelecionada.dataUserFinish = moment().format("DD/MM/YYYY HH:mm")
+                                vm.linhaSelecionada.finalizado = true
+                                vm.linhaSelecionada.obs = vm.user.Obs
                                 $('.modal').modal('hide')
-                                vm.saveState()
+                                vm.salvaLinha()
                             }
                             else {
                                 toastr.error("Usuário ou Senha Inválidos")
@@ -1742,19 +1740,19 @@
                     //})
 
                     if (executaVerificacaoParaAcao) {
-                        vm.seletedLinha.HaveCorrectiveAction = false
+                        vm.linhaSelecionada.HaveCorrectiveAction = false
                         /*PELO AMOR DE TUDO QUE É MAIS SAGRADO!!!! REMOVER ESTA FUNCIONALIDADE DAQUI E FAZER DE FORMA DESCENTE! CELSO GEA, OBS FUI EU QUE FIZ ISTO.....*/
                         for (let i = 0; i < $('[name=visualizacao]').length; i++) {
                             let table = $('[name=visualizacao]')[i]
 
                             if ($(table).find('.bgRed:not(.bgWhite, .bgYellow)').length) {
-                                vm.seletedLinha.latas[i].showCorrectiveAction = true
-                                vm.seletedLinha.HaveCorrectiveAction = true
+                                vm.linhaSelecionada.latas[i].showCorrectiveAction = true
+                                vm.linhaSelecionada.HaveCorrectiveAction = true
                             }
                             else
-                                vm.seletedLinha.latas[i].showCorrectiveAction = false //$(table).parent().find('#correctiveActionBtn').addClass('ng-hide')
+                                vm.linhaSelecionada.latas[i].showCorrectiveAction = false //$(table).parent().find('#correctiveActionBtn').addClass('ng-hide')
 
-                            vm.seletedLinha.latas[i].liberaAssinaturaLata = ($.grep($(table).find('.validate:visible'), function (o, c) {
+                            vm.linhaSelecionada.latas[i].liberaAssinaturaLata = ($.grep($(table).find('.validate:visible'), function (o, c) {
                                 return $(o).text().trim().length == 0
                             }).length == 0)
                         }
@@ -1831,7 +1829,7 @@
                     });
 
                     if (save)
-                        vm.saveState(notShowLabel, notShowLoader)
+                        vm.salvaLinha(notShowLabel, notShowLoader)
 
                     if (cb)
                         cb()
@@ -1864,17 +1862,17 @@
                                item.IsAssinada = true
                                item.HoraAssinatura = vm.Date
                                //$('.modal').modal('hide')
-                               vm.seletedLinha.IsStoped = true;
-                               //vm.TimerOn(false, vm.saveState(true, true))
+                               vm.linhaSelecionada.IsStoped = true;
+                               //vm.TimerOn(false, vm.salvaLinha(true, true))
                                item.Assinatura.Password = null
-                               vm.saveState()
+                               vm.salvaLinha()
                            }
                            else {
                                item.IsAssinada = false
                                toastr.error("Usuário ou Senha Inválidos")
                                console.log(r.Mensagem)
                                console.log(r.MensagemExcecao)
-                               vm.saveState(true, true)
+                               vm.salvaLinha(true, true)
                            }
                        });
                 }
@@ -1891,16 +1889,16 @@
                                item.HoraAssinatura = vm.Date
                                item.Assinatura.Password = null
                                //$('.modal').modal('hide')
-                               vm.seletedLinha.IsStoped = true;
-                               //vm.TimerOn(false, vm.saveState(true, true))
-                               vm.saveState()
+                               vm.linhaSelecionada.IsStoped = true;
+                               //vm.TimerOn(false, vm.salvaLinha(true, true))
+                               vm.salvaLinha()
                            }
                            else {
                                vm.selectedLata.PreventiveAction.IsAssinada = false
                                toastr.error("Usuário ou Senha Inválidos")
                                console.log(r.Mensagem)
                                console.log(r.MensagemExcecao)
-                               vm.saveState(true, true)
+                               vm.salvaLinha(true, true)
                            }
                        });
                 }
@@ -1913,8 +1911,8 @@
                 }
 
                 vm.TimerOn = function (isLoadData, cb) {
-                    //if (vm.seletedLinha.latas)
-                    //    vm.startTime = new Date(_.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    //if (vm.linhaSelecionada.latas)
+                    //    vm.startTime = new Date(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
                     //else
                     //    vm.startTime = new Date()
                     //vm.ExcedidoTempoLimite = false
@@ -1926,21 +1924,21 @@
                 }
 
                 vm.TimerOff = function () {
-                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
                     vm.duration = moment.duration(vm.diffTime);
                     let //years = duration.years(),
                         days = vm.duration.days(),
                         hrs = vm.duration.hours(),
                       mins = vm.duration.minutes(),
                       secs = vm.duration.seconds();
-                    vm.ProximaLataTimer = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
                     $timeout.cancel(vm.mytimeout);
                 }
 
                 vm.diffTime
                 vm.duration
                 $scope.onTimeout = function () {
-                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.seletedLinha.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
                     vm.duration = moment.duration(vm.diffTime);
                     let //years = duration.years(),
                         days = vm.duration.days(),
@@ -1949,7 +1947,7 @@
                       secs = vm.duration.seconds();
 
                     //if (hrs > 1)
-                    //    vm.seletedLinha.ExcedidoTempoLimite = true
+                    //    vm.linhaSelecionada.ExcedidoTempoLimite = true
 
                     //SEM MOCK
                     if (hrs > 1 || days > 1)
@@ -1963,7 +1961,7 @@
                     else
                         vm.ExcedidoTempoLimite = false
 
-                    vm.ProximaLataTimer = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
                     vm.mytimeout = $timeout($scope.onTimeout, 1000);
                 }
 
@@ -1972,13 +1970,13 @@
                 }
 
                 vm.saveLogParada = function () {
-                    if (vm.seletedLinha.logParada == undefined)
-                        vm.seletedLinha.logParada = []
+                    if (vm.linhaSelecionada.logParada == undefined)
+                        vm.linhaSelecionada.logParada = []
 
-                    vm.seletedLinha.logParada.push(vm.copyObj(vm.seletedLinha.RegistroParada))
-                    vm.seletedLinha.RegistroParada = {}
+                    vm.linhaSelecionada.logParada.push(vm.copyObj(vm.linhaSelecionada.RegistroParada))
+                    vm.linhaSelecionada.RegistroParada = {}
                     vm.TimerOff()
-                    vm.saveState()
+                    vm.salvaLinha()
                 }
 
                 vm.copyObj = function (obj) {
@@ -1994,9 +1992,9 @@
                 }
 
                 vm.print = function () {
-                    if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.seletedLinha && vm.seletedLinha.Id > 0) {
+                    if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
                         let preUrl = '@Url.Action("print", "Recravacao")';
-                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.seletedLinha.Id}`
+                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
                         openInNewTab(urlPrint)
                     }
                 }
@@ -2062,7 +2060,7 @@
                 //                    o["latas"] = []
                 //                })
                 //                setTimeout(function () { $('select').select2() }, 200)
-                //                vm.seletedLinha = { Id: 0 }
+                //                vm.linhaSelecionada = { Id: 0 }
                 //                //vm.getState()
                 //            }
                 //        });
@@ -2132,7 +2130,7 @@
                                 <h3>Ação Corretiva</h3>
                                 <div>
                                     <label>Ação Corretiva: </label><span ng-show="!(ca.ImmediateCorrectiveAction)" class="redDot">* Campo Obrigatório</span>
-                                    <label ng-show="$parent.seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada: </label>
+                                    <label ng-show="$parent.linhaSelecionada.correctiveAction.HorarioDeParada"> Ás {{linhaSelecionada.correctiveAction.HorarioDeParada}} a linha {{linhaSelecionada.Name}} foi paralizada: </label>
                                     <textarea ng-disabled="ca.IsAssinada"
                                               ng-model="ca.ImmediateCorrectiveAction"
                                               class="form-control custom-control"
