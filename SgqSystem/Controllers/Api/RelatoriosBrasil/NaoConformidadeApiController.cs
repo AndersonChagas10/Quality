@@ -772,6 +772,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var whereDepartment = "";
             var whereShift = "";
+            var whereStructure = "";
             var whereCriticalLevel = "";
 
 
