@@ -4233,7 +4233,7 @@ namespace SgqSystem.Services
 
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, painelLevel3);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
@@ -4349,7 +4349,7 @@ namespace SgqSystem.Services
                                                tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
 
                                                outerhtml: reauditFlag +
-                                                          painelLevel3 +
+                                                          painelLevel3.ToString() +
                                                           panelAccordeon +
                                                           groupLevel3Level2.ToString()
                                              );
@@ -4668,7 +4668,7 @@ namespace SgqSystem.Services
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, StringBuilder painellevel3)
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3)
         {
             var html = new Html();
 
