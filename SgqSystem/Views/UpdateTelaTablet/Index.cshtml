@@ -58,7 +58,7 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
         closeLeftSidebar();;
-        const refreshStatus = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
+        const refreshStatusUrl = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
         const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
         $(document).ready(function() {
 
@@ -71,7 +71,7 @@
                 $.ajax(
                {
                    type: "POST",
-                   url: refreshStatus,
+                   url: refreshStatusUrl,
                    data: things,
                    dataType: "JSON",
                    contentType: "application/json; charset=utf-8",

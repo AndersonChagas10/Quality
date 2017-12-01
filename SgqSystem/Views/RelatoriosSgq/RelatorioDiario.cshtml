@@ -70,13 +70,19 @@
                 Send(true);
             });
 
+            $('.levels').hide();
+
             formControl.showSimpleDate();
             //formControl.showOnlyUnit(); //showOnlyUnit showUnit
-            formControl.showUnit();
+            //formControl.showUnit();
+            formControl.showClustRegUnitCriticalLevel123();
             closeLeftSidebar();
 
             //Remove o 'Todos' da unidade
-            $("#unitId option[value='']").remove();
+            //$("#unitId option[value='']").remove();
+            $("#unitIdV option[value='']").remove();
+          
+            $('.sidebar-nav select').select2();
         });
 
         function Send(toggle) {
@@ -97,6 +103,7 @@
             //FTA._dataFim = FTA._dataInicio,
 
             enviar["auditorId"] = GetUsuarioId();
+            $("#unitIdV").change();
 
             EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);//AJAX
 
@@ -151,8 +158,6 @@
                         }
 
                     });
-
-
 
                 });
             } catch (e) {
@@ -233,8 +238,6 @@
             var total = 0;
             //var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
             var dataFim = new Date(parseInt(dtFim));
-
-
 
             valoresYY = {
                 dataInicio: new Date(parseInt(dtInicio/*.replace(/[^0-9]/g, '')*/)),
@@ -867,7 +870,7 @@
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
-            if (!($('#unitId :selected').val() > 0)) {
+            if (!($('#unitIdV :selected').val() > 0)) {
                 GuardJs.exibirMensagemAlerta('@Resources.Resource.select_the_unit_first');//"Por favor selecione uma unidade.");
                 return false;
             }
