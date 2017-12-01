@@ -369,7 +369,7 @@ namespace SgqSystem.Mail
                                 Project = "SGQApp"
                             };
                             var model = controller.GetCorrectiveActionById(ca.Id);
-                            newMail.Body = subject + "<br><br>" + model.SendMeByMail;
+                            newMail.Body = subject + "<br><br>" + model.EmailBodyCorrectiveAction;
                             db.EmailContent.Add(newMail);
                             db.SaveChanges();
 

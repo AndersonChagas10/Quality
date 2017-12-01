@@ -91,11 +91,7 @@ namespace SgqSystem.Mail
                     {
                         url = GlobalConfig.urlPreffixAppColleta + "/api/hf/SendMail";
                     }
-                    //else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Homologacao.ToString()))
-                    //    url = "https://sgqtest.jbssa.com/HMLUSA/" + "/api/hf/SendMail";
-                    //else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Producao.ToString()))
-                    //    url = "https://sgq.jbssa.com/SGQ/" + "/api/hf/SendMail";
-
+                  
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
@@ -236,7 +232,7 @@ namespace SgqSystem.Mail
                                 company = "All";
 
                             //"unidade" - "nome do indicador": 1st failure of the day
-                            var subject = string.Format("SGQ Corretive Action: Unit - {0}: {1}: {2} failure of the day.", company, parLevel1, ca.AlertNumber.DisplayWithSuffix());
+                            var subject = string.Format("SGQ Corretive Action: Plant - {0}: {1}: {2} failure of the day.", company, parLevel1, ca.AlertNumber.DisplayWithSuffix());
 
                             var newMail = new EmailContent()
                             {
@@ -247,8 +243,8 @@ namespace SgqSystem.Mail
                             };
 
                             var model = controller.GetCorrectiveActionById(ca.Id);
-                            newMail.Body = subject + "<br><br>" + model.SendMeByMail;
-                            newMail.To = DestinatariosSGQJBSUSA(newMail, ca);
+                            newMail.Body = subject + "<br><br>" + model.EmailBodyCorrectiveAction;
+                            newMail.To = DestinatariosSGQJBSUSAPorAlertaEAssinatura(newMail, ca, model);
                             db.EmailContent.Add(newMail);
                             db.SaveChanges();
 
@@ -268,37 +264,46 @@ namespace SgqSystem.Mail
         /// <summary>
         /// Envia para destinatários de acordo com documento na pasta desta classe
         /// </summary>
-        /// <param name="m"></param>
-        /// <param name="d"></param>
+        /// <param name="mail"></param>
+        /// <param name="caEmail"></param>
         /// <returns></returns>
-        private static string DestinatariosSGQJBSUSA(EmailContent m, CorrectiveActionEmail d)
+        private static string DestinatariosSGQJBSUSAPorAlertaEAssinatura(EmailContent mail, CorrectiveActionEmail caEmail, CorrectiveActionDTO modelCa)
         {
-            using (var dbLegado = new SgqDbDevEntities())
+
+            using (var db = new SgqDbDevEntities())
             {
                 var Roles = new List<string>();
                 var listaEmails = new List<string>();
-                var query = "SELECT * FROM UserSgq WHERE  1=1 AND ([role] like ";// ;)
+                var emailAssinatura = string.Empty;
+                var listaUserComEmailNaoNulo = db.UserSgq.Where(r => r.Email != null && r.Email.Length > 0);
+                var usersQueRecebemALertaNivelUm = listaUserComEmailNaoNulo.Where(r => r.Role.Contains("Alert1") && r.ParCompany_Id == caEmail.ParCompany_Id).ToList();
+                var usersQueRecebemALertaNivelDois = listaUserComEmailNaoNulo.Where(r => r.Role.Contains("Alert2")).ToList();
+                var usuarioQueAssinouSlaugther = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.SlaughterId);
+                var usuarioQueAssinouTechinical = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.TechinicalId);
 
-                if (d.AlertNumber == 1)
-                    query += "'%Alert1%' \n AND ParCompany_Id = " + d.ParCompany_Id + ") \n  ";
-                else
-                    query += "'%Alert1%' AND ParCompany_Id = " + d.ParCompany_Id + ") OR [role] like '%Alert2%' \n  ";
-
-                query += "\n AND Email IS NOT NULL";
-                query += "\n AND Email <> ''";
-
-                var listaUsuario = dbLegado.Database.SqlQuery<UserSgq>(query);
-
-                foreach (var usuario in listaUsuario)
-                    listaEmails.Add(usuario.Email);
-
-                if (listaEmails != null && listaEmails.Count() > 0)
-                    return string.Join(",", listaEmails.ToArray());
+                if (caEmail.AlertNumber == 1)
+                {
+                    foreach (var usuario in usersQueRecebemALertaNivelUm)
+                        listaEmails.Add(usuario.Email);
+                }
                 else
                 {
-                    //Caso não existam emails cadastrados
-                    //Preenche send status e não vai para a lista de envio.
-                    m.SendStatus = "Não existem destinatários para este email.";
+                    foreach (var usuario in usersQueRecebemALertaNivelUm)
+                        listaEmails.Add(usuario.Email);
+                    foreach (var usuario in usersQueRecebemALertaNivelDois)
+                        listaEmails.Add(usuario.Email);
+                }
+
+                if(usuarioQueAssinouSlaugther != null)
+                    listaEmails.Add(usuarioQueAssinouSlaugther.Email);
+                if (usuarioQueAssinouTechinical != null)
+                    listaEmails.Add(usuarioQueAssinouTechinical.Email);
+
+                if (listaEmails != null && listaEmails.Count() > 0)
+                    return string.Join(",", listaEmails.Distinct().ToArray());
+                else
+                {
+                    mail.SendStatus = "Não existem destinatários para este email.";
                     return string.Empty;
                 }
             }

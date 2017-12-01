@@ -190,7 +190,7 @@ namespace DTO.DTO
         }
 
 
-        public string SendMeByMail
+        public string EmailBodyCorrectiveAction
         {
             get
             {
