@@ -783,8 +783,8 @@
 
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
-            //enviar["ParametroTableRow"].push(paramRow);
-            //enviar["ParametroTableCol"].push(paramCol);
+            enviar["ParametroTableRow"][0] = "";
+            enviar["ParametroTableCol"][0] = "";
 
             EasyAjax(urlTabela2, enviar, function (r) {
                 $('#inicadoresPorRegional').empty().append(r);
