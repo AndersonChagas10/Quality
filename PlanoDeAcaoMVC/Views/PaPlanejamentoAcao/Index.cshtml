@@ -190,8 +190,8 @@
         margin: 0px !important;
         border: 1px solid #ddd;
         color: #666 !important;
-        padding-top:7px !important;
-        padding-bottom:7px !important;
+        padding-top: 7px !important;
+        padding-bottom: 7px !important;
     }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
@@ -292,7 +292,7 @@
                                     </div>
                                     <div class="col-sm-12">
                                         <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
-                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="EditarNovo();">Salvar Edição</button>
+                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">Salvar Edição</button>
                                         @*<button type="button" class="btn btn-danger hide" id="btnDeletarNovo" onclick="DeletarNovo();">Deletar</button>*@
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
                                     </div>
@@ -318,7 +318,6 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
         </div>
     </div>
-</div>
 </div>
 
 <div class="minmaxCon"></div>
@@ -719,13 +718,13 @@
 
         function DdlChangeTatico(model) {
             changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function() {
-                
+
             })
-            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function() { 
+            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function() {
             })
 
             console.log('DdlChangeTatico',model)
-            
+
             //changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
             //    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'ObjetivoGerencial_Id', function (r) {
             //        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
@@ -735,7 +734,7 @@
             $('#Iniciativa_Id').off('change').on('change', function () {
                 var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
                 manageButton(Iniciativa_Id,'IndicadoresDeProjeto_Id','Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
-                
+
                 $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
                     $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
                     //$('#IndicadoresDeProjeto_Id').remove();
@@ -743,7 +742,7 @@
 
                         var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
                         manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-                
+
                         $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
@@ -766,7 +765,7 @@
                 });
             });
             $('#Iniciativa_Id').change();
-            
+
 
         }
 
@@ -781,8 +780,10 @@
         function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected){
             let masterEl = $(idMaster)
             let masterElVal = $(idMaster).val()
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, 'Selecione um predecessor acima','');
             masterEl.off('change').on('change', function () {
                 let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, 'Selecione um predecessor acima','');
                 $.get(urlGETChildren, { id: seletedId }, function (response) {
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
@@ -794,6 +795,19 @@
                         masterCB()
                 })
             })
+        }
+
+        function manageButtonDisabledWhenHaveParentSelect(parentSelectedValue, elementChild, messageForDisabled, messageForEnabled){
+            let elem = $(elementChild)
+            if(elem.length > 0)
+                if(parentSelectedValue == 0){
+                    elem.parents('tr').find('.novoItem').attr('disabled', true)
+                    elem.parents('tr').find('.novoItem').attr('title', messageForDisabled)
+                }
+                else{
+                    elem.parents('tr').find('.novoItem').attr('disabled', false)
+                    elem.parents('tr').find('.novoItem').attr('title', messageForEnabled)
+                }
         }
 
         function manageButton(id, idChildren, messageDisabled, messageEnabled){
@@ -1104,18 +1118,10 @@
             $('#body').find('select').select2('destroy')
 
             //Remove select caso exista
-            if ($('#encadeado').find('select').length) {
-                $('#encadeado').find('select').remove();
-            }
+            $('#encadeado').find('select').remove();
 
             //Mantem invisivel o campo de Predecessor
             //$('#encadeado').show()
-
-            /*Limpa caso haja DDL denrto do modal.*/
-            if ($('#encadeado').find('select').length) {
-                $('#encadeado').find('select').remove();
-                $('#encadeado').hide()
-            }
             if(encadeado == undefined)
                 $('#encadeado').hide()
 
@@ -1128,94 +1134,50 @@
             $('#nomeItemNovo').html(label)
 
             if (encadeado != undefined) {
-                //$('#encadeado').show();
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-
                 $('#modalNovo select').select2();
                 $('#modalNovo select').select2('destroy');
                 $('#modalNovo select').select2();
-
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
             $('#body').find('select').select2()
         }
 
         function SalvarNovo() {
-            /*validação*/
 
-            /*Dados*/
-            var param1 = $('#newItem').val();
-            var param2 = tempName.split('_Id')[0];
-            var param3 = 0;
-            if ($('#encadeado').find('select').length) {
-                param3 = $('#encadeado').find('select').val();
+            var params = {
+                NomeDoItem: $('#newItem').val(),
+                ParametroDeBusca: tempName.split('_Id')[0],
+                PredecessorId: $('#encadeado').find('select').val(),
+                Id: $('#newIdItem').val(),
+                IsActive: $('#newIsActiveItem:checked').length == 1,
             }
 
-            /*Ajax*/
-            $.post(urlSalvarNovoItem, {val: param1, param: param2, predecessor: param3}, function (r) {
-
-                if(r.resposta != null){
-                    alert(r.resposta);
+            $.post(urlSalvarNovoItem, params, function (r) {
+                if(r.Resposta != null) {
+                    alert(r.Resposta);
                     return;
                 }
 
-                $(tempInput).append('<option value=' + r.Id + '> ' + $('#newItem').val() + '</option>');
-                //$(tempInput).val(r).change();
+                var jaExisteoptionNoDropDown = $(tempInput).find('option[value="' + r.Id + '"]').length > 0
+                if(jaExisteoptionNoDropDown)
+                    $(tempInput).find("option[value= "+ r.Id + "]").html(r.NomeDoItem)
+                else
+                    $(tempInput).append('<option value=' + r.Id + '> ' + r.NomeDoItem + '</option>');
+                $(tempInput).val(r.Id).change();
+                refreshDataTable();
+
                 //tempInput = undefined;
                 //tempName = undefined;
-                /*Limpa caso haja DDL denrto do modal.*/
-                /*if ($('#encadeado').find('select').length) {
-                    $('#encadeado').find('select').remove();
-                }*/
-
                 $('#btnCancelarNovo').click();
-                refreshDataTable();
             });
 
         }
 
-        function EditarNovo() {
-            /*validação*/
-
-            /*Dados*/
-            var param1 = $('#newItem').val();
-            var param2 = tempName.split('_Id')[0];
-            var param3 = 0;
-            if ($('#encadeado').find('select').length) {
-                param3 = $('#encadeado').find('select').val();
-            }
-            var param4 = $('#newIdItem').val();
-            var param5 = $('#newIsActiveItem:checked').length == 1;
-
-            /*Ajax*/
-            $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4, isActive: param5}, function (r) {
-
-                if(r.resposta != null){
-                    alert(r.resposta);
-                    return;
-                }
-
-                $(tempInput).find("option[value= "+ r.Id + "]").html($('#newItem').val())
-                //$(tempInput).find("select option[value= "+ r + "]").text($('#newItem').val());
-                //$(tempInput).val(r).change();
-                tempInput = undefined;
-                /*Limpa caso haja DDL denrto do modal.*/
-                /*if ($('#encadeado').find('select').length) {
-                    $('#encadeado').find('select').remove();
-                }*/
-                $('#btnCancelarNovo').click();
-                refreshDataTable();
-            });
-
-        }
-
-        //function DeletarNovo() {
+        //DEPRECIADO
+        //function EditarNovo() {
         //    /*validação*/
-
-        //    if (confirm("Deseja apagar este item?") == false)
-        //        return;
-
         //    /*Dados*/
         //    var param1 = $('#newItem').val();
         //    var param2 = tempName.split('_Id')[0];
@@ -1224,13 +1186,121 @@
         //        param3 = $('#encadeado').find('select').val();
         //    }
         //    var param4 = $('#newIdItem').val();
+        //    var param5 = $('#newIsActiveItem:checked').length == 1;
+        //    /*Ajax*/
+        //    $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4, isActive: param5}, function (r) {
+        //        if(r.resposta != null){
+        //            alert(r.resposta);
+        //            return;
+        //        }
+        //        $(tempInput).find("option[value= "+ r.Id + "]").html($('#newItem').val())
+        //        //$(tempInput).find("select option[value= "+ r + "]").text($('#newItem').val());
+        //        //$(tempInput).val(r).change();
+        //        refreshDataTable();
+        //        tempInput = undefined;
+        //        /*Limpa caso haja DDL denrto do modal.*/
+        //        /*if ($('#encadeado').find('select').length) {
+        //            $('#encadeado').find('select').remove();
+        //        }*/
+        //        $('#btnCancelarNovo').click();
+        //    });
+        //}
 
+        var refreshDataTable = function(){
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
+            }
+            $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+
+            if(param3 != 0){
+                $('#divPredecessora').removeClass('hide');
+            }else{
+                $('#divPredecessora').addClass('hide');
+            }
+
+            /*Ajax*/
+            $.post(urlGetAutoComplete, {NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3}, function (response) {
+                console.log(response);
+                $("#tableNovo").html('');
+
+                //Gera a lista
+                var list = [];
+                $.each(response, function( index, value ) {
+                    list.push([value.Id,value.Name,value.IsActive])
+                });
+
+                tableModalNovo = $('#tableNovo').DataTable( {
+                    data: list,
+                    destroy:true,
+                    lengthChange: false,
+                    pageLength: 3,
+                    "bInfo" : false,
+                    "language": {
+                        "sSearch": "Buscar",
+                        "paginate": {
+                            "previous": "Anterior",
+                            "next": "Próximo"
+                        }
+                    },
+                    columns: [
+                        { title: "ID"},
+                        { title: "Name"},
+                        {
+                            title: "Ativo",
+                            "data":           null,
+                            "render": function(data, type, full, meta){
+                                if(data[2] == true){
+                                    return "ATIVO";
+                                }
+                                return "INATIVO";
+                            }
+                        },
+                        {
+                            "className":      'options',
+                            "data":           null,
+                            "render": function(data, type, full, meta){
+                                return '<span class="btn btn-mini btn-info pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</span>';
+                            }
+                        }
+                    ],
+                    initComplete: function () {}
+                } );
+
+                $('#tableNovo tbody').on('click', 'span', function () {
+                    $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
+                    $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
+                    $("#newIsActiveItem").prop('checked',tableModalNovo.row($(this).parents('tr')).data()[2]);
+                    $('#btnSalvarNovo').addClass('hide');
+                    $('#btnEditarNovo').removeClass('hide');
+                    //$('#btnDeletarNovo').removeClass('hide');
+                    $('#btnCancelarNovo').removeClass('hide');
+                    $('#divIsActive').removeClass('hide');
+                });
+            })
+        };
+
+        //DEPRECIADO
+        //function DeletarNovo() {
+        //    /*validação*/
+        //    if (confirm("Deseja apagar este item?") == false)
+        //        return;
+        //    /*Dados*/
+        //    var param1 = $('#newItem').val();
+        //    var param2 = tempName.split('_Id')[0];
+        //    var param3 = 0;
+        //    if ($('#encadeado').find('select').length) {
+        //        param3 = $('#encadeado').find('select').val();
+        //    }
+        //    var param4 = $('#newIdItem').val();
         //    /*Ajax*/
         //    $.post(urlDeletarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
-
         //    });
-
         //}
+
         /*Fim Novo item*/
         //var btnEditar = '<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
 
@@ -1247,8 +1317,8 @@
             var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
             var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
             var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
-            var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
-            var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
+            var arrEstragy = [0, 1, 2, 3, 4, 5, 6, 7];
+            var arrEstragyH = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]; // SEM TEMA ASUNTO[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
 
             var table = $('#paTable').empty().DataTable({
                 data: retornoArray,
@@ -1256,6 +1326,7 @@
                     /*0*/{ title: "Diretoria", mData: "Diretoria" },
                     /*1*/{ title: "Missão", mData: "Missao" },
                     /*2*/{ title: "Visão", mData: "Visao" },
+                    /*NOVO 3*/{ title: "Tema / Assunto", mData: "TemaAssunto" },
                     /*3*/{ title: "Dimensão", mData: "Dimensao" },
                     /*4*/{ title: "Diretrizes", mData: "Objetivo" },//Objetivo
                     /*5*/{ title: "Indicadores Diretriz", mData: "IndicadoresDiretriz" },
@@ -1532,7 +1603,7 @@
                         //    bgColorStatus = "yellow"
                         //}
 
-                        $(row.cells[35]).css("background", bgColorStatus);
+                        $(row.cells[36]).css("background", bgColorStatus);
 
                         /*Prazo*/
                         if (data.Acao.Status == 2) {
@@ -1555,44 +1626,44 @@
                         //    bgColorPrazo = "rgb(250, 128, 114)"
                         //}
 
-                        $(row.cells[36]).css("background", bgColorPrazo);
+                        $(row.cells[37]).css("background", bgColorPrazo);
 
                         if (data.Tatico_Id > 0) { // possui plan tatico
-                            $(row.cells[37]).find('.btnNovoOperacional').show();
+                            $(row.cells[38]).find('.btnNovoOperacional').show();
                         } else {
-                            $(row.cells[37]).find('.btnNovoOperacional').hide();
+                            $(row.cells[38]).find('.btnNovoOperacional').hide();
                         }
 
                         if (data.Id > 0) { // Possui plan Estrat
-                            $(row.cells[37]).find('.btnNovoTatico').show();
+                            $(row.cells[38]).find('.btnNovoTatico').show();
                         } else {
-                            $(row.cells[37]).find('.btnNovoTatico').hide();
+                            $(row.cells[38]).find('.btnNovoTatico').hide();
                         }
 
                         if (data.Acao.Id > 0) { // Possui plan Operac
-                            $(row.cells[37]).find('.btnAcompanhamento').show();
+                            $(row.cells[38]).find('.btnAcompanhamento').show();
                         } else {
-                            $(row.cells[37]).find('.btnAcompanhamento').hide();
+                            $(row.cells[38]).find('.btnAcompanhamento').hide();
                         }
 
                     } catch (e) { }
 
                     if (data.Tatico_Id > 0) { // possui plan tatico
-                        $(row.cells[37]).find('.btnNovoOperacional').show();
+                        $(row.cells[38]).find('.btnNovoOperacional').show();
                     } else {
-                        $(row.cells[37]).find('.btnNovoOperacional').hide();
+                        $(row.cells[38]).find('.btnNovoOperacional').hide();
                     }
 
                     if (data.Id > 0) { // Possui plan Estrat
-                        $(row.cells[37]).find('.btnNovoTatico').show();
+                        $(row.cells[38]).find('.btnNovoTatico').show();
                     } else {
-                        $(row.cells[37]).find('.btnNovoTatico').hide();
+                        $(row.cells[38]).find('.btnNovoTatico').hide();
                     }
 
                     if (data.Acao.Id > 0) { // Possui plan Operac
-                        $(row.cells[37]).find('.btnAcompanhamento').show();
+                        $(row.cells[38]).find('.btnAcompanhamento').show();
                     } else {
-                        $(row.cells[37]).find('.btnAcompanhamento').hide();
+                        $(row.cells[38]).find('.btnAcompanhamento').hide();
                     }
 
                 },
@@ -1615,7 +1686,7 @@
             }
             //console.log(arrTodosIndices)
             let arrVisaoInicialHide2 = arrTodosIndices
-            let arrVisaoInicialShow2 = [0,4,6,7,9,11,12,13,17,18,28,29,30,31,32,35,36,37]
+            let arrVisaoInicialShow2 = [0, 3, 5, 7, 8, 10, 12, 13, 14, 18, 19, 29, 30, 31, 32, 33, 36, 37, 38]//[0,4,6,7,9,11,12,13,17,18,28,29,30,31,32,35,36,37]
 
             for (var i = 0; i < arrVisaoInicialShow2.length; i++) {
                 var index = arrVisaoInicialHide2.indexOf(arrVisaoInicialShow2[i]);
@@ -1628,11 +1699,11 @@
             console.log(arrVisaoInicialShow2)
 
 
-            var arrShowOperacional = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36];
-            var arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+            var arrShowOperacional = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]//[17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36];
+            var arrHideOperacional = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
             if (visaoOperacional) {
-                arrShowOperacional = [17, 18, 19, 20, 21, /*22, 23, 24, 25, 26,*/ 27, 28, 29, 30, 31, 32,/* 33, 34,*/ 35];
-                arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 33, 34];
+                arrShowOperacional = [18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 36]//[17, 18, 19, 20, 21, /*22, 23, 24, 25, 26,*/ 27, 28, 29, 30, 31, 32,/* 33, 34,*/ 35];
+                arrHideOperacional = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 34, 35]//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 33, 34];
             }
 
             var show = {
@@ -1651,8 +1722,8 @@
                 PlanejamentoTatico: {
                     extend: 'colvisGroup',
                     text: 'Planejamento Tático',
-                    show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                    hide: [0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+                    show: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],//[7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                    hide: [0, 1, 2, 3, 5, 6, 7, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]//[0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
                 },
                 PlanejamentoOperacional: {
                     extend: 'colvisGroup',
@@ -1862,7 +1933,7 @@
                 $('#modalLindo').find('.modal-body .content1').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
-                
+
                 //}
 
                 //else {
@@ -1939,7 +2010,7 @@
                              function (r) {
                                  TesteRenan(r, 'Estrategico', data);
                                  $('#modalNovo > div > div > div.modal-footer > button').show()
-                                 
+
                                  //HideForOperacional();
                              }
                         );
@@ -1957,7 +2028,7 @@
                                  $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
                                      var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
                                      manageButton(Iniciativa_Id,'IndicadoresDeProjeto_Id','Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
-                
+
                                      $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
                                          $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
                                          //$('#IndicadoresDeProjeto_Id').remove();
@@ -1965,7 +2036,7 @@
 
                                              var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $(' #formEditTatico#IndicadoresDeProjeto_Id').val() : 0;
                                              manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-                
+
                                              $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                                                  $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
@@ -2074,90 +2145,14 @@
             counter--;
         });
 
-        var refreshDataTable = function(){
-            /*Dados*/
-            var param1 = $('#newItem').val();
-            var param2 = tempName.split('_Id')[0];
-            var param3 = 0;
-            if ($('#encadeado').find('select').length) {
-                param3 = $('#encadeado').find('select').val();
-            }
-            $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
-
-            if(param3 != 0){
-                $('#divPredecessora').removeClass('hide');
-            }else{
-                $('#divPredecessora').addClass('hide');
-            }
-
-            /*Ajax*/
-            $.post(urlGetAutoComplete, {val: param1, param: param2, predecessor: param3}, function (response) {
-                console.log(response);
-                $("#tableNovo").html('');
-
-                //Gera a lista
-                var list = [];
-                $.each(response, function( index, value ) {
-                    list.push([value.Id,value.Name,value.IsActive])
-                });
-
-                tableModalNovo = $('#tableNovo').DataTable( {
-                    data: list,
-                    destroy:true,
-                    lengthChange: false,
-                    pageLength: 3,
-                    "bInfo" : false,
-                    "language": {
-                        "sSearch": "Buscar",
-                        "paginate": {
-                            "previous": "Anterior",
-                            "next": "Próximo"
-                        }
-                    },
-                    columns: [
-                        { title: "ID"},
-                        { title: "Name"},
-                        {
-                            title: "Ativo",
-                            "data":           null,
-                            "render": function(data, type, full, meta){
-                                if(data[2] == true){
-                                    return "ATIVO";
-                                }
-                                return "INATIVO";
-                            }
-                        },
-                        {
-                            "className":      'options',
-                            "data":           null,
-                            "render": function(data, type, full, meta){
-                                return '<span class="btn btn-mini btn-info pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</span>';
-                            }
-                        }
-                    ],
-                    initComplete: function () {}
-                } );
-
-                $('#tableNovo tbody').on('click', 'span', function () {
-                    $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
-                    $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
-                    $("#newIsActiveItem").prop('checked',tableModalNovo.row($(this).parents('tr')).data()[2]);
-                    $('#btnSalvarNovo').addClass('hide');
-                    $('#btnEditarNovo').removeClass('hide');
-                    //$('#btnDeletarNovo').removeClass('hide');
-                    $('#btnCancelarNovo').removeClass('hide');
-                    $('#divIsActive').removeClass('hide');
-                });
-            })
-        };
 
         $(function() {
             console.log( "ready!" );
             GetDataTable();
 
-            $('#modalNovo').on('hidden.bs.modal', function () {
-                $("#"+selectPredecessor).change();
-            })
+            //$('#modalNovo').on('hidden.bs.modal', function () {
+            //    $("#"+selectPredecessor).change();
+            //})
 
             $('#modalNovo').on('shown.bs.modal', function (e) {
 

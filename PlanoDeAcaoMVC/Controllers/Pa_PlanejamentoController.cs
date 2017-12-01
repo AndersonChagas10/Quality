@@ -40,7 +40,7 @@ namespace PlanoDeAcaoMVC.Controllers
         {
             ViewBag.urlSend = Url.Action("Save", "api/Pa_Planejamento");
             ViewBag.urlList = Url.Action("List", "api/Pa_Planejamento");
-
+            ViewBag.Coordenacao = new List<Pa_Coordenacao>();
             var model = new Pa_Planejamento();
 
             if(id.GetValueOrDefault() > 0)
