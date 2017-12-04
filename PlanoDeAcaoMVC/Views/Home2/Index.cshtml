@@ -134,6 +134,20 @@ AUTHOR: GABRIEL CRUZ NUNES
         /*tbody > tr > td {
             word-break: break-all;
         }*/
+
+        button[data-id=valor1Filtro]{
+            width:200px !important;
+        }
+
+        div.dropdown-menu.open{
+            max-width:300px;
+            word-wrap: break-word; 
+            white-space: normal;
+        }
+
+        div.daterangepicker{
+            width:750px;
+        }
     </style>
 
     <script type="text/javascript">
@@ -195,6 +209,8 @@ AUTHOR: GABRIEL CRUZ NUNES
                 json = dados;
 
                 MountDataTable(json);
+
+                distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2')
             });
         }
 
@@ -452,7 +468,7 @@ AUTHOR: GABRIEL CRUZ NUNES
 
             array.forEach(function (o, c) {
                 var flag = true;
-                if (arrValue != "Todos" ) {
+                if (arrValue != "Todos" && arrValue != "Todas") {
                     if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
                         || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
                         || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "TipoIndicador") {
@@ -649,187 +665,7 @@ AUTHOR: GABRIEL CRUZ NUNES
         //    color: andamentoColor
         //}];
 
-        var json = [{
-            "tempoNS": 4251649,
-            "tempoMS": 4,
-            "tamanhoArray": 1999,
-            "nome": "Bubble iterativo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-
-        }, {
-            "tempoNS": 3064749,
-            "tempoMS": 3,
-            "tamanhoArray": 1999,
-            "nome": "Bubble recursivo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 994920,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "Insertion iterativo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 908287,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "Insertion recursivo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 1500831,
-            "tempoMS": 1,
-            "tamanhoArray": 1999,
-            "nome": "Selection iterativo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 1461891,
-            "tempoMS": 1,
-            "tamanhoArray": 1999,
-            "nome": "Selection recursivo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 176888,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "Merge iterativo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 187754,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "Merge recursivo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 105348,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "Quick recursivo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 160588,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "Heap recursivo",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }, {
-            "tempoNS": 100217,
-            "tempoMS": 0,
-            "tamanhoArray": 1999,
-            "nome": "CombSort Sem Otimização",
-            "tit1": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit2": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit3": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit4": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit5": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit6": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit7": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit8": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit9": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf",
-            "tit10": "ghjhsfjadogj dihadfogihsd ofubhroubvdnrf adfgsdflhbsdf asdigjhfdgd adfgudshfgp sdfgkjsdfgsdf"
-
-        }
-        ];
-
-        json = FiltraColunas(dados, ["Diretoria",
+        var json = FiltraColunas(dados, ["Diretoria",
             "Missao",
             "Visao",
             "Dimensao",
@@ -977,7 +813,6 @@ AUTHOR: GABRIEL CRUZ NUNES
             <div class="defaultFilter ">
 
                 <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
-                    <option value="">Todos</option>
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
@@ -1090,7 +925,6 @@ AUTHOR: GABRIEL CRUZ NUNES
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
             <div class="defaultFilter">
                 <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
-                    <option value="">Todos</option>
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
@@ -1855,8 +1689,6 @@ AUTHOR: GABRIEL CRUZ NUNES
 
     function distinctFilter(lista, filtro, selectId) {
 
-        
-
         filtro = filtro.replace("Acao.", "");
         lista = FiltraColunas(lista, [filtro]);
 
@@ -1887,6 +1719,7 @@ AUTHOR: GABRIEL CRUZ NUNES
         $('#' + selectId).children('option').remove();
 
         $('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+        $('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
         $('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
         $('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
         $('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
@@ -2534,7 +2367,7 @@ AUTHOR: GABRIEL CRUZ NUNES
         var arrayValor = [];
         arrayValor.push($('#valor1FiltroPie2 option:selected').text());
 
-        if (arrayValor == "")
+        if (arrayValor == "" || arrayValor == "0")
             arrayValor = "Todos";
 
         dadosPie2 = FiltraLinhasComTodos(dados, arrayColuna, arrayValor);
@@ -2579,6 +2412,9 @@ AUTHOR: GABRIEL CRUZ NUNES
         $("input[name='daterange']").css('height', '25px');
 
         setTimeout(atualizarTopFilters, 100);
+
+
+        
 
     });
 
