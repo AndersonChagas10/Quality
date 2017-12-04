@@ -1242,6 +1242,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Phone" Type="nvarchar(max)" />
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="PasswordDate" Type="datetime" />
+          <Property Name="UseActiveDirectory" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="VerificacaoTipificacaoV2">
           <Key>
@@ -5430,6 +5431,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel2" />
           <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
+          <Property Name="UseActiveDirectory" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_CorrectiveAction_UserSgq">
           <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
@@ -7473,6 +7475,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="UserSgq">
             <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
               <MappingFragment StoreEntitySet="UserSgq">
+                <ScalarProperty Name="UseActiveDirectory" ColumnName="UseActiveDirectory" />
                 <ScalarProperty Name="PasswordDate" ColumnName="PasswordDate" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
