@@ -118,7 +118,7 @@ namespace PlanoDeAcaoMVC
             #region Bundles PANovo
 
             //Loading Overlay
-            bundles.Add(new ScriptBundle("~/bundles/loadingoverlay")
+            bundles.Add(new ScriptBundle("~/bundles/panovoScriptBundle")
                 .Include("~/Scripts/PANovo/js/jquery-1.12.4.js",
                 "~/Scripts/PANovo/js/popper.min.js",
                 "~/Scripts/PANovo/js/jquery.dataTables.min.js",
@@ -136,18 +136,16 @@ namespace PlanoDeAcaoMVC
                 "~/Scripts/PANovo/js/vfs_fonts.js",
                 "~/Scripts/PANovo/js/buttons.html5.min.js",
                 "~/Scripts/PANovo/js/buttons.print.min.js",
-                "~/Scripts/PANovo/js/pt-br.js")
+                "~/Scripts/PANovo/js/pt-br.js",
+                "~/Scripts/GuardJs.js")
             );
 
             //Reports
-            bundles.Add(new StyleBundle("~/bundles/reportsstyle")
+            bundles.Add(new StyleBundle("~/bundles/panovoBundle")
                 .Include("~/Content/Reports/Reports1.css",
                 "~/Content/PANovo/css/style.css",
                 "~/Content/PANovo/css/jquery.dataTables.min.css",
                 "~/Content/PANovo/css/bootstrap-select.min.css",
-                "~/Content/PANovo/css/daterangepicker.css",
-                "~/Content/PANovo/css/daterangepicker.css",
-                "~/Content/PANovo/css/daterangepicker.css",
                 "~/Content/PANovo/css/daterangepicker.css")
             );
             #endregion

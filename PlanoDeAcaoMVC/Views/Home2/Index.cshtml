@@ -10,11 +10,12 @@ AUTHOR: GABRIEL CRUZ NUNES
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <link rel="stylesheet" href="~/Content/PANovo/css/bootstrap-select.min.css">
+    @*<link rel="stylesheet" href="~/Content/PANovo/css/bootstrap-select.min.css">
     <link href="~/Content/PANovo/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/daterangepicker.css" />
-    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/style.css" />*@
+    @Styles.Render("~/bundles/panovoBundle")
 
 
     <style>
@@ -141,8 +142,8 @@ AUTHOR: GABRIEL CRUZ NUNES
 
         //var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
 
-        var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
-        //var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+        //var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
+        var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
         
 
@@ -238,8 +239,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     { "mData": "Acao.PraQue" },
                     { "mData": "Acao.QuantoCusta" },
                     { "mData": "Acao._StatusName" },
-                    { "mData": "Acao._Prazo" },
-                    { "title": "Acao.Acao" },
+                    { "mData": "Acao._Prazo" }
                 ],
 
                 'aoColumnDefs': [
@@ -278,8 +278,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     { "sTitle": "Pra que", "aTargets": [32], "width": "200px" },
                     { "sTitle": "Quanto custa", "aTargets": [33], "width": "50px" },
                     { "sTitle": "Status", "aTargets": [34], "width": "50px" },
-                    { "sTitle": "Prazo", "aTargets": [35], "width": "50px" },
-                    { "sTitle": "", "aTargets": [36], "width": "200px" }
+                    { "sTitle": "Prazo", "aTargets": [35], "width": "50px" }
                 ],
 
                 responsive: true,
@@ -882,7 +881,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <span class="icon-bar"></span>
                 </button>
 
-                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="/Imagens/Logo.png" style="height:45px;"> </div>
+                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="./Imagens/Logo.png" style="height:45px;"> </div>
 
                 <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
 
@@ -1259,20 +1258,15 @@ AUTHOR: GABRIEL CRUZ NUNES
 
 <footer>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="https://code.jquery.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
-
-    <script type="text/javascript" src="~/Scripts/PANovo/js/jquery-1.12.4.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/PANovo/js/jquery-1.12.4.js"></script>
 
     <script src="~/Scripts/PANovo/js/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/PANovo/js/highcharts.js"></script>
     <script src="~/Scripts/PANovo/js/treemap.js"></script>
     <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
     <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
     <script src="~/Scripts/GuardJs.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
 
     <script type="text/javascript" src="~/Scripts/PANovo/js/moment.min.js"></script>
     <script type="text/javascript" src="~/Scripts/PANovo/js/daterangepicker.js"></script>
@@ -1286,9 +1280,17 @@ AUTHOR: GABRIEL CRUZ NUNES
     <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
 
-    <script type="text/javascript" src="~/Scripts/PANovo/js/pt-br.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/pt-br.js"></script>*@
+
 
 </footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+@Scripts.Render("~/bundles/panovoScriptBundle")
 
 <script owner="CelsoGea">
 
