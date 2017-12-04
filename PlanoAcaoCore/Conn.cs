@@ -15,19 +15,19 @@
 
         ////////Config para dev GRT
         //////Local Db
-        //public static string catalog { get { return "PlanoDeAcao"; } }
-        //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        //public static string user { get { return "sa"; } }
-        //public static string pass { get { return "1qazmko0"; } }
+        public static string catalog { get { return "PlanoDeAcao"; } }
+        public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        public static string user { get { return "sa"; } }
+        public static string pass { get { return "1qazmko0"; } }
 
         ////Remoto SGQ
-        //public static string catalog2 { get { return "dbGQualidade"; } }
-        //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        //public static string user2 { get { return "sa"; } }
-        //public static string pass2 { get { return "1qazmko0"; } }
+        public static string catalog2 { get { return "dbGQualidade"; } }
+        public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        public static string user2 { get { return "sa"; } }
+        public static string pass2 { get { return "1qazmko0"; } }
 
-        //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
-        //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+        public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
+        public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
 
         //Config para localhost
         //Local Db
@@ -156,18 +156,18 @@
 
         //Utilizar para JBS
         //DB Local
-        public static string catalog { get { return "dbGQualidadeTeste"; } }
-        public static string dataSource { get { return @"10.255.0.41"; } }
-        public static string user { get { return "UserGQualidade"; } }
-        public static string pass { get { return "grJsoluco3s"; } }
-        ////Remoto SGQ
-        public static string catalog2 { get { return "dbGQualidade"; } }
-        public static string dataSource2 { get { return @"10.255.5.93"; } }
-        public static string user2 { get { return "UserGQualidade"; } }
-        public static string pass2 { get { return "grJsoluco3s"; } }
+        //public static string catalog { get { return "dbGQualidadeTeste"; } }
+        //public static string dataSource { get { return @"10.255.0.41"; } }
+        //public static string user { get { return "UserGQualidade"; } }
+        //public static string pass { get { return "grJsoluco3s"; } }
+        //////Remoto SGQ
+        //public static string catalog2 { get { return "dbGQualidade"; } }
+        //public static string dataSource2 { get { return @"10.255.5.93"; } }
+        //public static string user2 { get { return "UserGQualidade"; } }
+        //public static string pass2 { get { return "grJsoluco3s"; } }
 
-        public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
-        public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
+        //public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
 
         public static string emailFrom = "sgq@jbs.com.br";
         public static string emailPass = "Bvkw+iUcPJGZQe0tPxQDjg==";

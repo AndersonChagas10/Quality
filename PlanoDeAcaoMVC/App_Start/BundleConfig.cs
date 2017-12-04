@@ -115,6 +115,43 @@ namespace PlanoDeAcaoMVC
 
             #endregion
 
+            #region Bundles PANovo
+
+            //Loading Overlay
+            bundles.Add(new ScriptBundle("~/bundles/loadingoverlay")
+                .Include("~/Scripts/PANovo/js/jquery-1.12.4.js",
+                "~/Scripts/PANovo/js/popper.min.js",
+                "~/Scripts/PANovo/js/jquery.dataTables.min.js",
+                "~/Scripts/PANovo/js/highcharts.js",
+                "~/Scripts/PANovo/js/treemap.js",
+                "~/Scripts/PANovo/js/bootstrap-select.min.js",
+                "~/Scripts/PANovo/js/defaults-pt_BR.min.js",
+                "~/Scripts/PANovo/js/moment.min.js",
+                "~/Scripts/PANovo/js/daterangepicker.js",
+                "~/Scripts/PANovo/js/jquery.dataTables.min.js",
+                "~/Scripts/PANovo/js/dataTables.buttons.min.js",
+                "~/Scripts/PANovo/js/buttons.flash.min.js",
+                "~/Scripts/PANovo/js/jszip.min.js",
+                "~/Scripts/PANovo/js/pdfmake.min.js",
+                "~/Scripts/PANovo/js/vfs_fonts.js",
+                "~/Scripts/PANovo/js/buttons.html5.min.js",
+                "~/Scripts/PANovo/js/buttons.print.min.js",
+                "~/Scripts/PANovo/js/pt-br.js")
+            );
+
+            //Reports
+            bundles.Add(new StyleBundle("~/bundles/reportsstyle")
+                .Include("~/Content/Reports/Reports1.css",
+                "~/Content/PANovo/css/style.css",
+                "~/Content/PANovo/css/jquery.dataTables.min.css",
+                "~/Content/PANovo/css/bootstrap-select.min.css",
+                "~/Content/PANovo/css/daterangepicker.css",
+                "~/Content/PANovo/css/daterangepicker.css",
+                "~/Content/PANovo/css/daterangepicker.css",
+                "~/Content/PANovo/css/daterangepicker.css")
+            );
+            #endregion
+
         }
     }
 }
