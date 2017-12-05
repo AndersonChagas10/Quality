@@ -379,6 +379,12 @@
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
         var AcaoDetalhes = '@Url.Action("Details","Pa_Acao")'
+        
+        function DisabilitaBotaoGerenciar(){
+            $('#modalLindo').find('select[disabled]').each(function(i,o){
+                $(o).parents('tr').find('.novoItem').attr('disabled', true);
+            });
+        }
 
         function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
             isTaticoClicked = isClickedTatico;
@@ -1465,6 +1471,7 @@
                                  function (r) {
                                      TesteRenan(r, 'Estrategico', data);
                                      //HideForOperacional();
+                                     DisabilitaBotaoGerenciar();
                                  }
                             );
                         }
@@ -1474,6 +1481,7 @@
                                  function (r) {
                                      TesteRenan(r, 'Tatico', data);
                                      //HideForOperacional();
+                                     DisabilitaBotaoGerenciar();
                                  }
                             );
                         }
@@ -1516,6 +1524,8 @@
                                       $('#obj').show(); //Apagar depois
                                       InitDatePiker();
                                       //HideForOperacional();
+
+                                      DisabilitaBotaoGerenciar();
                                   }
                             );
 
@@ -1994,6 +2004,8 @@
             //$('#modalLindo').find('.modal-body .content3').append(form);
             InitDatePiker();
             MoneyMask();
+
+            DisabilitaBotaoGerenciar();
         }
 
         function SalvarAcompanhamento(obj) {
@@ -2203,6 +2215,7 @@
                 }
 
             })
+
 
             $('#modalNovo').on('shown.bs.modal', function (e) {
 
