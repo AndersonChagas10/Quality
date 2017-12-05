@@ -405,6 +405,7 @@
     <Content Include="Content\PANovo\css\bootstrap-select.min.css" />
     <Content Include="Content\PANovo\css\bootstrap-theme.min.css" />
     <Content Include="Content\PANovo\css\bootstrap.min.css" />
+    <Content Include="Content\PANovo\css\buttons.dataTables.min.css" />
     <Content Include="Content\PANovo\css\daterangepicker.css" />
     <Content Include="Content\PANovo\css\jquery.dataTables.min.css" />
     <Content Include="Content\PANovo\css\style.css" />
@@ -579,6 +580,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\PANovo\js\bootstrap-select.min.js" />
     <Content Include="Scripts\PANovo\js\bootstrap.min.js" />
+    <Content Include="Scripts\PANovo\js\buttons.colVis.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.flash.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.html5.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.print.min.js" />
