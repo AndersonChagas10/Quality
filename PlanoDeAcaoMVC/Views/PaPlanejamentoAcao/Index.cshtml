@@ -2091,7 +2091,7 @@
                                          //$('#IndicadoresDeProjeto_Id').remove();
                                          $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
 
-                                             var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $(' #formEditTatico#IndicadoresDeProjeto_Id').val() : 0;
+                                             var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
                                              manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
 
                                              $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
