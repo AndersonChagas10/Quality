@@ -142,7 +142,6 @@ namespace PlanoDeAcaoMVC
                 "~/Scripts/PANovo/js/buttons.html5.min.js",
                 "~/Scripts/PANovo/js/buttons.print.min.js",
                 "~/Scripts/PANovo/js/pt-br.js",
-                "~/Scripts/GuardJs.js",
                 "~/Scripts/home2.js")
             );
 
