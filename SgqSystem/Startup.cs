@@ -28,6 +28,7 @@ namespace SgqSystem
             if (GlobalConfig.Eua)
             {
                 RecurringJob.RemoveIfExists("MailServer");
+                RecurringJob.RemoveIfExists("ReProcessJson");
                 RecurringJob.AddOrUpdate("MailServer",
                     () => SimpleAsynchronousUSA.Mail(),
                     "*/10 * * * *");

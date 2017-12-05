@@ -17,8 +17,6 @@ namespace DTO.Helpers
     public static class Guard
     {
 
-
-
         public static String LANGUAGE_PT_BR = "pt-BR";
         public static String LANGUAGE_EN_US = "en-US";
         public static String LANGUAGE_DEFAULT = "default";

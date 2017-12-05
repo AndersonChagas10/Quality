@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api
 {
     [RoutePrefix("api/hf")]
-    public class HangFireServicesController : ApiController
+    public class HangFireServicesController : BaseApiController
     {
         /// <summary>
         /// 
