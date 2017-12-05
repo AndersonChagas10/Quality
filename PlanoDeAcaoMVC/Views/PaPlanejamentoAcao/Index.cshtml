@@ -350,6 +350,7 @@
         var NovaAcaoBuscaFeita = false;
         var tempInput;
         var tempName;
+        var IdBotaoClicado;
 
         @*var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');*@
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
@@ -389,6 +390,8 @@
         function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
             //console.log(ModalOpcoesEstrategico);
 
+            IdBotaoClicado = IdParaNovaAcao;
+
             $('#modalLindo').modal();
             $('#modalLindo').find('.modal-body').empty();
 
@@ -418,7 +421,11 @@
 
                 if (IdParaNovaAcao != undefined || planejamentoCorrentId > 0) { // Mostra Detalhes + BTN nova acao
                     $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-                        $('#modalLindo').find('.modal-body').empty().append(r);
+
+                        var modal = $('#modalLindo').find('.modal-body').html();
+
+                        $('#modalLindo').find('.modal-body').empty();
+                        $('#modalLindo').append(r);
                         $('#NovaAcao').show();
                     });
                 } else {
@@ -609,7 +616,7 @@
                                 $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
                             if (model.Visao_Id > 0)
                                 $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
-                            if (model.TemaAssunto_Id > 0)   
+                            if (model.TemaAssunto_Id > 0)
                                 $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.TemaAssunto_Id);
                             if (model.Dimensao_Id > 0)
                                 $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Dimensao_Id);
@@ -619,7 +626,7 @@
                                 $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.IndicadoresDiretriz_Id);
                             if (model.Responsavel_Diretriz > 0)
                                 $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').val(model.Responsavel_Diretriz);
-                          
+
                         }
 
                         $('.novoTatico').show();
@@ -1132,8 +1139,14 @@
 
             tempInput = $(btn).parents('tr').find('input , select');
             tempName = $(btn).parents('tr').find('input , select').attr('name');
+
+            var valorSelectSelecionado = $(btn).parents('tr').find('input , select option:selected').html();
+            var tempIdNovo = $(btn).parents('tr').find('input , select option:selected').val();
+
+            SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
+
             var label = $(btn).parents('tr').find('label').html();
-            $('#newItem').val("");
+            //$('#newItem').val("");
             $('#modalNovo').modal();
             $('#novoHeader').html("Gerenciar: " + label);
             $('#nomeItemNovo').html(label)
@@ -1167,10 +1180,23 @@
 
                 var jaExisteoptionNoDropDown = $(tempInput).find('option[value="' + r.Id + '"]').length > 0
                 if(jaExisteoptionNoDropDown)
-                    $(tempInput).find("option[value= "+ r.Id + "]").html(r.NomeDoItem)
-                else
-                    $(tempInput).append('<option value=' + r.Id + '> ' + r.NomeDoItem + '</option>');
-                $(tempInput).val(r.Id).change();
+                    if(r.IsActive){
+                        $(tempInput).find("option[value= "+ r.Id + "]").html(r.NomeDoItem);
+                        $(tempInput).find("option[value= "+ r.Id + "]").prop('selected',true);
+                        $(tempInput).val(r.Id).trigger('change');
+                    }else{
+                        $(tempInput).find('option:first').prop('selected',true);
+                        $(tempInput).find("option[value= "+ r.Id + "]").remove();
+                        $(tempInput).trigger('change');
+                    }
+                else{
+                    $(tempInput).find('option:selected').prop('selected',false);
+                    $(tempInput).append('<option value=' + r.Id + ' selected> ' + r.NomeDoItem + '</option>');
+                    $(tempInput).find("option[value= "+ r.Id + "]").prop('selected',true);
+                    //$(tempInput).val(r.Id).change();
+                    $(tempInput).trigger('change')
+                }
+                //$(tempInput).val(r.Id).change();
                 refreshDataTable();
 
                 //tempInput = undefined;
@@ -1276,17 +1302,31 @@
                 } );
 
                 $('#tableNovo tbody').on('click', 'span', function () {
-                    $("#newIdItem").val(tableModalNovo.row($(this).parents('tr')).data()[0]);
-                    $("#newItem").val(tableModalNovo.row($(this).parents('tr')).data()[1]);
-                    $("#newIsActiveItem").prop('checked',tableModalNovo.row($(this).parents('tr')).data()[2]);
-                    $('#btnSalvarNovo').addClass('hide');
-                    $('#btnEditarNovo').removeClass('hide');
-                    //$('#btnDeletarNovo').removeClass('hide');
-                    $('#btnCancelarNovo').removeClass('hide');
-                    $('#divIsActive').removeClass('hide');
+
+                    SetaValoresModal(
+                        tableModalNovo.row($(this).parents('tr')).data()[0],
+                        tableModalNovo.row($(this).parents('tr')).data()[1],
+                        tableModalNovo.row($(this).parents('tr')).data()[2])
                 });
             })
         };
+
+
+        function SetaValoresModal(id, item, isActive){
+
+            $('#btnCancelarNovo').click();
+            if(!!parseInt(id)){
+                $("#newIdItem").val(id);
+                $("#newItem").val(item);
+                $("#newIsActiveItem").prop('checked',isActive);
+                $('#btnSalvarNovo').addClass('hide');
+                $('#btnEditarNovo').removeClass('hide');
+                //$('#btnDeletarNovo').removeClass('hide');
+                $('#btnCancelarNovo').removeClass('hide');
+                $('#divIsActive').removeClass('hide');
+            }
+
+        }
 
         //DEPRECIADO
         //function DeletarNovo() {
@@ -2155,9 +2195,14 @@
             console.log( "ready!" );
             GetDataTable();
 
-            //$('#modalNovo').on('hidden.bs.modal', function () {
-            //    $("#"+selectPredecessor).change();
-            //})
+            $('#modalNovo').on('hidden.bs.modal', function () {
+                if(selectPredecessor != undefined){
+                    //$("#"+selectPredecessor).change();
+                }else{
+                    $('#'+IdBotaoClicado).click();
+                }
+
+            })
 
             $('#modalNovo').on('shown.bs.modal', function (e) {
 
@@ -2171,8 +2216,6 @@
                     $('#divIsActive').addClass('hide');
 
                 });
-
-                $('#btnCancelarNovo').click();
 
                 refreshDataTable();
 
