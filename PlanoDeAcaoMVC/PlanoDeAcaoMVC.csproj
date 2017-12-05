@@ -398,6 +398,10 @@
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fonts\font-awesome.css" />
+    <Content Include="Content\fonts\font-awesome.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\PANovo\css\bootstrap-glyphicons.css" />
     <Content Include="Content\PANovo\css\bootstrap-select.min.css" />
     <Content Include="Content\PANovo\css\bootstrap-theme.min.css" />
     <Content Include="Content\PANovo\css\bootstrap.min.css" />
@@ -547,6 +551,14 @@
     <Content Include="Scripts\inputmask\min\inputmask\jquery.inputmask.min.js" />
     <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
     <None Include="Properties\PublishProfiles\Plano de Acao Local.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcao.pubxml" />
@@ -582,6 +594,7 @@
     <Content Include="Scripts\PANovo\js\popper.min.js" />
     <Content Include="Scripts\PANovo\js\pt-br.js" />
     <Content Include="Scripts\PANovo\js\treemap.js" />
+    <Content Include="Scripts\PANovo\js\underscore-min.js" />
     <Content Include="Scripts\PANovo\js\vfs_fonts.js" />
     <Content Include="Scripts\pivottable-master\.gitignore" />
     <Content Include="Scripts\pivottable-master\dist\c3_renderers.js" />
@@ -849,6 +862,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\home2.js" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
