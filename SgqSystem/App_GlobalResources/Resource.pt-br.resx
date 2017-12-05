@@ -2256,4 +2256,25 @@
     <value />
     <comment>Parametros de Indicadores, Monitoramentos e tarefas, suas frequencias de coleta, responsáveis e limites.</comment>
   </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSANDO</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Selecionar Todos</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCESSO</value>
+  </data>
+  <data name="update_selected_units" xml:space="preserve">
+    <value>Atualizar unidades selecionadas</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>PENDENTE</value>
+  </data>
 </root>

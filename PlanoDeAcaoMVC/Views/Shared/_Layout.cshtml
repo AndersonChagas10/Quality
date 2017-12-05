@@ -122,6 +122,11 @@
                         <a href="@Url.Action("Index","PaPlanejamentoAcao")">Gerenciar</a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index","Home2")">Dashboard</a>
+                    </li>
+                </ul>
 
             </div>
             <!--/.nav-collapse -->
@@ -267,7 +272,7 @@
             //var tipo = "estrategico";
 
             $(this).find('.error').removeClass('error')
-            $(this).find('select.required' + tipo).each(function (c, o) {
+            $(this).find('select.required:visible' + tipo).each(function (c, o) {
                 if ($(o).find('option:selected').val().length == 0) {
                     $(o).addClass('error')
                     $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');

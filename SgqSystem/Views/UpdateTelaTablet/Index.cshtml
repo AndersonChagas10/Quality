@@ -1,4 +1,5 @@
 ﻿@using DTO.DTO.Params
+@using Resources
 
 @{
     ViewBag.Title = "Index";
@@ -9,11 +10,11 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content monitor-get-tela" style="min-height: 600px;">
 
-        <h2>Atualizar Parametrização</h2>
+        <h2>@Resource.update_tablet</h2>
 
-        <button class="btn btn-primary" style="color:white" id="updateTablets">Atualizar Unidades Selecionadas</button>
+        <button class="btn btn-primary" style="color:white" id="updateTablets">@Resource.update_selected_units</button>
         @*<button class="btn btn-success" id="refreshStatus">Atualizar</button>*@
-        <button class="btn btn-info" id="checkAll">Selecionar Todos</button>
+        <button class="btn btn-info" id="checkAll">@Resource.select_all</button>
         <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
 
         @if (ViewBag.UnidadesUsuario != null)
@@ -24,10 +25,10 @@
                     <tr>
                         <th></th>
                         <th>ID</th>
-                        <th>Nome</th>
-                        <th>Data Inicio</th>
-                        <th>Data Final</th>
-                        <th>Status</th>
+                        <th>@Resource.name</th>
+                        <th>@Resource.initial_date</th>
+                        <th>@Resource.final_date</th>
+                        <th>@Resource.status</th>
                     </tr>
                 </thead>
 

@@ -112,7 +112,10 @@ namespace SgqSystem.Controllers.Api
             return cookie;
         }
 
-        
+        public static string GetWebConfigSettings(string key)
+        {
+            return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
 
     }
 }

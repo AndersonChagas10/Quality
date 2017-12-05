@@ -98,15 +98,18 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         {
             var retorno = new List<ParStructureDTO>();
 
-            var whereCluster = "";
-            var unidadesUsuario = GetUserUnits(model.UserId);
-
-            if (model.Cluster > 0)
+            if (model.UserId > 0)
             {
-                whereCluster = "AND PC.Id = " + model.Cluster;
-            }
 
-            var query = $@"SELECT
+                var whereCluster = "";
+                var unidadesUsuario = GetUserUnits(model.UserId);
+
+                if (model.Cluster > 0)
+                {
+                    whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+
+                var query = $@"SELECT
                         DISTINCT
                         	ps.Id
                            ,ps.Name
@@ -124,9 +127,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         { whereCluster }
                         AND PS.Id IS NOT NULL";
 
-            using (var db = new SgqDbDevEntities())
-            {
-                retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
+                using (var db = new SgqDbDevEntities())
+                {
+                    retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
+                }
+
             }
 
             return retorno;
@@ -138,21 +143,24 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         {
             var retorno = new List<ParCompanyDTO>();
 
-            var whereStructure = "";
-            var whereCluster = "";
-            var unidadesUsuario = GetUserUnits(model.UserId);
-
-            if (model.Structure > 0)
+            if (model.UserId > 0)
             {
-                whereStructure = "and PS.Id = " + model.Structure;
-            }
 
-            if (model.Cluster > 0)
-            {
-                whereCluster = "AND PC.Id = " + model.Cluster;
-            }
+                var whereStructure = "";
+                var whereCluster = "";
+                var unidadesUsuario = GetUserUnits(model.UserId);
 
-            var query =$@"SELECT
+                if (model.Structure > 0)
+                {
+                    whereStructure = "and PS.Id = " + model.Structure;
+                }
+
+                if (model.Cluster > 0)
+                {
+                    whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+
+                var query = $@"SELECT
                         DISTINCT
                         	UNIT.Id
                            ,UNIT.Name
@@ -170,9 +178,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         { whereCluster }
                         { whereStructure } ";
 
-            using (var db = new SgqDbDevEntities())
-            {
-                retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
+                using (var db = new SgqDbDevEntities())
+                {
+                    retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
+                }
+
             }
 
             return retorno;
@@ -183,6 +193,8 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public List<ParCriticalLevelDTO> GetParCriticalLevel([FromBody] ModelForm model)
         {
             var retorno = new List<ParCriticalLevelDTO>();
+
+
 
             var whereCluster = "";
 
@@ -204,6 +216,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
             }
 
+
             return retorno;
         }
 
@@ -212,6 +225,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public List<ParLevel1DTO> GetLevel1ParCriticalLevel([FromBody] ModelForm model)
         {
             var retorno = new List<ParLevel1DTO>();
+
 
             var whereCriticalLevel = "";
             var whereCluster = "";
@@ -258,6 +272,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             {
                 retorno = db.Database.SqlQuery<ParLevel1DTO>(query).ToList();
             }
+
 
             return retorno;
         }

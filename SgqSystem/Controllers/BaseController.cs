@@ -146,6 +146,11 @@ namespace SgqSystem.Controllers
             }
 
         }
+
+        public static string GetWebConfigSettings(string key)
+        {
+            return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
     }
 
 }

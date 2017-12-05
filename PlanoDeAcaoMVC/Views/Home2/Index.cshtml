@@ -1,76 +1,591 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<script src="~/Scripts/lodash.min.js"></script>
+﻿@{ Layout = null;}
 
-<script type="text/javascript">
+<!--
+PROTÓTIPO DE DASHBOARD
+DATE: 2017-11-19
+AUTHOR: GABRIEL CRUZ NUNES
+-->
 
-    var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
-    var dados = [];
+<head>
 
-    $(function () {
-        console.log("ready!");
-        GetDataTable()
-    });
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
+    @*<link rel="stylesheet" href="~/Content/PANovo/css/bootstrap-select.min.css">
+    <link href="~/Content/PANovo/css/jquery.dataTables.min.css" rel="stylesheet">
 
-    function GetDataTable() {
-        $.post(urlGetPlanejamentoAcao, {}, function (r) { dados = r; })
-    }
+    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/style.css" />*@
 
-    /**
-     *
-     * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
-     * ['Nome','Idade'] arrColuna
-     */
-    function FiltraColunas(array,arrFiltro) {
 
-        let novoArr = [];
+        @Styles.Render("~/bundles/panovoBundle")
 
-        array.forEach(function (o, c) {
 
-            obj = {};
+    <style>
+        /*table {
 
-            arrFiltro.forEach(function (oo, cc) {
+            table-layout: fixed;
+            word-wrap: break-word;
+        }*/
 
-                obj[oo] =  o[oo]
-            });
 
-            novoArr.push(obj);
-        });
+        table {
+            table-layout: fixed;
+            width: 100%;
+            *margin-left: -100px; /*ie7*/
+        }
 
-        return novoArr;
-    }
+        .fix {
+            position: absolute;
+            *position: relative; /*ie7*/
+            margin-left: -100px;
+            width: 100px;
+        }
 
-    /**
-     *
-     * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
-     * ['Nome','Idade'] arrColuna
-     * ['Renan',25] arrValue
-     */
-    function FiltraLinhas(array, arrColuna, arrValue) {
+        .outer {
+            position: relative;
+        }
 
-        let novoArr = []
+        .inner {
 
-        array.forEach(function (o, c) {
+            width: 100%;
 
-            var flag = true;
+        }
 
-            arrColuna.forEach(function (oo, cc) {
+        .defaultDiv {
+            padding: 3px;
+        }
 
-                if (o[oo] != arrValue[cc]) {
-                    flag = false;
-                }
-            });
+        .defaultDivInternal {
+            background-color: #fff;
+            padding: 5px;
+        }
 
-            if (flag) {
-                novoArr.push(o)
-            }
-        });
+        .defaultSizeMin {
+            height: 250px;
+        }
 
-        return novoArr;
-    }
+        .defaultSizeMinPanel {
+            height: 150px;
+            width: 100%;
+        }
 
-</script>
+        .defaultSizeMed {
+            height: 270px;
+        }
+
+        .defaultSizeMedPanel {
+            height: 190px;
+            width: 100%;
+        }
+
+        .defaultSizeMax {
+            height: 540px;
+            font-size: xx-small;
+        }
+
+        .defaultSizeMaxPanel {
+            height: 500px;
+            width: 100%;
+        }
+
+        .defaultGroupTitle {
+            float: left;
+            /*width: 100%;*/
+        }
+
+        .defaultTitle {
+            font-weight: bold;
+            font-size: 14px;
+            float: left;
+        }
+
+        .defaultSubtitle {
+            font-weight: normal;
+            font-size: 8px;
+            text-transform: uppercase;
+            float: left;
+        }
+
+        .defaultFilter {
+            float: left;
+            border-bottom: 1px dotted #ccc;
+            margin-bottom:5px;
+            width:100%;
+            padding:2px;
+        }
+
+        .defaultDivFilter {
+            background-color: #06304e;
+            color: #FFF;
+            position: fixed;
+            z-index: 9999;
+            top:50px;
+        }
+
+        .btn-filter {
+            font-size: 12px;
+            height:26px;
+            width:23px;
+            padding:0;
+        }
+
+        .dropdown-menu open{
+            width:150px;
+        }
+
+        /*tbody > tr > td {
+            word-break: break-all;
+        }*/
+
+        button[data-id=valor1Filtro]{
+            width:200px !important;
+        }
+
+        div.dropdown-menu.open{
+            max-width:300px;
+            word-wrap: break-word; 
+            white-space: normal;
+        }
+
+        div.daterangepicker{
+            width:750px;
+        }
+    </style>
+    
+</head>
+
+<body style="background-color:#ccc;padding-top:86px;">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="@Url.Content("~/Imagens/Logo.png")" style="height:45px;" /> </div>
+
+                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
+
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active">
+                        <a href="#">By GRJ Soluções</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="@Url.Action("LogOut", "Home")">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @*<li class="">
+                            <a href="@Url.Action("FTAMock","Pa_Acao")">Form. de Tratamento de Anomalias (Simular)</a>
+                        </li>*@
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index","Home")">Relatórios</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index","PaPlanejamentoAcao")">Gerenciar</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index","Home2")">Dashboard</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <!--MENU DE FILTROS-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDivInternal defaultDivFilter">
+            <div class="defaultGroupTitle" style="width:auto; float:left; background-color:transparent;">
+                <span class="defaultTitle" style="line-height:27px;">Filtros</span>
+            </div>
+            <div class="defaultFilter input-group" style="width:auto; float:right; background-color:transparent; border-bottom: 0px; margin-bottom:0px;">
+                <div class="input-group-btn" style="width: 100px;">
+                    <input type="text" class="form-control" name="daterange" value="01/01/2017 - 31/01/2017" />
+                </div>
+                &nbsp;
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="_GrupoCausa">Grupo Causa</option>
+                    <option value="_CausaGenerica">Causa Genérica</option>
+                    <option value="_ContramedidaGenerica">Ação Genérica</option>
+                    <option value="UnidadeName">Unidade</option>
+                    <option value="_Quem">Quem</option>
+                    <option value="_StatusName">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Level1Name">Indicador</option>
+                    <option value="Level2Name">Monitoriamento</option>
+                    <option value="Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="TipoIndicador">Tipo Indicador</option>
+
+                </select>
+                &nbsp;
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1Filtro">
+                    <option>Todos</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnTop"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+
+        </div>
+    </div>
+    <!--FIM MENU DE FILTROS-->
+
+    <!--LINHA 1-->
+    <!--<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Status das Ações</span>
+                <br />
+                <span class="defaultSubtitle">Total de ações por Status</span>
+            </div>
+            <div id="panel1" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>-->
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultFilter ">
+
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="_GrupoCausa">Grupo Causa</option>
+                    <option value="_CausaGenerica">Causa Genérica</option>
+                    <option value="_ContramedidaGenerica">Ação Genérica</option>
+                    <option value="UnidadeName">Unidade</option>
+                    <option value="_Quem">Quem</option>
+                    <option value="_StatusName">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Level1Name">Indicador</option>
+                    <option value="Level2Name">Monitoriamento</option>
+                    <option value="Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="TipoIndicador">Tipo Indicador</option>
+                </select>
+                &nbsp;
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1FiltroPie2">
+                    <option>Todos</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnFiltroPie2"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Tarefas vs Status</span>
+                <br />
+                <span class="defaultSubtitle" id="spanPie2">Todas</span><span class="defaultSubtitle">&nbsp;por status</span><br />
+            </div>
+            <div id="panel2" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Estoque de Ações</span>
+                <br />
+                <span class="defaultSubtitle">Formação do Estoque de Ações</span>
+            </div>
+            <div id="panel4" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+
+    <!--FIM LINHA 1-->
+    <!--LINHA 2-->
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed ">
+            <div class="defaultFilter">
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
+
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao" selected>Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName">Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" id="valor1Panel5"></select>
+
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+                    
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName" selected>Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" id="valor2Panel5"></select>
+                <button class="btn btn-warning btn-filter" id="btnpanel5"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel5','campo2Panel5','panel5', this.id);" id="btnOrderFilterPanel5"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Ordem por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Comparativo</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel5">Status </span>
+                <span class="defaultSubtitle">&nbsp;por&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel5"> por Gerência</span>
+            </div>
+            <div id="panel5" class="defaultSizeMedPanel"></div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv Panel6">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
+            <div class="defaultFilter">
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia" selected>Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName">Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1Panel6"></select>
+
+                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
+                    
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName" selected>Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor2Panel6"></select>
+
+                <button class="btn btn-warning btn-filter" id="btnpanel6"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel6','campo2Panel6','panel6', this.id);" id="btnOrderFilterPanel6"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Orderm por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Comparativo</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel6">Status</span>
+                <span class="defaultSubtitle">&nbsp;por&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel6">Pessoa</span>
+            </div>
+            <div id="panel6" class="defaultSizeMedPanel"></div>
+        </div>
+    </div>
+
+    <!--FIM LINHA 2-->
+    <!--LINHA 3-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Gerenciador de Tarefas</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">Todas as tarefas para filtrar</span>
+            </div>
+
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FIM LINHA 3-->
+
+
+    @Scripts.Render("~/bundles/panovoScriptBundle")
+
+
+
+</body>
+
+<footer>
+
+    @*<script type="text/javascript" src="~/Scripts/PANovo/js/jquery-1.12.4.js"></script>
+
+    <script src="~/Scripts/PANovo/js/popper.min.js"></script>
+    <script src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/PANovo/js/highcharts.js"></script>
+    <script src="~/Scripts/PANovo/js/treemap.js"></script>
+    <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
+    <script src="~/Scripts/GuardJs.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/daterangepicker.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/jszip.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/PANovo/js/pt-br.js"></script>*@
+
+
+</footer>
+
+@*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>*@
+
+
 
