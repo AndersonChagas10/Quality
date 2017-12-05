@@ -717,7 +717,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <span class="icon-bar"></span>
                 </button>
 
-                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="./Imagens/Logo.png" style="height:45px;"> </div>
+                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="@Url.Content("~/Imagens/Logo.png")" style="height:45px;" /> </div>
 
                 <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
 
@@ -731,20 +731,29 @@ AUTHOR: GABRIEL CRUZ NUNES
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/Home/LogOut">
+                        <a href="@Url.Action("LogOut", "Home")">
                             <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
                         </a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @*<li class="">
+                            <a href="@Url.Action("FTAMock","Pa_Acao")">Form. de Tratamento de Anomalias (Simular)</a>
+                        </li>*@
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="/">Relatórios</a>
+                        <a href="@Url.Action("Index","Home")">Relatórios</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="/PaPlanejamentoAcao">Gerenciar</a>
+                        <a href="@Url.Action("Index","PaPlanejamentoAcao")">Gerenciar</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index","Home2")">Dashboard</a>
                     </li>
                 </ul>
 
