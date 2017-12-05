@@ -7,9 +7,11 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
 {
+
     public class RecravacaoApiController : BaseApiController
     {
         private SgqDbDevEntities db;
@@ -34,6 +36,8 @@ namespace SgqSystem.Controllers.Api
             var results = QueryNinja(db, query);
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results });
         }
+
+        
 
         // POST: api/RecravacaoApi
         public HttpResponseMessage Post()
@@ -91,6 +95,10 @@ namespace SgqSystem.Controllers.Api
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = mensagemSucesso, model = Request.Content.ReadAsStringAsync().Result });
 
         }
+
+        // GET: api/RecravacaoLinhaApi
+        
+        
 
         private void UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente)
         {
@@ -150,4 +158,6 @@ namespace SgqSystem.Controllers.Api
         }
 
     }
+
+    
 }
