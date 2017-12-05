@@ -2259,4 +2259,25 @@
   <data name="textHomeParams" xml:space="preserve">
     <value />
   </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSING</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="update_selected_units" xml:space="preserve">
+    <value>Update selected units</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>WAITING</value>
+  </data>
 </root>

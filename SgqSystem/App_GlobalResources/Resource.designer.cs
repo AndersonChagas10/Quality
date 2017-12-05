@@ -1798,6 +1798,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERROR.
+        /// </summary>
+        internal static string error_upper {
+            get {
+                return ResourceManager.GetString("error_upper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ev.
         /// </summary>
         internal static string ev {
@@ -4336,6 +4345,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PROCESSING.
+        /// </summary>
+        internal static string processing_upper {
+            get {
+                return ResourceManager.GetString("processing_upper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product Disposition.
         /// </summary>
         internal static string product_disposition {
@@ -4984,6 +5002,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select All.
+        /// </summary>
+        internal static string select_all {
+            get {
+                return ResourceManager.GetString("select_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select audit first.
         /// </summary>
         internal static string select_audit_first {
@@ -5560,6 +5587,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string status {
+            get {
+                return ResourceManager.GetString("status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantidade.
         /// </summary>
         internal static string String1 {
@@ -5601,6 +5637,15 @@ namespace Resources {
         internal static string success {
             get {
                 return ResourceManager.GetString("success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SUCCESS.
+        /// </summary>
+        internal static string success_upper {
+            get {
+                return ResourceManager.GetString("success_upper", resourceCulture);
             }
         }
         
@@ -6082,6 +6127,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update selected units.
+        /// </summary>
+        internal static string update_selected_units {
+            get {
+                return ResourceManager.GetString("update_selected_units", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Tablets.
         /// </summary>
         internal static string update_tablet {
@@ -6384,6 +6438,15 @@ namespace Resources {
         internal static string volume {
             get {
                 return ResourceManager.GetString("volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WAITING.
+        /// </summary>
+        internal static string waiting_upper {
+            get {
+                return ResourceManager.GetString("waiting_upper", resourceCulture);
             }
         }
         

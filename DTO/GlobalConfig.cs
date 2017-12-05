@@ -35,7 +35,26 @@ namespace DTO
         public string DataFimStr { get { return DataFim == null ? null : DataFim.Value.ToShortDateString() + " " + DataFim.Value.ToShortTimeString(); } }
         public enum StatusType { ERROR, SUCESSO, PROCESSANDO, PENDENTE };
         public StatusType Status { get; set; } = StatusType.PENDENTE;
-        public string StatusStr { get { return Status.ToString()/*Status == StatusType.SUCESSO? "SUCESSO":"ERROR"*/; } }
+        public string StatusStr
+        {
+            get
+            {
+               var str = Resources.Resource.waiting_upper;
+                switch (Status)
+                {
+                    case StatusType.ERROR:
+                        str = Resources.Resource.error_upper;
+                        break;
+                    case StatusType.SUCESSO:
+                        str = Resources.Resource.success_upper;
+                        break;
+                    case StatusType.PROCESSANDO:
+                        str = Resources.Resource.processing_upper;
+                        break;
+                }
+                return str;
+            }
+        }
     }
 
 
@@ -46,7 +65,7 @@ namespace DTO
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
         public static bool MockOn { get; set; }
-        
+
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
@@ -55,7 +74,7 @@ namespace DTO
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
         public static bool Santander { get; set; }
-        
+
 
         /*Resources manager*/
         public static bool LanguageBrasil { get; set; }
@@ -71,7 +90,7 @@ namespace DTO
         public static string urlPreffixAppColleta { get; set; }
         public static string urlAppColleta { get; set; }
         public static string pathFTA { get; set; }
-        
+
         /*Mail*/
         public static string emailPass { get; set; }
         public static bool emailSSL { get; set; }
@@ -151,7 +170,8 @@ namespace DTO
         public static Dictionary<int, string> UsuariosUnidades { get; set; }
 
         public static string Ambient { get; set; }
-        public enum Ambiets {
+        public enum Ambiets
+        {
             Homologacao,
             Producao,
             Desenvolvimento,
@@ -222,7 +242,7 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
-            
+
             //pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
             //pathFTA = "http://localhost:59907/Pa_Acao/NewFTA?";
             pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";

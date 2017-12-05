@@ -2004,4 +2004,16 @@
   <data name="valued" xml:space="preserve">
     <value>Avaliado</value>
   </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERRO</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSANDO</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCESSO</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>PENDENTE</value>
+  </data>
 </root>
