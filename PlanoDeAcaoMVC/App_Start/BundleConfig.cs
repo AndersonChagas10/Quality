@@ -119,7 +119,12 @@ namespace PlanoDeAcaoMVC
 
             //Loading Overlay
             bundles.Add(new ScriptBundle("~/bundles/panovoScriptBundle")
-                .Include("~/Scripts/PANovo/js/jquery-1.12.4.js",
+                .Include(
+                "~/Scripts/PANovo/js/jquery-1.12.4.js",
+                //"~/Scripts/PANovo/js/jquery-3.2.1.slim.min.js",
+                "~/Scripts/PANovo/js/bootstrap.min.js",
+                "~/Scripts/PANovo/js/underscore-min.js",
+                "~/Scripts/PANovo/js/lodash.min.js",
                 "~/Scripts/PANovo/js/popper.min.js",
                 "~/Scripts/PANovo/js/jquery.dataTables.min.js",
                 "~/Scripts/PANovo/js/highcharts.js",
@@ -137,7 +142,7 @@ namespace PlanoDeAcaoMVC
                 "~/Scripts/PANovo/js/buttons.html5.min.js",
                 "~/Scripts/PANovo/js/buttons.print.min.js",
                 "~/Scripts/PANovo/js/pt-br.js",
-                "~/Scripts/GuardJs.js")
+                "~/Scripts/home2.js")
             );
 
             //Reports
@@ -146,7 +151,11 @@ namespace PlanoDeAcaoMVC
                 "~/Content/PANovo/css/style.css",
                 "~/Content/PANovo/css/jquery.dataTables.min.css",
                 "~/Content/PANovo/css/bootstrap-select.min.css",
-                "~/Content/PANovo/css/daterangepicker.css")
+                "~/Content/PANovo/css/daterangepicker.css",
+                "~/Content/PANovo/css/bootstrap.min.css",
+                "~/Content/PANovo/css/bootstrap-theme.min.css",
+                "~/Content/PANovo/css/bootstrap-glyphicons.css"
+                )
             );
             #endregion
 
