@@ -154,7 +154,7 @@ function MountDataTable(json) {
         dom: 'Bfrtip',
         buttons: [
             { extend: 'excel', text: 'Excel' },
-            //{ extend: 'colvis', text: 'Colunas' }
+            { extend: 'colvis', text: 'Colunas' }
         ],
 
         "language": {
@@ -208,8 +208,6 @@ function MountDataTable(json) {
     });
 
     table.draw();
-
-
 
 }
 
