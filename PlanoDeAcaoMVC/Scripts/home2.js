@@ -153,10 +153,9 @@ function MountDataTable(json) {
 
         dom: 'Bfrtip',
         buttons: [
-            'excel',
-            //'colvis'
+            { extend: 'excel', text: 'Excel' },
+            //{ extend: 'colvis', text: 'Colunas' }
         ],
-
 
         "language": {
             "sEmptyTable": "Nenhum registro encontrado",
@@ -450,22 +449,22 @@ var data3 = [{
     value: 3
 }];
 
-var categories4 = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'];
+var categories4 = [];
 
 var data4 = [{
     type: 'column',
     name: 'Abertas',
-    data: [3, 2, 5, 3, 3],
+    data: [],
     color: andamentoColor
 }, {
     type: 'column',
     name: 'Fechada',
-    data: [2, 3, 2, 1, 6],
+    data: [],
     color: concluidoColor
 }, {
     type: 'spline',
     name: 'Estoque',
-    data: [1, 0, 3, 5, 2],
+    data: [],
     color: atrasadaColor,
     marker: {
         lineWidth: 2,
@@ -547,76 +546,131 @@ var json = FiltraColunas(dados, ["Diretoria",
 
 
 
-    //Graficos Instancia
+//    //Graficos Instancia
 
-    //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
-    function graficoEstoque() {
-        //MOCK Acompanhamento
-        dados.forEach(function (o, c) {
-            if (c < 5)
-                o.Acao['Acompanhamento'] = { AddDate: "2017-11-08T14:43:19.3044096" }
-            else if (c > 5 && c < 8)
-                o.Acao['Acompanhamento'] = { AddDate: "2017-10-08T14:43:19.3044096" }
-            else
-                o.Acao['Acompanhamento'] = { AddDate: "2017-09-08T14:43:19.3044096" }
-        })
-        //FIM MOCK Acompanhamento
+//    //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
+//function graficoEstoque() {
 
-        let groups = _.groupBy(dados, function (o) {
-            return moment(o.Acao.Acompanhamento.AddDate).startOf('mounth').format();
-        });
 
-        let categoriesArr = _.map(groups, function (group, day) {
-            return moment(day).format('MMM')
-        })
+//    dadosEstoque = [];
 
-        let serieArrFinal = [{
-            type: 'column',
-            name: 'Abertas',
-            data: _.map(groups, function (group, day) {
-                return getRegistrosNaoConcluidos(group).length
-            }),
-            color: andamentoColor
-        }, {
-            type: 'column',
-            name: 'Fechada',
-            data: _.map(groups, function (group, day) {
-                return getRegistrosConcluidos(group).length
-            }),
-            color: concluidoColor
-        }, {
-            type: 'spline',
-            name: 'Estoque',
-            data: _.map(groups, function (group, day) {
-                return getRegistrosNaoConcluidos(group).length - getRegistrosConcluidos(group).length
-            }),
-            color: atrasadaColor,
-            marker: {
-                lineWidth: 2,
-                lineColor: atrasadaColor,
-                fillColor: atrasadaColor
-            }
-        }];
+//    jQuery.each(dados, function (i, val) {
+//        if (dados[i].Acao.AddDate)
+//            dadosEstoque.push(dados[i]);
+//    });
+//        //MOCK Acompanhamento
+//        dadosEstoque.forEach(function (o, c) {
+//            //if (c < 5)
+//            //    o.Acao['Acompanhamento'] = { AddDate: "2017-11-08T14:43:19.3044096" }
+//            //else if (c > 5 && c < 8)
+//            //    o.Acao['Acompanhamento'] = { AddDate: "2017-10-08T14:43:19.3044096" }
+//            //else
+//            //    o.Acao['Acompanhamento'] = { AddDate: "2017-09-08T14:43:19.3044096" }
 
-        makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
-            //plotOptions: {
-            //    series: {
-            //        //stacking: 'normal',
-            //        events: {
-            //            click: function (event) {
-            //                filterBar1ForDataTable(event.point.name, event.point.category)
-            //            }
-            //        }
-            //    },
-            //    bar: {
-            //        dataLabels: {
-            //            enabled: false
-            //        }
-            //    }
-            //},
-        })
+//            //o.Acao['Acompanhamento'] = { AddDate: '' + o.Acao.AddDate.substring(0, 4) + '-' + o.Acao.AddDate.substring(8, 10) + '-' + o.Acao.AddDate.substring(5, 7) + '' };
 
-    }
+//            o.Acao['Acompanhamento'] = { AddDate: o.Acao.AddDate };
+
+//            console.log(o.Acao['Acompanhamento']);
+
+//        })
+//        //FIM MOCK Acompanhamento
+
+//        let groups = _.groupBy(dadosEstoque, function (o) {
+//            return moment(o.Acao.Acompanhamento.AddDate.substring(0, 7) + '-01' + o.Acao.Acompanhamento.AddDate.substring(10, 25)).startOf('mounth').format();
+//        });
+
+//        let categoriesArr = _.map(groups, function (group, day) {
+
+//            switch (day.substring(3, 5)) {
+//                case '01':
+//                    retorno = "Janeiro";
+//                    break;
+//                case '02':
+//                    retorno = "Fevereiro";
+//                    break;
+//                case '03':
+//                    retorno = "Março";
+//                    break;
+//                case '04':
+//                    retorno =  "Abril";
+//                    break;
+//                case '05':
+//                    retorno =  "Maio";
+//                    break;
+//                case '06':
+//                    retorno =  "Junho";
+//                    break;
+//                case '07':
+//                    retorno =  "Julho";
+//                    break;
+//                case '08':
+//                    retorno =  "Agosto";
+//                    break;
+//                case '09':
+//                    retorno =  "Setembro";
+//                    break;
+//                case '10':
+//                    retorno =  "Outubro";
+//                    break;
+//                case '11':
+//                    retorno =  "Novembro";
+//                    break;
+//                case '12':
+//                    retorno =  "Dezembro";
+//                    break;
+//            }
+
+//            return retorno + ' de ' + day.substring(6, 10);
+//        })
+
+//        let serieArrFinal = [{
+//            type: 'column',
+//            name: 'Abertas',
+//            data: _.map(groups, function (group, day) {
+//                return getRegistrosNaoConcluidos(group).length
+//            }),
+//            color: andamentoColor
+//        }, {
+//            type: 'column',
+//            name: 'Fechada',
+//            data: _.map(groups, function (group, day) {
+//                return getRegistrosConcluidos(group).length
+//            }),
+//            color: concluidoColor
+//        }, {
+//            type: 'spline',
+//            name: 'Estoque',
+//            data: _.map(groups, function (group, day) {
+//                return getRegistrosNaoConcluidos(group).length - getRegistrosConcluidos(group).length
+//            }),
+//            color: atrasadaColor,
+//            marker: {
+//                lineWidth: 2,
+//                lineColor: atrasadaColor,
+//                fillColor: atrasadaColor
+//            }
+//        }];
+
+//        makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
+//            //plotOptions: {
+//            //    series: {
+//            //        //stacking: 'normal',
+//            //        events: {
+//            //            click: function (event) {
+//            //                filterBar1ForDataTable(event.point.name, event.point.category)
+//            //            }
+//            //        }
+//            //    },
+//            //    bar: {
+//            //        dataLabels: {
+//            //            enabled: false
+//            //        }
+//            //    }
+//            //},
+//        })
+
+//    }
 
 function sortFunction(a, b) {
     if (a[0] === b[0]) {
@@ -744,11 +798,13 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
                     fontFamily: 'Verdana, sans-serif'
                 }
             },
-            tickInterval: 2
+            tickInterval: 1,
+            allowDecimals: false
         },
         yAxis: {
             min: 0,
-            max: 30,
+            //max: 30,
+            allowDecimals: false,
             title: {
                 text: yAxisTitle,
                 align: 'high',
