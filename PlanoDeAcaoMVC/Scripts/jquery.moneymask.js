@@ -159,6 +159,12 @@
                 }
 
                 function maskValue(value) {
+                    if (value.indexOf(',') < 0 && value.indexOf('.') < 0) {
+                        value += settings.decimal;
+                        for (var i = 0; i < settings.precision; i++)
+                            value += "0";   
+                    }
+
                     var negative = (value.indexOf("-") > -1 && settings.allowNegative) ? "-" : "",
                         onlyNumbers = value.replace(/[^0-9]/g, ""),
                         integerPart = onlyNumbers.slice(0, onlyNumbers.length - settings.precision),

@@ -598,7 +598,7 @@ AUTHOR: GABRIEL CRUZ NUNES
         dadosEstoque = [];
 
         jQuery.each(dados, function (i, val) {
-            if (dados[i].Acao.AddDate)
+            if (dados[i].Acao.AddDate != "0001-01-01T00:00:00")
                 dadosEstoque.push(dados[i]);
         });
         //MOCK Acompanhamento
@@ -619,7 +619,12 @@ AUTHOR: GABRIEL CRUZ NUNES
         })
         //FIM MOCK Acompanhamento
 
-        let groups = _.groupBy(dadosEstoque, function (o) {
+        //dadosEstoque.sort(function (a, b) { return (a.Acao.Acompanhamento > b.Acao.Acompanhamento) ? 1 : ((b.Acao.Acompanhamento > a.Acao.Acompanhamento) ? -1 : 0); });
+
+        //novo
+        dadosEstoque.sort((a, b) => a.Acao.Acompanhamento !== b.Acao.Acompanhamento ? a.Acao.Acompanhamento < b.Acao.Acompanhamento ? -1 : 1 : 0);
+
+        groups = _.groupBy(dadosEstoque, function (o) {
             return moment(o.Acao.Acompanhamento.AddDate.substring(0, 7) + '-01' + o.Acao.Acompanhamento.AddDate.substring(10, 25)).startOf('mounth').format();
         });
 
