@@ -11,6 +11,7 @@ var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejament
 
 var dados = [];
 var dadosPie2 = [];
+
 function GetDataTable(campo, filtro) {
     $.get(urlGetPlanejamentoAcao, enviar, function (r) {
 
@@ -153,8 +154,92 @@ function MountDataTable(json) {
 
         dom: 'Bfrtip',
         buttons: [
-            { extend: 'excel', text: 'Excel' },
-            { extend: 'colvis', text: 'Colunas' }
+            //{
+            {
+                extend: 'colvisGroup',
+                text: 'Visão Inicial',
+                show: [0, 4, 6, 7, 9, 11, 12, 13, 17, 18, 27, 28, 29, 30, 31, 33, 34, 35],
+                hide: [1, 2, 3, 5, 8, 10, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 32]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Planejamento Estratégico',
+                show: [0, 1, 2, 3, 4, 5, 31, 35],
+                hide: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Planejamento Tático',
+                show: [3, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 35],
+                hide: [0, 1, 2, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Planejamento Operacional',
+                show: [3, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
+                hide: [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Mostrar Todos',
+                show: ':hidden'
+            },
+            //print: {
+            //    extend: 'print',
+            //    text: 'Imprimir',
+            //    customize: function (win) {
+            //        $(win.document.body).find('table')
+            //            .addClass('compact')
+            //            .css('font-size', 'inherit');
+            //    },
+            //    exportOptions: {
+            //        columns: ':visible'
+            //    }
+            //},
+            {
+                extend: 'excelHtml5',
+                text: 'Excel',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'colvis',
+                text: 'Colunas Visíveis',
+                collectionLayout: 'fixed four-column',
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+            //atualizar: {
+            //    text: 'Atualizar',
+            //    action: function (e, dt, node, config) {
+            //        //if (config.counterAjaxTable > 1) {
+            //        GetDataTable();
+            //        //}
+            //        config.counterAjaxTable++;
+            //        config.counterAjaxTable++;
+            //        //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
+            //    },
+            //    counterAjaxTable: 1
+            //},
+            //novaAcao: {
+            //    text: 'Nova Ação',
+            //    action: function (e, dt, node, config) {
+            //        Clicked(isTaticoClicked, isNovaAcao);
+
+            //        $('#modalLindo').modal();
+            //        $('#modalLindo').find('.modal-body').empty();
+            //        $('#Header').html("Planejamento Operacional");
+
+            //        $.get(PlanejamentoDetalhes, { id: 1040 }, function (r) {
+            //            $('#modalLindo').find('.modal-body').empty().append(r);
+            //            $('#NovaAcao').show();
+            //            $('#NovaAcao').click();
+            //        });
+            //    },
+            //}
+            //}
         ],
         fixedColumns: {
             leftColumns: 0,
@@ -211,23 +296,23 @@ function MountDataTable(json) {
 
                 $(row.cells[35]).css("background", bgColorPrazo);
 
-            //    if (data.Tatico_Id > 0) { // possui plan tatico
-            //        $(row.cells[38]).find('.btnNovoOperacional').show();
-            //    } else {
-            //        $(row.cells[38]).find('.btnNovoOperacional').hide();
-            //    }
+                //    if (data.Tatico_Id > 0) { // possui plan tatico
+                //        $(row.cells[38]).find('.btnNovoOperacional').show();
+                //    } else {
+                //        $(row.cells[38]).find('.btnNovoOperacional').hide();
+                //    }
 
-            //    if (data.Id > 0) { // Possui plan Estrat
-            //        $(row.cells[38]).find('.btnNovoTatico').show();
-            //    } else {
-            //        $(row.cells[38]).find('.btnNovoTatico').hide();
-            //    }
+                //    if (data.Id > 0) { // Possui plan Estrat
+                //        $(row.cells[38]).find('.btnNovoTatico').show();
+                //    } else {
+                //        $(row.cells[38]).find('.btnNovoTatico').hide();
+                //    }
 
-            //    if (data.Acao.Id > 0) { // Possui plan Operac
-            //        $(row.cells[38]).find('.btnAcompanhamento').show();
-            //    } else {
-            //        $(row.cells[38]).find('.btnAcompanhamento').hide();
-            //    }
+                //    if (data.Acao.Id > 0) { // Possui plan Operac
+                //        $(row.cells[38]).find('.btnAcompanhamento').show();
+                //    } else {
+                //        $(row.cells[38]).find('.btnAcompanhamento').hide();
+                //    }
 
             } catch (e) { }
 
