@@ -10,6 +10,9 @@ var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlan
 var table;
 var ColvisarrayVisaoAtual_show = [0, 4, 6];
 var ColvisarrayVisaoAtual_hide = [1, 2, 3, 5, 9, 11, 15, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 33, 7, 8, 10, 14, 12, 13, 19, 18, 32, 28, 29, 30, 31, 36, 34, 35];
+var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
+var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
+var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
 var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
 
 var dados = [];
@@ -118,9 +121,17 @@ function MountDataTable(json) {
         {
             "mData": null,
             "render": function (data, type, row, meta) {
-                if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)
-                    return btnAcompanhamento;
-                return "";
+                var html = "";
+                if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
+                    html += btnNovoTatico;
+
+                if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
+                    html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
+
+                if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
+                    html += "<br>" + btnAcompanhamento
+
+                return html;
             }
         }
 
@@ -275,8 +286,43 @@ function MountDataTable(json) {
         //    leftColumns: 0,
         //    rightColumns: 2,
         //},
-        initComplete: function(){
+        initComplete: function () {
 
+            $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+                var data = table.row($(this).parents('tr')).data();
+                console.log(data);
+
+                Clicked(true, false, true);
+                $.get(urlGetPlanejamento, {
+                    id: data.Id
+                }, function (r) {
+                    //EditarPlanejamento(r)
+                    ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
+                        EditarPlanejamento(r)
+                    });
+                });
+
+            });
+
+            $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+                var data = table.row($(this).parents('tr')).data();
+                console.log(data);
+                planejamentoCorrentId = data.Tatico_Id;
+                Clicked(isTaticoClicked, isNovaAcao);
+
+                $('#modalLindo').modal();
+                $('#modalLindo').find('.modal-body').empty();
+                $('#Header').html("Planejamento Operacional");
+
+                $.get(PlanejamentoDetalhes, {
+                    id: planejamentoCorrentId
+                }, function (r) {
+                    $('#modalLindo').find('.modal-body').empty().append(r);
+                    $('#NovaAcao').show();
+                    $('#NovaAcao').click();
+                });
+
+            });
 
             $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
@@ -407,6 +453,9 @@ function MountDataTable(json) {
 
     });
 
+    setTimeout(function () {
+        $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+    }, 1100);
 
 
     $('#virtualBody').css('width', '100%');

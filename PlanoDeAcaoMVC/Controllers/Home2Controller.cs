@@ -12,7 +12,7 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Gabriel Page";
-            return View();
+            return View("Index2");
         }
 
         // GET: Home2
