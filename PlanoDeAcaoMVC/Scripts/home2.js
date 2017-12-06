@@ -7,8 +7,10 @@
 var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
+var table;
 var ColvisarrayVisaoAtual_show = [0, 4, 6];
 var ColvisarrayVisaoAtual_hide = [1, 2, 3, 5, 9, 11, 15, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 33, 7, 8, 10, 14, 12, 13, 19, 18, 32, 28, 29, 30, 31, 36, 34, 35];
+var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
 
 var dados = [];
 var dadosPie2 = [];
@@ -66,12 +68,12 @@ function GetDataTable(campo, filtro) {
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
 
-        
+
     });
 }
 
 function MountDataTable(json) {
-    $('#example').DataTable({
+    table = $('#example').DataTable({
         destroy: true,
         "aaData": json,
         "bAutoWidth": false,
@@ -112,7 +114,17 @@ function MountDataTable(json) {
             { "mData": "Acao.PraQue" },
             { "mData": "Acao.QuantoCusta" },
             { "mData": "Acao._StatusName" },
-            { "mData": "Acao._Prazo" }
+            { "mData": "Acao._Prazo" },
+        {
+            "mData": null,
+            "render": function (data, type, row, meta) {
+                if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)
+                    return btnAcompanhamento;
+                return "";
+            }
+        }
+
+
         ],
 
         'aoColumnDefs': [
@@ -152,7 +164,9 @@ function MountDataTable(json) {
             { "sTitle": "Pra que", "aTargets": [33], "width": "200px" },
             { "sTitle": "Quanto custa", "aTargets": [34], "width": "50px" },
             { "sTitle": "Status", "aTargets": [35], "width": "50px" },
-            { "sTitle": "Prazo", "aTargets": [36], "width": "50px" }
+            { "sTitle": "Prazo", "aTargets": [36], "width": "50px" },
+            { "sTitle": "Ação" },
+
         ],
 
         responsive: true,
@@ -181,7 +195,7 @@ function MountDataTable(json) {
                 text: 'Planejamento Tático',
                 show: [4, 17, 8, 9, 10, 11, 12, 13, 14, 15, 16, 36],
                 hide: [0, 1, 2, 4, 5, 6, 35, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
-            },            
+            },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Operacional',
@@ -257,9 +271,25 @@ function MountDataTable(json) {
             //}
             //}
         ],
-        fixedColumns: {
-            leftColumns: 0,
-            rightColumns: 1,
+        //fixedColumns: {
+        //    leftColumns: 0,
+        //    rightColumns: 2,
+        //},
+        initComplete: function(){
+
+
+            $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+
+                var data = table.row($(this).parents('tr')).data();
+                selecionado = data;
+                console.log(data);
+                acaoCorrentId = data.Acao.Id;
+                //Clicked(isTaticoClicked, isNovaAcao);
+
+                getAcompanhamento(acaoCorrentId);
+
+            });
+
         },
         createdRow: function (row, data, index) {
 
@@ -377,6 +407,8 @@ function MountDataTable(json) {
 
     });
 
+
+
     $('#virtualBody').css('width', '100%');
 
     //Filtros por coluna
@@ -404,10 +436,10 @@ function MountDataTable(json) {
 
     table.draw();
 
-    
+
 
     //deixa escondido o botão que mantem as colunas atuais
-    $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide(); 
+    $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
     //clicar no botão escondido das colunas atuais
     if (ColvisarrayVisaoAtual_show.length > 0)

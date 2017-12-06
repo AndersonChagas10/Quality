@@ -13,6 +13,7 @@
 
     @Scripts.Render("~/bundles/modernizr")
 
+
     <style>
         .message {
             padding: 32px;
@@ -74,6 +75,9 @@
             }
         </style>
     }
+
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
 
@@ -124,7 +128,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="@Url.Action("Index","Home2")">Dashboard</a>
+                        <a href="@Url.Action("Index2","Home2")">Dashboard</a>
                     </li>
                 </ul>
 

@@ -962,6 +962,7 @@
     <Content Include="Views\Gerenciar\Index.cshtml" />
     <Content Include="Views\Home2\Index.cshtml" />
     <Content Include="Views\Shared\_Calendar.cshtml" />
+    <Content Include="Views\Home2\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

@@ -14,5 +14,11 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Title = "Gabriel Page";
             return View();
         }
+
+        // GET: Home2
+        public ActionResult Index2()
+        {
+            return View();
+        }
     }
 }
