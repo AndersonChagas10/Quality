@@ -228,7 +228,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <input type="text" class="form-control" name="daterange" value="01/01/2017 - 31/01/2017" />
                 </div>
                 &nbsp;
-                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
+                <select   style="font-size:xx-small;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
                     <option value="">Todos</option>
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
@@ -252,7 +252,7 @@ AUTHOR: GABRIEL CRUZ NUNES
 
                 </select>
                 &nbsp;
-                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1Filtro">
+                <select       id="valor1Filtro">
                     <option>Todos</option>
                 </select>
                 &nbsp;
@@ -277,7 +277,7 @@ AUTHOR: GABRIEL CRUZ NUNES
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
             <div class="defaultFilter ">
 
-                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
+                <select   style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
@@ -299,7 +299,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
                 </select>
                 &nbsp;
-                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1FiltroPie2">
+                <select       id="valor1FiltroPie2">
                     <option>Todos</option>
                 </select>
                 &nbsp;
@@ -330,7 +330,7 @@ AUTHOR: GABRIEL CRUZ NUNES
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed ">
             <div class="defaultFilter">
-                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
+                <select   style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
 
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao" selected>Dimensão</option>
@@ -353,10 +353,10 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
                 </select>
 
-                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" id="valor1Panel5"></select>
+                <select     id="valor1Panel5"></select>
 
-                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
-
+                <select   style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+                    
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
@@ -378,7 +378,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
                 </select>
 
-                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" id="valor2Panel5"></select>
+                <select     id="valor2Panel5"></select>
                 <button class="btn btn-warning btn-filter" id="btnpanel5"><span class="glyphicon glyphicon-filter"></span></button>
                 <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel5','campo2Panel5','panel5', this.id);" id="btnOrderFilterPanel5"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Ordem por Valor" id="spanOrder"></span></button>
             </div>
@@ -395,7 +395,7 @@ AUTHOR: GABRIEL CRUZ NUNES
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv Panel6">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
             <div class="defaultFilter">
-                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
+                <select   style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
@@ -417,10 +417,10 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
                 </select>
 
-                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor1Panel6"></select>
+                <select       id="valor1Panel6"></select>
 
-                <select class="selectpicker" data-style="btn-default" data-width="100px" style="font-size:xx-small;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
-
+                <select   style="font-size:xx-small;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
+                    
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
@@ -442,7 +442,7 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
                 </select>
 
-                <select class="selectpicker" data-live-search="true" data-style="btn-default" data-width="100px" data-actions-box="true" data-selected-text-format="count" id="valor2Panel6"></select>
+                <select       id="valor2Panel6"></select>
 
                 <button class="btn btn-warning btn-filter" id="btnpanel6"><span class="glyphicon glyphicon-filter"></span></button>
                 <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel6','campo2Panel6','panel6', this.id);" id="btnOrderFilterPanel6"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Orderm por Valor" id="spanOrder"></span></button>
@@ -874,6 +874,16 @@ AUTHOR: GABRIEL CRUZ NUNES
             //    //        }
             //    //    }
             //    //},
+        })
+
+        $('select:not(#valor1Filtro)').select2({
+            dropdownAutoWidth: true,
+            width: '140px'
+        })
+
+        $('select#valor1Filtro').select2({
+            dropdownAutoWidth: true,
+            width: '250px'
         })
 
     }
