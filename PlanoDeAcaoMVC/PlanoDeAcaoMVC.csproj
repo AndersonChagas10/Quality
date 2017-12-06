@@ -585,6 +585,7 @@
     <Content Include="Scripts\PANovo\js\buttons.html5.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.print.min.js" />
     <Content Include="Scripts\PANovo\js\dataTables.buttons.min.js" />
+    <Content Include="Scripts\PANovo\js\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\PANovo\js\daterangepicker.js" />
     <Content Include="Scripts\PANovo\js\defaults-pt_BR.min.js" />
     <Content Include="Scripts\PANovo\js\highcharts.js" />
