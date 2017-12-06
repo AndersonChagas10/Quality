@@ -1225,7 +1225,7 @@ function distinctFilter(lista, filtro, selectId) {
 
     });
 
-    $('#' + selectId).selectpicker('refresh');
+    $('#' + selectId).trigger('change');//selectpicker('refresh');
 
 }
 

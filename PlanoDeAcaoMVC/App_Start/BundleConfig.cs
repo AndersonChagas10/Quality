@@ -143,6 +143,8 @@ namespace PlanoDeAcaoMVC
                 "~/Scripts/PANovo/js/buttons.html5.min.js",
                 "~/Scripts/PANovo/js/buttons.print.min.js",
                 "~/Scripts/PANovo/js/pt-br.js",
+                 "~/Scripts/select2.min.js",//Select 2
+                 "~/Scripts/i18n/pt-BR.js",//Select 2
                 "~/Scripts/home2.js")
             );
 
@@ -156,7 +158,8 @@ namespace PlanoDeAcaoMVC
                 "~/Content/PANovo/css/daterangepicker.css",
                 "~/Content/PANovo/css/bootstrap.min.css",
                 "~/Content/PANovo/css/bootstrap-theme.min.css",
-                "~/Content/PANovo/css/bootstrap-glyphicons.css"
+                "~/Content/PANovo/css/bootstrap-glyphicons.css",
+                "~/Content/css/select2.min.css"
                 )
             );
             #endregion
