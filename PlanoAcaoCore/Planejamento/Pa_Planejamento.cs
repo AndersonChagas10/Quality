@@ -317,7 +317,8 @@ namespace PlanoAcaoCore
 
         public static Pa_Planejamento Get(int Id)
         {
-            return GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Id = " + Id);
+            var retorno = GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Id = " + Id);
+            return retorno;
         }
 
         public static Pa_Planejamento GetTatico(int Id)

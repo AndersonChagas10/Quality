@@ -9,15 +9,15 @@ AUTHOR: GABRIEL CRUZ NUNES
 <head>
 
     @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
     @*<link rel="stylesheet" href="~/Content/PANovo/css/bootstrap-select.min.css">
-    <link href="~/Content/PANovo/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="~/Content/PANovo/css/jquery.dataTables.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/daterangepicker.css" />
-    <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/style.css" />*@
+        <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/daterangepicker.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/PANovo/css/style.css" />*@
 
 
-        @Styles.Render("~/bundles/panovoBundle")
+    @Styles.Render("~/bundles/panovoBundle")
 
 
     <style>
@@ -46,9 +46,7 @@ AUTHOR: GABRIEL CRUZ NUNES
         }
 
         .inner {
-
             width: 100%;
-
         }
 
         .defaultDiv {
@@ -109,9 +107,9 @@ AUTHOR: GABRIEL CRUZ NUNES
         .defaultFilter {
             float: left;
             border-bottom: 1px dotted #ccc;
-            margin-bottom:5px;
-            width:100%;
-            padding:2px;
+            margin-bottom: 5px;
+            width: 100%;
+            padding: 2px;
         }
 
         .defaultDivFilter {
@@ -119,39 +117,47 @@ AUTHOR: GABRIEL CRUZ NUNES
             color: #FFF;
             position: fixed;
             z-index: 9999;
-            top:50px;
+            top: 50px;
         }
 
         .btn-filter {
             font-size: 12px;
-            height:26px;
-            width:23px;
-            padding:0;
+            height: 26px;
+            width: 23px;
+            padding: 0;
         }
 
-        .dropdown-menu open{
-            width:150px;
+        .dropdown-menu open {
+            width: 150px;
         }
 
         /*tbody > tr > td {
             word-break: break-all;
         }*/
 
-        button[data-id=valor1Filtro]{
-            width:200px !important;
+        button[data-id=valor1Filtro] {
+            width: 200px !important;
         }
 
-        div.dropdown-menu.open{
-            max-width:300px;
-            word-wrap: break-word; 
+        div.dropdown-menu.open {
+            max-width: 300px;
+            word-wrap: break-word;
             white-space: normal;
         }
 
-        div.daterangepicker{
-            width:750px;
+        div.daterangepicker {
+            width: 750px;
+        }
+
+        #example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr {
+            background-color: #fff;
+        }
+
+        #example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightBodyWrapper {
+            top: -12px !important;
         }
     </style>
-    
+
 </head>
 
 <body style="background-color:#ccc;padding-top:86px;">
@@ -227,9 +233,11 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
-                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="_GrupoCausa">Grupo Causa</option>
                     <option value="_CausaGenerica">Causa Genérica</option>
                     <option value="_ContramedidaGenerica">Ação Genérica</option>
@@ -254,7 +262,6 @@ AUTHOR: GABRIEL CRUZ NUNES
         </div>
     </div>
     <!--FIM MENU DE FILTROS-->
-
     <!--LINHA 1-->
     <!--<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
@@ -274,9 +281,11 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
-                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="_GrupoCausa">Grupo Causa</option>
                     <option value="_CausaGenerica">Causa Genérica</option>
                     <option value="_ContramedidaGenerica">Ação Genérica</option>
@@ -326,9 +335,11 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao" selected>Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
-                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
                     <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
@@ -349,9 +360,11 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
-                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
                     <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
@@ -386,9 +399,11 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
-                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia" selected>Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
                     <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
@@ -409,9 +424,11 @@ AUTHOR: GABRIEL CRUZ NUNES
                     <option value="Diretoria">Diretoria</option>
                     <option value="Dimensao">Dimensão</option>
                     <option value="Objetivo">Diretriz</option>
-                    <option value="IndicadoresDiretriz">Indicadores / Diretiz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
                     <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
@@ -495,6 +512,8 @@ AUTHOR: GABRIEL CRUZ NUNES
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
+                                
 
                             </tr>
                         </thead>
@@ -536,6 +555,8 @@ AUTHOR: GABRIEL CRUZ NUNES
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                
 
                             </tr>
                         </tbody>
@@ -557,35 +578,35 @@ AUTHOR: GABRIEL CRUZ NUNES
 
     @*<script type="text/javascript" src="~/Scripts/PANovo/js/jquery-1.12.4.js"></script>
 
-    <script src="~/Scripts/PANovo/js/popper.min.js"></script>
-    <script src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
-    <script src="~/Scripts/PANovo/js/highcharts.js"></script>
-    <script src="~/Scripts/PANovo/js/treemap.js"></script>
-    <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
-    <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
-    <script src="~/Scripts/GuardJs.js"></script>
+        <script src="~/Scripts/PANovo/js/popper.min.js"></script>
+        <script src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
+        <script src="~/Scripts/PANovo/js/highcharts.js"></script>
+        <script src="~/Scripts/PANovo/js/treemap.js"></script>
+        <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
+        <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
+        <script src="~/Scripts/GuardJs.js"></script>
 
-    <script type="text/javascript" src="~/Scripts/PANovo/js/moment.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/daterangepicker.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/moment.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/daterangepicker.js"></script>
 
-    <script type="text/javascript" src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/jszip.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/jszip.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
 
-    <script type="text/javascript" src="~/Scripts/PANovo/js/pt-br.js"></script>*@
+        <script type="text/javascript" src="~/Scripts/PANovo/js/pt-br.js"></script>*@
 
 
 </footer>
 
 @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="https://code.jquery.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>*@
+    <script>window.jQuery || document.write('<script src="https://code.jquery.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>*@
 
 <script>
 
@@ -598,8 +619,8 @@ AUTHOR: GABRIEL CRUZ NUNES
         dadosEstoque = [];
 
         jQuery.each(dados, function (i, val) {
-            if (dados[i].Acao.AddDate != "0001-01-01T00:00:00")
-                dadosEstoque.push(dados[i]);
+            //if (dados[i].Acao._Acompanhamento.length != 0)
+            dadosEstoque.push(dados[i]);
         });
         //MOCK Acompanhamento
         dadosEstoque.forEach(function (o, c) {
@@ -611,10 +632,14 @@ AUTHOR: GABRIEL CRUZ NUNES
             //    o.Acao['Acompanhamento'] = { AddDate: "2017-09-08T14:43:19.3044096" }
 
             //o.Acao['Acompanhamento'] = { AddDate: '' + o.Acao.AddDate.substring(0, 4) + '-' + o.Acao.AddDate.substring(8, 10) + '-' + o.Acao.AddDate.substring(5, 7) + '' };
+            var tamanho = o.Acao._Acompanhamento.length
+            if (tamanho == 0) {
+                o.Acao['Acompanhamento'] = { AddDate: "1900-01-01" };
+            } else {
+                o.Acao['Acompanhamento'] = { AddDate: o.Acao._Acompanhamento[tamanho - 1].AddDate };
+            }
 
-            o.Acao['Acompanhamento'] = { AddDate: o.Acao.AddDate };
-
-            console.log(o.Acao['Acompanhamento']);
+            //console.log(o.Acao['Acompanhamento']);
 
         })
         //FIM MOCK Acompanhamento
@@ -622,76 +647,160 @@ AUTHOR: GABRIEL CRUZ NUNES
         //dadosEstoque.sort(function (a, b) { return (a.Acao.Acompanhamento > b.Acao.Acompanhamento) ? 1 : ((b.Acao.Acompanhamento > a.Acao.Acompanhamento) ? -1 : 0); });
 
         //novo
-        dadosEstoque.sort((a, b) => a.Acao.Acompanhamento !== b.Acao.Acompanhamento ? a.Acao.Acompanhamento < b.Acao.Acompanhamento ? -1 : 1 : 0);
+        //dadosEstoque.sort((a, b) => a.Acao.Acompanhamento !== b.Acao.Acompanhamento ? a.Acao.Acompanhamento < b.Acao.Acompanhamento ? -1 : 1 : 0);
 
-        groups = _.groupBy(dadosEstoque, function (o) {
-            return moment(o.Acao.Acompanhamento.AddDate.substring(0, 7) + '-01' + o.Acao.Acompanhamento.AddDate.substring(10, 25)).startOf('mounth').format();
-        });
+        //dadosEstoque.sort((a, b) => a.Acao.QuandoInicio !== b.Acao.QuandoInicio ? a.Acao.QuandoInicio < b.Acao.QuandoInicio ? -1 : 1 : 0);
 
-        let categoriesArr = _.map(groups, function (group, day) {
+        //groups = _.groupBy(dadosEstoque, function (o) {
+        //    return moment(o.Acao.Acompanhamento.AddDate.substring(0, 7) + '-01' + o.Acao.Acompanhamento.AddDate.substring(10, 25)).startOf('mounth').format();
+        //});
 
-            switch (day.substring(3, 5)) {
-                case '01':
-                    retorno = "Janeiro";
-                    break;
-                case '02':
-                    retorno = "Fevereiro";
-                    break;
-                case '03':
-                    retorno = "Março";
-                    break;
-                case '04':
-                    retorno = "Abril";
-                    break;
-                case '05':
-                    retorno = "Maio";
-                    break;
-                case '06':
-                    retorno = "Junho";
-                    break;
-                case '07':
-                    retorno = "Julho";
-                    break;
-                case '08':
-                    retorno = "Agosto";
-                    break;
-                case '09':
-                    retorno = "Setembro";
-                    break;
-                case '10':
-                    retorno = "Outubro";
-                    break;
-                case '11':
-                    retorno = "Novembro";
-                    break;
-                case '12':
-                    retorno = "Dezembro";
-                    break;
+        //let categoriesArr = _.map(groups, function (group, day) {
+
+        //    switch (day.substring(3, 5)) {
+        //        case '01':
+        //            retorno = "Janeiro";
+        //            break;
+        //        case '02':
+        //            retorno = "Fevereiro";
+        //            break;
+        //        case '03':
+        //            retorno = "Março";
+        //            break;
+        //        case '04':
+        //            retorno = "Abril";
+        //            break;
+        //        case '05':
+        //            retorno = "Maio";
+        //            break;
+        //        case '06':
+        //            retorno = "Junho";
+        //            break;
+        //        case '07':
+        //            retorno = "Julho";
+        //            break;
+        //        case '08':
+        //            retorno = "Agosto";
+        //            break;
+        //        case '09':
+        //            retorno = "Setembro";
+        //            break;
+        //        case '10':
+        //            retorno = "Outubro";
+        //            break;
+        //        case '11':
+        //            retorno = "Novembro";
+        //            break;
+        //        case '12':
+        //            retorno = "Dezembro";
+        //            break;
+        //    }
+
+        //    return retorno + ' de ' + day.substring(6, 10);
+        //})
+
+        //let serieArrFinal = [{
+        //    type: 'column',
+        //    name: 'Abertas',
+        //    data: _.map(groups, function (group, day) {
+        //        return getRegistrosNaoConcluidos(group).length
+        //    }),
+        //    color: andamentoColor
+        //}, {
+        //    type: 'column',
+        //    name: 'Fechada',
+        //    data: _.map(groups, function (group, day) {
+        //        return getRegistrosConcluidos(group).length
+        //    }),
+        //    color: concluidoColor
+        //}, {
+        //    type: 'spline',
+        //    name: 'Estoque',
+        //    data: _.map(groups, function (group, day) {
+        //        return getRegistrosNaoConcluidos(group).length - getRegistrosConcluidos(group).length
+        //    }),
+        //    color: atrasadaColor,
+        //    marker: {
+        //        lineWidth: 2,
+        //        lineColor: atrasadaColor,
+        //        fillColor: atrasadaColor
+        //    }
+        //}];
+
+        let categoriesArr = [];
+        categoriesArr.push(new Date('2017/01/01'));
+        categoriesArr.push(new Date('2017/02/01'));
+        categoriesArr.push(new Date('2017/03/01'));
+        categoriesArr.push(new Date('2017/04/01'));
+        categoriesArr.push(new Date('2017/05/01'));
+        categoriesArr.push(new Date('2017/06/01'));
+        categoriesArr.push(new Date('2017/07/01'));
+        categoriesArr.push(new Date('2017/08/01'));
+        categoriesArr.push(new Date('2017/09/01'));
+        categoriesArr.push(new Date('2017/10/01'));
+        categoriesArr.push(new Date('2017/11/01'));
+        categoriesArr.push(new Date('2017/12/01'));
+
+        let arrayAndamento = [];
+
+        let arrayFechadas = [];
+
+        let arrayEstoque = [];
+
+        let Aux = [];
+
+        let apenasAcoesAbertas = [];
+
+        let apenasAcoesFechadas = [];
+
+        for (var i = 0; i < categoriesArr.length; i++) {
+
+            arrayAndamento[i] = $.grep(dadosEstoque, function (o, j) {
+                return new Date(o.Acao.QuandoInicio).getFullYear() == categoriesArr[i].getFullYear() && new Date(o.Acao.QuandoInicio).getMonth() == categoriesArr[i].getMonth() && o.Acao._StatusName.indexOf('Cancelada') < 0;
+            }).length;
+
+        }
+
+        for (var i = 0; i < categoriesArr.length; i++) {
+
+            arrayFechadas[i] = $.grep(dadosEstoque, function (o, j) {
+                return new Date(o.Acao.Acompanhamento.AddDate).getFullYear() == categoriesArr[i].getFullYear() && new Date(o.Acao.Acompanhamento.AddDate).getMonth() == categoriesArr[i].getMonth() && o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0;
+            }).length;
+
+        }
+
+
+
+        //arrayAndamento = [1, 2, 3, 4, 5, 6];
+        //arrayFechadas = [6, 2, 4, 1, 0, 1];
+
+        arrayEstoque[0] = 0;
+
+        for (var i = 0; i < categoriesArr.length; i++) {
+            if (i == 0) {
+                arrayEstoque[0] = arrayAndamento[0] - arrayFechadas[0];
+            } else {
+                arrayEstoque[i] = arrayEstoque[i - 1] + (arrayAndamento[i] - arrayFechadas[i]);
             }
 
-            return retorno + ' de ' + day.substring(6, 10);
-        })
+        }
+
+
 
         let serieArrFinal = [{
             type: 'column',
             name: 'Abertas',
-            data: _.map(groups, function (group, day) {
-                return getRegistrosNaoConcluidos(group).length
-            }),
+            data: arrayAndamento,
             color: andamentoColor
         }, {
             type: 'column',
             name: 'Fechada',
-            data: _.map(groups, function (group, day) {
-                return getRegistrosConcluidos(group).length
-            }),
+            data: arrayFechadas,
             color: concluidoColor
         }, {
             type: 'spline',
             name: 'Estoque',
-            data: _.map(groups, function (group, day) {
-                return getRegistrosNaoConcluidos(group).length - getRegistrosConcluidos(group).length
-            }),
+            data: arrayEstoque,
             color: atrasadaColor,
             marker: {
                 lineWidth: 2,
@@ -700,22 +809,71 @@ AUTHOR: GABRIEL CRUZ NUNES
             }
         }];
 
+
+        for (var i = 0; i < categoriesArr.length; i++) {
+
+            retorno = '';
+            
+            switch (categoriesArr[i].getMonth()) {
+                case 0:
+                    retorno = "Janeiro";
+                    break;
+                case 1:
+                    retorno = "Fevereiro";
+                    break;
+                case 2:
+                    retorno = "Março";
+                    break;
+                case 3:
+                    retorno =  "Abril";
+                    break;
+                case 4:
+                    retorno =  "Maio";
+                    break;
+                case 5:
+                    retorno =  "Junho";
+                    break;
+                case 6:
+                    retorno =  "Julho";
+                    break;
+                case 7:
+                    retorno =  "Agosto";
+                    break;
+                case 8:
+                    retorno =  "Setembro";
+                    break;
+                case 9:
+                    retorno =  "Outubro";
+                    break;
+                case 10:
+                    retorno =  "Novembro";
+                    break;
+                case 11:
+                    retorno =  "Dezembro";
+                    break;
+            }
+
+            categoriesArr[i] = retorno + ' de ' + categoriesArr[i].getFullYear();
+
+        }
+
+
         makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
-            //plotOptions: {
-            //    series: {
-            //        //stacking: 'normal',
-            //        events: {
-            //            click: function (event) {
-            //                filterBar1ForDataTable(event.point.name, event.point.category)
-            //            }
-            //        }
-            //    },
-            //    bar: {
-            //        dataLabels: {
-            //            enabled: false
-            //        }
-            //    }
-            //},
+            //    //plotOptions: {
+            //    //    series: {
+            //    //        //stacking: 'normal',
+            //    //        events: {
+            //    //            click: function (event) {
+            //    //                filterBar1ForDataTable(event.point.name, event.point.category)
+            //    //            }
+            //    //        }
+            //    //    },
+            //    //    bar: {
+            //    //        dataLabels: {
+            //    //            enabled: false
+            //    //        }
+            //    //    }
+            //    //},
         })
 
         $('select:not(#valor1Filtro)').select2({
@@ -731,6 +889,3 @@ AUTHOR: GABRIEL CRUZ NUNES
     }
 
 </script>
-
-
-
