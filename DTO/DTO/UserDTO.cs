@@ -95,5 +95,6 @@ namespace DTO.DTO
         public IEnumerable<int> ListParCompany_Id { get; set; }
         public IEnumerable<string> ListRole { get; set; }
         public bool IsActive { get; set; }
+        public bool UseActiveDirectory { get; set; }
     }
 }

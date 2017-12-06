@@ -2280,4 +2280,7 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>WAITING</value>
   </data>
+  <data name="use_active_directory" xml:space="preserve">
+    <value>Use AD (Active Directory)</value>
+  </data>
 </root>

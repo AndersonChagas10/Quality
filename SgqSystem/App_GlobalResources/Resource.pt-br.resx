@@ -2277,4 +2277,7 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>PENDENTE</value>
   </data>
+  <data name="use_active_directory" xml:space="preserve">
+    <value>Usar AD (Active Directory)</value>
+  </data>
 </root>
