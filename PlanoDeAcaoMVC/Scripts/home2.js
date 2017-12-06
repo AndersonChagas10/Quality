@@ -7,8 +7,8 @@
 var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
-var ColvisarrayVisaoAtual_show = [0, 4, 6];
-var ColvisarrayVisaoAtual_hide = [1, 2, 3, 5, 9, 11, 15, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 33, 7, 8, 10, 14, 12, 13, 19, 18, 32, 28, 29, 30, 31, 36, 34, 35];
+var ColvisarrayVisaoAtual_show = [];
+var ColvisarrayVisaoAtual_hide = [];
 
 var dados = [];
 var dadosPie2 = [];
@@ -66,11 +66,21 @@ function GetDataTable(campo, filtro) {
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
 
-        
+
     });
 }
 
 function MountDataTable(json) {
+
+    if (ColvisarrayVisaoAtual_show.length != 0) {
+        setArrayColvisAtual();
+
+        setTimeout(function () {
+
+            $('body > div.dt-button-background').click();
+        }, 5);
+    }
+
     $('#example').DataTable({
         destroy: true,
         "aaData": json,
@@ -181,7 +191,7 @@ function MountDataTable(json) {
                 text: 'Planejamento Tático',
                 show: [4, 17, 8, 9, 10, 11, 12, 13, 14, 15, 16, 36],
                 hide: [0, 1, 2, 4, 5, 6, 35, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
-            },            
+            },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Operacional',
@@ -404,10 +414,19 @@ function MountDataTable(json) {
 
     table.draw();
 
-    
+    if (ColvisarrayVisaoAtual_show.length == 0) {
+        setArrayColvisAtual();
+
+        setTimeout(function () {
+
+            $('body > div.dt-button-background').click();
+        }, 5);
+    }
+
+
 
     //deixa escondido o botão que mantem as colunas atuais
-    $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide(); 
+    $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
     //clicar no botão escondido das colunas atuais
     if (ColvisarrayVisaoAtual_show.length > 0)
@@ -467,21 +486,23 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
         if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
             || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
-            || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "TipoIndicador") {
+            || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "Acao.TipoIndicador") {
 
-            if (arrColuna == "TipoIndicador" && arrValue != "Todos") {
+            if (arrColuna == "Acao.TipoIndicador" && arrValue != "Todos") {
+
+                
 
                 arrValueAux = [];
-                if (arrValue == "Outros")
+                if (arrValue == "Diretrizes")
                     arrValueAux.push(1);
-                else if (arrValue == "Score")
+                else if (arrValue == "Scorecard")
                     arrValueAux.push(2);
 
 
 
                 arrColuna.forEach(function (oo, cc) {
 
-                    if (o.Acao[oo] != arrValueAux[cc]) {
+                    if (o.Acao[oo.replace('Acao.', '')] != arrValueAux[cc]) {
                         flag = false;
                     }
                 });
@@ -522,19 +543,19 @@ function FiltraLinhasComTodos(array, arrColuna, arrValue) {
         if (arrValue != "Todos" && arrValue != "Todas") {
             if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
                 || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
-                || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "TipoIndicador") {
+                || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "Acao.TipoIndicador") {
 
-                if (arrColuna == "TipoIndicador" && arrValue != 0) {
+                if (arrColuna == "Acao.TipoIndicador" && arrValue != 0) {
 
                     arrValueAux = [];
-                    if (arrValue == "Outros")
+                    if (arrValue == "Diretrizes")
                         arrValueAux.push(1);
-                    else if (arrValue == "Score")
+                    else if (arrValue == "Scorecard")
                         arrValueAux.push(2);
 
                     arrColuna.forEach(function (oo, cc) {
 
-                        if (o.Acao[oo] != arrValueAux[cc]) {
+                        if (o.Acao[oo.replace('Acao.', '')] != arrValueAux[cc]) {
                             flag = false;
                         }
                     });
@@ -983,7 +1004,8 @@ function getRegistrosNaoConcluidos(arr) {
 function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
     let options = {
         chart: {
-            type: type
+            type: type,
+            zoomType: 'xy'
         },
         title: {
             text: false,
@@ -1089,7 +1111,19 @@ function MapeiaValorParaHC(array, prop, isInteger) {
         }
         var propArray = prop.split('.');
         if (propArray.length == 2) {
-            return o[propArray[0]][propArray[1]];
+            if (propArray[1] == "TipoIndicador") {
+                var value = o[propArray[0]][propArray[1]];
+                if (value == 0)
+                    value = "0";
+                else if (value == 1)
+                    value = "Diretrizes";
+                else if (value == 2)
+                    value = "Scorecard";
+                return value;
+            } else {
+                return o[propArray[0]][propArray[1]];
+
+            }
         } else {
             return o[prop];
         }
@@ -1144,18 +1178,40 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 var retornoSeries;
                 var retornoCategorias;
 
-                var propArray = seriesFilter.split('.');
-                if (propArray.length == 2) {
-                    retornoSeries = e[propArray[0]][propArray[1]];
+                var propArrayS = seriesFilter.split('.');
+                if (propArrayS.length == 2) {
+                    retornoSeries = e[propArrayS[0]][propArrayS[1]];
                 } else {
                     retornoSeries = e[seriesFilter];
                 }
 
-                var propArray = categoriesFilter.split('.');
-                if (propArray.length == 2) {
-                    retornoCategorias = e[propArray[0]][propArray[1]];
+                var propArrayC = categoriesFilter.split('.');
+                if (propArrayC.length == 2) {
+                    retornoCategorias = e[propArrayC[0]][propArrayC[1]];
                 } else {
                     retornoCategorias = e[categoriesFilter];
+                }
+
+                if (propArrayC[1] == "TipoIndicador") {
+                    var value = retornoCategorias;
+                    if (value == 0)
+                        value = "0";
+                    else if (value == 1)
+                        value = "Diretrizes";
+                    else if (value == 2)
+                        value = "Scorecard";
+                    retornoCategorias = value;
+                }
+
+                if (propArrayS[1] == "TipoIndicador") {
+                    var value = retornoSeries;
+                    if (value == 0)
+                        value = "0";
+                    else if (value == 1)
+                        value = "Diretrizes";
+                    else if (value == 2)
+                        value = "Scorecard";
+                    retornoCategorias = value;
                 }
 
                 return retornoSeries == o && retornoCategorias == categoriesArr[cc];
@@ -1406,21 +1462,21 @@ function distinctFilter(lista, filtro, selectId) {
 
 
     $.each(retorno, function (key, value) {
-        if ($('#campo1Filtro option:selected').val() == "TipoIndicador" ||
-            $('#campo1FiltroPie2 option:selected').val() == "TipoIndicador" ||
-            $('#campo1Panel5 option:selected').val() == "TipoIndicador" ||
-            $('#campo2Panel5 option:selected').val() == "TipoIndicador" ||
-            $('#campo1Panel6 option:selected').val() == "TipoIndicador" ||
-            $('#campo2Panel6 option:selected').val() == "TipoIndicador"
+        if ($('#campo1Filtro option:selected').val() == "Acao.TipoIndicador" ||
+            $('#campo1FiltroPie2 option:selected').val() == "Acao.TipoIndicador" ||
+            $('#campo1Panel5 option:selected').val() == "Acao.TipoIndicador" ||
+            $('#campo2Panel5 option:selected').val() == "Acao.TipoIndicador" ||
+            $('#campo1Panel6 option:selected').val() == "Acao.TipoIndicador" ||
+            $('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador"
         ) {
             if (value == 0)
-                value = "Todos"
+                value = "0";
             else if (value == 1)
-                value = "Outros";
+                value = "Diretrizes";
             else if (value == 2)
-                value = "Score";
+                value = "Scorecard";
         }
-        if (value != null) {
+        if (value != null && value != "0") {
 
             $('#' + selectId)
 
@@ -1777,15 +1833,28 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
 
             if (categoryX == "_Quem" || categoryX == "_GrupoCausa" || categoryX == "_CausaGenerica" || categoryX == "_ContramedidaGenerica"
                 || categoryX == "UnidadeName" || categoryX == "_StatusName" || categoryX == "Regional"
-                || categoryX == "Level1Name" || categoryX == "Level2Name" || categoryX == "Level3Name") {
+                || categoryX == "Level1Name" || categoryX == "Level2Name" || categoryX == "Level3Name" || categoryX == "TipoIndicador") {
 
                 if (o.Acao[categoryX] == name) {
 
                     if (categoryY == "_Quem" || categoryY == "_GrupoCausa" || categoryY == "_CausaGenerica" || categoryY == "_ContramedidaGenerica"
                         || categoryY == "UnidadeName" || categoryY == "_StatusName" || categoryY == "Regional"
-                        || categoryY == "Level1Name" || categoryY == "Level2Name" || categoryY == "Level3Name") {
+                        || categoryY == "Level1Name" || categoryY == "Level2Name" || categoryY == "Level3Name" || categoryY == "TipoIndicador") {
 
-                        if (o.Acao[categoryY] == Atribute) {
+
+                        var valueY = o.Acao[categoryY];
+
+                        if (categoryY == "TipoIndicador") {
+
+                            if (valueY == 0)
+                                valueY = "0";
+                            else if (valueY == 1)
+                                valueY = "Diretrizes";
+                            else if (valueY == 2)
+                                valueY = "Scorecard";
+                        }
+
+                        if (valueY == Atribute) {
 
                             novoArr.push(o);
                         }
@@ -1801,9 +1870,22 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                 if (o[categoryX] == name) {
                     if (categoryY == "_Quem" || categoryY == "_GrupoCausa" || categoryY == "_CausaGenerica" || categoryY == "_ContramedidaGenerica"
                         || categoryY == "UnidadeName" || categoryY == "_StatusName" || categoryY == "Regional"
-                        || categoryY == "Level1Name" || categoryY == "Level2Name" || categoryY == "Level3Name") {
+                        || categoryY == "Level1Name" || categoryY == "Level2Name" || categoryY == "Level3Name" || categoryY == "TipoIndicador") {
 
-                        if (o.Acao[categoryY] == Atribute) {
+
+                        var valueY = o.Acao[categoryY];
+
+                        if (categoryY == "TipoIndicador") {
+
+                            if (valueY == 0)
+                                valueY = "0";
+                            else if (valueY == 1)
+                                valueY = "Diretrizes";
+                            else if (valueY == 2)
+                                valueY = "Scorecard";
+                        }
+
+                        if (valueY == Atribute) {
 
                             novoArr.push(o);
                         }
