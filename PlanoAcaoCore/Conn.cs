@@ -2,7 +2,7 @@
 {
     public static class Conn
     {
-        //CONFIG COMMUN PARA TODOS
+        ////CONFIG COMMUN PARA TODOS
         public static int sessionTimer = 60;
         public static bool isSgqIntegrado = true;
         public static bool visaoOperacional = false;
@@ -29,8 +29,8 @@
         public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
         public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
 
-        //Config para localhost
-        //Local Db
+        ////Config para localhost
+        ////Local Db
         //public static string catalog { get { return "PlanoDeAcao"; } }
         //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         //public static string user { get { return "sa"; } }
@@ -70,11 +70,11 @@
         //public static string selfRoot { get { return "http://localhost/PlanoAcao/"; } }
         //public static string SgqHost { get { return "http://localhost/SgqSystem/api/User/AuthenticationLogin"; } }
 
-        public static string emailFrom = "celsogea@hotmail.com";
-        public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-        public static string emailSmtp = "smtp.live.com";
-        public static int emailPort = 587;
-        public static bool emailSSL = true;
+        //public static string emailFrom = "celsogea@hotmail.com";
+        //public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+        //public static string emailSmtp = "smtp.live.com";
+        //public static int emailPort = 587;
+        //public static bool emailSSL = true;
 
         //Config para dev GRT UTILIZAÇÃO LOCAL
         //Local Db GRT UTILIZAÇÃO LOCAL
@@ -92,11 +92,11 @@
         //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcaoGRT/"; } }
         //public static string SgqHost { get { return "http://192.168.25.200/sgqgrt/api/User/AuthenticationLogin"; } }
 
-        //public static string emailFrom = "celsogea@hotmail.com";
-        //public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-        //public static string emailSmtp = "smtp.live.com";
-        //public static int emailPort = 587;
-        //public static bool emailSSL = true;
+        public static string emailFrom = "celsogea@hotmail.com";
+        public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+        public static string emailSmtp = "smtp.live.com";
+        public static int emailPort = 587;
+        public static bool emailSSL = true;
 
 
         ////Azure
