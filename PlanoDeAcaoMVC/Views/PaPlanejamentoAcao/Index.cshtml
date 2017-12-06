@@ -1472,19 +1472,22 @@
                                      TesteRenan(r, 'Estrategico', data);
                                      //HideForOperacional();
                                      DisabilitaBotaoGerenciar();
+
+                                     if (data.Estrategico_Id > 0) {
+                                         $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
+                                             function (r) {
+                                                 TesteRenan(r, 'Tatico', data);
+                                                 //HideForOperacional();
+                                                 DisabilitaBotaoGerenciar();
+                                             }
+                                         );
+                                     }
+
                                  }
                             );
                         }
 
-                        if (data.Estrategico_Id > 0) {
-                            $.get(urlEditPlanEstrat, { id: data.Id },
-                                 function (r) {
-                                     TesteRenan(r, 'Tatico', data);
-                                     //HideForOperacional();
-                                     DisabilitaBotaoGerenciar();
-                                 }
-                            );
-                        }
+                        
 
                         if (data.Acao.Id > 0) {
 
@@ -2074,7 +2077,7 @@
                     }
 
                     if (data.Estrategico_Id > 0) {
-                        $.get(urlEditPlanEstrat, { id: data.Id },
+                        $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
                              function (r) {
                                  TesteRenan(r, 'Tatico', data);
                                  $('#modalNovo > div > div > div.modal-footer > button').show()
