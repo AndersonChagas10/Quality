@@ -1,11 +1,11 @@
 ﻿
 
-    //var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
+//var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
 
-    //var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
+//var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
 
-    //var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
-    var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
+var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 
 
@@ -128,7 +128,7 @@ function MountDataTable(json) {
             { "sTitle": "Unidade", "aTargets": [18], "width": "50px" },
             { "sTitle": "Indicador SGQ", "aTargets": [19], "width": "100px" },
             { "sTitle": "Monitoramento SGQ", "aTargets": [20], "width": "100px" },
-            { "sTitle": "Tarefa SGQ", "aTargets": [21], "width": "100px"  },
+            { "sTitle": "Tarefa SGQ", "aTargets": [21], "width": "100px" },
             { "sTitle": "Indicadores Operacional", "aTargets": [22], "width": "100px" }, // ver indicador operacional*
             { "sTitle": "Causa Genérica", "aTargets": [23], "width": "200px" },
             { "sTitle": "Grupo Causa", "aTargets": [24], "width": "200px" },
@@ -153,8 +153,92 @@ function MountDataTable(json) {
 
         dom: 'Bfrtip',
         buttons: [
-            { extend: 'excel', text: 'Excel' },
-            { extend: 'colvis', text: 'Colunas' }
+            //{
+            {
+                extend: 'colvisGroup',
+                text: 'Visão Inicial',
+                show: [0, 4, 6, 7, 9, 11, 12, 13, 17, 18, 27, 28, 29, 30, 31, 33, 34, 35],
+                hide: [1, 2, 3, 5, 8, 10, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 32]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Planejamento Estratégico',
+                show: [0, 1, 2, 3, 4, 5, 31, 35],
+                hide: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Planejamento Tático',
+                show: [3, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 35],
+                hide: [0, 1, 2, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Planejamento Operacional',
+                show: [3, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
+                hide: [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Mostrar Todos',
+                show: ':hidden'
+            },
+            //print: {
+            //    extend: 'print',
+            //    text: 'Imprimir',
+            //    customize: function (win) {
+            //        $(win.document.body).find('table')
+            //            .addClass('compact')
+            //            .css('font-size', 'inherit');
+            //    },
+            //    exportOptions: {
+            //        columns: ':visible'
+            //    }
+            //},
+            {
+                extend: 'excelHtml5',
+                text: 'Excel',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'colvis',
+                text: 'Colunas Visíveis',
+                collectionLayout: 'fixed two-column',
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+            //atualizar: {
+            //    text: 'Atualizar',
+            //    action: function (e, dt, node, config) {
+            //        //if (config.counterAjaxTable > 1) {
+            //        GetDataTable();
+            //        //}
+            //        config.counterAjaxTable++;
+            //        config.counterAjaxTable++;
+            //        //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
+            //    },
+            //    counterAjaxTable: 1
+            //},
+            //novaAcao: {
+            //    text: 'Nova Ação',
+            //    action: function (e, dt, node, config) {
+            //        Clicked(isTaticoClicked, isNovaAcao);
+
+            //        $('#modalLindo').modal();
+            //        $('#modalLindo').find('.modal-body').empty();
+            //        $('#Header').html("Planejamento Operacional");
+
+            //        $.get(PlanejamentoDetalhes, { id: 1040 }, function (r) {
+            //            $('#modalLindo').find('.modal-body').empty().append(r);
+            //            $('#NovaAcao').show();
+            //            $('#NovaAcao').click();
+            //        });
+            //    },
+            //}
+            //}
         ],
 
         "language": {
@@ -208,6 +292,8 @@ function MountDataTable(json) {
     });
 
     table.draw();
+
+    $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
 }
 
@@ -914,7 +1000,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
-    } else if (id == 'panel6'){
+    } else if (id == 'panel6') {
         if ($('#valor2Panel6 option:selected').text() == "Todas")
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
@@ -1204,7 +1290,7 @@ function distinctFilter(lista, filtro, selectId) {
             $('#campo2Panel5 option:selected').val() == "TipoIndicador" ||
             $('#campo1Panel6 option:selected').val() == "TipoIndicador" ||
             $('#campo2Panel6 option:selected').val() == "TipoIndicador"
-         ) {
+        ) {
             if (value == 0)
                 value = "Todos"
             else if (value == 1)
@@ -1508,7 +1594,7 @@ function FiltraColunasOfClickPie(array, Atribute, name) {
 
         if (Atribute == "_Quem" || Atribute == "_GrupoCausa" || Atribute == "_CausaGenerica" || Atribute == "_ContramedidaGenerica"
             || Atribute == "UnidadeName" || Atribute == "_StatusName" || Atribute == "Regional"
-            || Atribute == "Level1Name" || Atribute == "Level2Name" || Atribute == "Level3Name" ) {
+            || Atribute == "Level1Name" || Atribute == "Level2Name" || Atribute == "Level3Name") {
 
 
             if (o.Acao[Atribute] == name) {
@@ -1872,7 +1958,7 @@ $('#btnpanel6').off('click').on('click', function () {
 
 $(document).ready(function () {
 
-    console.log("ready!");
+    //console.log("ready!");
     GetDataTable();
 
 
