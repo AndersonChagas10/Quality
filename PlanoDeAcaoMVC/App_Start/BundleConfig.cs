@@ -142,6 +142,7 @@ namespace PlanoDeAcaoMVC
                 "~/Scripts/PANovo/js/vfs_fonts.js",
                 "~/Scripts/PANovo/js/buttons.html5.min.js",
                 "~/Scripts/PANovo/js/buttons.print.min.js",
+                "~/Scripts/PANovo/js/dataTables.fixedColumns.min.js",
                 "~/Scripts/PANovo/js/pt-br.js",
                 "~/Scripts/home2.js")
             );

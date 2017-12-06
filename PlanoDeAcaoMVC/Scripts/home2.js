@@ -365,27 +365,27 @@ function MountDataTable(json) {
 
     //Filtros por coluna
 
-    $('.dataTable thead th').each(function (i) {
-        var title = $('.dataTable thead th').eq($(this).index()).text();
-        $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
-    });
+    //$('.dataTable thead th').each(function (i) {
+    //    var title = $('.dataTable thead th').eq($(this).index()).text();
+    //    $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+    //});
 
-    $('.dataTable thead th').css('text-align', 'center');
+    //$('.dataTable thead th').css('text-align', 'center');
 
-    $('.dataTables_filter').hide();
+    //$('.dataTables_filter').hide();
 
     // DataTable
-    var table = $('.dataTable').DataTable();
+    //var table = $('.dataTable').DataTable();
 
     // Filter event handler
-    $(table.table().container()).on('keyup', 'thead input', function () {
-        table
-            .column($(this).data('index'))
-            .search(this.value)
-            .draw();
-    });
+    //$(table.table().container()).on('keyup', 'thead input', function () {
+    //    table
+    //        .column($(this).data('index'))
+    //        .search(this.value)
+    //        .draw();
+    //});
 
-    table.draw();
+    //table.draw();
 
     $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
