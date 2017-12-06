@@ -1,11 +1,11 @@
 ﻿
 
-    //var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
+//var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
 
-    //var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
+//var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcao';
 
-    //var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
-    var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcao';
+var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 
 
@@ -128,7 +128,7 @@ function MountDataTable(json) {
             { "sTitle": "Unidade", "aTargets": [18], "width": "50px" },
             { "sTitle": "Indicador SGQ", "aTargets": [19], "width": "100px" },
             { "sTitle": "Monitoramento SGQ", "aTargets": [20], "width": "100px" },
-            { "sTitle": "Tarefa SGQ", "aTargets": [21], "width": "100px"  },
+            { "sTitle": "Tarefa SGQ", "aTargets": [21], "width": "100px" },
             { "sTitle": "Indicadores Operacional", "aTargets": [22], "width": "100px" }, // ver indicador operacional*
             { "sTitle": "Causa Genérica", "aTargets": [23], "width": "200px" },
             { "sTitle": "Grupo Causa", "aTargets": [24], "width": "200px" },
@@ -154,16 +154,102 @@ function MountDataTable(json) {
         dom: 'Bfrtip',
         buttons: [
             { extend: 'excel', text: 'Excel' },
-            {
-                extend: 'colvis',
-                text: 'Colunas Visíveis',
-                collectionLayout: 'three-column',
-                exportOptions: {
-                    columns: ':visible',
-                } }
-
+            { extend: 'colvis', text: 'Colunas' }
         ],
+        fixedColumns: {
+            leftColumns: 0,
+            rightColumns: 1,
+        },
+        createdRow: function (row, data, index) {
 
+            try {
+                var bgColorStatus = ""
+                var bgColorPrazo = ""
+                /*Status*/
+                //console.log(data.Acao.Status);
+                if (data.Acao.Status == 2) {
+                    bgColorStatus = "grey";
+                    bgColorPrazo = "rgb(126, 194, 253)";
+                } else if (data.Acao.Status == 5) {
+                    bgColorStatus = "#ADD8E6";
+                } else if (data.Acao.Status == 5 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                    bgColorStatus = "#458fa8"
+                } else if (data.Acao.Status == 3/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
+                    bgColorPrazo = "rgb(126, 194, 253)";
+                    bgColorStatus = "cyan"
+                } else if (data.Acao.Status == 4) {
+                    bgColorPrazo = "rgb(126, 194, 253)";
+                    bgColorStatus = "steelblue"
+                }
+
+                //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
+                //    bgColorStatus = "yellow"
+                //}
+
+                $(row.cells[34]).css("background", bgColorStatus);
+
+                /*Prazo*/
+                if (data.Acao.Status == 2) {
+
+                } else if (data.Acao.Status == 3) {
+
+                    //} else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
+                } else if (data.Acao._Prazo.match(/\d+/g)) {
+                    let numero = data.Acao._Prazo.split(" ")[0]
+                    //console.log(numero)
+                    if (numero == 0) {
+                        bgColorPrazo = "rgba(253, 245, 154, 0.67)"
+                    } else if (isPositiveInteger(numero)) {
+                        bgColorPrazo = "#90EE90"
+                    } else {
+                        bgColorPrazo = "rgb(250, 128, 114)"
+                    }
+                }
+                else if (data.Acao._Prazo.indexOf('-') > -1 && data.Acao._Prazo.indexOf(' Dias') > -1) {
+                    bgColorPrazo = "rgb(250, 128, 114)"
+                }
+
+                $(row.cells[35]).css("background", bgColorPrazo);
+
+            //    if (data.Tatico_Id > 0) { // possui plan tatico
+            //        $(row.cells[38]).find('.btnNovoOperacional').show();
+            //    } else {
+            //        $(row.cells[38]).find('.btnNovoOperacional').hide();
+            //    }
+
+            //    if (data.Id > 0) { // Possui plan Estrat
+            //        $(row.cells[38]).find('.btnNovoTatico').show();
+            //    } else {
+            //        $(row.cells[38]).find('.btnNovoTatico').hide();
+            //    }
+
+            //    if (data.Acao.Id > 0) { // Possui plan Operac
+            //        $(row.cells[38]).find('.btnAcompanhamento').show();
+            //    } else {
+            //        $(row.cells[38]).find('.btnAcompanhamento').hide();
+            //    }
+
+            } catch (e) { }
+
+            //if (data.Tatico_Id > 0) { // possui plan tatico
+            //    $(row.cells[38]).find('.btnNovoOperacional').show();
+            //} else {
+            //    $(row.cells[38]).find('.btnNovoOperacional').hide();
+            //}
+
+            //if (data.Id > 0) { // Possui plan Estrat
+            //    $(row.cells[38]).find('.btnNovoTatico').show();
+            //} else {
+            //    $(row.cells[38]).find('.btnNovoTatico').hide();
+            //}
+
+            //if (data.Acao.Id > 0) { // Possui plan Operac
+            //    $(row.cells[38]).find('.btnAcompanhamento').show();
+            //} else {
+            //    $(row.cells[38]).find('.btnAcompanhamento').hide();
+            //}
+
+        },
         "language": {
             "sEmptyTable": "Nenhum registro encontrado",
             "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -215,6 +301,8 @@ function MountDataTable(json) {
     });
 
     table.draw();
+
+    $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
 }
 
@@ -364,7 +452,9 @@ function FiltraLinhasComTodos(array, arrColuna, arrValue) {
     return novoArr;
 }
 
-
+function isPositiveInteger(n) {
+    return n == "0" || ((n | 0) > 0 && n % 1 == 0);
+}
 
 function getDateRange(campo) { //$("input[name='daterange']").val()
     var datas = campo.split(' - ');
@@ -921,7 +1011,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
-    } else if (id == 'panel6'){
+    } else if (id == 'panel6') {
         if ($('#valor2Panel6 option:selected').text() == "Todas")
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
@@ -1211,7 +1301,7 @@ function distinctFilter(lista, filtro, selectId) {
             $('#campo2Panel5 option:selected').val() == "TipoIndicador" ||
             $('#campo1Panel6 option:selected').val() == "TipoIndicador" ||
             $('#campo2Panel6 option:selected').val() == "TipoIndicador"
-         ) {
+        ) {
             if (value == 0)
                 value = "Todos"
             else if (value == 1)
@@ -1515,7 +1605,7 @@ function FiltraColunasOfClickPie(array, Atribute, name) {
 
         if (Atribute == "_Quem" || Atribute == "_GrupoCausa" || Atribute == "_CausaGenerica" || Atribute == "_ContramedidaGenerica"
             || Atribute == "UnidadeName" || Atribute == "_StatusName" || Atribute == "Regional"
-            || Atribute == "Level1Name" || Atribute == "Level2Name" || Atribute == "Level3Name" ) {
+            || Atribute == "Level1Name" || Atribute == "Level2Name" || Atribute == "Level3Name") {
 
 
             if (o.Acao[Atribute] == name) {
@@ -1879,7 +1969,7 @@ $('#btnpanel6').off('click').on('click', function () {
 
 $(document).ready(function () {
 
-    console.log("ready!");
+    //console.log("ready!");
     GetDataTable();
 
 
