@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Home
 {
-    public class UpdateTelaTabletController : Controller
+    public class UpdateTelaTabletController : BaseController
     {
         SgqDbDevEntities db;
 

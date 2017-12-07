@@ -1618,7 +1618,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Not change password.
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Cancel.
         /// </summary>
         internal static string do_not_change_password {
             get {

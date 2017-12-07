@@ -856,7 +856,7 @@
     <value>Change the password</value>
   </data>
   <data name="do_not_change_password" xml:space="preserve">
-    <value>Not change password</value>
+    <value>Cancel</value>
   </data>
   <data name="fullname" xml:space="preserve">
     <value>Fullname</value>
