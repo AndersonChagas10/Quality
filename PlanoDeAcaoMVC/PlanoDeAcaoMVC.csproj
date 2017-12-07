@@ -405,6 +405,7 @@
     <Content Include="Content\PANovo\css\bootstrap-select.min.css" />
     <Content Include="Content\PANovo\css\bootstrap-theme.min.css" />
     <Content Include="Content\PANovo\css\bootstrap.min.css" />
+    <Content Include="Content\PANovo\css\buttons.dataTables.min.css" />
     <Content Include="Content\PANovo\css\daterangepicker.css" />
     <Content Include="Content\PANovo\css\jquery.dataTables.min.css" />
     <Content Include="Content\PANovo\css\style.css" />
@@ -559,6 +560,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
     <None Include="Properties\PublishProfiles\Plano de Acao Local.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcao.pubxml" />
@@ -578,10 +580,12 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\PANovo\js\bootstrap-select.min.js" />
     <Content Include="Scripts\PANovo\js\bootstrap.min.js" />
+    <Content Include="Scripts\PANovo\js\buttons.colVis.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.flash.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.html5.min.js" />
     <Content Include="Scripts\PANovo\js\buttons.print.min.js" />
     <Content Include="Scripts\PANovo\js\dataTables.buttons.min.js" />
+    <Content Include="Scripts\PANovo\js\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\PANovo\js\daterangepicker.js" />
     <Content Include="Scripts\PANovo\js\defaults-pt_BR.min.js" />
     <Content Include="Scripts\PANovo\js\highcharts.js" />
@@ -958,6 +962,7 @@
     <Content Include="Views\Gerenciar\Index.cshtml" />
     <Content Include="Views\Home2\Index.cshtml" />
     <Content Include="Views\Shared\_Calendar.cshtml" />
+    <Content Include="Views\Home2\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

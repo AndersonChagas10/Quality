@@ -3,213 +3,363 @@
     ViewBag.Title = "Index";
 }
 
-<style>
-    .select2-container {
-        width: 278px;
-    }
 
-    select {
-        min-width: 278px;
-    }
+@section Styles {
 
-    .hideEmail {
-        display: block !important;
-    }
-    /*.dataTable td {
-        max-width: 15ch;
-        height: 125px !important;
-        max-height: 125px !important;
-        overflow: hidden;
-        text-overflow: clip;
-        white-space: nowrap;
+    <style>
+        body {
+            padding-top: 86px !important;
+        }
+        /*table {
 
-        padding: 10px;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }*/
 
 
-    }
-
-    .dataTable td:hover {
-        overflow: visible;
-        white-space: normal;
-    }*/
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        color: #333;
-    }
-
-    table {
-        text-align: left;
-        border-radius: .25rem;
-    }
-
-        table.borderedNinja {
-            border: 2px solid #c1c1c1;
+        table {
+            table-layout: fixed;
+            width: 100%;
+            *margin-left: -100px; /*ie7*/
         }
 
-    thead tr:first-child {
-        background: #ffffff;
-        border: none;
-        height: 60px;
-    }
+        .fix {
+            position: absolute;
+            *position: relative; /*ie7*/
+            margin-left: -100px;
+            width: 100px;
+        }
 
-    th:first-child,
-    td:first-child {
-        padding: 0 15px 0 20px;
-    }
+        .outer {
+            position: relative;
+        }
 
-    tbody tr:hover {
-        background-color: rgba(170, 170, 170, 0.20);
-        cursor: default;
-    }
+        .inner {
+            width: 100%;
+        }
 
-    tbody tr:last-child td {
-        border: none;
-    }
+        .defaultDiv {
+            padding: 3px;
+        }
 
-    td:last-child {
-        text-align: right;
-        padding-right: 10px;
-    }
+        .defaultDivInternal {
+            background-color: #fff;
+            padding: 5px;
+        }
 
-    .button {
-        color: #aaa;
-        cursor: pointer;
-        vertical-align: middle;
-    }
+        .defaultSizeMin {
+            height: 250px;
+        }
 
-    .edit:hover {
-        color: #0a79df;
-    }
+        .defaultSizeMinPanel {
+            height: 150px;
+            width: 100%;
+        }
 
-    .delete:hover {
-        color: #dc2a2a;
-    }
+        .defaultSizeMed {
+            height: 370px;
+        }
 
-    .modal-header .btnGrp {
-        position: absolute;
-        top: 8px;
-        right: 10px;
-    }
+        .defaultSizeMedPanel {
+            height: 290px;
+            width: 100%;
+        }
+
+        .defaultSizeMax {
+            height: 540px;
+            font-size: xx-small;
+        }
+
+        .defaultSizeMaxPanel {
+            height: 500px;
+            width: 100%;
+        }
+
+        .defaultGroupTitle {
+            float: left;
+            /*width: 100%;*/
+        }
+
+        .defaultTitle {
+            font-weight: bold;
+            font-size: 14px;
+            float: left;
+        }
+
+        .defaultSubtitle {
+            font-weight: normal;
+            font-size: 8px;
+            text-transform: uppercase;
+            float: left;
+        }
+
+        .defaultFilter {
+            float: left;
+            border-bottom: 1px dotted #ccc;
+            margin-bottom: 5px;
+            width: 100%;
+            padding: 2px;
+        }
+
+        .defaultDivFilter {
+            background-color: #06304e;
+            color: #FFF;
+            position: fixed;
+            z-index: 999;
+            top: 50px;
+        }
+
+        .btn-filter {
+            font-size: 12px;
+            height: 26px;
+            width: 23px;
+            padding: 0;
+        }
+
+        .dropdown-menu open {
+            width: 150px;
+        }
+
+        /*tbody > tr > td {
+            word-break: break-all;
+        }*/
+
+        button[data-id=valor1Filtro] {
+            width: 200px !important;
+        }
+
+        div.dropdown-menu.open {
+            max-width: 300px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        div.daterangepicker {
+            width: 750px;
+        }
+
+        #example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr {
+            background-color: #fff;
+        }
+
+        #example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightBodyWrapper {
+            top: -12px !important;
+        }
+    </style>
+
+    <style>
+
+        span.select2{
+            min-width:120px !important;
+        }
+
+        .select2-container {
+            /*width: 278px;*/
+        }
+
+        select {
+            /*min-width: 278px;*/
+        }
+
+        .hideEmail {
+            display: block !important;
+        }
+        /*.dataTable td {
+            max-width: 15ch;
+            height: 125px !important;
+            max-height: 125px !important;
+            overflow: hidden;
+            text-overflow: clip;
+            white-space: nowrap;
+
+            padding: 10px;
 
 
-    .min {
-        width: 250px;
-        height: 35px;
-        overflow: hidden !important;
-        padding: 0px !important;
-        margin: 0px;
-        float: left;
-        position: static !important;
-    }
+        }
 
-        .min .modal-dialog, .min .modal-content {
+        .dataTable td:hover {
+            overflow: visible;
+            white-space: normal;
+        }*/
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+        }
+
+        table {
+            text-align: left;
+            border-radius: .25rem;
+        }
+
+            table.borderedNinja {
+                border: 2px solid #c1c1c1;
+            }
+
+        thead tr:first-child {
+            background: #ffffff;
+            border: none;
+            height: 60px;
+        }
+
+        th:first-child,
+        td:first-child {
+            padding: 0 15px 0 20px;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(170, 170, 170, 0.20);
+            cursor: default;
+        }
+
+        tbody tr:last-child td {
+            border: none;
+        }
+
+        td:last-child {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .button {
+            color: #aaa;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .edit:hover {
+            color: #0a79df;
+        }
+
+        .delete:hover {
+            color: #dc2a2a;
+        }
+
+        .modal-header .btnGrp {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+        }
+
+
+        .min {
+            width: 250px;
+            height: 35px;
+            overflow: hidden !important;
+            padding: 0px !important;
+            margin: 0px;
+            float: left;
+            position: static !important;
+        }
+
+            .min .modal-dialog, .min .modal-content {
+                height: 100%;
+                width: 100%;
+                min-width: 70%;
+                align-self: center;
+                margin: 0px !important;
+                padding: 0px !important;
+            }
+
+        .modal-dialog {
+            width: 80% !important;
+        }
+
+        .min .modal-header {
             height: 100%;
             width: 100%;
-            min-width: 70%;
-            align-self: center;
             margin: 0px !important;
-            padding: 0px !important;
+            padding: 3px 5px !important;
         }
 
-    .modal-dialog {
-        width: 80% !important;
-    }
-
-    .min .modal-header {
-        height: 100%;
-        width: 100%;
-        margin: 0px !important;
-        padding: 3px 5px !important;
-    }
-
-    .display-none {
-        display: none;
-    }
-
-    button .fa {
-        font-size: 16px;
-        margin-left: 10px;
-    }
-
-    .min .fa {
-        font-size: 14px;
-    }
-
-    .min .menuTab {
-        display: none;
-    }
-
-    button:focus {
-        outline: none;
-    }
-
-    .minmaxCon {
-        height: 35px;
-        bottom: 1px;
-        left: 1px;
-        position: fixed;
-        right: 1px;
-        z-index: 9999;
-    }
-
-
-    /*Datatable*/
-    ul.pagination {
-        margin: 0px;
-    }
-
-    .pagination > .active > a,
-    .pagination > .active > span,
-    .pagination > .active > a:hover,
-    .pagination > .active > span:hover,
-    .pagination > .active > a:focus,
-    .pagination > .active > span:focus {
-        background-color: #428bca !important;
-        border-color: #428bca !important;
-    }
-
-    .pagination > li > a, .pagination > li > span {
-        color: #666;
-    }
-
-    .dataTables_wrapper input {
-        border: 1px solid #666;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-    .dataTables_wrapper .dataTables_paginate span span {
-        background: transparent !important;
-        margin: 0px !important;
-        border: 1px solid #ddd;
-        color: #666 !important;
-        padding-top: 7px !important;
-        padding-bottom: 7px !important;
-    }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
-        .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-            color: #666 !important;
-            background: #ddd !important;
-            border: 1px solid #ddd;
+        .display-none {
+            display: none;
         }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
-            background: #428bca !important;
+        button .fa {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .min .fa {
+            font-size: 14px;
+        }
+
+        .min .menuTab {
+            display: none;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .minmaxCon {
+            height: 35px;
+            bottom: 1px;
+            left: 1px;
+            position: fixed;
+            right: 1px;
+            z-index: 9999;
+        }
+
+
+        /*Datatable*/
+        ul.pagination {
+            margin: 0px;
+        }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            background-color: #428bca !important;
             border-color: #428bca !important;
-            color: #fff !important;
         }
-</style>
 
+        .pagination > li > a, .pagination > li > span {
+            color: #666;
+        }
+
+        .dataTables_wrapper input {
+            border: 1px solid #666;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+        .dataTables_wrapper .dataTables_paginate span span {
+            background: transparent !important;
+            margin: 0px !important;
+            border: 1px solid #ddd;
+            color: #666 !important;
+            padding-top: 7px !important;
+            padding-bottom: 7px !important;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+            .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+                color: #666 !important;
+                background: #ddd !important;
+                border: 1px solid #ddd;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
+                background: #428bca !important;
+                border-color: #428bca !important;
+                color: #fff !important;
+            }
+    </style>
+
+}
 
 @*<h2>Plano de Ação</h2>*@
 
@@ -219,9 +369,365 @@
 
 <hr class="showAsEstrategy" />
 
-<div id="sasenhora" style="max-width:100%; ">
-    <table id="paTable" class="table-striped dt-body-justify "></table>
+<div class="container-fluid" style="background-color:#ccc;">
+    <!--MENU DE FILTROS-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDivInternal defaultDivFilter">
+            <div class="defaultGroupTitle" style="width:auto; float:left; background-color:transparent;">
+                <span class="defaultTitle" style="line-height:27px;">Filtros</span>
+            </div>
+            <div class="defaultFilter input-group" style="width:auto; float:right; background-color:transparent; border-bottom: 0px; margin-bottom:0px;">
+                <div class="input-group-btn" style="width: 100px;">
+                    <input type="text" class="form-control" name="daterange" value="01/01/2017 - 31/01/2017" />
+                </div>
+                &nbsp;
+                <select style="font-size:xx-small;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
+                    <option value="">Todos</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
+                    <option value="_GrupoCausa">Grupo Causa</option>
+                    <option value="_CausaGenerica">Causa Genérica</option>
+                    <option value="_ContramedidaGenerica">Ação Genérica</option>
+                    <option value="UnidadeName">Unidade</option>
+                    <option value="_Quem">Quem</option>
+                    <option value="_StatusName">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Level1Name">Indicador</option>
+                    <option value="Level2Name">Monitoriamento</option>
+                    <option value="Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
+
+                </select>
+                &nbsp;
+                <select id="valor1Filtro">
+                    <option>Todos</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnTop"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+
+        </div>
+    </div>
+    <!--FIM MENU DE FILTROS-->
+    <!--LINHA 1-->
+    <!--<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Status das Ações</span>
+                <br />
+                <span class="defaultSubtitle">Total de ações por Status</span>
+            </div>
+            <div id="panel1" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>-->
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultFilter ">
+
+                <select style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
+                    <option value="_GrupoCausa">Grupo Causa</option>
+                    <option value="_CausaGenerica">Causa Genérica</option>
+                    <option value="_ContramedidaGenerica">Ação Genérica</option>
+                    <option value="UnidadeName">Unidade</option>
+                    <option value="_Quem">Quem</option>
+                    <option value="_StatusName">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Level1Name">Indicador</option>
+                    <option value="Level2Name">Monitoriamento</option>
+                    <option value="Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
+                </select>
+                &nbsp;
+                <select id="valor1FiltroPie2">
+                    <option>Todos</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnFiltroPie2"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Tarefas vs Status</span>
+                <br />
+                <span class="defaultSubtitle" id="spanPie2">Todas</span><span class="defaultSubtitle">&nbsp;por status</span><br />
+            </div>
+            <div id="panel2" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Estoque de Ações</span>
+                <br />
+                <span class="defaultSubtitle">Formação do Estoque de Ações</span>
+            </div>
+            <div id="panel4" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+    <!--FIM LINHA 1-->
+    <!--LINHA 2-->
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed ">
+            <div class="defaultFilter">
+                <select style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
+
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao" selected>Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName">Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select id="valor1Panel5"></select>
+
+                <select style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName" selected>Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select id="valor2Panel5"></select>
+                <button class="btn btn-warning btn-filter" id="btnpanel5"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel5','campo2Panel5','panel5', this.id);" id="btnOrderFilterPanel5"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Ordem por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Comparativo</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel5">Status </span>
+                <span class="defaultSubtitle">&nbsp;por&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel5"> por Gerência</span>
+            </div>
+            <div id="panel5" class="defaultSizeMedPanel"></div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv Panel6">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
+            <div class="defaultFilter">
+                <select style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
+                    <option value="Gerencia" selected>Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName">Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select id="valor1Panel6"></select>
+
+                <select style="font-size:xx-small;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
+
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="Dimensao">Dimensão</option>
+                    <option value="Objetivo">Diretriz</option>
+                    <option value="IndicadoresDiretriz">Indicadores / Diretriz</option>
+                    <option value="TemaAssunto">Tema / Assunto</option>
+                    <option value="Gerencia">Gerência</option>
+                    <option value="Coordenacao">Coordenação</option>
+                    <option value="Iniciativa">Projeto / Iniciativa</option>
+                    <option value="Acao._GrupoCausa">Grupo Causa</option>
+                    <option value="Acao._CausaGenerica">Causa Genérica</option>
+                    <option value="Acao._ContramedidaGenerica">Ação Genérica</option>
+                    <option value="Acao.UnidadeName">Unidade</option>
+                    <option value="Acao._Quem">Quem</option>
+                    <option value="Acao._StatusName" selected>Status</option>
+                    <option value="Acao.Regional">Regional</option>
+                    <option value="Acao.Level1Name">Indicador</option>
+                    <option value="Acao.Level2Name">Monitoriamento</option>
+                    <option value="Acao.Level3Name">Tarefa</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">Tipo Indicador</option>
+                </select>
+
+                <select id="valor2Panel6"></select>
+
+                <button class="btn btn-warning btn-filter" id="btnpanel6"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel6','campo2Panel6','panel6', this.id);" id="btnOrderFilterPanel6"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Orderm por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Comparativo</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel6">Status</span>
+                <span class="defaultSubtitle">&nbsp;por&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel6">Pessoa</span>
+            </div>
+            <div id="panel6" class="defaultSizeMedPanel"></div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <!--FIM LINHA 2-->
+    <!--LINHA 3-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Gerenciador de Tarefas</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">Todas as tarefas para filtrar</span>
+            </div>
+
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--FIM LINHA 3-->
+
 </div>
+
+
 
 <div class="container">
     <div class="modal fade" id="modalLindo" role="dialog" aria-labelledby="" data-backdrop="static">
@@ -329,7 +835,211 @@
 
 @section Scripts {
 
+<script src="~/Scripts/PANovo/js/underscore-min.js"></script>
+<script src="~/Scripts/lodash.min.js"></script>
+@*<script src="~/Scripts/PANovo/js/popper.min.js"></script>
+    <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
+    <script src="~/Scripts/PANovo/js/moment.min.js"></script>
+    <script src="~/Scripts/PANovo/js/daterangepicker.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.colVis.min.js"></script>
+    <script src="~/Scripts/PANovo/js/jszip.min.js"></script>
+    <script src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
+    <script src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+    <script src="~/Scripts/PANovo/js/pt-br.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/i18n/pt-BR.js"></script>*@
+
+<script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+<script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+<script src="~/Scripts/PANovo/js/pt-br.js"></script>
+<script src="~/Scripts/select2.min.js"></script>
+<script src="~/Scripts/i18n/pt-BR.js"></script>
+<script src="~/Scripts/home2.js"></script>
+
     <script>
+
+        //Graficos Instancia
+
+        //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
+        function graficoEstoque() {
+
+
+            dadosEstoque = [];
+
+            jQuery.each(dados, function (i, val) {
+                //if (dados[i].Acao._Acompanhamento.length != 0)
+                dadosEstoque.push(dados[i]);
+            });
+            //MOCK Acompanhamento
+            dadosEstoque.forEach(function (o, c) {
+               var tamanho = o.Acao._Acompanhamento.length
+                if (tamanho == 0) {
+                    o.Acao['Acompanhamento'] = { AddDate: "1900-01-01" };
+                } else {
+                    o.Acao['Acompanhamento'] = { AddDate: o.Acao._Acompanhamento[tamanho - 1].AddDate };
+                }
+
+                //console.log(o.Acao['Acompanhamento']);
+
+            })
+
+            let categoriesArr = [];
+            categoriesArr.push(new Date('2017/01/01'));
+            categoriesArr.push(new Date('2017/02/01'));
+            categoriesArr.push(new Date('2017/03/01'));
+            categoriesArr.push(new Date('2017/04/01'));
+            categoriesArr.push(new Date('2017/05/01'));
+            categoriesArr.push(new Date('2017/06/01'));
+            categoriesArr.push(new Date('2017/07/01'));
+            categoriesArr.push(new Date('2017/08/01'));
+            categoriesArr.push(new Date('2017/09/01'));
+            categoriesArr.push(new Date('2017/10/01'));
+            categoriesArr.push(new Date('2017/11/01'));
+            categoriesArr.push(new Date('2017/12/01'));
+
+            let arrayAndamento = [];
+
+            let arrayFechadas = [];
+
+            let arrayEstoque = [];
+
+            let Aux = [];
+
+            let apenasAcoesAbertas = [];
+
+            let apenasAcoesFechadas = [];
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+
+                arrayAndamento[i] = $.grep(dadosEstoque, function (o, j) {
+                    return new Date(o.Acao.QuandoInicio).getFullYear() == categoriesArr[i].getFullYear() && new Date(o.Acao.QuandoInicio).getMonth() == categoriesArr[i].getMonth() && o.Acao._StatusName.indexOf('Cancelada') < 0;
+                }).length;
+
+            }
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+
+                arrayFechadas[i] = $.grep(dadosEstoque, function (o, j) {
+                    return new Date(o.Acao.Acompanhamento.AddDate).getFullYear() == categoriesArr[i].getFullYear() && new Date(o.Acao.Acompanhamento.AddDate).getMonth() == categoriesArr[i].getMonth() && o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0;
+                }).length;
+
+            }
+
+
+
+            //arrayAndamento = [1, 2, 3, 4, 5, 6];
+            //arrayFechadas = [6, 2, 4, 1, 0, 1];
+
+            arrayEstoque[0] = 0;
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+                if (i == 0) {
+                    arrayEstoque[0] = arrayAndamento[0] - arrayFechadas[0];
+                } else {
+                    arrayEstoque[i] = arrayEstoque[i - 1] + (arrayAndamento[i] - arrayFechadas[i]);
+                }
+
+            }
+
+
+
+            let serieArrFinal = [{
+                type: 'column',
+                name: 'Abertas',
+                data: arrayAndamento,
+                color: andamentoColor
+            }, {
+                type: 'column',
+                name: 'Fechada',
+                data: arrayFechadas,
+                color: concluidoColor
+            }, {
+                type: 'spline',
+                name: 'Estoque',
+                data: arrayEstoque,
+                color: atrasadaColor,
+                marker: {
+                    lineWidth: 2,
+                    lineColor: atrasadaColor,
+                    fillColor: atrasadaColor
+                }
+            }];
+
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+
+                retorno = '';
+
+                switch (categoriesArr[i].getMonth()) {
+                    case 0:
+                        retorno = "Janeiro";
+                        break;
+                    case 1:
+                        retorno = "Fevereiro";
+                        break;
+                    case 2:
+                        retorno = "Março";
+                        break;
+                    case 3:
+                        retorno = "Abril";
+                        break;
+                    case 4:
+                        retorno = "Maio";
+                        break;
+                    case 5:
+                        retorno = "Junho";
+                        break;
+                    case 6:
+                        retorno = "Julho";
+                        break;
+                    case 7:
+                        retorno = "Agosto";
+                        break;
+                    case 8:
+                        retorno = "Setembro";
+                        break;
+                    case 9:
+                        retorno = "Outubro";
+                        break;
+                    case 10:
+                        retorno = "Novembro";
+                        break;
+                    case 11:
+                        retorno = "Dezembro";
+                        break;
+                }
+
+                categoriesArr[i] = retorno + ' de ' + categoriesArr[i].getFullYear();
+
+            }
+
+
+            makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
+            })
+
+            $('select:not(#valor1Filtro)').select2({
+                dropdownAutoWidth: true,
+                width: '140px'
+            })
+
+            $('select#valor1Filtro').select2({
+                dropdownAutoWidth: true,
+                width: '250px'
+            })
+
+            $('.container').each(function (i, o) {
+                $(o).removeClass('container').addClass('container-fluid');
+            });
+
+        }
+
+    </script>
+
+<script>
         $(document).ready(function () {
             var zero =0;
         });
@@ -1212,37 +1922,6 @@
 
         }
 
-        //DEPRECIADO
-        //function EditarNovo() {
-        //    /*validação*/
-        //    /*Dados*/
-        //    var param1 = $('#newItem').val();
-        //    var param2 = tempName.split('_Id')[0];
-        //    var param3 = 0;
-        //    if ($('#encadeado').find('select').length) {
-        //        param3 = $('#encadeado').find('select').val();
-        //    }
-        //    var param4 = $('#newIdItem').val();
-        //    var param5 = $('#newIsActiveItem:checked').length == 1;
-        //    /*Ajax*/
-        //    $.post(urlEditarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4, isActive: param5}, function (r) {
-        //        if(r.resposta != null){
-        //            alert(r.resposta);
-        //            return;
-        //        }
-        //        $(tempInput).find("option[value= "+ r.Id + "]").html($('#newItem').val())
-        //        //$(tempInput).find("select option[value= "+ r + "]").text($('#newItem').val());
-        //        //$(tempInput).val(r).change();
-        //        refreshDataTable();
-        //        tempInput = undefined;
-        //        /*Limpa caso haja DDL denrto do modal.*/
-        //        /*if ($('#encadeado').find('select').length) {
-        //            $('#encadeado').find('select').remove();
-        //        }*/
-        //        $('#btnCancelarNovo').click();
-        //    });
-        //}
-
         var refreshDataTable = function(){
             /*Dados*/
             var param1 = $('#newItem').val();
@@ -1371,7 +2050,7 @@
             var arrEstragy = [0, 1, 2, 3, 4, 5, 6, 7];
             var arrEstragyH = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]; // SEM TEMA ASUNTO[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
 
-            var table = $('#paTable').empty().DataTable({
+            var table1 = $('#paTable').empty().DataTable({
                 data: retornoArray,
                 columns: [
                     /*0*/{ title: "Diretoria", mData: "Diretoria" },
@@ -1596,17 +2275,6 @@
 
                     });
 
-                    $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
-
-                        var data = table.row($(this).parents('tr')).data();
-                        selecionado = data;
-                        console.log(data);
-                        acaoCorrentId = data.Acao.Id;
-                        //Clicked(isTaticoClicked, isNovaAcao);
-
-                        getAcompanhamento(acaoCorrentId);
-
-                    });
 
                 },
                 language: {
@@ -1944,9 +2612,9 @@
             //}
         }
 
-        function GetDataTable() {
-            $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
-        }
+        //function GetDataTable() {
+        //    $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+        //}
 
         function TesteRenan(r, tipo, model) {
             console.log("TesteRenan")
@@ -2264,6 +2932,7 @@
         /*Table*/
 
 
-    </script>
+
+</script>
 
 }

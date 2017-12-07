@@ -106,10 +106,19 @@ namespace PlanoDeAcaoMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult Editar(int id)
+        public ActionResult Editar(int id, bool? isTatico )
         {
             //var model = Pa_Planejamento.Listar().FirstOrDefault();
-            var model = Pa_Planejamento.Get(id);
+            var model = new Pa_Planejamento();
+            if(isTatico == true)
+            {
+                model = Pa_Planejamento.GetTatico(id);
+            }
+            else
+            {
+                model = Pa_Planejamento.Get(id);
+            }
+                
 
             if(model.DataInicio != null)
                 model._DataInicio = model.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
