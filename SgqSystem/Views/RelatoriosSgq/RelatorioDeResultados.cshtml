@@ -164,7 +164,7 @@
 @section Scripts {
 
     <script type="text/javascript">
-
+        var Subtitle = "";
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
@@ -174,7 +174,7 @@
         var UrlGraficoHistoricoGeral = '@Html.Raw(Url.Action("GetGraficoHistoricoModalGeral", "api/RelatorioDeResultados"))';
         var UrlListaResultadosPeriodoGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
         var UrlListaResultadosPeriodoSemUnidadeGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoSemUnidadeTabela", "api/RelatorioDeResultados"))';
-        var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';       
+        var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';
 
         @*var UrlIndicadorXAcaoModalPA = '@Html.Raw(Url.Action("GetAcoesByDate", "api/RelatorioDeResultados"))';
         var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';*@
@@ -352,6 +352,7 @@
             var NomeExibir = "";
             var Level = 0;
             var Titulo = "";
+            //var Subtitle = "";
 
             if (data.length > 0) {
 
@@ -363,19 +364,17 @@
                 } else if (data[0].IsMonitoramento) {
                     Level = 2;
                     NomeExibir = "MonitoramentoUnidade";
-                    Titulo += Resources("level2Non_Conformities") + " " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
+                    Titulo += Resources("level2Non_Conformities");
+                    //+ " " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
                 } else {
                     Level = 3;
                     NomeExibir = "TarefaUnidade"
-                    Titulo += Resources("level3Non_Conformities") + " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") +": "+ data[0].IndicadorName;
+                    Titulo += Resources("level3Non_Conformities");
+                    //+ " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
                 }
 
-                if((enviar.unitId != '' && enviar.unitId != undefined))
-                {
-                    Titulo += " " + Resources("fromUnit") + ": " + $('#unitIdV :selected').text();
-                }else{
-                    Titulo += " " + Resources("perUnit");
-                }
+                if ((enviar.unitId != '' && enviar.unitId == undefined))                     
+                    Titulo += " " + Resources("perUnit");                
 
                 SetTitulo(Level);
 
@@ -399,6 +398,9 @@
                     },
                     title: {
                         text: Titulo,
+                    },
+                    subtitle: {
+                        text: Subtitle,
                     },
                     xAxis: {
                         categories: IndicadorUnidade,
@@ -531,6 +533,7 @@
             var NomeExibir = "";
             var Level = 0;
             var Titulo = "";
+            //var Subtitle = "";
 
             if (data.length > 0) {
 
@@ -542,16 +545,13 @@
                 } else if (data[0].IsMonitoramento) {
                     Level = 2;
                     NomeExibir = "MonitoramentoName";
-                    Titulo += Resources("level2Non_Conformities") + " " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
+                    Titulo += Resources("level2Non_Conformities");
+                    //+ " " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
                 } else {
                     Level = 3;
                     NomeExibir = "TarefaName"
-                    Titulo += Resources("level3Non_Conformities") + " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
-                }
-
-                if((enviar.unitId != '' && enviar.unitId != undefined))
-                {
-                    Titulo += Resources("fromUnit") + ": " + $('#unitIdV :selected').text();
+                    Titulo += Resources("level3Non_Conformities");
+                    //+ " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
                 }
 
                 var IndicadorName = MapeiaValorParaHC(data, NomeExibir);
@@ -574,6 +574,9 @@
                     },
                     title: {
                         text: Titulo,
+                    },
+                    subtitle: {
+                        text: Subtitle,
                     },
                     xAxis: {
                         categories: IndicadorName,
@@ -673,7 +676,7 @@
         }
 
         function CallbackGraficoHistoricoModal(data) {
-
+            var subtitleAux = "";
             var dia = MapeiaValorParaHC(data, "_date");
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
@@ -682,16 +685,19 @@
             var limInferior = MapeiaValorParaHC(data, "limiteInferior");
 
             let TituloHistoricoModal = "";
-
+            subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
             if (data[0].ChartTitle == "Histórico do Indicador") {
-                TituloHistoricoModal += Resources("level1_history") + ": " + data[0].level1Name;;
+                TituloHistoricoModal += Resources("level1_history");
+                subtitleAux += Resources('level1')+": "+data[0].level1Name;
             }else if(data[0].ChartTitle == "Histórico do Monitoramento"){
-                TituloHistoricoModal += Resources("level2_history") + ": " + data[0].level2Name;
+                TituloHistoricoModal += Resources("level2_history");
+                subtitleAux += Resources('level1') + ": "+data[0].level2Name;
             }else if (data[0].ChartTitle == "Histórico da Tarefa") {
-                TituloHistoricoModal += Resources("level3_history") + ": " + data[0].level3Name;;
+                TituloHistoricoModal += Resources("level3_history");
+                subtitleAux += Resources('level1') + ": "+data[0].level3Name;
             }
 
-            TituloHistoricoModal += " | " + Resources("unit") + ": " + data[0].UnidadeName
+            
 
             //var limSup = MapeiaValorParaHC(data, "limiteSuperior");
             //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
@@ -722,6 +728,9 @@
                 title: {
                     //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
                     text: TituloHistoricoModal
+                },
+                subtitle: {
+                    text: subtitleAux
                 },
                 xAxis: {
                     categories: dia,
@@ -890,6 +899,7 @@
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+                //var SubTitle = "";
 
                 var sumav = qtdAv.reduce(function(a, b){return a+b;});
                 var sumnc = nc.reduce(function(a, b){return a+b;});
@@ -907,19 +917,19 @@
                 let ProcessoName = $("#clusterId option:selected").text();
 
                 if (UnidadeId != "" && UnidadeId != undefined) {
-                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("unit") + ": " + UnidadeName;
+                    TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("unit") + ": " + UnidadeName;
                 }else if (IndicadorId != "" && RegionalId != "" && IndicadorId != undefined && RegionalId != undefined) {
-                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("level1") + ": " + IndicadorName + " | " + Resources("structure") + ": " + RegionalName;
+                    TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("level1") + ": " + IndicadorName + " | " + Resources("structure") + ": " + RegionalName;
                 }else if (MonitoramentoId != "" && MonitoramentoId != undefined) {
-                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("level2") + ": " + MonitoramentoName;
+                    TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("level2") + ": " + MonitoramentoName;
                 }else if (IndicadorId != "" && IndicadorId != undefined) {
-                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("level1") + ": " + IndicadorName;
+                    TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("level1") + ": " + IndicadorName;
                 }else if (RegionalId != "" && RegionalId != undefined) {
-                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("structure") + ": " + RegionalName;
+                    TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("structure") + ": " + RegionalName;
                 }else if (ProcessoId != "" && ProcessoId != undefined) {
-                    TituloGrafico1 = Resources("consolidated_history") + " | " + Resources("cluster") + ": " + ProcessoName;
+                    TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("cluster") + ": " + ProcessoName;
                 }else{
-                    TituloGrafico1 = Resources("consolidated_history") + " | JBS";
+                    TituloGrafico1 = Resources("consolidated_history");// + " | JBS";
                 }
 
                 if (sumav != 0 && sumnc != 0) {
@@ -942,6 +952,9 @@
                         title: {
                             //text: data[0].ChartTitle + " " + Resources("from") + " " + data[0].UnidadeName
                             text: TituloGrafico1
+                        },
+                        subtitle: {
+                            text: Subtitle
                         },
                         xAxis: {
                             categories: dia,
@@ -1117,16 +1130,19 @@
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+                //var Subtitle = "";
 
                 var sumav = qtdAv.reduce(function(a, b){return a+b;});
                 var sumnc = nc.reduce(function(a, b){return a+b;});
                 var porcPeriodo = sumnc/sumav * 100;
 
-                let TituloGraficoHistoricoIndicador = Resources("level1_history")  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
+                let TituloGraficoHistoricoIndicador = Resources("level1_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
                 $('#GraficoHistoricoIndicador').removeClass('loader');
 
                 $('#GraficoHistoricoIndicador').empty();
+
+
 
                 chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
                     credits: {
@@ -1140,6 +1156,9 @@
                     title: {
                         //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
                         text: TituloGraficoHistoricoIndicador
+                    },
+                    subtitle: {
+                        text: Subtitle
                     },
                     xAxis: {
                         categories: dia,
@@ -1312,16 +1331,19 @@
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+                //var Subtitle = "";
 
                 var sumav = qtdAv.reduce(function(a, b){return a+b;});
                 var sumnc = nc.reduce(function(a, b){return a+b;});
                 var porcPeriodo = sumnc/sumav * 100;
 
-                let TituloGraficoHistoricoMonitoramento = Resources("level2_history")  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
+                let TituloGraficoHistoricoMonitoramento = Resources("level2_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
                 $('#GraficoHistoricoMonitoramento').removeClass('loader');
 
                 $('#GraficoHistoricoMonitoramento').empty();
+
+
 
                 chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
                     credits: {
@@ -1335,6 +1357,9 @@
                     title: {
                         //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
                         text: TituloGraficoHistoricoMonitoramento
+                    },
+                    subtitle: {
+                        text: Subtitle
                     },
                     xAxis: {
                         categories: dia,
@@ -1573,7 +1598,7 @@
         }
 
         function CBGAcoesXIndicador(data) {
-
+            var subtitleAux = "";
             //var dia = MapeiaValorParaHC(data, "_date");
             //var porc = MapeiaValorParaHC(data, "procentagemNc");
             //fazGambipraMenosCem(porc)
@@ -1587,13 +1612,16 @@
             var aux = "";
 
             if (data[0].level3Id > 0) {
-                aux = Resources("level1_porc_non_conform_evo") + ": " + data[0].level3Name;
+                aux = Resources("level1_porc_non_conform_evo");
+                subtitleAux = Resources('level3')+": "+data[0].level3Name +" | ";
                 enviarAxI.isLevel = 3;
             }else if (data[0].level2Id > 0) {
-                aux = Resources("level1_porc_non_conform_evo") + ": " + data[0].level2Name;
+                aux = Resources("level1_porc_non_conform_evo");
+                subtitleAux = Resources('level2') + ": " +data[0].level2Name + " | ";
                 enviarAxI.isLevel = 2;
             }else if (data[0].level1Id > 0) {
-                aux = Resources("level1_porc_non_conform_evo") + ": " + data[0].level1Name;
+                aux = Resources("level1_porc_non_conform_evo");
+                subtitleAux = Resources('level1') + ": " +data[0].level1Name + " | ";
                 enviarAxI.isLevel = 1;
             }
 
@@ -1602,8 +1630,8 @@
             enviarAxI['level3Id'] = data[0].level3Id;
             enviarAxI['unitId'] = enviar3.unitId;
 
-            var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
-
+            //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
+            subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
             $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
                 //$.post(UrlIndicadorXAcaoModalPA, enviarAxI , function (r) {
 
@@ -1635,7 +1663,11 @@
                     },
                     title: {
                         //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
-                        text: ChartTitle//data[0].ChartTitle
+                        //text: ChartTitle//data[0].ChartTitle
+                        text: aux
+                    },
+                    subtitle: {                        
+                        text: subtitleAux
                     },
                     xAxis: {
                         categories: dia,
@@ -2057,6 +2089,34 @@
             closeLeftSidebar();
 
             $("#btnSend").click(function (e) {
+                Subtitle = "";
+                if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                    Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                }
+                if (enviar.unitId != '' && enviar.unitId != undefined) {
+                    Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                }
+                if (enviar.structureId != '' && enviar.structureId != undefined) {
+                    Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                }
+                if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+                    if (!$('#auditorId :selected').text() == "All")
+                        Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                }
+                if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+                    Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                }
+                if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+                    Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                }
+                if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+                    Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+                }
+                if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+                    Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+                }
+                Subtitle = Subtitle.substring(0, (Subtitle.length - 2));
+
                 Send(true);
             });
             $("#showModulo2").hide();
