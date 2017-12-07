@@ -296,12 +296,14 @@
                                         </table>
                                     </div>
 
-                                    @if (GlobalConfig.Brasil)
-                                    {
-                                        @*Obj Integrações*@
-                                        <div id="objIntegracoes" style="display:none;">
-                                            <table id="tblIntegracoes">
-                                                <tbody>
+                                    
+                                    @*Obj Integrações*@
+                                    <div id="objIntegracoes" style="display:none;">
+                                        <table id="tblIntegracoes">
+                                            <tbody>
+
+                                                @if (GlobalConfig.Brasil)
+                                                {
                                                     <tr class="row">
 
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
@@ -309,6 +311,7 @@
                                                         <td style="padding:5px;">@Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })</td>
 
                                                     </tr>
+
                                                     <tr class="row">
 
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
@@ -335,25 +338,26 @@
 
                                                     <tr class="row">
 
-                                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto" value="integracaoProduto"></td>
-                                                            <td style="padding:5px;">Produtos</td>
-                                                            <td style="padding:5px;"></td>
-
-                                                        </tr>
-
-                                                    <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
                                                         <td style="padding:5px;">Família de Produtos</td>
                                                         <td style="padding:5px;"></td>
 
                                                     </tr>
+                                                }
 
-                                                </tbody>
-                                            </table>
-                                            <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
-                                        </div>
-                                    }
+                                                <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto" value="integracaoProduto"></td>
+                                                        <td style="padding:5px;">Produtos</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
+                                    </div>
+                                    
                                     <div id="objTexto" style="display:none;">
                                         @*@Table.GerarColuna(@Html.Editor("objTextoName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("objTextoName", "*"), null)*@
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" />
