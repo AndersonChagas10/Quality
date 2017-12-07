@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,20 +40,22 @@ namespace DTO
         {
             get
             {
-               var str = Resources.Resource.waiting_upper;
+                //Gambeta para funcionar o resources no controller
+                var vtnc = CommonDataLocal.getResource("waiting_upper");
+                var str = Resources.Resource.waiting_upper; //CommonDataLocal.getResource("waiting_upper");//
                 switch (Status)
                 {
                     case StatusType.ERROR:
-                        str = Resources.Resource.error_upper;
+                        str = Resources.Resource.error_upper; //CommonDataLocal.getResource("error_upper"); //
                         break;
                     case StatusType.SUCESSO:
-                        str = Resources.Resource.success_upper;
+                        str = Resources.Resource.success_upper; //CommonDataLocal.getResource("success_upper"); //
                         break;
                     case StatusType.PROCESSANDO:
-                        str = Resources.Resource.processing_upper;
+                        str = Resources.Resource.processing_upper; //CommonDataLocal.getResource("processing_upper"); //
                         break;
                 }
-                return str;
+                return str.ToString();
             }
         }
     }

@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api.App
     /// 
     /// </summary>
     [RoutePrefix("api/AppParams")]
-    public class AppParamsApiController : ApiController
+    public class AppParamsApiController : BaseApiController
     {
         SgqDbDevEntities db;
 

@@ -157,6 +157,7 @@
     <Compile Include="DTO\VTVerificacaoTipificacaoDTO.cs" />
     <Compile Include="GetResources.cs" />
     <Compile Include="GlobalConfig.cs" />
+    <Compile Include="Helpers\CommonDataLocal.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />
     <Compile Include="ResultSet\TabelaDinamicaResultados.cs" />
