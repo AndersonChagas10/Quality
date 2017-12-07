@@ -1,11 +1,11 @@
 ﻿
 
-//var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
-//var urlGetPlanejamentoAcao = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
-var urlGetPlanejamentoAcao = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-//var urlGetPlanejamentoAcao = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 var ColvisarrayVisaoAtual_show = [];
 var ColvisarrayVisaoAtual_hide = [];
@@ -19,7 +19,7 @@ var dados = [];
 var dadosPie2 = [];
 
 function GetDataTable(campo, filtro) {
-    $.get(urlGetPlanejamentoAcao, enviar, function (r) {
+    $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
         dados = r;
         //https://grtsolucoes.atlassian.net/browse/JBS-110
