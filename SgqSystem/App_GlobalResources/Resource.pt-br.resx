@@ -484,7 +484,7 @@
     <value>Define se as unidades poderão editar/criar os vínculos com as tarefas</value>
   </data>
   <data name="link_number_evaluation" xml:space="preserve">
-    <value>Link com o número da avaliação</value>
+    <value>Link com a avaliação</value>
   </data>
   <data name="evaluation" xml:space="preserve">
     <value>Avaliação</value>
@@ -2276,5 +2276,23 @@
   </data>
   <data name="waiting_upper" xml:space="preserve">
     <value>PENDENTE</value>
+  </data>
+  <data name="use_active_directory" xml:space="preserve">
+    <value>Usar AD (Active Directory)</value>
+  </data>
+  <data name="products" xml:space="preserve">
+    <value>Produtos</value>
+  </data>
+  <data name="include_integrations" xml:space="preserve">
+    <value>Incluir Integrações</value>
+  </data>
+  <data name="edit_header" xml:space="preserve">
+    <value>Editar cabeçalho</value>
+  </data>
+  <data name="advanced_itens" xml:space="preserve">
+    <value>Itens avançados</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Nenhum</value>
   </data>
 </root>

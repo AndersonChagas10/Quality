@@ -294,11 +294,11 @@ namespace Dominio.Services
             //}
 
             /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
-            if (GlobalConfig.mockLoginEUA)
-            {
-                UserSgq userDev = CheckUserAndPassDataBase(userDto);
-                return userDev;
-            }
+            //if (GlobalConfig.mockLoginEUA)
+            //{
+            //    UserSgq userDev = CheckUserAndPassDataBase(userDto);
+            //    return userDev;
+            //}
 
             if (userByName != null)
             {
@@ -306,31 +306,39 @@ namespace Dominio.Services
                 if (!IsActive)
                     throw new Exception("User disabled.");
             }
-
-            /*1*/
-            if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                        
+            if (userByName == null || userByName.UseActiveDirectory)
             {
-
-
-                /*1.1*/
-                UserSgq isUser = CheckUserAndPassDataBase(userDto);
-
-                /*1.2*/
-                if (userByName.IsNotNull() && isUser.IsNull())
+                /*1*/
+                if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
                 {
-                    isUser = AlteraSenhaAlteradaNoAd(userDto, userByName);
-                    if (isUser.IsNull())
-                        throw new Exception("Error updating password from ADUser.");
+
+
+                    /*1.1*/
+                    UserSgq isUser = CheckUserAndPassDataBase(userDto);
+
+                    /*1.2*/
+                    if (userByName.IsNotNull() && isUser.IsNull())
+                    {
+                        isUser = AlteraSenhaAlteradaNoAd(userDto, userByName);
+                        if (isUser.IsNull())
+                            throw new Exception("Error updating password from ADUser.");
+                    }
+
+                    /*1.3*/
+                    //if (isUser.IsNull())
+                    //return CreateUserFromAd(userDto);
+
+                    return isUser;
+
                 }
-
-                /*1.3*/
-                //if (isUser.IsNull())
-                //return CreateUserFromAd(userDto);
-
-                return isUser;
-
             }
-
+            else
+            {
+                UserSgq userDev = CheckUserAndPassDataBase(userDto);
+                return userDev;
+            }
+            
             return null;
         }
 

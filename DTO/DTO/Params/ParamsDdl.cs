@@ -100,12 +100,7 @@ namespace DTO.DTO.Params
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition.OrderBy(r => r.Name));
 
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.OrderBy(r => r.Name));
-
-            if (GlobalConfig.Eua)
-            {
-                DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.Where(r => r.Id != 2).OrderBy(r => r.Name));
-            }
-
+            
             DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment.OrderBy(r => r.Name));
             DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1.OrderBy(r => r.Name));
             DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1.OrderBy(r => r.Name));

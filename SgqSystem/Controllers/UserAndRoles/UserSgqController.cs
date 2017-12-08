@@ -330,10 +330,14 @@ namespace SgqSystem.Controllers
 
                     myCookie.Values.Add("addDate", userSgq.AddDate.ToString("dd/MM/yyyy"));
 
-                    if (userSgq.Role != null)
+                    
+
+                    if (userSgq.ParCompanyXUserSgq != null)
                         myCookie.Values.Add("roles", userSgq.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
                     else
                         myCookie.Values.Add("roles", "");
+
+                    myCookie.Values.Add("CompanyId", userSgq.ParCompany_Id.ToString());
 
                     if (userSgq.ParCompanyXUserSgq != null)
                         if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))

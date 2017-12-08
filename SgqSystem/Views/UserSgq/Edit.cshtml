@@ -118,15 +118,6 @@
                                             </div>
                                         </div>
 
-                                        <hr />
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
-                                            </div>
-                                        </div>
-
                                         @if (@DTO.GlobalConfig.Eua)
                                         {
                                             <div class="form-group">
@@ -137,34 +128,46 @@
                                             </div>
                                         }
 
-                                        @if (@DTO.GlobalConfig.Eua == false)
+                                        <hr />
+
+                                        @if (@DTO.GlobalConfig.Eua)
                                         {
-                                            <div class="password">
-
-                                                <div class="form-group">
-                                                    @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                    <div class="col-md-10">
-                                                        @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
-                                                        @*<span id="errMsg"></span>*@
-                                                    </div>
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.use_active_directory, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    <input id="userSgqDto_UseActiveDirectory" name="userSgqDto.UseActiveDirectory" type="checkbox" value="">
                                                 </div>
-
-                                                <div class="form-group">
-                                                    @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                    <div class="col-md-10">
-                                                        @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         }
 
                                         <div class="form-group">
+                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                        <div id="passwordContainer">
+
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                @if (@DTO.GlobalConfig.Eua == false)
-                                                {
-                                                    <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
-                                                }
+                                                <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
                                                 <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
                                             </div>
                                         </div>
@@ -172,8 +175,6 @@
                                     </div>
                                 }
                             </div>
-
-
 
                             <div>
                                 @Html.ActionLink(Resources.Resource.back_to_list, "Index")
@@ -197,14 +198,14 @@
     $('#AlterDate').val(new Date($.now()).toUTCString());
 
     $(document).on("click", "#btnChangePassword", function () {
-        if ($(".password").hasClass("hide")) {
-            $(".password").removeClass("hide");
+        if ($("#passwordContainer").hasClass("hide")) {
+            $("#passwordContainer").removeClass("hide");
             $("#userSgqDto_Password").val("");
             $("#userSgqDto_ConfirmPassword").val("");
             $(this).text(Resources('do_not_change_password'));
         } else {
             $(this).text(Resources('change_password'));
-            $(".password").addClass("hide");
+            $("#passwordContainer").addClass("hide");
         }
     });
 
@@ -228,7 +229,7 @@
         }
 
 
-        if (!$(".password").hasClass("hide")) {
+        if (!$("#passwordContainer").hasClass("hide")) {
 
             if ($("#userSgqDto_Password").val() == "") {
                 openMessageModal(Resources('password_required'), '');
@@ -247,7 +248,28 @@
         })
     });
 
-    $(document).ready( function () {
+    $(document).on('switchChange.bootstrapSwitch', '#userSgqDto_UseActiveDirectory', function () {
+        $(this).is(":checked") ? $('#userSgqDto_UseActiveDirectory').val(true) : $('#userSgqDto_UseActiveDirectory').val(false)
+        setupAD();
+    });
+
+    function setupAD() {
+        if ($('#userSgqDto_UseActiveDirectory').length > 0) {
+            if (!$('#userSgqDto_UseActiveDirectory').prop('checked')) {
+                $('#btnChangePassword').removeClass("hide");
+            } else {
+                $('#passwordContainer').addClass("hide");
+                $('#btnChangePassword').addClass("hide");
+            }
+        }
+    }
+
+    $(document).ready(function () {
+
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $("[type='checkbox']").bootstrapSwitch();
 
         $.get("@Url.Action("Get", "api/UserSgq")", { 'Id': @Id }, function (object) {
             for (var key in object) {
@@ -260,12 +282,18 @@
             }
 
             if(object["IsActive"]){
-                $("#userSgqDto_IsActive").attr('checked', true)
+                $("#userSgqDto_IsActive").attr('checked', true).trigger('change');
             }
 
-            $(".password").addClass("hide");
+            if (object["UseActiveDirectory"]) {
+                $("#userSgqDto_UseActiveDirectory").attr('checked', true).trigger('change');
+            }
+
+            $("#passwordContainer").addClass("hide");
             $("#userSgqDto_Password").val("");
             $("#userSgqDto_ConfirmPassword").val("");
+
+            setupAD();
         })
 
         $("#userSgqDto_ListParCompany_Id").attr("multiple", "multiple");
@@ -273,23 +301,6 @@
 
         $("#userSgqDto_ListRole").attr("multiple", "multiple");
         $("#userSgqDto_ListRole").select2();
-
-        ////Função que limita o máximo de caracteres no password
-        //var maxLen = 7;
-        //$('#userSgqDto_Password').keyup(function (event) {
-        //    var Length = $("#userSgqDto_Password").val().length;
-        //    var AmountLeft = maxLen - Length;
-        //    $('#txt-length-left').html(AmountLeft);
-        //    if (Length > maxLen) {
-        //        if (event.which != 8) {
-        //            $('#userSgqDto_Password').val($('#userSgqDto_Password').val().slice(0, -1));
-        //            $('#errMsg').text('A senha deve conter no máximo 7 caracteres');
-        //            return false;
-        //        }
-        //    } else {
-        //        $('#errMsg').text('')
-        //    }
-        //});
 
         $('#userSgqDto_IsActive').change(function(){
 

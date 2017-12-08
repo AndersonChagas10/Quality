@@ -856,7 +856,7 @@
     <value>Change the password</value>
   </data>
   <data name="do_not_change_password" xml:space="preserve">
-    <value>Not change password</value>
+    <value>Cancel</value>
   </data>
   <data name="fullname" xml:space="preserve">
     <value>Fullname</value>
@@ -2279,5 +2279,23 @@
   </data>
   <data name="waiting_upper" xml:space="preserve">
     <value>WAITING</value>
+  </data>
+  <data name="use_active_directory" xml:space="preserve">
+    <value>Use AD (Active Directory)</value>
+  </data>
+  <data name="products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="include_integrations" xml:space="preserve">
+    <value>Include system integrations</value>
+  </data>
+  <data name="edit_header" xml:space="preserve">
+    <value>Edit header</value>
+  </data>
+  <data name="advanced_itens" xml:space="preserve">
+    <value>Advanced itens</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>None</value>
   </data>
 </root>

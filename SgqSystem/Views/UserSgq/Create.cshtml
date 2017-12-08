@@ -117,6 +117,16 @@
 
                                         <hr />
 
+                                        @if (@DTO.GlobalConfig.Eua)
+                                        {
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.use_active_directory, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    <input id="userSgqDto_UseActiveDirectory" name="userSgqDto.UseActiveDirectory" type="checkbox" value="">
+                                                </div>
+                                            </div>
+                                        }
+
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -124,8 +134,7 @@
                                             </div>
                                         </div>
 
-                                        @if (@DTO.GlobalConfig.Eua == false)
-                                        {
+                                        <div id="passwordContainer">
                                             <div class="form-group">
                                                 @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
@@ -140,7 +149,7 @@
                                                     @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
                                                 </div>
                                             </div>
-                                        }
+                                        </div>                                        
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
@@ -173,6 +182,21 @@
 
     $('#userSgqDto_AddDate').val(new Date($.now()).toUTCString());
 
+    $(document).on('switchChange.bootstrapSwitch', '#userSgqDto_UseActiveDirectory', function () {
+        $(this).is(":checked") ? $('#userSgqDto_UseActiveDirectory').val(true) : $('#userSgqDto_UseActiveDirectory').val(false)
+        setupAD();
+    });
+
+    function setupAD() {
+        if ($('#userSgqDto_UseActiveDirectory').length > 0) {
+            if ($('#userSgqDto_UseActiveDirectory').prop('checked')) {
+                $('#passwordContainer').addClass('hide');
+            } else {
+                $('#passwordContainer').removeClass('hide');
+            }
+        }        
+    }
+
     $(document).on("click", "#btnSave", function () {
 
         var valid = true;
@@ -187,19 +211,21 @@
             return;
         }
 
-        if ($("#userSgqDto_Password").val() == "") {
-            openMessageModal(Resources('password_required'), '');
-            return;
-        }
-
         if ($("#userSgqDto_ListParCompany_Id").val().length == 0) {
             openMessageModal(Resources('select_one_company'), '');
             return;
         }
 
-        if ($("#userSgqDto_Password").val() != $("#userSgqDto_ConfirmPassword").val()) {
-            openMessageModal(Resources('invalid_password'), '');
-            return;
+        if (!$('#passwordContainer').hasClass('hide')) {
+            if ($("#userSgqDto_Password").val() == "") {
+                openMessageModal(Resources('password_required'), '');
+                return;
+            }
+
+            if ($("#userSgqDto_Password").val() != $("#userSgqDto_ConfirmPassword").val()) {
+                openMessageModal(Resources('invalid_password'), '');
+                return;
+            }
         }
 
         $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function (data) {
@@ -214,28 +240,21 @@
     });
 
     $(document).ready(function () {
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $("[type='checkbox']").bootstrapSwitch();
+
         $("#userSgqDto_ListParCompany_Id").attr("multiple", "multiple");
         $("#userSgqDto_ListParCompany_Id").select2();
 
         $("#userSgqDto_ListRole").attr("multiple", "multiple");
         $("#userSgqDto_ListRole").select2();
 
-        ////Função que limita o máximo de caracteres no password
-        //var maxLen = 7;
-        //$('#userSgqDto_Password').keyup(function (event) {
-        //    var Length = $("#userSgqDto_Password").val().length;
-        //    var AmountLeft = maxLen - Length;
-        //    $('#txt-length-left').html(AmountLeft);
-        //    if (Length > maxLen) {
-        //        if (event.which != 8) {
-        //            $('#userSgqDto_Password').val($('#userSgqDto_Password').val().slice(0, -1));
-        //            $('#errMsg').text('A senha deve conter no máximo 7 caracteres');
-        //            return false;
-        //        }
-        //    } else {
-        //        $('#errMsg').text('')
-        //    }
-        //});
+        $("#userSgqDto_UseActiveDirectory").prop('checked', false);
+
+        setupAD();
+
     });
 
 </script>

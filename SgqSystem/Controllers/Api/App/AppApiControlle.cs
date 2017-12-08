@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api.App
     /// 
     /// </summary>
     [RoutePrefix("api/AppParams")]
-    public class AppParamsApiController : ApiController
+    public class AppParamsApiController : BaseApiController
     {
         SgqDbDevEntities db;
 
@@ -196,6 +196,17 @@ namespace SgqSystem.Controllers.Api.App
             public List<int> ListUnits { get; set; }
         }
 
+        [HttpGet]
+        [Route("GetStackTrace/{id}")]
+        public object GetStackTrace(int id)
+        {
+            if (GlobalConfig.PaginaDoTablet.ContainsKey(id))
+            {
+                return GlobalConfig.PaginaDoTablet[id].StackTrace;
+            }
+            return null;
+        }
+
         [HttpPost]
         [Route("GetGeneratedUnits")]
         public object GetGeneratedUnits([FromBody]GeneratedUnit generatedUnit)
@@ -272,6 +283,8 @@ namespace SgqSystem.Controllers.Api.App
                 {
                     GlobalConfig.PaginaDoTablet[id].DataFim = DateTime.Now;
                     GlobalConfig.PaginaDoTablet[id].Status = HtmlDoTablet.StatusType.ERROR;
+                    GlobalConfig.PaginaDoTablet[id].StackTrace = ex.StackTrace;
+
                 }
             }
             finally
