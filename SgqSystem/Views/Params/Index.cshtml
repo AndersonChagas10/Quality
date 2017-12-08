@@ -213,8 +213,8 @@
                     ID: Body
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary">Salvar</button>
-                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">Fechar</button>
+                    <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">@Resources.Resource.close</button>
                 </div>
             </div>
         </div>
@@ -1381,7 +1381,7 @@
         idLvl1 = idL1;
         $('#modalEdicaoCabecalho').modal();
         $('#modalEdicaoCabecalho').find('.modal-body').empty();
-        $('#Header').html("Edição de Cabeçalho");
+        $('#Header').html("@Resources.Resource.edit_header");
 
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);

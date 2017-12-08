@@ -113,3 +113,5 @@ IF COL_LENGTH('PA_COORDENACAO','GERENCIA_ID') IS NULL
 -------------------------------------------------------------------- 04 12 2017 - JELSAFA https://grtsolucoes.atlassian.net/browse/GRT-26
 
 ALTER TABLE UserSgq ADD UseActiveDirectory BIT NOT NULL DEFAULT 0
+
+ALTER TABLE ParHeaderField duplicate bit NOT NULL DEFAULT 0

@@ -4534,7 +4534,7 @@ namespace SgqSystem.Services
 
                             form_control = " <script> " +
                                            "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
-                                           
+
                                            " </script>                                           ";
 
                             form_control += @" <script>
@@ -4590,7 +4590,8 @@ namespace SgqSystem.Services
                             if (!hasDefaultIntegration)
                                 optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsIntegration + "</select>";
+                            form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsIntegration + "</select>";
+                        }
                         break;
                     //Binário
                     case 3:

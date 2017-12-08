@@ -187,6 +187,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Advanced itens.
+        /// </summary>
+        internal static string advanced_itens {
+            get {
+                return ResourceManager.GetString("advanced_itens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Alert.
         /// </summary>
         internal static string alert {
@@ -1672,6 +1681,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Edit header.
+        /// </summary>
+        internal static string edit_header {
+            get {
+                return ResourceManager.GetString("edit_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Edit input data type.
         /// </summary>
         internal static string edit_input_data_type {
@@ -2487,6 +2505,15 @@ namespace Resources {
         internal static string include_information {
             get {
                 return ResourceManager.GetString("include_information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Include system integrations.
+        /// </summary>
+        internal static string include_integrations {
+            get {
+                return ResourceManager.GetString("include_integrations", resourceCulture);
             }
         }
         
@@ -3706,6 +3733,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a None.
+        /// </summary>
+        internal static string none {
+            get {
+                return ResourceManager.GetString("none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Non-Conformities in Period.
         /// </summary>
         internal static string non_conformities_in_period {
@@ -4350,6 +4386,15 @@ namespace Resources {
         internal static string processing_upper {
             get {
                 return ResourceManager.GetString("processing_upper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Products.
+        /// </summary>
+        internal static string products {
+            get {
+                return ResourceManager.GetString("products", resourceCulture);
             }
         }
         

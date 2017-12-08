@@ -83,7 +83,7 @@
                     <div class="panel panel-danger">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1Av_header_accordion" href="#level1Av_header_collapse" aria-expanded="false"> Itens Avançados</a>
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1Av_header_accordion" href="#level1Av_header_collapse" aria-expanded="false">@Resources.Resource.advanced_itens</a>
                             </h4>
                         </div>
                         <div id="level1Av_header_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -347,14 +347,14 @@
                                                 <tr class="row">
 
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto" value="integracaoProduto"></td>
-                                                        <td style="padding:5px;">Produtos</td>
+                                                        <td style="padding:5px;">@Resources.Resource.products</td>
                                                         <td style="padding:5px;"></td>
 
                                                 </tr>
 
                                             </tbody>
                                         </table>
-                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_integrations" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
                                     </div>
                                     
                                     <div id="objTexto" style="display:none;">
@@ -488,7 +488,7 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
                                                             {
 
-                                                                <td style="font-size:xx-small;">
+                                                                <td>
                                                                    
                                                                     @{ var tipo = "";
 
@@ -510,7 +510,7 @@
                                                                                 tipo = "Família de Produtos";
                                                                                 break;
                                                                             case ("Produto"):
-                                                                                tipo = "Produto";
+                                                                                tipo = Resources.Resource.products;
                                                                                 break;
                                                                             default:
                                                                                 tipo = "";
@@ -548,10 +548,8 @@
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
                                                             {
-
-
-                                                                <td style="font-size:xx-small;">
-                                                                    <input type="number" class="fixed-width form-control input-sm" style="font-size:xx-small;" />
+                                                                <td>
+                                                                    <input type="number" class="fixed-width form-control input-sm" />
 
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
 
@@ -561,8 +559,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
                                                             {
 
-                                                                <td style="font-size:xx-small;">
-                                                                    <input type="text" class="dataInput active form-control input-sm" style="font-size:xx-small;">
+                                                                <td>
+                                                                    <input type="text" class="dataInput active form-control input-sm">
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
 
                                                                 </td>
@@ -571,8 +569,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
                                                             {
 
-                                                                <td style="font-size:xx-small;">
-                                                                    <input type="time" class="active form-control input-sm" style="font-size:xx-small;">
+                                                                <td>
+                                                                    <input type="time" class="active form-control input-sm">
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
 
                                                                 </td>
@@ -581,7 +579,7 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
                                                             {
 
-                                                                <td style="font-size:xx-small;">
+                                                                <td>
                                                                     @parLevel1XHeaderField.ParHeaderField.Description
 
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
@@ -616,13 +614,13 @@
 
                                                             </td>
 
-                                                            <td style="font-size:xx-small;">
+                                                            <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
                                                                     <div class="input-group">
                                                                         <div class="input-group-btn">
                                                                             <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
-                                                                                <option value="0" selected>Nenhum</option>
+                                                                                <option value="0" selected>@Resources.Resource.none</option>
                                                                                 @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                                 {
                                                                                     if (radioOpt.IsDefaultOption == true)
@@ -641,8 +639,7 @@
                                                                 }
                                                             </td>
 
-                                                            </td>
-                                                            <td style="font-size:xx-small;">
+                                                            <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
                                                                 {
                                                                     <button type="button" class="btn btn-success btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
@@ -657,7 +654,7 @@
                                                                     </button>
                                                                 }
 
-                                                                <button type="button" class="btn btn-danger btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="Editar Cabeçalho">
+                                                                <button type="button" class="btn btn-danger btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
                                                                     <span class="fa fa-pencil-square-o"></span>
                                                                 </button>
 
@@ -1598,7 +1595,7 @@
                     tipo = "Família de Produtos";
                     break;
                 case "integracaoProduto":
-                    tipo = "Produtos";
+                    tipo = "@Resources.Resource.products";
                     break;
                 default:
                     tipo = "";
