@@ -229,6 +229,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 			ON L2.ParDepartment_Id = D.Id
                         LEFT JOIN ParCompanyCluster PCC
 		                	ON PCC.ParCompany_Id = UNI.Id
+                            and PCC.Active = 1
 		                LEFT JOIN ParCluster PC
 		                	ON PCC.ParCluster_Id = PC.Id
 		                LEFT JOIN ParClusterGroup PCG
