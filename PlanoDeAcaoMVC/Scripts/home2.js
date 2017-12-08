@@ -293,10 +293,10 @@ function MountDataTable(json) {
             //}
             //}
         ],
-        //fixedColumns: {
-        //    leftColumns: 0,
-        //    rightColumns: 2,
-        //},
+        fixedColumns: {
+            leftColumns: 0,
+            rightColumns: 2,
+        },
         initComplete: function () {
 
             $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
