@@ -1538,11 +1538,13 @@ function distinctFilter(lista, filtro, selectId) {
 
     $('#' + selectId).children('option').remove();
 
-    $('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todas"));
+
+    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
 
 
     $.each(retorno, function (key, value) {
