@@ -249,7 +249,7 @@ function MountDataTable(json) {
             //    }
             //},
             {
-                extend: 'excelHtml5',
+                extend: 'excel',
                 text: 'Excel',
                 exportOptions: {
                     columns: ':visible'
