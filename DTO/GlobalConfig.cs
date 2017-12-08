@@ -35,6 +35,7 @@ namespace DTO
         public DateTime? DataFim { get; set; }
         public string DataFimStr { get { return DataFim == null ? null : DataFim.Value.ToShortDateString() + " " + DataFim.Value.ToShortTimeString(); } }
         public enum StatusType { ERROR, SUCESSO, PROCESSANDO, PENDENTE };
+        public string StackTrace { get; set; }
         public StatusType Status { get; set; } = StatusType.PENDENTE;
         public string StatusStr
         {
