@@ -65,8 +65,6 @@ function GetDataTable(campo, filtro) {
 
         MountDataTable(json);
 
-
-
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
@@ -128,22 +126,22 @@ function MountDataTable(json) {
             { "mData": "Acao.QuantoCusta" },
             { "mData": "Acao._StatusName" },
             { "mData": "Acao._Prazo" },
-        {
-            "mData": null,
-            "render": function (data, type, row, meta) {
-                var html = "";
-                if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
-                    html += btnNovoTatico;
+            {
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    var html = "";
+                    if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
+                        html += btnNovoTatico;
 
-                if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
-                    html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
+                    if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
+                        html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
 
-                if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
-                    html += "<br>" + btnAcompanhamento
+                    if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
+                        html += "<br>" + btnAcompanhamento
 
-                return html;
+                    return html;
+                }
             }
-        }
 
 
         ],
@@ -574,7 +572,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
             if (arrColuna == "Acao.TipoIndicador" && arrValue != "Todos") {
 
-                
+
 
                 arrValueAux = [];
                 if (arrValue == "Diretrizes")
@@ -1840,7 +1838,7 @@ function filterPie2ForDataTable(name) {
         dadosAux = dadosPie2;
 
     var arrayfilter = FiltraColunasOfClickPie(dadosAux, "_StatusName", name);
-    MountDataTable(arrayfilter);
+    //MountDataTable(arrayfilter);
 
     var retorno = '';
 
@@ -2297,18 +2295,18 @@ function setArrayColvisAtual() {
         } else {
             ColvisarrayVisaoAtual_hide.push(i);
         }
-    })
-    $('body > div.dt-button-collection.fixed.four-column').show();
-    $('body > div.dt-button-background').click();
+    }).promise().done(function () {       
+        $('body > div.dt-button-background').click();
+        //$('body > div.dt-button-collection.fixed.four-column').show();
+    });
+
 }
 
 
 $(document).ready(function () {
 
     //console.log("ready!");
-    GetDataTable();
-
-
+    //GetDataTable();
 
     $('.defaultFilter').css('color', '#000000');
 
@@ -2316,12 +2314,7 @@ $(document).ready(function () {
     $("input[name='daterange']").css('width', '140px');
     $("input[name='daterange']").css('height', '25px');
 
-    
-
     setTimeout(atualizarTopFilters, 5000);
-
-
-
 
 });
 
