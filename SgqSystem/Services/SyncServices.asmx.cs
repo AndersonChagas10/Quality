@@ -1806,23 +1806,29 @@ namespace SgqSystem.Services
                 string ParHeaderField_Id = header[0];
                 string ParFieldType_Id = header[1];
                 string Value = header[2];
+                string Evaluation = header[3];
+                string Sample = header[4];
 
                 //Tratamento de erros Gabriel 2017-05-27
                 if (ParHeaderField_Id != "undefined" && ParFieldType_Id != "undefined")
                 {
 
-                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
-                         "      ([CollectionLevel2_Id]                                     " +
-                         "      ,[ParHeaderField_Id]                                       " +
-                         "      ,[ParHeaderField_Name]                                     " +
-                         "      ,[ParFieldType_Id]                                         " +
-                         "      ,[Value])                                                  " +
-                         "VALUES                                                           " +
-                         "      ('" + CollectionLevel2Id + "'                              " +
-                         "      ," + ParHeaderField_Id + "                                     " +
+                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]                                      " +
+                         "      ([CollectionLevel2_Id]                                                              " +
+                         "      ,[ParHeaderField_Id]                                                                " +
+                         "      ,[ParHeaderField_Name]                                                              " +
+                         "      ,[ParFieldType_Id]                                                                  " +
+                         "      ,[Evaluation]                                                                       " +
+                         "      ,[Sample]                                                                           " +
+                         "      ,[Value])                                                                           " +
+                         "VALUES                                                                                    " +
+                         "      ('" + CollectionLevel2Id + "'                                                       " +
+                         "      ," + ParHeaderField_Id + "                                                          " +
                          "      ,(SELECT Name FROM ParHeaderField (nolock)  WHERE Id='" + ParHeaderField_Id + "')   " +
-                         "      ,'" + ParFieldType_Id + "'                                  " +
-                         "      ,'" + Value + "')                                           ";
+                         "      ,'" + ParFieldType_Id + "'                                                          " +
+                         "      ,'" + Evaluation + "'                                                               " +
+                         "      ,'" + Sample + "'                                                                   " +
+                         "      ,'" + Value + "')                                                                   ";
 
                 }
 
@@ -4513,7 +4519,7 @@ namespace SgqSystem.Services
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() +"\">" + optionsMultiple + "</select>";
 
 
                         break;
@@ -4584,8 +4590,7 @@ namespace SgqSystem.Services
                             if (!hasDefaultIntegration)
                                 optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
 
-                            form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
-                        }
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsIntegration + "</select>";
                         break;
                     //Binário
                     case 3:
@@ -4602,7 +4607,7 @@ namespace SgqSystem.Services
                                 optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsBinario + "</select>";
                         break;
                     //Texto
                     case 4:

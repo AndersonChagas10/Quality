@@ -484,7 +484,7 @@
     <value>Define se as unidades poderão editar/criar os vínculos com as tarefas</value>
   </data>
   <data name="link_number_evaluation" xml:space="preserve">
-    <value>Link com o número da avaliação</value>
+    <value>Link com a avaliação</value>
   </data>
   <data name="evaluation" xml:space="preserve">
     <value>Avaliação</value>

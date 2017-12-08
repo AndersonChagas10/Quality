@@ -238,7 +238,7 @@
                                             @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", Resources.Resource.select_the_field_where), null)
                                             @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.type), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", Resources.Resource.select_the_field_type), null)
                                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", Resources.Resource.fill_the_header_name_field), null)
-                                            @*@Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)*@
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)
                                         </tr>
                                     </tbody>
                                 </table>
@@ -246,13 +246,12 @@
                                 <div id="allObjCamposCabecalho">
 
                                     @*Multipla Escolha*@
-                                    <div id="objMultiplaEscolha" style="display:none;">
+                                    <div id="objMultiplaEscolha" style="display:none;" class="margin-top">
                                         <table id="tblOpcaoMultiplaEscolha">
                                             <tbody>
                                                 <tr class="row">
                                                     @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Opção deve ser preenchido para o Cabeçalho."), null)
                                                     @Table.GerarColunaButton(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.punishment_value), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirMultiplaEscolha' onclick='Cabecalhos.IncluirMultiplaEscolha();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -437,10 +436,7 @@
 
                                     @*Cabecalho Preview Edicao*@
                                     <div id="cabecalhoPreviewEDICAO" class="table">
-
                                         <div id="alteracao" style="padding: 8px;">
-
-
                                         </div>
                                     </div>
 
@@ -461,14 +457,14 @@
                                     <div id="cabecalhoPreview" class="table">
                                         <table id="tableCabecalhosPreview" class="table">
                                             <thead>
-                                                <tr style="font-size:xx-small;">
-                                                    <th style="font-size:xx-small;">@Resources.Resource.field_level</th>
-                                                    <th style="font-size:xx-small;">@Resources.Resource.name</th>
-                                                    <th style="font-size:xx-small;">@Resources.Resource.type</th>
-                                                    <th style="font-size:xx-small;">@Resources.Resource.preview</th>
-                                                    <th style="font-size:xx-small;">@Resources.Resource.required</th>
-                                                    <th style="min-width:120px; font-size:xx-small;">@Resources.Resource.pattern</th>
-                                                    <th style="min-width:120px; max-width:120px; font-size:xx-small;">@Resources.Resource.action</th>
+                                                <tr>
+                                                    <th>@Resources.Resource.field_level</th>
+                                                    <th>@Resources.Resource.name</th>
+                                                    <th>@Resources.Resource.type</th>
+                                                    <th>@Resources.Resource.preview</th>                                                    
+                                                    <th>@Resources.Resource.required</th>                                                    
+                                                    <th>@Resources.Resource.pattern</th>
+                                                    <th>@Resources.Resource.action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -477,16 +473,14 @@
                                                     foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                     {
                                                         <tr class="alteracao">
-
-                                                            <td style="font-size:xx-small;">@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td style="font-size:xx-small;">@parLevel1XHeaderField.ParHeaderField.Name</td>
-                                                            <td style="font-size:xx-small;">@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                             {
-                                                                <td style="font-size:xx-small;">
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm ", @id = parLevel1XHeaderField.ParHeaderField.Id, @style = "font-size:xx-small;" })
+                                                                <td>
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
                                                                 </td>
                                                             }
@@ -534,8 +528,7 @@
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
-
-                                                                <td style="font-size:xx-small;">
+                                                                <td>
                                                                     @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                     {
                                                                         <label>@radioOpt.Name</label>
@@ -548,11 +541,8 @@
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
                                                             {
-
-                                                                <td style="font-size:xx-small;">
+                                                                <td>
                                                                     @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-
                                                                 </td>
                                                             }
 
@@ -567,6 +557,7 @@
 
                                                                 </td>
                                                             }
+
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
                                                             {
 
@@ -576,6 +567,7 @@
 
                                                                 </td>
                                                             }
+
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
                                                             {
 
@@ -585,6 +577,7 @@
 
                                                                 </td>
                                                             }
+
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
                                                             {
 
@@ -595,9 +588,9 @@
 
                                                                 </td>
                                                             }
-
-                                                            <td style="font-size:xx-small;">
-                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" style="font-size:xx-small;" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                            
+                                                            <td>
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control fixed-width input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
                                                                     {
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
@@ -628,7 +621,7 @@
                                                                 {
                                                                     <div class="input-group">
                                                                         <div class="input-group-btn">
-                                                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px; font-size:xx-small;">
+                                                                            <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
                                                                                 <option value="0" selected>Nenhum</option>
                                                                                 @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                                 {
@@ -646,6 +639,7 @@
                                                                         </div>
                                                                     </div>
                                                                 }
+                                                            </td>
 
                                                             </td>
                                                             <td style="font-size:xx-small;">
@@ -693,7 +687,6 @@
 
                 @Html.Partial("_CounterXLevel", Model)
 
-                @*Regra de NC*@
                 <div class="panel-group accordion" id="level1_nc_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -740,12 +733,11 @@
                 </div>
 
                 @Html.Partial("_ReincidenciaXLevel", Model)
-
-
+                
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
-                    }
+    }
 
 </div>
 
@@ -872,6 +864,13 @@
             $('#punishmentValueCabecalho1').hide();
             $('#punishmentValueCabecalho2').hide();
         },
+        ShowLinkEvaluation: function (IsShow) {
+            if (IsShow) {
+                $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').parent().parent().parent().show();
+            } else {
+                $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').parent().parent().parent().hide();
+            }
+        },
         TipoChange: function () {
 
             var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
@@ -882,6 +881,12 @@
             Cabecalhos.ParBinario = [];
 
             $('#paramsDto_parHeaderFieldDto_Description').parents('td').hide();
+
+            if (escolhaSelecionada >= 1 && escolhaSelecionada <= 3) {
+                Cabecalhos.ShowLinkEvaluation(true);
+            } else {
+                Cabecalhos.ShowLinkEvaluation(false);
+            }
 
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
@@ -1024,11 +1029,6 @@
         },
         SalvaMultiplaEscolha: function () {
 
-            /* <tr><th>Nível do campo</th></tr>
-            <tr><th>Nome</th></tr>
-            <tr><th>Tipo</th></tr>
-            <tr><th>Preview</th></tr>
-            <tr><th></th></tr>*/
             if ($('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state')) {
                 statusText = "Sim";
             } else {
@@ -1041,13 +1041,7 @@
                 '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
                 '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
                 '<option value="-1">"@Resources.Resource.select"</option> ';
-
-
-            @*var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
-                          '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
-                          '<option value="-1">"@Resources.Resource.select"</option> ';*@
+            
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
                 Cabecalhos.ParMultiplaEscolhaOpcoes[c].IsRequired =  $('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state');
@@ -1063,6 +1057,7 @@
                     example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
             }
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"                value="true" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
 
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
