@@ -191,12 +191,15 @@ function MountDataTable(json) {
         ],
 
         responsive: true,
-        //"bFilter": false,
+        "bFilter": true,
+        paging: true,
+        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
+        info: true,
         "scrollY": 370,
         "scrollX": 500,
-        "bLengthChange": false,
+        "bLengthChange": true,
 
-        dom: 'Bfrtip',
+        dom: 'Blfrtip',
         buttons: [
             //{
             {
@@ -1723,6 +1726,8 @@ function geraData2(dadosFiltrados) {
 
 function atualizarTopFilters() {
     $('.dropdown-toggle').css('font-size', 'xx-small');
+    $('.select2').css('width', '50px');
+    $('.select2').css('font-size', 'xx-small');
 }
 
 function getGraphPanel1(meuDado) {
@@ -2309,7 +2314,9 @@ $(document).ready(function () {
     $("input[name='daterange']").css('width', '140px');
     $("input[name='daterange']").css('height', '25px');
 
-    setTimeout(atualizarTopFilters, 100);
+    
+
+    setTimeout(atualizarTopFilters, 5000);
 
 
 
