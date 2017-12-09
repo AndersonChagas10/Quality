@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using Dominio;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
 using System;
@@ -14,14 +15,20 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/Reprocesso")]
     public class ReprocessoApiController : ApiController
     {
-
+        public class RetrocessoReturn
+        {
+           public List<ParReprocessoHeaderOP> parReprocessoHeaderOPs { get; set; }
+           public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
+           public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
+           public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
+        }
 
         public class ParReprocessoHeaderOP
         {
             public int nCdOrdemProducao { get; set; }
             public int nCdEmpresa { get; set; }
-            public int dLancamento { get; set; }
-            public DateTime nCdUsuario { get; set; }
+            public DateTime dLancamento { get; set; }
+            public int nCdUsuario { get; set; }
             public String cCdRastreabilidade { get; set; }
             public int nCdHabilitacao { get; set; }
         }
@@ -53,18 +60,35 @@ namespace SgqSystem.Controllers.Api
             public String cCdRastreabilidade { get; set; }
             public int iVolume { get; set; }
             public double nPesoLiquido { get; set; }
+            public Produto produto { get; set; }
         }
 
-        [Route("Get")]
+        public class Produto
+        {
+
+        }
+
+        [Route("Get/{ParCompany_Id}")]
         [HttpGet]
-        public void Get(int ParCompany_Id)
+        public RetrocessoReturn Get(int ParCompany_Id)
         {
             Factory factory = new Factory("DbContextSgqEUA");
 
-            var t1 = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " 489");
-            var t2 = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP"));
-            var t3 = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " 489");
-            var t4 = factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " 489");
+            var companyNumber = factory.SearchQuery<int>("SELECT CompanyNumber FROM ParCompany WHERE Id = "+ ParCompany_Id);
+
+            if(companyNumber.Count() > 0)
+            {
+                RetrocessoReturn retrocessoReturn = new RetrocessoReturn();
+
+                retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " "+ companyNumber[0]);
+                retrocessoReturn.parReprocessoCertificadosSaidaOP = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP"));
+                retrocessoReturn.parReprocessoSaidaOPs = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " "+ companyNumber[0]);
+                retrocessoReturn.parReprocessoEntradaOPs = factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " " + companyNumber[0]);
+
+                return retrocessoReturn;
+            }
+
+            return null;
 
         }
     }
