@@ -52,7 +52,8 @@ namespace SgqSystem.Controllers.Api
         public class ParReprocessoEntradaOP
         {
             public int nCdOrdemProducao { get; set; }
-            public DateTime dProducao { get; set; }
+            public int nCdProduto { get; set; }
+            public DateTime dProduto { get; set; }
             public DateTime dEmbalagem { get; set; }
             public DateTime dValidade { get; set; }
             public int nCdLocalEstoque { get; set; }
@@ -65,7 +66,9 @@ namespace SgqSystem.Controllers.Api
 
         public class Produto
         {
-
+            public decimal nCdProduto { get; set; }
+            public String cNmProduto { get; set; }
+            public String cDescricaoDetalhada { get; set; }
         }
 
         [Route("Get/{ParCompany_Id}")]
@@ -73,11 +76,12 @@ namespace SgqSystem.Controllers.Api
         public RetrocessoReturn Get(int ParCompany_Id)
         {
             Factory factory = new Factory("DbContextSgqEUA");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
-            
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();            
 
             var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
+
+            sgqDbDevEntities.CollectionLevel2.
 
             if (parCompany != null)
             {
@@ -86,7 +90,12 @@ namespace SgqSystem.Controllers.Api
                 retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " "+ parCompany.CompanyNumber);
                 retrocessoReturn.parReprocessoCertificadosSaidaOP = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP"));
                 retrocessoReturn.parReprocessoSaidaOPs = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP"));
-                retrocessoReturn.parReprocessoEntradaOPs = factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP"));
+                retrocessoReturn.parReprocessoEntradaOPs =
+                    factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP")).Select(r =>
+                    {
+                        r.produto = factory.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = "+ r.nCdProduto).FirstOrDefault();
+                        return r;
+                    }).ToList();
 
                 return retrocessoReturn;
             }
