@@ -380,6 +380,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppSettingsWebConfig.cs" />
     <Compile Include="Helpers\CommonDate.cs" />
     <Compile Include="Helpers\Handlres\HandleApi.cs" />
     <Compile Include="Helpers\Handlres\HandleController.cs" />

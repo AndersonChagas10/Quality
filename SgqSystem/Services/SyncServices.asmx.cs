@@ -3067,7 +3067,6 @@ namespace SgqSystem.Services
         [WebMethod]
         public string getAPP()
         {
-
             var html = new Html();
 
             string login = GetLoginAPP();
@@ -3195,7 +3194,6 @@ namespace SgqSystem.Services
         public int getMaxEvaluateLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
         {
             int evaluate = 0;
-
 
             string sql = "" +
                 "\n DECLARE @ParCompany_id int = 16 " +
