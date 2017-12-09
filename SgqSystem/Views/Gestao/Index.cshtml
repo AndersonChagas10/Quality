@@ -357,7 +357,8 @@
                         <ul id="nav">
                             <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
                             <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
-                            <li><a href="#">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                            @*<li><a href="@urlCEP">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>*@
+                            <li><a href="@urlCEP">@Resources.Resource.spc_charts</a></li>
                             @if (GlobalConfig.Eua)
                             {
                                 <li><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
