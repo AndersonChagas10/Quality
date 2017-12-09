@@ -73,17 +73,20 @@ namespace SgqSystem.Controllers.Api
         public RetrocessoReturn Get(int ParCompany_Id)
         {
             Factory factory = new Factory("DbContextSgqEUA");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
-            var companyNumber = factory.SearchQuery<int>("SELECT CompanyNumber FROM ParCompany WHERE Id = "+ ParCompany_Id);
+            
 
-            if(companyNumber.Count() > 0)
+            var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
+
+            if (parCompany != null)
             {
                 RetrocessoReturn retrocessoReturn = new RetrocessoReturn();
 
-                retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " "+ companyNumber[0]);
+                retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " "+ parCompany.CompanyNumber);
                 retrocessoReturn.parReprocessoCertificadosSaidaOP = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP"));
-                retrocessoReturn.parReprocessoSaidaOPs = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " "+ companyNumber[0]);
-                retrocessoReturn.parReprocessoEntradaOPs = factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " " + companyNumber[0]);
+                retrocessoReturn.parReprocessoSaidaOPs = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP"));
+                retrocessoReturn.parReprocessoEntradaOPs = factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP"));
 
                 return retrocessoReturn;
             }
