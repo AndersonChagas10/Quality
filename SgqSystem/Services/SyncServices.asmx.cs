@@ -18,6 +18,7 @@ using SGQDBContextYTOARA;
 using SgqSystem.Controllers.Api.App;
 using System.Data;
 using System.Text;
+using ADOFactory;
 
 namespace SgqSystem.Services
 {
@@ -3076,9 +3077,55 @@ namespace SgqSystem.Services
             return login + resource;
         }
 
+        public class ParReprocessoHeaderOP
+        {
+            private int nCdOrdemProducao { get; set; }
+            private int nCdEmpresa { get; set; }
+            private int dLancamento { get; set; }
+            private DateTime nCdUsuario { get; set; }
+            private String  cCdRastreabilidade { get; set; }
+            private int nCdHabilitacao { get; set; }
+        }
+
+        public class ParReprocessoCertificadosSaidaOP
+        {
+            private int nCdOrdemProducao { get; set; }
+            private int nCdCertificacao { get; set; }
+        }
+
+        public class ParReprocessoSaidaOP
+        {
+            private int nCdOrdemProducao { get; set; }
+            private int iItem { get; set; }
+            private double nCdProduto { get; set; }
+            private int iQtdeValor { get; set; }
+            private String cQtdeTipo { get; set; }
+            private int nCdLocalEstoque { get; set; }
+        }
+
+        public class ParReprocessoEntradaOP
+        {
+            private int nCdOrdemProducao { get; set; }
+            private DateTime dProducao { get; set; }
+            private DateTime dEmbalagem { get; set; }
+            private DateTime dValidade { get; set; }
+            private int nCdLocalEstoque { get; set; }
+            private String cCdOrgaoRegulador { get; set; }
+            private String cCdRastreabilidade { get; set; }
+            private int iVolume { get; set; }
+            private double nPesoLiquido { get; set; }
+        }
+
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
+
+            Factory factory = new Factory("DbContextSgqEUA");
+
+            var t1 = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " 1");
+            var t2 = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP") + " 1");
+            var t3 = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " 1");
+            var t4 = factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " 1");
 
             string APPMain = string.Empty;
 
