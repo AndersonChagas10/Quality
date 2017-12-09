@@ -94,5 +94,22 @@ namespace SgqSystem.Controllers.Api
             return null;
 
         }
+
+        [Route("GetCollectionLevel2Reprocesso/{ParCompany_Id}/{dtIni}/{dtFim}")]
+        [HttpGet]
+        public IEnumerable<CollectionLevel2> GetCollectionLevel2Reprocesso(int ParCompany_Id, DateTime dtIni, DateTime dtFim)
+            {
+            Factory factory = new Factory("DbContextSgqEUA");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
+
+            sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+
+            var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
+
+            var retorno = sgqDbDevEntities.CollectionLevel2.Where(r => r.UnitId == ParCompany_Id && r.CollectionDate >= dtIni && r.CollectionDate <= dtFim).ToList();
+
+            return retorno;
+
+        }
     }
 }
