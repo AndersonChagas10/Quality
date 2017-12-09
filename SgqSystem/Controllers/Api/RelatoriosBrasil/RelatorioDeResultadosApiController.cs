@@ -198,8 +198,11 @@ SELECT
 	END) AS Meta
    ,NC
    ,Av
+   
    ,case when ProcentagemNc > S2.Meta then 0 else 1 end as Status
    ,CAST(1 as bit) as IsIndicador
+,avComPeso
+   ,ncComPeso
 FROM (SELECT
 		Unidade
 	   ,IsRuleConformity
@@ -208,6 +211,8 @@ FROM (SELECT
 	   ,level1_Id
 	   ,SUM(avSemPeso) AS av
 	   ,SUM(ncSemPeso) AS nc
+       ,SUM(av) AS avComPeso
+	   ,SUM(nc) AS ncComPeso
 	   ,CASE
 			WHEN SUM(AV) IS NULL OR
 				SUM(AV) = 0 THEN 0
@@ -4599,7 +4604,10 @@ SELECT
    ,SUM(Meta) AS Meta
    ,SUM(nc) AS nc
    ,SUM(av) av
+
    ,[date]
+   ,SUM(ncComPeso) ncComPeso
+   ,SUM(avComPeso) avComPeso
 FROM (SELECT
 		level1_Id
 	   ,Level1Name
@@ -4614,6 +4622,8 @@ FROM (SELECT
 		END) AS Meta
 	   ,NcSemPeso AS nc
 	   ,AvSemPeso AS av
+       ,nc AS ncComPeso
+	   ,Av AS avComPeso
 	   ,Data AS date
 	FROM (SELECT
 			*
@@ -5136,6 +5146,8 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string IndicadorName { get; set; }
         public decimal? Av { get; set; }
         public decimal? Nc { get; set; }
+        public decimal? avComPeso { get; set; }
+        public decimal? ncComPeso { get; set; }
         public decimal? Pc { get; set; }
         public string Historico_Id { get; set; }
         public decimal? Meta { get; set; }
@@ -5159,6 +5171,9 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
     public class RetornoGenerico
     {
+
+        public decimal? avComPeso { get; set; }
+        public decimal? ncComPeso { get; set; }
 
         public decimal? av { get; set; }
         public string ChartTitle { get; set; }

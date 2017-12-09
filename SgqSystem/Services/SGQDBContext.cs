@@ -1520,6 +1520,7 @@ namespace SGQDBContext
                         GROUP BY TT.cNrClassificacao, cNmClassificacao
                         ORDER BY 2";
             }
+            
 
             var multipleValues = db.Query<ParFieldType>(sql);
 
