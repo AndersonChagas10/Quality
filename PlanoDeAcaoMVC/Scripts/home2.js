@@ -65,8 +65,6 @@ function GetDataTable(campo, filtro) {
 
         MountDataTable(json);
 
-
-
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
@@ -128,22 +126,22 @@ function MountDataTable(json) {
             { "mData": "Acao.QuantoCusta" },
             { "mData": "Acao._StatusName" },
             { "mData": "Acao._Prazo" },
-        {
-            "mData": null,
-            "render": function (data, type, row, meta) {
-                var html = "";
-                if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
-                    html += btnNovoTatico;
+            {
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    var html = "";
+                    if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
+                        html += btnNovoTatico;
 
-                if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
-                    html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
+                    if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
+                        html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
 
-                if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
-                    html += "<br>" + btnAcompanhamento
+                    if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
+                        html += "<br>" + btnAcompanhamento
 
-                return html;
+                    return html;
+                }
             }
-        }
 
 
         ],
@@ -251,7 +249,7 @@ function MountDataTable(json) {
             //    }
             //},
             {
-                extend: 'excelHtml5',
+                extend: 'excel',
                 text: 'Excel',
                 exportOptions: {
                     columns: ':visible'
@@ -295,10 +293,10 @@ function MountDataTable(json) {
             //}
             //}
         ],
-        //fixedColumns: {
-        //    leftColumns: 0,
-        //    rightColumns: 2,
-        //},
+        fixedColumns: {
+            leftColumns: 0,
+            rightColumns: 2,
+        },
         initComplete: function () {
 
             $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
@@ -574,7 +572,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
             if (arrColuna == "Acao.TipoIndicador" && arrValue != "Todos") {
 
-                
+
 
                 arrValueAux = [];
                 if (arrValue == "Diretrizes")
@@ -1086,6 +1084,22 @@ function getRegistrosNaoConcluidos(arr) {
 }
 //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
 function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
+
+    $('.semDados').hide();
+
+    if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
+        if (id == 'panel5') {
+            $('#semDados1').show();
+            return;
+        }
+
+        if (id == 'panel6') {
+            $('#semDados2').show();
+            return;
+        }
+        
+    }
+
     let options = {
         chart: {
             type: type,
@@ -1538,11 +1552,13 @@ function distinctFilter(lista, filtro, selectId) {
 
     $('#' + selectId).children('option').remove();
 
-    $('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
-    $('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todas"));
+
+    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
 
 
     $.each(retorno, function (key, value) {
@@ -1838,7 +1854,7 @@ function filterPie2ForDataTable(name) {
         dadosAux = dadosPie2;
 
     var arrayfilter = FiltraColunasOfClickPie(dadosAux, "_StatusName", name);
-    MountDataTable(arrayfilter);
+    //MountDataTable(arrayfilter);
 
     var retorno = '';
 
@@ -2295,18 +2311,18 @@ function setArrayColvisAtual() {
         } else {
             ColvisarrayVisaoAtual_hide.push(i);
         }
-    })
-    $('body > div.dt-button-collection.fixed.four-column').show();
-    $('body > div.dt-button-background').click();
+    }).promise().done(function () {       
+        $('body > div.dt-button-background').click();
+        //$('body > div.dt-button-collection.fixed.four-column').show();
+    });
+
 }
 
 
 $(document).ready(function () {
 
     //console.log("ready!");
-    GetDataTable();
-
-
+    //GetDataTable();
 
     $('.defaultFilter').css('color', '#000000');
 
@@ -2314,12 +2330,7 @@ $(document).ready(function () {
     $("input[name='daterange']").css('width', '140px');
     $("input[name='daterange']").css('height', '25px');
 
-    
-
     setTimeout(atualizarTopFilters, 5000);
-
-
-
 
 });
 
