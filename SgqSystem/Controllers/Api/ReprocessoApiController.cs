@@ -54,7 +54,7 @@ namespace SgqSystem.Controllers.Api
         {
             public int nCdOrdemProducao { get; set; }
             public int nCdProduto { get; set; }
-            public DateTime dProduto { get; set; }
+            public DateTime dProducao { get; set; }
             public DateTime dEmbalagem { get; set; }
             public DateTime dValidade { get; set; }
             public int nCdLocalEstoque { get; set; }
