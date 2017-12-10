@@ -160,7 +160,8 @@
                 , async: false //blocks window close
                 , success: function (data, status) {
                     console.log(data);
-                    dadosReprocessoCabecalho = data;
+                    if (!!data[0].Objeto)
+                        dadosReprocessoCabecalho = JSON.parse(data[0].Objeto.replace(/(\r\n|\n|\r)/gm, ""));
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
