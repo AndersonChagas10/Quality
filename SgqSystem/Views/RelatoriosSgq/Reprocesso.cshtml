@@ -47,11 +47,11 @@
             </style>
 
             <table id="results" class="display" cellspacing="0" style="width:100% !important;"></table>
-        </div>
+        </div>        
 
-        <button id="btnPrint">Clique para imprimir</button>
+        <div id="divReport" style="display:none; position:absolute; top: 50px; margin:auto; 
 
-        <div id="divReport" style="display:none; position:absolute; width: 21cm;
+    width: 21cm;
     min-height: 29.7cm;
     padding: 2cm;
     margin: 1cm auto;
@@ -59,6 +59,8 @@
     border-radius: 5px;
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
+
+            <button id="btnPrint">Clique para imprimir</button>
             
         </div>
 
@@ -72,7 +74,7 @@
 
         var dadosReprocessoCabecalho;
 
-        document.getElementById('btnPrint').onclick = function () {
+        function imprimirRelatorio() {
             var conteudo = document.getElementById('divReport').innerHTML,
                 tela_impressao = window.open('about:blank');
 
@@ -100,30 +102,69 @@
 
                     var lista = "";
 
-                    var cabecalho = "<table border=1>" +
+                    var cabecalho = "<table cellspacing=0px cellpadding=5px style='font-size:10px;'>" +
                         "<tr>" +
-                        "<td rowspan=3>" +
+                        "<td rowspan=3 align=center style='border:1px solid black;' width=140>" +
                         "<img src='../Imagens/logo-jbs.png'>" +
                         "</td>" +
-                        "<td align=center>" +
+                        "<td align=center style='border:1px solid black;'>" +
                         "<h4><b>REPROCESSO</b></h4>" +
                         "</td>" +
-                        "<td rowspan=3>" +
+                        "<td rowspan=3 align=center style='border:1px solid black;' width=140>" +
                         "<img src='../Imagens/logo-gq.png'>" +
                         "</td>" +
                         "</tr>" +
                         "<tr>" +
-                        "<td>" +
+                        "<td style='border:1px solid black;'>" +
                         "<b>Elaborador:</b> Equipe GQC Documentação/ANH" +
                         "</td>" +
                         "</tr>" +
                         "<tr>" +
-                        "<td>" +
+                        "<td style='border:1px solid black;'>" +
                         "<b>Aprovador:</b> Célia Regina Mattia GQC/ANH" +
                         "</td>" +
                         "</tr>";
 
-                    lista = lista + cabecalho;
+                    var campos = "" +
+                        "<tr><td colspan=3>&nbsp;</td></tr>" +
+                        "<tr><td colspan=3>Data do Reprocesso: ________/ _________/ __________</td></tr>" +
+                        "<tr><td colspan=3>Número da Ordem do Reprocesso: __________</td></tr>" +
+                        "<tr><td colspan=3>Número do Ofício do SIF autorizando o reprocesso: ________</td></tr>" +
+                        "<tr><td colspan=3>&nbsp;</td></tr>";
+
+                    var produtos = "";
+
+                    produtos = "<tr><td colspan=3>" +
+                        "<table border=1 width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'>" +
+                        "<tr>" +
+                        "<td style='padding:5px; font-weight:bold; text-align:center; width:300px;'>Produto</td>" +
+                        "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Produção</td>" +
+                        "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Embalagem</td>" +
+                        "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Validade</td>" +
+                        "<td style='padding:5px; font-weight:bold; text-align:center;';>Código da Ratreabilidade</td>" +
+                        "</tr>";
+
+
+                    for (var i = 0; i < 10; i++) {
+
+                        produtos = produtos +
+                            "<tr>" +
+                            "<td style='padding:5px;'>Produto " + i + "</td>" +
+                            "<td style='padding:5px; text-align:center;'>05/08/2017</td>" +
+                            "<td style='padding:5px; text-align:center;'>05/08/2017</td>" +
+                            "<td style='padding:5px; text-align:center;'>05/08/2017</td>" +
+                            "<td style='padding:5px; text-align:center;'>123s2311 " + i + "</td>" +
+                            "</tr>";
+                            
+                    }
+
+                    produtos = produtos + "</table>";
+
+                    lista = lista + cabecalho + campos + produtos;
+
+                    lista = lista +
+                        "<tr><td colspan=3>&nbsp;</td></tr>" +
+                        "<tr><td colspan=3 style='font-weight:bold;'>Avaliação do Produto</td></tr>";
 
                     for (var i = 0; i < data.length; i++) {
 
@@ -138,6 +179,43 @@
                             data[i].WeiDefects + 
                             '</td><tr>';
                     }
+
+                    lista = lista +
+                        "<tr><td colspan=3>&nbsp;</td></tr>" +
+                        "<tr><td colspan=3>Quantidade de produto aproveitado: _______________________</td></tr>" +
+                        "<tr><td colspan=3>Quantidade de produto descartado: _______________________</td></tr>" +
+                        "<tr><td colspan=3>Destino do produto: _______________________</td></tr>" +
+                        "<tr><td colspan=3>Local de estoque de alocação de produto final: _______________________</td></tr>" +
+                        "<tr><td colspan=3>&nbsp;</td></tr>" +
+                        "<tr><td colspan=3 style='font-weight:bold;'>Observações</td></tr>" +
+                        "<tr><td colspan=3>__________________________________________________________</td></tr>" +
+                        "<tr><td colspan=3>__________________________________________________________</td></tr>" +
+
+                        "<tr><td colspan=3 height=50px></td></tr>" +
+                        "<tr><td colspan=3>" +
+                            "<table width=100% cellspacing=0 cellspadding=0 style='font-size:10px;'><tr>" +
+                            "<td width=10%></td>" +
+                            "<td width=35% align=center style='border-top:1px solid black;'>Monitor GQ</td>" +
+                            "<td width=10%></td>" +
+                            "<td width=35% align=center style='border-top:1px solid black;'>Estoque Físico</td>" +
+                            "<td width=10%></td>" +
+                            "</tr></table>" +
+                        "</td ></tr > " +
+
+                        "<tr><td colspan=3 height=50px></td></tr>" +
+                        "<tr><td colspan=3>" +
+                            "<table width=100% cellspacing=0 cellspadding=0 style='font-size:10px;'><tr>" +
+                            "<td width=10%></td>" +
+                            "<td width=35% align=center style='border-top:1px solid black;'>Gerente Industrial</td>" +
+                            "<td width=10%></td>" +
+                            "<td width=35% align=center style='border-top:1px solid black;'>Garantia da Qualidade</td>" +
+                            "<td width=10%></td>" +
+                            "</tr></table>" +
+                        "</td ></tr > " +
+
+                        "</table>";
+
+                    lista = lista + "<button id='btnPrint' onClick='imprimirRelatorio();'>Clique para imprimir</button>";
 
                     $('#divReport').html(lista);
 
