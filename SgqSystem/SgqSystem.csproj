@@ -349,6 +349,7 @@
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
+    <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -770,6 +771,8 @@
     <Content Include="Imagens\if_check_406783.png" />
     <Content Include="Imagens\if_tablet_406729.png" />
     <Content Include="Imagens\if_target_406854.png" />
+    <Content Include="Imagens\logo-gq.png" />
+    <Content Include="Imagens\logo-jbs.png" />
     <Content Include="Imagens\Logo.png" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
@@ -1436,6 +1439,8 @@
     <Content Include="Views\ParClusterGroups\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel3Value.cshtml" />
     <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
+    <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

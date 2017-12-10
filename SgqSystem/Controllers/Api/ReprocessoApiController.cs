@@ -17,10 +17,10 @@ namespace SgqSystem.Controllers.Api
     {
         public class RetrocessoReturn
         {
-           public List<ParReprocessoHeaderOP> parReprocessoHeaderOPs { get; set; }
-           public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
-           public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
-           public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
+            public List<ParReprocessoHeaderOP> parReprocessoHeaderOPs { get; set; }
+            public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
+            public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
+            public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
         }
 
         public class ParReprocessoHeaderOP
@@ -77,23 +77,21 @@ namespace SgqSystem.Controllers.Api
         {
             Factory factory = new Factory("DbContextSgqEUA");
 
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();            
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
             var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
-
-            sgqDbDevEntities.CollectionLevel2.
 
             if (parCompany != null)
             {
                 RetrocessoReturn retrocessoReturn = new RetrocessoReturn();
 
-                retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " "+ parCompany.CompanyNumber);
+                retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " " + parCompany.CompanyNumber);
                 retrocessoReturn.parReprocessoCertificadosSaidaOP = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP"));
                 retrocessoReturn.parReprocessoSaidaOPs = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP"));
                 retrocessoReturn.parReprocessoEntradaOPs =
                     factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP")).Select(r =>
                     {
-                        r.produto = factory.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = "+ r.nCdProduto).FirstOrDefault();
+                        r.produto = factory.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
                         return r;
                     }).ToList();
 
@@ -107,17 +105,113 @@ namespace SgqSystem.Controllers.Api
         [Route("GetCollectionLevel2Reprocesso/{ParCompany_Id}/{dtIni}/{dtFim}")]
         [HttpGet]
         public IEnumerable<CollectionLevel2> GetCollectionLevel2Reprocesso(int ParCompany_Id, DateTime dtIni, DateTime dtFim)
-            {
+        {
             Factory factory = new Factory("DbContextSgqEUA");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
-            var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
+            //var ID_parLevel1 = sgqDbDevEntities.ParLevel1.FirstOrDefault(r => r.hashKey == 6).Id;
 
-            var retorno = sgqDbDevEntities.CollectionLevel2.Where(r => r.UnitId == ParCompany_Id && r.CollectionDate >= dtIni && r.CollectionDate <= dtFim).ToList();
+            var retorno = sgqDbDevEntities.CollectionLevel2
+
+                .Where(
+                r => r.UnitId == ParCompany_Id 
+                && r.CollectionDate >= dtIni 
+                && r.CollectionDate <= dtFim 
+                //&& r.ParLevel1_Id == ID_parLevel1
+                ).ToList();
+
+            retorno = retorno
+                .Select(r => 
+                {
+                    r.CollectionLevel21 = null;
+                    r.CollectionLevel22 = null;
+                    return r;
+                })
+                .ToList();
 
             return retorno;
+
+        }
+
+        [Route("GetReportReprocesso/{cl2_Id}")]
+        [HttpGet]
+        public IEnumerable<dynamic> GetReportReprocesso(int cl2_Id)
+        {
+            Factory factory = new Factory("DbContextSgqEUA");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+
+            sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+
+
+
+            //var retorno = sgqDbDevEntities.CollectionLevel2
+
+            //    .Where(r => r.Id == CollectionLevel2_Id).ToList();
+
+            var query = @"SELECT *
+                          FROM CollectionLevel2 C2
+                          LEFT JOIN Result_Level3 R3
+                          ON R3.CollectionLevel2_Id = C2.Id
+                          LEFT JOIN CollectionLevel2Object C2O
+                          ON C2O.CollectionLevel2_Id = C2.Id
+                          WHERE C2.Id = " + cl2_Id.ToString();
+
+
+            var retorno = factory.QueryNinjaADO(query);
+
+
+            //retorno = retorno
+            //    .Select(r =>
+            //    {
+            //        r.CollectionLevel21 = null;
+            //        r.CollectionLevel22 = null;
+            //        return r;
+            //    })
+            //    .ToList();
+
+            return retorno; // retorno;
+
+        }
+
+        [Route("GetReportReprocessoHeader/{cl2_Id}")]
+        [HttpGet]
+        public IEnumerable<dynamic> GetReportReprocessoHeader(int cl2_Id)
+        {
+            Factory factory = new Factory("DbContextSgqEUA");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+
+            sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+
+
+
+            //var retorno = sgqDbDevEntities.CollectionLevel2
+
+            //    .Where(r => r.Id == CollectionLevel2_Id).ToList();
+
+            var query = @"SELECT *
+                        FROM CollectionLevel2 C2
+                        LEFT JOIN CollectionLevel2XParHeaderField R3
+                        ON R3.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2Object C2O
+                        ON C2O.CollectionLevel2_Id = C2.Id
+                        WHERE C2.Id = " + cl2_Id.ToString();
+
+
+            var retorno = factory.QueryNinjaADO(query);
+
+
+            //retorno = retorno
+            //    .Select(r =>
+            //    {
+            //        r.CollectionLevel21 = null;
+            //        r.CollectionLevel22 = null;
+            //        return r;
+            //    })
+            //    .ToList();
+
+            return retorno; // retorno;
 
         }
     }

@@ -1,0 +1,421 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Reprocesso";
+    var url = Url.Action("Index", "Home");
+    var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
+    var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
+}
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+
+        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+
+            <button type="button" style="margin-top: 5px;" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+        </div>
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="load"></div>
+        <div id="divTable">
+
+            <style>
+
+                .dataTables_scroll{
+                   
+                    font-size:small;
+                }
+
+                table.dataTable{
+                    margin:0px !important;
+                }
+                
+                table.dataTable thead th, table.dataTable thead td {
+                    padding:2px 12px !important;
+                }
+                    
+
+                table.dataTable tbody th, table.dataTable tbody td {
+                    padding:2px !important;
+                }
+
+                .dataTables_scrollBody{
+                    border-bottom: 0px !important;
+                }
+
+            </style>
+
+            <table id="results" class="display" cellspacing="0" style="width:100% !important;"></table>
+        </div>
+
+        <button id="btnPrint">Clique para imprimir</button>
+
+        <div id="divReport" style="display:none; position:absolute; width: 21cm;
+    min-height: 29.7cm;
+    padding: 2cm;
+    margin: 1cm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
+            
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        var dadosReprocessoCabecalho;
+
+        document.getElementById('btnPrint').onclick = function () {
+            var conteudo = document.getElementById('divReport').innerHTML,
+                tela_impressao = window.open('about:blank');
+
+
+            tela_impressao.document.write(conteudo);
+            tela_impressao.window.print();
+            tela_impressao.window.close();
+        }
+
+        //var dadosReprocessoLista = $.get('http://localhost/SgqSystem/Api/Reprocesso/GetCollectionLevel2Reprocesso/6/2017-12-10/2017-12-11');
+        //var dadosReprocessoResultados = $.get('http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocesso/16301460');
+        //var dadosReprocessoCabecalho = $.get('http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocessoHeader/16301460');
+
+        function getDadosReprocessoResultados(id) {
+
+            $.ajax({
+                type: 'GET'
+                , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocesso/' + id
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: ''
+                , async: false //blocks window close
+                , success: function (data, status) {
+                    console.log(data);
+
+                    var lista = "";
+
+                    var cabecalho = "<table border=1>" +
+                        "<tr>" +
+                        "<td rowspan=3>" +
+                        "logo1" +
+                        "</td>" +
+                        "<td align=center>" +
+                        "<h4><b>REPROCESSO</b></h4>" +
+                        "</td>" +
+                        "<td rowspan=3>" +
+                        "logo2" +
+                        "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>" +
+                        "<b>Elaborador:</b> Equipe GQC Documentação/ANH" +
+                        "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>" +
+                        "<b>Aprovador:</b> Célia Regina Mattia GQC/ANH" +
+                        "</td>" +
+                        "</tr>";
+
+                    lista = lista + cabecalho;
+
+                    for (var i = 0; i < data.length; i++) {
+
+                        lista = lista + 
+                            '<tr><td colspan=3>' +
+                            data[i].CollectionDate +
+                            ' - ' +
+                            data[i].ParLevel3_Id +  
+                            ' - ' + 
+                            data[i].ParLevel3_Name + 
+                            ' - ' +
+                            data[i].WeiDefects + 
+                            '</td><tr>';
+                    }
+
+                    $('#divReport').html(lista);
+
+                    $('#divReport').show();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                    // mensagemSyncHide();
+                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                }
+            })
+
+            $.ajax({
+                type: 'GET'
+                , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocessoHeader/' + id
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: ''
+                , async: false //blocks window close
+                , success: function (data, status) {
+                    console.log(data);
+                    dadosReprocessoCabecalho = data;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                    // mensagemSyncHide();
+                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                }
+            })
+
+        }
+
+        $.ajax({
+            type: 'GET'
+            , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetCollectionLevel2Reprocesso/6/2017-12-10/2017-12-11'
+            , contentType: 'application/json; charset=utf-8'
+            , dataType: 'json'
+            , data: ''
+            , async: false //blocks window close
+            , success: function (data, status) {
+                console.log(data);
+
+                var lista = "";
+
+                for (var i = 0; i < data.length; i++) {
+
+                    lista = lista + '<a href="#" onClick="getDadosReprocessoResultados(' + data[i].Id + ')">' +
+                        data[i].Id +
+                        ' - ' +
+                        data[i].CollectionDate +
+                        '</a><br>';
+                }
+
+                $('#divTable').html(lista);
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                // mensagemSyncHide();
+                // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+            }
+        })
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        var url1 = '@Html.Raw(@urlScorecard)';
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                $('#unitId').change();
+                Send(true);
+            });
+        });
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#divTable').hide();
+
+            enviar["auditorId"] = GetUsuarioId();
+
+            EasyAjax(url1, enviar, GerarTabela, "load", toggle);//AJAX
+        };
+
+        var limitesMid = @Html.Raw(Json.Encode(ViewBag.PercentValueMid));
+        var limitesHigh = @Html.Raw(Json.Encode(ViewBag.PercentValueHigh));
+
+        var arrSintShow = [5, 6, 7, 8, 11, 12, 13];
+        var arrSintHide = [0, 1, 2, 3, 4, 9, 10];
+        var visibilidadeDefault = [];
+
+        arrSintShow.forEach(function (o, c) {
+            visibilidadeDefault.push({
+                targets: o,
+                visible: true
+            })
+        })
+
+        arrSintHide.forEach(function (o, c) {
+            visibilidadeDefault.push({
+                targets: o,
+                visible: false
+            })
+        })
+
+        function GerarTabela(retornoArray) {
+            $('#divTable').show();
+
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "Cluster", mData: "ClusterName" },
+                    { title: "Regional", mData: "RegionalName" },
+                    { title: "Empresa", mData: "ParCompanyName" },
+                    { title: "@Resources.Resource.scorecard_type", mData: "TipoScore" },
+                    { title: "@Resources.Resource.audit_type", mData: "TipoIndicadorName" },
+                    { title: "@Resources.Resource.audit", mData: "Level1Name" },
+                    { title: "@Resources.Resource.smp", mData: "AV" },
+                    { title: "@Resources.Resource.ncc", mData: "NC" },
+                    { title: "@Resources.Resource.group2", mData: "CriterioName" },
+                    { title: "@Resources.Resource.points2", mData: "Pontos" },
+                    { title: "@Resources.Resource.points_possible", mData: "PontosIndicador" },
+                    { title: "@Resources.Resource.goal %", mData: "Meta" },
+                    { title: "Real %", mData: "Real" },
+                    { title: "@Resources.Resource.points_achieved", mData: "PontosAtingidos" },
+                    { title: "Scorecard", mData: "Scorecard" },
+                ],
+                destroy: true,
+                /*
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                */
+                //columnDefs: visibilidadeDefault,
+                //stateSave: true,
+                //stateSaveCallback: function(settings,data) {
+                //    localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+                //},
+                //stateLoadCallback: function(settings) {
+                //    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+                //},
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#results').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                },
+                createdRow: function (row, data, index) {
+
+                    if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
+                        // green
+                        $('td', row).eq(14).css("background-color", '#33FF33');
+                    } else if (data["Scorecard"] < parseInt(limitesMid)) {
+                        // red
+                        $('td', row).eq(14).css("background-color", '#FF6666');
+                    }
+                    else if (data["Scorecard"] < parseInt(limitesHigh)) {
+                        $('td', row).eq(14).css("background-color", 'yellow');
+                    }
+
+                },
+                fnDrawCallback: function (data, d, o) {
+
+
+
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                     {
+                         extend: 'colvisGroup',
+                         text: '@Resources.Resource.synthetic',
+
+                         //show: [3, 4, 5, 6, 9, 10, 12],
+                         show: arrSintShow,
+                         //hide: [0, 1, 2, 7, 8, 11]
+                         hide: arrSintHide
+                     },
+                    {
+                        extend: 'colvisGroup',
+                        text: '@Resources.Resource.analytical',
+                        show: ':hidden'
+                    },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'pdf',
+                            ]
+            });
+
+
+
+                        table.buttons(0, null).container().prependTo(
+                            table.table().container()
+                        );
+
+                        //Filtros por coluna
+
+                        $('.dataTable thead th').each(function (i) {
+                            var title = $('.dataTable thead th').eq($(this).index()).text();
+                            $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+                        });
+
+                        // DataTable
+                        var table = $('.dataTable').DataTable();
+
+                        // Filter event handler
+                        $(table.table().container()).on('keyup', 'thead input', function () {
+                            table
+                                .column($(this).data('index'))
+                                .search(this.value)
+                                .draw();
+                        });
+
+                        $('.dt-button.buttons-colvisGroup')[0].click();
+
+                    }
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        $(document).ready(function () {
+            formControl.showFullCallendar();
+            formControl.showUnit();
+            //formControl.showProcesso();
+            closeLeftSidebar();
+        });
+    </script>
+
+}
