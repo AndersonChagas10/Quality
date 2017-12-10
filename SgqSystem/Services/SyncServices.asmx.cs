@@ -485,6 +485,7 @@ namespace SgqSystem.Services
                         string monitoramentoultimoalerta = result[45];
                         string startphaseevaluation = "0";
                         string endphaseevaluation = "0";
+                        string reprocesso = null;
                         if (result.Length > 47)
                         {
                             startphaseevaluation = result[47];
@@ -492,6 +493,11 @@ namespace SgqSystem.Services
                         if (result.Length > 48)
                         {
                             endphaseevaluation = result[48];
+                        }
+
+                        if (result.Length > 49)
+                        {
+                            reprocesso = result[49];
                         }
 
                         //Gera o Cabeçalho do Level02
@@ -525,6 +531,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + monitoramentoultimoalerta;
                         level02HeaderJSon += ";" + startphaseevaluation;
                         level02HeaderJSon += ";" + endphaseevaluation;
+                        level02HeaderJSon += ";" + reprocesso;
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -919,6 +926,13 @@ namespace SgqSystem.Services
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey);
+                    
+                    if (arrayHeader.Length > 30)
+                    {
+                        string reprocesso = DefaultValueReturn(arrayHeader[30], null);
+
+                        InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
+                    }
 
                     if (CollectionLevel2Id == 2627)
                     {
@@ -1882,6 +1896,32 @@ namespace SgqSystem.Services
             else //Tratamento de erros Gabriel 2017-05-27
             {
                 return 1;
+            }
+        }
+
+        public int InsertCollectionLevel2Object(int CollectionLevel2Id, string Reprocesso)
+        {
+            string sql = "INSERT INTO CollectionLevel2Object ([CollectionLevel2_Id], [Objeto], [AddDate]) " +
+             "VALUES ('" + CollectionLevel2Id + "', '" + Reprocesso + "', GETDATE()) ";
+
+            sql += " SELECT @@IDENTITY AS 'Identity' ";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        return i;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
