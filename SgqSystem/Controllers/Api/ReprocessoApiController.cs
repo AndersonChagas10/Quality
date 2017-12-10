@@ -103,6 +103,10 @@ namespace SgqSystem.Controllers.Api
                     factoryParReprocessoEntradaOP.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP")).Select(r =>
                     {
                         r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
+                        if (r.produto != null)
+                        {
+                            r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
+                        }
                         return r;
                     }).ToList(),
                     headerFields = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'Reprocesso%'")
