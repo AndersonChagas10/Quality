@@ -21,6 +21,7 @@ namespace SgqSystem.Controllers.Api
            public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
            public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
            public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
+            public List<Header> headerFields { get; set; }
         }
 
         public class ParReprocessoHeaderOP
@@ -71,33 +72,42 @@ namespace SgqSystem.Controllers.Api
             public String cDescricaoDetalhada { get; set; }
         }
 
+        public class Header
+        {
+            public String Id { get; set; }
+        }
+
         [Route("Get/{ParCompany_Id}")]
         [HttpGet]
         public RetrocessoReturn Get(int ParCompany_Id)
         {
-            Factory factory = new Factory("DbContextSgqEUA");
+            Factory factorySgq = new Factory("DbContextSgqEUA");
+            
+            Factory factoryParReprocessoHeaderOP = new Factory("CONN_ParReprocessoHeaderOP");
+            Factory factoryParReprocessoCertificadosSaidaOP = new Factory("CONN_ParReprocessoCertificadosSaidaOP");
+            Factory factoryParReprocessoEntradaOP = new Factory("CONN_ParReprocessoEntradaOP");
+            Factory factoryParReprocessoSaidaOP = new Factory("CONN_ParReprocessoSaidaOP");
 
             SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();            
 
             var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
 
-            sgqDbDevEntities.CollectionLevel2.
-
             if (parCompany != null)
             {
-                RetrocessoReturn retrocessoReturn = new RetrocessoReturn();
-
-                retrocessoReturn.parReprocessoHeaderOPs = factory.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " "+ parCompany.CompanyNumber);
-                retrocessoReturn.parReprocessoCertificadosSaidaOP = factory.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP"));
-                retrocessoReturn.parReprocessoSaidaOPs = factory.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP"));
-                retrocessoReturn.parReprocessoEntradaOPs =
-                    factory.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP")).Select(r =>
+                return new RetrocessoReturn
+                {
+                    parReprocessoHeaderOPs = factoryParReprocessoHeaderOP.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " " + parCompany.CompanyNumber),
+                    parReprocessoCertificadosSaidaOP = factoryParReprocessoCertificadosSaidaOP.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP")),
+                    parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP")),
+                    parReprocessoEntradaOPs =
+                    factoryParReprocessoEntradaOP.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP")).Select(r =>
                     {
-                        r.produto = factory.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = "+ r.nCdProduto).FirstOrDefault();
+                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
                         return r;
-                    }).ToList();
-
-                return retrocessoReturn;
+                    }).ToList(),
+                    headerFields = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'Reprocesso%'")
+                };
+                
             }
 
             return null;
