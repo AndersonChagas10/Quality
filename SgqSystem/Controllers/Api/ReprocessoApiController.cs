@@ -217,15 +217,25 @@ namespace SgqSystem.Controllers.Api
 
             var retorno = factory.QueryNinjaADO(query);
 
+            return retorno; // retorno;
 
-            //retorno = retorno
-            //    .Select(r =>
-            //    {
-            //        r.CollectionLevel21 = null;
-            //        r.CollectionLevel22 = null;
-            //        return r;
-            //    })
-            //    .ToList();
+        }
+
+        [Route("GetMonitor/{user}")]
+        [HttpGet]
+        public IEnumerable<dynamic> GetMonitor(int user)
+        {
+            Factory factory = new Factory("DbContextSgqEUA");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+
+            sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+
+            var query = @"SELECT top 1 *
+                        FROM UserSgq
+                        WHERE Id = " + user.ToString();
+
+
+            var retorno = factory.QueryNinjaADO(query);
 
             return retorno; // retorno;
 
