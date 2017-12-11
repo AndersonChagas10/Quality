@@ -251,9 +251,10 @@
         $("#userSgqDto_ListRole").attr("multiple", "multiple");
         $("#userSgqDto_ListRole").select2();
 
-        $("#userSgqDto_UseActiveDirectory").prop('checked', false);
+        $("#userSgqDto_UseActiveDirectory").prop('checked', true);
+        $("#userSgqDto_UseActiveDirectory").trigger("change");
 
-        setupAD();
+        //setupAD();
 
     });
 
