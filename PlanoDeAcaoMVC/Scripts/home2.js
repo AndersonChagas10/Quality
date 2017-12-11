@@ -1084,7 +1084,13 @@ function getRegistrosNaoConcluidos(arr) {
 //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
 function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
 
-    $('.semDados').hide();
+    if (id == 'panel5') {
+        $('#semDados1').hide();
+    }
+
+    if (id == 'panel6') {
+        $('#semDados2').hide();
+    }
 
     if (seriesArr[0] != undefined) {
 
