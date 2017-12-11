@@ -145,7 +145,6 @@ function MountDataTable(json) {
 
 
         ],
-
         'aoColumnDefs': [
             { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
             { "sTitle": "Missão", "aTargets": [1], "width": "200px" },
@@ -187,18 +186,17 @@ function MountDataTable(json) {
             { "sTitle": "Ação" },
 
         ],
-
-        responsive: true,
+        "responsive": true,
+        "bSearchable": true,
         "bFilter": true,
-        paging: true,
-        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
-        info: true,
+        "paging": true,
+        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
+        "info": true,
         "scrollY": 370,
         "scrollX": 500,
         "bLengthChange": true,
-
-        dom: 'Blfrtip',
-        buttons: [
+        "dom": 'Blfrtip',
+        "buttons": [
             //{
             {
                 extend: 'colvisGroup',
@@ -263,18 +261,12 @@ function MountDataTable(json) {
                     columns: ':visible',
                 }
             },
-            //atualizar: {
-            //    text: 'Atualizar',
-            //    action: function (e, dt, node, config) {
-            //        //if (config.counterAjaxTable > 1) {
-            //        GetDataTable();
-            //        //}
-            //        config.counterAjaxTable++;
-            //        config.counterAjaxTable++;
-            //        //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
-            //    },
-            //    counterAjaxTable: 1
-            //},
+            {
+                text: 'Atualizar',
+                action: function (e, dt, node, config) {
+                    $('#btnTop').click();
+                },
+            },
             //novaAcao: {
             //    text: 'Nova Ação',
             //    action: function (e, dt, node, config) {
@@ -346,7 +338,6 @@ function MountDataTable(json) {
                 getAcompanhamento(acaoCorrentId);
 
             });
-
         },
         createdRow: function (row, data, index) {
 
@@ -466,6 +457,7 @@ function MountDataTable(json) {
 
     setTimeout(function () {
         $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        $(".dataTables_filter").css("display", "block");
     }, 1100);
 
 
@@ -1097,7 +1089,7 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
             $('#semDados2').show();
             return;
         }
-        
+
     }
 
     let options = {
@@ -2311,7 +2303,7 @@ function setArrayColvisAtual() {
         } else {
             ColvisarrayVisaoAtual_hide.push(i);
         }
-    }).promise().done(function () {       
+    }).promise().done(function () {
         $('body > div.dt-button-background').click();
         //$('body > div.dt-button-collection.fixed.four-column').show();
     });
