@@ -734,13 +734,14 @@
                 },
                 xAxis: {
                     categories: dia,
+                    //min: 0,
                     title: {
                         text: 'Data',
                     },
                 },
                 yAxis: [
                     {
-                        //min: 0,
+                        min: 0,
                         title: {
                             text: Resources("quantity")
                         },
@@ -751,7 +752,7 @@
                             }
                         },
                     }, {
-                        //min: 0,
+                        min: 0,
                         labels: {
                             format: '{value} %',
                             style: {
@@ -854,13 +855,14 @@
                     visible: false,
                     name: Resources("sample"),
                     data: qtdAv,
+                    yAxis: 0,
                     type: 'line',
                     marker: {
                         enabled: false
                     },
                     color: 'rgba(81,207,64,1)',
-                    pointPadding: 0.3,
-                    pointPlacement: 0.2,
+                    pointPadding: 0.2,
+                    //pointPlacement: 0.2,
                     yAxis: 0,
                     point: {
                         events: {
@@ -892,17 +894,32 @@
 
         function GerarGraficoHistoricoGeral(data){
 
+            var porc = [];
+
+            
+
             if (data.length > 0) {
 
                 var dia = MapeiaValorParaHC(data, "_date");
                 var nc = MapeiaValorParaHC(data, "nc");
-                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                //var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
+
+                var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+                var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+
+                for (var i = 0; i < data.length; i++) {
+                    porc[i] = avComPeso == 0 ? 0 : ncComPeso[i] / avComPeso[i] * 100;
+                }
+
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
                 //var SubTitle = "";
 
                 var sumav = qtdAv.reduce(function(a, b){return a+b;});
-                var sumnc = nc.reduce(function(a, b){return a+b;});
+                var sumnc = nc.reduce(function (a, b) { return a + b; });
+
+                var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
+                var sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
 
                 let TituloGrafico1 = "";
                 let UnidadeId = $("#unitIdV option:selected").val();
@@ -934,7 +951,9 @@
 
                 if (sumav != 0 && sumnc != 0) {
 
-                    var porcPeriodo = sumnc/sumav * 100;
+                    var porcPeriodo = sumnc / sumav * 100;
+
+                    var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100;
 
                     $('#GraficoHistoricoGeral').removeClass('loader');
 
@@ -964,7 +983,7 @@
                         },
                         yAxis: [
                             {
-                                //min: 0,
+                                min: 0,
                                 title: {
                                     text: Resources("quantity")
 
@@ -976,7 +995,7 @@
                                     }
                                 },
                             }, {
-                                //min: 0,
+                                min: 0,
                                 labels: {
                                     format: '{value} %',
                                     style: {
@@ -1013,7 +1032,7 @@
                             marker: {
                                 enabled: false
                             },
-                            pointPadding: 0.2,
+                            //pointPadding: 0.2,
                             //pointPlacement: -0.2,
                             point: {
                                 events: {
@@ -1082,8 +1101,8 @@
                                 enabled: false
                             },
                             color: 'rgba(81,207,64,1)',
-                            pointPadding: 0.3,
-                            pointPlacement: 0.2,
+                            //pointPadding: 0.3,
+                            //pointPlacement: 0.2,
                             yAxis: 0,
                             point: {
                                 events: {
@@ -1111,7 +1130,7 @@
                             }
                         }]
                     }, function(){
-                        $('#showNCGeral > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                        $('#showNCGeral > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
                         $('#NCGeral').show();
                     });
 
@@ -1676,7 +1695,7 @@
                         },
                     },
                     yAxis: [{
-                        //min: 0,
+                        min: 0,
                         title: {
                             text: Resources("number_of_shares")
                         },
@@ -1689,7 +1708,7 @@
                         opposite: true
                     },
                     {
-                        //min: 0,
+                        min: 0,
                         labels: {
                             format: '{value} %',
                             style: {

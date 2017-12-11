@@ -19,15 +19,22 @@ namespace Dominio
     {
         public SgqDbDevEntities()
             : base("name=SgqDbDevEntities")
-        {
+        {   
     
-    
-    this.Database.CommandTimeout = 9600;
-    this.Database.Log = s => System.Diagnostics.Debug.Write(s);
-    
+            this.Database.CommandTimeout = 9600;
+            this.Database.Log = s => System.Diagnostics.Debug.Write(s);   
     
         }
-    
+
+        public SgqDbDevEntities(bool NoLazyLoading)
+            : base("name=SgqDbDevEntities")
+        {
+            this.Configuration.LazyLoadingEnabled = NoLazyLoading;
+            this.Database.CommandTimeout = 9600;
+            this.Database.Log = s => System.Diagnostics.Debug.Write(s);
+        }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

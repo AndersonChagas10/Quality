@@ -1,0 +1,589 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Reprocesso";
+    var url = Url.Action("Index", "Home");
+
+    //tem que tirar quando for refatorar
+    var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
+    var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
+
+    var urlGetReportReprocessoHeader = Url.Action("GetReportReprocessoHeader", "Api/Reprocesso");
+    var urlGetReportReprocesso = Url.Action("GetReportReprocesso", "Api/Reprocesso");
+    var urlGetMonitor = Url.Action("GetMonitor", "Api/Reprocesso");
+    var urlGetCollectionLevel2Reprocesso = Url.Action("GetCollectionLevel2Reprocesso", "Api/Reprocesso");
+}
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <style media="print">
+        .botao {
+            display: none;
+        }
+    </style>
+
+    <div id="formBodyContent">
+
+        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+
+            <button type="button" style="margin-top: 5px;" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+        </div>
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="load"></div>
+        <div id="divTable">
+
+            <style>
+                .dataTables_scroll {
+                    font-size: small;
+                }
+
+                table.dataTable {
+                    margin: 0px !important;
+                }
+
+                    table.dataTable thead th, table.dataTable thead td {
+                        padding: 2px 12px !important;
+                    }
+
+
+                    table.dataTable tbody th, table.dataTable tbody td {
+                        padding: 2px !important;
+                    }
+
+                .dataTables_scrollBody {
+                    border-bottom: 0px !important;
+                }
+            </style>
+
+            <table id="results" class="display" cellspacing="0" style="width:100% !important;"></table>
+        </div>
+
+        <div id="divReport" style="z-index:999999; display:none; position:absolute; top: -20px; margin:auto;
+
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 2cm;
+    margin: 1cm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
+
+            <button id="btnPrint">Clique para imprimir</button>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+
+<script type="text/javascript">
+
+         var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
+         var urlGetReportReprocessoHeader = '@Html.Raw(urlGetReportReprocessoHeader)';
+         var urlGetReportReprocesso = '@Html.Raw(urlGetReportReprocesso)';
+         var urlGetMonitor = '@Html.Raw(urlGetMonitor)';
+
+        var dadosReprocessoCabecalho;
+        var dadosC2;
+
+        //data formato javascript para data BR
+        function dateInternacionalFormat(date) {
+            return (new Date(date)).toLocaleDateString("pt-BR")
+        }
+
+        function imprimirRelatorio() {
+            var conteudo = document.getElementById('divReport').innerHTML,
+                tela_impressao = window.open('about:blank');
+
+
+            tela_impressao.document.write(conteudo);
+            tela_impressao.window.print();
+            tela_impressao.window.close();
+        }
+
+        //var dadosReprocessoLista = $.get('http://localhost/SgqSystem/Api/Reprocesso/GetCollectionLevel2Reprocesso/6/2017-12-10/2017-12-11');
+        //var dadosReprocessoResultados = $.get('http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocesso/16301460');
+        //var dadosReprocessoCabecalho = $.get('http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocessoHeader/16301460');
+
+        function getDadosReprocessoResultados(id) {
+
+
+
+            $.ajax({
+                type: 'GET'
+                , url: urlGetReportReprocesso + "/" + id
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: ''
+                , async: false //blocks window close
+                , success: function (data, status) {
+                    dadosC2 = data;
+
+                    $.ajax({
+                        type: 'GET'
+                        , url: urlGetReportReprocessoHeader + "/" + id
+                        , contentType: 'application/json; charset=utf-8'
+                        , dataType: 'json'
+                        , data: ''
+                        , async: false //blocks window close
+                        , success: function (result, status) {
+
+                            dadosReprocesso = result;
+
+                            if (!!result[0].Objeto)
+                                dadosReprocessoCabecalho = JSON.parse(result[0].Objeto.replace(/(\r\n|\n|\r)/gm, ""));
+
+
+                            $.ajax({
+                                type: 'GET'
+                                , url: urlGetMonitor + "/" + dadosC2[0].AuditorId
+                                , contentType: 'application/json; charset=utf-8'
+                                , dataType: 'json'
+                                , data: ''
+                                , async: false //blocks window close
+                                , success: function (user, status) {
+                                console.log(result);
+
+
+                                console.log(data);
+
+                                var lista = "";
+
+                                var cabecalho = "<table cellspacing=0px cellpadding=5px style='font-size:10px;'>" +
+                                    "<tr>" +
+                                    "<td rowspan=3 align=center style='border:1px solid black;' width=140>" +
+                                    "<img src='../Imagens/logo-jbs.png'>" +
+                                    "</td>" +
+                                    "<td align=center style='border:1px solid black;'>" +
+                                    "<h4><b>REPROCESSO</b></h4>" +
+                                    "</td>" +
+                                    "<td rowspan=3 align=center style='border:1px solid black;' width=140>" +
+                                    "<img src='../Imagens/logo-gq.png'>" +
+                                    "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td style='border:1px solid black;'>" +
+                                    "<b>Elaborador:</b> Equipe GQC Documentação/ANH" +
+                                    "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td style='border:1px solid black;'>" +
+                                    "<b>Aprovador:</b> Célia Regina Mattia GQC/ANH" +
+                                    "</td>" +
+                                    "</tr>";
+
+                                var ObjOP = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "41"
+                                });
+
+                                var OP = ObjOP.length == 0 ? '' : ObjOP[0].Value;
+
+                                var ObjDataReprocesso = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "42"
+                                });
+
+                                var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[0].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4)
+
+                                var ObjSIF = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "43"
+                                });
+
+                                var SIF = ObjSIF.length == 0 ? '' : ObjSIF[0].Value;
+
+                                var ObjObs = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "44"
+                                });
+
+                                var Obs = ObjObs.length == 0 ? '' : ObjObs[0].Value;
+
+                                var ObjQtdAproveitado = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "45"
+                                });
+
+                                var QtdAproveitado = ObjQtdAproveitado.length == 0 ? '' : ObjQtdAproveitado[0].Value;
+
+                                var ObjQtdDescartado = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "46"
+                                });
+
+                                var QtdDescartado = ObjQtdDescartado.length == 0 ? '' : ObjQtdDescartado[0].Value;
+
+                                var campos = "" +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3>Data do Reprocesso: " + dataReprocesso + "</td></tr>" +
+                                    "<tr><td colspan=3>Número da Ordem do Reprocesso: " + OP + "</td></tr>" +
+                                    "<tr><td colspan=3>Número do Ofício do SIF autorizando o reprocesso: " + SIF + "</td></tr>" +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>";
+
+                                var produtos = "";
+
+                                produtos = "<tr><td colspan=3>" +
+                                    "<table border=1 width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'>" +
+                                    "<tr>" +
+                                    "<td style='padding:5px; font-weight:bold; text-align:center; width:230px;'>Produto</td>" +
+                                    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Produção</td>" +
+                                    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Embalagem</td>" +
+                                    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Validade</td>" +
+                                    "<td style='padding:5px; font-weight:bold; text-align:center;';>Código da Ratreabilidade</td>" +
+                                    "</tr>";
+
+
+                                for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoEntradaOPs.length; i++) {
+
+                                    produtos = produtos +
+                                        "<tr>" +
+                                        "<td style='padding:5px;'>Produto " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + "</td>" +
+                                        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao) +"</td>" +
+                                        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem) +"</td>" +
+                                        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade) +"</td>" +
+                                        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade +"</td>" +
+                                        "</tr>";
+
+                                }
+
+                                produtos = produtos + "</table>";
+
+                                lista = lista + cabecalho + campos + produtos;
+
+                                lista = lista +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3 style='font-weight:bold;'>Avaliação do Produto</td></tr>";
+
+                                for (var i = 0; i < data.length; i++) {
+
+                                    lista = lista +
+                                        '<tr><td colspan=3>' +
+                                        data[i].CollectionDate +
+                                        ' - ' +
+                                        data[i].ParLevel3_Id +
+                                        ' - ' +
+                                        data[i].ParLevel3_Name +
+                                        ' - ' +
+                                        data[i].WeiDefects +
+                                        '</td><tr>';
+                                }
+
+                                lista = lista +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3>Quantidade de produto aproveitado: " + QtdAproveitado + "</td></tr>" +
+                                    "<tr><td colspan=3>Quantidade de produto descartado: " + QtdDescartado + "</td></tr>" +
+                                    "<tr><td colspan=3>Destino do produto: " + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].nCdHabilitacao + "</td></tr>" +
+                                    "<tr><td colspan=3>Local de estoque de alocação de produto final: " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[0].nCdLocalEstoque + "</td></tr>" +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3 style='font-weight:bold;'>Observações</td></tr>" +
+                                    "<tr><td colspan=3>" + Obs + "</td></tr>" +
+
+                                    "<tr><td colspan=3 height=50px></td></tr>" +
+                                    "<tr><td colspan=3>" +
+                                    "<table width=100% cellspacing=0 cellspadding=0 style='font-size:10px;'><tr>" +
+                                    "<td width=10%></td>" +
+                                    "<td width=35% align=center style='border-top:1px solid black;'>" + user[0].FullName + " <br> Monitor GQ</td>" +
+                                    "<td width=10%></td>" +
+                                    "<td width=35% align=center style='border-top:1px solid black;'>Estoque Físico</td>" +
+                                    "<td width=10%></td>" +
+                                    "</tr></table>" +
+                                    "</td ></tr > " +
+
+                                    "<tr><td colspan=3 height=50px></td></tr>" +
+                                    "<tr><td colspan=3>" +
+                                    "<table width=100% cellspacing=0 cellspadding=0 style='font-size:10px;'><tr>" +
+                                    "<td width=10%></td>" +
+                                    "<td width=35% align=center style='border-top:1px solid black;'>Gerente Industrial</td>" +
+                                    "<td width=10%></td>" +
+                                    "<td width=35% align=center style='border-top:1px solid black;'>Garantia da Qualidade</td>" +
+                                    "<td width=10%></td>" +
+                                    "</tr></table>" +
+                                    "</td ></tr > " +
+
+                                    "</table>";
+
+                                lista = lista +
+                                    "<br><br><button id='btnPrint' onClick='imprimirRelatorio();' class='botao'>Imprimir</button> &nbsp;&nbsp;&nbsp;&nbsp;" +
+                                    '<button onClick="$(\'#divReport\').hide();" class="botao">Fechar</button>';
+
+                                $('#divReport').html(lista);
+
+                                $('#divReport').show();
+
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                                    // mensagemSyncHide();
+                                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                                }
+                            })
+
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                            // mensagemSyncHide();
+                            // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                        }
+                    })
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                    // mensagemSyncHide();
+                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                }
+            })
+
+
+
+        }
+
+        $.ajax({
+            type: 'GET'
+            , url: urlGetCollectionLevel2Reprocesso+'/6/2017-12-10/2017-12-11'
+            , contentType: 'application/json; charset=utf-8'
+            , dataType: 'json'
+            , data: ''
+            , async: false //blocks window close
+            , success: function (data, status) {
+                console.log(data);
+
+                var lista = "";
+
+                for (var i = 0; i < data.length; i++) {
+
+                    lista = lista + '<a href="#" onClick="getDadosReprocessoResultados(' + data[i].Id + ')">' +
+                        data[i].Id +
+                        ' - ' +
+                        dateInternacionalFormat(data[i].CollectionDate) +
+                        ' ' +
+                        data[i].CollectionDate.substring(11, 16) +
+                        '</a><br>';
+                }
+
+                $('#divTable').html(lista);
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                // mensagemSyncHide();
+                // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+            }
+        })
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        var url1 = '@Html.Raw(@urlScorecard)';
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                $('#unitId').change();
+                Send(true);
+            });
+        });
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#divTable').hide();
+
+            enviar["auditorId"] = GetUsuarioId();
+
+            EasyAjax(url1, enviar, GerarTabela, "load", toggle);//AJAX
+        };
+
+        var limitesMid = @Html.Raw(Json.Encode(ViewBag.PercentValueMid));
+        var limitesHigh = @Html.Raw(Json.Encode(ViewBag.PercentValueHigh));
+
+        var arrSintShow = [5, 6, 7, 8, 11, 12, 13];
+        var arrSintHide = [0, 1, 2, 3, 4, 9, 10];
+        var visibilidadeDefault = [];
+
+        arrSintShow.forEach(function (o, c) {
+            visibilidadeDefault.push({
+                targets: o,
+                visible: true
+            })
+        })
+
+        arrSintHide.forEach(function (o, c) {
+            visibilidadeDefault.push({
+                targets: o,
+                visible: false
+            })
+        })
+
+        function GerarTabela(retornoArray) {
+            $('#divTable').show();
+
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "Cluster", mData: "ClusterName" },
+                    { title: "Regional", mData: "RegionalName" },
+                    { title: "Empresa", mData: "ParCompanyName" },
+                    { title: "@Resources.Resource.scorecard_type", mData: "TipoScore" },
+                    { title: "@Resources.Resource.audit_type", mData: "TipoIndicadorName" },
+                    { title: "@Resources.Resource.audit", mData: "Level1Name" },
+                    { title: "@Resources.Resource.smp", mData: "AV" },
+                    { title: "@Resources.Resource.ncc", mData: "NC" },
+                    { title: "@Resources.Resource.group2", mData: "CriterioName" },
+                    { title: "@Resources.Resource.points2", mData: "Pontos" },
+                    { title: "@Resources.Resource.points_possible", mData: "PontosIndicador" },
+                    { title: "@Resources.Resource.goal %", mData: "Meta" },
+                    { title: "Real %", mData: "Real" },
+                    { title: "@Resources.Resource.points_achieved", mData: "PontosAtingidos" },
+                    { title: "Scorecard", mData: "Scorecard" },
+                ],
+                destroy: true,
+                /*
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                */
+                //columnDefs: visibilidadeDefault,
+                //stateSave: true,
+                //stateSaveCallback: function(settings,data) {
+                //    localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+                //},
+                //stateLoadCallback: function(settings) {
+                //    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+                //},
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#results').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                },
+                createdRow: function (row, data, index) {
+
+                    if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
+                        // green
+                        $('td', row).eq(14).css("background-color", '#33FF33');
+                    } else if (data["Scorecard"] < parseInt(limitesMid)) {
+                        // red
+                        $('td', row).eq(14).css("background-color", '#FF6666');
+                    }
+                    else if (data["Scorecard"] < parseInt(limitesHigh)) {
+                        $('td', row).eq(14).css("background-color", 'yellow');
+                    }
+
+                },
+                fnDrawCallback: function (data, d, o) {
+
+
+
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                     {
+                         extend: 'colvisGroup',
+                         text: '@Resources.Resource.synthetic',
+
+                         //show: [3, 4, 5, 6, 9, 10, 12],
+                         show: arrSintShow,
+                         //hide: [0, 1, 2, 7, 8, 11]
+                         hide: arrSintHide
+                     },
+                    {
+                        extend: 'colvisGroup',
+                        text: '@Resources.Resource.analytical',
+                        show: ':hidden'
+                    },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'pdf',
+                            ]
+            });
+
+
+
+                        table.buttons(0, null).container().prependTo(
+                            table.table().container()
+                        );
+
+                        //Filtros por coluna
+
+                        $('.dataTable thead th').each(function (i) {
+                            var title = $('.dataTable thead th').eq($(this).index()).text();
+                            $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+                        });
+
+                        // DataTable
+                        var table = $('.dataTable').DataTable();
+
+                        // Filter event handler
+                        $(table.table().container()).on('keyup', 'thead input', function () {
+                            table
+                                .column($(this).data('index'))
+                                .search(this.value)
+                                .draw();
+                        });
+
+                        $('.dt-button.buttons-colvisGroup')[0].click();
+
+                    }
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        $(document).ready(function () {
+            formControl.showFullCallendar();
+            formControl.showUnit();
+            //formControl.showProcesso();
+            closeLeftSidebar();
+        });
+</script>
+
+}
