@@ -2,8 +2,15 @@
 @{
     ViewBag.Title = "Reprocesso";
     var url = Url.Action("Index", "Home");
+
+    //tem que tirar quando for refatorar
     var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
     var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
+
+    var urlGetReportReprocessoHeader = Url.Action("GetReportReprocessoHeader", "Api/Reprocesso");
+    var urlGetReportReprocesso = Url.Action("GetReportReprocesso", "Api/Reprocesso");
+    var urlGetMonitor = Url.Action("GetMonitor", "Api/Reprocesso");
+    var urlGetCollectionLevel2Reprocesso = Url.Action("GetCollectionLevel2Reprocesso", "Api/Reprocesso");
 }
 
 <div class="page-content" style="min-height: 600px;">
@@ -73,7 +80,12 @@
 @section Scripts {
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
+
+         var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
+         var urlGetReportReprocessoHeader = '@Html.Raw(urlGetReportReprocessoHeader)';
+         var urlGetReportReprocesso = '@Html.Raw(urlGetReportReprocesso)';
+         var urlGetMonitor = '@Html.Raw(urlGetMonitor)';
 
         var dadosReprocessoCabecalho;
         var dadosC2;
@@ -103,7 +115,7 @@
 
             $.ajax({
                 type: 'GET'
-                , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocesso/' + id
+                , url: urlGetReportReprocesso + "/" + id
                 , contentType: 'application/json; charset=utf-8'
                 , dataType: 'json'
                 , data: ''
@@ -113,7 +125,7 @@
 
                     $.ajax({
                         type: 'GET'
-                        , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetReportReprocessoHeader/' + id
+                        , url: urlGetReportReprocessoHeader + "/" + id
                         , contentType: 'application/json; charset=utf-8'
                         , dataType: 'json'
                         , data: ''
@@ -128,14 +140,14 @@
 
                             $.ajax({
                                 type: 'GET'
-                                , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetMonitor/' + dadosC2[0].AuditorId
+                                , url: urlGetMonitor + "/" + dadosC2[0].AuditorId
                                 , contentType: 'application/json; charset=utf-8'
                                 , dataType: 'json'
                                 , data: ''
                                 , async: false //blocks window close
                                 , success: function (user, status) {
                                 console.log(result);
-                                
+
 
                                 console.log(data);
 
@@ -327,7 +339,7 @@
 
         $.ajax({
             type: 'GET'
-            , url: 'http://localhost/SgqSystem/Api/Reprocesso/GetCollectionLevel2Reprocesso/6/2017-12-10/2017-12-11'
+            , url: urlGetCollectionLevel2Reprocesso+'/6/2017-12-10/2017-12-11'
             , contentType: 'application/json; charset=utf-8'
             , dataType: 'json'
             , data: ''
@@ -572,6 +584,6 @@
             //formControl.showProcesso();
             closeLeftSidebar();
         });
-    </script>
+</script>
 
 }
