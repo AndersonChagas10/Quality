@@ -187,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Advanced itens.
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Advanced items.
         /// </summary>
         internal static string advanced_itens {
             get {
