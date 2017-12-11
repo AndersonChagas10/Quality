@@ -45,6 +45,12 @@ namespace SgqSystem.Controllers
         #endregion
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult Reprocesso()
+        {
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Scorecard()
         {
 

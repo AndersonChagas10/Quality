@@ -342,6 +342,14 @@
                                                         <td style="padding:5px;"></td>
 
                                                     </tr>
+
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocesso" value="integracaoReprocesso"></td>
+                                                        <td style="padding:5px;">Reprocesso</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                    </tr>
                                                 }
 
                                                 <tr class="row">
@@ -1552,6 +1560,9 @@
                 case "integracaoFamiliaProduto":
                     description = "familiaProduto";
                     break;
+                case "integracaoReprocesso":
+                    description = "Reprocesso";
+                    break;
                 default:
                     description = "";
                     break;
@@ -1593,6 +1604,9 @@
                     break;
                 case "integracaoFamiliaProduto":
                     tipo = "Família de Produtos";
+                    break;
+                case "integracaoReprocesso":
+                    description = "Reprocesso";
                     break;
                 case "integracaoProduto":
                     tipo = "@Resources.Resource.products";
