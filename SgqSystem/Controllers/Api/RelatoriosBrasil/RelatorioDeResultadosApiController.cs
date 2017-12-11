@@ -628,7 +628,7 @@ FROM (SELECT
 						SUM(Quartos) / 2
 					FROM VolumePcc1b(nolock)
 					WHERE ParCompany_id = UNI.Id
-					AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+					AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
@@ -1253,11 +1253,11 @@ FROM (SELECT
 	   ,SUM(R3.WeiDefects) /
 		CASE
 			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-						SUM(Quartos) / 2
-					FROM VolumePcc1b(nolock)
-					WHERE 1 = 1 
-                    --and ParCompany_id = UNI.Id
-					AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+								SUM(Quartos) - @RESS
+							FROM VolumePcc1b(nolock)
+							WHERE 1=1
+                            --AND ParCompany_id = UNI.Id
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
@@ -3872,7 +3872,7 @@ FROM (SELECT
 						SUM(Quartos) / 2
 					FROM VolumePcc1b(nolock)
 					WHERE ParCompany_id = UNI.Id
-					AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+					AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
 	   ,CAST(c2.CollectionDate AS DATE) AS date
@@ -4060,7 +4060,7 @@ FROM (SELECT
 								SUM(Quartos) - @RESS
 							FROM VolumePcc1b(nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
@@ -4072,7 +4072,7 @@ FROM (SELECT
 								SUM(Quartos) - @RESS
 							FROM VolumePcc1b(nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
 					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
@@ -4341,7 +4341,7 @@ FROM (SELECT
 								SUM(Quartos) - @RESS
 							FROM VolumePcc1b(nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 					WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -4353,7 +4353,7 @@ FROM (SELECT
 								SUM(Quartos) - @RESS
 							FROM VolumePcc1b(nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 					WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -4659,7 +4659,7 @@ FROM (SELECT
 								SUM(Quartos) - @RESS
 							FROM VolumePcc1b(nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 					WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -4671,7 +4671,7 @@ FROM (SELECT
 								SUM(Quartos) - @RESS
 							FROM VolumePcc1b(nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 					WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
