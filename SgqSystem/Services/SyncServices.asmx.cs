@@ -931,7 +931,8 @@ namespace SgqSystem.Services
                     {
                         string reprocesso = DefaultValueReturn(arrayHeader[30], null);
 
-                        InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
+                        if(reprocesso != null)
+                            InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
                     }
 
                     if (CollectionLevel2Id == 2627)

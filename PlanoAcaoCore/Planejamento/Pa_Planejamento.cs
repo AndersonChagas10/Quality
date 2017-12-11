@@ -498,10 +498,8 @@ namespace PlanoAcaoCore
             var statusAberto = new int[] { 1, 5, 6 };
             var statusFechado = new int[] { 3,4,7,8 };
 
-            retorno = retorno.Where(r => statusAberto.Contains(r.Acao.Status) || (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit) || r.Acao.Panejamento_Id == 0 ).ToList();
+            retorno = retorno.Where(r => statusAberto.Contains(r.Acao.Status) || (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit) || r.Acao.Id == 0).ToList();
                 
-     
-
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
 
             return retorno;

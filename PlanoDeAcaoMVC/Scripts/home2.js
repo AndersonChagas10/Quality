@@ -145,7 +145,6 @@ function MountDataTable(json) {
 
 
         ],
-
         'aoColumnDefs': [
             { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
             { "sTitle": "Missão", "aTargets": [1], "width": "200px" },
@@ -187,18 +186,17 @@ function MountDataTable(json) {
             { "sTitle": "Ação" },
 
         ],
-
-        responsive: true,
+        "responsive": true,
+        "bSearchable": true,
         "bFilter": true,
-        paging: true,
-        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
-        info: true,
+        "paging": true,
+        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
+        "info": true,
         "scrollY": 370,
         "scrollX": 500,
         "bLengthChange": true,
-
-        dom: 'Blfrtip',
-        buttons: [
+        "dom": 'Blfrtip',
+        "buttons": [
             //{
             {
                 extend: 'colvisGroup',
@@ -254,27 +252,21 @@ function MountDataTable(json) {
                 exportOptions: {
                     columns: ':visible'
                 }
-            },
+            },          
             {
-                extend: 'colvis',
-                text: 'Colunas Visíveis',
-                collectionLayout: 'fixed four-column',
-                exportOptions: {
-                    columns: ':visible',
-                }
+            extend: 'colvis',
+            text: 'Colunas Visíveis',
+            collectionLayout: 'fixed four-column',
+            exportOptions: {
+                columns: ':visible',
+            }
+        },
+        {
+            text: 'Atualizar',
+            action: function (e, dt, node, config) {
+                $('#btnTop').click();
             },
-            //atualizar: {
-            //    text: 'Atualizar',
-            //    action: function (e, dt, node, config) {
-            //        //if (config.counterAjaxTable > 1) {
-            //        GetDataTable();
-            //        //}
-            //        config.counterAjaxTable++;
-            //        config.counterAjaxTable++;
-            //        //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
-            //    },
-            //    counterAjaxTable: 1
-            //},
+        },
             //novaAcao: {
             //    text: 'Nova Ação',
             //    action: function (e, dt, node, config) {
@@ -301,7 +293,7 @@ function MountDataTable(json) {
 
             $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
                 var data = table.row($(this).parents('tr')).data();
-                console.log(data);
+                //console.log(data);
 
                 Clicked(true, false, true);
                 $.get(urlGetPlanejamento, {
@@ -317,7 +309,7 @@ function MountDataTable(json) {
 
             $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
                 var data = table.row($(this).parents('tr')).data();
-                console.log(data);
+                //console.log(data);
                 planejamentoCorrentId = data.Tatico_Id;
                 Clicked(isTaticoClicked, isNovaAcao);
 
@@ -339,14 +331,13 @@ function MountDataTable(json) {
 
                 var data = table.row($(this).parents('tr')).data();
                 selecionado = data;
-                console.log(data);
+                //console.log(data);
                 acaoCorrentId = data.Acao.Id;
                 //Clicked(isTaticoClicked, isNovaAcao);
 
                 getAcompanhamento(acaoCorrentId);
 
             });
-
         },
         createdRow: function (row, data, index) {
 
@@ -464,55 +455,56 @@ function MountDataTable(json) {
 
     });
 
+setTimeout(function () {
+    $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+    $(".dataTables_filter").css("display", "block");
+}, 1100);
+
+
+$('#virtualBody').css('width', '100%');
+
+//Filtros por coluna
+
+$('.dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
+    //$('.dataTable thead th').each(function (i) {
+    var title = $('.dataTable thead th').eq($(this).index()).text();
+    $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+});
+
+$('.dataTable thead th').css('text-align', 'center');
+
+$('.dataTables_filter').hide();
+
+// DataTable
+var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
+
+// Filter event handler
+$(table.table().container()).on('keyup', 'thead input', function () {
+    table
+        .column($(this).data('index'))
+        .search(this.value)
+        .draw();
+});
+
+table.draw();
+
+if (ColvisarrayVisaoAtual_show.length == 0) {
+    setArrayColvisAtual();
+
     setTimeout(function () {
-        $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
-    }, 1100);
 
-
-    $('#virtualBody').css('width', '100%');
-
-    //Filtros por coluna
-
-    $('.dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
-        //$('.dataTable thead th').each(function (i) {
-        var title = $('.dataTable thead th').eq($(this).index()).text();
-        $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
-    });
-
-    $('.dataTable thead th').css('text-align', 'center');
-
-    $('.dataTables_filter').hide();
-
-    // DataTable
-    var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
-
-    // Filter event handler
-    $(table.table().container()).on('keyup', 'thead input', function () {
-        table
-            .column($(this).data('index'))
-            .search(this.value)
-            .draw();
-    });
-
-    table.draw();
-
-    if (ColvisarrayVisaoAtual_show.length == 0) {
-        setArrayColvisAtual();
-
-        setTimeout(function () {
-
-            $('body > div.dt-button-background').click();
-        }, 5);
-    }
+        $('body > div.dt-button-background').click();
+    }, 5);
+}
 
 
 
-    //deixa escondido o botão que mantem as colunas atuais
-    $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
+//deixa escondido o botão que mantem as colunas atuais
+$('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
-    //clicar no botão escondido das colunas atuais
-    if (ColvisarrayVisaoAtual_show.length > 0)
-        $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+//clicar no botão escondido das colunas atuais
+if (ColvisarrayVisaoAtual_show.length > 0)
+    $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
 
 
 
@@ -600,16 +592,23 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
 
         } else {
-            arrColuna.forEach(function (oo, cc) {
 
-                if (o[oo] != arrValue[cc]) {
-                    flag = false;
+            if (arrValue[0] == 'Todas') {
+
+                novoArr.push(o);
+
+            } else {
+
+                arrColuna.forEach(function (oo, cc) {
+                    if (o[oo] != arrValue[cc]) {
+                        flag = false;
+                    }
+                });
+
+                if (flag) {
+                    novoArr.push(o)
                 }
-            });
-        }
-
-        if (flag) {
-            novoArr.push(o)
+            }
         }
     });
 
@@ -1085,19 +1084,27 @@ function getRegistrosNaoConcluidos(arr) {
 //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
 function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
 
-    $('.semDados').hide();
+    if (id == 'panel5') {
+        $('#semDados1').hide();
+    }
 
-    if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
-        if (id == 'panel5') {
-            $('#semDados1').show();
-            return;
-        }
+    if (id == 'panel6') {
+        $('#semDados2').hide();
+    }
 
-        if (id == 'panel6') {
-            $('#semDados2').show();
-            return;
+    if (seriesArr[0] != undefined) {
+
+        if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
+            if (id == 'panel5') {
+                $('#semDados1').show();
+                return;
+            }
+
+            if (id == 'panel6') {
+                $('#semDados2').show();
+                return;
+            }
         }
-        
     }
 
     let options = {
@@ -2311,7 +2318,7 @@ function setArrayColvisAtual() {
         } else {
             ColvisarrayVisaoAtual_hide.push(i);
         }
-    }).promise().done(function () {       
+    }).promise().done(function () {
         $('body > div.dt-button-background').click();
         //$('body > div.dt-button-collection.fixed.four-column').show();
     });

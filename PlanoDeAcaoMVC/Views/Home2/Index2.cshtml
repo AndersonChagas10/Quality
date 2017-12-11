@@ -56,6 +56,11 @@
             width: 100%;
         }
 
+        .defaultSizeMinPanel2 {
+            height: 200px;
+            width: 100%;
+        }
+
         .defaultSizeMed {
             height: 370px;
         }
@@ -489,7 +494,7 @@
                 <br />
                 <span class="defaultSubtitle">Formação do Estoque de Ações</span>
             </div>
-            <div id="panel4" class="defaultSizeMinPanel"></div>
+            <div id="panel4" class="defaultSizeMinPanel2"></div>
         </div>
     </div>
 
@@ -761,7 +766,7 @@
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
-                    <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
+                    @*<button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>*@
 
                     <h4 class="modal-title" id="Header">ID: Header</h4>
                 </div>
@@ -1293,7 +1298,7 @@
 
         //Verificando
         function SalvarPlanejamentoEditado(form) {
-            console.log(SalvarPlanejamentoEditado);
+            //console.log(SalvarPlanejamentoEditado);
             var sendObj = {};
 
             if (isClickedTaticoVinculado)
@@ -2804,97 +2809,18 @@
                     var data = selecionado
 
                     $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
+
                     if (data.Id > 0) {
-                        $.get(urlEditPlanOp, { id: data.Id },
-                             function (r) {
-                                 TesteRenan(r, 'Estrategico', data);
-                                 $('#modalNovo > div > div > div.modal-footer > button').show()
 
-                                 //HideForOperacional();
-                             }
-                        );
-                    }
+                        getPlanOp(data, a, b);
 
-                    if (data.Estrategico_Id > 0) {
-                        $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
-                             function (r) {
-                                 TesteRenan(r, 'Tatico', data);
-                                 $('#modalNovo > div > div > div.modal-footer > button').show()
+                    } else if (data.Estrategico_Id > 0) {
 
-                                 //DDLs ENCADEADAS da PARTIAL VIEW
-                                 changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function() { })
+                        getPlanEstrat(data, a, b);
 
-                                 $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
-                                     var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
-                                     manageButton(Iniciativa_Id,'IndicadoresDeProjeto_Id','Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                    } else if (data.Acao.Id > 0) {
 
-                                     $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                                         $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-                                         //$('#IndicadoresDeProjeto_Id').remove();
-                                         $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
-
-                                             var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
-                                             manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-
-                                             $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-
-                                                 $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
-                                                 //$('#ObjetivoGerencial_Id').remove();
-
-                                                 $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
-
-                                                 try {
-                                                     $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
-                                                 } catch(e){
-                                                 }
-                                                 finally {
-                                                     $('#formEditTatico #modalLindo select').select2();
-                                                 }
-
-                                             });
-                                         });
-                                         $('#formEditTatico #IndicadoresDeProjeto_Id').change();
-
-                                     });
-                                 });
-                                 //HideForOperacional();
-                             }
-                        );
-                    }
-
-                    if (data.Acao.Id > 0) {
-
-                        $.get(urlEditAcao, { id: data.Acao.Id },
-                              function (r) {
-                                  var acao = data.Acao;
-
-
-                                  $('#Header').html("Editar Ação");
-                                  //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
-                                  $('#modalLindo').find('.modal-footer button').hide();
-                                  $('#modalLindo').find('.modal-body .content3').append(r);
-
-                                  $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
-                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                                  $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
-                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
-                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
-                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
-                                  $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
-
-                                  $(r).attr("id", "formEditAcao")
-
-                                  MoneyMask();
-                                  myfunction();
-
-                                  $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
-                                  $('#obj').show(); //Apagar depois
-                                  InitDatePiker();
-                                  $('#modalNovo > div > div > div.modal-footer > button').show()
-                              }
-                        );
-
+                        getAcao(data, a, b);
                     }
 
 
@@ -2978,7 +2904,98 @@
         });
         /*Table*/
 
+        function getPlanOp(data, a, b) {
 
+            $.get(urlEditPlanOp, { id: data.Id }, function (r) {
+                TesteRenan(r, 'Estrategico', data);
+                $('#modalNovo > div > div > div.modal-footer > button').show();
+                getPlanEstrat(data, a, b);
+            });
+
+        }
+
+        function getPlanEstrat(data, a, b) {
+            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
+                function (r) {
+                    TesteRenan(r, 'Tatico', data);
+                    $('#modalNovo > div > div > div.modal-footer > button').show();
+
+                    //DDLs ENCADEADAS da PARTIAL VIEW
+                    changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
+
+                    $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
+                        var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+                        manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                        $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+                            //$('#IndicadoresDeProjeto_Id').remove();
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+
+                                var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+                                manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                                $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                                    $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
+                                    //$('#ObjetivoGerencial_Id').remove();
+
+                                    $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+
+                                    try {
+                                        $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
+                                    } catch (e) {
+                                    }
+                                    finally {
+                                        $('#formEditTatico #modalLindo select').select2();
+                                    }
+
+                                });
+                            });
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+
+                        });
+                    });
+                    //HideForOperacional();
+
+                    getAcao(data, a, b);
+                }
+            );
+        }
+
+        function getAcao(data, a, b) {
+
+            $.get(urlEditAcao, { id: data.Acao.Id },
+                function (r) {
+                    var acao = data.Acao;
+
+
+                    $('#Header').html("Editar Ação");
+                    //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
+                    $('#modalLindo').find('.modal-footer button').hide();
+                    $('#modalLindo').find('.modal-body .content3').append(r);
+
+                    $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                    $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
+                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
+                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
+                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+                    $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+
+                    $(r).attr("id", "formEditAcao")
+
+                    MoneyMask();
+                    myfunction();
+
+                    $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
+                    $('#obj').show(); //Apagar depois
+                    InitDatePiker();
+                    $('#modalNovo > div > div > div.modal-footer > button').show()
+                }
+            );
+        }
 
     </script>
 
