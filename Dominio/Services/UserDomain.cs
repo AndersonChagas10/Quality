@@ -6,6 +6,7 @@ using DTO.DTO;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 
@@ -85,6 +86,11 @@ namespace Dominio.Services
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
+
+            //if ( GetAppSettings("BuildPermission"))
+            //{
+            //
+            //}
 
             try
             {
@@ -649,6 +655,11 @@ namespace Dominio.Services
                     throw e;
                 }
             }
+        }
+
+        public static string GetAppSettings(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
         }
 
         #endregion
