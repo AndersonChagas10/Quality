@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Api
         {
             if (PermissionValues.User.Equals("teste") && PermissionValues.Password.Equals("123"))
             {
-                return Guard.EncryptStringAES(PermissionValues.Date.ToString());
+                return Guard.EncryptStringAES(PermissionValues.Date.ToString("dd/MM/yyyy"));
             }
             return null;
         }

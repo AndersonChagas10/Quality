@@ -87,10 +87,16 @@ namespace Dominio.Services
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
 
-            //if ( GetAppSettings("BuildPermission"))
-            //{
-            //
-            //}
+            if (GetAppSettings("BuildPermission") != null)
+            {
+                var PermissionDate = TransformStringToDateFormat(
+                    Guard.DecryptStringAES(GetAppSettings("BuildPermission")), "dd/MM/yyyy");
+                if (PermissionDate != null)
+                {
+                    if(PermissionDate.CompareTo(DateTime.Now) <= 0)
+                        throw new ExceptionHelper("The access is expired.");
+                }                
+            }
 
             try
             {
@@ -657,9 +663,15 @@ namespace Dominio.Services
             }
         }
 
-        public static string GetAppSettings(string key)
+        private string GetAppSettings(string key)
         {
             return ConfigurationManager.AppSettings[key];
+        }
+
+        private DateTime TransformStringToDateFormat(String date, String format)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, format, null);
+            return dateTime;
         }
 
         #endregion
