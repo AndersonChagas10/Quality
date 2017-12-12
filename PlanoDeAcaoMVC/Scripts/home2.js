@@ -1,11 +1,9 @@
 ﻿
 
-//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-
+var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
-var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 var ColvisarrayVisaoAtual_show = [];
 var ColvisarrayVisaoAtual_hide = [];
@@ -83,6 +81,8 @@ function MountDataTable(json) {
             $('body > div.dt-button-background').click();
         }, 5);
     }
+
+    table = null;
 
     table = $('#example').DataTable({
         destroy: true,
@@ -293,7 +293,7 @@ function MountDataTable(json) {
 
             $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
                 var data = table.row($(this).parents('tr')).data();
-                console.log(data);
+                //console.log(data);
 
                 Clicked(true, false, true);
                 $.get(urlGetPlanejamento, {
@@ -309,7 +309,7 @@ function MountDataTable(json) {
 
             $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
                 var data = table.row($(this).parents('tr')).data();
-                console.log(data);
+                //console.log(data);
                 planejamentoCorrentId = data.Tatico_Id;
                 Clicked(isTaticoClicked, isNovaAcao);
 
@@ -331,7 +331,7 @@ function MountDataTable(json) {
 
                 var data = table.row($(this).parents('tr')).data();
                 selecionado = data;
-                console.log(data);
+                //console.log(data);
                 acaoCorrentId = data.Acao.Id;
                 //Clicked(isTaticoClicked, isNovaAcao);
 
@@ -467,7 +467,7 @@ function MountDataTable(json) {
 
     $('.dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
         //$('.dataTable thead th').each(function (i) {
-        var title = $('.dataTable thead th').eq($(this).index()).text();
+        var title = $('.dataTable:not(.DTFC_Cloned) thead th').eq($(this).index()).text();
         $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
     });
 
@@ -476,7 +476,7 @@ function MountDataTable(json) {
     $('.dataTables_filter').hide();
 
     // DataTable
-    var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
+    //var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
 
     // Filter event handler
     $(table.table().container()).on('keyup', 'thead input', function () {
@@ -507,7 +507,7 @@ function MountDataTable(json) {
         $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
 
 
-
+    $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
 }
 
 /**

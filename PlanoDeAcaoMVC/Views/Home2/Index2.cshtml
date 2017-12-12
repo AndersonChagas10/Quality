@@ -56,6 +56,11 @@
             width: 100%;
         }
 
+        .defaultSizeMinPanel2 {
+            height: 200px;
+            width: 100%;
+        }
+
         .defaultSizeMed {
             height: 370px;
         }
@@ -489,7 +494,7 @@
                 <br />
                 <span class="defaultSubtitle">Formação do Estoque de Ações</span>
             </div>
-            <div id="panel4" class="defaultSizeMinPanel"></div>
+            <div id="panel4" class="defaultSizeMinPanel2"></div>
         </div>
     </div>
 
@@ -761,7 +766,7 @@
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
-                    <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
+                    @*<button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>*@
 
                     <h4 class="modal-title" id="Header">ID: Header</h4>
                 </div>
@@ -860,6 +865,12 @@
 
 @section Scripts {
 
+    <script type="text/javascript">
+        $('.container').each(function (i, o) {
+            $(o).removeClass('container').addClass('container-fluid');
+        });
+    </script>
+
     <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
     <script src="~/Scripts/lodash.min.js"></script>
     @*<script src="~/Scripts/PANovo/js/popper.min.js"></script>
@@ -878,8 +889,8 @@
         <script src="~/Scripts/select2.min.js"></script>
         <script src="~/Scripts/i18n/pt-BR.js"></script>*@
 
-    <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+    @*<script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
     <script src="~/Scripts/PANovo/js/pt-br.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/i18n/pt-BR.js"></script>
@@ -954,8 +965,6 @@
 
             }
 
-
-
             //arrayAndamento = [1, 2, 3, 4, 5, 6];
             //arrayFechadas = [6, 2, 4, 1, 0, 1];
 
@@ -969,8 +978,6 @@
                 }
 
             }
-
-
 
             let serieArrFinal = [{
                 type: 'column',
@@ -1056,9 +1063,9 @@
                 width: '250px'
             })
 
-            $('.container').each(function (i, o) {
-                $(o).removeClass('container').addClass('container-fluid');
-            });
+            //$('.container').each(function (i, o) {
+            //    $(o).removeClass('container').addClass('container-fluid');
+            //});
 
         }
 
@@ -1293,7 +1300,7 @@
 
         //Verificando
         function SalvarPlanejamentoEditado(form) {
-            console.log(SalvarPlanejamentoEditado);
+            //console.log(SalvarPlanejamentoEditado);
             var sendObj = {};
 
             if (isClickedTaticoVinculado)
