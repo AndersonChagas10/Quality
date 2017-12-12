@@ -1807,7 +1807,7 @@ function getGraphPanel1(meuDado) {
 function getGraphPanel2(meuDado) {
     Highcharts.chart('panel2', {
         chart: {
-            plotBackgroundColor: null,
+            backgroundColor: 'rgba(255, 255, 255, 0.0)',
             plotBorderWidth: null,
             plotShadow: false,
             type: 'pie'

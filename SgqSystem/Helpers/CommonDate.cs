@@ -12,5 +12,11 @@ namespace SgqSystem.Helpers
             DateTime dateTime = DateTime.ParseExact(date, input, null);
             return dateTime.ToString(output);
         }
+
+        public static DateTime TransformStringToDateFormat(String date, String format)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, format, null);
+            return dateTime;
+        }
     }
 }

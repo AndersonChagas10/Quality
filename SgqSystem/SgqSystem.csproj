@@ -306,6 +306,7 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BuildPermissionApiController.cs" />
     <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
