@@ -397,6 +397,9 @@ namespace PlanoAcaoCore
                         else
                             k._QuandoFim = string.Empty;
 
+                        if (k.QuantoCusta > 0)
+                            k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
@@ -479,6 +482,9 @@ namespace PlanoAcaoCore
                             k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
                         else
                             k._QuandoFim = string.Empty;
+
+                        if (k.QuantoCusta > 0)
+                            k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
 
                         planTemp.Acao = k;
                         retorno.Add(planTemp);

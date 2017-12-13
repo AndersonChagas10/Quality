@@ -123,7 +123,7 @@ function MountDataTable(json) {
             { "mData": "Acao._QuandoFim" },
             { "mData": "Acao.ComoPontosimportantes" },
             { "mData": "Acao.PraQue" },
-            { "mData": "Acao.QuantoCusta" },
+            { "mData": "Acao._QuantoCusta" },
             { "mData": "Acao._StatusName" },
             { "mData": "Acao._Prazo" },
             {
