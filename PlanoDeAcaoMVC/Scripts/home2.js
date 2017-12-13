@@ -2,8 +2,7 @@
 
 //var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-
+//var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 var ColvisarrayVisaoAtual_show = [];
 var ColvisarrayVisaoAtual_hide = [];
