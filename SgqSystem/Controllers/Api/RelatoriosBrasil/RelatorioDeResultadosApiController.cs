@@ -671,6 +671,7 @@ FROM (SELECT
 			,UNI.Id
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
+            ,CL1.ConsolidationDate -- hot fix gabriel 2017-12-13
 	HAVING SUM(R3.WeiDefects) > 0) TAB
 ORDER BY 8 DESC ";
 
@@ -3907,6 +3908,7 @@ FROM (SELECT
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
 			,CAST(c2.CollectionDate AS date)
+            ,CAST(CL1.ConsolidationDate AS DATE)
 	HAVING SUM(R3.WeiDefects) > 0) TAB
 ORDER BY 15";
         }
