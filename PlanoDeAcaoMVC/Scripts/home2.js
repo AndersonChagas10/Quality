@@ -103,7 +103,7 @@ function MountDataTable(json) {
             { "mData": "IndicadoresDeProjeto" },
             { "mData": "ObjetivoGerencial" },
             { "mData": "_ValorDe" },
-            { "mData": "ValorPara" },
+            { "mData": "_ValorPara"},
             { "mData": "_DataInicio" },
             { "mData": "_DataFim" },
             { "mData": "Responsavel_Projeto_Quem.Name" },
@@ -130,11 +130,12 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     var html = "";
-                    if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
-                        html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
-                        
+
                     if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
                         html += btnNovoTatico;
+
+                    if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
+                        html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
 
                     if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
                         html += "<br>" + btnAcompanhamento
@@ -419,15 +420,15 @@ function MountDataTable(json) {
 
     //Filtros por coluna
 
-    $('.dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
+    $('#example_wrapper .dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
         //$('.dataTable thead th').each(function (i) {
-        var title = $('.dataTable:not(.DTFC_Cloned) thead th').eq($(this).index()).text();
+        var title = $('#example_wrapper .dataTable:not(.DTFC_Cloned) thead th').eq($(this).index()).text();
         $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
     });
 
     $('.dataTable thead th').css('text-align', 'center');
 
-    $('.dataTables_filter').hide();
+    //$('.dataTables_filter').hide();
 
     // DataTable
     //var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
