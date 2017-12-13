@@ -26,42 +26,42 @@ namespace SgqSystem.Controllers.Api
 
         public class ParReprocessoHeaderOP
         {
-            public int nCdOrdemProducao { get; set; }
-            public int nCdEmpresa { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
+            public decimal nCdEmpresa { get; set; }
             public DateTime dLancamento { get; set; }
-            public int nCdUsuario { get; set; }
+            public decimal nCdUsuario { get; set; }
             public String cCdRastreabilidade { get; set; }
-            public int nCdHabilitacao { get; set; }
+            public decimal nCdHabilitacao { get; set; }
         }
 
         public class ParReprocessoCertificadosSaidaOP
         {
-            public int nCdOrdemProducao { get; set; }
-            public int nCdCertificacao { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
+            public decimal nCdCertificacao { get; set; }
         }
 
         public class ParReprocessoSaidaOP
         {
-            public int nCdOrdemProducao { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
             public int iItem { get; set; }
-            public double nCdProduto { get; set; }
+            public decimal nCdProduto { get; set; }
             public int iQtdeValor { get; set; }
             public String cQtdeTipo { get; set; }
-            public int nCdLocalEstoque { get; set; }
+            public decimal nCdLocalEstoque { get; set; }
         }
 
         public class ParReprocessoEntradaOP
         {
-            public int nCdOrdemProducao { get; set; }
-            public int nCdProduto { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
+            public decimal nCdProduto { get; set; }
             public DateTime dProducao { get; set; }
             public DateTime dEmbalagem { get; set; }
             public DateTime dValidade { get; set; }
-            public int nCdLocalEstoque { get; set; }
+            public decimal nCdLocalEstoque { get; set; }
             public String cCdOrgaoRegulador { get; set; }
             public String cCdRastreabilidade { get; set; }
             public int iVolume { get; set; }
-            public double nPesoLiquido { get; set; }
+            public decimal nPesoLiquido { get; set; }
             public Produto produto { get; set; }
         }
 
