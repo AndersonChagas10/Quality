@@ -21,7 +21,8 @@ namespace SgqSystem.Controllers.Api
            public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
            public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
            public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
-            public List<Header> headerFields { get; set; }
+            public List<Header> headerFieldsEntrada { get; set; }
+            public List<Header> headerFieldsSaida { get; set; }
         }
 
         public class ParReprocessoHeaderOP
@@ -31,13 +32,18 @@ namespace SgqSystem.Controllers.Api
             public DateTime dLancamento { get; set; }
             public decimal nCdUsuario { get; set; }
             public String cCdRastreabilidade { get; set; }
+            public String cValidaHabilitacaoEntrada { get; set; }
             public decimal nCdHabilitacao { get; set; }
+            public String cNmHabilitacao { get; set; }
+            public String cSgHabilitacao { get; set; }
         }
 
         public class ParReprocessoCertificadosSaidaOP
         {
             public decimal nCdOrdemProducao { get; set; }
             public decimal nCdCertificacao { get; set; }
+            public String cNmCertificacao { get; set; }
+            public String cSgCertificacao { get; set; }
         }
 
         public class ParReprocessoSaidaOP
@@ -45,9 +51,16 @@ namespace SgqSystem.Controllers.Api
             public decimal nCdOrdemProducao { get; set; }
             public int iItem { get; set; }
             public decimal nCdProduto { get; set; }
-            public int iQtdeValor { get; set; }
+            public int iQtdePrevista { get; set; }
             public String cQtdeTipo { get; set; }
             public decimal nCdLocalEstoque { get; set; }
+            public String cNmLocalEstoque { get; set; }
+            public DateTime dProducao { get; set; }
+            public DateTime dValidade { get; set; }
+            public int iTotalPeca { get; set; }
+            public int iTotalVolume { get; set; }
+            public decimal nTotalPeso { get; set; }             
+
         }
 
         public class ParReprocessoEntradaOP
@@ -58,6 +71,7 @@ namespace SgqSystem.Controllers.Api
             public DateTime dEmbalagem { get; set; }
             public DateTime dValidade { get; set; }
             public decimal nCdLocalEstoque { get; set; }
+            public String cNmLocalEstoque { get; set; }
             public String cCdOrgaoRegulador { get; set; }
             public String cCdRastreabilidade { get; set; }
             public int iVolume { get; set; }
@@ -109,7 +123,8 @@ namespace SgqSystem.Controllers.Api
                         }
                         return r;
                     }).ToList(),
-                    headerFields = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'Reprocesso%'")
+                    headerFieldsEntrada = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoEntrada%'"),
+                    headerFieldsSaida = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoSaida%'")
                 };
                 
             }

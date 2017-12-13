@@ -1000,6 +1000,13 @@
 
 
     $(document).ready(function () {
+
+        var isEua = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+        if (isEua) {
+            $('#showModulo2').hide();
+        }
+
         $("#menu-toggle").click(function (e) {
             $("#menu-toggle > i").toggleClass("glyphicon-chevron-right");
             $('.redLabelSecTitle').toggle();

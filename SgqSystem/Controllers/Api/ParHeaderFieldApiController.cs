@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpGet]
-        [Route("GetList/{unitId}/{date}")]
+        [Route("GetCollectionLevel2XHeaderField/{unitId}/{date}")]
         public IEnumerable<CollectionHeaderField> GetListCollectionHeaderField(int UnitId, String Date)
         {
             var TransformedDate = CommonDate.TransformDateFormatToAnother(
