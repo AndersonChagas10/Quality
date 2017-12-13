@@ -34,8 +34,8 @@ namespace SgqSystem.Controllers
 
             var list = new[]
                {
-                    new SelectListItem { Value = "1", Text = "X" },
-                    new SelectListItem { Value = "2", Text = "P" },
+                    new SelectListItem { Value = "1", Text = "P" },
+                    new SelectListItem { Value = "2", Text = "X" },
                 };
 
             ViewBag.ListaCEP = new SelectList(list, "Value", "Text");

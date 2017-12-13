@@ -23,15 +23,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             List<Cep> _ceps = new List<Cep>();
 
-            bool x = true;
+            bool x = false;
 
             if(form.tipoCEP == "1")
             {
-                x = true;
+                x = false;
             }
             else if (form.tipoCEP == "2")
             {
-                x = false;
+                x = true;
             }
 
                 var query1 = "";
@@ -91,6 +91,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		INNER
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
+                            AND R3.IsNotEvaluate = 0
                 		INNER JOIN (SELECT DISTINCT
                 				id
                 			   ,ParLevel3_Id
@@ -125,6 +126,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		INNER
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
+                            AND R3.IsNotEvaluate = 0
                 		INNER JOIN (SELECT DISTINCT
                 				id
                 			   ,ParLevel3_Id
@@ -169,6 +171,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		INNER
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
+                            AND R3.IsNotEvaluate = 0
                 		INNER JOIN (SELECT DISTINCT
                 				id
                 			   ,ParLevel3_Id
@@ -203,6 +206,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		INNER
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
+                            AND R3.IsNotEvaluate = 0
                 		INNER JOIN (SELECT DISTINCT
                 				id
                 			   ,ParLevel3_Id
@@ -262,6 +266,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 	INNER
                 	JOIN Result_Level3 R3
                 		ON R3.CollectionLevel2_Id = CL.id
+                        AND R3.IsNotEvaluate = 0
                 	INNER JOIN (SELECT DISTINCT
                 			id
                 		   ,ParLevel3_Id
@@ -296,6 +301,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 	INNER
                 	JOIN Result_Level3 R3
                 		ON R3.CollectionLevel2_Id = CL.id
+                        AND R3.IsNotEvaluate = 0
                 	INNER JOIN (SELECT DISTINCT
                 			id
                 		   ,ParLevel3_Id
@@ -330,7 +336,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 //Carta P
 
                 query1 = "" +
-                "\n DECLARE @N INT = 120 --CASO X, ENTÃO 1                                                                                                   " +
+                "\n DECLARE @N DECIMAL(30, 5)  --CASO X, ENTÃO 1                                                                                                   " +
                 "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 5) = 2.5                                                                               " +
                 "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 5) = 1                                                                               " +
                 "\n DECLARE @MEDIA DECIMAL(30, 5)                                                                                                           " +
@@ -363,7 +369,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n select @MEDIA = AVG(media.VALOR) * 100, @N = avg(N) from                                                                                                  " +
                 "\n --select @MEDIA = AVG(media.DEFEITOS)  from                                                                                             " +
                 "\n (                                                                                                                                       " +
-                "\n select sum(WeiDefects) DEFEITOS, SUM(WeiDefects) / @N AS VALOR, count(WeiDefects) N from CollectionLevel2                                                          " +
+                "\n select sum(WeiDefects) DEFEITOS, case when (SUM(WeiEvaluation) = 0 or SUM(WeiEvaluation) is null) then 0 else (SUM(WeiDefects) / SUM(WeiEvaluation)) end AS VALOR, SUM(WeiEvaluation) N from CollectionLevel2                                                          " +
 
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
                 "\n AND UnitId = @UNIDADE                                                                                                                   " +

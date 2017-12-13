@@ -131,10 +131,10 @@ function MountDataTable(json) {
                 "render": function (data, type, row, meta) {
                     var html = "";
                     if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
-                        html += btnNovoTatico;
-
-                    if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
                         html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
+                        
+                    if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
+                        html += btnNovoTatico;
 
                     if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
                         html += "<br>" + btnAcompanhamento
@@ -291,53 +291,7 @@ function MountDataTable(json) {
         },
         initComplete: function () {
 
-            $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
-                var data = table.row($(this).parents('tr')).data();
-                //console.log(data);
 
-                Clicked(true, false, true);
-                $.get(urlGetPlanejamento, {
-                    id: data.Id
-                }, function (r) {
-                    //EditarPlanejamento(r)
-                    ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
-                        EditarPlanejamento(r)
-                    });
-                });
-
-            });
-
-            $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
-                var data = table.row($(this).parents('tr')).data();
-                //console.log(data);
-                planejamentoCorrentId = data.Tatico_Id;
-                Clicked(isTaticoClicked, isNovaAcao);
-
-                $('#modalLindo').modal();
-                $('#modalLindo').find('.modal-body').empty();
-                $('#Header').html("Planejamento Operacional");
-
-                $.get(PlanejamentoDetalhes, {
-                    id: planejamentoCorrentId
-                }, function (r) {
-                    $('#modalLindo').find('.modal-body').empty().append(r);
-                    $('#NovaAcao').show();
-                    $('#NovaAcao').click();
-                });
-
-            });
-
-            $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
-
-                var data = table.row($(this).parents('tr')).data();
-                selecionado = data;
-                //console.log(data);
-                acaoCorrentId = data.Acao.Id;
-                //Clicked(isTaticoClicked, isNovaAcao);
-
-                getAcompanhamento(acaoCorrentId);
-
-            });
         },
         createdRow: function (row, data, index) {
 
@@ -510,6 +464,54 @@ function MountDataTable(json) {
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
 }
 
+$('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+    var data = table.row($(this).parents('tr')).data();
+    //console.log(data);
+
+    Clicked(true, false, true);
+    $.get(urlGetPlanejamento, {
+        id: data.Id
+    }, function (r) {
+        //EditarPlanejamento(r)
+        ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
+            EditarPlanejamento(r)
+        });
+    });
+
+});
+
+$('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+    var data = table.row($(this).parents('tr')).data();
+    //console.log(data);
+    planejamentoCorrentId = data.Tatico_Id;
+    Clicked(isTaticoClicked, isNovaAcao);
+
+    $('#modalLindo').modal();
+    $('#modalLindo').find('.modal-body').empty();
+    $('#Header').html("Planejamento Operacional");
+
+    $.get(PlanejamentoDetalhes, {
+        id: planejamentoCorrentId
+    }, function (r) {
+        $('#modalLindo').find('.modal-body').empty().append(r);
+        $('#NovaAcao').show();
+        $('#NovaAcao').click();
+    });
+
+});
+
+$('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+
+    var data = table.row($(this).parents('tr')).data();
+    selecionado = data;
+    //console.log(data);
+    acaoCorrentId = data.Acao.Id;
+    //Clicked(isTaticoClicked, isNovaAcao);
+
+    getAcompanhamento(acaoCorrentId);
+
+});
+
 /**
  *
  * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
@@ -593,7 +595,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
         } else {
 
-            if (arrValue[0] == 'Todas') {
+            if (arrValue[0] == 'Todos') {
 
                 novoArr.push(o);
 
@@ -621,7 +623,7 @@ function FiltraLinhasComTodos(array, arrColuna, arrValue) {
 
     array.forEach(function (o, c) {
         var flag = true;
-        if (arrValue != "Todos" && arrValue != "Todas") {
+        if (arrValue != "Todos" && arrValue != "Todos") {
             if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
                 || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
                 || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "Acao.TipoIndicador") {
@@ -995,12 +997,12 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
     if (hasFilter) {
         var categoriesArr = [];
         if (id == 'panel5') {
-            if ($('#valor1Panel5 option:selected').text() == "Todas")
+            if ($('#valor1Panel5 option:selected').text() == "Todos")
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel5 option:selected').text());
         } else if (id == 'panel6') {
-            if ($('#valor1Panel6 option:selected').text() == "Todas")
+            if ($('#valor1Panel6 option:selected').text() == "Todos")
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel6 option:selected').text());
@@ -1255,14 +1257,14 @@ function orderArray(array) {
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
     var filtroEixoX = [];
     if (id == 'panel5') {
-        if ($('#valor2Panel5 option:selected').text() == "Todas")
+        if ($('#valor2Panel5 option:selected').text() == "Todos")
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
     } else if (id == 'panel6') {
-        if ($('#valor2Panel6 option:selected').text() == "Todas")
+        if ($('#valor2Panel6 option:selected').text() == "Todos")
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel6 option:selected').text());
@@ -1559,13 +1561,13 @@ function distinctFilter(lista, filtro, selectId) {
 
     $('#' + selectId).children('option').remove();
 
-    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todas"));
+    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todos"));
 
-    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todos"));
 
 
     $.each(retorno, function (key, value) {
@@ -1805,7 +1807,7 @@ function getGraphPanel1(meuDado) {
 function getGraphPanel2(meuDado) {
     Highcharts.chart('panel2', {
         chart: {
-            plotBackgroundColor: null,
+            backgroundColor: 'rgba(255, 255, 255, 0.0)',
             plotBorderWidth: null,
             plotShadow: false,
             type: 'pie'
@@ -1865,7 +1867,7 @@ function filterPie2ForDataTable(name) {
 
     var retorno = '';
 
-    if ($('#valor1FiltroPie2 option:selected').text() == "Todas") {
+    if ($('#valor1FiltroPie2 option:selected').text() == "Todos") {
         retorno = name;
     } else {
         retorno = $('#campo1FiltroPie2 option:selected').text() + ': ' + $('#valor1FiltroPie2 option:selected').text() + ' | ' + 'Status' + ': ' + name;

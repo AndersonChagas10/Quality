@@ -209,6 +209,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\ApiGerenciarController.cs" />
     <Compile Include="Controllers\Api\ApiSgqController.cs" />
+    <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="Controllers\Home2Controller.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
@@ -963,6 +964,7 @@
     <Content Include="Views\Home2\Index.cshtml" />
     <Content Include="Views\Shared\_Calendar.cshtml" />
     <Content Include="Views\Home2\Index2.cshtml" />
+    <Content Include="Views\Centauro\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

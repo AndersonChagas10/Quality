@@ -1520,11 +1520,12 @@ namespace SGQDBContext
                         GROUP BY TT.cNrClassificacao, cNmClassificacao
                         ORDER BY 2";
             }
-            else if (valores[0] == "Reprocesso")
+            else if (valores[0] == "ReprocessoEntrada" || valores[0] == "ReprocessoSaida")
             {
-                sql = "\n SELECT 1 Id, 'teste' as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
+                sql = "\n SELECT 1 Id, 'Selecione' as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
                       "\n  ";
             }
+
             var multipleValues = db.Query<ParFieldType>(sql);
 
             return multipleValues;
