@@ -1,11 +1,9 @@
 ﻿
 
-//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-
+var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+//var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
-var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 var ColvisarrayVisaoAtual_show = [];
 var ColvisarrayVisaoAtual_hide = [];
@@ -84,6 +82,8 @@ function MountDataTable(json) {
         }, 5);
     }
 
+    table = null;
+
     table = $('#example').DataTable({
         destroy: true,
         "aaData": json,
@@ -131,10 +131,10 @@ function MountDataTable(json) {
                 "render": function (data, type, row, meta) {
                     var html = "";
                     if (!!parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id) > 0)  // possui plan tatico
-                        html += btnNovoTatico;
-
-                    if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
                         html += "<br class='showAsEstrategy'>" + btnNovoOperacional;
+                        
+                    if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
+                        html += btnNovoTatico;
 
                     if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
                         html += "<br>" + btnAcompanhamento
@@ -145,7 +145,6 @@ function MountDataTable(json) {
 
 
         ],
-
         'aoColumnDefs': [
             { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
             { "sTitle": "Missão", "aTargets": [1], "width": "200px" },
@@ -187,18 +186,17 @@ function MountDataTable(json) {
             { "sTitle": "Ação" },
 
         ],
-
-        responsive: true,
+        "responsive": true,
+        "bSearchable": true,
         "bFilter": true,
-        paging: true,
-        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
-        info: true,
+        "paging": true,
+        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
+        "info": true,
         "scrollY": 370,
         "scrollX": 500,
         "bLengthChange": true,
-
-        dom: 'Blfrtip',
-        buttons: [
+        "dom": 'Blfrtip',
+        "buttons": [
             //{
             {
                 extend: 'colvisGroup',
@@ -263,18 +261,12 @@ function MountDataTable(json) {
                     columns: ':visible',
                 }
             },
-            //atualizar: {
-            //    text: 'Atualizar',
-            //    action: function (e, dt, node, config) {
-            //        //if (config.counterAjaxTable > 1) {
-            //        GetDataTable();
-            //        //}
-            //        config.counterAjaxTable++;
-            //        config.counterAjaxTable++;
-            //        //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
-            //    },
-            //    counterAjaxTable: 1
-            //},
+            {
+                text: 'Atualizar',
+                action: function (e, dt, node, config) {
+                    $('#btnTop').click();
+                },
+            },
             //novaAcao: {
             //    text: 'Nova Ação',
             //    action: function (e, dt, node, config) {
@@ -299,53 +291,6 @@ function MountDataTable(json) {
         },
         initComplete: function () {
 
-            $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
-                var data = table.row($(this).parents('tr')).data();
-                console.log(data);
-
-                Clicked(true, false, true);
-                $.get(urlGetPlanejamento, {
-                    id: data.Id
-                }, function (r) {
-                    //EditarPlanejamento(r)
-                    ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
-                        EditarPlanejamento(r)
-                    });
-                });
-
-            });
-
-            $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
-                var data = table.row($(this).parents('tr')).data();
-                console.log(data);
-                planejamentoCorrentId = data.Tatico_Id;
-                Clicked(isTaticoClicked, isNovaAcao);
-
-                $('#modalLindo').modal();
-                $('#modalLindo').find('.modal-body').empty();
-                $('#Header').html("Planejamento Operacional");
-
-                $.get(PlanejamentoDetalhes, {
-                    id: planejamentoCorrentId
-                }, function (r) {
-                    $('#modalLindo').find('.modal-body').empty().append(r);
-                    $('#NovaAcao').show();
-                    $('#NovaAcao').click();
-                });
-
-            });
-
-            $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
-
-                var data = table.row($(this).parents('tr')).data();
-                selecionado = data;
-                console.log(data);
-                acaoCorrentId = data.Acao.Id;
-                //Clicked(isTaticoClicked, isNovaAcao);
-
-                getAcompanhamento(acaoCorrentId);
-
-            });
 
         },
         createdRow: function (row, data, index) {
@@ -466,6 +411,7 @@ function MountDataTable(json) {
 
     setTimeout(function () {
         $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        $(".dataTables_filter").css("display", "block");
     }, 1100);
 
 
@@ -475,7 +421,7 @@ function MountDataTable(json) {
 
     $('.dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
         //$('.dataTable thead th').each(function (i) {
-        var title = $('.dataTable thead th').eq($(this).index()).text();
+        var title = $('.dataTable:not(.DTFC_Cloned) thead th').eq($(this).index()).text();
         $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
     });
 
@@ -484,7 +430,7 @@ function MountDataTable(json) {
     $('.dataTables_filter').hide();
 
     // DataTable
-    var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
+    //var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
 
     // Filter event handler
     $(table.table().container()).on('keyup', 'thead input', function () {
@@ -515,8 +461,56 @@ function MountDataTable(json) {
         $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
 
 
-
+    $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
 }
+
+$('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+    var data = table.row($(this).parents('tr')).data();
+    //console.log(data);
+
+    Clicked(true, false, true);
+    $.get(urlGetPlanejamento, {
+        id: data.Id
+    }, function (r) {
+        //EditarPlanejamento(r)
+        ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
+            EditarPlanejamento(r)
+        });
+    });
+
+});
+
+$('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+    var data = table.row($(this).parents('tr')).data();
+    //console.log(data);
+    planejamentoCorrentId = data.Tatico_Id;
+    Clicked(isTaticoClicked, isNovaAcao);
+
+    $('#modalLindo').modal();
+    $('#modalLindo').find('.modal-body').empty();
+    $('#Header').html("Planejamento Operacional");
+
+    $.get(PlanejamentoDetalhes, {
+        id: planejamentoCorrentId
+    }, function (r) {
+        $('#modalLindo').find('.modal-body').empty().append(r);
+        $('#NovaAcao').show();
+        $('#NovaAcao').click();
+    });
+
+});
+
+$('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+
+    var data = table.row($(this).parents('tr')).data();
+    selecionado = data;
+    //console.log(data);
+    acaoCorrentId = data.Acao.Id;
+    //Clicked(isTaticoClicked, isNovaAcao);
+
+    getAcompanhamento(acaoCorrentId);
+
+});
 
 /**
  *
@@ -600,16 +594,23 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
 
         } else {
-            arrColuna.forEach(function (oo, cc) {
 
-                if (o[oo] != arrValue[cc]) {
-                    flag = false;
+            if (arrValue[0] == 'Todos') {
+
+                novoArr.push(o);
+
+            } else {
+
+                arrColuna.forEach(function (oo, cc) {
+                    if (o[oo] != arrValue[cc]) {
+                        flag = false;
+                    }
+                });
+
+                if (flag) {
+                    novoArr.push(o)
                 }
-            });
-        }
-
-        if (flag) {
-            novoArr.push(o)
+            }
         }
     });
 
@@ -622,7 +623,7 @@ function FiltraLinhasComTodos(array, arrColuna, arrValue) {
 
     array.forEach(function (o, c) {
         var flag = true;
-        if (arrValue != "Todos" && arrValue != "Todas") {
+        if (arrValue != "Todos" && arrValue != "Todos") {
             if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
                 || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
                 || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "Acao.TipoIndicador") {
@@ -996,12 +997,12 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
     if (hasFilter) {
         var categoriesArr = [];
         if (id == 'panel5') {
-            if ($('#valor1Panel5 option:selected').text() == "Todas")
+            if ($('#valor1Panel5 option:selected').text() == "Todos")
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel5 option:selected').text());
         } else if (id == 'panel6') {
-            if ($('#valor1Panel6 option:selected').text() == "Todas")
+            if ($('#valor1Panel6 option:selected').text() == "Todos")
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel6 option:selected').text());
@@ -1085,19 +1086,27 @@ function getRegistrosNaoConcluidos(arr) {
 //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
 function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
 
-    $('.semDados').hide();
+    if (id == 'panel5') {
+        $('#semDados1').hide();
+    }
 
-    if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
-        if (id == 'panel5') {
-            $('#semDados1').show();
-            return;
-        }
+    if (id == 'panel6') {
+        $('#semDados2').hide();
+    }
 
-        if (id == 'panel6') {
-            $('#semDados2').show();
-            return;
+    if (seriesArr[0] != undefined) {
+
+        if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
+            if (id == 'panel5') {
+                $('#semDados1').show();
+                return;
+            }
+
+            if (id == 'panel6') {
+                $('#semDados2').show();
+                return;
+            }
         }
-        
     }
 
     let options = {
@@ -1248,14 +1257,14 @@ function orderArray(array) {
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
     var filtroEixoX = [];
     if (id == 'panel5') {
-        if ($('#valor2Panel5 option:selected').text() == "Todas")
+        if ($('#valor2Panel5 option:selected').text() == "Todos")
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
     } else if (id == 'panel6') {
-        if ($('#valor2Panel6 option:selected').text() == "Todas")
+        if ($('#valor2Panel6 option:selected').text() == "Todos")
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel6 option:selected').text());
@@ -1552,13 +1561,13 @@ function distinctFilter(lista, filtro, selectId) {
 
     $('#' + selectId).children('option').remove();
 
-    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todas"));
+    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todos"));
 
-    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
-    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todas"));
+    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todos"));
+    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todos"));
 
 
     $.each(retorno, function (key, value) {
@@ -1798,7 +1807,7 @@ function getGraphPanel1(meuDado) {
 function getGraphPanel2(meuDado) {
     Highcharts.chart('panel2', {
         chart: {
-            plotBackgroundColor: null,
+            backgroundColor: 'rgba(255, 255, 255, 0.0)',
             plotBorderWidth: null,
             plotShadow: false,
             type: 'pie'
@@ -1858,7 +1867,7 @@ function filterPie2ForDataTable(name) {
 
     var retorno = '';
 
-    if ($('#valor1FiltroPie2 option:selected').text() == "Todas") {
+    if ($('#valor1FiltroPie2 option:selected').text() == "Todos") {
         retorno = name;
     } else {
         retorno = $('#campo1FiltroPie2 option:selected').text() + ': ' + $('#valor1FiltroPie2 option:selected').text() + ' | ' + 'Status' + ': ' + name;
@@ -2311,7 +2320,7 @@ function setArrayColvisAtual() {
         } else {
             ColvisarrayVisaoAtual_hide.push(i);
         }
-    }).promise().done(function () {       
+    }).promise().done(function () {
         $('body > div.dt-button-background').click();
         //$('body > div.dt-button-collection.fixed.four-column').show();
     });

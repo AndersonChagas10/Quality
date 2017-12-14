@@ -13,8 +13,8 @@
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
-        //////////Config para dev GRT
-        //////Local Db
+        //Config para dev GRT
+        //Local Db
         public static string catalog { get { return "PlanoDeAcao"; } }
         public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         public static string user { get { return "sa"; } }

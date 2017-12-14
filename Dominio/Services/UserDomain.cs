@@ -6,6 +6,7 @@ using DTO.DTO;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 
@@ -85,6 +86,17 @@ namespace Dominio.Services
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
+
+            if (GetAppSettings("BuildPermission") != null)
+            {
+                var PermissionDate = TransformStringToDateFormat(
+                    Guard.DecryptStringAES(GetAppSettings("BuildPermission")), "dd/MM/yyyy");
+                if (PermissionDate != null)
+                {
+                    if(PermissionDate.CompareTo(DateTime.Now) <= 0)
+                        throw new ExceptionHelper("The access is expired.");
+                }                
+            }
 
             try
             {
@@ -649,6 +661,17 @@ namespace Dominio.Services
                     throw e;
                 }
             }
+        }
+
+        private string GetAppSettings(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
+        private DateTime TransformStringToDateFormat(String date, String format)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, format, null);
+            return dateTime;
         }
 
         #endregion

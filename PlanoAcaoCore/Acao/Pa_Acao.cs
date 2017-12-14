@@ -356,13 +356,13 @@ namespace PlanoAcaoCore
                 }
                 if (retorno.Level2Id != null && retorno.Level2Id > 0)
                 {
-                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level2Id).FirstOrDefault();
                     if (level2 != null)
                         retorno._Level2 = level2.Name;
                 }
                 if (retorno.Level3Id != null && retorno.Level3Id > 0)
                 {
-                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level3Id).FirstOrDefault();
                     if (level3 != null)
                         retorno._Level3 = level3.Name;
                 }
