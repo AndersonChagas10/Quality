@@ -59,7 +59,8 @@ namespace SgqSystem.Controllers.Api
             public DateTime dValidade { get; set; }
             public int iTotalPeca { get; set; }
             public int iTotalVolume { get; set; }
-            public decimal nTotalPeso { get; set; }             
+            public decimal nTotalPeso { get; set; }
+            public Produto produto { get; set; }
 
         }
 
@@ -112,7 +113,15 @@ namespace SgqSystem.Controllers.Api
                 {
                     parReprocessoHeaderOPs = factoryParReprocessoHeaderOP.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " " + parCompany.CompanyNumber),
                     parReprocessoCertificadosSaidaOP = factoryParReprocessoCertificadosSaidaOP.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP") + " " + parCompany.CompanyNumber),
-                    parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber),
+                    parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber).Select(r =>
+                    {
+                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
+                        if (r.produto != null)
+                        {
+                            r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
+                        }
+                        return r;
+                    }).ToList(),
                     parReprocessoEntradaOPs =
                     factoryParReprocessoEntradaOP.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " " + parCompany.CompanyNumber).Select(r =>
                     {
