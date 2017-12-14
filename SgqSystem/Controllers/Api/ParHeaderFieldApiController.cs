@@ -4,8 +4,6 @@ using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
@@ -15,6 +13,18 @@ namespace SgqSystem.Controllers.Api
     public class ParHeaderFieldApiController : ApiController
     {
         public partial class CollectionHeaderField
+        {
+            public int ParLevel1_Id { get; set; }
+            public int ParLevel2_Id { get; set; }
+            public int Period { get; set; }
+            public int Shift { get; set; }
+            public int ParHeaderField_Id { get; set; }
+            public int Evaluation { get; set; }
+            public int Sample { get; set; }
+            public string Value { get; set; }
+        }
+
+        public partial class ParMultipleValuesXParCompany
         {
             public int ParLevel1_Id { get; set; }
             public int ParLevel2_Id { get; set; }
@@ -54,6 +64,29 @@ namespace SgqSystem.Controllers.Api
             using (var context = new SgqDbDevEntities())
             {
                 return context.Database.SqlQuery<CollectionHeaderField>(SelectQuery).ToList();
+            }
+
+        }
+
+        [HttpGet]
+        [Route("GetListParMultipleValuesXParCompany/{unitId}")]
+        public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, String Date)
+        {
+            var SelectQuery =
+                @"SELECT 
+                PP.ParCompany_Id, 
+                PP.ParMultipleValues_Id, 
+                PP.HashKey, 
+                PP.ParHeaderField_Id, 
+                PP.Parent_ParMultipleValues_Id, 
+                P.Name 
+                FROM ParMultipleValuesXParCompany PP 
+                LEFT JOIN ParMultipleValues P on P.Id = PP.ParMultipleValues_Id
+                WHERE PP.IsActive = 1 and ParCompany_Id = " +  UnitId ;
+
+            using (var context = new SgqDbDevEntities())
+            {
+                return context.Database.SqlQuery<ParMultipleValuesXParCompany>(SelectQuery).ToList();
             }
 
         }
