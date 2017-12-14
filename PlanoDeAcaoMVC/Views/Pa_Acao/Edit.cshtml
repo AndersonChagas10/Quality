@@ -263,7 +263,7 @@
                             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(model => model.Status, new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </td>
                         <td></td>

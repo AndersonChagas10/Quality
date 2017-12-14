@@ -1705,7 +1705,7 @@
             //        $($('[id=adicionar]')[c]).click();
             //});
 
-            //$('#Edit').show();
+            //$('#Edit').show();           
             InitDatePiker();
         }
 
@@ -2998,7 +2998,8 @@
                     $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                     $('#obj').show(); //Apagar depois
                     InitDatePiker();
-                    $('#modalNovo > div > div > div.modal-footer > button').show()
+                    $('#CausaGenerica_Id').change();
+                    $('#modalNovo > div > div > div.modal-footer > button').show();
                 }
             );
         }
