@@ -324,8 +324,16 @@
 
                                                     <tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocesso" value="integracaoReprocesso"></td>
-                                                        <td style="padding:5px;">Reprocesso</td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
+                                                        <td style="padding:5px;">Reprocesso Entrada</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                    </tr>
+
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
+                                                        <td style="padding:5px;">Reprocesso Saída</td>
                                                         <td style="padding:5px;"></td>
 
                                                     </tr>
@@ -1540,8 +1548,11 @@
                 case "integracaoFamiliaProduto":
                     description = "familiaProduto";
                     break;
-                case "integracaoReprocesso":
-                    description = "Reprocesso";
+                case "integracaoReprocessoEntrada":
+                    description = "ReprocessoEntrada";
+                    break;
+                case "integracaoReprocessoSaida":
+                    description = "ReprocessoSaida";
                     break;
                 default:
                     description = "";
@@ -1585,8 +1596,11 @@
                 case "integracaoFamiliaProduto":
                     tipo = "Família de Produtos";
                     break;
-                case "integracaoReprocesso":
-                    description = "Reprocesso";
+                case "integracaoReprocessoEntrada":
+                    description = "ReprocessoEntrada";
+                    break;
+                case "integracaoReprocessoSaida":
+                    description = "ReprocessoSaida";
                     break;
                 case "integracaoProduto":
                     tipo = "@Resources.Resource.products";

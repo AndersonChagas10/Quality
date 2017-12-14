@@ -21,47 +21,62 @@ namespace SgqSystem.Controllers.Api
            public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
            public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
            public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
-            public List<Header> headerFields { get; set; }
+            public List<Header> headerFieldsEntrada { get; set; }
+            public List<Header> headerFieldsSaida { get; set; }
         }
 
         public class ParReprocessoHeaderOP
         {
-            public int nCdOrdemProducao { get; set; }
-            public int nCdEmpresa { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
+            public decimal nCdEmpresa { get; set; }
             public DateTime dLancamento { get; set; }
-            public int nCdUsuario { get; set; }
+            public decimal nCdUsuario { get; set; }
             public String cCdRastreabilidade { get; set; }
-            public int nCdHabilitacao { get; set; }
+            public String cValidaHabilitacaoEntrada { get; set; }
+            public decimal nCdHabilitacao { get; set; }
+            public String cNmHabilitacao { get; set; }
+            public String cSgHabilitacao { get; set; }
         }
 
         public class ParReprocessoCertificadosSaidaOP
         {
-            public int nCdOrdemProducao { get; set; }
-            public int nCdCertificacao { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
+            public decimal nCdCertificacao { get; set; }
+            public String cNmCertificacao { get; set; }
+            public String cSgCertificacao { get; set; }
         }
 
         public class ParReprocessoSaidaOP
         {
-            public int nCdOrdemProducao { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
             public int iItem { get; set; }
-            public double nCdProduto { get; set; }
-            public int iQtdeValor { get; set; }
+            public decimal nCdProduto { get; set; }
+            public int iQtdePrevista { get; set; }
             public String cQtdeTipo { get; set; }
-            public int nCdLocalEstoque { get; set; }
+            public decimal nCdLocalEstoque { get; set; }
+            public String cNmLocalEstoque { get; set; }
+            public DateTime dProducao { get; set; }
+            public DateTime dValidade { get; set; }
+            public int iTotalPeca { get; set; }
+            public int iTotalVolume { get; set; }
+            public decimal nTotalPeso { get; set; }
+            public Produto produto { get; set; }
+
         }
 
         public class ParReprocessoEntradaOP
         {
-            public int nCdOrdemProducao { get; set; }
-            public int nCdProduto { get; set; }
+            public decimal nCdOrdemProducao { get; set; }
+            public decimal nCdProduto { get; set; }
             public DateTime dProducao { get; set; }
             public DateTime dEmbalagem { get; set; }
             public DateTime dValidade { get; set; }
-            public int nCdLocalEstoque { get; set; }
+            public decimal nCdLocalEstoque { get; set; }
+            public String cNmLocalEstoque { get; set; }
             public String cCdOrgaoRegulador { get; set; }
             public String cCdRastreabilidade { get; set; }
             public int iVolume { get; set; }
-            public double nPesoLiquido { get; set; }
+            public decimal nPesoLiquido { get; set; }
             public Produto produto { get; set; }
         }
 
@@ -98,7 +113,15 @@ namespace SgqSystem.Controllers.Api
                 {
                     parReprocessoHeaderOPs = factoryParReprocessoHeaderOP.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " " + parCompany.CompanyNumber),
                     parReprocessoCertificadosSaidaOP = factoryParReprocessoCertificadosSaidaOP.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP") + " " + parCompany.CompanyNumber),
-                    parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber),
+                    parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber).Select(r =>
+                    {
+                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
+                        if (r.produto != null)
+                        {
+                            r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
+                        }
+                        return r;
+                    }).ToList(),
                     parReprocessoEntradaOPs =
                     factoryParReprocessoEntradaOP.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " " + parCompany.CompanyNumber).Select(r =>
                     {
@@ -109,7 +132,8 @@ namespace SgqSystem.Controllers.Api
                         }
                         return r;
                     }).ToList(),
-                    headerFields = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'Reprocesso%'")
+                    headerFieldsEntrada = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoEntrada%'"),
+                    headerFieldsSaida = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoSaida%'")
                 };
                 
             }
