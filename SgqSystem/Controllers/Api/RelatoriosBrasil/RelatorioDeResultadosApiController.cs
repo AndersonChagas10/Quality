@@ -305,7 +305,7 @@ FROM (SELECT
 		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
 			ON CL1.UnitId = CXS.ParCompany_Id
 		INNER JOIN ParCompanyCluster PCC
-			ON PCC.ParCompany_Id = UNI.Id
+			ON PCC.ParCompany_Id = UNI.Id  AND PCC.ParCluster_Id = L1XC.ParCluster_Id 
 		WHERE 1 = 1
         AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + whereUnidade2 + @"
@@ -319,7 +319,7 @@ FROM (SELECT
 			,Level1Name
 			,level1_Id
 			,IsRuleConformity) S2
-WHERE nc > 0
+WHERE 1=1 -- nc > 0
 " + whereStatus + @"
 ORDER BY 6 DESC
 DROP TABLE #AMOSTRATIPO4 ";
@@ -484,6 +484,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
 	WHERE 1 = 1
     AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + whereUnidade2 + @"
@@ -492,7 +493,7 @@ FROM (SELECT
     " + whereCriticalLevel + @"
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id, level1_Id, S1.Level1Name
-HAVING SUM(NC) > 0
+-- HAVING SUM(NC) > 0
 ORDER BY 10 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -652,6 +653,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id  
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + whereUnidade2 + @"
@@ -671,8 +673,8 @@ FROM (SELECT
 			,UNI.Id
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
-            ,CL1.ConsolidationDate -- hot fix gabriel 2017-12-13
-	HAVING SUM(R3.WeiDefects) > 0) TAB
+            ,CL1.ConsolidationDate
+	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
 ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -938,8 +940,9 @@ FROM (SELECT
             and L1XC.IsActive = 1
 		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
 			ON CL1.UnitId = CXS.ParCompany_Id
-		INNER JOIN ParCompanyCluster PCC
+		INNER JOIN ParCompanyCluster PCC (NOLOCK)
 			ON PCC.ParCompany_Id = UNI.Id
+            AND PCC.ParCluster_Id = L1XC.ParCluster_Id
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + whereUnidade2 + @"
         " + whereCluster + @"
@@ -950,7 +953,7 @@ FROM (SELECT
 			Level1Name
 			,level1_Id
 			,IsRuleConformity) S2
-WHERE nc > 0
+WHERE 1=1 -- AND nc > 0
 " + whereStatus + @"
 ORDER BY 3 DESC
 DROP TABLE #AMOSTRATIPO4 ";
@@ -1112,6 +1115,7 @@ FROM (SELECT
     	ON CL1.UnitId = CXS.ParCompany_Id
     INNER JOIN ParCompanyCluster PCC
     	ON PCC.ParCompany_Id = UNI.Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + whereUnidade2 + @"
     " + whereCluster + @"
@@ -1119,7 +1123,7 @@ FROM (SELECT
     " + whereCriticalLevel + @"
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, level2_Id, level1_Id, S1.Level1Name
-HAVING SUM(NC) > 0
+-- HAVING SUM(NC) > 0
 ORDER BY 7 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -1282,6 +1286,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC
 		ON PCC.ParCompany_Id = UNI.Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + whereUnidade2 + @"
@@ -1299,7 +1304,7 @@ FROM (SELECT
 			,R3.ParLevel3_Name
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
-	HAVING SUM(R3.WeiDefects) > 0) TAB
+	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
 ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -1506,7 +1511,7 @@ ORDER BY 8 DESC ";
 "\n    LEFT JOIN ParLevel1XCluster L1C                                                                                                                                                                                                                                                                                                     " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1                                                                                                                                                                                                                                                " +
+"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                                                             " +
 "\n    LEFT JOIN ParCriticalLevel CRL                                                                                                                                                                                                                                                                                                      " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
@@ -1958,7 +1963,7 @@ ORDER BY 8 DESC ";
            "\n        ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                            " +
            "\n LEFT JOIN ParCompanyCluster CCL   (nolock)                                                                                                                                                                                                                                    " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                                 " +
+           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                               " +
            "\n LEFT JOIN ParCluster CL       (nolock)                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                 " +
@@ -1967,7 +1972,7 @@ ORDER BY 8 DESC ";
            "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
            "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
+           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1 AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                  " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
@@ -2131,7 +2136,7 @@ ORDER BY 8 DESC ";
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
                     whereClusterGroup +
                     whereCluster +
                     whereStructure +
@@ -2326,7 +2331,7 @@ ORDER BY 8 DESC ";
 "\n    LEFT JOIN ParLevel1XCluster L1C                                                                                                                                                                                                                                                                                                     " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1                                                                                                                                                                                                                                                " +
+"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1    AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                                                              " +
 "\n    LEFT JOIN ParCriticalLevel CRL                                                                                                                                                                                                                                                                                                      " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
@@ -2772,7 +2777,7 @@ ORDER BY 8 DESC ";
            "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
            "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
+           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                 " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
@@ -2933,7 +2938,7 @@ ORDER BY 8 DESC ";
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
                     whereClusterGroup +
                     whereCluster +
                     whereStructure +
@@ -3129,7 +3134,7 @@ ORDER BY 8 DESC ";
 "\n    LEFT JOIN ParLevel1XCluster L1C                                                                                                                                                                                                                                                                                                     " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1                                                                                                                                                                                                                                                " +
+"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                                                               " +
 "\n    LEFT JOIN ParCriticalLevel CRL                                                                                                                                                                                                                                                                                                      " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
@@ -3590,7 +3595,7 @@ ORDER BY 8 DESC ";
            "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
            "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
+           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                 " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
@@ -3908,8 +3913,7 @@ FROM (SELECT
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
 			,CAST(c2.CollectionDate AS date)
-            ,CAST(CL1.ConsolidationDate AS DATE)
-	HAVING SUM(R3.WeiDefects) > 0) TAB
+	/* HAVING SUM(R3.WeiDefects) > 0 */) TAB
 ORDER BY 15";
         }
 
