@@ -1287,7 +1287,7 @@
                     planejamentoCorrentId = parseInt(r.Id);
                     openMessageModal('Registro salvo com sucesso!', '');
                     $('#modalLindo').modal('hide');
-
+                    $('#btnTop').click();
                     //$.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
                 }).fail(function (e, h, x) {
@@ -1323,7 +1323,7 @@
                 planejamentoCorrentId = parseInt(r.Id);
                 openMessageModal('Registro salvo com sucesso!', '');
                 $('#modalLindo').modal('hide');
-
+                $('#btnTop').click();
                 //$.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
             }).fail(function (e, h, x) {
@@ -1769,6 +1769,7 @@
                         openMessageModal('Registro salvo com sucesso!', '');
                         //}
                         //GerarTabela(r);
+                        $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
 
@@ -1811,6 +1812,7 @@
                     openMessageModal('Registro salvo com sucesso!', '');
                     //}
                     //GerarTabela(r);
+                    $('#btnTop').click();
                     getAcompanhamento(selecionado.Acao.Id);
                 }).fail(function (e, h, x) {
 
@@ -2770,6 +2772,7 @@
                 //Colocar o retorno no modal
                 formReset();
                 getAcompanhamento(obj.Acao_Id);
+                $('#btnTop').click();
                 openMessageModal('Registro salvo com sucesso!', '');
 
             })
