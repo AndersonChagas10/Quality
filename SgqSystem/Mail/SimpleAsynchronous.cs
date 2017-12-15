@@ -304,7 +304,7 @@ namespace SgqSystem.Mail
                             AND U.Email IS NOT NULL
                             AND U.Email <> ''
                             AND Reg.Id =
-                            CASE
+                            CASE --forçar regional para diretores
 
                                 WHEN U.ID = 1002 THEN 5
 
@@ -314,7 +314,8 @@ namespace SgqSystem.Mail
 
                                 WHEN U.ID = 1872 THEN 2
 
-                            ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END";
+                            ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
+                            AND U.Id NOT IN (543,546,511)"; //Tirar Célia e Mariana da JBS
 
                 var listaEmails = dbLegado.Database.SqlQuery<string>(query);
                 if (listaEmails != null && listaEmails.Count() > 0)
