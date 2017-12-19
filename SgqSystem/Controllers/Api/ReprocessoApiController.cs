@@ -21,8 +21,8 @@ namespace SgqSystem.Controllers.Api
            public List<ParReprocessoCertificadosSaidaOP> parReprocessoCertificadosSaidaOP { get; set; }
            public List<ParReprocessoSaidaOP> parReprocessoSaidaOPs { get; set; }
            public List<ParReprocessoEntradaOP> parReprocessoEntradaOPs { get; set; }
-            public List<Header> headerFieldsEntrada { get; set; }
-            public List<Header> headerFieldsSaida { get; set; }
+           public List<Header> headerFieldsEntrada { get; set; }
+           public List<Header> headerFieldsSaida { get; set; }
         }
 
         public class ParReprocessoHeaderOP
