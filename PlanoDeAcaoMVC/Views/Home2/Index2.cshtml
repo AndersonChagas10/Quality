@@ -869,6 +869,9 @@
         $('.container').each(function (i, o) {
             $(o).removeClass('container').addClass('container-fluid');
         });
+
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")'
+
     </script>
 
     <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
@@ -1238,6 +1241,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
                     DdlChangeEstrategico();
                 }
                 InitDatePiker();
@@ -1283,7 +1287,7 @@
                     planejamentoCorrentId = parseInt(r.Id);
                     openMessageModal('Registro salvo com sucesso!', '');
                     $('#modalLindo').modal('hide');
-
+                    $('#btnTop').click();
                     //$.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
                 }).fail(function (e, h, x) {
@@ -1319,7 +1323,7 @@
                 planejamentoCorrentId = parseInt(r.Id);
                 openMessageModal('Registro salvo com sucesso!', '');
                 $('#modalLindo').modal('hide');
-
+                $('#btnTop').click();
                 //$.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
             }).fail(function (e, h, x) {
@@ -1359,7 +1363,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                        $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
                         if (model != undefined) {
 
                             //$('#Id').val(model.Id);
@@ -1701,7 +1705,7 @@
             //        $($('[id=adicionar]')[c]).click();
             //});
 
-            //$('#Edit').show();
+            //$('#Edit').show();           
             InitDatePiker();
         }
 
@@ -1765,6 +1769,7 @@
                         openMessageModal('Registro salvo com sucesso!', '');
                         //}
                         //GerarTabela(r);
+                        $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
 
@@ -1804,9 +1809,11 @@
                     //if (counter == 1 && !jaLiberouCallback) {
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
+                    $('.modal-backdrop').remove();
                     openMessageModal('Registro salvo com sucesso!', '');
                     //}
                     //GerarTabela(r);
+                    $('#btnTop').click();
                     getAcompanhamento(selecionado.Acao.Id);
                 }).fail(function (e, h, x) {
 
@@ -2766,6 +2773,7 @@
                 //Colocar o retorno no modal
                 formReset();
                 getAcompanhamento(obj.Acao_Id);
+                $('#btnTop').click();
                 openMessageModal('Registro salvo com sucesso!', '');
 
             })
@@ -2994,7 +3002,8 @@
                     $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                     $('#obj').show(); //Apagar depois
                     InitDatePiker();
-                    $('#modalNovo > div > div > div.modal-footer > button').show()
+                    $('#CausaGenerica_Id').change();
+                    $('#modalNovo > div > div > div.modal-footer > button').show();
                 }
             );
         }

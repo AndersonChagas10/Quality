@@ -61,51 +61,53 @@
         closeLeftSidebar();;
         const refreshStatusUrl = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
         const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
+        //const refreshStatusUrl = "/SGQ/api/AppParams/GetGeneratedUnits";
+        //const urlUpdateTablets = "/SGQ/api/AppParams/UpdateGetTelaThread";
         $(document).ready(function() {
 
             var things = {'ListUnits':@Html.Raw(Json.Encode(ViewBag.IdUnidadesUsuario))};
 
-            things = JSON.stringify( things );
+            things = JSON.stringify(things);
 
-            var refreshStatus = function(){
+            var refreshStatus = function () {
                 $('#spamLoading').LoadingOverlay("show");
                 $.ajax(
-               {
-                   type: "POST",
-                   url: refreshStatusUrl,
-                   data: things,
-                   dataType: "JSON",
-                   contentType: "application/json; charset=utf-8",
-                   success: function (response) {
-                       getDataTable(response);
-                       $('#spamLoading').LoadingOverlay("hide");
+                    {
+                        type: "POST",
+                        url: refreshStatusUrl,
+                        data: things,
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            getDataTable(response);
+                            $('#spamLoading').LoadingOverlay("hide");
 
 
-                       setTimeout(function(){
-                           refreshStatus();
-                       }, 3000);
-                   }
-               });
+                            setTimeout(function () {
+                                refreshStatus();
+                            }, 3000);
+                        }
+                    });
             };
 
 
-            var getDataTable = function(response){
+            var getDataTable = function (response) {
                 $('#tableAllUnitTelaTablet').empty();
 
                 var list = [];
                 //Gera a lista
-                $.each(response, function( index, value ) {
-                    var row = $('tr[data-unit-id='+value.Key+']').children();
-                    if(value != null){
-                        list.push([value.Key,value.DataInicioStr,value.DataFimStr, value.StatusStr])
-                    }else{
-                        list.push([value.Key,"-","-","-"])
+                $.each(response, function (index, value) {
+                    var row = $('tr[data-unit-id=' + value.Key + ']').children();
+                    if (value != null) {
+                        list.push([value.Key, value.DataInicioStr, value.DataFimStr, value.StatusStr])
+                    } else {
+                        list.push([value.Key, "-", "-", "-"])
                     }
                 });
 
                 //Atualiza Html
-                $.each(list, function( index, value ) {
-                    var row = $('tr[data-unit-id='+value[0]+']').children();
+                $.each(list, function (index, value) {
+                    var row = $('tr[data-unit-id=' + value[0] + ']').children();
                     $(row[1]).html(value[0]);
                     $(row[3]).html(value[1]);
                     $(row[4]).html(value[2]);
@@ -113,31 +115,31 @@
                 });
             };
 
-            $('#updateTablets').on('click', function(){
+            $('#updateTablets').on('click', function () {
                 $.LoadingOverlay("show");
 
                 var listId = [];
-                $("input:checkbox[name=unitId]:checked").each(function(){
+                $("input:checkbox[name=unitId]:checked").each(function () {
                     listId.push($(this).val());
                 });
 
-                var data = JSON.stringify( {'ListUnits':listId} );
+                var data = JSON.stringify({ 'ListUnits': listId });
 
                 $.ajax(
-                   {
-                       type: "POST",
-                       url: urlUpdateTablets,
-                       data: data,
-                       dataType: "JSON",
-                       contentType: "application/json; charset=utf-8",
-                       success: function (response) {
-                           $.LoadingOverlay("hide");
-                       }
-                   });
+                    {
+                        type: "POST",
+                        url: urlUpdateTablets,
+                        data: data,
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $.LoadingOverlay("hide");
+                        }
+                    });
 
                 $('#updateTablets').LoadingOverlay("show");
 
-                setTimeout(function(){
+                setTimeout(function () {
                     $('#updateTablets').LoadingOverlay("hide");
                 }, 8000);
 
@@ -145,15 +147,15 @@
             });
 
             var selectedAll = false;
-            $('#checkAll').on('click', function(){
+            $('#checkAll').on('click', function () {
                 $('.monitor-get-tela input:checkbox').prop('checked', !selectedAll);
-                selectedAll =! selectedAll;
+                selectedAll = !selectedAll;
             });
 
             //$('#refreshStatus').on('click',refreshStatus);
 
             refreshStatus();
 
-        } );
+        });
     </script>
 }

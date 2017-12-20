@@ -277,7 +277,7 @@ namespace PlanoAcaoCore
                         DIME.Name AS Dimensao,                         
                         INICI.Name AS Iniciativa,                      
                         OBJ.Name AS Objetivo                               
-                         FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id, Pl2.IsTatico, Pl2.Tatico_Id, Pl1.IsFta FROM Pa_Planejamento Pl1 
+                         FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl2.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id, Pl2.IsTatico, Pl2.Tatico_Id, Pl1.IsFta FROM Pa_Planejamento Pl1 
                           INNER JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id 
                           UNION ALL 
                           SELECT DISTINCT pl1.* FROM Pa_Planejamento Pl1 LEFT JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null 
@@ -397,6 +397,9 @@ namespace PlanoAcaoCore
                         else
                             k._QuandoFim = string.Empty;
 
+                        if (k.QuantoCusta > 0)
+                            k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
@@ -479,6 +482,9 @@ namespace PlanoAcaoCore
                             k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
                         else
                             k._QuandoFim = string.Empty;
+
+                        if (k.QuantoCusta > 0)
+                            k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
 
                         planTemp.Acao = k;
                         retorno.Add(planTemp);

@@ -80,7 +80,7 @@
 @section Scripts {
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
          var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
          var urlGetReportReprocessoHeader = '@Html.Raw(urlGetReportReprocessoHeader)';
@@ -177,25 +177,25 @@
                                     "</tr>";
 
                                 var ObjOP = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == "41"
+                                    return a.ParHeaderField_Id == "92"
                                 });
 
                                 var OP = ObjOP.length == 0 ? '' : ObjOP[0].Value;
 
                                 var ObjDataReprocesso = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == "42"
+                                    return a.ParHeaderField_Id == "91"
                                 });
 
                                 var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[0].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4)
 
                                 var ObjSIF = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == "43"
+                                    return a.ParHeaderField_Id == "93"
                                 });
 
                                 var SIF = ObjSIF.length == 0 ? '' : ObjSIF[0].Value;
 
                                 var ObjObs = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == "44"
+                                    return a.ParHeaderField_Id == "93"
                                 });
 
                                 var Obs = ObjObs.length == 0 ? '' : ObjObs[0].Value;
@@ -212,11 +212,33 @@
 
                                 var QtdDescartado = ObjQtdDescartado.length == 0 ? '' : ObjQtdDescartado[0].Value;
 
+                                var ObjOrigem = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "94"
+                                });
+
+                                var Origem = ObjOrigem.length == 0 ? '' : ObjOrigem[0].Value;
+
+                                var ObjMotivo = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "95"
+                                });
+
+                                var Motivo = ObjMotivo.length == 0 ? '' : ObjMotivo[0].Value;
+
+                                var ObjQtdeEnvolvido = $.grep(dadosReprocesso, function (a, b) {
+                                    return a.ParHeaderField_Id == "96"
+                                });
+
+                                var QtdeEnvolvido = ObjQtdeEnvolvido.length == 0 ? '' : ObjQtdeEnvolvido[0].Value;
+
+
                                 var campos = "" +
                                     "<tr><td colspan=3>&nbsp;</td></tr>" +
                                     "<tr><td colspan=3>Data do Reprocesso: " + dataReprocesso + "</td></tr>" +
                                     "<tr><td colspan=3>Número da Ordem do Reprocesso: " + OP + "</td></tr>" +
                                     "<tr><td colspan=3>Número do Ofício do SIF autorizando o reprocesso: " + SIF + "</td></tr>" +
+                                    "<tr><td colspan=3>Origem do reprocesso: " + Origem + "</td></tr>" +
+                                    "<tr><td colspan=3>Motivo do reprocesso: " + Motivo + "</td></tr>" +
+                                    "<tr><td colspan=3>Quantidade de produto envolvido: " + QtdeEnvolvido + "</td></tr>" +
                                     "<tr><td colspan=3>&nbsp;</td></tr>";
 
                                 var produtos = "";
@@ -255,6 +277,14 @@
 
                                 for (var i = 0; i < data.length; i++) {
 
+                                    var valor = '';
+
+                                    if (data[i].Value == undefined) {
+                                        valor = data[i].WeiDefects.toFixed(0).toString();
+                                    } else {
+                                        valor = data[i].Value.toString();
+                                    }
+
                                     lista = lista +
                                         '<tr><td colspan=3>' +
                                         data[i].CollectionDate +
@@ -263,19 +293,19 @@
                                         ' - ' +
                                         data[i].ParLevel3_Name +
                                         ' - ' +
-                                        data[i].WeiDefects +
+                                        valor +
                                         '</td><tr>';
                                 }
 
                                 lista = lista +
                                     "<tr><td colspan=3>&nbsp;</td></tr>" +
-                                    "<tr><td colspan=3>Quantidade de produto aproveitado: " + QtdAproveitado + "</td></tr>" +
-                                    "<tr><td colspan=3>Quantidade de produto descartado: " + QtdDescartado + "</td></tr>" +
-                                    "<tr><td colspan=3>Destino do produto: " + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].nCdHabilitacao + "</td></tr>" +
-                                    "<tr><td colspan=3>Local de estoque de alocação de produto final: " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[0].nCdLocalEstoque + "</td></tr>" +
-                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
-                                    "<tr><td colspan=3 style='font-weight:bold;'>Observações</td></tr>" +
-                                    "<tr><td colspan=3>" + Obs + "</td></tr>" +
+                                    //"<tr><td colspan=3>Quantidade de produto aproveitado: " + QtdAproveitado + "</td></tr>" +
+                                    //"<tr><td colspan=3>Quantidade de produto descartado: " + QtdDescartado + "</td></tr>" +
+                                    //"<tr><td colspan=3>Destino do produto: " + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].nCdHabilitacao + "</td></tr>" +
+                                    //"<tr><td colspan=3>Local de estoque de alocação de produto final: " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[0].nCdLocalEstoque + "</td></tr>" +
+                                    //"<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    //"<tr><td colspan=3 style='font-weight:bold;'>Observações</td></tr>" +
+                                    //"<tr><td colspan=3>" + Obs + "</td></tr>" +
 
                                     "<tr><td colspan=3 height=50px></td></tr>" +
                                     "<tr><td colspan=3>" +
@@ -299,6 +329,23 @@
                                     "</tr></table>" +
                                     "</td ></tr > " +
 
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+                                    "<tr><td colspan=3>&nbsp;</td></tr>" +
+
+                                    "<tr><td colspan=3>" +
+                                    "<table width=100% border=1px cellspan=0 cellpadding=5px><tr>" +
+                                        "<td>Codificação do documento</td>" +
+                                        "<td>Revisão</td>" +
+                                        "<td>Data de Aprovação</td>" +
+                                        "</tr><tr>" +
+                                        "<td>RGQ-00-GQC-025/06</td>" +
+                                        "<td></td>" +
+                                        "<td>07/12/2017</td>" +
+                                    "</tr></table>" +
+
+                                    "</td></tr>"+
                                     "</table>";
 
                                 lista = lista +
@@ -339,7 +386,7 @@
 
         $.ajax({
             type: 'GET'
-            , url: urlGetCollectionLevel2Reprocesso+'/6/2017-12-10/2017-12-11'
+            , url: urlGetCollectionLevel2Reprocesso+'/55/2017-12-10/2017-12-30'
             , contentType: 'application/json; charset=utf-8'
             , dataType: 'json'
             , data: ''
@@ -584,6 +631,6 @@
             //formControl.showProcesso();
             closeLeftSidebar();
         });
-</script>
+    </script>
 
 }
