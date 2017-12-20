@@ -305,7 +305,7 @@ FROM (SELECT
 		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
 			ON CL1.UnitId = CXS.ParCompany_Id
 		INNER JOIN ParCompanyCluster PCC
-			ON PCC.ParCompany_Id = UNI.Id  AND PCC.ParCluster_Id = L1XC.ParCluster_Id 
+			ON PCC.ParCompany_Id = UNI.Id  AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 		WHERE 1 = 1
         AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + whereUnidade2 + @"
@@ -484,7 +484,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 	WHERE 1 = 1
     AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + whereUnidade2 + @"
@@ -653,7 +653,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id  
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1  
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + whereUnidade2 + @"
@@ -942,7 +942,7 @@ FROM (SELECT
 			ON CL1.UnitId = CXS.ParCompany_Id
 		INNER JOIN ParCompanyCluster PCC (NOLOCK)
 			ON PCC.ParCompany_Id = UNI.Id
-            AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+            AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + whereUnidade2 + @"
         " + whereCluster + @"
@@ -1115,7 +1115,7 @@ FROM (SELECT
     	ON CL1.UnitId = CXS.ParCompany_Id
     INNER JOIN ParCompanyCluster PCC
     	ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + whereUnidade2 + @"
     " + whereCluster + @"
@@ -1286,7 +1286,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC
 		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + whereUnidade2 + @"
