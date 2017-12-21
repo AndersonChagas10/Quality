@@ -203,10 +203,11 @@ namespace SgqSystem.Mail
                             EmailContent newMail = GetMailByDeviation(db, m, m.AlertNumber);
                             newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
                             db.EmailContent.Add(newMail);
-                            db.Database.ExecuteSqlCommand("UPDATE Deviation SET sendMail = 1 WHERE ID = " + m.Id);
-                        }
+                            db.SaveChanges();
 
-                        db.SaveChanges();
+                            db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
+                            db.SaveChanges();
+                        }
 
                     }
                 }
@@ -245,11 +246,24 @@ namespace SgqSystem.Mail
 
             var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
 
+            #region Captura ultimo body do email content enviado
+            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta =
+                $@"select top 1 ec.Body from deviation d
+                                INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
+                                WHERE
+                                CAST(GETDATE() AS Date) = CAST(d.DeviationDate AS Date)    
+                                and ParLevel1_Id = { m.ParLevel1_Id }                                           
+                                AND d.ParCompany_Id = { m.ParCompany_Id }  
+                                and d.alertnumber > 0
+                                order by d.alertnumber desc";
+
+            var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
+            #endregion
 
             var newMail = new EmailContent()
             {
                 AddDate = DateTime.Now,
-                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body),
+                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
                 IsBodyHtml = true,
                 Subject = subject,
                 Project = "SGQApp"
