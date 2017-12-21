@@ -1457,7 +1457,6 @@
     <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
     <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
-    <Content Include="Views\RelatoriosSgq\ReprocessoPrint.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
