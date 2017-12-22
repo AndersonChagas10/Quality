@@ -12,14 +12,188 @@
 
 
 
+<style type="text/css">
+    #conteudodatabela div.conteudodatabela {
+        width: 900px;
+        margin: 0 auto;
+    }
+    /*
+        #conteudodatabela table {
+            width: 99%;
+            border: none;
+            background-color: #f7f7f7;
+        }
+
+        #conteudodatabela table > tbody {
+            overflow: auto;
+            height: 200px;
+            overflow-x: hidden;
+        }*/
+
+    #conteudodatabela thead tr {
+        position: relative;
+        top: expression(offsetParent.scrollTop); /*IE5+ only*/
+    }
+
+    #conteudodatabela thead td, thead th {
+        text-align: center;
+        font-size: 14px;
+        background-color: white !important;
+        color: steelblue;
+        font-weight: bold;
+        border-top: solid 0px #ffffff;
+    }
+
+    /*#conteudodatabela td {
+            color: #000;
+            padding-right: 2px;
+            font-size: 12px;
+            text-align: right;
+            border: solid 1px #d8d8d8;
+        }*/
+
+    #conteudodatabela table tfoot tr { /*idea of Renato Cherullo to help IE*/
+        position: relative;
+        overflow-x: hidden;
+        background-color: white !important;
+        top: expression(parentNode.parentNode.offsetHeight >= offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
+    }
+
+
+    #conteudodatabela tfoot td {
+        text-align: center;
+        font-size: 11px;
+        font-weight: bold;
+        background-color: white !important;
+        color: steelblue;
+        border-top: solid 0px white;
+    }
+
+    #conteudodatabela td:last-child {
+        padding-right: 20px;
+    }
+    /*prevent Mozilla scrollbar from hiding cell content*/
+</style>
+
+
+
+<!-- Estilo para impressão -->
+<style type="text/css" media="print">
+    
+
+    /*#conteudodatabela div.conteudodatabela {
+            overflow: visible;
+        }
+
+        #conteudodatabela table > tbody {
+            overflow: visible;
+        }
+
+        #conteudodatabela td {
+            height: 14pt;
+        }*/
+    /*adds control for test purposes*/
+    #conteudodatabela thead td {
+        font-size: 11pt;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela tfoot td {
+        text-align: center;
+        font-size: 9pt;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela thead {
+        display: table-header-group;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela tfoot {
+        display: table-footer-group;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela thead th, thead td {
+        position: static;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela thead tr {
+        position: static;
+        border: 0px !important;
+        background-color: white !important;
+    }
+    /*prevent problem if print after scrolling table*/
+    #conteudodatabela table tfoot tr {
+        position: static;
+        border: 0px !important;
+        background-color: white !important;
+    }
+</style>
+
+
+
+<style>
+
+    body {
+  counter-reset: section;
+    name-reset: section;
+  text-align: justify;
+}
+
+@Html.Raw("@page") {
+  size: A4;
+  margin: 5%;
+  padding: 0 0 10%;
+}
+
+@Html.Raw("@media") print {
+  h6#number {
+    position: absolute;
+    page-break-before: always;
+    page-break-after: always;
+    bottom: 0;
+    right: 0;
+  }
+   h6#number::before {
+    position: relative;
+    bottom: -20px;
+    counter-increment: section;
+    content: counter(section);
+  }
+
+    h6#cod {
+    position: absolute;
+    page-break-before: always;
+    page-break-after: always;
+    bottom: 0;
+    left: 0;
+  }
+  h6#cod::before {
+
+    position: relative;
+    bottom: -20px;
+    name-increment: section;
+    content: "Leornado 2";
+  }
+  .print {
+    display: none;
+  }
+}
+
+
+</style>
+
+
+
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
-    <style media="print">
-        .botao {
-            display: none;
-        }
-    </style>
 
     <div id="formBodyContent">
 
@@ -55,144 +229,221 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
 
 
-                <table border=0 width="100%" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
+                <!--cabeçalho e Rodapé-->
 
-                    <tr>
-                        <td height=80px;>
-                            <table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                <div id="conteudo">
+
+                    <div class="conteudodatabela">
+                        <table id="externo" cellspacing="0">
+                            <thead>
                                 <tr>
-                                    <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-jbs.png' width="80px"></td>
-                                    <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
-                                    <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-gq.png' width="80px"></td>
+                                    <td width="100%" style="border:0px solid #ffffff !important;">
+
+                                        @*<table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-jbs.png" width="80px"></td>
+                                                        <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
+                                                        <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-gq.png" width="80px"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>*@
+
+                                    </td>
                                 </tr>
+                            </thead>
+                            <tfoot>
+                                <tr style="background-color: white;">
+                                    <td style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px; background-color:#fff; padding-top:5px;">
+                                        <div style="background-color:#ffffff; z-index:9999999; padding-top:5px; width:100%;">
+                                            RGQ-00-GQC-025/06 Aprov. em: 07/12/2017
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
                                 <tr>
-                                    <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                    <td>
+
+                                        <!--table normal-->
+
+
+                                        <table border=0 width="100%" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
+
+                                            <tr>
+                                                <td height=80px;>
+                                                    <table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                                        <tr>
+                                                            <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-jbs.png' width="80px"></td>
+                                                            <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
+                                                            <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-gq.png' width="80px"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr><td height=20px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <table width="100%" style="font-size:10px;">
+                                                        <tr>
+                                                            <td height=30px; width="35%"><b>Data do Reprocesso:</b></td>
+                                                            <td width="13%"><span id="dtReprocesso"></span></td>
+                                                            <td width="4%"></td>
+                                                            <td width="35%"><b>Número do Ofício do SIF autorizando o reprocesso:</b></td>
+                                                            <td width="13%"><span id="OficioSIF"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height=30px;><b>Número da Ordem do Reprocesso:</b></td>
+                                                            <td><span id="numOp"></span></td>
+                                                            <td></td>
+                                                            <td><b>Quantidade de produto envolvido:</b></td>
+                                                            <td><span id="qdeProd"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height=30px;><b>Origem de reprocesso:</b></td>
+                                                            <td><span id="OrigemRep"></span></td>
+                                                            <td></td>
+                                                            <td><b>Motivo do reprocesso:</b></td>
+                                                            <td><span id="MotivoRep"></span></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr><td height=20px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <div id="tblProdutosEntrada" style="width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr><td height=20px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <div id="tblProdutosSaida" style="width:100%">
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr><td height=20px;></td></tr>
+                                            <tr><td height=20px;><b>Avaliação do Produto</b></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <div id="divTarefas" style="width:100%"></div>
+                                                </td>
+                                            </tr>
+                                            <tr><td height=50px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                                                        <tr>
+                                                            <td height="20px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="40px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center"><span id="nomePessoa"></span><br />Monitor GQ</td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center">Estoque Físico<br />&nbsp;</td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr><td height=30px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                                                        <tr>
+                                                            <td height="20px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="20px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center">Gerente Industrial</td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center">Garantia da Qualidade</td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr><td><div id="divRodape"></div></td></tr>
+
+
+
+
+
+                                        </table>
+
+                                        <!--cabeçalho e rodapé final-->
+
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr><td height=20px;></td></tr>
-                    <tr>
-                        <td height=20px;>
-                            <table width="100%" style="font-size:10px;">
-                                <tr>
-                                    <td height=30px; width="35%"><b>Data do Reprocesso:</b></td>
-                                    <td width="13%"><span id="dtReprocesso"></span></td>
-                                    <td width="4%"></td>
-                                    <td width="35%"><b>Número do Ofício do SIF autorizando o reprocesso:</b></td>
-                                    <td width="13%"><span id="OficioSIF"></span></td>
-                                </tr>
-                                <tr>
-                                    <td height=30px;><b>Número da Ordem do Reprocesso:</b></td>
-                                    <td><span id="numOp"></span></td>
-                                    <td></td>
-                                    <td><b>Quantidade de produto envolvido:</b></td>
-                                    <td><span id="qdeProd"></span></td>
-                                </tr>
-                                <tr>
-                                    <td height=30px;><b>Origem de reprocesso:</b></td>
-                                    <td><span id="OrigemRep"></span></td>
-                                    <td></td>
-                                    <td><b>Motivo do reprocesso:</b></td>
-                                    <td><span id="MotivoRep"></span></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr><td height=20px;></td></tr>
-                    <tr>
-                        <td height=20px;>
-                            <div id="tblProdutosEntrada" style="width:100%"></div>
-                        </td>
-                    </tr>
-
-                    <tr><td height=20px;></td></tr>
-                    <tr>
-                        <td height=20px;>
-                            <div id="tblProdutosSaida" style="width:100%">
-
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr><td height=20px;></td></tr>
-                    <tr><td height=20px;><b>Avaliação do Produto</b></td></tr>
-                    <tr>
-                        <td height=20px;>
-                            <div id="divTarefas" style="width:100%"></div>
-                        </td>
-                    </tr>
-                    <tr><td height=50px;></td></tr>
-                    <tr>
-                        <td height=20px;>
-                            <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
-                                <tr>
-                                    <td height="20px" width="15%" align="center"></td>
-                                    <td width="30%" align="center" style="border-bottom:1px solid black"></td>
-                                    <td width="10%" align="center"></td>
-                                    <td width="30%" align="center" style="border-bottom:1px solid black"></td>
-                                    <td width="15%" align="center"></td>
-                                </tr>
-                                <tr>
-                                    <td height="40px" width="15%" align="center"></td>
-                                    <td width="30%" align="center"><span id="nomePessoa"></span><br />Monitor GQ</td>
-                                    <td width="10%" align="center"></td>
-                                    <td width="30%" align="center">Estoque Físico<br />&nbsp;</td>
-                                    <td width="15%" align="center"></td>
-                                </tr>
-
-                            </table>
-                        </td>
-                    </tr>
-                    <tr><td height=30px;></td></tr>
-                    <tr>
-                        <td height=20px;>
-                            <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
-                                <tr>
-                                    <td height="20px" width="15%" align="center"></td>
-                                    <td width="30%" align="center" style="border-bottom:1px solid black"></td>
-                                    <td width="10%" align="center"></td>
-                                    <td width="30%" align="center" style="border-bottom:1px solid black"></td>
-                                    <td width="15%" align="center"></td>
-                                </tr>
-                                <tr>
-                                    <td height="20px" width="15%" align="center"></td>
-                                    <td width="30%" align="center">Gerente Industrial</td>
-                                    <td width="10%" align="center"></td>
-                                    <td width="30%" align="center">Garantia da Qualidade</td>
-                                    <td width="15%" align="center"></td>
-                                </tr>
-
-                            </table>
-                        </td>
-                    </tr>
-                    <tr><td><div id="divRodape"></div></td></tr>
 
 
+                            </tbody>
+                        </table>
 
+                    </div>
 
+                    <!-- fim cabecalho e rodape-->
 
-                </table>
+                </div>
 
+                <h6 id="number" class="first"></h6>
+                <h6 id="cod" class="secound"></h6>
+                <div class="insert"></div>
             </div>
+
         </div>
-
     </div>
-</div>
 
-@section Scripts {
+    @section Scripts {
 
 
-    <script type="text/javascript">
+        <script type="text/javascript">
+
+            var bottom = 0;
+            $(document).ready(function () {
+                $("tr:nth-child(1n)").each(function () {
+                    bottom -= 100;
+                    botString = bottom.toString();
+                    var $counter = $('h6.first').clone().removeClass('first');
+                    $counter.css("bottom", botString + "vh");
+                    ($counter).insertBefore('.insert');
+
+                    var $name = $('h6.secound').clone().removeClass('secound');
+                    $name.css("bottom", botString + "vh");
+                    ($name).insertBefore('.insert');
+                });
+            });
 
         function imprimirRelatorio() {
             var conteudo = document.getElementById('divReport').innerHTML,
                 tela_impressao = window.open('');
-            tela_impressao.document.write('<html><head><title>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</title><body>' + conteudo + '</body><footer style="bottom:0px; font-family: \'Century Gothic\', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</footer></html>');
+            tela_impressao.document.write('<html><head><title>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</title><body>' + conteudo + '</body></html>');
             tela_impressao.window.print();
             tela_impressao.window.close();
         }
@@ -454,7 +705,7 @@
 
                                 var tabela = "";
 
-                                tabela = tabela + '<table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+                                tabela = tabela + '<table width="100%" border="1" cellspacing="0" cellpadding="1" style="border-color:#ccc; font-size:10px;">';
                                 tabela = tabela + '<tr>';
                                 tabela = tabela + '<td height="40px" width="25%" align="center"><b>Produto de Entrada</b></td>';
                                 tabela = tabela + '<td width="10%" align="center"><b>Data de Produção</b></td>';
@@ -492,43 +743,6 @@
                                 tabela = tabela + '</table>';
 
                                 $('#tblProdutosEntrada').html(tabela);
-
-                                //var produtos = "";
-
-                                //produtos = "<tr><td colspan=3 style='font-size:10px;'>" +
-                                //    "<table border=1 width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'>" +
-                                //    "<tr>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center; width:230px;'>Produto de Entrada</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Produção</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Embalagem</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Validade</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>SIF</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Código da Ratreabilidade</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Volume</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Peso</td>" +
-                                //    "</tr>";
-
-
-                                //for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoEntradaOPs.length; i++) {
-
-                                //    produtos = produtos +
-                                //        "<tr>" +
-                                //        "<td style='padding:5px;'>Produto " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao) +"</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem) +"</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade) + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido + "</td>" +
-                                //        "</tr>";
-
-                                //}
-
-                                //produtos = produtos + "</table>";
-
-                                //lista = lista + cabecalho + campos + produtos;
-
 
                                 //saída
 
@@ -885,7 +1099,7 @@
 
 
                 //variveis de ambiente 92/367/97/368 GABRIEL /55/20171210/20171230/92/97
-		
+
                 monitoramentoEntrada = 353;
                 monitoramentoSaida = 356;
                 cabecalhoOPEntrada = 41;
@@ -897,7 +1111,7 @@
                 cabecalhoObjOrigem = 44;
                 cabecalhoObjMotivo = 42;
                 cabecalhoObjQtdeEnvolvido = 44;
-		
+
 
                 //variveis de ambiente JBS
 
@@ -985,6 +1199,6 @@
             //formControl.showProcesso();
             closeLeftSidebar();
         });
-    </script>
+        </script>
 
-}
+    }

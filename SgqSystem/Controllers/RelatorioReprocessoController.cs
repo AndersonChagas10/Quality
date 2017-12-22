@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class RelatorioReprocessoController : BaseController
+    public class RelatorioReprocessoController : Controller
     {
         // GET: RelatorioReprocesso
         public ActionResult Index()
