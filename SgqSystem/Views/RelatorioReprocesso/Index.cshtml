@@ -1,272 +1,258 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿
 @{
-    ViewBag.Title = "Scorecard";
-    var url = Url.Action("Index", "Home");
-    var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
-    var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
+    Layout = null;
 }
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<style>
 
-    <div id="formBodyContent">
-
-        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-
-            <button type="button" style="margin-top: 5px;" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-        </div>
-
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="load"></div>
-        <div id="divTable">
-
-            <style>
-                .dataTables_scroll {
-                    font-size: small;
-                }
-
-                table.dataTable {
-                    margin: 0px !important;
-                }
-
-                    table.dataTable thead th, table.dataTable thead td {
-                        padding: 2px 12px !important;
-                    }
-
-
-                    table.dataTable tbody th, table.dataTable tbody td {
-                        padding: 2px !important;
-                    }
-
-                .dataTables_scrollBody {
-                    border-bottom: 0px !important;
-                }
-            </style>
-
-            <table id="results" class="display" cellspacing="0" style="width:100% !important;"></table>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-
-
-    <script type="text/javascript">
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
-
-        $('button').button({ loadingText: '@Resources.Resource.loading...' });
-
-        var url1 = '@Html.Raw(@urlScorecard)';
-        var $btn = $('#btnSend');
-        $('#simpleCallendar').hide().attr('disabled', true);
-
-        $(document).ready(function () {
-            $("#btnSend").click(function (e) {
-                $('#unitId').change();
-                Send(true);
-            });
-        });
-
-        function Send(toggle) {
-            $btn.button('loading');
-            $('#results').empty();
-
-            if (!ValidaDadosParaEnvio()) {
-                $btn.button('reset');
-                return;
-            }
-
-            $('#divTable').hide();
-
-            enviar["auditorId"] = GetUsuarioId();
-
-            EasyAjax(url1, enviar, GerarTabela, "load", toggle);//AJAX
-        };
-
-        var limitesMid = @Html.Raw(Json.Encode(ViewBag.PercentValueMid));
-        var limitesHigh = @Html.Raw(Json.Encode(ViewBag.PercentValueHigh));
-
-        var arrSintShow = [5, 6, 7, 8, 11, 12, 13];
-        var arrSintHide = [0, 1, 2, 3, 4, 9, 10];
-        var visibilidadeDefault = [];
-
-        arrSintShow.forEach(function (o, c) {
-            visibilidadeDefault.push({
-                targets: o,
-                visible: true
-            })
-        })
-
-        arrSintHide.forEach(function (o, c) {
-            visibilidadeDefault.push({
-                targets: o,
-                visible: false
-            })
-        })
-
-        function GerarTabela(retornoArray) {
-            $('#divTable').show();
-
-            var table = $('#results').empty().DataTable({
-                data: retornoArray,
-                columns: [{ title: "Cluster", mData: "ClusterName" },
-                    { title: "Regional", mData: "RegionalName" },
-                    { title: "Empresa", mData: "ParCompanyName" },
-                    { title: "@Resources.Resource.scorecard_type", mData: "TipoScore" },
-                    { title: "@Resources.Resource.audit_type", mData: "TipoIndicadorName" },
-                    { title: "@Resources.Resource.audit", mData: "Level1Name" },
-                    { title: "@Resources.Resource.smp", mData: "AV" },
-                    { title: "@Resources.Resource.ncc", mData: "NC" },
-                    { title: "@Resources.Resource.group2", mData: "CriterioName" },
-                    { title: "@Resources.Resource.points2", mData: "Pontos" },
-                    { title: "@Resources.Resource.points_possible", mData: "PontosIndicador" },
-                    { title: "@Resources.Resource.goal %", mData: "Meta" },
-                    { title: "Real %", mData: "Real" },
-                    { title: "@Resources.Resource.points_achieved", mData: "PontosAtingidos" },
-                    { title: "Scorecard", mData: "Scorecard" },
-                ],
-                destroy: true,
-                /*
-                fixedHeader: {
-                    header: true,
-                    footer: true
-                },
-                */
-                //columnDefs: visibilidadeDefault,
-                //stateSave: true,
-                //stateSaveCallback: function(settings,data) {
-                //    localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
-                //},
-                //stateLoadCallback: function(settings) {
-                //    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
-                //},
-                scrollX: true,
-                paginate: false,
-                paging: false,
-                bSort: false,
-                loadingRecords: false,
-                destroy: true,
-                info: false,
-                responsive: true,
-                initComplete: function () {
-                    $('#loading').hide();
-                    setTimeout(function (e) {
-                        var oTable = $('#results').dataTable();
-                        if (oTable.length > 0) {
-                            oTable.fnAdjustColumnSizing();
-                        }
-                    }, 100);
-                },
-                createdRow: function (row, data, index) {
-
-                    if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
-                        // green
-                        $('td', row).eq(14).css("background-color", '#33FF33');
-                    } else if (data["Scorecard"] < parseInt(limitesMid)) {
-                        // red
-                        $('td', row).eq(14).css("background-color", '#FF6666');
-                    }
-                    else if (data["Scorecard"] < parseInt(limitesHigh)) {
-                        $('td', row).eq(14).css("background-color", 'yellow');
-                    }
-
-                },
-                fnDrawCallback: function (data, d, o) {
-
-
-
-                }
-            });
-
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                     {
-                         extend: 'colvisGroup',
-                         text: '@Resources.Resource.synthetic',
-
-                         //show: [3, 4, 5, 6, 9, 10, 12],
-                         show: arrSintShow,
-                         //hide: [0, 1, 2, 7, 8, 11]
-                         hide: arrSintHide
-                     },
-                    {
-                        extend: 'colvisGroup',
-                        text: '@Resources.Resource.analytical',
-                        show: ':hidden'
-                    },
-                    {
-                        extend: 'print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'pdf',
-                            ]
-            });
-
-
-
-                        table.buttons(0, null).container().prependTo(
-                            table.table().container()
-                        );
-
-                        //Filtros por coluna
-
-                        $('.dataTable thead th').each(function (i) {
-                            var title = $('.dataTable thead th').eq($(this).index()).text();
-                            $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
-                        });
-
-                        // DataTable
-                        var table = $('.dataTable').DataTable();
-
-                        // Filter event handler
-                        $(table.table().container()).on('keyup', 'thead input', function () {
-                            table
-                                .column($(this).data('index'))
-                                .search(this.value)
-                                .draw();
-                        });
-
-                        $('.dt-button.buttons-colvisGroup')[0].click();
-
-                    }
-
-        function ValidaDadosParaEnvio() {
-            GuardJs.resetForValidation();
-            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-            /*Especifico*/
-            if (!($('#unitId :selected').val() > 0)) {
-                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
-                return false;
-            }
-            if (!GuardJs.isValid)
-                return !GuardJs.isValid;
-            GuardJs.esconderMensagem();
-
-            return true;
-        }
-
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-            //formControl.showProcesso();
-            closeLeftSidebar();
-        });
-    </script>
-
+    body {
+  counter-reset: section;
+    name-reset: section;
+  text-align: justify;
 }
+
+@Html.Raw("@page") {
+  size: A4;
+  margin: 5%;
+  padding: 0 0 10%;
+}
+
+@Html.Raw("@media") print {
+  h6#number {
+    position: absolute;
+    page-break-before: always;
+    page-break-after: always;
+    bottom: 0;
+    right: 0;
+  }
+   h6#number::before {
+    position: relative;
+    bottom: -20px;
+    counter-increment: section;
+    content: counter(section);
+  }
+
+    h6#cod {
+    position: absolute;
+    page-break-before: always;
+    page-break-after: always;
+    bottom: 0;
+    left: 0;
+  }
+  h6#cod::before {
+
+    position: relative;
+    bottom: -20px;
+    name-increment: section;
+    content: "Leornado 2";
+  }
+  .print {
+    display: none;
+  }
+}
+
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<body>
+
+    <button class="print">Print</button>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel volutpat ante. Pellentesque maximus ipsum vel tempus scelerisque. Quisque vitae nunc est. Aliquam dictum magna nec quam aliquet accumsan. Suspendisse potenti. Sed dignissim pellentesque
+        lacus, vitae vehicula urna dignissim non. Phasellus eget odio efficitur, vehicula quam sit amet, dictum nisl. Vestibulum a sapien arcu. Nunc tristique, risus eu dignissim egestas, sem metus tincidunt odio, sed ullamcorper magna est eu sapien. Pellentesque
+        volutpat vestibulum porttitor.
+    </p>
+
+    <p>
+        Curabitur vel molestie mauris, eget tempus augue. Aliquam commodo mi vitae sapien auctor rhoncus sit amet in nibh. Sed sit amet elit dignissim ligula malesuada pulvinar. Curabitur eget hendrerit erat. Nullam et pellentesque leo. Vestibulum lacinia leo
+        vel nunc tincidunt convallis. Duis massa purus, tempus et diam vitae, rhoncus suscipit ex. Proin at risus eu libero viverra mattis nec sed neque. Nullam tristique tristique ante, vel pharetra elit. Fusce eu arcu ante. Maecenas ut orci nisl.
+    </p>
+
+    <p>
+        Vivamus quis purus accumsan, suscipit ante sit amet, dapibus enim. Donec vestibulum varius risus, sed suscipit nulla commodo suscipit. Sed arcu elit, iaculis at est eget, suscipit porta felis. Donec semper ultricies mi id varius. Etiam condimentum diam
+        quis augue tempor aliquam. Sed vel tellus mauris. Sed semper lectus tincidunt placerat bibendum.
+    </p>
+
+    <p>
+        Nulla nisl erat, fermentum non ornare ornare, sagittis at turpis. Nunc feugiat varius turpis, vitae condimentum nibh vulputate vitae. Praesent posuere leo non eleifend fermentum. Integer eu dui auctor, commodo mauris sed, ultrices ipsum. Quisque ultricies
+        consectetur sapien. Morbi efficitur turpis non ligula faucibus facilisis. Sed tincidunt placerat felis ac vulputate. Phasellus felis orci, tincidunt in laoreet non, aliquet et libero. Etiam luctus enim ut molestie pulvinar. Nam in venenatis est. Maecenas
+        mollis vulputate mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin sit amet interdum sem, ut fermentum risus. Nunc vulputate semper sodales. Nullam nec neque laoreet, ornare diam in, laoreet mi.
+    </p>
+
+    <p>
+        Aliquam dignissim semper ipsum sit amet sagittis. Vivamus egestas quam lacus, in porttitor nulla dictum non. Aliquam sagittis efficitur augue sit amet ornare. Sed et enim vitae justo sollicitudin interdum. Pellentesque sagittis, mauris ut maximus auctor,
+        lectus ipsum tempor velit, at venenatis nulla quam ut massa. Suspendisse aliquet, justo sit amet elementum feugiat, arcu nunc fringilla magna, vitae lobortis velit lorem vel est. Etiam purus risus, ultrices nec tempor at, auctor a massa. Praesent
+        vel fermentum libero.
+    </p>
+
+    <p>
+        In nec interdum justo, id rhoncus erat. Pellentesque molestie turpis sed nunc aliquam, et malesuada massa luctus. Nam eu pharetra felis. Proin non neque ligula. Suspendisse sit amet arcu mollis, porta odio eget, rutrum lorem. Sed lorem nisl, eleifend
+        ac lorem nec, interdum pellentesque nulla. Cras orci mauris, pretium ut ipsum eget, sodales consectetur risus. Nullam eu ultricies urna. Vivamus porta mi in placerat consequat. Fusce tincidunt arcu at urna molestie, in cursus erat sagittis. Donec
+        congue lectus at leo malesuada, porta porta mauris laoreet. Suspendisse in neque in quam scelerisque accumsan id sed risus. Maecenas sollicitudin augue neque, et auctor nisi luctus in. Proin ultricies nisl a quam hendrerit finibus.
+    </p>
+
+    <p>
+        Praesent commodo nibh ac augue tempus, vitae sodales quam interdum. Curabitur accumsan ullamcorper molestie. Donec vel orci vitae ligula cursus consequat nec ut nisl. Ut aliquet neque malesuada sagittis eleifend. Aliquam ex ligula, congue non velit
+        et, efficitur dapibus quam. Proin nisl augue, pulvinar in cursus id, ultricies eget ipsum. Mauris consequat mollis est, ut semper lacus pellentesque at. Vestibulum purus elit, elementum nec hendrerit ut, pellentesque sollicitudin purus.
+    </p>
+
+    <p>
+        Ut lacinia ex vitae tincidunt pretium. Cras euismod ex id elit egestas lobortis. Sed placerat mi purus, maximus laoreet quam tristique nec. Etiam sodales maximus urna sed accumsan. Quisque sed eleifend quam, et luctus ante. Vivamus dolor sem, lacinia
+        in vehicula non, consectetur vel dolor. Donec finibus consequat elit et condimentum. Mauris et mauris enim.
+    </p>
+
+    <p>
+        Cras interdum arcu ac mauris luctus mollis non ac arcu. Sed ut libero ut turpis fringilla consectetur. Nulla facilisi. Morbi ipsum enim, viverra accumsan leo eu, dignissim dictum felis. Nullam pretium eu nunc a dictum. Duis fermentum sem non eros laoreet,
+        in dictum elit vehicula. Duis vitae molestie enim, non ultrices purus. Pellentesque in tempor mauris.
+    </p>
+
+    <p>
+        Donec pharetra elementum commodo. Sed gravida sagittis lobortis. Pellentesque quis orci id nisi sodales molestie ut vel ex. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec eu nisi mi. Aenean pulvinar
+        diam lobortis, faucibus arcu a, gravida leo. Vestibulum mi urna, malesuada sed cursus eget, dignissim a augue. Praesent sapien justo, vestibulum id dignissim vitae, volutpat nec nunc.
+    </p>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel volutpat ante. Pellentesque maximus ipsum vel tempus scelerisque. Quisque vitae nunc est. Aliquam dictum magna nec quam aliquet accumsan. Suspendisse potenti. Sed dignissim pellentesque
+        lacus, vitae vehicula urna dignissim non. Phasellus eget odio efficitur, vehicula quam sit amet, dictum nisl. Vestibulum a sapien arcu. Nunc tristique, risus eu dignissim egestas, sem metus tincidunt odio, sed ullamcorper magna est eu sapien. Pellentesque
+        volutpat vestibulum porttitor.
+    </p>
+
+    <p>
+        Curabitur vel molestie mauris, eget tempus augue. Aliquam commodo mi vitae sapien auctor rhoncus sit amet in nibh. Sed sit amet elit dignissim ligula malesuada pulvinar. Curabitur eget hendrerit erat. Nullam et pellentesque leo. Vestibulum lacinia leo
+        vel nunc tincidunt convallis. Duis massa purus, tempus et diam vitae, rhoncus suscipit ex. Proin at risus eu libero viverra mattis nec sed neque. Nullam tristique tristique ante, vel pharetra elit. Fusce eu arcu ante. Maecenas ut orci nisl.
+    </p>
+
+    <p>
+        Vivamus quis purus accumsan, suscipit ante sit amet, dapibus enim. Donec vestibulum varius risus, sed suscipit nulla commodo suscipit. Sed arcu elit, iaculis at est eget, suscipit porta felis. Donec semper ultricies mi id varius. Etiam condimentum diam
+        quis augue tempor aliquam. Sed vel tellus mauris. Sed semper lectus tincidunt placerat bibendum.
+    </p>
+
+    <p>
+        Nulla nisl erat, fermentum non ornare ornare, sagittis at turpis. Nunc feugiat varius turpis, vitae condimentum nibh vulputate vitae. Praesent posuere leo non eleifend fermentum. Integer eu dui auctor, commodo mauris sed, ultrices ipsum. Quisque ultricies
+        consectetur sapien. Morbi efficitur turpis non ligula faucibus facilisis. Sed tincidunt placerat felis ac vulputate. Phasellus felis orci, tincidunt in laoreet non, aliquet et libero. Etiam luctus enim ut molestie pulvinar. Nam in venenatis est. Maecenas
+        mollis vulputate mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin sit amet interdum sem, ut fermentum risus. Nunc vulputate semper sodales. Nullam nec neque laoreet, ornare diam in, laoreet mi.
+    </p>
+
+    <p>
+        Aliquam dignissim semper ipsum sit amet sagittis. Vivamus egestas quam lacus, in porttitor nulla dictum non. Aliquam sagittis efficitur augue sit amet ornare. Sed et enim vitae justo sollicitudin interdum. Pellentesque sagittis, mauris ut maximus auctor,
+        lectus ipsum tempor velit, at venenatis nulla quam ut massa. Suspendisse aliquet, justo sit amet elementum feugiat, arcu nunc fringilla magna, vitae lobortis velit lorem vel est. Etiam purus risus, ultrices nec tempor at, auctor a massa. Praesent
+        vel fermentum libero.
+    </p>
+
+    <p>
+        In nec interdum justo, id rhoncus erat. Pellentesque molestie turpis sed nunc aliquam, et malesuada massa luctus. Nam eu pharetra felis. Proin non neque ligula. Suspendisse sit amet arcu mollis, porta odio eget, rutrum lorem. Sed lorem nisl, eleifend
+        ac lorem nec, interdum pellentesque nulla. Cras orci mauris, pretium ut ipsum eget, sodales consectetur risus. Nullam eu ultricies urna. Vivamus porta mi in placerat consequat. Fusce tincidunt arcu at urna molestie, in cursus erat sagittis. Donec
+        congue lectus at leo malesuada, porta porta mauris laoreet. Suspendisse in neque in quam scelerisque accumsan id sed risus. Maecenas sollicitudin augue neque, et auctor nisi luctus in. Proin ultricies nisl a quam hendrerit finibus.
+    </p>
+
+    <p>
+        Praesent commodo nibh ac augue tempus, vitae sodales quam interdum. Curabitur accumsan ullamcorper molestie. Donec vel orci vitae ligula cursus consequat nec ut nisl. Ut aliquet neque malesuada sagittis eleifend. Aliquam ex ligula, congue non velit
+        et, efficitur dapibus quam. Proin nisl augue, pulvinar in cursus id, ultricies eget ipsum. Mauris consequat mollis est, ut semper lacus pellentesque at. Vestibulum purus elit, elementum nec hendrerit ut, pellentesque sollicitudin purus.
+    </p>
+
+    <p>
+        Ut lacinia ex vitae tincidunt pretium. Cras euismod ex id elit egestas lobortis. Sed placerat mi purus, maximus laoreet quam tristique nec. Etiam sodales maximus urna sed accumsan. Quisque sed eleifend quam, et luctus ante. Vivamus dolor sem, lacinia
+        in vehicula non, consectetur vel dolor. Donec finibus consequat elit et condimentum. Mauris et mauris enim.
+    </p>
+
+    <p>
+        Cras interdum arcu ac mauris luctus mollis non ac arcu. Sed ut libero ut turpis fringilla consectetur. Nulla facilisi. Morbi ipsum enim, viverra accumsan leo eu, dignissim dictum felis. Nullam pretium eu nunc a dictum. Duis fermentum sem non eros laoreet,
+        in dictum elit vehicula. Duis vitae molestie enim, non ultrices purus. Pellentesque in tempor mauris.
+    </p>
+
+    <p>
+        Donec pharetra elementum commodo. Sed gravida sagittis lobortis. Pellentesque quis orci id nisi sodales molestie ut vel ex. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec eu nisi mi. Aenean pulvinar
+        diam lobortis, faucibus arcu a, gravida leo. Vestibulum mi urna, malesuada sed cursus eget, dignissim a augue. Praesent sapien justo, vestibulum id dignissim vitae, volutpat nec nunc.
+    </p>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel volutpat ante. Pellentesque maximus ipsum vel tempus scelerisque. Quisque vitae nunc est. Aliquam dictum magna nec quam aliquet accumsan. Suspendisse potenti. Sed dignissim pellentesque
+        lacus, vitae vehicula urna dignissim non. Phasellus eget odio efficitur, vehicula quam sit amet, dictum nisl. Vestibulum a sapien arcu. Nunc tristique, risus eu dignissim egestas, sem metus tincidunt odio, sed ullamcorper magna est eu sapien. Pellentesque
+        volutpat vestibulum porttitor.
+    </p>
+
+    <p>
+        Curabitur vel molestie mauris, eget tempus augue. Aliquam commodo mi vitae sapien auctor rhoncus sit amet in nibh. Sed sit amet elit dignissim ligula malesuada pulvinar. Curabitur eget hendrerit erat. Nullam et pellentesque leo. Vestibulum lacinia leo
+        vel nunc tincidunt convallis. Duis massa purus, tempus et diam vitae, rhoncus suscipit ex. Proin at risus eu libero viverra mattis nec sed neque. Nullam tristique tristique ante, vel pharetra elit. Fusce eu arcu ante. Maecenas ut orci nisl.
+    </p>
+
+    <p>
+        Vivamus quis purus accumsan, suscipit ante sit amet, dapibus enim. Donec vestibulum varius risus, sed suscipit nulla commodo suscipit. Sed arcu elit, iaculis at est eget, suscipit porta felis. Donec semper ultricies mi id varius. Etiam condimentum diam
+        quis augue tempor aliquam. Sed vel tellus mauris. Sed semper lectus tincidunt placerat bibendum.
+    </p>
+
+    <p>
+        Nulla nisl erat, fermentum non ornare ornare, sagittis at turpis. Nunc feugiat varius turpis, vitae condimentum nibh vulputate vitae. Praesent posuere leo non eleifend fermentum. Integer eu dui auctor, commodo mauris sed, ultrices ipsum. Quisque ultricies
+        consectetur sapien. Morbi efficitur turpis non ligula faucibus facilisis. Sed tincidunt placerat felis ac vulputate. Phasellus felis orci, tincidunt in laoreet non, aliquet et libero. Etiam luctus enim ut molestie pulvinar. Nam in venenatis est. Maecenas
+        mollis vulputate mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin sit amet interdum sem, ut fermentum risus. Nunc vulputate semper sodales. Nullam nec neque laoreet, ornare diam in, laoreet mi.
+    </p>
+
+    <p>
+        Aliquam dignissim semper ipsum sit amet sagittis. Vivamus egestas quam lacus, in porttitor nulla dictum non. Aliquam sagittis efficitur augue sit amet ornare. Sed et enim vitae justo sollicitudin interdum. Pellentesque sagittis, mauris ut maximus auctor,
+        lectus ipsum tempor velit, at venenatis nulla quam ut massa. Suspendisse aliquet, justo sit amet elementum feugiat, arcu nunc fringilla magna, vitae lobortis velit lorem vel est. Etiam purus risus, ultrices nec tempor at, auctor a massa. Praesent
+        vel fermentum libero.
+    </p>
+
+    <p>
+        In nec interdum justo, id rhoncus erat. Pellentesque molestie turpis sed nunc aliquam, et malesuada massa luctus. Nam eu pharetra felis. Proin non neque ligula. Suspendisse sit amet arcu mollis, porta odio eget, rutrum lorem. Sed lorem nisl, eleifend
+        ac lorem nec, interdum pellentesque nulla. Cras orci mauris, pretium ut ipsum eget, sodales consectetur risus. Nullam eu ultricies urna. Vivamus porta mi in placerat consequat. Fusce tincidunt arcu at urna molestie, in cursus erat sagittis. Donec
+        congue lectus at leo malesuada, porta porta mauris laoreet. Suspendisse in neque in quam scelerisque accumsan id sed risus. Maecenas sollicitudin augue neque, et auctor nisi luctus in. Proin ultricies nisl a quam hendrerit finibus.
+    </p>
+
+    <p>
+        Praesent commodo nibh ac augue tempus, vitae sodales quam interdum. Curabitur accumsan ullamcorper molestie. Donec vel orci vitae ligula cursus consequat nec ut nisl. Ut aliquet neque malesuada sagittis eleifend. Aliquam ex ligula, congue non velit
+        et, efficitur dapibus quam. Proin nisl augue, pulvinar in cursus id, ultricies eget ipsum. Mauris consequat mollis est, ut semper lacus pellentesque at. Vestibulum purus elit, elementum nec hendrerit ut, pellentesque sollicitudin purus.
+    </p>
+
+    <p>
+        Ut lacinia ex vitae tincidunt pretium. Cras euismod ex id elit egestas lobortis. Sed placerat mi purus, maximus laoreet quam tristique nec. Etiam sodales maximus urna sed accumsan. Quisque sed eleifend quam, et luctus ante. Vivamus dolor sem, lacinia
+        in vehicula non, consectetur vel dolor. Donec finibus consequat elit et condimentum. Mauris et mauris enim.
+    </p>
+
+    <p>
+        Cras interdum arcu ac mauris luctus mollis non ac arcu. Sed ut libero ut turpis fringilla consectetur. Nulla facilisi. Morbi ipsum enim, viverra accumsan leo eu, dignissim dictum felis. Nullam pretium eu nunc a dictum. Duis fermentum sem non eros laoreet,
+        in dictum elit vehicula. Duis vitae molestie enim, non ultrices purus. Pellentesque in tempor mauris.
+    </p>
+
+    <p>
+        Donec pharetra elementum commodo. Sed gravida sagittis lobortis. Pellentesque quis orci id nisi sodales molestie ut vel ex. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec eu nisi mi. Aenean pulvinar
+        diam lobortis, faucibus arcu a, gravida leo. Vestibulum mi urna, malesuada sed cursus eget, dignissim a augue. Praesent sapien justo, vestibulum id dignissim vitae, volutpat nec nunc.
+    </p>
+
+    <button class="print">Print</button>
+
+    <h6 id="number" class="first"></h6>
+    <h6 id="cod" class="secound"></h6>
+    <div class="insert"></div>
+
+</body>
+
+<script>
+
+    var bottom = 0;
+    $(document).ready(function () {
+        $("p:nth-child(10n)").each(function () {
+            bottom -= 100;
+            botString = bottom.toString();
+            var $counter = $('h6.first').clone().removeClass('first');
+            $counter.css("bottom", botString + "vh");
+            ($counter).insertBefore('.insert');
+
+            var $name = $('h6.secound').clone().removeClass('secound');
+            $name.css("bottom", botString + "vh");
+            ($name).insertBefore('.insert');
+        });
+    });
+
+    $('.print').on('click', function () {
+        window.print();
+        return false;
+    });
+
+
+</script>
+
+

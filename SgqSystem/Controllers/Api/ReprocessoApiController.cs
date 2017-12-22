@@ -44,6 +44,7 @@ namespace SgqSystem.Controllers.Api
             public decimal nCdCertificacao { get; set; }
             public String cNmCertificacao { get; set; }
             public String cSgCertificacao { get; set; }
+            public decimal nCdEmpresa { get; set; }
         }
 
         public class ParReprocessoSaidaOP
@@ -61,6 +62,7 @@ namespace SgqSystem.Controllers.Api
             public int iTotalVolume { get; set; }
             public decimal nTotalPeso { get; set; }
             public Produto produto { get; set; }
+            public decimal nCdEmpresa { get; set; }
 
         }
 
@@ -78,6 +80,7 @@ namespace SgqSystem.Controllers.Api
             public int iVolume { get; set; }
             public decimal nPesoLiquido { get; set; }
             public Produto produto { get; set; }
+            public decimal nCdEmpresa { get; set; }
         }
 
         public class Produto
@@ -96,16 +99,53 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         public RetrocessoReturn Get(int ParCompany_Id)
         {
-            Factory factorySgq = new Factory("DbContextSgqEUA");
             
-            Factory factoryParReprocessoHeaderOP = new Factory("CONN_ParReprocessoHeaderOP");
-            Factory factoryParReprocessoCertificadosSaidaOP = new Factory("CONN_ParReprocessoCertificadosSaidaOP");
-            Factory factoryParReprocessoEntradaOP = new Factory("CONN_ParReprocessoEntradaOP");
-            Factory factoryParReprocessoSaidaOP = new Factory("CONN_ParReprocessoSaidaOP");
 
             SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();            
 
             var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
+
+            Factory factorySgq = new Factory("DbContextSgqEUA");
+
+            var userSQL = "UserGQualidade";
+            var passSQL = "grJsoluco3s";
+
+            if(AppSettingsWebConfig.GetValue("BuildEm") == "DesenvolvimentoDeployServidorGrtParaTeste")
+            {
+                userSQL = "sa";
+                passSQL = "betsy1";
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var log = new LogJson();
+                log.Device_Id = "Web";
+                log.callback = "Reprocesso";
+                log.AddDate = DateTime.Now;
+                log.log =
+                    "{ \"User\" : \"" + userSQL + "\", " +
+                    " \"Password\" : \"" + passSQL + "\" " +
+                    " \"IPServer\" : \"" + parCompany.IPServer + "\" " +
+                    " \"DBServer\" : \"" + parCompany.DBServer + "\"} ";
+
+
+                log.result =
+                    "{ \"User\" : \"" + userSQL + "\", " +
+                    " \"Password\" : \"" + passSQL + "\" " +
+                    " \"IPServer\" : \"" + parCompany.IPServer + "\" " +
+                    " \"DBServer\" : \"" + parCompany.DBServer + "\"} ";
+
+                db.LogJson.Add(log);
+
+                db.LogJson.Add(log);
+                db.SaveChanges();
+            }
+
+
+            Factory factoryParReprocessoHeaderOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+            Factory factoryParReprocessoCertificadosSaidaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+            Factory factoryParReprocessoEntradaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+            Factory factoryParReprocessoSaidaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
 
             if (parCompany != null)
             {
@@ -115,7 +155,7 @@ namespace SgqSystem.Controllers.Api
                     parReprocessoCertificadosSaidaOP = factoryParReprocessoCertificadosSaidaOP.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP") + " " + parCompany.CompanyNumber),
                     parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber).Select(r =>
                     {
-                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
+                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto.ToString()).FirstOrDefault();
                         if (r.produto != null)
                         {
                             r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
@@ -142,42 +182,88 @@ namespace SgqSystem.Controllers.Api
 
         }
 
-        [Route("GetCollectionLevel2Reprocesso/{ParCompany_Id}/{dtIni}/{dtFim}")]
+        [Route("GetCollectionLevel2Reprocesso/{ParCompany_Id}/{dtIni}/{dtFim}/{headerEntrada}/{headerSaida}")]
         [HttpGet]
-        public IEnumerable<CollectionLevel2> GetCollectionLevel2Reprocesso(int ParCompany_Id, DateTime dtIni, DateTime dtFim)
+        public IEnumerable<dynamic> GetCollectionLevel2Reprocesso(int ParCompany_Id, string dtIni, string dtFim, int headerEntrada, int headerSaida)
         {
+            Factory factory = new Factory("DbContextSgqEUA");
+            //SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+
+            //sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+            //    public IEnumerable<CollectionLevel2> GetCollectionLevel2Reprocesso(int ParCompany_Id, DateTime dtIni, DateTime dtFim)
+            //{
+            //    Factory factory = new Factory("DbContextSgqEUA");
+            //    SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+
+            //    sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+
+            //var ID_parLevel1 = sgqDbDevEntities.ParLevel1.FirstOrDefault(r => r.hashKey == 6).Id;
+
+            var query = @"SELECT R3.Value
+                        FROM CollectionLevel2 C2
+                        LEFT JOIN CollectionLevel2XParHeaderField R3
+                        ON R3.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2Object C2O
+                        ON C2O.CollectionLevel2_Id = C2.Id
+                        WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
+                        AND ParHeaderField_Id in (" + headerEntrada.ToString() + " ," + headerSaida.ToString() + @")
+                        AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + " 23:59' GROUP BY R3.Value";
+
+
+            var retorno = factory.QueryNinjaADO(query);
+
+            return retorno; // retorno;
+
+
+           //var retorno = sgqDbDevEntities.CollectionLevel2
+
+           //     .Where(
+           //     r => r.UnitId == ParCompany_Id 
+           //     && r.CollectionDate >= dtIni 
+           //     && r.CollectionDate <= dtFim 
+           //     //&& r.ParLevel1_Id == ID_parLevel1
+           //     ).ToList();
+
+           // retorno = retorno
+           //     .Select(r => 
+           //     {
+           //         r.CollectionLevel21 = null;
+           //         r.CollectionLevel22 = null;
+           //         return r;
+           //     })
+           //     .ToList();
+
+           // return retorno;
+
+        }
+
+        [Route("GetUnidadeMedida/{level3_id}")]
+        [HttpGet]
+        public string GetUnidadeMedida(int level3_id)
+        {
+
             Factory factory = new Factory("DbContextSgqEUA");
             SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
-            //var ID_parLevel1 = sgqDbDevEntities.ParLevel1.FirstOrDefault(r => r.hashKey == 6).Id;
+            var query = @"select max(p3u.name) unidade from parlevel3 p3
+                            left join parlevel3value p3v
+                            on p3v.parlevel3_id = p3.id
+                            left join parMeasurementUnit p3u
+                            on p3u.id = p3v.parMeasurementUnit_id
+                            where p3.id = " + level3_id.ToString();
 
-            var retorno = sgqDbDevEntities.CollectionLevel2
+            string valor = "";
 
-                .Where(
-                r => r.UnitId == ParCompany_Id 
-                && r.CollectionDate >= dtIni 
-                && r.CollectionDate <= dtFim 
-                //&& r.ParLevel1_Id == ID_parLevel1
-                ).ToList();
+            valor = sgqDbDevEntities.Database.SqlQuery<string>(query).FirstOrDefault();
 
-            retorno = retorno
-                .Select(r => 
-                {
-                    r.CollectionLevel21 = null;
-                    r.CollectionLevel22 = null;
-                    return r;
-                })
-                .ToList();
-
-            return retorno;
-
+            return valor;
         }
 
-        [Route("GetReportReprocesso/{cl2_Id}")]
+        [Route("GetReportReprocesso/{cl2_Id}/{ParCompany_Id}/{dtIni}/{dtFim}/{cabecalho_idEntrada}/{level2_idEntrada}/{cabecalho_idSaida}/{level2_idSaida}")]
         [HttpGet]
-        public IEnumerable<dynamic> GetReportReprocesso(int cl2_Id)
+        public IEnumerable<dynamic> GetReportReprocesso(int cl2_Id, int ParCompany_Id, string dtIni, string dtFim, int cabecalho_idEntrada, int level2_idEntrada, int cabecalho_idSaida, int level2_idSaida)
         {
             Factory factory = new Factory("DbContextSgqEUA");
             SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
@@ -190,13 +276,106 @@ namespace SgqSystem.Controllers.Api
 
             //    .Where(r => r.Id == CollectionLevel2_Id).ToList();
 
-            var query = @"SELECT *
-                          FROM CollectionLevel2 C2
-                          LEFT JOIN Result_Level3 R3
-                          ON R3.CollectionLevel2_Id = C2.Id
-                          LEFT JOIN CollectionLevel2Object C2O
-                          ON C2O.CollectionLevel2_Id = C2.Id
-                          WHERE C2.Id = " + cl2_Id.ToString();
+            //var query = @"SELECT *
+            //              FROM CollectionLevel2 C2
+            //              LEFT JOIN Result_Level3 R3
+            //              ON R3.CollectionLevel2_Id = C2.Id
+            //              LEFT JOIN CollectionLevel2Object C2O
+            //              ON C2O.CollectionLevel2_Id = C2.Id
+            //              WHERE C2.Id = " + cl2_Id.ToString();
+
+            //var query = @"SELECT *
+            //            FROM CollectionLevel2 C2
+            //            LEFT JOIN Result_Level3 R3
+            //            ON R3.CollectionLevel2_Id = C2.Id
+            //            LEFT JOIN CollectionLevel2XParHeaderField HF
+            //            ON R3.CollectionLevel2_Id = C2.Id
+            //            LEFT JOIN CollectionLevel2Object C2O
+            //            ON C2O.CollectionLevel2_Id = C2.Id
+            //            WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
+            //            AND ParHeaderField_Id in (41,47)
+            //            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + "' AND '" + dtFim.ToString() + @"'
+            //            AND HF.Value = '" + cl2_Id.ToString() + "'";
+
+            var query = @"SELECT  C2.*, R3.*, (
+
+                            select max(p3u.name) unidade from parlevel3 p3
+                            left join parlevel3value p3v
+                            on p3v.parlevel3_id = p3.id
+                            left join parMeasurementUnit p3u
+                            on p3u.id = p3v.parMeasurementUnit_id
+                            where p3.id = R3.parLevel3_id
+                        ) unidadeMedida
+                        FROM CollectionLevel2 C2 with(nolock)
+                        LEFT JOIN Result_Level3 R3 with(nolock)
+                        ON R3.CollectionLevel2_Id = C2.Id
+                        /*
+                        LEFT JOIN CollectionLevel2XParHeaderField HF with(nolock)
+                        ON HF.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2Object C2O with(nolock)
+                        ON C2O.CollectionLevel2_Id = C2.Id
+                        */
+                        WHERE C2.ID = (
+
+                            SELECT  MAX(C2.id) ID
+                            FROM CollectionLevel2 C2 with(nolock)
+                            LEFT JOIN Result_Level3 R3 with(nolock)
+                            ON R3.CollectionLevel2_Id = C2.Id
+                            LEFT JOIN CollectionLevel2XParHeaderField HF with(nolock)
+                            ON HF.CollectionLevel2_Id = C2.Id
+                            LEFT JOIN CollectionLevel2Object C2O with(nolock)
+                            ON C2O.CollectionLevel2_Id = C2.Id
+                            WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
+                            AND ParLevel2_Id = " + level2_idEntrada.ToString() + @"
+                            AND ParHeaderField_Id = " + cabecalho_idEntrada.ToString() + @"
+                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @" 23:59'
+                            AND HF.Value = '" + cl2_Id.ToString() + @"' 
+                            -- GROUP BY C2.id, c2.collectiondate, C2.PARLEVEL2_ID
+                            
+
+                        )
+
+
+                        union all
+
+                        SELECT C2.*, R3.*, (
+
+                            select max(p3u.name) unidade from parlevel3 p3
+                            left join parlevel3value p3v
+                            on p3v.parlevel3_id = p3.id
+                            left join parMeasurementUnit p3u
+                            on p3u.id = p3v.parMeasurementUnit_id
+                            where p3.id = R3.parLevel3_id
+                        ) unidadeMedida
+                        FROM CollectionLevel2 C2 with(nolock)
+                        LEFT JOIN Result_Level3 R3 with(nolock)
+                        ON R3.CollectionLevel2_Id = C2.Id
+                        /*
+                        LEFT JOIN CollectionLevel2XParHeaderField HF with(nolock)
+                        ON HF.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2Object C2O with(nolock)
+                        ON C2O.CollectionLevel2_Id = C2.Id
+                        */
+                        WHERE C2.ID = (
+
+                            SELECT  MAX(C2.id) ID
+                            FROM CollectionLevel2 C2 with(nolock)
+                            LEFT JOIN Result_Level3 R3 with(nolock)
+                            ON R3.CollectionLevel2_Id = C2.Id
+                            LEFT JOIN CollectionLevel2XParHeaderField HF with(nolock)
+                            ON HF.CollectionLevel2_Id = C2.Id
+                            LEFT JOIN CollectionLevel2Object C2O with(nolock)
+                            ON C2O.CollectionLevel2_Id = C2.Id
+                            WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
+                            AND ParLevel2_Id = " + level2_idSaida.ToString() + @"
+                            AND ParHeaderField_Id = " + cabecalho_idSaida.ToString() + @"
+                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @" 23:59'
+                            AND HF.Value = '" + cl2_Id.ToString() + @"' 
+                            -- GROUP BY C2.id, c2.collectiondate, C2.PARLEVEL2_ID
+                           
+
+                        )";
+
 
 
             var retorno = factory.QueryNinjaADO(query);
@@ -215,10 +394,14 @@ namespace SgqSystem.Controllers.Api
 
         }
 
-        [Route("GetReportReprocessoHeader/{cl2_Id}")]
+
+        [Route("GetReportReprocessoHeader/{cl2_Id}/{unitId}/{dtIni}/{dtFim}/{cabecalho_idEntrada}/{level2_idEntrada}/{cabecalho_idSaida}/{level2_idSaida}")]
         [HttpGet]
-        public IEnumerable<dynamic> GetReportReprocessoHeader(int cl2_Id)
+        public IEnumerable<dynamic> GetReportReprocessoHeader(int cl2_Id, int unitId, string dtIni, string dtFim, int cabecalho_idEntrada, int level2_idEntrada, int cabecalho_idSaida, int level2_idSaida)
         {
+
+            var ParCompany_Id = unitId;
+
             Factory factory = new Factory("DbContextSgqEUA");
             SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
@@ -230,14 +413,36 @@ namespace SgqSystem.Controllers.Api
 
             //    .Where(r => r.Id == CollectionLevel2_Id).ToList();
 
-            var query = @"SELECT *
+            //var query = @"SELECT *
+            //            FROM CollectionLevel2 C2
+            //            LEFT JOIN CollectionLevel2XParHeaderField R3
+            //            ON R3.CollectionLevel2_Id = C2.Id
+            //            LEFT JOIN CollectionLevel2Object C2O
+            //            ON C2O.CollectionLevel2_Id = C2.Id
+            //            WHERE C2.Id = " + cl2_Id.ToString();
+
+            var query = @"SELECT C2.*, HF.*, C2O.*, ISNULL(PMV.Name,HF.Value) as ValueMultiple
                         FROM CollectionLevel2 C2
-                        LEFT JOIN CollectionLevel2XParHeaderField R3
-                        ON R3.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2XParHeaderField HF
+                        ON HF.CollectionLevel2_Id = C2.Id
                         LEFT JOIN CollectionLevel2Object C2O
                         ON C2O.CollectionLevel2_Id = C2.Id
-                        WHERE C2.Id = " + cl2_Id.ToString();
-
+                        LEFT JOIN ParMultipleValues PMV
+                        ON cast(PMV.Id as varchar) = HF.Value and HF.ParFieldType_Id = 1
+                        WHERE 
+                            C2.ID IN (
+                            SELECT C2.ID
+                            FROM CollectionLevel2 C2
+                            LEFT JOIN CollectionLevel2XParHeaderField HF
+                            ON HF.CollectionLevel2_Id = C2.Id
+                            LEFT JOIN CollectionLevel2Object C2O
+                            ON C2O.CollectionLevel2_Id = C2.Id
+                            LEFT JOIN ParMultipleValues PMV
+                            ON cast(PMV.Id as varchar) = HF.Value and HF.ParFieldType_Id = 1
+                            WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
+                            AND HF.ParHeaderField_Id in ("+ cabecalho_idEntrada.ToString() + " ," + cabecalho_idSaida.ToString() + @")
+                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @" 23:59'
+                            AND HF.Value = '" + cl2_Id.ToString() + "')";
 
             var retorno = factory.QueryNinjaADO(query);
 

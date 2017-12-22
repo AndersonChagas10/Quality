@@ -243,6 +243,8 @@ namespace SgqSystem.Services
 
             SqlConnection.ClearAllPools();
 
+            //ObjResultJSon = "<level02>1;12/18/2017 17:45:057:484;9;12/18/2017 17:45:056:657;2;1;1;1;0;false;12182017;1;1;<header>17,1,3</header>;false;false;;undefined;undefined;false; 2.0.40;JBS ;<level03>2,12/18/2017 17:45:056:671,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>15,12/18/2017 17:45:056:673,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>17,12/18/2017 17:45:056:675,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>26,12/18/2017 17:45:056:677,,true,1,null,null,undefined,1.0000000000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;havecorrectiveaction;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;0;0;4;0;1;0;0;0;0;undefined;0;0</level02><level02>1;12/18/2017 17:45:057:484;9;12/18/2017 17:45:057:087;2;1;1;1;0;false;12182017;1;2;<header>17,1,3</header>;false;false;;undefined;undefined;false; 2.0.40;JBS ;<level03>2,12/18/2017 17:45:057:093,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>15,12/18/2017 17:45:057:094,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>17,12/18/2017 17:45:057:094,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>26,12/18/2017 17:45:057:095,,true,1,null,null,undefined,1.0000000000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;havecorrectiveaction;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;0;0;4;0;1;0;0;0;0;undefined;0;0</level02><level02>1;12/18/2017 17:45:057:484;9;12/18/2017 17:45:057:550;2;1;1;1;0;false;12182017;1;3;<header>17,1,3</header>;false;false;;undefined;undefined;false; 2.0.40;JBS ;<level03>2,12/18/2017 17:45:057:563,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>15,12/18/2017 17:45:057:564,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>17,12/18/2017 17:45:057:566,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>26,12/18/2017 17:45:057:568,,true,1,null,null,undefined,1.0000000000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;havecorrectiveaction;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;0;0;4;0;1;0;0;0;0;undefined;0;0</level02>";
+
             ObjResultJSon = ObjResultJSon.Replace("%2C", "");
 
             var objObjResultJSonPuro = ObjResultJSon;
@@ -1822,8 +1824,10 @@ namespace SgqSystem.Services
                 string ParHeaderField_Id = header[0];
                 string ParFieldType_Id = header[1];
                 string Value = header[2];
-                string Evaluation = header[3];
-                string Sample = header[4];
+
+
+                string Evaluation = header.Length > 3 ? header[3] : "0";
+                string Sample = header.Length > 3 ? header[4] : "0";
 
                 //Tratamento de erros Gabriel 2017-05-27
                 if (ParHeaderField_Id != "undefined" && ParFieldType_Id != "undefined")
