@@ -144,12 +144,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 						FROM VolumePcc1b
                 						WHERE ParCompany_id = UNI.Id
                 						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
                 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL2.WeiEvaluation
                 				ELSE 0
                 			END AS Av
                 		   ,CASE
@@ -158,30 +158,30 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 						FROM VolumePcc1b
                 						WHERE ParCompany_id = UNI.Id
                 						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
                 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL2.EvaluateTotal
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL2.EvaluateTotal
                 				ELSE 0
                 			END AS AvSemPeso
                 		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult
                 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiDefects
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
                 				ELSE 0
                 			END AS NC
                 		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+                				WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult
                 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+                				WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
                 				ELSE 0
                 			END AS NCSemPeso
                 		   ,CASE
@@ -414,40 +414,40 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			   ,UNI.Name AS Unidade
             			   ,CASE
             					WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL2.WeiEvaluation
             					ELSE 0
             				END AS Av
             			   ,CASE
             					WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
-            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
-            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL2.EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL2.EvaluateTotal
             					ELSE 0
             				END AS AvSemPeso
             			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
-            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
-            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
             					ELSE 0
             				END AS NC
             			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
-            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
-            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
-            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
             					ELSE 0
             				END AS NCSemPeso
             			   ,CASE
