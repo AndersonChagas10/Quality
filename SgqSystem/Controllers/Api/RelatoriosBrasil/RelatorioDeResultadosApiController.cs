@@ -1258,7 +1258,7 @@ FROM (SELECT
 	   ,SUM(R3.WeiDefects) /
 		CASE
 			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
+								SUM(Quartos) - @NAPCC
 							FROM VolumePcc1b(nolock)
 							WHERE 1=1
                             --AND ParCompany_id = UNI.Id
@@ -1304,6 +1304,7 @@ FROM (SELECT
 			,R3.ParLevel3_Name
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
+            ,cl1.ConsolidationDate
 	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
 ORDER BY 8 DESC ";
 
@@ -3878,7 +3879,7 @@ FROM (SELECT
 						SUM(Quartos) / 2
 					FROM VolumePcc1b(nolock)
 					WHERE ParCompany_id = UNI.Id
-					AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+					AND CAST(Data AS DATE) = CAST(c2.CollectionDate AS DATE))
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
 	   ,CAST(c2.CollectionDate AS DATE) AS date
