@@ -97,6 +97,11 @@
         #conteudodatabela td {
             height: 14pt;
         }*/
+
+    .botao {
+        display: none;
+    }
+
     /*adds control for test purposes*/
     #conteudodatabela thead td {
         font-size: 11pt;
@@ -150,6 +155,14 @@
 
 <!--cabeçalho e Rodapé-->
 
+<div class="botao" style="padding:10px">
+
+    <button onclick="window.print();">Imprimir</button>
+    &nbsp;
+    <button onclick="window.close()">Fechar</button>
+
+</div>
+
 <div id="conteudo" width="900px">
 
     <div class="conteudodatabela" width="900px">
@@ -173,15 +186,16 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <br />&nbsp;
 
                     </td>
                 </tr>
             </thead>
             <tfoot>
                 <tr style="background-color: white;">
-                    <td style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px; background-color:#fff; padding-top:5px; height:40%;">
+                    <td style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px; background-color:#fff; padding-top:5px;">
                         <div style="background-color:#ffffff; z-index:9999999; padding-top:5px; width:100%;">
-                            &nbsp;<br />&nbsp;
+                            &nbsp;<br />&nbsp;<br />&nbsp;<br />&nbsp;
                         </div>
                     </td>
                 </tr>
@@ -197,30 +211,30 @@
 
 
                             <tbody>
-                                <tr><td height="20px;"></td></tr>
+
                                 <tr>
                                     <td height="20px;">
                                         <table width="100%" style="font-size:10px;">
                                             <tbody>
                                                 <tr>
-                                                    <td height="30px;" width="35%"><b>Data do Reprocesso:</b></td>
+                                                    <td height="30px;" width="35%"><b><span id="txtDtReprocesso"></span>:</b></td>
                                                     <td width="13%"><span id="dtReprocesso"></span></td>
                                                     <td width="4%"></td>
-                                                    <td width="35%"><b>Número do Ofício do SIF autorizando o reprocesso:</b></td>
+                                                    <td width="35%"><b><span id="txtOficioSIF"></span>:</b></td>
                                                     <td width="13%"><span id="OficioSIF">zsdfzk</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td height="30px;"><b>Número da Ordem do Reprocesso:</b></td>
+                                                    <td height="30px;"><b><span id="txtNumOp"></span>:</b></td>
                                                     <td><span id="numOp">671871</span></td>
                                                     <td></td>
-                                                    <td><b>Quantidade de produto envolvido:</b></td>
+                                                    <td><b><span id="txtQdeProd"></span>:</b></td>
                                                     <td><span id="qdeProd">1324</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td height="30px;"><b>Origem de reprocesso:</b></td>
+                                                    <td height="30px;"><b><span id="txtOrigemRep"></span>:</b></td>
                                                     <td><span id="OrigemRep">Devolução</span></td>
                                                     <td></td>
-                                                    <td><b>Motivo do reprocesso:</b></td>
+                                                    <td><b><span id="txtMotivoRep"></span>:</b></td>
                                                     <td><span id="MotivoRep">Alteração de cor</span></td>
                                                 </tr>
                                             </tbody>
@@ -399,17 +413,16 @@
 
         //variveis de ambiente JBS
 
-        //var monitoramentoEntrada = 367;
-        //var monitoramentoSaida = 368;
-        //var cabecalhoOPEntrada = 92;
-        //var cabecalhoOPSaida = 97;
-
-        //var cabecalhoObjOP = 92;
-        //var cabecalhoObjDataReprocesso = 91;
-        //var cabecalhoObjSIF = 93;
-        //var cabecalhoObjOrigem = 94;
-        //var cabecalhoObjMotivo = 95;
-        //var cabecalhoObjQtdeEnvolvido = 96;
+        var monitoramentoEntrada = 367;
+        var monitoramentoSaida = 368;
+        var cabecalhoOPEntrada = 92;
+        var cabecalhoOPSaida = 97;
+        var cabecalhoObjOP = 92;
+        var cabecalhoObjDataReprocesso = 91;
+        var cabecalhoObjSIF = 93;
+        var cabecalhoObjOrigem = 94;
+        var cabecalhoObjMotivo = 95;
+        var cabecalhoObjQtdeEnvolvido = 96;
 
 
          var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
@@ -494,6 +507,7 @@
                                 });
 
                                 var OP = ObjOP.length == 0 ? '' : ObjOP[ObjOP.length-1].ValueMultiple;
+                                var txtOP = ObjOP.length == 0 ? '' : ObjOP[ObjOP.length-1].ParHeaderField_Name;
 
                                 //--------------------------------------------------------------------------
                                 var ObjDataReprocesso = $.grep(dadosReprocesso, function (a, b) {
@@ -512,7 +526,8 @@
                                     return a.CollectionLevel2_Id == maior;
                                 });
 
-                                var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[ObjDataReprocesso.length-1].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4)
+                                var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[ObjDataReprocesso.length-1].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4);
+				var txtdataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[ObjDataReprocesso.length-1].ParHeaderField_Name;
 
 				//--------------------------------------------------------------------------
 
@@ -533,6 +548,7 @@
                                 });
 
                                 var SIF = ObjSIF.length == 0 ? '' : ObjSIF[ObjSIF.length-1].ValueMultiple;
+				var txtSIF = ObjSIF.length == 0 ? '' : ObjSIF[ObjSIF.length-1].ParHeaderField_Name;
 				//--------------------------------------------------------------------------
 
                                 var ObjOrigem = $.grep(dadosReprocesso, function (a, b) {
@@ -552,6 +568,7 @@
                                 });
 
                                 var Origem = ObjOrigem.length == 0 ? '' : ObjOrigem[ObjOrigem.length-1].ValueMultiple;
+				var txtOrigem = ObjOrigem.length == 0 ? '' : ObjOrigem[ObjOrigem.length-1].ParHeaderField_Name;
 				//--------------------------------------------------------------------------
 
                                 var ObjMotivo = $.grep(dadosReprocesso, function (a, b) {
@@ -571,6 +588,7 @@
                                 });
 
                                 var Motivo = ObjMotivo.length == 0 ? '' : ObjMotivo[0].ValueMultiple;
+				var txtMotivo = ObjMotivo.length == 0 ? '' : ObjMotivo[ObjMotivo.length-1].ParHeaderField_Name;
 				//--------------------------------------------------------------------------
 
                                 var ObjQtdeEnvolvido = $.grep(dadosReprocesso, function (a, b) {
@@ -591,6 +609,7 @@
 
 
                                 var QtdeEnvolvido = ObjQtdeEnvolvido.length == 0 ? '' : ObjQtdeEnvolvido[ObjQtdeEnvolvido.length-1].ValueMultiple;
+				var txtQtdeEnvolvido = ObjQtdeEnvolvido.length == 0 ? '' : ObjQtdeEnvolvido[ObjQtdeEnvolvido.length-1].ParHeaderField_Name;
 				//--------------------------------------------------------------------------
 
                                 $('#dtReprocesso').text(dataReprocesso);
@@ -599,6 +618,13 @@
                                 $('#qdeProd').text(QtdeEnvolvido);
                                 $('#OrigemRep').text(Origem);
                                 $('#MotivoRep').text(Motivo);
+
+                                $('#txtDtReprocesso').text(txtdataReprocesso);
+                                $('#txtOficioSIF').text(txtSIF);
+                                $('#txtNumOp').text(txtOP);
+                                $('#txtQdeProd').text(txtQtdeEnvolvido);
+                                $('#txtOrigemRep').text(txtOrigem);
+                                $('#txtMotivoRep').text(txtMotivo);
 
                                 $('#nomePessoa').text(user[0].FullName);
 
@@ -974,17 +1000,17 @@
 
                 //variveis de ambiente JBS
 
-                //monitoramentoEntrada = 367;
-                //monitoramentoSaida = 368;
-                //cabecalhoOPEntrada = 92;
-                //cabecalhoOPSaida = 97;
+                monitoramentoEntrada = 367;
+                monitoramentoSaida = 368;
+                cabecalhoOPEntrada = 92;
+                cabecalhoOPSaida = 97;
 
-                //cabecalhoObjOP = 92;
-                //cabecalhoObjDataReprocesso = 91;
-                //cabecalhoObjSIF = 93;
-                //cabecalhoObjOrigem = 94;
-                //cabecalhoObjMotivo = 95;
-                //cabecalhoObjQtdeEnvolvido = 96;
+                cabecalhoObjOP = 92;
+                cabecalhoObjDataReprocesso = 91;
+                cabecalhoObjSIF = 93;
+                cabecalhoObjOrigem = 94;
+                cabecalhoObjMotivo = 95;
+                cabecalhoObjQtdeEnvolvido = 96;
 
 
 
