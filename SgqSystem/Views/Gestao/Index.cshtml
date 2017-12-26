@@ -1,6 +1,7 @@
 ﻿@using DTO
 @{
     ViewBag.Title = Resources.Resource.management;
+    var version = ViewBag.Asembly;
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
     var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
@@ -250,139 +251,141 @@
         float: right;
     }
 </style>
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 600px; padding-right: 30px;">
 
-<div class="page-content" style="min-height: 525px; padding: 32px;  background-color:#fff;">
+        <div id="divMenu">
 
-    <div id="divMenu">
+            <div class="fundoMenu">
 
-        <div class="fundoMenu">
-
-            <div id="menu" class="menu">
-
-            </div>
-
-        </div>
-
-        <div id="linha" class="centro">
-
-            <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.planning
-
-            </div>
-
-        </div>
-
-        <div id="linha">
-
-            <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.chronic_problems_and_anomaly_reports
-
-            </div>
-
-            <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.data_collect_execution_and_action_plan
-
-            </div>
-
-        </div>
-
-        <div id="linha" class="centro">
-
-            <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.result_evaluation_and_deviation_communication
-
-            </div>
-
-        </div>
-
-        <div id="fundoMenuSuperior">
-
-            <div class="corpoMenuCampos">
-
-                <div id="menu1Plan" class="menuCampos">
-
-                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
-
-                    <ul id="nav">
-
-                        @*<li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>*@
-
-                        @if (GlobalConfig.Eua)
-                        {
-                            <li><a href="#">@Resources.Resource.general_view_of_the_area <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
-                        }
-                        else
-                        {
-                            <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a></li>
-                        }
-                        <li><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></li>
-                    </ul>
+                <div id="menu" class="menu">
 
                 </div>
 
-                <div id="menu2Do" class="menuCampos">
+            </div>
 
-                    <div class="interno">
+            <div id="linha" class="centro">
+
+                <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                    @Resources.Resource.planning
+
+                </div>
+
+            </div>
+
+            <div id="linha">
+
+                <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                    @Resources.Resource.chronic_problems_and_anomaly_reports
+
+                </div>
+
+                <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                    @Resources.Resource.data_collect_execution_and_action_plan
+
+                </div>
+
+            </div>
+
+            <div id="linha" class="centro">
+
+                <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                    @Resources.Resource.result_evaluation_and_deviation_communication
+
+                </div>
+
+            </div>
+
+            <div id="fundoMenuSuperior">
+
+                <div class="corpoMenuCampos">
+
+                    <div id="menu1Plan" class="menuCampos">
 
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                         <ul id="nav">
 
-                            <li>
-                                <a href="#">@Resources.Resource.collection_reports</a>
-                                <a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a>
+                            @*<li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>*@
 
-                                <ul>
-                                    @*<li><a href="#">@Resources.Resource.customization</a></li>*@
-                                    @*<li><a href="#">@Resources.Resource.sgq_using</a></li>*@
-                                    <li><a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a></li>
-                                    @*<li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>*@
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-
-                <div id="menu3Check" class="menuCampos">
-
-                    <div class="interno">
-
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
-
-                        <ul id="nav">
-                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
-                            <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
-                            @*<li><a href="@urlCEP">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>*@
-                            <li><a href="@urlCEP">@Resources.Resource.spc_charts</a></li>
                             @if (GlobalConfig.Eua)
                             {
-                                <li><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                                <li><a href="#">@Resources.Resource.general_view_of_the_area <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
                             }
                             else
                             {
-                                <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
+                                <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a></li>
                             }
-                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></li>
-                            <li><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></li>
+                            <li><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></li>
                         </ul>
+
                     </div>
 
-                </div>
+                    <div id="menu2Do" class="menuCampos">
 
-                <div id="menu4Action" class="menuCampos">
+                        <div class="interno">
 
-                    <div class="interno">
+                            <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
+                            <ul id="nav">
 
-                        <ul id="nav">
-                            <li><a href="#">@Resources.Resource.recidivism <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
-                        </ul>
+                                <li>
+                                    <a href="#">@Resources.Resource.collection_reports</a>
+                                    <a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a>
+
+                                    <ul>
+                                        @*<li><a href="#">@Resources.Resource.customization</a></li>*@
+                                        @*<li><a href="#">@Resources.Resource.sgq_using</a></li>*@
+                                        <li><a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a></li>
+                                        @*<li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>*@
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div id="menu3Check" class="menuCampos">
+
+                        <div class="interno">
+
+                            <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
+
+                            <ul id="nav">
+                                <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
+                                <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
+                                @*<li><a href="@urlCEP">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>*@
+                                <li><a href="@urlCEP">@Resources.Resource.spc_charts</a></li>
+                                @if (GlobalConfig.Eua)
+                                {
+                                    <li><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
+                                }
+                                <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></li>
+                                <li><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div id="menu4Action" class="menuCampos">
+
+                        <div class="interno">
+
+                            <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
+
+                            <ul id="nav">
+                                <li><a href="#">@Resources.Resource.recidivism <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                            </ul>
+                        </div>
+
                     </div>
 
                 </div>
@@ -392,7 +395,6 @@
         </div>
 
     </div>
-
 </div>
 
 <script type="text/javascript">
@@ -471,5 +473,17 @@
         }
 
     }
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        closeLeftSidebar();
+    });
+
+    var version = '@Html.Raw(ViewBag.Asembly)';
 
 </script>
