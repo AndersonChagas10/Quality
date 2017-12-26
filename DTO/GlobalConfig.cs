@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace DTO
 {
@@ -64,7 +65,8 @@ namespace DTO
 
     public static class GlobalConfig
     {
-
+        private static Semaphore _poolSemaphore;
+        public static Semaphore PoolSemaphore { get { if (_poolSemaphore == null) _poolSemaphore = new Semaphore(5, 5); return _poolSemaphore; } }
         public static Dictionary<int, HtmlDoTablet> PaginaDoTablet { get; set; }
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }

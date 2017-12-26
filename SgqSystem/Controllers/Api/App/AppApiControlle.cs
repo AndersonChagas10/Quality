@@ -46,7 +46,9 @@ namespace SgqSystem.Controllers.Api.App
             CommonLog.SaveReport("Update_GetTelaAll");
 
             GlobalConfig.ParamsDisponiveis = string.Empty;
-            GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
+
+            if (GlobalConfig.PaginaDoTablet == null)
+                GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
 
             var units = db.ParCompany.Where(r => r.IsActive).ToList();
             using (var service = new SyncServices())
@@ -143,7 +145,10 @@ namespace SgqSystem.Controllers.Api.App
             {
                 if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
                 {
+                        
                     retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value.Html;
+
+                    if(retorno.ParteDaTela != null )
                     return retorno;
                 }
             }
@@ -229,8 +234,6 @@ namespace SgqSystem.Controllers.Api.App
             return null;
         }
 
-        private static Semaphore Pool;
-
         [HttpPost]
         [Route("UpdateGetTelaThread")]
         public void UpdateGetTelaThread([FromBody]GeneratedUnit generatedUnit)
@@ -242,7 +245,7 @@ namespace SgqSystem.Controllers.Api.App
             {
                 Queue<Thread> threadBuffer = new Queue<Thread>();
 
-                Pool = new Semaphore(5, 5);
+                var Pool = GlobalConfig.PoolSemaphore;
 
                 foreach (int i in generatedUnit.ListUnits)
                 {
@@ -264,7 +267,7 @@ namespace SgqSystem.Controllers.Api.App
             {
                 CreateItemIfNotExist(id);
 
-                Pool.WaitOne();
+                GlobalConfig.PoolSemaphore.WaitOne();
                 if (GlobalConfig.PaginaDoTablet != null
                     &&
                     ((GlobalConfig.PaginaDoTablet[id] != null
@@ -289,7 +292,7 @@ namespace SgqSystem.Controllers.Api.App
             }
             finally
             {
-                Pool.Release();
+                GlobalConfig.PoolSemaphore.Release();
             }
         }
 

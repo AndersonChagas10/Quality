@@ -12,6 +12,8 @@
 
 
 
+
+
 <style type="text/css">
     #conteudodatabela div.conteudodatabela {
         width: 900px;
@@ -79,7 +81,15 @@
 
 <!-- Estilo para impressão -->
 <style type="text/css" media="print">
-    
+    table {
+        page-break-inside: auto
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto
+    }
+
 
     /*#conteudodatabela div.conteudodatabela {
             overflow: visible;
@@ -180,7 +190,7 @@
     position: relative;
     bottom: -20px;
     name-increment: section;
-    content: "Leornado 2";
+    content: "RGQ-00-GQC-025/06 Aprov. em: 07/12/2017";
   }
   .print {
     display: none;
@@ -239,21 +249,21 @@
                                 <tr>
                                     <td width="100%" style="border:0px solid #ffffff !important;">
 
-                                        @*<table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-jbs.png" width="80px"></td>
-                                                        <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
-                                                        <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-gq.png" width="80px"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>*@
+                                        <table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-jbs.png" width="80px"></td>
+                                                    <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
+                                                    <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-gq.png" width="80px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
                                     </td>
                                 </tr>
@@ -262,7 +272,7 @@
                                 <tr style="background-color: white;">
                                     <td style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px; background-color:#fff; padding-top:5px;">
                                         <div style="background-color:#ffffff; z-index:9999999; padding-top:5px; width:100%;">
-                                            RGQ-00-GQC-025/06 Aprov. em: 07/12/2017
+                                            @*RGQ-00-GQC-025/06 Aprov. em: 07/12/2017*@
                                         </div>
                                     </td>
                                 </tr>
@@ -276,23 +286,23 @@
 
                                         <table border=0 width="100%" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
 
-                                            <tr>
-                                                <td height=80px;>
-                                                    <table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
-                                                        <tr>
-                                                            <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-jbs.png' width="80px"></td>
-                                                            <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
-                                                            <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-gq.png' width="80px"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            @*<tr>
+                                                    <td height=80px;>
+                                                        <table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                                            <tr>
+                                                                <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-jbs.png' width="80px"></td>
+                                                                <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
+                                                                <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-gq.png' width="80px"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>*@
                                             <tr><td height=20px;></td></tr>
                                             <tr>
                                                 <td height=20px;>
@@ -426,7 +436,11 @@
         <script type="text/javascript">
 
             var bottom = 0;
-            $(document).ready(function () {
+
+
+            function imprimirRelatorio() {
+
+
                 $("tr:nth-child(1n)").each(function () {
                     bottom -= 100;
                     botString = bottom.toString();
@@ -438,9 +452,7 @@
                     $name.css("bottom", botString + "vh");
                     ($name).insertBefore('.insert');
                 });
-            });
 
-        function imprimirRelatorio() {
             var conteudo = document.getElementById('divReport').innerHTML,
                 tela_impressao = window.open('');
             tela_impressao.document.write('<html><head><title>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</title><body>' + conteudo + '</body></html>');
@@ -470,7 +482,7 @@
 
             linhasParaFinalPagina = (linhasPorPagina * (parseInt((linhasNecessarias) / linhasPorPagina) + 1)) - linhasNecessarias;
 
-            return linhasParaFinalPagina;
+            return 0;
 
         }
         //fim testes
@@ -705,16 +717,16 @@
 
                                 var tabela = "";
 
-                                tabela = tabela + '<table width="100%" border="1" cellspacing="0" cellpadding="1" style="border-color:#ccc; font-size:10px;">';
+                                tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="border-color:#ccc; font-size:10px;">';
                                 tabela = tabela + '<tr>';
-                                tabela = tabela + '<td height="40px" width="25%" align="center"><b>Produto de Entrada</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Data de Produção</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Data de Embalagem</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Data de Validade</b></td>';
-                                tabela = tabela + '<td width="5%" align="center"><b>SIF</b></td>';
-                                tabela = tabela + '<td width="20%" align="center"><b>Código de Rastreabilidade</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Volume</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Peso</b></td>';
+                                tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Entrada</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Embalagem</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
+                                tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;"><b>SIF</b></td>';
+                                tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Volume</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Peso</b></td>';
                                 tabela = tabela + '</tr>';
 
                                 for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoEntradaOPs.length; i++) {
@@ -728,14 +740,14 @@
 				    var campo8 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido;
 
                                     tabela = tabela + '<tr>';
-                                    tabela = tabela + '<td height="40px" width="25%">' + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto +  '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo2 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo3 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo4 + '</td>';
-                                    tabela = tabela + '<td width="5%" align="center">' + campo5 + '</td>';
-                                    tabela = tabela + '<td width="20%" align="center">' + campo6 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo7 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo8 + '</td>';
+                                    tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto +  '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
+                                    tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
+                                    tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo7 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo8 + '</td>';
                                     tabela = tabela + '</tr>';
 
                                 }
@@ -749,17 +761,17 @@
 
                                 tabela = "";
 
-                                tabela = tabela + '<table width="100%" border="1" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+                                tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-size:10px;">';
                                 tabela = tabela + '<tr>';
-                                tabela = tabela + '<td height="40px" width="25%" align="center"><b>Produto de Saída</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Data de Produção</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Data de Validade</b></td>';
-                                tabela = tabela + '<td width="14%" align="center"><b>Código de Rastreabilidade</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Habilitação</b></td>';
-                                tabela = tabela + '<td width="10%" align="center"><b>Local de Estoque</b></td>';
-                                tabela = tabela + '<td width="7%" align="center"><b>Total Peça</b></td>';
-                                tabela = tabela + '<td width="7%" align="center"><b>Total Volume</b></td>';
-                                tabela = tabela + '<td width="7%" align="center"><b>Total Peso</b></td>';
+                                tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Saída</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
+                                tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Habilitação</b></td>';
+                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Local de Estoque</b></td>';
+                                tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peça</b></td>';
+                                tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Volume</b></td>';
+                                tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peso</b></td>';
                                 tabela = tabela + '</tr>';
 
                                 for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
@@ -775,15 +787,15 @@
 
 
                                     tabela = tabela + '<tr>';
-                                    tabela = tabela + '<td height="40px" width="25%">' + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo2 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo3 + '</td>';
-                                    tabela = tabela + '<td width="14%" align="center">' + campo4 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo5 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center">' + campo6 + '</td>';
-                                    tabela = tabela + '<td width="7%" align="center">' +  campo7 + '</td>';
-                                    tabela = tabela + '<td width="7%" align="center">' +  campo8 + '</td>';
-                                    tabela = tabela + '<td width="7%" align="center">' +  campo9 + '</td>';
+                                    tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
+                                    tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' +  campo7 + '</td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' +  campo8 + '</td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' +  campo9 + '</td>';
                                     tabela = tabela + '</tr>';
 
                                 }
@@ -954,60 +966,23 @@
 
                                 //------------------------------------------
 
-                                lista = lista +
-                                    '</table>' +
-                                    '</td><tr>';
-
-                                lista = lista +
-                                    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
-                                    //"<tr><td colspan=3>Quantidade de produto aproveitado: " + QtdAproveitado + "</td></tr>" +
-                                    //"<tr><td colspan=3>Quantidade de produto descartado: " + QtdDescartado + "</td></tr>" +
-                                    //"<tr><td colspan=3>Destino do produto: " + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].nCdHabilitacao + "</td></tr>" +
-                                    //"<tr><td colspan=3>Local de estoque de alocação de produto final: " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[0].nCdLocalEstoque + "</td></tr>" +
-                                    //"<tr><td colspan=3>&nbsp;</td></tr>" +
-                                    //"<tr><td colspan=3 style='font-weight:bold;'>Observações</td></tr>" +
-                                    //"<tr><td colspan=3>" + Obs + "</td></tr>" +
-
-                                    "<tr><td colspan=3 height=50px style='font-size:10px;'></td></tr>" +
-                                    "<tr><td colspan=3 style='font-size:10px;'>" +
-                                    "<table width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'><tr>" +
-                                    "<td width=10%></td>" +
-                                    "<td width=35% align=center style='border-top:1px solid black;'>" + user[0].FullName + " <br> Monitor GQ</td>" +
-                                    "<td width=10%></td>" +
-                                    "<td width=35% align=center style='border-top:1px solid black;'>Estoque Físico</td>" +
-                                    "<td width=10%></td>" +
-                                    "</tr></table>" +
-                                    "</td ></tr > " +
-
-                                    "<tr><td colspan=3 height=50px></td></tr>" +
-                                    "<tr><td colspan=3>" +
-                                    "<table width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'><tr>" +
-                                    "<td width=10%></td>" +
-                                    "<td width=35% align=center style='border-top:1px solid black;'>Gerente Industrial</td>" +
-                                    "<td width=10%></td>" +
-                                    "<td width=35% align=center style='border-top:1px solid black;'>Garantia da Qualidade</td>" +
-                                    "<td width=10%></td>" +
-                                    "</tr></table>" +
-                                    "</td ></tr > " +
-
-                                    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
-                                    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
-                                    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
-                                    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
-
-                                    //"<tr><td colspan=3>" +
-                                    //"RGQ-00-GQC-025/06 Aprov. em: 07/12/2017" +
-
-                                    //"</td></tr>"+
-                                    "</table>";
 
 
+                                var numeroPaginas = (Math.ceil($('#conteudo').height() / 842));
 
+                                $('#number').attr('data-content', numeroPaginas);
 
-                                //$('#corpo').html(lista);
-                                    $('#fundoPreto').show();
-                                $('#divReport').show();
-				$('#botoesImpressao').show();
+                                for (var i = 0; i < numeroPaginas - 1; i++) {
+                                    bottom -= 100;
+                                    botString = bottom.toString();
+                                    var $counter = $('h6.first').clone().removeClass('first');
+                                    $counter.css("bottom", botString + "vh");
+                                    ($counter).insertBefore('.insert');
+
+                                    var $name = $('h6.secound').clone().removeClass('secound');
+                                    $name.css("bottom", botString + "vh");
+                                    ($name).insertBefore('.insert');
+                                }
 
                                 },
                                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -1053,7 +1028,7 @@
 
                     for (var i = 0; i < data.length; i++) {
 
-                        lista = lista + '<a href="#" onClick="getDadosReprocessoResultados(' + data[i].Value + ', ' + unidade + ', ' + dtIni + ', ' + dtFim + ')">' +
+                        lista = lista + '<a href="' + "@Url.Action("Index", "RelatorioReprocesso")" + '?numero=' + data[i].Value + '&unidade=' + unidade + '&dataini=' + dtIni + '&datafim=' + dtFim + '" target="_blank">' +
                             "Ordem de Produção: " + data[i].Value +
                             //' - ' +
                             //dateInternacionalFormat(data[i].CollectionDate) +
