@@ -226,7 +226,13 @@ FROM (SELECT
 		   ,UNI.Id AS Unidade_Id
 		   ,UNI.Name AS Unidade
 		   ,CASE
-				WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+				WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) - ISNULL(@NAPCC,0)
 				WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -236,7 +242,13 @@ FROM (SELECT
 				ELSE 0
 			END AS Av
 		   ,CASE
-				WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+				WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) - ISNULL(@NAPCC,0)
 				WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -305,7 +317,7 @@ FROM (SELECT
 		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
 			ON CL1.UnitId = CXS.ParCompany_Id
 		INNER JOIN ParCompanyCluster PCC
-			ON PCC.ParCompany_Id = UNI.Id  AND PCC.ParCluster_Id = L1XC.ParCluster_Id 
+			ON PCC.ParCompany_Id = UNI.Id  AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 		WHERE 1 = 1
         AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + whereUnidade2 + @"
@@ -434,7 +446,13 @@ FROM (SELECT
 	   ,UNI.Id AS Unidade_Id
 	   ,UNI.Name AS Unidade
 	   ,CASE
-			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - ISNULL(@NAPCC,0)
 			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
 			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.EvaluatedResult
@@ -443,7 +461,13 @@ FROM (SELECT
 			ELSE 0
 		END AS Av
 	   ,CASE
-			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - ISNULL(@NAPCC,0)
 			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
 			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.EvaluatedResult
@@ -484,7 +508,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 	WHERE 1 = 1
     AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + whereUnidade2 + @"
@@ -615,21 +639,35 @@ FROM (SELECT
 			ELSE SUM(R3.Defects)
 		END AS NcSemPeso
 	   ,CASE
-			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
 			ELSE SUM(R3.WeiEvaluation)
 		END AS Av
 	   ,CASE
-			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
 		END AS AvSemPeso
 	   ,SUM(R3.WeiDefects) /
 		CASE
-			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-						SUM(Quartos) / 2
-					FROM VolumePcc1b(nolock)
-					WHERE ParCompany_id = UNI.Id
-					AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+			WHEN IND.HashKey = 1 THEN ((SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
@@ -653,7 +691,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id  
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1  
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + whereUnidade2 + @"
@@ -862,7 +900,13 @@ FROM (SELECT
 		   ,UNI.Id AS Unidade_Id
 		   ,UNI.Name AS Unidade
 		   ,CASE
-				WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+				WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume)  - ISNULL(@NAPCC,0)
 				WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -872,7 +916,13 @@ FROM (SELECT
 				ELSE 0
 			END AS Av
 		   ,CASE
-				WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+				WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume)  - ISNULL(@NAPCC,0)
 				WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -942,7 +992,7 @@ FROM (SELECT
 			ON CL1.UnitId = CXS.ParCompany_Id
 		INNER JOIN ParCompanyCluster PCC (NOLOCK)
 			ON PCC.ParCompany_Id = UNI.Id
-            AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+            AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + whereUnidade2 + @"
         " + whereCluster + @"
@@ -1065,7 +1115,13 @@ FROM (SELECT
 	   ,UNI.Id AS Unidade_Id
 	   ,UNI.Name AS Unidade
 	   ,CASE
-			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - ISNULL(@NAPCC,0)
 			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
 			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.EvaluatedResult
@@ -1074,7 +1130,13 @@ FROM (SELECT
 			ELSE 0
 		END AS Av
 	   ,CASE
-			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) / 2 - ISNULL(@NAPCC,0)
 			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
 			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.EvaluatedResult
@@ -1115,7 +1177,7 @@ FROM (SELECT
     	ON CL1.UnitId = CXS.ParCompany_Id
     INNER JOIN ParCompanyCluster PCC
     	ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + whereUnidade2 + @"
     " + whereCluster + @"
@@ -1258,7 +1320,7 @@ FROM (SELECT
 	   ,SUM(R3.WeiDefects) /
 		CASE
 			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
+								SUM(Quartos) - @NAPCC
 							FROM VolumePcc1b(nolock)
 							WHERE 1=1
                             --AND ParCompany_id = UNI.Id
@@ -1286,7 +1348,7 @@ FROM (SELECT
 		ON CL1.UnitId = CXS.ParCompany_Id
 	INNER JOIN ParCompanyCluster PCC
 		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id
+        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + whereUnidade2 + @"
@@ -1304,6 +1366,7 @@ FROM (SELECT
 			,R3.ParLevel3_Name
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
+            ,cl1.ConsolidationDate
 	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
 ORDER BY 8 DESC ";
 
@@ -3878,7 +3941,7 @@ FROM (SELECT
 						SUM(Quartos) / 2
 					FROM VolumePcc1b(nolock)
 					WHERE ParCompany_id = UNI.Id
-					AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+					AND CAST(Data AS DATE) = CAST(c2.CollectionDate AS DATE))
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
 	   ,CAST(c2.CollectionDate AS DATE) AS date
@@ -4062,11 +4125,13 @@ FROM (SELECT
 				,Nomes.A7 as level2_Id
 				,NOMES.a8 as level2Name
 			   ,CASE
-					WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
-							FROM VolumePcc1b(nolock)
-							WHERE ParCompany_id = UNI.Id
-							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+					WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											    AND Data = cl1.ConsolidationDate
+											    AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) - ISNULL(@RESS,0)
 					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
@@ -4074,11 +4139,13 @@ FROM (SELECT
 					ELSE 0
 				END AS Av
 			   ,CASE
-					WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
-							FROM VolumePcc1b(nolock)
-							WHERE ParCompany_id = UNI.Id
-							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+					WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = cl1.UnitId
+											GROUP BY ParCompany_id) Volume) - ISNULL(@RESS,0)
 					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
 					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult

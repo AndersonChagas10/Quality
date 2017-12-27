@@ -8,20 +8,20 @@
     var urlLogOutCookie = @Url.Action("LogOutCookie", "UserAuthentication");
 
     //EUA PROD
-    //ViewBag.urlRootPa = "http://sgq.jbssa.com/ActionPlan";
-    //ViewBag.urlRootPaFTA = "http://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "https://sgq.jbssa.com/ActionPlan";
+    //ViewBag.urlRootPaFTA = "https://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
 
     //EUA HML
-    //ViewBag.urlRootPa = "http://sgqtest.jbssa.com/actionPlanHML";
-    //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "https://sgqtest.jbssa.com/actionPlanHML";
+    //ViewBag.urlRootPaFTA = "https://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
 
     //EUA GRT
-    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
-    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
 
     //BR GRT
-    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
-    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
+    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
 
     //JBS HML / PROD
     //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
@@ -223,7 +223,7 @@
 
     <footer class="wrapper">
 
-        <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px;">
+        <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px; z-index: 999;">
             <label class="pull-right">Version: @Html.AssemblyVersion()</label>
             <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </label>
         </p>
