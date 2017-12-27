@@ -89,7 +89,7 @@
             element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
             reloadPopovers();
         },
-        btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
+        btnReActive: '<button type="button" class="btn btn-info btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
         funcReActive: function (e) {
             var obj = $(e).parents('tr').data();
             obj["IsActive"] = true;
@@ -112,7 +112,7 @@
         //    reloadPopovers();
         //},
 
-        btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
+        btnEdit: '<button type="button" class="btn btn-success btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
 
             $('#crudNxNEdit > div > div > div.modal-body').empty();

@@ -135,7 +135,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.NBR, "NBR - Nível Geral de Inspeção Escolhido", htmlAttributes: new { @class = "control -label col-md-2" })
+                                            @Html.LabelFor(model => model.NBR, "NBR - Nível Geral de Inspeção Escolhido", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <select id="NBR" name="NBR" class="form-control valid">
                                                     <option value="-1">@Resources.Resource.select</option>
@@ -177,7 +177,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.TamanhoAmostra, "Tamanho de Cada Amostra (3KG; 4KG ou 5KG)", htmlAttributes: new { @class = "control -label col-md-2" })
+                                            @Html.LabelFor(model => model.TamanhoAmostra, "Tamanho de Cada Amostra (3KG; 4KG ou 5KG)", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.TextBoxFor(model => model.TamanhoAmostra, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.TamanhoAmostra, "", new { @class = "text-danger" })
@@ -185,7 +185,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, "Total de Amostras Para Avaliação Por Colaborador/Esteira, Por Hora de Produção", htmlAttributes: new { @class = "control -label col-md-2" })
+                                            @Html.LabelFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, "Total de Amostras Para Avaliação Por Colaborador/Esteira, Por Hora de Produção", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, "", new { @class = "text-danger" })
@@ -215,8 +215,8 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" class="btn btn-default" /> |
-                                                @Html.ActionLink("Voltar para Volume de CEP Recortes", "Index")
+                                                <input type="submit" value="Salvar" class="btn btn-primary" />
+                                                @Html.ActionLink("Voltar para Volume de CEP Recortes", "Index", null, new { @class= "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>

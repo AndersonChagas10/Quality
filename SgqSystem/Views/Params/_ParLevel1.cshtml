@@ -637,19 +637,19 @@
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
                                                                 {
-                                                                    <button type="button" class="btn btn-success btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
                                                                         <span class="glyphicon glyphicon-duplicate"></span>
                                                                     </button>
 
                                                                 }
                                                                 else
                                                                 {
-                                                                    <button type="button" class="btn btn-danger btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
                                                                         <span class="fa fa-copy"></span>
                                                                     </button>
                                                                 }
 
-                                                                <button type="button" class="btn btn-danger btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
+                                                                <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
                                                                     <span class="fa fa-pencil-square-o"></span>
                                                                 </button>
 

@@ -48,7 +48,7 @@
                                 <p>
 
                                     <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
-                                        <button id="btnFilter" class="btn-success" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
+                                        <button id="btnFilter" class="btn-info" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
                                         <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px;padding:5px;margin-left:5px;margin-top:-12px;float:right;">
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                                             <span></span> <b class="caret"></b>
@@ -56,7 +56,7 @@
                                         @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
                                         <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
                                     </div>
-                                    @Html.ActionLink("Novo volume de PCC1b", "Create")
+                                    @Html.ActionLink("Novo volume de PCC1b", "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table table-condensed">
                                     <tr>
@@ -98,9 +98,9 @@
                                                 @Html.DisplayFor(modelItem => item.Amostras)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                             </td>
                                         </tr>
                                     }
