@@ -75,7 +75,7 @@
 
                                             <tr class="rowTabelaFamilia">
                                                 <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Indicador:")</td>
-                                                <td class="colTabelaFamilia" align="center">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                <td class="colTabelaFamilia">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
                                             </tr>
 
                                             @Html.Partial("_ControlCompanySelectBoxLevel2")
