@@ -94,6 +94,10 @@ footer > p{
 }
 
 /**LEO**/
+div.page-content-wrapper div.page-content{
+    min-height:625px !important;
+}
+
 div.login div.form-signin{
     padding:0px;
 }
