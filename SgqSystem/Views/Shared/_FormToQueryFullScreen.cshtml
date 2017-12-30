@@ -1,4 +1,4 @@
-﻿
+﻿<!--QUERY FULL SCREEN-->
 <div class="wrapper">
     @Html.Partial("~/Views/Shared/_FormularioQueryData.cshtml")
     <div class="page-content-wrapper report-wrapper">
@@ -6,11 +6,12 @@
             <div class="row">
                 <div class="col-lg-12">
 
-                    <p style="margin-left: -30px;margin-top: -17px;">
-                        <button type="button" class="btn btn-primary btn-xs" style="position:fixed;" id="menu-toggle"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                    <p style="margin-left: -30px;">
+                        <button type="button" class="btn btn-primary pull-right" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+
+                        <button type="button" class="btn btn-primary btn-xs" id="menu-toggle"><i class="glyphicon glyphicon-chevron-left"></i></button>
                         &nbsp;&nbsp;&nbsp;&nbsp;<span style="display: none" class="redLabelSecTitle">@ViewBag.Title</span>
                     </p>
-
                     <div id="body_FormularioQueryData"></div>
 
                 </div>

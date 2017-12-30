@@ -188,19 +188,25 @@
 
     function openLeftSidebar() {
         $('.page-sidebar-menu').removeClass('page-sidebar-menu-closed');
+        $('.page-sidebar-menu').parent().removeClass('zindex-control')
         $('body').removeClass('page-sidebar-closed');
         $('#sidebar-wrapper').css('margin-left', '-65px');
-        $('.report-wrapper').css('margin-left', '240px');
+        $('.report-wrapper').css('margin-left', '10px');
+        $('.report-wrapper').css('padding-top', '30px !important');
         //$('.page-content').css('padding-right', '230px');
 
     }
 
     function closeLeftSidebar() {
-        $('.page-sidebar-menu').addClass('page-sidebar-menu-closed');
+        $('.page-sidebar-menu').addClass('page-sidebar-menu-closed')
+        setTimeout(function () {
+            $('.page-sidebar-menu').parent().addClass('zindex-control')
+        }, 500)
         $('body').addClass('page-sidebar-closed');
         $('#sidebar-wrapper').css('margin-left', '-255px');
-        $('.report-wrapper').css('margin-left', '50px');
-        $('.page-content').css('padding-right', '30px');
+        $('.report-wrapper').css('margin-left', '10px');
+        $('.report-wrapper').css('padding-top', '30px !important');
+        //$('.page-content').css('padding-right', '30px');
     }
 
 
