@@ -358,13 +358,13 @@
         $('#' + id).addClass('active').addClass('start').addClass('open');
     };
 
-    $('.nav-item').click(function () {
-        if ($(this).hasClass('open')) {
-            $(this).children('.sub-menu').css("display", "none");
-            $(this).removeClass('open');
+    $('.nav-item a').click(function () {
+        if ($(this).parent().hasClass('open')) {
+            $(this).parent().children('.sub-menu').css("display", "none");
+            $(this).parent().removeClass('open');
         } else {
-            $(this).addClass('open');
-            $(this).children('.sub-menu').css("display", "block");
+            $(this).parent().addClass('open');
+            $(this).parent().children('.sub-menu').css("display", "block");
         }
     });
 
