@@ -53,9 +53,6 @@
 
     <script type="text/javascript">
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
-
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         //var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
@@ -79,7 +76,10 @@
             //formControl.showOnlyUnit(); //showOnlyUnit showUnit
             //formControl.showUnit();
             formControl.showClustRegUnitCriticalLevel123();
+
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             //Remove o 'Todos' da unidade
             //$("#unitId option[value='']").remove();

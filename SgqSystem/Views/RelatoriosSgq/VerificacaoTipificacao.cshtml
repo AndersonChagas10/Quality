@@ -5,22 +5,19 @@
     var urlEdit = Url.Action("Edit", "api/VerificacaoTipificacao2");
 }
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 600px;">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
+        <div id="formBodyContent">
 
-        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_VerificacaoTipificacaoEdit.cshtml")
 
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-        </div>
-
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        @Html.Partial("~/Views/RelatoriosSgq/_VerificacaoTipificacaoEdit.cshtml")
-
-        <div id="load"></div>
-        <div id="divTable">
-            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+            <div id="load"></div>
+            <div id="divTable">
+                <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+            </div>
         </div>
     </div>
 </div>
@@ -29,14 +26,16 @@
 
     <script type="text/javascript">
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
         var $btn = $('#btnSend');
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
 
         $(document).ready(function () {
+
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
             formControl.showFullCallendar();
             formControl.showUnit();
 
@@ -75,7 +74,7 @@
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
 
-            else{
+            else {
                 //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
 
                 //var regraEdit = false;

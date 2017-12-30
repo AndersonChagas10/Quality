@@ -25,33 +25,32 @@
     }
 </style>
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 600px;">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="load"></div>
-        <div id="plotPrincipal2"></div>
-        <div id="plotPrincipal"></div>
-        <div class="panel panel-info" id="PanelFull" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g1">
+        <div id="formBodyContent">
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <div id="load"></div>
+            <div id="plotPrincipal2"></div>
+            <div id="plotPrincipal"></div>
+            <div class="panel panel-info" id="PanelFull" style="display:none">
+                <div class="panel-heading"></div>
+                <div class="panel-body" id="g1">
+                </div>
+                *O Peso atribuído as Tarefas influenciam no resultado gráfico.
             </div>
-            *O Peso atribuído as Tarefas influenciam no resultado gráfico.
+            @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
         </div>
-        @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
     </div>
-</div>
 
-@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+    @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+</div>
 
 @section Scripts {
 
 
     <script type="text/javascript">
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -73,7 +72,10 @@
             formControl.showFullCallendar();
             //formControl.showOnlyUnit(); //showOnlyUnit showUnit
             formControl.showUnit();
+
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             //Remove o 'Todos' da unidade
             $("#unitId option[value='']").remove();

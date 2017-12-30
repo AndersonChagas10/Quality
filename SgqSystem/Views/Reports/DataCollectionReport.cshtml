@@ -10,12 +10,14 @@
 <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Content/DataTables/css/responsive.dataTables.min.css")" rel="stylesheet" />
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 600px;">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        <div id="formBodyContent">
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        </div>
     </div>
 </div>
 
@@ -36,6 +38,10 @@
             $("#btnSend").click(function (e) {
                 Send();
             });
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
         });
 
         function Send() {
