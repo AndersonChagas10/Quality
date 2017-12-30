@@ -17,54 +17,64 @@
             <div class="page-toolbar">
             </div>
         </div>
-        <h3>@Resources.Resource.confirm_delete?</h3>
-        <div>
-            <h4>@Resources.Resource.negative_input_type</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayName(Resources.Resource.name)
-                </dt>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <h4>@Resources.Resource.negative_input_type</h4>
+                                <hr />
+                                <h3>@Resources.Resource.confirm_delete?</h3>
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        @Html.DisplayName(Resources.Resource.name)
+                                    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Name)
+                                    </dd>
 
-                @*<dt>
-                        @Html.DisplayNameFor(model => model.AddDate)
-                    </dt>
+                                    @*<dt>
+                                            @Html.DisplayNameFor(model => model.AddDate)
+                                        </dt>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.AddDate)
-                    </dd>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AddDate)
+                                        </dd>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.AlterDate)
-                    </dt>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.AlterDate)
+                                        </dt>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.AlterDate)
-                    </dd>*@
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AlterDate)
+                                        </dd>*@
 
-                <dt>
-                    @Html.DisplayName(Resources.Resource.is_active)
-                </dt>
+                                    <dt>
+                                        @Html.DisplayName(Resources.Resource.is_active)
+                                    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.IsActive)
-                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.IsActive)
+                                    </dd>
 
-            </dl>
+                                </dl>
 
-            @using (Html.BeginForm())
+                                @using (Html.BeginForm())
             {
-                @Html.AntiForgeryToken()
+                                    @Html.AntiForgeryToken()
 
-                <div class="form-actions no-color">
-                    <input type="submit" value="@Resources.Resource.delete" class="btn btn-default" /> |
-                    @Html.ActionLink(Resources.Resource.back_to_list, "Index")
+                                    <div class="form-actions no-color">
+                                        <input type="submit" value="@Resources.Resource.delete" class="btn btn-danger" />
+                                        @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            }
+            </div>
         </div>
     </div>
 </div>

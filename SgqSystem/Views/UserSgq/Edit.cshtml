@@ -168,18 +168,14 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
-                                                <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
+                                                <button type="button" id="btnSave" class="btn btn-primary">@Resources.Resource.save</button>
+                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
 
                                     </div>
                                 }
                             </div>
-
-                            <div>
-                                @Html.ActionLink(Resources.Resource.back_to_list, "Index")
-                            </div>
-
                         </div>
                     </div>
                 </div>

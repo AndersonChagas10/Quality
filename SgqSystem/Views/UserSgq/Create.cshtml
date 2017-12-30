@@ -95,11 +95,11 @@
                                         </div>
 
                                         @*<div class="form-group">
-                                            @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
-                                            </div>
-                                        </div>*@
+                                                @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
+                                                </div>
+                                            </div>*@
 
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -149,21 +149,17 @@
                                                     @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                                                 </div>
                                             </div>
-                                        </div>                                        
+                                        </div>
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
+                                                <button type="button" id="btnSave" class="btn btn-primary">@Resources.Resource.save</button>
+                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
                                 }
                             </div>
-
-                            <div>
-                                @Html.ActionLink(Resources.Resource.back_to_list, "Index")
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -194,7 +190,7 @@
             } else {
                 $('#passwordContainer').removeClass('hide');
             }
-        }        
+        }
     }
 
     $(document).on("click", "#btnSave", function () {
