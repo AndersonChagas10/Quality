@@ -733,6 +733,10 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
+    <Content Include="Imagens\A.png" />
+    <Content Include="Imagens\C.png" />
+    <Content Include="Imagens\D.png" />
+    <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -788,6 +792,7 @@
     <Content Include="Imagens\logo-gq.png" />
     <Content Include="Imagens\logo-jbs.png" />
     <Content Include="Imagens\Logo.png" />
+    <Content Include="Imagens\seta.png" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
