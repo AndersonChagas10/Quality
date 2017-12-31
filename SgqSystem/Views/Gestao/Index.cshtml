@@ -38,7 +38,7 @@
         width: 450px;
         height: 450px;
         margin: auto;
-        background-image: url('../Imagens/setas.png');
+        /*background-image: url('../Imagens/setas.png');*/
         background-repeat: no-repeat;
         background-position: center;
         background-size: 400px;
@@ -46,42 +46,70 @@
         font-size: small;
     }
 
-    .circuloPDCA {
-        border-radius: 50% !important;
+    .circuloPDCA, .seta {
         display: inline-block;
         cursor: pointer;
-        background-color: yellow;
         width: 150px;
         height: 150px !important;
-        text-align: center;
         font-weight: bold;
         color: #333;
+        background-repeat:no-repeat;
+        background-size:cover;
+        text-align:center;
+
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        padding:5px;
     }
 
+    .circuloPDCA p{
+        text-align:center;
+        display: block;
+    }
+    
+
     #circulo1Plan {
-        background-color: #e5e498;
-        padding-top: 60px;
-        height: 90px;
+        background-image: url('../Imagens/P.png');
     }
 
     #circulo2Do {
-        background-color: #9fe598;
-        float: right;
-        padding-top: 50px;
-        height: 100px;
+        background-image: url('../Imagens/D.png');
     }
 
     #circulo3Check {
-        background-color: #e59898;
-        padding-top: 40px;
-        height: 110px;
+        background-image: url('../Imagens/C.png');
     }
 
     #circulo4Action {
-        background-color: #b4bcc5;
-        float: left;
-        padding-top: 60px;
-        height: 90px;
+        background-image: url('../Imagens/A.png');
+    }
+
+    .seta {
+        background-image: url('../Imagens/seta.png');
+        background-size: 50px 50px;
+        background-position:left bottom;
+    }
+
+    .seta90{
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+        background-position:left bottom;
+    }
+
+    .seta180{
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+        background-position:left bottom;
+    }
+
+    .seta270{
+        -webkit-transform: rotate(270deg);
+        transform: rotate(270deg);
+        background-position:left bottom;
     }
 
     .fundoMenu {
@@ -161,15 +189,15 @@
         <div id="divMenu">
             <div class="row">
                 <div class="col-xs-4">
-                    <img class="img-responsive" src="~/Content/Imagens/GRTJBSLogo.png" />
+                    <div class="seta seta270"></div>
                 </div>
                 <div class="col-xs-4">
                     <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo1Plan" class="circuloPDCA">
-                        @Resources.Resource.planning
+                        <p>@Resources.Resource.planning</p>
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <img class="img-responsive" src="~/Content/Imagens/GRTJBSLogo.png" />
+                    <div class="seta"></div>
                 </div>
             </div>
             <div class="row">
@@ -179,7 +207,6 @@
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <img class="img-responsive" src="~/Content/Imagens/GRTJBSLogo.png" />
                 </div>
                 <div class="col-xs-4">
                     <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo2Do" class="circuloPDCA">
@@ -189,7 +216,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <img class="img-responsive" src="~/Content/Imagens/GRTJBSLogo.png" />
+                    <div class="seta seta180"></div>
                 </div>
                 <div class="col-xs-4">
                     <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo3Check" class="circuloPDCA">
@@ -197,7 +224,7 @@
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <img class="img-responsive" src="~/Content/Imagens/GRTJBSLogo.png" />
+                    <div class="seta seta90"></div>
                 </div>
             </div>
 
