@@ -2053,10 +2053,10 @@ public class NaoConformidadeResultsSet
     public string MonitoramentoName { get; set; }
     public string Tarefa_Id { get; set; }
     public string TarefaName { get; set; }
-    public decimal Nc { get; set; }
-    public decimal Av { get; set; }
-    public decimal Meta { get; set; }
-    public decimal Proc { get; internal set; }
+    public decimal? Nc { get; set; }
+    public decimal? Av { get; set; }
+    public decimal? Meta { get; set; }
+    public decimal? Proc { get; internal set; }
     public int? Shift { get; set; }
     public string dataX { get; set; }
 }
