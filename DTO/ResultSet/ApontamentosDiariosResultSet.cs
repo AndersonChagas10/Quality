@@ -113,7 +113,12 @@ public class ApontamentosDiariosResultSet
                  ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList' 
                  ,C2.AddDate as AddDate
                  ,CJ.Device_Id as Platform
-                 ,IIF(CAST(C2.AddDate as date) != CAST(C2.CollectionDate as date), 'RETROATIVO','EDITADO') as Type
+				 , CASE 
+					WHEN C2.AlterDate IS NOT NULL THEN 'EDITADO'
+					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN 'RETROATIVO'
+				   ELSE 'NORMAL'
+				   END
+				 as Type
                  FROM CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
