@@ -696,6 +696,10 @@ var atrasadaColor = '#FF0000';
 var concluidoColor = '#0000FF';
 var andamentoColor = '#008000';
 var concluidoAtrasoColor = '#FFA500'
+var canceladoColor = '#000000'
+var retornoColor = '#8B4513'
+var finalizadaColor = '#00008B'
+var finalizadaComAtrasoColor = '#FF4500'
 
 var dataInicio;
 var dataFim;
@@ -1371,7 +1375,15 @@ function pintaStatus(seriesFilter, serieArrFinal) {
                 c["color"] = concluidoAtrasoColor;
             } else if (c.name == "Em Andamento") {
                 c["color"] = andamentoColor;
-            }
+            } else if (c.name == "Cancelado") {
+                c["color"] = canceladoColor;
+            } else if (c.name == "Retorno") {
+                c["color"] = retornoColor;
+            } else if (c.name == "Finalizada") {
+                c["color"] = finalizadaColor;
+            } else if (c.name == "Finalizada com atraso") {
+                c["color"] = finalizadaComAtrasoColor;
+            } 
         });
 
         return serieArrFinal
