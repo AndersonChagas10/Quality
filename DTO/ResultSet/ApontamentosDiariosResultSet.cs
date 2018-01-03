@@ -81,7 +81,7 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
         }
 
-        return " SELECT                                    " +
+        var query =  " SELECT                                    " +
                 " \n  C2.CollectionDate AS Data             " +
                 " \n ,L1.Name AS Indicador                  " +
                 " \n ,L2.Name AS Monitoramento              " +
@@ -123,14 +123,17 @@ public class ApontamentosDiariosResultSet
                 " \n (SELECT                                " +
                 " \n     CL2HF.CollectionLevel2_Id,         " +
                 " \n     STUFF(                             " +
-                " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 2 or CL2HF2.ParFieldType_Id = 3 then PMV.Name " +
+                " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case " +
+                " \n            when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name " +
+                " \n            when CL2HF2.ParFieldType_Id = 2 then EQP.Nome " +
                 " \n            when CL2HF2.ParFieldType_Id = 6 then " + formatDate + " " +
                 " \n            else CL2HF2.Value end) " +
                 " \n            FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) " +
                 " \n            left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF2.CollectionLevel2_Id " +
                 " \n            left join ParHeaderField HF (nolock) on CL2HF2.ParHeaderField_Id = HF.Id " +
                 " \n            left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id " +
-                " \n            left join ParMultipleValues PMV (nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) " +
+                " \n            left join ParMultipleValues PMV (nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2 " +
+                " \n            left join Equipamentos EQP (nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2 " +
                 " \n            WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id " +
                 " \n            FOR XML PATH('') " +
                 " \n            ), 1, 1, '')  AS HeaderFieldList " +
@@ -143,6 +146,8 @@ public class ApontamentosDiariosResultSet
                 " \n on c2.Id = HF.CollectionLevel2_Id " +
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
                 sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
+
+        return query;
     }
    
 }
