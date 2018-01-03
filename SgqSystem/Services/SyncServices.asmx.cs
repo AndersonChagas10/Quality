@@ -744,6 +744,8 @@ namespace SgqSystem.Services
 
                 var collectionJson = CollectionJsonDB.getJson(sql);
 
+                var collectionLevel2XCollectionJsonList = new List<KeyValuePair<int, int>>();
+
 
                 //connection = new SqlConnection(conexao);
                 //connection.Open();
@@ -1071,7 +1073,11 @@ namespace SgqSystem.Services
                         int insertLog = insertLogJson("", "Level 3 VAZIO " + ids, "N/A", "N/A", "Erro no [ProcessJson].");
                     }
 
+                    collectionLevel2XCollectionJsonList.Add(new KeyValuePair<int, int>(CollectionLevel2Id, c.Id));
+
                 }
+
+                InsertCollectionLevel2XCollectionJson(collectionLevel2XCollectionJsonList);
 
                 return null;
             }
@@ -7098,6 +7104,54 @@ namespace SgqSystem.Services
 
         }
 
+        public void InsertCollectionLevel2XCollectionJson(List<KeyValuePair<int,int>> list)
+        {
+            string sql = $@"INSERT INTO CollectionLevel2XCollectionJson
+                        (CollectionLevel2_Id,CollectionJson_Id)
+                        VALUES";
+
+            StringBuilder query = new StringBuilder();
+            for (int i = 0; i < list.Count; i++)
+            {
+                if(i % 1000 == 0)
+                {
+                    if (query.Length > 0)
+                        query.Append(" GO ");
+                    query.Append(sql);
+                }
+                query.Append($"({list[i].Key},{list[i].Value})");
+                if (i + 1 % 1000 != 0 && i + 1 < list.Count)
+                {
+                    query.Append(",");
+                }
+            }
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(query.ToString(), connection))
+                    {
+                        connection.Open();
+                        Convert.ToInt32(command.ExecuteNonQuery());
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "");
+                //throw ex;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "");
+                //throw ex;
+            }
+
+
+        }
     }
 }
 
