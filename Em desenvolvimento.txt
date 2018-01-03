@@ -115,3 +115,16 @@ IF COL_LENGTH('PA_COORDENACAO','GERENCIA_ID') IS NULL
 ALTER TABLE UserSgq ADD UseActiveDirectory BIT NOT NULL DEFAULT 0
 
 ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+
+-------------------------------------------------------------------- 03 01 2017 - LEO https://grtsolucoes.atlassian.net/browse/GRT-37
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCollectionJson' AND xtype='U')
+    CREATE TABLE CollectionLevel2XCollectionJson (
+		ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+		CollectionLevel2_Id int not null
+		FOREIGN KEY REFERENCES CollectionLevel2(Id),
+		CollectionJson_Id int not null
+		FOREIGN KEY REFERENCES CollectionJson(Id)
+	)
+GO
