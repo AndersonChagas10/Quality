@@ -633,7 +633,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             WHERE NA = 2
             --------------------------------  
             SELECT
-               concat(DepartamentoName, ' - Shift ', Shift) as 'dataX'   
+               concat(DepartamentoName, ' - Shift ', Case when Shift = 1 then 'A' else 'B' END) as 'dataX'   
                ,UnidadeName
                ,Unidade_Id
                ,SUM([proc]) AS 'proc'
@@ -1418,7 +1418,7 @@ SELECT
    ,NC
    ,Av
    ,Shift
-   ,CONCAT(Level1Name, ' - Shift ',S2.Shift) as 'dataX'
+   ,CONCAT(Level1Name, ' - Shift ', Case when S2.Shift = 1 then 'A' else 'B' END) as 'dataX'
 FROM (SELECT
 		Unidade
 	   ,IsRuleConformity

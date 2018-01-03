@@ -163,7 +163,7 @@
 
             enviar["shift"] = ShiftSelected;
 
-            $('#unitId').change();
+            $('#unitIdV').change();
 
             popoverMain.addClass('hide');
 
@@ -472,7 +472,7 @@
                 subtitle += " | " + Resources("department") + ": " + enviar["departmentName"];
 
             if (enviar["shift"] != "" && enviar["shift"] != undefined)
-                subtitle += " | " + Resources("shift") + ": " + enviar["shift"];
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
 
 
             var nc = MapeiaValorParaHC(data, "Nc");
@@ -588,7 +588,7 @@
             subtitle += " | " + Resources('level1') + ": " + enviar["level1Name"];
 
             if (enviar["shift"] != "" && enviar["shift"] != undefined)
-                subtitle += " | " + Resources("shift") + ": " + enviar["shift"];
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
 
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
@@ -642,7 +642,7 @@
             subtitle += + " | " + Resources('level1') + ": " + enviar["level1Name"] + " | " + Resources('level2') + ": " + enviar["level2Name"];
 
             if (enviar["shift"] != "" && enviar["shift"] != undefined)
-                subtitle += " | " + Resources("shift") + ": " + enviar["shift"];
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
 
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
