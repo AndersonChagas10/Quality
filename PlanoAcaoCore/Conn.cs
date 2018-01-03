@@ -3,7 +3,7 @@
     public static class Conn
     {
         ////CONFIG COMMUN PARA TODOS
-        public static int sessionTimer = 60;
+        public static int sessionTimer = 1800;
         public static bool isSgqIntegrado = true;
         public static bool visaoOperacional = false;
         public static string nameCausaEspecifica { get { return !visaoOperacional ? "Causa Especifica" : "Assunto"; } }
