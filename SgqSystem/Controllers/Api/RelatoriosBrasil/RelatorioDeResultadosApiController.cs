@@ -644,7 +644,7 @@ FROM (SELECT
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
 											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
+											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
 			ELSE SUM(R3.WeiEvaluation)
 		END AS Av
@@ -654,7 +654,7 @@ FROM (SELECT
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
 											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
+											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
@@ -666,7 +666,7 @@ FROM (SELECT
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
 											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
+											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
