@@ -58,8 +58,16 @@
         @RenderSection("Styles");
     }
 
+    <script>
+        var hideMenu = false;
+
+        function HideMenuLayout(){
+            hideMenu = true;
+        }
+    </script>
+
 </head>
-<body class="page-header-fixed page-sidebar-closed-hide-logo">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -217,6 +225,7 @@
             @*<div class="page-content-wrapper">*@
             @RenderBody()
             @*</div>*@
+            <button onclick="topFunction()" id="btn-topo"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
 
         </div>
     </div>
@@ -609,6 +618,33 @@
             return @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA))
         }
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if(!hideMenu){
+                $(".sidebar-toggler").removeClass("hide");
+                $(".page-sidebar-wrapper").removeClass("hide");
+                closeLeftSidebar();
+            }
+        });
+        
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById("btn-topo").style.display = "block";
+            } else {
+                document.getElementById("btn-topo").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
     </script>
 
 
