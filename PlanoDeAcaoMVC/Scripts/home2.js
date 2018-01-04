@@ -1314,7 +1314,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoCategorias = value;
+                    retornoSeries = value;
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
@@ -1325,7 +1325,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoCategorias = value;
+                    retornoSeries = value;
                 }
 
                 return retornoSeries == o && retornoCategorias == categoriesArr[cc];
