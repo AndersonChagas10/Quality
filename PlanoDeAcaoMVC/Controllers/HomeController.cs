@@ -30,7 +30,7 @@ namespace PlanoDeAcaoMVC.Controllers
         {
             // clear cookies
             ExpireCookie();
-            return View("Index");
+            return View("../Home2/Index2");
         }
 
         protected void ExpireCookie()
