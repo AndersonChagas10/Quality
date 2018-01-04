@@ -485,9 +485,9 @@
 
                                                                 <td>
                                                                    
-                                                                    @{ var tipo = "";
+                                                                    @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
 
-                                                                        switch (parLevel1XHeaderField.ParHeaderField.Description)
+                                                                        switch (tipo)
                                                                         {
                                                                             case ("Equipamento|"):
                                                                                 tipo = "Equipamento";
@@ -508,7 +508,6 @@
                                                                                 tipo = Resources.Resource.products;
                                                                                 break;
                                                                             default:
-                                                                                tipo = "";
                                                                                 break;
                                                                         }
                                                                     }

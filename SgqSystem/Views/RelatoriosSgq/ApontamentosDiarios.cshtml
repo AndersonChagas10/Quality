@@ -8,9 +8,8 @@
 }
 
 <style>
-
     /*Não quebra a linha nos campos de cabeçalho*/
-    #resultsApontamentos>tbody>tr:last-child > td:last-child{
+    #resultsApontamentos > tbody > tr:last-child > td:last-child {
         white-space: nowrap;
     }
 </style>
@@ -215,6 +214,20 @@
                             Tipo1,
                             Tipo2,
                             { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"},
+                        { title: "Plataforma", mData: "Platform", "width": "50%"},
+                        { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%"},
+                        { title: "@Resources.Resource.type", mData: "Type", "width": "50%"}
 
 
                         ],
