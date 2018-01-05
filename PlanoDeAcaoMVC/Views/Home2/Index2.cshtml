@@ -1247,7 +1247,11 @@
                 InitDatePiker();
                 MoneyMask();
 
+                MoneyMask('R$ ');
 
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                });
 
             });
 
@@ -1417,6 +1421,12 @@
 
                 InitDatePiker();
                 MoneyMask();
+
+                MoneyMask('R$ ');
+
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                });
 
             });
             /*Botões*/
@@ -1612,6 +1622,10 @@
 
                 myfunction();
                 MoneyMask('R$ ');
+
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                });
                 InitDatePiker();
 
                 $('div[id = ' + collapseId + '] select').select2({
@@ -1658,6 +1672,10 @@
 
                     myfunction();
                     MoneyMask('R$ ');
+
+                    $('.money').each(function () {
+                        $(this).maskMoney('mask', $(this).val());
+                    });
 
                     $('#new').click();
                     if (isFukingNewClicked) {
@@ -1707,6 +1725,12 @@
 
             //$('#Edit').show();           
             InitDatePiker();
+
+            MoneyMask('R$ ');
+
+            $('.money').each(function () {
+                $(this).maskMoney('mask', $(this).val());
+            });
         }
 
         //Verificando
@@ -2761,6 +2785,12 @@
             InitDatePiker();
             MoneyMask();
 
+            MoneyMask('R$ ');
+
+            $('.money').each(function () {
+                $(this).maskMoney('mask', $(this).val());
+            });
+
             DisabilitaBotaoGerenciar();
         }
 
@@ -2832,7 +2862,6 @@
 
                         getAcao(data, a, b);
                     }
-
 
                     $('#modalLindo').find('.modal-footer button').hide();
                     $('#Header').html("Editar");
@@ -2962,8 +2991,7 @@
 
                                 });
                             });
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
-
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();                           
                         });
                     });
                     //HideForOperacional();
@@ -3004,8 +3032,13 @@
                     InitDatePiker();
                     $('#CausaGenerica_Id').change();
                     $('#modalNovo > div > div > div.modal-footer > button').show();
-                }
-            );
+
+                    MoneyMask('R$ ');
+
+                    $('.money').each(function () {
+                        $(this).maskMoney('mask', $(this).val());
+                    })               
+                });
         }
 
     </script>

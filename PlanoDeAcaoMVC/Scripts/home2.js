@@ -1660,7 +1660,7 @@ function geraData1() {
                 break;
             case 2:
                 campo = 'Cancelado';
-                cor = 'green';
+                cor = canceladoColor;
                 break;
             case 3:
                 campo = 'Concluído';
@@ -1676,15 +1676,15 @@ function geraData1() {
                 break;
             case 6:
                 campo = 'Retorno';
-                cor = concluidoAtrasoColor;
+                cor = retornoColor;
                 break;
             case 7:
                 campo = 'Finalizada';
-                cor = concluidoAtrasoColor;
+                cor = finalizadaColor;
                 break;
             case 8:
                 campo = 'Finalizada com atraso';
-                cor = concluidoAtrasoColor;
+                cor = finalizadaComAtrasoColor;
                 break;
             default:
                 campo = 'Status';
@@ -1732,7 +1732,7 @@ function geraData2(dadosFiltrados) {
                 break;
             case 2:
                 campo = 'Cancelado';
-                cor = 'green';
+                cor = canceladoColor;
                 break;
             case 3:
                 campo = 'Concluído';
@@ -1748,15 +1748,15 @@ function geraData2(dadosFiltrados) {
                 break;
             case 6:
                 campo = 'Retorno';
-                cor = concluidoAtrasoColor;
+                cor = retornoColor;
                 break;
             case 7:
                 campo = 'Finalizada';
-                cor = concluidoAtrasoColor;
+                cor = finalizadaColor;
                 break;
             case 8:
                 campo = 'Finalizada com atraso';
-                cor = concluidoAtrasoColor;
+                cor = finalizadaComAtrasoColor;
                 break;
             default:
                 campo = 'Status';
