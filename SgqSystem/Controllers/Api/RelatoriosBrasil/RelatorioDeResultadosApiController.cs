@@ -644,7 +644,7 @@ FROM (SELECT
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
 											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
+											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
 			ELSE SUM(R3.WeiEvaluation)
 		END AS Av
@@ -654,7 +654,7 @@ FROM (SELECT
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
 											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
+											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
@@ -666,7 +666,7 @@ FROM (SELECT
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
 											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
+											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
 		END * 100 AS [Proc]
@@ -4588,10 +4588,10 @@ DROP TABLE #AMOSTRATIPO4a  ";
             }
 
             return @"
- DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
+ DECLARE @dataFim_ datetime = '" + form._dataFimSQL + " 23:59:59" + @"'
   
- DECLARE @dataInicio_ date = '" + form._dataInicioSQL + @"'
-SET @dataInicio_ = '" + form._dataInicioSQL + @"'
+ DECLARE @dataInicio_ datetime = '" + form._dataInicioSQL +" 00:00:00"+ @"'
+SET @dataInicio_ = '" + form._dataInicioSQL + " 00:00:00" + @"'
   
  declare @ListaDatas_ table(data_ date)
   
@@ -4636,7 +4636,7 @@ INSERT INTO #AMOSTRATIPO4a
             AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
-		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+		WHERE C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		AND C2.NotEvaluatedIs = 0
 		AND C2.Duplicated = 0
 		AND L1.ParConsolidationType_Id = 4
@@ -4657,7 +4657,7 @@ FROM (SELECT
 	FROM CollectionLevel2 C2 (NOLOCK)
 	LEFT JOIN Result_Level3 C3 (NOLOCK)
 		ON C3.CollectionLevel2_Id = C2.Id
-	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+	WHERE C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	AND C2.ParLevel1_Id = (SELECT TOP 1
 			id
 		FROM Parlevel1(nolock)
@@ -4728,11 +4728,11 @@ FROM (SELECT
 			   ,NOMES.A5 AS Unidade
 			   --UNI.Name     AS Unidade  
 			   ,CASE
-					WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
-							FROM VolumePcc1b(nolock)
+					WHEN IND.HashKey = 1 THEN (SELECT 
+								SUM(Quartos)
+							FROM VolumePcc1b (nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))- ISNULL(@RESS,0)
 					WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -4740,11 +4740,11 @@ FROM (SELECT
 					ELSE 0
 				END AS Av
 			   ,CASE
-					WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
-							FROM VolumePcc1b(nolock)
+					WHEN IND.HashKey = 1 THEN (SELECT 
+								SUM(Quartos)
+							FROM VolumePcc1b (nolock)
 							WHERE ParCompany_id = UNI.Id
-							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE)) - ISNULL(@RESS,0)
 					WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -4772,14 +4772,14 @@ FROM (SELECT
 							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 							AND (G.ParCompany_id = CL1.UnitId
 							OR G.ParCompany_id IS NULL)
-							AND G.AddDate <= @DATAFINAL)
+							AND G.AddDate <= CL1.ConsolidationDate)
 						> 0 THEN (SELECT TOP 1
 								ISNULL(G.PercentValue, 0)
 							FROM ParGoal G (NOLOCK)
 							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 							AND (G.ParCompany_id = CL1.UnitId
 							OR G.ParCompany_id IS NULL)
-							AND G.AddDate <= @DATAFINAL
+							AND G.AddDate <= CL1.ConsolidationDate
 							ORDER BY G.ParCompany_Id DESC, AddDate DESC)
 					ELSE (SELECT TOP 1
 								ISNULL(G.PercentValue, 0)
@@ -4843,7 +4843,7 @@ FROM (SELECT
 ) ff
 GROUP BY ChartTitle		
 		,[date]
-having sum(av) is not null or sum(nc) is not null
+--having sum(av) is not null or sum(nc) is not null
 ORDER BY 10
 DROP TABLE #AMOSTRATIPO4a  ";
         }

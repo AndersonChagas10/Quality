@@ -1791,6 +1791,11 @@ namespace SgqSystem.Helpers
                                                                      htmlAttributes);
         }
 
+        public static string PutSpaceBeforeCapitalLetter(string phrase)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(phrase, "(?<=[a-z])(?=[A-Z])", " ");
+        }
+
         //public static JsonResult DebugAlertas()
         //{
 

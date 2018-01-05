@@ -102,7 +102,7 @@ function MountDataTable(json) {
             { "mData": "IndicadoresDeProjeto" },
             { "mData": "ObjetivoGerencial" },
             { "mData": "_ValorDe" },
-            { "mData": "_ValorPara"},
+            { "mData": "_ValorPara" },
             { "mData": "_DataInicio" },
             { "mData": "_DataFim" },
             { "mData": "Responsavel_Projeto_Quem.Name" },
@@ -688,11 +688,18 @@ function getDateUSA(campo) { //$("input[name='daterange']").val()
     }
 }
 
+//var atrasadaColor = '#ff6666';
+//var concluidoColor = 'lightgreen';
+//var andamentoColor = 'lightblue';
 
-
-var atrasadaColor = '#ff6666';
-var concluidoColor = 'lightgreen';
-var andamentoColor = 'lightblue';
+var atrasadaColor = '#FF0000';
+var concluidoColor = '#0000FF';
+var andamentoColor = '#008000';
+var concluidoAtrasoColor = '#FFA500'
+var canceladoColor = '#000000'
+var retornoColor = '#8B4513'
+var finalizadaColor = '#00008B'
+var finalizadaComAtrasoColor = '#FF4500'
 
 var dataInicio;
 var dataFim;
@@ -1307,7 +1314,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoCategorias = value;
+                    retornoSeries = value;
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
@@ -1318,12 +1325,13 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoCategorias = value;
+                    retornoSeries = value;
                 }
 
                 return retornoSeries == o && retornoCategorias == categoriesArr[cc];
             }).length)
         })
+
         serieArrFinal.push(serieData);
     });
     if (verifyStatus)
@@ -1356,8 +1364,30 @@ function pintaStatus(seriesFilter, serieArrFinal) {
             }
         }
         return serie
-    } else
+    } else {
+
+        serieArrFinal.forEach(function (c, o) {
+            if (c.name == "Atrasado") {
+                c["color"] = atrasadaColor;
+            } else if (c.name == "Concluído") {
+                c["color"] = concluidoColor;
+            } else if (c.name == "Concluído com atraso") {
+                c["color"] = concluidoAtrasoColor;
+            } else if (c.name == "Em Andamento") {
+                c["color"] = andamentoColor;
+            } else if (c.name == "Cancelado") {
+                c["color"] = canceladoColor;
+            } else if (c.name == "Retorno") {
+                c["color"] = retornoColor;
+            } else if (c.name == "Finalizada") {
+                c["color"] = finalizadaColor;
+            } else if (c.name == "Finalizada com atraso") {
+                c["color"] = finalizadaComAtrasoColor;
+            } 
+        });
+
         return serieArrFinal
+    }
 }
 
 //Fim Aux
@@ -1630,7 +1660,7 @@ function geraData1() {
                 break;
             case 2:
                 campo = 'Cancelado';
-                cor = 'green';
+                cor = canceladoColor;
                 break;
             case 3:
                 campo = 'Concluído';
@@ -1638,7 +1668,7 @@ function geraData1() {
                 break;
             case 4:
                 campo = 'Concluído com atraso';
-                cor = 'pink';
+                cor = concluidoAtrasoColor;
                 break;
             case 5:
                 campo = 'Em Andamento';
@@ -1646,15 +1676,15 @@ function geraData1() {
                 break;
             case 6:
                 campo = 'Retorno';
-                cor = 'pink';
+                cor = retornoColor;
                 break;
             case 7:
                 campo = 'Finalizada';
-                cor = 'pink';
+                cor = finalizadaColor;
                 break;
             case 8:
                 campo = 'Finalizada com atraso';
-                cor = 'pink';
+                cor = finalizadaComAtrasoColor;
                 break;
             default:
                 campo = 'Status';
@@ -1702,7 +1732,7 @@ function geraData2(dadosFiltrados) {
                 break;
             case 2:
                 campo = 'Cancelado';
-                cor = 'green';
+                cor = canceladoColor;
                 break;
             case 3:
                 campo = 'Concluído';
@@ -1710,7 +1740,7 @@ function geraData2(dadosFiltrados) {
                 break;
             case 4:
                 campo = 'Concluído com atraso';
-                cor = 'pink';
+                cor = concluidoAtrasoColor;
                 break;
             case 5:
                 campo = 'Em Andamento';
@@ -1718,15 +1748,15 @@ function geraData2(dadosFiltrados) {
                 break;
             case 6:
                 campo = 'Retorno';
-                cor = 'pink';
+                cor = retornoColor;
                 break;
             case 7:
                 campo = 'Finalizada';
-                cor = 'pink';
+                cor = finalizadaColor;
                 break;
             case 8:
                 campo = 'Finalizada com atraso';
-                cor = 'pink';
+                cor = finalizadaComAtrasoColor;
                 break;
             default:
                 campo = 'Status';
