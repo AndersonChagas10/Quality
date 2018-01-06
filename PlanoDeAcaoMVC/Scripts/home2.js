@@ -598,6 +598,10 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                     }
                 });
 
+                if (flag) {
+                    novoArr.push(o)
+                }
+
             } else {
                 arrColuna.forEach(function (oo, cc) {
 
@@ -605,6 +609,10 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                         flag = false;
                     }
                 });
+
+                if (flag) {
+                    novoArr.push(o)
+                }
             }
 
 
