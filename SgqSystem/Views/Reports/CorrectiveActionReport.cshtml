@@ -11,9 +11,8 @@
 @*<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />*@
 
-@*<div class="page-content-wrapper">*@
-<div class="page-content">
-    <div class="page-content" style="min-height: 650px;">
+<div class="page-content-wrapper">
+    <div class="page-content">
 
         @*@Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")*@
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
@@ -34,9 +33,6 @@
         @Scripts.Render("~/bundles/ScriptTables")*@
 
     <script type="text/javascript">
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
@@ -258,7 +254,11 @@
         }
 
         $(document).ready(function () {
+
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
             formControl.ShowAllFielsAndFullCallendar();
         });
 

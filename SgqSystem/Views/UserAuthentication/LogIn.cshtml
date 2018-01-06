@@ -14,30 +14,33 @@
 {
     <div class="login">
         <div class="head"></div>
-        <div class="form-signin">
-            <h2 class="form-signin-heading">@Resources.Resource.please_sign_in</h2>
+        <div class="form-signin panel panel-primary">
+            <h2 class="form-signin-heading panel-heading">@Resources.Resource.please_sign_in</h2>
+            <div class="panel-body">
+                <label for="inputUserName" class="sr-only">@Resources.Resource.username</label>
+                <input type="text" id="inputUserName" class="form-control" placeholder="@Resources.Resource.username" required="" autofocus="" name="Name">
+                <label for="inputPassword" class="sr-only">@Resources.Resource.password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="@Resources.Resource.password" required="" name="Password">
+                @Html.HiddenFor(r => r.IsWeb)
+                @*<span id="errMsg"></span>*@
 
-            <label for="inputUserName" class="sr-only">@Resources.Resource.username</label>
-            <input type="text" id="inputUserName" class="form-control" placeholder="@Resources.Resource.username" required="" autofocus="" name="Name">
-            <label for="inputPassword" class="sr-only">@Resources.Resource.password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="@Resources.Resource.password" required="" name="Password">
-            @Html.HiddenFor(r => r.IsWeb)
-            @*<span id="errMsg"></span>*@
+                @Html.AntiForgeryToken()
 
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect)
+                @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect, new { @class = "alert alert-danger" })
 
-            <button class="btn btn-md btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">@Resources.Resource.sign_in</button>
-            @if (!GlobalConfig.Eua)
-            {
-                <button type="button" class="btn btn-sm btn-success marginTop10" style="float:right;" id="RecPassword" onclick="ModalRecuperaSenha('Recuperar Senha');" data-toggle="modal">@Resources.Resource.forgotPass ?</button>
-            }
+                <button class="btn btn-md btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">@Resources.Resource.sign_in</button>
+                @if (!GlobalConfig.Eua)
+                {
+                    <button type="button" class="btn btn-sm btn-success marginTop10" style="float:right;" id="RecPassword" onclick="ModalRecuperaSenha('Recuperar Senha');" data-toggle="modal">@Resources.Resource.forgotPass ?</button>
+                }
+            </div>
         </div>
+
         @if (GlobalConfig.Ytoara)
         {
             <div class="foot" style="background-image: url('Content/Imagens/GRTYtoaraLogo.png');"></div>
         }
-        else if(GlobalConfig.Santander)
+        else if (GlobalConfig.Santander)
         {
             <div class="foot" style="background-image: url('Content/Imagens/LogoGRTSantander.png');"></div>
         }
@@ -51,9 +54,9 @@
 <!--Modal Recupera Senha-->
 <div class="container">
     <div class="modal fade" id="modalRecPassword" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
-        <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+        <div class="modal-dialog modal-sm"  role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header modal-header-gray">
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
 
@@ -70,9 +73,10 @@
             </div>
         </div>
     </div>
-</div>
 @section Scripts {
     <script type="text/javascript">
+
+        HideMenuLayout();
 
         var RecPassword = '@Html.Raw(@urlRecPassword)';
         var BuscaEmail = '@Html.Raw(@urlBuscaEmail)';
