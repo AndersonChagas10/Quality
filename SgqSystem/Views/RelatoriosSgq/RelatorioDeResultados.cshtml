@@ -208,7 +208,7 @@
                 if (enviar['level2Id'] > 0) {
                     var enviar4 = Object.create(enviar);
                     enviar4['level2Id'] = 0;
-
+                      
                     EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
                     EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
                 } else if (enviar['level1Id'] > 0) {
@@ -377,6 +377,34 @@
                 if ((enviar.unitId != '' && enviar.unitId == undefined))
                     Titulo += " " + Resources("perUnit");
 
+                
+                var SubtitleIndicador = "";
+
+                if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                    SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                }
+                if (enviar.structureId != '' && enviar.structureId != undefined) {
+                    SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                }
+                if (enviar.unitId != '' && enviar.unitId != undefined) {
+                    SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                }
+                if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+                    if (!$('#auditorId :selected').text() == "All")
+                        SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                }
+                if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+                    SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                }
+                if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+                    SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                }
+                if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+                    SubtitleIndicador += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+                }
+
+                SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 2));
+
                 SetTitulo(Level);
 
                 var IndicadorUnidade = MapeiaValorParaHC(data, NomeExibir);
@@ -401,7 +429,7 @@
                         text: Titulo,
                     },
                     subtitle: {
-                        text: Subtitle,
+                        text: Subtitle, 
                     },
                     xAxis: {
                         categories: IndicadorUnidade,
@@ -956,6 +984,28 @@
 
                     var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100;
 
+
+                    var SubtitleConsolidado = "";
+
+                    if (enviar.unitId != null || enviar.unitId != "") {
+                        SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | "
+                    }
+                    ;
+
+                    SubtitleConsolidado = "";
+                    if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                        SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                    }
+                    if (enviar.structureId != '' && enviar.structureId != undefined) {
+                        SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                    }
+                    if (enviar.unitId != '' && enviar.unitId != undefined) {
+                        SubtitleConsolidado += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                    }
+
+                    SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 2));
+
+
                     $('#GraficoHistoricoGeral').removeClass('loader');
 
                     $('#GraficoHistoricoGeral').empty();
@@ -974,7 +1024,7 @@
                             text: TituloGrafico1
                         },
                         subtitle: {
-                            text: Subtitle
+                            text: SubtitleConsolidado
                         },
                         xAxis: {
                             categories: dia,
@@ -1162,6 +1212,34 @@
 
                 $('#GraficoHistoricoIndicador').empty();
 
+
+                var SubtitleIndicador = "";
+
+                if (enviar.unitId != null || enviar.unitId != "") {
+                    SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | "
+                }
+                ;
+                SubtitleIndicador = "";
+                if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                    SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                }
+                if (enviar.structureId != '' && enviar.structureId != undefined) {
+                    SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                }
+                if (enviar.unitId != '' && enviar.unitId != undefined) {
+                    SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                }
+                if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+                    if (!$('#auditorId :selected').text() == "All")
+                        SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                }
+                if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+                    SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                }
+                if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+                    SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                }
+                SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 2));
 
 
                 chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
