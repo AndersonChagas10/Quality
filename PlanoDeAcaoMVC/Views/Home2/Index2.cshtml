@@ -943,18 +943,35 @@
             })
 
             let categoriesArr = [];
-            categoriesArr.push(new Date('2017/01/01'));
-            categoriesArr.push(new Date('2017/02/01'));
-            categoriesArr.push(new Date('2017/03/01'));
-            categoriesArr.push(new Date('2017/04/01'));
-            categoriesArr.push(new Date('2017/05/01'));
-            categoriesArr.push(new Date('2017/06/01'));
-            categoriesArr.push(new Date('2017/07/01'));
-            categoriesArr.push(new Date('2017/08/01'));
-            categoriesArr.push(new Date('2017/09/01'));
-            categoriesArr.push(new Date('2017/10/01'));
-            categoriesArr.push(new Date('2017/11/01'));
-            categoriesArr.push(new Date('2017/12/01'));
+            var data = new Date();
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+
+            data.setMonth(data.getMonth() - 11);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
 
             let arrayAndamento = [];
 
