@@ -183,6 +183,9 @@
     }
 
     function atribuiClickBtnModal() {
+
+        $('#formLogin').children().attr('style', 'width: 350px !important');
+
         $('#formLogin  > div > div > div.modal-footer > button').off('click').on('click', function () {
 
             var user = $('#formLogin form').serializeObject();
