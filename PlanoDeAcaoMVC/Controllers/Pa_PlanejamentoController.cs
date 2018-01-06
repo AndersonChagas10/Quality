@@ -30,6 +30,8 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Iniciativa = Pa_Iniciativas.Listar();
             ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar();
             ViewBag.UnidadeMedida = Pa_UnidadeMedida.Listar();
+            ViewBag.TemaProjeto = Pa_TemaProjeto.Listar();
+            ViewBag.TipoProjeto = Pa_TipoProjeto.Listar();
 
             if (ViewBag.Quem == null)
                 ViewBag.Quem = Pa_Quem.Listar();

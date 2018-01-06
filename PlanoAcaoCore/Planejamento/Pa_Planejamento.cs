@@ -69,10 +69,16 @@ namespace PlanoAcaoCore
         public int Iniciativa_Id { get; set; }
         public string Iniciativa { get; set; }
 
+        [Display(Name = "Tema do Projeto")]
+        public int TemaProjeto_Id { get; set; }
+        public string TemaProjeto { get; set; }
+
+        [Display(Name = "Tipo de Projeto")]
+        public int TipoProjeto_Id { get; set; }
+        public string TipoProjeto { get; set; }
+
         [Display(Name = "Indicadores do Projeto / Iniciativa")]
         public int IndicadoresDeProjeto_Id { get; set; }
-
-      
 
         public string IndicadoresDeProjeto { get; set; }
 
@@ -165,8 +171,6 @@ namespace PlanoAcaoCore
 
             Salvar(cmd);
         }
-
-
 
         #endregion
 
@@ -263,40 +267,97 @@ namespace PlanoAcaoCore
             get
             {
               
-                return $@"SELECT Pl.* ,             
-                        INI.Name AS Inciativa,     
-                        DIR.Name AS Diretoria,     
-                        GER.Name AS Gerencia,      
-                        CORD.Name AS Coordenacao,  
-                        MISS.Name AS Missao,       
-                        VIS.Name AS Visao,         
-                        TEM.Name AS TemaAssunto,        
-                        INDIC.Name AS IndicadoresDiretriz,             
-                        INDICProj.Name AS IndicadoresDeProjeto,        
-                        OBJT.Name AS ObjetivoGerencial,                
-                        DIME.Name AS Dimensao,                         
-                        INICI.Name AS Iniciativa,                      
-                        OBJ.Name AS Objetivo                               
-                         FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl2.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id, Pl2.IsTatico, Pl2.Tatico_Id, Pl1.IsFta FROM Pa_Planejamento Pl1 
-                          INNER JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id 
-                          UNION ALL 
-                          SELECT DISTINCT pl1.* FROM Pa_Planejamento Pl1 LEFT JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null 
-                          ) Pl 
-                        LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id 
-                        LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id 
-                        LEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id 
-                        LEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id 
-                        LEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id 
-                        LEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id 
-                        LEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id 
-                        LEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id 
-                        LEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDICProj.Id = Pl.IndicadoresDeProjeto_Id 
-                        LEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id 
-                        LEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id 
-                        LEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id 
-                        LEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id
-                        
-                        ";
+                return $@"SELECT
+	Pl.*
+   ,INI.Name AS Inciativa
+   ,DIR.Name AS Diretoria
+   ,GER.Name AS Gerencia
+   ,CORD.Name AS Coordenacao
+   ,MISS.Name AS Missao
+   ,VIS.Name AS Visao
+   ,TEM.Name AS TemaAssunto
+   ,TEMPROJ.Name AS TemaProjeto
+   ,TIPPROJ.Name as TipoProjeto
+   ,INDIC.Name AS IndicadoresDiretriz
+   ,INDICProj.Name AS IndicadoresDeProjeto
+   ,OBJT.Name AS ObjetivoGerencial
+   ,DIME.Name AS Dimensao
+   ,INICI.Name AS Iniciativa
+   ,OBJ.Name AS Objetivo
+FROM (SELECT
+		Pl1.Id
+	   ,Pl1.AddDate
+	   ,Pl1.AlterDate
+	   ,Pl1.Diretoria_Id
+	   ,Pl2.Gerencia_Id
+	   ,Pl2.Coordenacao_Id
+	   ,Pl1.Missao_Id
+	   ,Pl1.Visao_Id
+	   ,Pl1.TemaAssunto_Id
+	   ,Pl1.Indicadores_Id
+	   ,Pl2.Iniciativa_Id
+	   ,Pl2.ObjetivoGerencial_Id
+	   ,Pl1.Dimensao
+	   ,Pl1.Objetivo
+	   ,Pl2.ValorDe
+	   ,Pl2.ValorPara
+	   ,Pl2.DataInicio
+	   ,Pl2.DataFim
+	   ,Pl1.[Order]
+	   ,Pl1.Dimensao_Id
+	   ,Pl1.Objetivo_Id
+	   ,Pl1.IndicadoresDiretriz_Id
+	   ,Pl2.IndicadoresDeProjeto_Id
+	   ,Pl2.Estrategico_Id
+	   ,Pl2.Responsavel_Diretriz
+	   ,Pl2.Responsavel_Projeto
+	   ,Pl2.UnidadeDeMedida_Id
+	   ,Pl2.IsTatico
+	   ,Pl2.Tatico_Id
+	   ,Pl1.IsFta
+	   ,Pl2.TemaProjeto_Id
+	   ,Pl2.TipoProjeto_Id
+	FROM Pa_Planejamento Pl1
+	INNER JOIN Pa_Planejamento Pl2
+		ON Pl1.Id = Pl2.Estrategico_Id
+	UNION ALL
+	SELECT DISTINCT
+		pl1.*
+	FROM Pa_Planejamento Pl1
+	LEFT JOIN Pa_Planejamento Pl2
+		ON Pl1.Id = Pl2.Estrategico_Id
+	WHERE Pl1.Estrategico_Id IS NULL
+	AND Pl2.Estrategico_Id IS NULL) Pl
+LEFT JOIN Pa_Iniciativa INI
+	ON INI.Id = Pl.Iniciativa_Id
+LEFT JOIN Pa_Diretoria DIR
+	ON DIR.Id = Pl.Diretoria_Id
+LEFT JOIN Pa_Gerencia GER
+	ON Pl.Gerencia_Id = GER.Id
+LEFT JOIN Pa_Coordenacao CORD
+	ON CORD.Id = Pl.Coordenacao_Id
+LEFT JOIN Pa_Missao MISS
+	ON MISS.Id = Pl.Missao_Id
+LEFT JOIN Pa_Visao VIS
+	ON VIS.Id = Pl.Visao_Id
+LEFT JOIN Pa_TemaAssunto TEM
+	ON TEM.Id = Pl.TemaAssunto_Id
+LEFT JOIN Pa_TemaProjeto TEMPROJ
+	ON TEMPROJ.Id = Pl.TemaProjeto_Id
+LEFT JOIN Pa_TipoProjeto TIPPROJ
+	ON TIPPROJ.Id = Pl.TipoProjeto_Id
+LEFT JOIN Pa_IndicadoresDiretriz INDIC
+	ON INDIC.Id = Pl.IndicadoresDiretriz_Id
+LEFT JOIN Pa_IndicadoresDeProjeto INDICProj
+	ON INDICProj.Id = Pl.IndicadoresDeProjeto_Id
+LEFT JOIN Pa_Iniciativa INICI
+	ON INICI.Id = Pl.Iniciativa_Id
+LEFT JOIN Pa_ObjetivoGeral OBJT
+	ON OBJT.Id = Pl.ObjetivoGerencial_Id
+LEFT JOIN Pa_Objetivo OBJ
+	ON OBJ.Id = Pl.Objetivo_Id
+LEFT JOIN Pa_Dimensao DIME
+	ON DIME.Id = Pl.Dimensao_Id";
 
             }
         }

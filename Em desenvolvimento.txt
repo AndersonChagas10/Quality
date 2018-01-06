@@ -128,3 +128,33 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCollectionJ
 		FOREIGN KEY REFERENCES CollectionJson(Id)
 	)
 GO
+
+----------------------------------------------------------------- 06-01-2017 - Renan //Adicionado Tipo de Projeto e Tema do Projeto no PA
+
+create table Pa_TemaProjeto(	
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[Order] [int] NULL DEFAULT ((0)),
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+
+create table Pa_TipoProjeto(	
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[Order] [int] NULL DEFAULT ((0)),
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+
+insert into Pa_TipoProjeto(name) values ('Manutenção')
+insert into Pa_TipoProjeto(name) values ('Melhoria')
+insert into Pa_TipoProjeto(name) values ('Implantação')
+
+alter table Pa_Planejamento add TemaProjeto_Id int null
+
+alter table Pa_Planejamento add TipoProjeto_Id int null

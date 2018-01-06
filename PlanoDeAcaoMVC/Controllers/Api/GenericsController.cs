@@ -20,7 +20,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             try
             {
-                if (String.IsNullOrEmpty(valores.NomeDoItem)) {
+                if (String.IsNullOrEmpty(valores.NomeDoItem))
+                {
                     valores.Resposta = "Valor informado é invalido.";
                     return valores;
                 }
@@ -137,6 +138,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 case "Coordenacao":
                     table = "PA_COORDENACAO";
                     fk = "GERENCIA_ID";
+                    break;
+                case "TemaProjeto":
+                    table = "Pa_TemaProjeto";
                     break;
                 default:
                     break;

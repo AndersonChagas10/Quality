@@ -98,6 +98,8 @@ function MountDataTable(json) {
             { "mData": "TemaAssunto" },
             { "mData": "Gerencia" },
             { "mData": "Coordenacao" },
+            { "mData": "TipoProjeto" },
+            { "mData": "TemaProjeto" },
             { "mData": "Iniciativa" },
             { "mData": "IndicadoresDeProjeto" },
             { "mData": "ObjetivoGerencial" },
@@ -156,33 +158,35 @@ function MountDataTable(json) {
             { "sTitle": "Tema | Assunto", "aTargets": [7], "width": "100px" },
             { "sTitle": "Gerência", "aTargets": [8], "width": "100px" },
             { "sTitle": "Coordenação", "aTargets": [9], "width": "100px" },
-            { "sTitle": "Projeto | Iniciativa", "aTargets": [10], "width": "200px" },
-            { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [11], "width": "100px" },
-            { "sTitle": "Objetivo Gerencial", "aTargets": [12], "width": "100px" },
-            { "sTitle": "Valor de", "aTargets": [13], "width": "50px" },
-            { "sTitle": "Valor para", "aTargets": [14], "width": "50px" },
-            { "sTitle": "Data Início", "aTargets": [15], "width": "50px" },
-            { "sTitle": "Data Fim", "aTargets": [16], "width": "50px" },
-            { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [17], "width": "50px" },
-            { "sTitle": "Regional", "aTargets": [18], "width": "50px" },
-            { "sTitle": "Unidade", "aTargets": [19], "width": "50px" },
-            { "sTitle": "Indicador SGQ", "aTargets": [20], "width": "100px" },
-            { "sTitle": "Monitoramento SGQ", "aTargets": [21], "width": "100px" },
-            { "sTitle": "Tarefa SGQ", "aTargets": [22], "width": "100px" },
-            { "sTitle": "Indicadores Operacional", "aTargets": [23], "width": "100px" }, // ver indicador operacional*
-            { "sTitle": "Causa Genérica", "aTargets": [24], "width": "200px" },
-            { "sTitle": "Grupo Causa", "aTargets": [25], "width": "200px" },
-            { "sTitle": "Ação Genérica", "aTargets": [26], "width": "100px" },
-            { "sTitle": "Causa Específica", "aTargets": [27], "width": "100px" },
-            { "sTitle": "Ação Específica", "aTargets": [28], "width": "100px" },
-            { "sTitle": "Quem", "aTargets": [29], "width": "200px" },
-            { "sTitle": "Quando (Início)", "aTargets": [30], "width": "50px" },
-            { "sTitle": "Quando (Fim)", "aTargets": [31], "width": "50px" },
-            { "sTitle": "Como Pontos Importantes", "aTargets": [32], "width": "200px" },
-            { "sTitle": "Pra que", "aTargets": [33], "width": "200px" },
-            { "sTitle": "Quanto custa", "aTargets": [34], "width": "50px" },
-            { "sTitle": "Status", "aTargets": [35], "width": "50px" },
-            { "sTitle": "Prazo", "aTargets": [36], "width": "50px" },
+            { "sTitle": "Tipo de Projeto", "aTargets": [10], "width": "100px" },
+            { "sTitle": "Tema do Projeto", "aTargets": [11], "width": "100px" },
+            { "sTitle": "Projeto | Iniciativa", "aTargets": [12], "width": "200px" },
+            { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [13], "width": "100px" },
+            { "sTitle": "Objetivo Gerencial", "aTargets": [14], "width": "100px" },
+            { "sTitle": "Valor de", "aTargets": [15], "width": "50px" },
+            { "sTitle": "Valor para", "aTargets": [16], "width": "50px" },
+            { "sTitle": "Data Início", "aTargets": [17], "width": "50px" },
+            { "sTitle": "Data Fim", "aTargets": [18], "width": "50px" },
+            { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [19], "width": "50px" },
+            { "sTitle": "Regional", "aTargets": [20], "width": "50px" },
+            { "sTitle": "Unidade", "aTargets": [21], "width": "50px" },
+            { "sTitle": "Indicador SGQ", "aTargets": [22], "width": "100px" },
+            { "sTitle": "Monitoramento SGQ", "aTargets": [23], "width": "100px" },
+            { "sTitle": "Tarefa SGQ", "aTargets": [24], "width": "100px" },
+            { "sTitle": "Indicadores Operacional", "aTargets": [25], "width": "100px" }, // ver indicador operacional*
+            { "sTitle": "Causa Genérica", "aTargets": [26], "width": "200px" },
+            { "sTitle": "Grupo Causa", "aTargets": [27], "width": "200px" },
+            { "sTitle": "Ação Genérica", "aTargets": [28], "width": "100px" },
+            { "sTitle": "Causa Específica", "aTargets": [29], "width": "100px" },
+            { "sTitle": "Ação Específica", "aTargets": [30], "width": "100px" },
+            { "sTitle": "Quem", "aTargets": [31], "width": "200px" },
+            { "sTitle": "Quando (Início)", "aTargets": [32], "width": "50px" },
+            { "sTitle": "Quando (Fim)", "aTargets": [33], "width": "50px" },
+            { "sTitle": "Como Pontos Importantes", "aTargets": [34], "width": "200px" },
+            { "sTitle": "Pra que", "aTargets": [35], "width": "200px" },
+            { "sTitle": "Quanto custa", "aTargets": [36], "width": "50px" },
+            { "sTitle": "Status", "aTargets": [37], "width": "50px" },
+            { "sTitle": "Prazo", "aTargets": [38], "width": "50px" },
             { "sTitle": "Ação" },
 
         ],
@@ -201,26 +205,26 @@ function MountDataTable(json) {
             {
                 extend: 'colvisGroup',
                 text: 'Visão Inicial',
-                show: [0, 4, 6, 7, 8, 10, 14, 12, 13, 19, 18, 32, 28, 29, 30, 31, 36, 34, 35],
-                hide: [1, 2, 3, 5, 9, 11, 15, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 33]
+                show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19],
+                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Estratégico',
-                show: [0, 1, 2, 3, 4, 5, 7, 32, 36],
-                hide: [31, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 35, 33, 34]
+                show: [0, 1, 2, 3, 4, 5, 6, 34, 38],
+                hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 37, 35, 36]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Tático',
-                show: [4, 17, 8, 9, 10, 11, 12, 13, 14, 15, 16, 36],
-                hide: [0, 1, 2, 4, 5, 6, 35, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
+                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 38],
+                hide: [0, 1, 2, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Operacional',
-                show: [3, 35, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
-                hide: [0, 1, 2, 4, 5, 6, 7, 17, 9, 10, 11, 12, 13, 14, 15, 16]
+                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+                hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
             {
                 extend: 'colvisGroup',
@@ -319,7 +323,7 @@ function MountDataTable(json) {
                 //    bgColorStatus = "yellow"
                 //}
 
-                $(row.cells[35]).css("background", bgColorStatus);
+                $(row.cells[37]).css("background", bgColorStatus);
 
                 /*Prazo*/
                 if (data.Acao.Status == 2) {
@@ -342,7 +346,7 @@ function MountDataTable(json) {
                     bgColorPrazo = "rgb(250, 128, 114)"
                 }
 
-                $(row.cells[36]).css("background", bgColorPrazo);
+                $(row.cells[38]).css("background", bgColorPrazo);
 
                 //    if (data.Tatico_Id > 0) { // possui plan tatico
                 //        $(row.cells[38]).find('.btnNovoOperacional').show();

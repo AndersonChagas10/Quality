@@ -51,6 +51,7 @@
                     <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Gerencia_Id')">Gerenciar</button>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Missao_Id, htmlAttributes: new { @class = "control-label " })
@@ -121,7 +122,7 @@
                     <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Objetivo_Id')">Gerenciar</button>
                 </td>
             </tr>
-           
+
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Responsavel_Diretriz, htmlAttributes: new { @class = "control-label " })
@@ -130,11 +131,30 @@
                 <td>
                     @Html.DropDownList("Responsavel_Diretriz", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required estrategico" })
                 </td>
+                <td></td>
+            </tr>
+            <tr>
                 <td>
-                    
+                    @Html.LabelFor(model => model.TipoProjeto_Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownList("TipoProjeto_Id", new SelectList(ViewBag.TipoProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.TipoProjeto_Id, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.TemaProjeto_Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownList("TemaProjeto_Id", new SelectList(ViewBag.TemaProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.TemaProjeto_Id, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default" onclick="Novo(this)">Gerenciar</button>
                 </td>
             </tr>
-
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Iniciativa_Id, htmlAttributes: new { @class = "control-label " })
@@ -151,7 +171,7 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, htmlAttributes: new { @class = "control-label " })
-                    
+
                 </td>
                 <td>
                     @Html.DropDownList("IndicadoresDeProjeto_Id", new SelectList(ViewBag.IndicadoresDeProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm   " })
@@ -174,31 +194,31 @@
                 </td>
             </tr>
 
-           
+
             @*<tr>
-                    <td>
-                        @Html.LabelFor(model => model.Dimensao, htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Dimensao, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Dimensao, "", new { @class = "text-danger" })
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Objetivo, htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Objetivo, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Objetivo, "", new { @class = "text-danger" })
-                    </td>
-                    <td></td>
-                </tr>*@
-           
+            <td>
+                @Html.LabelFor(model => model.Dimensao, htmlAttributes: new { @class = "control-label " })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Dimensao, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Dimensao, "", new { @class = "text-danger" })
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Objetivo, htmlAttributes: new { @class = "control-label " })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Objetivo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Objetivo, "", new { @class = "text-danger" })
+            </td>
+            <td></td>
+        </tr>*@
+
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.ValorDe, htmlAttributes: new { @class = "control-label "})
+                    @Html.LabelFor(model => model.ValorDe, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(model => model._ValorDe, new { htmlAttributes = new { @class = "form-control money" } })
@@ -218,7 +238,7 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.UnidadeDeMedida_Id, htmlAttributes: new { @class = "control-label " })
-                    
+
                 </td>
                 <td>
                     @Html.DropDownList("UnidadeDeMedida_Id", new SelectList(ViewBag.UnidadeMedida, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm    " })
