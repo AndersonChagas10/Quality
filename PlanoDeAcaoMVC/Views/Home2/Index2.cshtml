@@ -410,6 +410,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="_GrupoCausa">Grupo Causa</option>
                     <option value="_CausaGenerica">Causa Genérica</option>
@@ -458,6 +460,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="_GrupoCausa">Grupo Causa</option>
                     <option value="_CausaGenerica">Causa Genérica</option>
@@ -513,6 +517,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -538,6 +544,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -582,6 +590,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia" selected>Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -607,6 +617,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -699,12 +711,16 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
+                                <th></th>
 
 
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -1242,6 +1258,9 @@
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
+                    
                     DdlChangeEstrategico();
                 }
                 InitDatePiker();
@@ -1396,19 +1415,19 @@
                     } else {
 
                         $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                        $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-                        $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                         DdlChangeEstrategico();
                     }
                 } else {
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
@@ -1417,6 +1436,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
                 }
 
                 InitDatePiker();
@@ -2719,18 +2739,17 @@
                 form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                //form.find('#Tatico_Id').val(model.Id);
                 form.attr('id', 'formEditTatico');
 
-                form.find('button').each(function (o,c){
-                    if($(c).attr('onclick').split(',')[1]){
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
-                        before = before.slice(2,before.length)
+                        before = before.slice(2, before.length)
                         console.log(before)
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
-                })
+                });
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
@@ -2753,6 +2772,8 @@
                 form.find('table > tbody > tr:nth-child(16)').hide();
                 form.find('table > tbody > tr:nth-child(17)').hide();
                 form.find('table > tbody > tr:nth-child(18)').hide();
+                form.find('table > tbody > tr:nth-child(19)').hide();
+                form.find('table > tbody > tr:nth-child(20)').hide();
                 form.attr('id', 'formEditEstrategy');
 
                 form.find('button').each(function (o,c){
