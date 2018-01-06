@@ -6,7 +6,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -24,9 +24,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -44,7 +44,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                <h3>@Resources.Resource.confirm_delete</h3>
+                                <h3>@Resources.Resource.confirm_delete?</h3>
                                 <div>
                                     <hr />
                                     <dl class="dl-horizontal">
@@ -88,7 +88,7 @@
 
                                         <div class="form-actions no-color">
                                             @*<input type="submit" value="@Resources.Resource.delete" class="btn btn-default" /> |*@
-                                            @Html.ActionLink(Resources.Resource.back_to_list, "Index")
+                                            @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                         </div>
                                     }
                                 </div>
@@ -105,9 +105,9 @@
 
 <script>
 
-$(".sidebar-toggler").removeClass("hide");
-$(".page-sidebar-wrapper").removeClass("hide");
-navbarSelect("navbar3");
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar3");
 
 </script>
 

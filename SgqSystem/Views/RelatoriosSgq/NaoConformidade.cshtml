@@ -49,66 +49,65 @@
         }
 </style>
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
 
-    <div id="CustomPopover" class="hide">
-        <h5>@Resources.Resource.next_unfolding</h5>
-        <div>
-            <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
-            <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
-        </div>
-    </div>
-
-    <div id="formBodyContent">
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="inicio"></div>
-        <div id="btnRGUnidadesGrafico"></div>
-        <div id="RGUnidadesGrafico"></div>
-
-        <div id="btnRGDepartamentosGrafico"></div>
-        <div id="RGDepartamentosGrafico"></div>
-
-        <div id="btnRGOperacoesGrafico"></div>
-        <div id="RGOperacoesGrafico"></div>
-
-        <div id="btnRGOperacoesGrafico"></div>
-        <div id="RGOperacoesGrafico"></div>
-        <div id="loading"></div>
-
-        <div class="panel panel-info" id="PanelFull0" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g0">
-                <div id="btnRGTarefasGrafico"></div>
-                <div id="RGTarefasGrafico"></div>
-
-                <div id="btnRGMonitoramentosGrafico"></div>
-                <div id="RGMonitoramentosGrafico"></div>
+        <div id="CustomPopover" class="hide">
+            <h5>@Resources.Resource.next_unfolding</h5>
+            <div>
+                <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
+                <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
             </div>
         </div>
 
-        <div class="panel panel-info" id="PanelFull1" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g1">
-                <div id="btnTarefasAcumuladas"></div>
-                <div id="RGOTarefasAcumuladas"></div>
-                <div id="btnMonitoramentosTarefa"></div>
-                <div id="RGOMonitoramentosTarefa"></div>
+        <div id="formBodyContent">
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <div id="inicio"></div>
+            <div id="btnRGUnidadesGrafico"></div>
+            <div id="RGUnidadesGrafico"></div>
+
+            <div id="btnRGDepartamentosGrafico"></div>
+            <div id="RGDepartamentosGrafico"></div>
+
+            <div id="btnRGOperacoesGrafico"></div>
+            <div id="RGOperacoesGrafico"></div>
+
+            <div id="btnRGOperacoesGrafico"></div>
+            <div id="RGOperacoesGrafico"></div>
+            <div id="loading"></div>
+
+            <div class="panel panel-info" id="PanelFull0" style="display:none">
+                <div class="panel-heading"></div>
+                <div class="panel-body" id="g0">
+                    <div id="btnRGTarefasGrafico"></div>
+                    <div id="RGTarefasGrafico"></div>
+
+                    <div id="btnRGMonitoramentosGrafico"></div>
+                    <div id="RGMonitoramentosGrafico"></div>
+                </div>
             </div>
-            @**O Peso atribuído as Tarefas influenciam no resultado gráfico.*@
+
+            <div class="panel panel-info" id="PanelFull1" style="display:none">
+                <div class="panel-heading"></div>
+                <div class="panel-body" id="g1">
+                    <div id="btnTarefasAcumuladas"></div>
+                    <div id="RGOTarefasAcumuladas"></div>
+                    <div id="btnMonitoramentosTarefa"></div>
+                    <div id="RGOMonitoramentosTarefa"></div>
+                </div>
+                @**O Peso atribuído as Tarefas influenciam no resultado gráfico.*@
+            </div>
         </div>
     </div>
+
+    @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
 </div>
-
-@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
 
 @section Scripts {
 
     <script type="text/javascript">
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -139,6 +138,8 @@
         $(document).ready(function () {
 
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             $("#btnSend").click(function (e) {
                 Send(true);
@@ -380,7 +381,7 @@
         }
 
         function GraficoIndicadorUnidade(data) {
-            
+
             if (pathDirect == 1)
                 subtitle = Resources("unit") + ": " + enviar["unitName"] + " | " + Resources("department") + ": " + enviar["departmentName"];
             else
@@ -453,7 +454,7 @@
                     Resources('level1') + ": " + enviar["level1Name"];
             else
                 subtitle = Resources('unit') + ": " + enviar["unitName"] + " | " +
-                    Resources('level1') + ": " + enviar["level1Name"];  
+                    Resources('level1') + ": " + enviar["level1Name"];
             //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
             //     insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
@@ -461,7 +462,7 @@
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(GraficoMon),
                 subtitle: {
-                    text: subtitle 
+                    text: subtitle
                 },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
