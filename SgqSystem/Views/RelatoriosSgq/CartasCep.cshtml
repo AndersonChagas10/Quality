@@ -4,26 +4,23 @@
     var urlGet = Url.Action("Get", "api/CartasCep");
 }
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
+        <div id="formBodyContent">
 
-        @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+            <div id="divMensagemVazio" style="display: none" class="alert alert-info" role="alert">
+                <span id="" class="icon-info-sign">@Resources.Resource.no_data_to_show</span>
+            </div>
 
-                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-            </div>*@
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
-        <div id="divMensagemVazio" style="display: none" class="alert alert-info" role="alert">
-            <span id="" class="icon-info-sign">@Resources.Resource.no_data_to_show</span>
+            <div id="load"></div>
+            <div id="container"></div>
+
         </div>
-
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
-
-        <div id="load"></div>
-        <div id="container"></div>
-
     </div>
 </div>
 
@@ -34,20 +31,15 @@
 
         var urlGet = '@Html.Raw(@urlGet)';
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
-
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         $('#tipoCEP').change(function (a) {
-            if(($('#tipoCEP').val()) == "1")
-            {
+            /*if (($('#tipoCEP').val()) == "2") {
                 $('#level3Id').parent().show();
-            }else if(($('#tipoCEP').val()) == "2")
-            {
+            } else if (($('#tipoCEP').val()) == "1") {
                 $('#level3Id').val("").trigger('change.select2');
                 $('#level3Id').parent().hide();
-            }
+            }*/
         })
 
         $(document).ready(function () {
@@ -61,15 +53,14 @@
             formControl.showUnit();
             formControl.showTipoCEP();
             formControl.showLevel1();
+
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             //Remove o 'Todos' da unidade
             $("#unitId option[value='']").remove();
             $("#tipoCEP option[value='']").remove();
-
-            //$("#btnSend").click(function (e) {
-            //    Send(true);
-            //});
         });
 
         var $btn = $('#btnSend');
@@ -102,7 +93,7 @@
                 return false;
             }
 
-            if (!(parseInt($('#level1Id :selected').val().replace(/\D/g, ''), 10)) > 0){
+            if (!(parseInt($('#level1Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
                 GuardJs.exibirMensagemAlerta(Resources('select_the_level1'));
                 return false;
             }
@@ -257,8 +248,8 @@
                         point: {
                             events: {
                                 click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
                     },
@@ -275,8 +266,8 @@
                         point: {
                             events: {
                                 click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
                     },
@@ -292,8 +283,8 @@
                         point: {
                             events: {
                                 click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
                     },
@@ -319,8 +310,8 @@
                         point: {
                             events: {
                                 click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
                     },
@@ -337,8 +328,8 @@
                         point: {
                             events: {
                                 click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
 

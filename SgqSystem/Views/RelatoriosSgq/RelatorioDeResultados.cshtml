@@ -15,147 +15,149 @@
     }
 </style>
 
-<div class="page-content" style="min-height: 600px;">
+<div class="page-content-wrapper">
+    <div class="page-content">
 
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto;">
+        <div id="formBodyContent" class="col-xs-12" style="margin-left:auto; margin-right:auto;">
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        @*@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")*@
+            @*@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")*@
 
-        <div class="alert alert-warning" id="SemDados" hidden>
-            @Resources.Resource.could_not_fetch_data
-        </div>
-
-        <div class="alert alert-info" id="divMensagemAlerta" hidden>
-            @Resources.Resource.select_the_unit_first
-        </div>
-
-        <h2 id="Titulo"></h2>
-        <h3 id="TituloGrafico" style="display:none;"></h3>
-        <br />
-        <div id="loaderNCGeral"></div>
-        <div class="totalNC" id="NCGeral" hidden>
-            <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
-                <h1>0 %</h1>
-                <br />
-                <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="alert alert-warning" id="SemDados" hidden>
+                @Resources.Resource.could_not_fetch_data
             </div>
-            <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
-        </div>
 
-        <div class="totalNC" id="NCIndicador" hidden>
-            <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
-                <h1>0 %</h1>
-                <br />
-                <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="alert alert-info" id="divMensagemAlerta" hidden>
+                @Resources.Resource.select_the_unit_first
             </div>
-            <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
-        </div>
 
-        <div class="totalNC" id="NCMonitoramento" hidden>
-            <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
-                <h1>0 %</h1>
-                <br />
-                <span>@Resources.Resource.non_conformities_in_period</span>
-            </div>
-            <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
-        </div>
-        <br />
-        <div id="GraficoPeriodoSemUnidadeLoader"></div>
-        <div id="GraficoPeriodoSemUnidade"></div>
-        <br />
-        <div id="GraficoPeriodoLoader"></div>
-        <div id="GraficoPeriodo"></div>
-        <br />
-        <h3 id="TituloTabela"></h3>
-        <br />
-        <table id="DataTable"></table>
-
-    </div>
-</div>
-
-<!-- Modal Historico do Indicador-->
-<div class="modal fade bs-example-modal-lg position-modal" id="modalHistorico" role="dialog">
-    <div class="modal-dialog modal-lg ">
-
-        <!-- Modal content-->
-        <div class="modal-content position-modal">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@Resources.Resource.history</h4>
-            </div>
-            <div class="modal-body">
-                <div class="" id="GraficoHistoricoModal"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="modal fade bs-example-modal-lg position-modal" id="modalResultados" role="dialog">
-    <div class="modal-dialog modal-lg ">
-
-        <!-- Modal content-->
-        <div class="modal-content position-modal">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@Resources.Resource.results</h4>
-            </div>
-            <div class="modal-body">
-                <table id="DataTableResultados"></table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Modal FTA -->
-<div class="modal fade bs-example-modal-lg position-modal" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg position-modal" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">@Resources.Resource.do_you_want_to_create_an_anomaly_treatment_form</h4>
-            </div>
-            @*<div class="modal-body">
-
-                </div>*@
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.no</button>
-                <a id="ftaModalSim" href="#" target="_blank">
-                    <button type="button" class="btn btn-primary">@Resources.Resource.yes</button>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal ACOES X INDICADORES -->
-<div class="modal fade bs-example-modal-lg position-modal" id="IndicadorXAcaoModal" role="dialog">
-    <div class="modal-dialog modal-lg position-modal" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-
-                <div id="graficoAcoesXIndicadores"></div>
-                <div>
-                    <table class="table" id="tabelaAcoesXIndicaor"></table>
+            <h2 id="Titulo"></h2>
+            <h3 id="TituloGrafico" style="display:none;"></h3>
+            <br />
+            <div id="loaderNCGeral"></div>
+            <div class="totalNC" id="NCGeral" hidden>
+                <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
+                    <h1>0 %</h1>
+                    <br />
+                    <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
-                <label id="mensagem" style="display:none">@Resources.Resource.there_are_no_data_for_this_indicador_unit</label>
+                <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+
+            <div class="totalNC" id="NCIndicador" hidden>
+                <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
+                    <h1>0 %</h1>
+                    <br />
+                    <span>@Resources.Resource.non_conformities_in_period</span>
+                </div>
+                <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
+            </div>
+
+            <div class="totalNC" id="NCMonitoramento" hidden>
+                <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
+                    <h1>0 %</h1>
+                    <br />
+                    <span>@Resources.Resource.non_conformities_in_period</span>
+                </div>
+                <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
+            </div>
+            <br />
+            <div id="GraficoPeriodoSemUnidadeLoader"></div>
+            <div id="GraficoPeriodoSemUnidade"></div>
+            <br />
+            <div id="GraficoPeriodoLoader"></div>
+            <div id="GraficoPeriodo"></div>
+            <br />
+            <h3 id="TituloTabela"></h3>
+            <br />
+            <table id="DataTable"></table>
+
+        </div>
+    </div>
+
+    <!-- Modal Historico do Indicador-->
+    <div class="modal fade bs-example-modal-lg position-modal" id="modalHistorico" role="dialog">
+        <div class="modal-dialog modal-lg ">
+
+            <!-- Modal content-->
+            <div class="modal-content position-modal">
+                <div class="modal-header modal-header-gray">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@Resources.Resource.history</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="" id="GraficoHistoricoModal"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg position-modal" id="modalResultados" role="dialog">
+        <div class="modal-dialog modal-lg ">
+
+            <!-- Modal content-->
+            <div class="modal-content position-modal">
+                <div class="modal-header modal-header-gray">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@Resources.Resource.results</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="DataTableResultados"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal FTA -->
+    <div class="modal fade bs-example-modal-lg position-modal" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg position-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-gray">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.do_you_want_to_create_an_anomaly_treatment_form</h4>
+                </div>
+                @*<div class="modal-body">
+
+                    </div>*@
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.no</button>
+                    <a id="ftaModalSim" href="#" target="_blank">
+                        <button type="button" class="btn btn-primary">@Resources.Resource.yes</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ACOES X INDICADORES -->
+    <div class="modal fade bs-example-modal-lg position-modal" id="IndicadorXAcaoModal" role="dialog">
+        <div class="modal-dialog modal-lg position-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-gray">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="graficoAcoesXIndicadores"></div>
+                    <div>
+                        <table class="table" id="tabelaAcoesXIndicaor"></table>
+                    </div>
+                    <label id="mensagem" style="display:none">@Resources.Resource.there_are_no_data_for_this_indicador_unit</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -165,8 +167,6 @@
 
     <script type="text/javascript">
         var Subtitle = "";
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
 
         var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
         var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
@@ -211,10 +211,10 @@
                       
                     EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
                     EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
-                }else if (enviar['level1Id'] > 0) {
+                } else if (enviar['level1Id'] > 0) {
                     EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", true);
                 }
-            }else{
+            } else {
                 EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
             }
 
@@ -239,10 +239,11 @@
                         { title: Resources("level3"), mData: "TarefaName" },
                         { title: "Av", mData: "Av" },
                         { title: Resources("nonconformity"), mData: "Nc" },
-                        { title: Resources("percentNon_conformities"), mData: "Pc",
+                        {
+                            title: Resources("percentNon_conformities"), mData: "Pc",
                             render: $.fn.dataTable.render.number(',', '.', 2, '')
                         },
-                        { title: "% "+ Resources("goal"), mData: "Meta" },
+                        { title: "% " + Resources("goal"), mData: "Meta" },
                         { title: "Status", mData: "Status" },
                         { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-target="#modalHistorico" >' + Resources("history") + '</button>', "orderable": false },
                         { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalResultados">' + Resources("list_results") + '</button>', "orderable": false },
@@ -373,8 +374,8 @@
                     //+ " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
                 }
 
-                if ((enviar.unitId != '' && enviar.unitId == undefined))                     
-                    Titulo += " " + Resources("perUnit");                
+                if ((enviar.unitId != '' && enviar.unitId == undefined))
+                    Titulo += " " + Resources("perUnit");
 
                 
                 var SubtitleIndicador = "";
@@ -557,7 +558,7 @@
             }
         }
 
-        function GerarGraficoSemUnidade(data){
+        function GerarGraficoSemUnidade(data) {
             var NomeExibir = "";
             var Level = 0;
             var Titulo = "";
@@ -716,16 +717,16 @@
             subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
             if (data[0].ChartTitle == "Histórico do Indicador") {
                 TituloHistoricoModal += Resources("level1_history");
-                subtitleAux += Resources('level1')+": "+data[0].level1Name;
-            }else if(data[0].ChartTitle == "Histórico do Monitoramento"){
+                subtitleAux += Resources('level1') + ": " + data[0].level1Name;
+            } else if (data[0].ChartTitle == "Histórico do Monitoramento") {
                 TituloHistoricoModal += Resources("level2_history");
-                subtitleAux += Resources('level1') + ": "+data[0].level2Name;
-            }else if (data[0].ChartTitle == "Histórico da Tarefa") {
+                subtitleAux += Resources('level1') + ": " + data[0].level2Name;
+            } else if (data[0].ChartTitle == "Histórico da Tarefa") {
                 TituloHistoricoModal += Resources("level3_history");
-                subtitleAux += Resources('level1') + ": "+data[0].level3Name;
+                subtitleAux += Resources('level1') + ": " + data[0].level3Name;
             }
 
-            
+
 
             //var limSup = MapeiaValorParaHC(data, "limiteSuperior");
             //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
@@ -920,11 +921,11 @@
             });
         }
 
-        function GerarGraficoHistoricoGeral(data){
+        function GerarGraficoHistoricoGeral(data) {
 
             var porc = [];
 
-            
+
 
             if (data.length > 0) {
 
@@ -943,7 +944,7 @@
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
                 //var SubTitle = "";
 
-                var sumav = qtdAv.reduce(function(a, b){return a+b;});
+                var sumav = qtdAv.reduce(function (a, b) { return a + b; });
                 var sumnc = nc.reduce(function (a, b) { return a + b; });
 
                 var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
@@ -963,17 +964,17 @@
 
                 if (UnidadeId != "" && UnidadeId != undefined) {
                     TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("unit") + ": " + UnidadeName;
-                }else if (IndicadorId != "" && RegionalId != "" && IndicadorId != undefined && RegionalId != undefined) {
+                } else if (IndicadorId != "" && RegionalId != "" && IndicadorId != undefined && RegionalId != undefined) {
                     TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("level1") + ": " + IndicadorName + " | " + Resources("structure") + ": " + RegionalName;
-                }else if (MonitoramentoId != "" && MonitoramentoId != undefined) {
+                } else if (MonitoramentoId != "" && MonitoramentoId != undefined) {
                     TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("level2") + ": " + MonitoramentoName;
-                }else if (IndicadorId != "" && IndicadorId != undefined) {
+                } else if (IndicadorId != "" && IndicadorId != undefined) {
                     TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("level1") + ": " + IndicadorName;
-                }else if (RegionalId != "" && RegionalId != undefined) {
+                } else if (RegionalId != "" && RegionalId != undefined) {
                     TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("structure") + ": " + RegionalName;
-                }else if (ProcessoId != "" && ProcessoId != undefined) {
+                } else if (ProcessoId != "" && ProcessoId != undefined) {
                     TituloGrafico1 = Resources("consolidated_history");// + " | " + Resources("cluster") + ": " + ProcessoName;
-                }else{
+                } else {
                     TituloGrafico1 = Resources("consolidated_history");// + " | JBS";
                 }
 
@@ -1179,7 +1180,7 @@
                                 format: '{point:.2f}',
                             }
                         }]
-                    }, function(){
+                    }, function () {
                         $('#showNCGeral > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
                         $('#NCGeral').show();
                     });
@@ -1190,7 +1191,7 @@
             }
         }
 
-        function GerarGraficoHistoricoIndicador(data){
+        function GerarGraficoHistoricoIndicador(data) {
 
             if (data.length > 0) {
 
@@ -1201,9 +1202,9 @@
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
                 //var Subtitle = "";
 
-                var sumav = qtdAv.reduce(function(a, b){return a+b;});
-                var sumnc = nc.reduce(function(a, b){return a+b;});
-                var porcPeriodo = sumnc/sumav * 100;
+                var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                var sumnc = nc.reduce(function (a, b) { return a + b; });
+                var porcPeriodo = sumnc / sumav * 100;
 
                 let TituloGraficoHistoricoIndicador = Resources("level1_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
@@ -1410,7 +1411,7 @@
                             format: '{point:.2f}',
                         }
                     }]
-                }, function(){
+                }, function () {
                     $('#showNCIndicador > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
                     $('#NCIndicador').show();
                 });
@@ -1419,7 +1420,7 @@
             }
         }
 
-        function GerarGraficoHistoricoMonitoramento(data){
+        function GerarGraficoHistoricoMonitoramento(data) {
 
             if (data.length > 0) {
 
@@ -1430,9 +1431,9 @@
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
                 //var Subtitle = "";
 
-                var sumav = qtdAv.reduce(function(a, b){return a+b;});
-                var sumnc = nc.reduce(function(a, b){return a+b;});
-                var porcPeriodo = sumnc/sumav * 100;
+                var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                var sumnc = nc.reduce(function (a, b) { return a + b; });
+                var porcPeriodo = sumnc / sumav * 100;
 
                 let TituloGraficoHistoricoMonitoramento = Resources("level2_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
@@ -1607,7 +1608,7 @@
                             format: '{point:.2f}',
                         }
                     }]
-                }, function(){
+                }, function () {
                     $('#showNCMonitoramento > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
                     $('#NCMonitoramento').show();
                 });
@@ -1710,15 +1711,15 @@
 
             if (data[0].level3Id > 0) {
                 aux = Resources("level1_porc_non_conform_evo");
-                subtitleAux = Resources('level3')+": "+data[0].level3Name +" | ";
+                subtitleAux = Resources('level3') + ": " + data[0].level3Name + " | ";
                 enviarAxI.isLevel = 3;
-            }else if (data[0].level2Id > 0) {
+            } else if (data[0].level2Id > 0) {
                 aux = Resources("level1_porc_non_conform_evo");
-                subtitleAux = Resources('level2') + ": " +data[0].level2Name + " | ";
+                subtitleAux = Resources('level2') + ": " + data[0].level2Name + " | ";
                 enviarAxI.isLevel = 2;
-            }else if (data[0].level1Id > 0) {
+            } else if (data[0].level1Id > 0) {
                 aux = Resources("level1_porc_non_conform_evo");
-                subtitleAux = Resources('level1') + ": " +data[0].level1Name + " | ";
+                subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
                 enviarAxI.isLevel = 1;
             }
 
@@ -1729,16 +1730,16 @@
 
             //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
             subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
-            $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
+            $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI, function (r) {
                 //$.post(UrlIndicadorXAcaoModalPA, enviarAxI , function (r) {
 
-                r.map(function(a, b){
+                r.map(function (a, b) {
 
-                    var array = $.grep(data, function(o){ return o.date == a.Data})
+                    var array = $.grep(data, function (o) { return o.date == a.Data })
 
                     if (array.length > 0) {
                         a['procentagemNc'] = array[0].procentagemNc;
-                    }else{
+                    } else {
                         a['procentagemNc'] = 0;
                     }
 
@@ -1763,7 +1764,7 @@
                         //text: ChartTitle//data[0].ChartTitle
                         text: aux
                     },
-                    subtitle: {                        
+                    subtitle: {
                         text: subtitleAux
                     },
                     xAxis: {
@@ -2129,8 +2130,7 @@
 
             var total = 0;
 
-            if(Number > 0)
-            {
+            if (Number > 0) {
                 total = totalPerc / Number;
             }
 
@@ -2159,14 +2159,14 @@
             let str = jQuery.param(params);
             @*let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));*@
             let preServer = GetUrlFTA();
-            preServer = preServer.substr(0,(preServer.length - 1));
+            preServer = preServer.substr(0, (preServer.length - 1));
             preServer += "2?"
 
             $('#ftaModal').modal();
             $('#ftaModalSim').attr('href', preServer + str);
         }
 
-        function limpaDadosTela(){
+        function limpaDadosTela() {
             $('#SemDados').hide();
             $('#divMensagemAlerta').hide();
             $('#GraficoPeriodo').empty();
@@ -2184,6 +2184,8 @@
         $(document).ready(function () {
 
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             $("#btnSend").click(function (e) {
                 Subtitle = "";
@@ -2223,13 +2225,13 @@
 
             $('select').select2();
 
-            $('#level1Idv').on('change', function(){
+            $('#level1Idv').on('change', function () {
 
                 let level1 = $('#level1Idv option:selected').val()
 
                 if (level1 != "" && level1 != undefined) {
                     $('#statusIndicador').prop("disabled", true);
-                } else{
+                } else {
                     $('#statusIndicador').prop("disabled", false);
                 }
 

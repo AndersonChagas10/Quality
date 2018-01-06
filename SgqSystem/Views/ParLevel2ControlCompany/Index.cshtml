@@ -12,7 +12,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 650px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">
@@ -75,7 +75,7 @@
 
                                             <tr class="rowTabelaFamilia">
                                                 <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Indicador:")</td>
-                                                <td class="colTabelaFamilia" align="center">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                <td class="colTabelaFamilia">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
                                             </tr>
 
                                             @Html.Partial("_ControlCompanySelectBoxLevel2")
@@ -283,4 +283,10 @@ else
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar6");
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

@@ -6,7 +6,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -43,7 +43,7 @@
                             <div class="tab-pane active" id="setup_tab">
 
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._new, "Create")
+                                    @Html.ActionLink(Resources.Resource._new, "Create", null, new { @class= "btn btn-primary" })
                                 </p>
                                 <table class="table">
                                     <tr>
@@ -90,9 +90,9 @@
                                                 @Html.DisplayFor(modelItem => item.IsActive)
                                             </td>*@
                                             <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
+                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                             </td>
                                         </tr>
                                     }
