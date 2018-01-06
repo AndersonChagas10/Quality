@@ -509,12 +509,14 @@ LEFT JOIN Pa_Dimensao DIME
                 //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
                 //}
                 if (i.DataInicio.GetValueOrDefault() != DateTime.MinValue)
-                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    //i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("yyyy-MM-dd");
                 else
                     i._DataInicio = string.Empty;
 
                 if (i.DataFim.GetValueOrDefault() != DateTime.MinValue)
-                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    //i._DataFim = i.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("yyyy-MM-dd");
                 else
                     i._DataFim = string.Empty;
 
@@ -535,12 +537,14 @@ LEFT JOIN Pa_Dimensao DIME
                             }
 
                         if (k.QuandoInicio != DateTime.MinValue)
-                            k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                            //k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                            k._QuandoInicio = k.QuandoInicio.ToString("yyyy-MM-dd");
                         else
                             k._QuandoFim = string.Empty;
 
                         if (k.QuandoFim != DateTime.MinValue)
-                            k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                            //k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                            k._QuandoFim = k.QuandoFim.ToString("yyyy-MM-dd");
                         else
                             k._QuandoFim = string.Empty;
 
