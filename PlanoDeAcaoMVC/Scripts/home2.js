@@ -410,7 +410,13 @@ function MountDataTable(json) {
     });
 
     setTimeout(function () {
-        $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        if (ColvisarrayVisaoAtual_hide.length != 0) {
+
+            $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+
+        } else {
+            $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        }
         $(".dataTables_filter").css("display", "block");
     }, 1100);
 
@@ -457,8 +463,11 @@ function MountDataTable(json) {
     $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
     //clicar no botão escondido das colunas atuais
-    if (ColvisarrayVisaoAtual_show.length > 0)
+    if (ColvisarrayVisaoAtual_show.length > 0) {
+
         $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+
+    }
 
 
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
@@ -1383,7 +1392,7 @@ function pintaStatus(seriesFilter, serieArrFinal) {
                 c["color"] = finalizadaColor;
             } else if (c.name == "Finalizada com atraso") {
                 c["color"] = finalizadaComAtrasoColor;
-            } 
+            }
         });
 
         return serieArrFinal
