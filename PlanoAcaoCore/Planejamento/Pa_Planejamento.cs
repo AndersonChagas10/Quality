@@ -215,46 +215,46 @@ namespace PlanoAcaoCore
             //}
             //else if (Estrategico_Id.GetValueOrDefault() > 0)
             //{
-                //if (Gerencia_Id <= 0)
-                //    message += "\n Gerencia,";
-                //if (Coordenacao_Id <= 0)
-                //    message += "\n Coordenação,";
-                //if (Iniciativa_Id <= 0)
-                //    message += "\n Projeto / Iniciativa,";
-                //if (IndicadoresDeProjeto_Id <= 0)
-                //    message += "\n Indicadores do Projeto / Iniciativa,";
-                //if (ObjetivoGerencial_Id <= 0)
-                //    message += "\n Objetivo Gerencial,";
-                //if (_ValorDe == null || _ValorDe == "")
-                //    message += "\n Valor De,";
-                //if (_ValorPara == null || _ValorPara == "")
-                //    message += "\n Valor Para,";
-                //if (UnidadeDeMedida_Id <= 0)
-                //    message += "\n Unidade de Medida,";
-                //if (_DataInicio == null || _DataInicio == "")
-                //    message += "\n Data inicio do Projeto / Iniciativa,";
-                //if (_DataFim == null || _DataFim == "")
-                //    message += "\n Data fim Projeto / Iniciativa,,";
-                //if (Responsavel_Projeto < 0)
-                //    message += "\n Responsavel pelo Projeto / Iniciativa,";
+            //if (Gerencia_Id <= 0)
+            //    message += "\n Gerencia,";
+            //if (Coordenacao_Id <= 0)
+            //    message += "\n Coordenação,";
+            //if (Iniciativa_Id <= 0)
+            //    message += "\n Projeto / Iniciativa,";
+            //if (IndicadoresDeProjeto_Id <= 0)
+            //    message += "\n Indicadores do Projeto / Iniciativa,";
+            //if (ObjetivoGerencial_Id <= 0)
+            //    message += "\n Objetivo Gerencial,";
+            //if (_ValorDe == null || _ValorDe == "")
+            //    message += "\n Valor De,";
+            //if (_ValorPara == null || _ValorPara == "")
+            //    message += "\n Valor Para,";
+            //if (UnidadeDeMedida_Id <= 0)
+            //    message += "\n Unidade de Medida,";
+            //if (_DataInicio == null || _DataInicio == "")
+            //    message += "\n Data inicio do Projeto / Iniciativa,";
+            //if (_DataFim == null || _DataFim == "")
+            //    message += "\n Data fim Projeto / Iniciativa,,";
+            //if (Responsavel_Projeto < 0)
+            //    message += "\n Responsavel pelo Projeto / Iniciativa,";
 
             //}
             //else
             //{
-                //if (Diretoria_Id <= 0)
-                //    message += "\n Diretoria,";
-                //if (Missao_Id <= 0)
-                //    message += "\n Missão,";
-                //if (Visao_Id <= 0)
-                //    message += "\n Visão,";
-                //if (Dimensao_Id <= 0)
-                //    message += "\n Dimensão,";
-                //if (Objetivo_Id <= 0)
-                //    message += "\n Diretrizes / Objetivos,";
-                //if (IndicadoresDiretriz_Id <= 0)
-                //    message += "\n Indicadores da Diretrizes / Objetivos,";
-                //if (Responsavel_Diretriz <= 0)
-                //    message += "\n Responsável pela Diretriz,";
+            //if (Diretoria_Id <= 0)
+            //    message += "\n Diretoria,";
+            //if (Missao_Id <= 0)
+            //    message += "\n Missão,";
+            //if (Visao_Id <= 0)
+            //    message += "\n Visão,";
+            //if (Dimensao_Id <= 0)
+            //    message += "\n Dimensão,";
+            //if (Objetivo_Id <= 0)
+            //    message += "\n Diretrizes / Objetivos,";
+            //if (IndicadoresDiretriz_Id <= 0)
+            //    message += "\n Indicadores da Diretrizes / Objetivos,";
+            //if (Responsavel_Diretriz <= 0)
+            //    message += "\n Responsável pela Diretriz,";
 
             //}
 
@@ -266,7 +266,7 @@ namespace PlanoAcaoCore
         {
             get
             {
-              
+
                 return $@"SELECT
 	Pl.*
    ,INI.Name AS Inciativa
@@ -399,7 +399,7 @@ LEFT JOIN Pa_Dimensao DIME
             var acoes = Pa_Acao.Listar();
             var remover = new List<int>();
 
-            
+
             foreach (var i in planejamentos)
             {
                 //$
@@ -413,7 +413,7 @@ LEFT JOIN Pa_Dimensao DIME
                 //Percentual
                 if (i.UnidadeDeMedida_Id == 2)
                 {
-                    if(i.ValorDe > 0)
+                    if (i.ValorDe > 0)
                         i._ValorDe = i.ValorDe.ToString("0.##") + " %";
                     if (i.ValorPara > 0)
                         i._ValorPara = i.ValorPara.ToString("0.##") + " %";
@@ -432,7 +432,7 @@ LEFT JOIN Pa_Dimensao DIME
                 else
                     i._DataFim = string.Empty;
 
-               var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
+                var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
                 if (acoesTmp.Count() > 0)
                 {
                     foreach (var k in acoesTmp)
@@ -509,12 +509,14 @@ LEFT JOIN Pa_Dimensao DIME
                 //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
                 //}
                 if (i.DataInicio.GetValueOrDefault() != DateTime.MinValue)
-                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    //i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("yyyy-MM-dd");
                 else
                     i._DataInicio = string.Empty;
 
                 if (i.DataFim.GetValueOrDefault() != DateTime.MinValue)
-                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    //i._DataFim = i.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("yyyy-MM-dd");
                 else
                     i._DataFim = string.Empty;
 
@@ -535,17 +537,32 @@ LEFT JOIN Pa_Dimensao DIME
                             }
 
                         if (k.QuandoInicio != DateTime.MinValue)
-                            k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                            //k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                            k._QuandoInicio = k.QuandoInicio.ToString("yyyy-MM-dd");
                         else
                             k._QuandoFim = string.Empty;
 
                         if (k.QuandoFim != DateTime.MinValue)
-                            k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                            //k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                            k._QuandoFim = k.QuandoFim.ToString("yyyy-MM-dd");
                         else
                             k._QuandoFim = string.Empty;
 
                         if (k.QuantoCusta > 0)
                             k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+
+                        switch (k.TipoIndicador)
+                        {
+                            case 1:
+                                k.TipoIndicadorName = "Diretrizes";
+                                break;
+                            case 2:
+                                k.TipoIndicadorName = "Scorecard";
+                                break;
+                            default:
+                                k.TipoIndicadorName = "";
+                                break;
+                        }
 
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
@@ -563,10 +580,10 @@ LEFT JOIN Pa_Dimensao DIME
             var dtFim = DTO.Helpers.Guard.ParseDateToSqlV2(dataFim, DTO.Helpers.Guard.CultureCurrent.BR);
 
             var statusAberto = new int[] { 1, 5, 6 };
-            var statusFechado = new int[] { 3,4,7,8 };
+            var statusFechado = new int[] { 3, 4, 7, 8 };
 
             retorno = retorno.Where(r => statusAberto.Contains(r.Acao.Status) || (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit) || r.Acao.Id == 0).ToList();
-                
+
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
 
             return retorno;

@@ -108,8 +108,9 @@ function MountDataTable(json) {
             { "mData": "_DataInicio" },
             { "mData": "_DataFim" },
             { "mData": "Responsavel_Projeto_Quem.Name" },
-            { "mData": "Acao.Regional" },
+            { "mData": "Acao.Regional" },            
             { "mData": "Acao.UnidadeName" },
+            { "mData": "Acao.TipoIndicadorName" },
             { "mData": "Acao.Level1Name" },
             { "mData": "Acao.Level2Name" },
             { "mData": "Acao.Level3Name" },
@@ -170,23 +171,24 @@ function MountDataTable(json) {
             { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [19], "width": "50px" },
             { "sTitle": "Regional", "aTargets": [20], "width": "50px" },
             { "sTitle": "Unidade", "aTargets": [21], "width": "50px" },
-            { "sTitle": "Indicador SGQ", "aTargets": [22], "width": "100px" },
-            { "sTitle": "Monitoramento SGQ", "aTargets": [23], "width": "100px" },
-            { "sTitle": "Tarefa SGQ", "aTargets": [24], "width": "100px" },
-            { "sTitle": "Indicadores Operacional", "aTargets": [25], "width": "100px" }, // ver indicador operacional*
-            { "sTitle": "Causa Genérica", "aTargets": [26], "width": "200px" },
-            { "sTitle": "Grupo Causa", "aTargets": [27], "width": "200px" },
-            { "sTitle": "Ação Genérica", "aTargets": [28], "width": "100px" },
-            { "sTitle": "Causa Específica", "aTargets": [29], "width": "100px" },
-            { "sTitle": "Ação Específica", "aTargets": [30], "width": "100px" },
-            { "sTitle": "Quem", "aTargets": [31], "width": "200px" },
-            { "sTitle": "Quando (Início)", "aTargets": [32], "width": "50px" },
-            { "sTitle": "Quando (Fim)", "aTargets": [33], "width": "50px" },
-            { "sTitle": "Como Pontos Importantes", "aTargets": [34], "width": "200px" },
-            { "sTitle": "Pra que", "aTargets": [35], "width": "200px" },
-            { "sTitle": "Quanto custa", "aTargets": [36], "width": "50px" },
-            { "sTitle": "Status", "aTargets": [37], "width": "50px" },
-            { "sTitle": "Prazo", "aTargets": [38], "width": "50px" },
+            { "sTitle": "Tipo de Indicador", "aTargets": [22], "width": "50px" },
+            { "sTitle": "Indicador SGQ", "aTargets": [23], "width": "100px" },
+            { "sTitle": "Monitoramento SGQ", "aTargets": [24], "width": "100px" },
+            { "sTitle": "Tarefa SGQ", "aTargets": [25], "width": "100px" },
+            { "sTitle": "Indicadores Operacional", "aTargets": [26], "width": "100px" }, // ver indicador operacional*
+            { "sTitle": "Causa Genérica", "aTargets": [27], "width": "200px" },
+            { "sTitle": "Grupo Causa", "aTargets": [28], "width": "200px" },
+            { "sTitle": "Ação Genérica", "aTargets": [29], "width": "100px" },
+            { "sTitle": "Causa Específica", "aTargets": [30], "width": "100px" },
+            { "sTitle": "Ação Específica", "aTargets": [31], "width": "100px" },
+            { "sTitle": "Quem", "aTargets": [32], "width": "200px" },
+            { "sTitle": "Quando (Início)", "aTargets": [33], "width": "50px" },
+            { "sTitle": "Quando (Fim)", "aTargets": [34], "width": "50px" },
+            { "sTitle": "Como Pontos Importantes", "aTargets": [35], "width": "200px" },
+            { "sTitle": "Pra que", "aTargets": [36], "width": "200px" },
+            { "sTitle": "Quanto custa", "aTargets": [37], "width": "50px" },
+            { "sTitle": "Status", "aTargets": [38], "width": "50px" },
+            { "sTitle": "Prazo", "aTargets": [39], "width": "50px" },
             { "sTitle": "Ação" },
 
         ],
@@ -206,24 +208,24 @@ function MountDataTable(json) {
                 extend: 'colvisGroup',
                 text: 'Visão Inicial',
                 show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19],
-                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Estratégico',
-                show: [0, 1, 2, 3, 4, 5, 6, 34, 38],
-                hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 37, 35, 36]
+                show: [0, 1, 2, 3, 4, 5, 6, 35, 39],
+                hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Tático',
-                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 38],
-                hide: [0, 1, 2, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
+                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 39],
+                hide: [0, 1, 2, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Operacional',
-                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38],
                 hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
             {
@@ -323,7 +325,7 @@ function MountDataTable(json) {
                 //    bgColorStatus = "yellow"
                 //}
 
-                $(row.cells[37]).css("background", bgColorStatus);
+                $(row.cells[38]).css("background", bgColorStatus);
 
                 /*Prazo*/
                 if (data.Acao.Status == 2) {
@@ -346,7 +348,7 @@ function MountDataTable(json) {
                     bgColorPrazo = "rgb(250, 128, 114)"
                 }
 
-                $(row.cells[38]).css("background", bgColorPrazo);
+                $(row.cells[39]).css("background", bgColorPrazo);
 
                 //    if (data.Tatico_Id > 0) { // possui plan tatico
                 //        $(row.cells[38]).find('.btnNovoOperacional').show();
@@ -414,7 +416,13 @@ function MountDataTable(json) {
     });
 
     setTimeout(function () {
-        $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        if (ColvisarrayVisaoAtual_hide.length != 0) {
+
+            $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+
+        } else {
+            $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        }
         $(".dataTables_filter").css("display", "block");
     }, 1100);
 
@@ -461,8 +469,11 @@ function MountDataTable(json) {
     $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
     //clicar no botão escondido das colunas atuais
-    if (ColvisarrayVisaoAtual_show.length > 0)
+    if (ColvisarrayVisaoAtual_show.length > 0) {
+
         $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+
+    }
 
 
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
