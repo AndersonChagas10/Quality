@@ -143,101 +143,102 @@
         padding-top: 50px;
         padding-bottom: 50px;
     }
-
 </style>
 
-<div class="page-content" style="min-height: 600px;">
+<div class="page-content-wrapper">
+    <div class="page-content">
 
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
+        <div id="formBodyContent" class="col-xs-12" style="margin-left:auto; margin-right:auto; border">
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="loaderNCGeral"></div>
-        <div class="totalNC" id="NCGeral" hidden>
-            <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
-                <hh>0 %</hh>
-                <br />
-                <span>Scorecard</span>
+            <div id="loaderNCGeral"></div>
+            <div class="totalNC" id="NCGeral" hidden>
+                <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
+                    <hh>0 %</hh>
+                    <br />
+                    <span>Scorecard</span>
+                </div>
+                <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
             </div>
-            <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
+
+            <div id="graficoEvolutivoEmpresa" style="max-height:250px;"></div>
+
+            <div class="row">
+                <div id="graficoEvolutivoRegional0" class="col-md-3"></div>
+                <div id="graficoEvolutivoRegional1" class="col-md-3"></div>
+                <div id="graficoEvolutivoRegional2" class="col-md-3"></div>
+                <div id="graficoEvolutivoRegional3" class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+                <div id="graficoEvolutivoUnidade0" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade1" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade2" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade3" class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div id="graficoEvolutivoUnidade4" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade5" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade6" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade7" class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div id="graficoEvolutivoUnidade8" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade9" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade10" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade11" class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div id="graficoEvolutivoUnidade12" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade13" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade14" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade15" class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div id="graficoEvolutivoUnidade16" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade17" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade18" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade19" class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div id="graficoEvolutivoUnidade20" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade21" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade22" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade23" class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div id="graficoEvolutivoUnidade24" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade25" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade26" class="col-md-3"></div>
+                <div id="graficoEvolutivoUnidade27" class="col-md-3"></div>
+            </div>
+
+            <div id="grafico1" style="max-height:250px;"></div>
+
+            <div id="grafico2" style="max-height:250px;"></div>
+
+            <div id="tabela1div"></div>
+
+            <div id="funcoesPorUnidade"></div>
+
+            <div id="inicadoresPorRegional"></div>
+
+            <div id="inicadoresPorUnidade"></div>
+
+            <div id="tabela2div"></div>
+
+            <div id="grafico3"></div>
+
+            <div id="grafico4"></div>
+
+            <div id="grafico5"></div>
+            @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
         </div>
 
-        <div id="graficoEvolutivoEmpresa" style="max-height:250px;"></div>
-
-        <div class="row">
-            <div id="graficoEvolutivoRegional0" class="col-md-3"></div>
-            <div id="graficoEvolutivoRegional1" class="col-md-3"></div>
-            <div id="graficoEvolutivoRegional2" class="col-md-3"></div>
-            <div id="graficoEvolutivoRegional3" class="col-md-3"></div>
-        </div>
-
-        <div class="row">
-            <div id="graficoEvolutivoUnidade0" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade1" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade2" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade3" class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div id="graficoEvolutivoUnidade4" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade5" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade6" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade7" class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div id="graficoEvolutivoUnidade8" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade9" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade10" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade11" class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div id="graficoEvolutivoUnidade12" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade13" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade14" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade15" class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div id="graficoEvolutivoUnidade16" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade17" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade18" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade19" class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div id="graficoEvolutivoUnidade20" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade21" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade22" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade23" class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div id="graficoEvolutivoUnidade24" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade25" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade26" class="col-md-3"></div>
-            <div id="graficoEvolutivoUnidade27" class="col-md-3"></div>
-        </div>
-
-        <div id="grafico1" style="max-height:250px;"></div>
-
-        <div id="grafico2" style="max-height:250px;"></div>
-
-        <div id="tabela1div"></div>
-
-        <div id="funcoesPorUnidade"></div>
-
-        <div id="inicadoresPorRegional"></div>
-
-        <div id="inicadoresPorUnidade"></div>
-
-        <div id="tabela2div"></div>
-
-        <div id="grafico3"></div>
-
-        <div id="grafico4"></div>
-
-        <div id="grafico5"></div>
-        @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
     </div>
-
 </div>
 
 @section Scripts {
@@ -2348,9 +2349,15 @@
                 var porcPeriodo = data[0].nc;
                 $('#showNCGeral > hh').css("font-size", "40px")
                 $('#showNCGeral > hh').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
-                $('#NCGeral').show();               
+                $('#NCGeral').show();
             }
         }
+
+        $(document).ready(function () {
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+        });
 
     </script>
 

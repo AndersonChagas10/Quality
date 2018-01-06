@@ -82,12 +82,12 @@
 <!-- Estilo para impressão -->
 <style type="text/css" media="print">
     table {
-        page-break-inside: auto
+        page-break-inside: auto;
     }
 
     tr {
         page-break-inside: avoid;
-        page-break-after: auto
+        page-break-after: auto;
     }
 
 
@@ -200,43 +200,40 @@
 
 </style>
 
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <div id="load"></div>
+
+            <div id="divTable"></div>
 
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+            <div id="botoesImpressao" style="z-index:1; display:none; position:absolute; top: 32px; left: 17px; background-color:rgb(51, 122, 183); padding:10px; border:1px solid #000000;">
+                <button id='btnPrint' onClick='imprimirRelatorio();' class='botao'><span class="glyphicon glyphicon-print"></span></button>
+                &nbsp;&nbsp;
+                <button onClick="$('#fundoPreto').hide(); $('#divReport').hide(); $('#botoesImpressao').hide();" class="botao"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
 
-    <div id="formBodyContent">
-
-
-
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="load"></div>
-
-        <div id="divTable"></div>
-
-
-        <div id="botoesImpressao" style="z-index:1; display:none; position:absolute; top: 32px; left: 17px; background-color:rgb(51, 122, 183); padding:10px; border:1px solid #000000;">
-            <button id='btnPrint' onClick='imprimirRelatorio();' class='botao'><span class="glyphicon glyphicon-print"></span></button>
-            &nbsp;&nbsp;
-            <button onClick="$('#fundoPreto').hide(); $('#divReport').hide(); $('#botoesImpressao').hide();" class="botao"><span class="glyphicon glyphicon-remove"></span></button>
-        </div>
-
-        <div id="fundoPreto" style="display:none; position:absolute; top:26px; width:100%; left:13px; background-color:#fff">
-            <div id="divReport" style="
-    z-index:999998;
-    display:none;
+            <div id="fundoPreto" style="display:none; position:absolute; top:26px; width:100%; left:13px; background-color:#fff">
+                <div id="divReport" style="
+                     z-index:999998;
+                     display:none;
     /*position:absolute;*/
-    top: -34px;
-    margin:auto;
-    /*A4*/
-    width: 21cm;
-    min-height: 29.7cm;
-    padding: 2cm;
-    margin: 1cm auto;
-    border: 1px #D3D3D3 solid;
-    border-radius: 5px;
-    background: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
+                top: -34px;
+                margin:auto;
+                /*A4*/
+                width: 21cm;
+                min-height: 29.7cm;
+                padding: 2cm;
+                margin: 1cm auto;
+                border: 1px #D3D3D3 solid;
+                border-radius: 5px;
+                background: white;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
 
 
                 <!--cabeçalho e Rodapé-->
@@ -429,29 +426,30 @@
 
         </div>
     </div>
+</div>
 
-    @section Scripts {
-
-
-        <script type="text/javascript">
-
-            var bottom = 0;
+@section Scripts {
 
 
-            function imprimirRelatorio() {
+    <script type="text/javascript">
+
+        var bottom = 0;
 
 
-                $("tr:nth-child(1n)").each(function () {
-                    bottom -= 100;
-                    botString = bottom.toString();
-                    var $counter = $('h6.first').clone().removeClass('first');
-                    $counter.css("bottom", botString + "vh");
-                    ($counter).insertBefore('.insert');
+        function imprimirRelatorio() {
 
-                    var $name = $('h6.secound').clone().removeClass('secound');
-                    $name.css("bottom", botString + "vh");
-                    ($name).insertBefore('.insert');
-                });
+
+            $("tr:nth-child(1n)").each(function () {
+                bottom -= 100;
+                botString = bottom.toString();
+                var $counter = $('h6.first').clone().removeClass('first');
+                $counter.css("bottom", botString + "vh");
+                ($counter).insertBefore('.insert');
+
+                var $name = $('h6.secound').clone().removeClass('secound');
+                $name.css("bottom", botString + "vh");
+                ($name).insertBefore('.insert');
+            });
 
             var conteudo = document.getElementById('divReport').innerHTML,
                 tela_impressao = window.open('');
@@ -465,9 +463,9 @@
             var linhasObrigatorias = 29 + data.length;
             var caracteresLinhaObs = 65;
 
-            var linhasObservacoes = parseInt((obs.length/caracteresLinhaObs)) + 1;
+            var linhasObservacoes = parseInt((obs.length / caracteresLinhaObs)) + 1;
 
-            tamanhoObservacoes = linhasObservacoes/2;
+            tamanhoObservacoes = linhasObservacoes / 2;
             linhasObrigatorias = linhasObrigatorias + tamanhoObservacoes;
 
             var linhasParaProdutos = 0;
@@ -525,11 +523,11 @@
         //var cabecalhoObjQtdeEnvolvido = 96;
 
 
-         var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
-         var urlGetReportReprocessoHeader = '@Html.Raw(urlGetReportReprocessoHeader)';
-         var urlGetReportReprocesso = '@Html.Raw(urlGetReportReprocesso)';
-         var urlGetMonitor = '@Html.Raw(urlGetMonitor)';
-         var urlGetUnidadeMedida = '@Html.Raw(urlGetUnidadeMedida)';
+        var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
+        var urlGetReportReprocessoHeader = '@Html.Raw(urlGetReportReprocessoHeader)';
+        var urlGetReportReprocesso = '@Html.Raw(urlGetReportReprocesso)';
+        var urlGetMonitor = '@Html.Raw(urlGetMonitor)';
+        var urlGetUnidadeMedida = '@Html.Raw(urlGetUnidadeMedida)';
 
         var dadosReprocessoCabecalho;
         var dadosC2;
@@ -563,7 +561,7 @@
 
                             dadosReprocesso = result;
 
-                            if (!!result[result.length-1].Objeto)
+                            if (!!result[result.length - 1].Objeto)
                                 dadosReprocessoCabecalho = JSON.parse(result[0].Objeto.replace(/(\r\n|\n|\r)/gm, ""));
 
 
@@ -575,414 +573,414 @@
                                 , data: ''
                                 , async: false //blocks window close
                                 , success: function (user, status) {
-                                console.log(result);
+                                    console.log(result);
 
 
-                                console.log(data);
+                                    console.log(data);
 
-                                var lista = '';
+                                    var lista = '';
 
-                                var maior = 0;
+                                    var maior = 0;
 
-				for(var j = 0; j < dadosReprocesso.length; j++){
+                                    for (var j = 0; j < dadosReprocesso.length; j++) {
 
-					maior = dadosReprocesso[j].CollectionLevel2_Id > maior ? dadosReprocesso[j].CollectionLevel2_Id : maior;
+                                        maior = dadosReprocesso[j].CollectionLevel2_Id > maior ? dadosReprocesso[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                var ObjOP = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == cabecalhoObjOP;
-                                });
+                                    var ObjOP = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjOP;
+                                    });
 
-                                maior = 0;
+                                    maior = 0;
 
-				for(var j = 0; j < ObjOP.length; j++){
+                                    for (var j = 0; j < ObjOP.length; j++) {
 
-					maior = ObjOP[j].CollectionLevel2_Id > maior ? ObjOP[j].CollectionLevel2_Id : maior;
+                                        maior = ObjOP[j].CollectionLevel2_Id > maior ? ObjOP[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                ObjOP = $.grep(ObjOP, function (a, b) {
-                                    return a.CollectionLevel2_Id == maior;
-                                });
+                                    ObjOP = $.grep(ObjOP, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
 
-                                var OP = ObjOP.length == 0 ? '' : ObjOP[ObjOP.length-1].ValueMultiple;
+                                    var OP = ObjOP.length == 0 ? '' : ObjOP[ObjOP.length - 1].ValueMultiple;
 
-                                //--------------------------------------------------------------------------
-                                var ObjDataReprocesso = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == cabecalhoObjDataReprocesso;
-                                });
+                                    //--------------------------------------------------------------------------
+                                    var ObjDataReprocesso = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjDataReprocesso;
+                                    });
 
-                                maior = 0;
+                                    maior = 0;
 
-				for(var j = 0; j < ObjDataReprocesso.length; j++){
+                                    for (var j = 0; j < ObjDataReprocesso.length; j++) {
 
-					maior = ObjDataReprocesso[j].CollectionLevel2_Id > maior ? ObjDataReprocesso[j].CollectionLevel2_Id : maior;
+                                        maior = ObjDataReprocesso[j].CollectionLevel2_Id > maior ? ObjDataReprocesso[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                ObjDataReprocesso = $.grep(ObjDataReprocesso, function (a, b) {
-                                    return a.CollectionLevel2_Id == maior;
-                                });
+                                    ObjDataReprocesso = $.grep(ObjDataReprocesso, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
 
-                                var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[ObjDataReprocesso.length-1].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4)
+                                    var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[ObjDataReprocesso.length - 1].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4)
 
-				//--------------------------------------------------------------------------
+                                    //--------------------------------------------------------------------------
 
-                                var ObjSIF = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == cabecalhoObjSIF;
-                                });
+                                    var ObjSIF = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjSIF;
+                                    });
 
-                                maior = 0;
+                                    maior = 0;
 
-				for(var j = 0; j < ObjSIF.length; j++){
+                                    for (var j = 0; j < ObjSIF.length; j++) {
 
-					maior = ObjSIF[j].CollectionLevel2_Id > maior ? ObjSIF[j].CollectionLevel2_Id : maior;
+                                        maior = ObjSIF[j].CollectionLevel2_Id > maior ? ObjSIF[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                ObjSIF = $.grep(ObjSIF, function (a, b) {
-                                    return a.CollectionLevel2_Id == maior;
-                                });
+                                    ObjSIF = $.grep(ObjSIF, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
 
-                                var SIF = ObjSIF.length == 0 ? '' : ObjSIF[ObjSIF.length-1].ValueMultiple;
-				//--------------------------------------------------------------------------
+                                    var SIF = ObjSIF.length == 0 ? '' : ObjSIF[ObjSIF.length - 1].ValueMultiple;
+                                    //--------------------------------------------------------------------------
 
-                                var ObjOrigem = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == cabecalhoObjOrigem;
-                                });
+                                    var ObjOrigem = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjOrigem;
+                                    });
 
-                                maior = 0;
+                                    maior = 0;
 
-				for(var j = 0; j < ObjOrigem.length; j++){
+                                    for (var j = 0; j < ObjOrigem.length; j++) {
 
-					maior = ObjOrigem[j].CollectionLevel2_Id > maior ? ObjOrigem[j].CollectionLevel2_Id : maior;
+                                        maior = ObjOrigem[j].CollectionLevel2_Id > maior ? ObjOrigem[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                ObjOrigem = $.grep(ObjOrigem, function (a, b) {
-                                    return a.CollectionLevel2_Id == maior;
-                                });
+                                    ObjOrigem = $.grep(ObjOrigem, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
 
-                                var Origem = ObjOrigem.length == 0 ? '' : ObjOrigem[ObjOrigem.length-1].ValueMultiple;
-				//--------------------------------------------------------------------------
+                                    var Origem = ObjOrigem.length == 0 ? '' : ObjOrigem[ObjOrigem.length - 1].ValueMultiple;
+                                    //--------------------------------------------------------------------------
 
-                                var ObjMotivo = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == cabecalhoObjMotivo;
-                                });
+                                    var ObjMotivo = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjMotivo;
+                                    });
 
-                                maior = 0;
+                                    maior = 0;
 
-				for(var j = 0; j < ObjMotivo.length; j++){
+                                    for (var j = 0; j < ObjMotivo.length; j++) {
 
-					maior = ObjMotivo[j].CollectionLevel2_Id > maior ? ObjMotivo[j].CollectionLevel2_Id : maior;
+                                        maior = ObjMotivo[j].CollectionLevel2_Id > maior ? ObjMotivo[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                ObjMotivo = $.grep(ObjMotivo, function (a, b) {
-                                    return a.CollectionLevel2_Id == maior;
-                                });
+                                    ObjMotivo = $.grep(ObjMotivo, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
 
-                                var Motivo = ObjMotivo.length == 0 ? '' : ObjMotivo[0].ValueMultiple;
-				//--------------------------------------------------------------------------
+                                    var Motivo = ObjMotivo.length == 0 ? '' : ObjMotivo[0].ValueMultiple;
+                                    //--------------------------------------------------------------------------
 
-                                var ObjQtdeEnvolvido = $.grep(dadosReprocesso, function (a, b) {
-                                    return a.ParHeaderField_Id == cabecalhoObjQtdeEnvolvido;
-                                });
+                                    var ObjQtdeEnvolvido = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjQtdeEnvolvido;
+                                    });
 
-                                maior = 0;
+                                    maior = 0;
 
-				for(var j = 0; j < ObjQtdeEnvolvido.length; j++){
+                                    for (var j = 0; j < ObjQtdeEnvolvido.length; j++) {
 
-					maior = ObjQtdeEnvolvido[j].CollectionLevel2_Id > maior ? ObjQtdeEnvolvido[j].CollectionLevel2_Id : maior;
+                                        maior = ObjQtdeEnvolvido[j].CollectionLevel2_Id > maior ? ObjQtdeEnvolvido[j].CollectionLevel2_Id : maior;
 
-}
+                                    }
 
-                                ObjQtdeEnvolvido = $.grep(ObjQtdeEnvolvido, function (a, b) {
-                                    return a.CollectionLevel2_Id == maior;
-                                });
+                                    ObjQtdeEnvolvido = $.grep(ObjQtdeEnvolvido, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
 
 
-                                var QtdeEnvolvido = ObjQtdeEnvolvido.length == 0 ? '' : ObjQtdeEnvolvido[ObjQtdeEnvolvido.length-1].ValueMultiple;
-				//--------------------------------------------------------------------------
+                                    var QtdeEnvolvido = ObjQtdeEnvolvido.length == 0 ? '' : ObjQtdeEnvolvido[ObjQtdeEnvolvido.length - 1].ValueMultiple;
+                                    //--------------------------------------------------------------------------
 
-                                $('#dtReprocesso').text(dataReprocesso);
-                                $('#OficioSIF').text(SIF);
-                                $('#numOp').text(OP);
-                                $('#qdeProd').text(QtdeEnvolvido);
-                                $('#OrigemRep').text(Origem);
-                                $('#MotivoRep').text(Motivo);
+                                    $('#dtReprocesso').text(dataReprocesso);
+                                    $('#OficioSIF').text(SIF);
+                                    $('#numOp').text(OP);
+                                    $('#qdeProd').text(QtdeEnvolvido);
+                                    $('#OrigemRep').text(Origem);
+                                    $('#MotivoRep').text(Motivo);
 
-                                $('#nomePessoa').text(user[0].FullName);
+                                    $('#nomePessoa').text(user[0].FullName);
 
-                                var tabela = "";
+                                    var tabela = "";
 
-                                tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="border-color:#ccc; font-size:10px;">';
-                                tabela = tabela + '<tr>';
-                                tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Entrada</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Embalagem</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
-                                tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;"><b>SIF</b></td>';
-                                tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Volume</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Peso</b></td>';
-                                tabela = tabela + '</tr>';
-
-                                for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoEntradaOPs.length; i++) {
-
-				    var campo2 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao);
-				    var campo3 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem);
-				    var campo4 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade);
-				    var campo5 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador;
-				    var campo6 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade;
-				    var campo7 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume;
-				    var campo8 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido;
-
+                                    tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="border-color:#ccc; font-size:10px;">';
                                     tabela = tabela + '<tr>';
-                                    tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto +  '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
-                                    tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
-                                    tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo7 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo8 + '</td>';
+                                    tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Entrada</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Embalagem</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
+                                    tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;"><b>SIF</b></td>';
+                                    tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Volume</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Peso</b></td>';
                                     tabela = tabela + '</tr>';
 
-                                }
+                                    for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoEntradaOPs.length; i++) {
 
-                                tabela = tabela + '</table>';
+                                        var campo2 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao);
+                                        var campo3 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem);
+                                        var campo4 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade);
+                                        var campo5 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador;
+                                        var campo6 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade;
+                                        var campo7 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume;
+                                        var campo8 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido;
 
-                                $('#tblProdutosEntrada').html(tabela);
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
+                                        tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
+                                        tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo7 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo8 + '</td>';
+                                        tabela = tabela + '</tr>';
 
-                                //saída
+                                    }
 
+                                    tabela = tabela + '</table>';
 
-                                tabela = "";
+                                    $('#tblProdutosEntrada').html(tabela);
 
-                                tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-size:10px;">';
-                                tabela = tabela + '<tr>';
-                                tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Saída</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
-                                tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Habilitação</b></td>';
-                                tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Local de Estoque</b></td>';
-                                tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peça</b></td>';
-                                tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Volume</b></td>';
-                                tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peso</b></td>';
-                                tabela = tabela + '</tr>';
-
-                                for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
-
-                                    var campo2 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao);
-                                    var campo3 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade);
-                                    var campo4 = dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade== null ? "-" : dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade;
-                                    var campo5 = dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cSgHabilitacao == null ? "-" : dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cSgHabilitacao;
-                                    var campo6 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque;
-                                    var campo7 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca;
-                                    var campo8 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume;
-                                    var campo9 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso;
+                                    //saída
 
 
+                                    tabela = "";
+
+                                    tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-size:10px;">';
                                     tabela = tabela + '<tr>';
-                                    tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
-                                    tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
-                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
-                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' +  campo7 + '</td>';
-                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' +  campo8 + '</td>';
-                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' +  campo9 + '</td>';
+                                    tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Saída</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
+                                    tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Habilitação</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Local de Estoque</b></td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peça</b></td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Volume</b></td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peso</b></td>';
                                     tabela = tabela + '</tr>';
 
-                                }
+                                    for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
 
-                                tabela = tabela + '</table>';
-
-                                $('#tblProdutosSaida').html(tabela);
-
-                                //produtos = "";
-
-                                //produtos = "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr><tr><td colspan=3 style='font-size:10px;'>" +
-                                //    "<table border=1 width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'>" +
-                                //    "<tr>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center; width:230px;'>Produto de Saída</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Produção</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Validade</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Código da Ratreabilidade</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Habilitação</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Local do Estoque</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Peça</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Volume</td>" +
-                                //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Peso</td>" +
-                                //    "</tr>";
+                                        var campo2 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao);
+                                        var campo3 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade);
+                                        var campo4 = dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade == null ? "-" : dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade;
+                                        var campo5 = dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cSgHabilitacao == null ? "-" : dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cSgHabilitacao;
+                                        var campo6 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque;
+                                        var campo7 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca;
+                                        var campo8 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume;
+                                        var campo9 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso;
 
 
-                                //for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
+                                        tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
+                                        tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' + campo7 + '</td>';
+                                        tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' + campo8 + '</td>';
+                                        tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' + campo9 + '</td>';
+                                        tabela = tabela + '</tr>';
 
-                                //    produtos = produtos +
-                                //        "<tr>" +
-                                //        "<td style='padding:5px;'>Produto " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao) + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade) + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cNmHabilitacao + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume + "</td>" +
-                                //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso + "</td>" +
-                                //        "</tr>";
+                                    }
 
-                                //}
+                                    tabela = tabela + '</table>';
 
-                                //produtos = produtos + "</table>";
+                                    $('#tblProdutosSaida').html(tabela);
 
-                                //lista = lista + produtos;
+                                    //produtos = "";
 
-
-
-                                //lista = lista +
-                                //    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
-                                //    "<tr><td colspan=3 style='font-weight:bold; font-size:10px;'>Avaliação do Produto</td></tr>";
-
-                                //lista = lista +
-                                //    "<tr><td colspan=3 style='font-size:10px;'>" +
-                                //    '<table border=0px  cellpadding=1 cellspacing=0 width=100%>' +
-				                //'<tr><td><b>Tarefa</b></td><td><b>Padrão</b></td><td><b>Resultado</b></td></tr>' +
-                                //'';
-
-                                tabela = '<table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">';
-
-                                for (var i = 0; i < 9; i++) {
-
-                                }
+                                    //produtos = "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr><tr><td colspan=3 style='font-size:10px;'>" +
+                                    //    "<table border=1 width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'>" +
+                                    //    "<tr>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center; width:230px;'>Produto de Saída</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Produção</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Validade</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Código da Ratreabilidade</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Habilitação</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Local do Estoque</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Peça</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Volume</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Peso</td>" +
+                                    //    "</tr>";
 
 
+                                    //for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
 
-				                var idObservacao = -1;
+                                    //    produtos = produtos +
+                                    //        "<tr>" +
+                                    //        "<td style='padding:5px;'>Produto " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao) + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade) + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cNmHabilitacao + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso + "</td>" +
+                                    //        "</tr>";
 
-                                for (var i = 0; i < data.length; i++) {
+                                    //}
 
-                                    var valor = '';
-  				                    var intervalo = '';
-				                    var min = '';
-				                    var max = '';
-				                    var unidadeMedida = '';
+                                    //produtos = produtos + "</table>";
 
-				                    if(data[i].ParLevel3_Id == 1316){
-					                    idObservacao = i;
-					                    continue;
-				                    }
+                                    //lista = lista + produtos;
 
-                                    if (data[i].ValueText == "undefined") {
-                                        valor = data[i].Value.toString();
-					                    if( data[i].IntervalMin == "-9999999999999.9000000000"){
-					                        min = '';
-					                    } else {
-					                       min = 'Mín: ' + parseFloat(data[i].IntervalMin).toFixed(0).toString() + '   ';
-                                                               unidadeMedida = data[i].unidadeMedida;
-					                    }
 
-					                    if( data[i].IntervalMax == "9999999999999.9000000000"){
-					                        max = '';
-					                    } else {
-					                       max = 'Máx: ' + parseFloat(data[i].IntervalMax).toFixed(0).toString();
-                                                               unidadeMedida = data[i].unidadeMedida;
-					                    }
 
-					                    if(min == '' && max == ''){
-					                       valor = data[i].ValueText.toString() == "undefined" ? '' : data[i].ValueText.toString();
-					                    }
+                                    //lista = lista +
+                                    //    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
+                                    //    "<tr><td colspan=3 style='font-weight:bold; font-size:10px;'>Avaliação do Produto</td></tr>";
 
-					                intervalo =  min + max + ' ' + unidadeMedida;
-                                                    } else if (data[i].ValueText != "null") {
-                                                        valor = data[i].ValueText.toString() == "undefined" ? '' : data[i].ValueText.toString();
-					                intervalo = '';
+                                    //lista = lista +
+                                    //    "<tr><td colspan=3 style='font-size:10px;'>" +
+                                    //    '<table border=0px  cellpadding=1 cellspacing=0 width=100%>' +
+                                    //'<tr><td><b>Tarefa</b></td><td><b>Padrão</b></td><td><b>Resultado</b></td></tr>' +
+                                    //'';
 
-                                                    } else {
-                                                        valor = data[i].IsConform == "True" ? "Conforme" : "Não Conforme";
-					                intervalo = '';
+                                    tabela = '<table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+
+                                    for (var i = 0; i < 9; i++) {
+
                                     }
 
 
-                                    tabela = tabela + '<tr>';
-                                    tabela = tabela + '<td height= "20px" width= "50%" >' + data[i].ParLevel3_Name + '</td>';
-                                    tabela = tabela + '<td width="25%" align="center">' + intervalo + '</td>';
-                                    tabela = tabela + '<td width="25%" align="center">' + valor + " " + unidadeMedida + '</td>';
-                                    tabela = tabela + '</tr>';
+
+                                    var idObservacao = -1;
+
+                                    for (var i = 0; i < data.length; i++) {
+
+                                        var valor = '';
+                                        var intervalo = '';
+                                        var min = '';
+                                        var max = '';
+                                        var unidadeMedida = '';
+
+                                        if (data[i].ParLevel3_Id == 1316) {
+                                            idObservacao = i;
+                                            continue;
+                                        }
+
+                                        if (data[i].ValueText == "undefined") {
+                                            valor = data[i].Value.toString();
+                                            if (data[i].IntervalMin == "-9999999999999.9000000000") {
+                                                min = '';
+                                            } else {
+                                                min = 'Mín: ' + parseFloat(data[i].IntervalMin).toFixed(0).toString() + '   ';
+                                                unidadeMedida = data[i].unidadeMedida;
+                                            }
+
+                                            if (data[i].IntervalMax == "9999999999999.9000000000") {
+                                                max = '';
+                                            } else {
+                                                max = 'Máx: ' + parseFloat(data[i].IntervalMax).toFixed(0).toString();
+                                                unidadeMedida = data[i].unidadeMedida;
+                                            }
+
+                                            if (min == '' && max == '') {
+                                                valor = data[i].ValueText.toString() == "undefined" ? '' : data[i].ValueText.toString();
+                                            }
+
+                                            intervalo = min + max + ' ' + unidadeMedida;
+                                        } else if (data[i].ValueText != "null") {
+                                            valor = data[i].ValueText.toString() == "undefined" ? '' : data[i].ValueText.toString();
+                                            intervalo = '';
+
+                                        } else {
+                                            valor = data[i].IsConform == "True" ? "Conforme" : "Não Conforme";
+                                            intervalo = '';
+                                        }
 
 
-                         //          lista = lista + "<tr><td style='font-size:10px;'>" +
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height= "20px" width= "50%" >' + data[i].ParLevel3_Name + '</td>';
+                                        tabela = tabela + '<td width="25%" align="center">' + intervalo + '</td>';
+                                        tabela = tabela + '<td width="25%" align="center">' + valor + " " + unidadeMedida + '</td>';
+                                        tabela = tabela + '</tr>';
 
-                         //               data[i].ParLevel3_Name +
-					                    //"</td><td style='font-size:10px;'>" +
-                         //               intervalo  +
-                         //               "</td><td align=center style='font-size:10px;'>" +
-                         //               valor + " " + unidadeMedida +
-                         //               '</td>' +
-                         //               '</tr>';
 
-                                }
+                                        //          lista = lista + "<tr><td style='font-size:10px;'>" +
 
-				                if(idObservacao >= 0){
-    					                //    lista = lista + "<tr><td style='font-size:10px;'>" +
+                                        //               data[i].ParLevel3_Name +
+                                        //"</td><td style='font-size:10px;'>" +
+                                        //               intervalo  +
+                                        //               "</td><td align=center style='font-size:10px;'>" +
+                                        //               valor + " " + unidadeMedida +
+                                        //               '</td>' +
+                                        //               '</tr>';
 
-                         //               data[idObservacao].ParLevel3_Name +
-					                    //"</td><td style='font-size:10px;'>" +
-                         //               ''  +
-                         //               "</td><td align=center style='font-size:10px;'>" +
-                         //               data[idObservacao].Value.toString(); +
-                         //               '</td>' +
-                         //                       '</tr>';
-					var ob = data[idObservacao].ValueText.toString() == "undefined" ? '' : data[idObservacao].ValueText.toString();
+                                    }
+
+                                    if (idObservacao >= 0) {
+                                        //    lista = lista + "<tr><td style='font-size:10px;'>" +
+
+                                        //               data[idObservacao].ParLevel3_Name +
+                                        //"</td><td style='font-size:10px;'>" +
+                                        //               ''  +
+                                        //               "</td><td align=center style='font-size:10px;'>" +
+                                        //               data[idObservacao].Value.toString(); +
+                                        //               '</td>' +
+                                        //                       '</tr>';
+                                        var ob = data[idObservacao].ValueText.toString() == "undefined" ? '' : data[idObservacao].ValueText.toString();
 
                                         tabela = tabela + '<tr>';
                                         tabela = tabela + '<td height= "20px" width= "50%" >' + data[idObservacao].ParLevel3_Name + '</td>';
                                         //tabela = tabela + '<td width="25%" align="center"></td>';
                                         tabela = tabela + '<td colspan="2" width="50%" align="justify"><div style="width: 300px; overflow: auto;word-wrap: break-word;">' + ob + '</div></td>';
                                         tabela = tabela + '</tr>';
-                                }
+                                    }
 
-                                tabela = tabela + '</table>';
+                                    tabela = tabela + '</table>';
 
-                                $('#divTarefas').html(tabela);
+                                    $('#divTarefas').html(tabela);
 
-                                var rodape = '<table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+                                    var rodape = '<table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">';
 
-                                var valorObs = "";
-				if(idObservacao > 0)
-                                    valorObs = data[idObservacao].ValueText.toString() == "undefined" ? '' : data[idObservacao].ValueText.toString();
+                                    var valorObs = "";
+                                    if (idObservacao > 0)
+                                        valorObs = data[idObservacao].ValueText.toString() == "undefined" ? '' : data[idObservacao].ValueText.toString();
 
-                                for (var i = 0; i < calculaRodape(data, dadosReprocessoCabecalho.parReprocessoSaidaOPs, dadosReprocessoCabecalho.parReprocessoEntradaOPs, valorObs); i++) {
-                                    rodape = rodape + '<tr><td height=20px;></td></tr>';
-                                }
+                                    for (var i = 0; i < calculaRodape(data, dadosReprocessoCabecalho.parReprocessoSaidaOPs, dadosReprocessoCabecalho.parReprocessoEntradaOPs, valorObs) ; i++) {
+                                        rodape = rodape + '<tr><td height=20px;></td></tr>';
+                                    }
 
-                                //rodape = rodape + '<tr><td height=20px;>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</td></tr></table>';
+                                    //rodape = rodape + '<tr><td height=20px;>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</td></tr></table>';
 
-                                $('#divRodape').html(rodape);
+                                    $('#divRodape').html(rodape);
 
-                                //------------------------------------------
+                                    //------------------------------------------
 
 
 
-                                var numeroPaginas = (Math.ceil($('#conteudo').height() / 842));
+                                    var numeroPaginas = (Math.ceil($('#conteudo').height() / 842));
 
-                                $('#number').attr('data-content', numeroPaginas);
+                                    $('#number').attr('data-content', numeroPaginas);
 
-                                for (var i = 0; i < numeroPaginas - 1; i++) {
-                                    bottom -= 100;
-                                    botString = bottom.toString();
-                                    var $counter = $('h6.first').clone().removeClass('first');
-                                    $counter.css("bottom", botString + "vh");
-                                    ($counter).insertBefore('.insert');
+                                    for (var i = 0; i < numeroPaginas - 1; i++) {
+                                        bottom -= 100;
+                                        botString = bottom.toString();
+                                        var $counter = $('h6.first').clone().removeClass('first');
+                                        $counter.css("bottom", botString + "vh");
+                                        ($counter).insertBefore('.insert');
 
-                                    var $name = $('h6.secound').clone().removeClass('secound');
-                                    $name.css("bottom", botString + "vh");
-                                    ($name).insertBefore('.insert');
-                                }
+                                        var $name = $('h6.secound').clone().removeClass('secound');
+                                        $name.css("bottom", botString + "vh");
+                                        ($name).insertBefore('.insert');
+                                    }
 
                                 },
                                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -1054,9 +1052,6 @@
                 }
             })
         }
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -1172,8 +1167,11 @@
             formControl.showFullCallendar();
             formControl.showUnit();
             //formControl.showProcesso();
-            closeLeftSidebar();
-        });
-        </script>
 
-    }
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+        });
+    </script>
+
+}
