@@ -10,27 +10,29 @@
 
 }
 
-<div class="page-content" style="min-height: 600px;">
+<div class="page-content-wrapper">
+    <div class="page-content">
 
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
+        <div id="formBodyContent" class="col-xs-12" style="margin-left:auto; margin-right:auto; border">
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="grafico1" @*style="max-height:250px;"*@></div>
+            <div id="grafico1" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico2" @*style="max-height:250px;"*@></div>
+            <div id="grafico2" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico3" @*style="max-height:250px;"*@></div>
+            <div id="grafico3" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico4" @*style="max-height:250px;"*@></div>
+            <div id="grafico4" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico5" @*style="max-height:250px;"*@></div>
+            <div id="grafico5" @*style="max-height:250px;"*@></div>
 
-        @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+        </div>
+
     </div>
-
 </div>
 
 @section Scripts {
@@ -295,7 +297,7 @@
                         name: 'Meta',
                         data: meta,
                         color: '#67D184',
-                        dataLabels: {                           
+                        dataLabels: {
                             enabled: true,
                             color: 'black',
                             align: 'right',
@@ -1548,6 +1550,10 @@
 
             formControl.showFullCallendar();
             //formControl.showUnit();
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
         });
     </script>

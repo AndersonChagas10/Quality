@@ -1,6 +1,7 @@
 ﻿@using DTO
 @{
     ViewBag.Title = Resources.Resource.management;
+    var version = ViewBag.Asembly;
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
     var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
@@ -37,7 +38,7 @@
         width: 450px;
         height: 450px;
         margin: auto;
-        background-image: url('../Imagens/setas.png');
+        /*background-image: url('../Imagens/setas.png');*/
         background-repeat: no-repeat;
         background-position: center;
         background-size: 400px;
@@ -45,52 +46,92 @@
         font-size: small;
     }
 
-    #linha {
-        position: relative;
-        height: 150px;
-        width: 450px;
-    }
-
-    .centro {
-        text-align: center;
-    }
-
-    .circuloPDCA {
-        border-radius: 50% !important;
+    .circuloPDCA, .seta {
         display: inline-block;
         cursor: pointer;
-        background-color: yellow;
         width: 150px;
         height: 150px !important;
-        text-align: center;
         font-weight: bold;
         color: #333;
+        background-repeat:no-repeat;
+        background-size:cover;
+        text-align:center;
+
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        padding:10px;
     }
 
+    .circuloPDCA, .circuloPDCA:focus{
+        outline:none !important;
+        border-radius: 50% !important;
+    }
+
+    .circuloPDCA p{
+        text-align:center;
+        display: block;
+    }
+    
+
     #circulo1Plan {
-        background-color: #e5e498;
-        padding-top: 60px;
-        height: 90px;
+        background-image: url('../Imagens/P.png');
     }
 
     #circulo2Do {
-        background-color: #9fe598;
-        float: right;
-        padding-top: 50px;
-        height: 100px;
+        background-image: url('../Imagens/D.png');
     }
 
     #circulo3Check {
-        background-color: #e59898;
-        padding-top: 40px;
-        height: 110px;
+        background-image: url('../Imagens/C.png');
     }
 
     #circulo4Action {
-        background-color: #b4bcc5;
-        float: left;
-        padding-top: 60px;
-        height: 90px;
+        background-image: url('../Imagens/A.png');
+    }
+    
+
+    #circulo1Plan:hover, #circulo1Plan:focus {
+        background-color:#f89a1b;
+    }
+
+    #circulo2Do:hover, #circulo2Do:focus {
+        background-color:#99d01d;
+    }
+
+    #circulo3Check:hover, #circulo3Check:focus {
+        background-color:#e94b4b;
+    }
+
+    #circulo4Action:hover, #circulo4Action:focus {
+        background-color:#0abdd5;
+    }
+
+    .seta {
+        background-image: url('../Imagens/seta.png');
+        background-size: 50px 50px;
+        background-position:left bottom;
+    }
+
+    .seta90{
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+        background-position:left bottom;
+    }
+
+    .seta180{
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+        background-position:left bottom;
+    }
+
+    .seta270{
+        -webkit-transform: rotate(270deg);
+        transform: rotate(270deg);
+        background-position:left bottom;
     }
 
     .fundoMenu {
@@ -108,283 +149,153 @@
         z-index: 1;
     }
 
-    .menu {
-        position: relative;
-        height: 290px;
-        width: 290px;
-        margin: auto;
-        top: 85px;
-        border-radius: 20%;
+    .item-menu, .item-sub-menu {
+        height: 30px;
+        padding: 0px;
     }
 
-    .corpoMenuCampos {
-        position: relative;
-        height: 220px;
-        width: 220px;
-        margin-right: auto;
-        margin-left: auto;
-        top: 130px;
-    }
-
-    .menuCampos {
-        position: relative;
-        height: 220px;
-        width: 220px;
-        display: table;
-    }
-
-    #menu1Plan {
-        display: none;
-        top: 60px;
-        z-index: 10;
-    }
-
-    #menu2Do {
-        display: none;
-        right: 45px;
-        z-index: 10;
-    }
-
-        #menu2Do .interno {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: -110px;
-            right: 0;
-            width: 50%;
-            height: 50%;
-            margin: auto;
+        .item-menu a, .item-sub-menu a {
+            display: block;
+            height: 30px;
+            vertical-align: middle;
+            line-height: 30px;
+            padding: 1px 3px 1px 8px;
+            color:#959fae;
+            text-decoration:none;
         }
 
-    #menu3Check {
-        display: none;
-        top: -40px;
-        z-index: 10;
-    }
-
-        #menu3Check .interno {
-            position: absolute;
-            bottom: 0;
+        .item-menu a:hover, .item-sub-menu a:hover {
+            text-decoration:none;
         }
 
-    #menu4Action {
-        display: none;
-        left: 45px;
-        z-index: 10;
-    }
-
-        #menu4Action .interno {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: -110px;
-            right: 0;
-            width: 50%;
-            height: 50%;
-            margin: auto;
+        .item-menu a {
+            display: block;
+            background-color: rgb(44, 53, 66) !important;
         }
 
-
-    .botaoFecharMenu {
-        width: 220px;
-        background-color: #410404;
-        font-size: xx-small;
-        color: #fff;
-        text-align: center;
-        cursor: pointer;
-    }
-
-    /*menu*/
-
-    #divMenu ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        width: 220px;
-        text-align: center;
-    }
-
-        #divMenu ul li {
-            position: relative;
+        .item-menu a:hover {
+            background-color: #404f63 !important;
         }
 
-    #divMenu li ul {
-        position: absolute;
-        left: 220px;
-        top: 0;
-        display: none;
-    }
-
-    #divMenu ul li a {
-        display: block;
-        text-decoration: none;
-        color: #000;
-        background: #eee;
-        padding: 5px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    /* Fix IE. Hide from IE Mac \*/
-    * #divMenu html ul li {
-        float: left;
-    }
-
-        * #divMenu html ul li a {
-            height: 1%;
+        .item-sub-menu a {
+            background-color: #364150 !important;
+            padding-left: 25px;
         }
-    /* End */
 
-    #divMenu li:hover ul {
-        display: block;
-    }
-
-    #divMenu ul li a:hover {
-        text-decoration: none;
-        font-weight: bold;
-        background: #ccc;
-    }
+        .item-sub-menu a:hover {
+            background-color: #3e4b5c !important;
+        }
 
     .under_construction {
         height: 20px;
         width: 20px;
         float: right;
+        margin-top:5px;
+    }
+
+    .popover-content {
+        padding: 0px;
+        width: 200px;
+    }
+    
+    .popover.right .arrow:after {
+        border-right-color: rgb(44, 53, 66);
     }
 </style>
+@*<a class="btn btn-lg btn-danger" role="button" tabindex="0"  data-toggle="popover" data-trigger="focus" title="" data-content="">Dismissible popover</a>*@
 
-<div class="page-content" style="min-height: 525px; padding: 32px;  background-color:#fff;">
+<div class="page-content-wrapper">
+    <div class="page-content" style=" padding-right: 30px;">
 
-    <div id="divMenu">
-
-        <div class="fundoMenu">
-
-            <div id="menu" class="menu">
-
+        <!--Circulo-->
+        <div id="divMenu">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="seta seta270"></div>
+                </div>
+                <div class="col-xs-4">
+                    <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo1Plan" class="circuloPDCA">
+                        <p>@Resources.Resource.planning</p>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="seta"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo4Action" class="circuloPDCA">
+                        @Resources.Resource.chronic_problems_and_anomaly_reports
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                </div>
+                <div class="col-xs-4">
+                    <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo2Do" class="circuloPDCA">
+                        @Resources.Resource.data_collect_execution_and_action_plan
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="seta seta180"></div>
+                </div>
+                <div class="col-xs-4">
+                    <div role="button" tabindex="0" data-toggle="popover" data-trigger="focus" id="circulo3Check" class="circuloPDCA">
+                        @Resources.Resource.result_evaluation_and_deviation_communication
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="seta seta90"></div>
+                </div>
             </div>
 
-        </div>
+            <!--Listagem-->
+            <div id="fundoMenuSuperior">
 
-        <div id="linha" class="centro">
-
-            <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.planning
-
-            </div>
-
-        </div>
-
-        <div id="linha">
-
-            <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.chronic_problems_and_anomaly_reports
-
-            </div>
-
-            <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.data_collect_execution_and_action_plan
-
-            </div>
-
-        </div>
-
-        <div id="linha" class="centro">
-
-            <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
-
-                @Resources.Resource.result_evaluation_and_deviation_communication
-
-            </div>
-
-        </div>
-
-        <div id="fundoMenuSuperior">
-
-            <div class="corpoMenuCampos">
-
-                <div id="menu1Plan" class="menuCampos">
-
-                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
-
-                    <ul id="nav">
-
-                        @*<li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>*@
-
-                        @if (GlobalConfig.Eua)
-                        {
-                            <li><a href="#">@Resources.Resource.general_view_of_the_area <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
-                        }
-                        else
-                        {
-                            <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a></li>
-                        }
-                        <li><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></li>
-                    </ul>
-
+                <div id="menu1Plan">
+                    @if (GlobalConfig.Eua)
+                    {
+                        <div class="col-xs-12 item-menu"><a href="#">@Resources.Resource.general_view_of_the_area <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></div>
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 item-menu"><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a></div>
+                    }
+                    <div class="col-xs-12 item-menu"><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></div>
                 </div>
 
-                <div id="menu2Do" class="menuCampos">
-
-                    <div class="interno">
-
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
-
-                        <ul id="nav">
-
-                            <li>
-                                <a href="#">@Resources.Resource.collection_reports</a>
-                                <a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a>
-
-                                <ul>
-                                    @*<li><a href="#">@Resources.Resource.customization</a></li>*@
-                                    @*<li><a href="#">@Resources.Resource.sgq_using</a></li>*@
-                                    <li><a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a></li>
-                                    @*<li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>*@
-                                </ul>
-                            </li>
-                        </ul>
+                <div id="menu2Do">
+                    <div class="col-xs-12 item-menu">
+                        <a href="#">@Resources.Resource.collection_reports</a>
+                    </div>
+                    <div class="col-xs-12 item-sub-menu">
+                        <a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a>
+                    </div>
+                    <div class="col-xs-12 item-menu">
+                        <a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a>
                     </div>
 
                 </div>
 
-                <div id="menu3Check" class="menuCampos">
-
-                    <div class="interno">
-
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
-
-                        <ul id="nav">
-                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
-                            <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
-                            @*<li><a href="@urlCEP">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>*@
-                            <li><a href="@urlCEP">@Resources.Resource.spc_charts</a></li>
-                            @if (GlobalConfig.Eua)
-                            {
-                                <li><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
-                            }
-                            else
-                            {
-                                <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
-                            }
-                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></li>
-                            <li><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></li>
-                        </ul>
-                    </div>
-
+                <div id="menu3Check">
+                    <div class="col-xs-12 item-menu"><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></div>
+                    <div class="col-xs-12 item-menu"><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></div>
+                    <div class="col-xs-12 item-menu"><a href="@urlCEP">@Resources.Resource.spc_charts</a></div>
+                    @if (GlobalConfig.Eua)
+                    {
+                        <div class="col-xs-12 item-menu"><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></div>
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 item-menu"><a href="@urlScorecard">@Resources.Resource.scorecard</a></div>
+                    }
+                    <div class="col-xs-12 item-menu"><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></div>
+                    <div class="col-xs-12 item-menu"><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></div>
                 </div>
 
-                <div id="menu4Action" class="menuCampos">
-
-                    <div class="interno">
-
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
-
-                        <ul id="nav">
-                            <li><a href="#">@Resources.Resource.recidivism <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
-                        </ul>
-                    </div>
-
+                <div id="menu4Action">
+                    <div class="col-xs-12 item-menu"><a href="#">@Resources.Resource.recidivism <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></div>
                 </div>
 
             </div>
@@ -396,80 +307,67 @@
 </div>
 
 <script type="text/javascript">
-    startList = function () {
-        if (document.all && document.getElementById) {
-            navRoot = document.getElementById("menuDropDown");
-            for (i = 0; i < navRoot.childNodes.length; i++) {
-                node = navRoot.childNodes[i];
-                if (node.nodeName == "LI") {
-                    node.onmouseover = function () {
-                        this.className += " over";
-                    }
-                    node.onmouseout = function () {
-                        this.className = this.className.replace
-                          (" over", "");
-                    }
-                }
+    $(function () {
+        $('#circulo1Plan[data-toggle="popover"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $("#menu1Plan").html();
+                return clone;
             }
-        }
-    }
-    window.onload = startList;
+        }).click(function (e) {
+            e.preventDefault();
+        });
+    });
+
+    $(function () {
+        $('#circulo2Do[data-toggle="popover"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $("#menu2Do").html();
+                return clone;
+            }
+        }).click(function (e) {
+            e.preventDefault();
+        });
+    });
+
+    $(function () {
+        $('#circulo3Check[data-toggle="popover"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $("#menu3Check").html();
+                return clone;
+            }
+        }).click(function (e) {
+            e.preventDefault();
+        });
+    });
+
+    $(function () {
+        $('#circulo4Action[data-toggle="popover"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $("#menu4Action").html();
+                return clone;
+            }
+        }).click(function (e) {
+            e.preventDefault();
+        });
+    });
 </script>
 
 <script>
 
-    function setBgColor(id, color, font) {
+    $(document).ready(function () {
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        closeLeftSidebar();
+    });
 
-        document.getElementById(id).style.backgroundColor = color;
-        document.getElementById(id).style.color = font;
-
-    }
-
-
-    function showHide(id, menu) {
-
-
-        if (document.getElementById(menu).style.display == 'none') {
-
-            document.getElementById(menu).style.display = 'block';
-
-            document.getElementById('circulo1Plan').style.display = 'none';
-            document.getElementById('circulo2Do').style.display = 'none';
-            document.getElementById('circulo3Check').style.display = 'none';
-            document.getElementById('circulo4Action').style.display = 'none';
-
-            document.getElementById('menu1Plan').style.display = 'none';
-            document.getElementById('menu2Do').style.display = 'none';
-            document.getElementById('menu3Check').style.display = 'none';
-            document.getElementById('menu4Action').style.display = 'none';
-
-            document.getElementById('divMenu').style.backgroundImage = 'none';
-
-
-            var meuMenu = 'menu' + id.substring(7, 20);
-
-
-            document.getElementById(id).style.display = 'inline-block';
-            document.getElementById(meuMenu).style.display = 'inline-block';
-
-        } else {
-
-            document.getElementById(menu).style.display = 'none';
-
-            document.getElementById('circulo1Plan').style.display = 'inline-block';
-            document.getElementById('circulo2Do').style.display = 'inline-block';
-            document.getElementById('circulo3Check').style.display = 'inline-block';
-            document.getElementById('circulo4Action').style.display = 'inline-block';
-
-            document.getElementById('menu1Plan').style.display = 'none';
-            document.getElementById('menu2Do').style.display = 'none';
-            document.getElementById('menu3Check').style.display = 'none';
-            document.getElementById('menu4Action').style.display = 'none';
-
-            document.getElementById('divMenu').style.backgroundImage = "url('../Imagens/setas.png')";
-
-        }
-
-    }
+    var version = '@Html.Raw(ViewBag.Asembly)';
 
 </script>
