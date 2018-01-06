@@ -129,8 +129,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCollectionJ
 	)
 GO
 
-____________________________________________________________________
-Inserir Tipo de Projeto e Tema do Projeto
+----------------------------------------------------------------- 06-01-2017 - Renan //Adicionado Tipo de Projeto e Tema do Projeto no PA
 
 create table Pa_TemaProjeto(	
 	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
