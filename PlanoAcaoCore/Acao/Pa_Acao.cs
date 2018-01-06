@@ -113,6 +113,7 @@ namespace PlanoAcaoCore
         public string Regional { get; set; }
 
         public int TipoIndicador { get; set; }
+        public string TipoIndicadorName { get; set; }
 
         public string _QuandoFimData
         {
