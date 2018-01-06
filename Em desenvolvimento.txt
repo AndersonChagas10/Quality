@@ -129,6 +129,9 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCollectionJ
 	)
 GO
 
+____________________________________________________________________
+Inserir Tipo de Projeto e Tema do Projeto
+
 create table Pa_TemaProjeto(	
 	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
