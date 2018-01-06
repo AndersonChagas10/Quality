@@ -551,6 +551,8 @@ LEFT JOIN Pa_Dimensao DIME
                         if (k.QuantoCusta > 0)
                             k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
 
+
+
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
