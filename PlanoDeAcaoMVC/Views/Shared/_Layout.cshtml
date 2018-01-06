@@ -294,6 +294,10 @@
                 }
             });
 
+            $(this).find('input.money').each(function (i, e) {
+                $(e).val($(e).val().replace('R$ ', ''));
+            });
+
             //if ($(this).find('.error').length) {
             //    alert("Campos obrigatórios");
             //    return { isValid: '0' }
