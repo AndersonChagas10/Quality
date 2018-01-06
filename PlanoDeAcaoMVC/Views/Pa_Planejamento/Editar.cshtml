@@ -25,6 +25,15 @@
             </tr>
             <tr>
                 <td>
+                    @Html.LabelFor(model => model.TemaProjeto_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.TemaProjeto_Id, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
                     @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                 </td>
                 <td>

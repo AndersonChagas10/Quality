@@ -116,6 +116,8 @@
     <Compile Include="Planejamento\Pa_IndicadoresDeProjeto.cs" />
     <Compile Include="Acao\Pa_Problema_Desvio.cs" />
     <Compile Include="Planejamento\Pa_Objetivo.cs" />
+    <Compile Include="Planejamento\Pa_TemaProjeto.cs" />
+    <Compile Include="Planejamento\Pa_TipoProjeto.cs" />
     <Compile Include="Planejamento\Pa_UnidadeMedida.cs" />
     <Compile Include="Planejamento\Pa_ObjetivoGeral.cs" />
     <Compile Include="Planejamento\Pa_Iniciativas.cs" />
