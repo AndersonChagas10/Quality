@@ -3027,8 +3027,7 @@
             $.get(urlEditAcao, { id: data.Acao.Id },
                 function (r) {
                     var acao = data.Acao;
-
-
+                    
                     $('#Header').html("Editar Ação");
                     //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
                     $('#modalLindo').find('.modal-footer button').hide();
@@ -3041,7 +3040,9 @@
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
-                    $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                    setTimeout(function () {
+                        $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                    }, 1);
 
                     $(r).attr("id", "formEditAcao")
 
