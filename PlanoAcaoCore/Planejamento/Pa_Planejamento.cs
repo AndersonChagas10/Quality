@@ -268,7 +268,38 @@ namespace PlanoAcaoCore
             {
 
                 return $@"SELECT
-	Pl.*
+	Pl.Id
+   ,Pl.AddDate
+   ,Pl.AlterDate
+   ,Pl.Diretoria_Id
+   ,Pl.Gerencia_Id
+   ,Pl.Coordenacao_Id
+   ,Pl.Missao_Id
+   ,Pl.Visao_Id
+   ,Pl.TemaAssunto_Id
+   ,Pl.Indicadores_Id
+   ,Pl.Iniciativa_Id
+   ,Pl.ObjetivoGerencial_Id
+   ,Pl.Dimensao
+   ,Pl.Objetivo
+   ,Pl.ValorDe
+   ,Pl.ValorPara
+   ,Pl.DataInicio
+   ,Pl.DataFim
+   ,Pl.[Order]
+   ,Pl.Dimensao_Id
+   ,Pl.Objetivo_Id
+   ,Pl.IndicadoresDiretriz_Id
+   ,Pl.IndicadoresDeProjeto_Id
+   ,Pl.Estrategico_Id
+   ,Pl.Responsavel_Diretriz
+   ,Pl.Responsavel_Projeto
+   ,Pl.UnidadeDeMedida_Id
+   ,Pl.IsTatico
+   ,Pl.Tatico_Id
+   ,Pl.IsFta
+   ,Pl.TemaProjeto_Id
+   ,Pl.TipoProjeto_Id
    ,INI.Name AS Inciativa
    ,DIR.Name AS Diretoria
    ,GER.Name AS Gerencia
@@ -277,7 +308,7 @@ namespace PlanoAcaoCore
    ,VIS.Name AS Visao
    ,TEM.Name AS TemaAssunto
    ,TEMPROJ.Name AS TemaProjeto
-   ,TIPPROJ.Name as TipoProjeto
+   ,TIPPROJ.Name AS TipoProjeto
    ,INDIC.Name AS IndicadoresDiretriz
    ,INDICProj.Name AS IndicadoresDeProjeto
    ,OBJT.Name AS ObjetivoGerencial
@@ -322,7 +353,38 @@ FROM (SELECT
 		ON Pl1.Id = Pl2.Estrategico_Id
 	UNION ALL
 	SELECT DISTINCT
-		pl1.*
+		pl1.Id
+	   ,pl1.AddDate
+	   ,pl1.AlterDate
+	   ,pl1.Diretoria_Id
+	   ,pl1.Gerencia_Id
+	   ,pl1.Coordenacao_Id
+	   ,pl1.Missao_Id
+	   ,pl1.Visao_Id
+	   ,pl1.TemaAssunto_Id
+	   ,pl1.Indicadores_Id
+	   ,pl1.Iniciativa_Id
+	   ,pl1.ObjetivoGerencial_Id
+	   ,pl1.Dimensao
+	   ,pl1.Objetivo
+	   ,pl1.ValorDe
+	   ,pl1.ValorPara
+	   ,pl1.DataInicio
+	   ,pl1.DataFim
+	   ,pl1.[Order]
+	   ,pl1.Dimensao_Id
+	   ,pl1.Objetivo_Id
+	   ,pl1.IndicadoresDiretriz_Id
+	   ,pl1.IndicadoresDeProjeto_Id
+	   ,pl1.Estrategico_Id
+	   ,pl1.Responsavel_Diretriz
+	   ,pl1.Responsavel_Projeto
+	   ,pl1.UnidadeDeMedida_Id
+	   ,pl1.IsTatico
+	   ,pl1.Tatico_Id
+	   ,pl1.IsFta
+	   ,pl1.TemaProjeto_Id
+	   ,pl1.TipoProjeto_Id
 	FROM Pa_Planejamento Pl1
 	LEFT JOIN Pa_Planejamento Pl2
 		ON Pl1.Id = Pl2.Estrategico_Id
