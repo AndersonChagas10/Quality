@@ -1304,7 +1304,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
-                    
+
                     DdlChangeEstrategico();
                 }
                 InitDatePiker();
@@ -1787,7 +1787,7 @@
             //        $($('[id=adicionar]')[c]).click();
             //});
 
-            //$('#Edit').show();           
+            //$('#Edit').show();
             InitDatePiker();
 
             MoneyMask('R$ ');
@@ -1807,13 +1807,17 @@
                 form.find('.IndicadorOutros').hide();
                 form.find('.IndicadorSgq').hide();
 
-                if (valor == 1) {
+                if (valor == 1) {                   
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
+                    $('#Pa_IndicadorSgqAcao_Id').select2();
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
-                    form.find('.ProbDesv').show();
+                    form.find('.ProbDesv').show(); 
+                    $('#Level1Id').select2();
+                    $('#Level2Id').select2();
+                    $('#Level3Id').select2();
                 }
 
             });
@@ -1838,25 +1842,25 @@
 
         //Verificando
         function SalvarAcao() {
-            console.log(SalvarAcao);
+            //console.log(SalvarAcao);
             var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
                 listaAcoes.push(SalvarAcaoAvulsa(o));
             });
 
             let isValid = $('.Acao').not(':first').find('.error').length == 0
-            if(listaAcoes[0] != undefined && isValid ){
-                //if(listaAcoes[0].isValid == '0') { return }
+
+            if (ValidaAcao(listaAcoes) && isValid) {
+
                 $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
-                    if(listaAcoes[0].isValid == '0') { return }
+
+                    if (listaAcoes[0].isValid == '0') { return }
+
                     $.post(urlGetPlanejamentoAcao, {}, function (r) {
 
-                        //if (counter == 1 && !jaLiberouCallback) {
                         jaLiberouCallback = true;
                         $('#modalLindo').modal('hide');
                         openMessageModal('Registro salvo com sucesso!', '');
-                        //}
-                        //GerarTabela(r);
                         $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
@@ -1875,6 +1879,15 @@
             }else
                 alert("Campos obrigatórios");
 
+        }
+
+        function ValidaAcao(listaAcoes) {
+
+            if (listaAcoes[0] != undefined) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function SalvarAcaoEditada() {
@@ -1922,7 +1935,7 @@
         var jaLiberouCallback = false;
         //Verificando
         function SalvarAcaoAvulsa(o, isEdit) {
-            console.log(SalvarAcaoAvulsa);
+            //console.log(SalvarAcaoAvulsa);
             var sendObj = $(o).serializeObject();
 
             if (isEdit == undefined && sendObj != undefined) {
@@ -2791,7 +2804,7 @@
                         before = before.slice(2, before.length)
                         console.log(before)
 
-                        
+
 
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
@@ -3059,7 +3072,7 @@
 
                                 });
                             });
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();                           
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                         });
                     });
                     //HideForOperacional();
@@ -3074,7 +3087,7 @@
             $.get(urlEditAcao, { id: data.Acao.Id },
                 function (r) {
                     var acao = data.Acao;
-                    
+
                     $('#Header').html("Editar Ação");
                     //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
                     $('#modalLindo').find('.modal-footer button').hide();
@@ -3106,7 +3119,7 @@
 
                     $('.money').each(function () {
                         $(this).maskMoney('mask', $(this).val());
-                    })  
+                    })
 
                     $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
                     $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
