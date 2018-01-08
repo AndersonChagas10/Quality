@@ -28,15 +28,15 @@ namespace ADOFactory
             connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
             connectionString.InitialCatalog = catalog;//"SgqDbDev";
 
-            //if (!string.IsNullOrEmpty(password))
-            //{
-            connectionString.Password = password;//"1qazmko0";
-            connectionString.UserID = user;// "sa";
-            //}
-            //else
-            //{
-            //    connectionString.IntegratedSecurity = true;
-            //}
+            if (!string.IsNullOrEmpty(password))
+            {
+                connectionString.Password = password;//"1qazmko0";
+                connectionString.UserID = user;// "sa";
+            }
+            else
+            {
+                connectionString.IntegratedSecurity = true;
+            }
 
             try
             {
