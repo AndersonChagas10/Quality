@@ -19,6 +19,9 @@ function GetDataTable(campo, filtro) {
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
         dados = r;
+
+        dados = $.grep(dados, function (a, b) { return a.Acao._Quem != 'gabrielnunes-mtz' }); //tira gabriel
+
         //https://grtsolucoes.atlassian.net/browse/JBS-110
         let usuarioIscorporativo = false//getRole("Admin");
 
@@ -119,8 +122,8 @@ function MountDataTable(json) {
             { "mData": "Acao._CausaGenerica" },
             { "mData": "Acao._GrupoCausa" },
             { "mData": "Acao._ContramedidaGenerica" },
-            { "mData": "Acao.ContramedidaEspecifica" },
             { "mData": "Acao.CausaEspecifica" },
+            { "mData": "Acao.ContramedidaEspecifica" },
             { "mData": "Acao._Quem" },
             { "mData": "Acao._QuandoInicio" },
             { "mData": "Acao._QuandoFim" },
@@ -925,44 +928,44 @@ var json = FiltraColunas(dados, ["Diretoria",
 
 //            switch (day.substring(3, 5)) {
 //                case '01':
-//                    retorno = "Janeiro";
+//                    retorno = "Jan";
 //                    break;
 //                case '02':
-//                    retorno = "Fevereiro";
+//                    retorno = "Fev";
 //                    break;
 //                case '03':
-//                    retorno = "Março";
+//                    retorno = "Mar";
 //                    break;
 //                case '04':
-//                    retorno =  "Abril";
+//                    retorno =  "Abr";
 //                    break;
 //                case '05':
-//                    retorno =  "Maio";
+//                    retorno =  "Mai";
 //                    break;
 //                case '06':
-//                    retorno =  "Junho";
+//                    retorno =  "Jun";
 //                    break;
 //                case '07':
-//                    retorno =  "Julho";
+//                    retorno =  "Jul";
 //                    break;
 //                case '08':
-//                    retorno =  "Agosto";
+//                    retorno =  "Ago";
 //                    break;
 //                case '09':
-//                    retorno =  "Setembro";
+//                    retorno =  "Set";
 //                    break;
 //                case '10':
-//                    retorno =  "Outubro";
+//                    retorno =  "Out";
 //                    break;
 //                case '11':
-//                    retorno =  "Novembro";
+//                    retorno =  "Nov";
 //                    break;
 //                case '12':
-//                    retorno =  "Dezembro";
+//                    retorno =  "Dez";
 //                    break;
 //            }
 
-//            return retorno + ' de ' + day.substring(6, 10);
+//            return retorno + '-' + day.substring(6, 10);
 //        })
 
 //        let serieArrFinal = [{

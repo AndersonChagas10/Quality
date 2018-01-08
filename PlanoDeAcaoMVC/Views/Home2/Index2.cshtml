@@ -948,7 +948,32 @@
             var data = new Date();
             data = new Date(data.getFullYear(), data.getMonth(), 1);
 
-            data.setMonth(data.getMonth() - 11);
+            data.setMonth(data.getMonth() - 23);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
 
             categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
             data.setMonth(data.getMonth() + 1);
@@ -1046,44 +1071,44 @@
 
                 switch (categoriesArr[i].getMonth()) {
                     case 0:
-                        retorno = "Janeiro";
+                        retorno = "Jan";
                         break;
                     case 1:
-                        retorno = "Fevereiro";
+                        retorno = "Fev";
                         break;
                     case 2:
-                        retorno = "Março";
+                        retorno = "Mar";
                         break;
                     case 3:
-                        retorno = "Abril";
+                        retorno = "Abr";
                         break;
                     case 4:
-                        retorno = "Maio";
+                        retorno = "Mai";
                         break;
                     case 5:
-                        retorno = "Junho";
+                        retorno = "Jun";
                         break;
                     case 6:
-                        retorno = "Julho";
+                        retorno = "Jul";
                         break;
                     case 7:
-                        retorno = "Agosto";
+                        retorno = "Ago";
                         break;
                     case 8:
-                        retorno = "Setembro";
+                        retorno = "Set";
                         break;
                     case 9:
-                        retorno = "Outubro";
+                        retorno = "Out";
                         break;
                     case 10:
-                        retorno = "Novembro";
+                        retorno = "Nov";
                         break;
                     case 11:
-                        retorno = "Dezembro";
+                        retorno = "Dez";
                         break;
                 }
 
-                categoriesArr[i] = retorno + ' de ' + categoriesArr[i].getFullYear();
+                categoriesArr[i] = retorno + '-' + categoriesArr[i].getFullYear();
 
             }
 
