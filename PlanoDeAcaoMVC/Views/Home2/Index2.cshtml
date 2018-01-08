@@ -2765,6 +2765,9 @@
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
                         console.log(before)
+
+                        
+
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
@@ -3078,7 +3081,10 @@
 
                     $('.money').each(function () {
                         $(this).maskMoney('mask', $(this).val());
-                    })               
+                    })  
+
+                    $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
+                    $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
                 });
         }
 

@@ -61,6 +61,7 @@ function GetDataTable(campo, filtro) {
         json = dados;
 
         MountDataTable(json);
+        $('#spanSubTable').text('TODAS AS TAREFAS PARA FILTRAR');
 
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
@@ -1126,7 +1127,19 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
 
     if (seriesArr[0] != undefined) {
 
-        if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
+        var semDados = false;
+
+        for (var h = 0; h < seriesArr.length; h++) {
+            if (seriesArr[h].data.length == 1 && seriesArr[h].data[0] == 0) {
+                semDados = false;
+            } else {
+                semDados = true;
+                break;
+            }
+
+        }
+
+        if (!semDados) {
             if (id == 'panel5') {
                 $('#semDados1').show();
                 return;
@@ -1325,6 +1338,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 var propArrayC = categoriesFilter.split('.');
                 if (propArrayC.length == 2) {
                     retornoCategorias = e[propArrayC[0]][propArrayC[1]];
+                    console.log(retornoCategorias);
                 } else {
                     retornoCategorias = e[categoriesFilter];
                 }
