@@ -1782,13 +1782,17 @@
                 form.find('.IndicadorOutros').hide();
                 form.find('.IndicadorSgq').hide();
 
-                if (valor == 1) {
+                if (valor == 1) {                   
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
+                    $('#Pa_IndicadorSgqAcao_Id').select2();
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
-                    form.find('.ProbDesv').show();
+                    form.find('.ProbDesv').show(); 
+                    $('#Level1Id').select2();
+                    $('#Level2Id').select2();
+                    $('#Level3Id').select2();
                 }
 
             });
@@ -1813,7 +1817,7 @@
 
         //Verificando
         function SalvarAcao() {
-            console.log(SalvarAcao);
+            //console.log(SalvarAcao);
             var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
                 listaAcoes.push(SalvarAcaoAvulsa(o));
@@ -1821,7 +1825,7 @@
 
             let isValid = $('.Acao').not(':first').find('.error').length == 0
 
-            if (ValidaAcao(listaAcoes)) {
+            if (ValidaAcao(listaAcoes) && isValid) {
 
                 $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
 
@@ -1854,7 +1858,7 @@
 
         function ValidaAcao(listaAcoes) {
 
-            if (listaAcoes[0] != undefined && isValid) {
+            if (listaAcoes[0] != undefined) {
                 return true;
             } else {
                 return false;
@@ -1906,7 +1910,7 @@
         var jaLiberouCallback = false;
         //Verificando
         function SalvarAcaoAvulsa(o, isEdit) {
-            console.log(SalvarAcaoAvulsa);
+            //console.log(SalvarAcaoAvulsa);
             var sendObj = $(o).serializeObject();
 
             if (isEdit == undefined && sendObj != undefined) {
