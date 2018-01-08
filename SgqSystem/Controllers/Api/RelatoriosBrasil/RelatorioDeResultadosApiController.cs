@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using SgqSystem.ViewModels;
@@ -19,15 +20,74 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         List<RetornoGenerico> retorno2;
         List<RetornoGenerico> retorno3;
         List<RetornoGenerico> retorno4;
-        
+        //List<RetornoLogJson> logJson;
+
 
         public RelatorioDeResultadosApiController()
         {
             retorno = new List<RelatorioResultadosPeriodo>();
             retorno2 = new List<RetornoGenerico>();
             retorno3 = new List<RetornoGenerico>();
-            retorno4 = new List<RetornoGenerico>();          
+            retorno4 = new List<RetornoGenerico>();
+            //logJson = new List<RetornoLogJson>();
         }
+
+        //[HttpPost]
+        //[Route("listaSugestoes")]
+        //public List<RetornoSugestao> ListaSugestoes([FromBody] FormularioParaRelatorioViewModel form)
+        //{
+        //    var script = "";
+
+        //    script += @"SELECT 
+	       //         AddDate
+	       //         ,REPLACE(CAST(result AS VARCHAR(8000)),'""','''') AS result
+	       //         ,callback
+        //            FROM logJson
+        //            where callback like 'Relatorio_Nao_Conformidade' and AddDate >= '2017-07-27 11:45:31.4432595'
+        //            order by 1 desc
+        //            ";
+
+
+        //    using (var db = new SgqDbDevEntities())
+        //    {
+        //    logJson = db.Database.SqlQuery<RetornoLogJson>(script).ToList();
+        //    }
+
+        //    dynamic recebeLista = new List<RetornoSugestao>();
+
+
+        //    List<RetornoSugestao> montaLista;
+        //    montaLista = new List<RetornoSugestao>();
+
+        //    var Data = "";
+
+        //    foreach (var lista in logJson)
+        //    {
+        //        recebeLista = JsonConvert.DeserializeObject<RetornoSugestao>(lista.result);
+
+        //        recebeLista.DataConsulta = lista.AddDate.Value;
+
+        //        if (recebeLista.DataInicio_ == null)
+        //        {
+        //            recebeLista.DataInicio_ = recebeLista.DataInicio.Value.ToString("yyyy-MM-dd");
+        //        }
+        //        else
+        //        {
+        //            recebeLista.DataInicio_.Value.ToString("");
+        //        }
+
+        //        Data = recebeLista.DataInicio.AsString;
+
+        //        recebeLista.DataInicio_ = Data.ToString();
+        //        recebeLista.Fim_ = recebeLista.Fim.AsDateTime;
+
+        //        montaLista.Add(recebeLista);
+        //    }
+
+
+        //    return montaLista;
+        //}
+
 
         [HttpPost]
         [Route("listaResultadosPeriodoTabela")]
@@ -4363,6 +4423,8 @@ SELECT
    ,SUM(Meta) AS Meta
    ,SUM(nc) AS nc
    ,SUM(av) av
+   ,SUM(ncComPeso) AS ncComPeso
+   ,SUM(avComPeso) AS avComPeso
    ,[date]
 FROM (SELECT
 		level1_Id
@@ -4378,6 +4440,8 @@ FROM (SELECT
 		END) AS Meta
 	   ,NcSemPeso AS nc
 	   ,AvSemPeso AS av
+	   ,Nc AS ncComPeso
+	   ,Av AS avComPeso
 	   ,Data AS date
 	FROM (SELECT
 			*
@@ -4537,6 +4601,17 @@ DROP TABLE #AMOSTRATIPO4a  ";
         {
             var where1 = "";
 
+            var whereStatus = "";
+
+            if (form.statusIndicador == 1)
+            {
+                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 0";
+            }
+            else if (form.statusIndicador == 2)
+            {
+                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
+            }
+
             if (form.unitId > 0)
             {
                 where1 += " AND C2.UnitId = @UNIDADE ";
@@ -4614,6 +4689,14 @@ SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
  AM INT NULL,   
  DEF_AM INT NULL  
  )
+
+ DECLARE @P4 INT = ISNULL((SELECT TOP 1 1 FROM PARLEVEL1 WHERE ParConsolidationType_Id = 4 AND IsActive = 1),0)
+
+
+ IF (@P4 = 1) -- Pergunta se existe algum indicador ativo do tipo de consolidação 4
+	
+	BEGIN
+
 INSERT INTO #AMOSTRATIPO4a
 	SELECT
 		UNIDADE
@@ -4647,7 +4730,9 @@ INSERT INTO #AMOSTRATIPO4a
 				,CAST(CollectionDate AS DATE)) TAB
 	GROUP BY UNIDADE
 			,INDICADOR
-  
+
+END 
+
  DECLARE @RESS INT
 SELECT
 	@RESS =
@@ -4667,6 +4752,32 @@ FROM (SELECT
 	GROUP BY C2.ID) NA
 WHERE NA = 2
 
+                SELECT
+					IND.ID A1
+				   ,IND.NAME A2
+				   ,'Tendência do Indicador ' + IND.NAME AS A3
+				   ,CL1.UnitId A4
+				   ,UNI.NAME A5
+				   ,0 AS A6
+				INTO #NOMES
+				FROM (SELECT
+						CL1.UnitId,CL1.ParLevel1_Id
+					FROM ConsolidationLevel1 CL1 (nolock)
+					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+					AND UnitId <> 11514) CL1
+				LEFT JOIN ParLevel1 IND (NOLOCK)
+					ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
+					AND IND.Id <> 43 
+				LEFT JOIN ParCompany UNI (NOLOCK)
+					ON UNI.Id = CL1.UnitId
+				LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
+					ON A4.UNIDADE = UNI.Id
+					AND A4.INDICADOR = IND.ID
+				GROUP BY IND.ID
+						,IND.NAME
+						,CL1.UnitId
+						,UNI.NAME
+
 SELECT
 	0 as level1Id
    ,'' as Level1Name
@@ -4677,7 +4788,6 @@ SELECT
    ,SUM(Meta) AS Meta
    ,SUM(nc) AS nc
    ,SUM(av) av
-
    ,[date]
    ,SUM(ncComPeso) ncComPeso
    ,SUM(avComPeso) avComPeso
@@ -4699,7 +4809,18 @@ FROM (SELECT
 	   ,Av AS avComPeso
 	   ,Data AS date
 	FROM (SELECT
-			*
+			S1.level1_Id
+			,S1.Level1Name
+			,S1.ChartTitle
+			,S1.Unidade_Id
+			,S1.Unidade
+			,S1.IsRuleConformity
+			,S1.NCSemPeso
+			,S1.AvSemPeso
+			,S1.NC 
+			,S1.Av 
+			,S1.Data
+			,S1.Meta
 		   ,CASE
 				WHEN AV IS NULL OR
 					AV = 0 THEN 0
@@ -4794,8 +4915,8 @@ FROM (SELECT
 			   ,DD.Data_ AS Data
 			FROM @ListaDatas_ DD
 			LEFT JOIN (SELECT
-					*
-				FROM ConsolidationLevel1(nolock)
+					CL1.UnitId,CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.WeiEvaluation,CL1.EvaluatedResult,CL1.EvaluateTotal,CL1.WeiDefects,CL1.DefectsResult,CL1.DefectsTotal
+				FROM ConsolidationLevel1 CL1 (nolock)
 				WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 				AND UnitId <> 12341614) CL1
 				ON DD.Data_ = CL1.ConsolidationDate
@@ -4809,30 +4930,7 @@ FROM (SELECT
 			LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
 				ON A4.UNIDADE = UNI.Id
 				AND A4.INDICADOR = IND.ID
-			LEFT JOIN (SELECT
-					IND.ID A1
-				   ,IND.NAME A2
-				   ,'Tendência do Indicador ' + IND.NAME AS A3
-				   ,CL1.UnitId A4
-				   ,UNI.NAME A5
-				   ,0 AS A6
-				FROM (SELECT
-						*
-					FROM ConsolidationLevel1(nolock)
-					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-					AND UnitId <> 11514) CL1
-				LEFT JOIN ParLevel1 IND (NOLOCK)
-					ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
-					AND IND.Id <> 43 
-				LEFT JOIN ParCompany UNI (NOLOCK)
-					ON UNI.Id = CL1.UnitId
-				LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
-					ON A4.UNIDADE = UNI.Id
-					AND A4.INDICADOR = IND.ID
-				GROUP BY IND.ID
-						,IND.NAME
-						,CL1.UnitId
-						,UNI.NAME) NOMES
+			LEFT JOIN #NOMES NOMES
 				ON 1 = 1
 				AND (NOMES.A1 = CL1.ParLevel1_Id
 				AND NOMES.A4 = UNI.ID)
@@ -4840,12 +4938,15 @@ FROM (SELECT
 	WHERE 1 = 1
 	" + where3 + @"
     " + where4 + @"
+    " + whereStatus + @"
+
 ) ff
 GROUP BY ChartTitle		
 		,[date]
 --having sum(av) is not null or sum(nc) is not null
 ORDER BY 10
-DROP TABLE #AMOSTRATIPO4a  ";
+DROP TABLE #AMOSTRATIPO4a
+DROP TABLE #NOMES ";
         }
 
         [HttpPost]
@@ -5303,6 +5404,74 @@ DROP TABLE #AMOSTRATIPO4a  ";
         }
     }
 
-   
+    //public class RetornoSugestao
+    //{
+
+    //    public string Unidade { get; set; }
+    //    public string UnidadeNome { get; set; }
+    //    public DateTime? DataInicio_ { get; set; }
+    //    public string DataInicio { get; set; }
+    //    //{
+    //    //    get
+    //    //    {
+
+    //    //        if (DataInicio_.HasValue)
+    //    //        {
+    //    //            return DataInicio_.Value.ToString("dd/MM/yyyy HH:mm:ss");
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            return string.Empty;
+    //    //        }
+    //    //    }
+    //    //}
+    //    public DateTime? DataFim_ { get; set; }
+    //    public string DataFim { get; set; }
+    //    //{
+    //    //    get
+    //    //    {
+    //    //        if (DataFim_.HasValue)
+    //    //        {
+    //    //            return DataFim_.Value.ToString("dd/MM/yyyy HH:mm:ss");
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            return string.Empty;
+    //    //        }
+    //    //    }
+    //    //}
+    //    public string Indicador { get; set; }
+    //    public string IndicadorNome { get; set; }
+    //    public string Monitoramento { get; set; }
+    //    public string MonitoramentoNome { get; set; }
+    //    public string Tarefa { get; set; }
+    //    public string TarefaNome { get; set; }
+    //    public string Usuario { get; set; }
+    //    public string UsuarioNome { get; set; }
+    //    public DateTime? DataConsulta { get; set; }
+    //}
+
+    //public class RetornoLogJson
+    //{
+    //    public DateTime? AddDate { get; set; }
+    //    public string result { get; set; }
+    //    public string callback { get; set; }
+    //}
+
+    /*
+     
+	"Unidade" : "37"
+	"UnidadeNome" : "Pontes e Lacerda"
+	"DataInicio" :	"03/04/2017 00:00:00"
+	"DataFim" : "03/04/2017 00:00:00"
+	"Indicador" : "0"
+	"IndicadorNome" : ""
+	"Monitoramento" : "0"
+	"MonitoramentoNome" : ""
+	"Tarefa" : "0"
+	"TarefaNome" : ""
+	"Usuario" : "1"
+	"UsuarioNome": "camilaprata-mtz"
+     */
 
 }
