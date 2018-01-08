@@ -140,16 +140,21 @@ namespace PlanoDeAcaoMVC.Controllers
             Pa_Acao model;
             using (var dbADO = ConexaoADO())
             {
-                dynamic obj2 = dbADO.QueryNinjaADO("select * from pa_acao where id = " + id).FirstOrDefault();
-                int quemId = obj2.Quem_Id;
-                var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
-                model = Mapper.Map<Pa_Acao>(obj);
-                model.Quem_Id = obj2.Quem_Id;
-                if (quemId > 0)
+                //dynamic obj2 = dbADO.QueryNinjaADO("select * from pa_acao where id = " + id).FirstOrDefault();
+
+                //int quemId = obj2.Quem_Id;
+                //var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
+                //model = Mapper.Map<Pa_Acao>(obj);
+                //model.Quem_Id = obj2.Quem_Id;
+
+                model = Pa_Acao.Get(id);
+
+                if (model.Quem_Id > 0)
                 {
-                    dynamic quem = dbADO.QueryNinjaADO("select * from pa_quem where id = " + quemId).FirstOrDefault();
+                    dynamic quem = dbADO.QueryNinjaADO("select * from pa_quem where id = " + model.Quem_Id).FirstOrDefault();
                     model._Quem = quem.Name;
                 }
+
             }
             //var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
             //var model = Mapper.Map<Pa_Acao>(obj);
