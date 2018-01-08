@@ -171,7 +171,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                         emailTo = "gabriel@grtsolucoes.com.br";
                         title += " (Destinatário sem Email)" + paUser.Name;
                     }
-                    //emailTo = "celso.bernar@grtsolucoes.com.br";
+                    emailTo = "renan.santini@grtsolucoes.com.br";
                     CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
                 }
         }
