@@ -1267,7 +1267,7 @@ function MapeiaValorParaHC(array, prop, isInteger) {
             if (propArray[1] == "TipoIndicador") {
                 var value = o[propArray[0]][propArray[1]];
                 if (value == 0)
-                    value = "0";
+                    value = "Sem planejamento operacional";
                 else if (value == 1)
                     value = "Diretrizes";
                 else if (value == 2)
@@ -1349,18 +1349,18 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (propArrayC[1] == "TipoIndicador") {
                     var value = retornoCategorias;
                     if (value == 0)
-                        value = "0";
+                        value = "Sem planejamento operacional";
                     else if (value == 1)
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoSeries = value;
+                    retornoCategorias = value;
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
                     var value = retornoSeries;
                     if (value == 0)
-                        value = "0";
+                        value = "Sem planejamento operacional";
                     else if (value == 1)
                         value = "Diretrizes";
                     else if (value == 2)
@@ -1649,7 +1649,7 @@ function distinctFilter(lista, filtro, selectId) {
             $('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador"
         ) {
             if (value == 0)
-                value = "0";
+                value = "Sem planejamento operacional";
             else if (value == 1)
                 value = "Diretrizes";
             else if (value == 2)
