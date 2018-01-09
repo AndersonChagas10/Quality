@@ -1963,6 +1963,8 @@ function filterPieForDataTable(name) {
 //monta arrau com o filtro do status passado
 function FiltraColunasOfClickPie(array, Atribute, name) {
 
+    Atribute = Atribute == "(vazio)" ? null : Atribute;
+
     let novoArr = [];
 
     array.forEach(function (o, c) {
@@ -2005,6 +2007,8 @@ function filterBar1ForDataTable(name, category, idPanel) {
 }
 
 function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
+
+    Atribute = Atribute == "(vazio)" ? null : Atribute;
 
     let novoArr = [];
     if (categoryY != "" && categoryY != "" && Atribute != "") {
