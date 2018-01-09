@@ -165,6 +165,10 @@
             .semDados h1 {
                 margin-left: 40px;
             }
+
+        /*#body {
+            overflow: auto;
+        }*/
     </style>
 
     <style>
@@ -1356,7 +1360,7 @@
 
         //Verificando
         function SalvarPlanejamento(form) {
-            console.log(SalvarPlanejamento);
+            //console.log(SalvarPlanejamento);
 
             if (!isClickedTaticoVinculado){
                 isClickedEstrategico = true;
@@ -1431,7 +1435,7 @@
 
         //Verificando
         function EditarPlanejamento(model) {
-            console.log(EditarPlanejamento);
+            //console.log(EditarPlanejamento);
             var title = $('#Header').html();
             var title2 = " > Novo"
             if (isTaticoClicked) {
@@ -1592,7 +1596,7 @@
             changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function() {
             })
 
-            console.log('DdlChangeTatico',model)
+            //console.log('DdlChangeTatico',model)
 
             //changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
             //    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'ObjetivoGerencial_Id', function (r) {
@@ -1728,7 +1732,7 @@
 
         //Verificando
         function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
-            console.log(ModalAcao);
+            //console.log(ModalAcao);
             //if (!(planejamentoCorrentId > 0)) {
             //    BuscarPlanejamentos();
             //    return;
@@ -1787,7 +1791,7 @@
 
         //Verificando
         function EditarAcao(html, data) {
-            console.log(EditarAcao);
+            //console.log(EditarAcao);
             var acao = data.Acao;
 
             $('#modalLindo').modal();
@@ -1832,14 +1836,14 @@
                 form.find('.IndicadorOutros').hide();
                 form.find('.IndicadorSgq').hide();
 
-                if (valor == 1) {                   
+                if (valor == 1) {
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
                     $('#Pa_IndicadorSgqAcao_Id').select2();
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
-                    form.find('.ProbDesv').show(); 
+                    form.find('.ProbDesv').show();
                     $('#Level1Id').select2();
                     $('#Level2Id').select2();
                     $('#Level3Id').select2();
@@ -1916,7 +1920,7 @@
         }
 
         function SalvarAcaoEditada() {
-            console.log("SalvarAcaoEditada")
+            //console.log("SalvarAcaoEditada")
             var listaAcoes = [];
             $('.Acao').each(function (c, o) {
 
@@ -1982,14 +1986,14 @@
 
         //Verificando
         function RemoveAcao(btn) {
-            console.log(RemoveAcao);
+            //console.log(RemoveAcao);
             $(btn).parents('#obj').remove();
         }
         /*Fim Acao*/
 
         //Verificando
         function Adicionar(btn) {
-            console.log(Adicionar);
+            //console.log(Adicionar);
             var $tr = $(btn).closest('.tr_clone');
             var $clone;
 
@@ -2003,13 +2007,13 @@
 
         //Verificando
         function Remover(btn) {
-            console.log(Remover);
+            //console.log(Remover);
             $(btn).parents('tr').remove();
         }
 
         /*Novo item*/
         function Novo(btn, encadeado) {
-            console.log("Novo")
+            //console.log("Novo")
 
             selectPredecessor = encadeado;
 
@@ -2111,7 +2115,7 @@
 
             /*Ajax*/
             $.post(urlGetAutoComplete, {NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3}, function (response) {
-                console.log(response);
+                //console.log(response);
                 $("#tableNovo").html('');
 
                 //Gera a lista
@@ -2804,7 +2808,7 @@
         //}
 
         function TesteRenan(r, tipo, model) {
-            console.log("TesteRenan")
+            //console.log("TesteRenan")
             //console.log(TesteRenan);
             //$('#modalLindo').find('.modal-body').empty().append(r);
 
@@ -2827,7 +2831,7 @@
                     if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
-                        console.log(before)
+                        //console.log(before)
 
 
 
@@ -2865,7 +2869,7 @@
                     if($(c).attr('onclick').split(',')[1]){
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2,before.length)
-                        console.log(before)
+                        //console.log(before)
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
@@ -2929,7 +2933,7 @@
         }
 
         function getAcompanhamento(acaoCorrentId) {
-            console.log("getAcompanhamento");
+            //console.log("getAcompanhamento");
 
             $('#modalLindo').modal('hide');
 
@@ -3017,7 +3021,7 @@
 
 
         $(function() {
-            console.log( "ready!" );
+            //console.log( "ready!" );
             GetDataTable();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
