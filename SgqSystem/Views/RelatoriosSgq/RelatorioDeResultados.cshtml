@@ -165,9 +165,10 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
         var Subtitle = "";
 
+//        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
         var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
         var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
         var UrlGraficoHistorico = '@Html.Raw(Url.Action("GetGraficoHistoricoModal", "api/RelatorioDeResultados"))';
@@ -208,7 +209,7 @@
                 if (enviar['level2Id'] > 0) {
                     var enviar4 = Object.create(enviar);
                     enviar4['level2Id'] = 0;
-                      
+
                     EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
                     EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
                 } else if (enviar['level1Id'] > 0) {
@@ -217,6 +218,7 @@
             } else {
                 EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
             }
+   //         EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
         }
 
@@ -374,10 +376,10 @@
                     //+ " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
                 }
 
-                if ((enviar.unitId != '' && enviar.unitId == undefined))
+                if ((enviar.unitId == '' || enviar.unitId == undefined))
                     Titulo += " " + Resources("perUnit");
 
-                
+
                 var SubtitleIndicador = "";
 
                 if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
@@ -429,7 +431,7 @@
                         text: Titulo,
                     },
                     subtitle: {
-                        text: Subtitle, 
+                        text: Subtitle,
                     },
                     xAxis: {
                         categories: IndicadorUnidade,
@@ -1199,12 +1201,16 @@
                 var nc = MapeiaValorParaHC(data, "nc");
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
+                var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+                var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
                 var limInferior = MapeiaValorParaHC(data, "limiteInferior");
                 //var Subtitle = "";
 
                 var sumav = qtdAv.reduce(function (a, b) { return a + b; });
                 var sumnc = nc.reduce(function (a, b) { return a + b; });
-                var porcPeriodo = sumnc / sumav * 100;
+                var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+                var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+                var porcPeriodo = sumncCP / sumavCP * 100;
 
                 let TituloGraficoHistoricoIndicador = Resources("level1_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
@@ -2258,6 +2264,6 @@
             }, 0);
         });
 
-    </script>
+</script>
 
 }
