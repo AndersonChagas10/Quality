@@ -216,7 +216,7 @@
                 <td>
                     @Html.DisplayNameFor(model => model.ValorDe)
                 </td>
-                <td>
+                <td class="money">
                     @Html.DisplayFor(model => model.ValorDe)
                 </td>
                 <td></td>
@@ -225,7 +225,7 @@
                 <td>
                     @Html.DisplayNameFor(model => model.ValorPara)
                 </td>
-                <td>
+                <td class="money">
                     @Html.DisplayFor(model => model.ValorPara)
                 </td>
                 <td></td>
@@ -271,6 +271,16 @@
     </table>
 }
 <br />
+
+<script>
+
+    $(document).ready(function () {
+        $('td.money').each(function (i, e) {
+            $(e).text('R$ '+$(e).text());
+        })
+    });
+
+</script>
 
 
 

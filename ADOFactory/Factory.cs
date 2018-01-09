@@ -27,8 +27,16 @@ namespace ADOFactory
             connectionString = new SqlConnectionStringBuilder();
             connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
             connectionString.InitialCatalog = catalog;//"SgqDbDev";
-            connectionString.Password = password;//"1qazmko0";
-            connectionString.UserID = user;// "sa";
+
+            if (!string.IsNullOrEmpty(password))
+            {
+                connectionString.Password = password;//"1qazmko0";
+                connectionString.UserID = user;// "sa";
+            }
+            else
+            {
+                connectionString.IntegratedSecurity = true;
+            }
 
             try
             {

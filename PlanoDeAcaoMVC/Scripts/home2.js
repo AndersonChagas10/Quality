@@ -19,6 +19,9 @@ function GetDataTable(campo, filtro) {
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
         dados = r;
+
+        dados = $.grep(dados, function (a, b) { return a.Acao._Quem != 'gabrielnunes-mtz' }); //tira gabriel
+
         //https://grtsolucoes.atlassian.net/browse/JBS-110
         let usuarioIscorporativo = false//getRole("Admin");
 
@@ -61,6 +64,7 @@ function GetDataTable(campo, filtro) {
         json = dados;
 
         MountDataTable(json);
+        $('#spanSubTable').text('TODAS AS TAREFAS PARA FILTRAR');
 
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
@@ -98,6 +102,8 @@ function MountDataTable(json) {
             { "mData": "TemaAssunto" },
             { "mData": "Gerencia" },
             { "mData": "Coordenacao" },
+            { "mData": "TipoProjeto" },
+            { "mData": "TemaProjeto" },
             { "mData": "Iniciativa" },
             { "mData": "IndicadoresDeProjeto" },
             { "mData": "ObjetivoGerencial" },
@@ -106,8 +112,9 @@ function MountDataTable(json) {
             { "mData": "_DataInicio" },
             { "mData": "_DataFim" },
             { "mData": "Responsavel_Projeto_Quem.Name" },
-            { "mData": "Acao.Regional" },
+            { "mData": "Acao.Regional" },            
             { "mData": "Acao.UnidadeName" },
+            { "mData": "Acao.TipoIndicadorName" },
             { "mData": "Acao.Level1Name" },
             { "mData": "Acao.Level2Name" },
             { "mData": "Acao.Level3Name" },
@@ -115,8 +122,8 @@ function MountDataTable(json) {
             { "mData": "Acao._CausaGenerica" },
             { "mData": "Acao._GrupoCausa" },
             { "mData": "Acao._ContramedidaGenerica" },
-            { "mData": "Acao.ContramedidaEspecifica" },
             { "mData": "Acao.CausaEspecifica" },
+            { "mData": "Acao.ContramedidaEspecifica" },
             { "mData": "Acao._Quem" },
             { "mData": "Acao._QuandoInicio" },
             { "mData": "Acao._QuandoFim" },
@@ -156,33 +163,36 @@ function MountDataTable(json) {
             { "sTitle": "Tema | Assunto", "aTargets": [7], "width": "100px" },
             { "sTitle": "Gerência", "aTargets": [8], "width": "100px" },
             { "sTitle": "Coordenação", "aTargets": [9], "width": "100px" },
-            { "sTitle": "Projeto | Iniciativa", "aTargets": [10], "width": "200px" },
-            { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [11], "width": "100px" },
-            { "sTitle": "Objetivo Gerencial", "aTargets": [12], "width": "100px" },
-            { "sTitle": "Valor de", "aTargets": [13], "width": "50px" },
-            { "sTitle": "Valor para", "aTargets": [14], "width": "50px" },
-            { "sTitle": "Data Início", "aTargets": [15], "width": "50px" },
-            { "sTitle": "Data Fim", "aTargets": [16], "width": "50px" },
-            { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [17], "width": "50px" },
-            { "sTitle": "Regional", "aTargets": [18], "width": "50px" },
-            { "sTitle": "Unidade", "aTargets": [19], "width": "50px" },
-            { "sTitle": "Indicador SGQ", "aTargets": [20], "width": "100px" },
-            { "sTitle": "Monitoramento SGQ", "aTargets": [21], "width": "100px" },
-            { "sTitle": "Tarefa SGQ", "aTargets": [22], "width": "100px" },
-            { "sTitle": "Indicadores Operacional", "aTargets": [23], "width": "100px" }, // ver indicador operacional*
-            { "sTitle": "Causa Genérica", "aTargets": [24], "width": "200px" },
-            { "sTitle": "Grupo Causa", "aTargets": [25], "width": "200px" },
-            { "sTitle": "Ação Genérica", "aTargets": [26], "width": "100px" },
-            { "sTitle": "Causa Específica", "aTargets": [27], "width": "100px" },
-            { "sTitle": "Ação Específica", "aTargets": [28], "width": "100px" },
-            { "sTitle": "Quem", "aTargets": [29], "width": "200px" },
-            { "sTitle": "Quando (Início)", "aTargets": [30], "width": "50px" },
-            { "sTitle": "Quando (Fim)", "aTargets": [31], "width": "50px" },
-            { "sTitle": "Como Pontos Importantes", "aTargets": [32], "width": "200px" },
-            { "sTitle": "Pra que", "aTargets": [33], "width": "200px" },
-            { "sTitle": "Quanto custa", "aTargets": [34], "width": "50px" },
-            { "sTitle": "Status", "aTargets": [35], "width": "50px" },
-            { "sTitle": "Prazo", "aTargets": [36], "width": "50px" },
+            { "sTitle": "Tipo de Projeto", "aTargets": [10], "width": "100px" },
+            { "sTitle": "Tema do Projeto", "aTargets": [11], "width": "100px" },
+            { "sTitle": "Projeto | Iniciativa", "aTargets": [12], "width": "200px" },
+            { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [13], "width": "100px" },
+            { "sTitle": "Objetivo Gerencial", "aTargets": [14], "width": "100px" },
+            { "sTitle": "Valor de", "aTargets": [15], "width": "50px" },
+            { "sTitle": "Valor para", "aTargets": [16], "width": "50px" },
+            { "sTitle": "Data Início", "aTargets": [17], "width": "50px" },
+            { "sTitle": "Data Fim", "aTargets": [18], "width": "50px" },
+            { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [19], "width": "50px" },
+            { "sTitle": "Regional", "aTargets": [20], "width": "50px" },
+            { "sTitle": "Unidade", "aTargets": [21], "width": "50px" },
+            { "sTitle": "Tipo de Indicador", "aTargets": [22], "width": "50px" },
+            { "sTitle": "Indicador SGQ", "aTargets": [23], "width": "100px" },
+            { "sTitle": "Monitoramento SGQ", "aTargets": [24], "width": "100px" },
+            { "sTitle": "Tarefa SGQ", "aTargets": [25], "width": "100px" },
+            { "sTitle": "Indicadores Operacional", "aTargets": [26], "width": "100px" }, // ver indicador operacional*
+            { "sTitle": "Causa Genérica", "aTargets": [27], "width": "200px" },
+            { "sTitle": "Grupo Causa", "aTargets": [28], "width": "200px" },
+            { "sTitle": "Ação Genérica", "aTargets": [29], "width": "100px" },
+            { "sTitle": "Causa Específica", "aTargets": [30], "width": "100px" },
+            { "sTitle": "Ação Específica", "aTargets": [31], "width": "100px" },
+            { "sTitle": "Quem", "aTargets": [32], "width": "200px" },
+            { "sTitle": "Quando (Início)", "aTargets": [33], "width": "50px" },
+            { "sTitle": "Quando (Fim)", "aTargets": [34], "width": "50px" },
+            { "sTitle": "Como Pontos Importantes", "aTargets": [35], "width": "200px" },
+            { "sTitle": "Pra que", "aTargets": [36], "width": "200px" },
+            { "sTitle": "Quanto custa", "aTargets": [37], "width": "50px" },
+            { "sTitle": "Status", "aTargets": [38], "width": "50px" },
+            { "sTitle": "Prazo", "aTargets": [39], "width": "50px" },
             { "sTitle": "Ação" },
 
         ],
@@ -201,26 +211,26 @@ function MountDataTable(json) {
             {
                 extend: 'colvisGroup',
                 text: 'Visão Inicial',
-                show: [0, 4, 6, 7, 8, 10, 14, 12, 13, 19, 18, 32, 28, 29, 30, 31, 36, 34, 35],
-                hide: [1, 2, 3, 5, 9, 11, 15, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 33]
+                show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19],
+                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Estratégico',
-                show: [0, 1, 2, 3, 4, 5, 7, 32, 36],
-                hide: [31, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 35, 33, 34]
+                show: [0, 1, 2, 3, 4, 5, 6, 35, 39],
+                hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Tático',
-                show: [4, 17, 8, 9, 10, 11, 12, 13, 14, 15, 16, 36],
-                hide: [0, 1, 2, 4, 5, 6, 35, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
+                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 39],
+                hide: [0, 1, 2, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Operacional',
-                show: [3, 35, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
-                hide: [0, 1, 2, 4, 5, 6, 7, 17, 9, 10, 11, 12, 13, 14, 15, 16]
+                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38],
+                hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
             {
                 extend: 'colvisGroup',
@@ -319,7 +329,7 @@ function MountDataTable(json) {
                 //    bgColorStatus = "yellow"
                 //}
 
-                $(row.cells[35]).css("background", bgColorStatus);
+                $(row.cells[38]).css("background", bgColorStatus);
 
                 /*Prazo*/
                 if (data.Acao.Status == 2) {
@@ -342,7 +352,7 @@ function MountDataTable(json) {
                     bgColorPrazo = "rgb(250, 128, 114)"
                 }
 
-                $(row.cells[36]).css("background", bgColorPrazo);
+                $(row.cells[39]).css("background", bgColorPrazo);
 
                 //    if (data.Tatico_Id > 0) { // possui plan tatico
                 //        $(row.cells[38]).find('.btnNovoOperacional').show();
@@ -410,7 +420,13 @@ function MountDataTable(json) {
     });
 
     setTimeout(function () {
-        $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        if (ColvisarrayVisaoAtual_hide.length != 0) {
+
+            $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+
+        } else {
+            $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
+        }
         $(".dataTables_filter").css("display", "block");
     }, 1100);
 
@@ -457,8 +473,11 @@ function MountDataTable(json) {
     $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
     //clicar no botão escondido das colunas atuais
-    if (ColvisarrayVisaoAtual_show.length > 0)
+    if (ColvisarrayVisaoAtual_show.length > 0) {
+
         $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
+
+    }
 
 
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
@@ -583,6 +602,10 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                     }
                 });
 
+                if (flag) {
+                    novoArr.push(o)
+                }
+
             } else {
                 arrColuna.forEach(function (oo, cc) {
 
@@ -590,6 +613,10 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                         flag = false;
                     }
                 });
+
+                if (flag) {
+                    novoArr.push(o)
+                }
             }
 
 
@@ -901,44 +928,44 @@ var json = FiltraColunas(dados, ["Diretoria",
 
 //            switch (day.substring(3, 5)) {
 //                case '01':
-//                    retorno = "Janeiro";
+//                    retorno = "Jan";
 //                    break;
 //                case '02':
-//                    retorno = "Fevereiro";
+//                    retorno = "Fev";
 //                    break;
 //                case '03':
-//                    retorno = "Março";
+//                    retorno = "Mar";
 //                    break;
 //                case '04':
-//                    retorno =  "Abril";
+//                    retorno =  "Abr";
 //                    break;
 //                case '05':
-//                    retorno =  "Maio";
+//                    retorno =  "Mai";
 //                    break;
 //                case '06':
-//                    retorno =  "Junho";
+//                    retorno =  "Jun";
 //                    break;
 //                case '07':
-//                    retorno =  "Julho";
+//                    retorno =  "Jul";
 //                    break;
 //                case '08':
-//                    retorno =  "Agosto";
+//                    retorno =  "Ago";
 //                    break;
 //                case '09':
-//                    retorno =  "Setembro";
+//                    retorno =  "Set";
 //                    break;
 //                case '10':
-//                    retorno =  "Outubro";
+//                    retorno =  "Out";
 //                    break;
 //                case '11':
-//                    retorno =  "Novembro";
+//                    retorno =  "Nov";
 //                    break;
 //                case '12':
-//                    retorno =  "Dezembro";
+//                    retorno =  "Dez";
 //                    break;
 //            }
 
-//            return retorno + ' de ' + day.substring(6, 10);
+//            return retorno + '-' + day.substring(6, 10);
 //        })
 
 //        let serieArrFinal = [{
@@ -1103,7 +1130,19 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
 
     if (seriesArr[0] != undefined) {
 
-        if (seriesArr[0].data.length == 1 && seriesArr[0].data[0] == 0) {
+        var semDados = false;
+
+        for (var h = 0; h < seriesArr.length; h++) {
+            if (seriesArr[h].data.length == 1 && seriesArr[h].data[0] == 0) {
+                semDados = false;
+            } else {
+                semDados = true;
+                break;
+            }
+
+        }
+
+        if (!semDados) {
             if (id == 'panel5') {
                 $('#semDados1').show();
                 return;
@@ -1228,7 +1267,7 @@ function MapeiaValorParaHC(array, prop, isInteger) {
             if (propArray[1] == "TipoIndicador") {
                 var value = o[propArray[0]][propArray[1]];
                 if (value == 0)
-                    value = "0";
+                    value = "Sem planejamento operacional";
                 else if (value == 1)
                     value = "Diretrizes";
                 else if (value == 2)
@@ -1302,6 +1341,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 var propArrayC = categoriesFilter.split('.');
                 if (propArrayC.length == 2) {
                     retornoCategorias = e[propArrayC[0]][propArrayC[1]];
+                    console.log(retornoCategorias);
                 } else {
                     retornoCategorias = e[categoriesFilter];
                 }
@@ -1309,18 +1349,18 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (propArrayC[1] == "TipoIndicador") {
                     var value = retornoCategorias;
                     if (value == 0)
-                        value = "0";
+                        value = "Sem planejamento operacional";
                     else if (value == 1)
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoSeries = value;
+                    retornoCategorias = value;
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
                     var value = retornoSeries;
                     if (value == 0)
-                        value = "0";
+                        value = "Sem planejamento operacional";
                     else if (value == 1)
                         value = "Diretrizes";
                     else if (value == 2)
@@ -1383,7 +1423,7 @@ function pintaStatus(seriesFilter, serieArrFinal) {
                 c["color"] = finalizadaColor;
             } else if (c.name == "Finalizada com atraso") {
                 c["color"] = finalizadaComAtrasoColor;
-            } 
+            }
         });
 
         return serieArrFinal
@@ -1609,7 +1649,7 @@ function distinctFilter(lista, filtro, selectId) {
             $('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador"
         ) {
             if (value == 0)
-                value = "0";
+                value = "Sem planejamento operacional";
             else if (value == 1)
                 value = "Diretrizes";
             else if (value == 2)

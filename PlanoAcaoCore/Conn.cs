@@ -13,7 +13,7 @@
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
-        //Config para dev GRT
+        ////Config para dev GRT
         //Local Db
         public static string catalog { get { return "PlanoDeAcao"; } }
         public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
@@ -29,8 +29,8 @@
         public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
         public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
 
-        ////________________________________________________________________________
-        ////Configurações de Email de envio
+        //________________________________________________________________________
+        //Configurações de Email de envio
 
         public static string emailFrom = "testedealertagrt@hotmail.com";
         public static string emailPass = "L7e9HaN6UAsTeTxI3vtsoA==";
@@ -136,13 +136,14 @@
         //public static string dataSource { get { return @"10.255.5.33"; } }
         //public static string user { get { return "UserGQualidade"; } }
         //public static string pass { get { return "grJsoluco3s"; } }
-        //////Remoto SGQ
+        ////Remoto SGQ
         //public static string catalog2 { get { return "dbGQualidade"; } }
         //public static string dataSource2 { get { return @"10.255.5.93"; } }
         //public static string user2 { get { return "UserGQualidade"; } }
         //public static string pass2 { get { return "grJsoluco3s"; } }
 
         //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
+        //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcaoNovo/"; } }
         //public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
 
         //public static string emailFrom = "sgq@jbs.com.br";

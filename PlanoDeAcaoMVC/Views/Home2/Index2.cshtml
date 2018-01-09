@@ -165,6 +165,10 @@
             .semDados h1 {
                 margin-left: 40px;
             }
+
+        /*#body {
+            overflow: auto;
+        }*/
     </style>
 
     <style>
@@ -410,6 +414,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="_GrupoCausa">Grupo Causa</option>
                     <option value="_CausaGenerica">Causa Genérica</option>
@@ -458,6 +464,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="_GrupoCausa">Grupo Causa</option>
                     <option value="_CausaGenerica">Causa Genérica</option>
@@ -513,6 +521,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -538,6 +548,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -582,6 +594,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia" selected>Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -607,6 +621,8 @@
                     <option value="TemaAssunto">Tema / Assunto</option>
                     <option value="Gerencia">Gerência</option>
                     <option value="Coordenacao">Coordenação</option>
+                    <option value="TipoProjeto">Tipo de Projeto</option>
+                    <option value="TemaProjeto">Tema do Projeto</option>
                     <option value="Iniciativa">Projeto / Iniciativa</option>
                     <option value="Acao._GrupoCausa">Grupo Causa</option>
                     <option value="Acao._CausaGenerica">Causa Genérica</option>
@@ -699,12 +715,18 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
 
 
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -927,18 +949,60 @@
             })
 
             let categoriesArr = [];
-            categoriesArr.push(new Date('2017/01/01'));
-            categoriesArr.push(new Date('2017/02/01'));
-            categoriesArr.push(new Date('2017/03/01'));
-            categoriesArr.push(new Date('2017/04/01'));
-            categoriesArr.push(new Date('2017/05/01'));
-            categoriesArr.push(new Date('2017/06/01'));
-            categoriesArr.push(new Date('2017/07/01'));
-            categoriesArr.push(new Date('2017/08/01'));
-            categoriesArr.push(new Date('2017/09/01'));
-            categoriesArr.push(new Date('2017/10/01'));
-            categoriesArr.push(new Date('2017/11/01'));
-            categoriesArr.push(new Date('2017/12/01'));
+            var data = new Date();
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+
+            data.setMonth(data.getMonth() - 23);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), data.getDay()));
+            data.setMonth(data.getMonth() + 1);
 
             let arrayAndamento = [];
 
@@ -1011,44 +1075,44 @@
 
                 switch (categoriesArr[i].getMonth()) {
                     case 0:
-                        retorno = "Janeiro";
+                        retorno = "Jan";
                         break;
                     case 1:
-                        retorno = "Fevereiro";
+                        retorno = "Fev";
                         break;
                     case 2:
-                        retorno = "Março";
+                        retorno = "Mar";
                         break;
                     case 3:
-                        retorno = "Abril";
+                        retorno = "Abr";
                         break;
                     case 4:
-                        retorno = "Maio";
+                        retorno = "Mai";
                         break;
                     case 5:
-                        retorno = "Junho";
+                        retorno = "Jun";
                         break;
                     case 6:
-                        retorno = "Julho";
+                        retorno = "Jul";
                         break;
                     case 7:
-                        retorno = "Agosto";
+                        retorno = "Ago";
                         break;
                     case 8:
-                        retorno = "Setembro";
+                        retorno = "Set";
                         break;
                     case 9:
-                        retorno = "Outubro";
+                        retorno = "Out";
                         break;
                     case 10:
-                        retorno = "Novembro";
+                        retorno = "Nov";
                         break;
                     case 11:
-                        retorno = "Dezembro";
+                        retorno = "Dez";
                         break;
                 }
 
-                categoriesArr[i] = retorno + ' de ' + categoriesArr[i].getFullYear();
+                categoriesArr[i] = retorno + '-' + categoriesArr[i].getFullYear();
 
             }
 
@@ -1242,6 +1306,9 @@
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
+
                     DdlChangeEstrategico();
                 }
                 InitDatePiker();
@@ -1268,7 +1335,7 @@
 
         //Verificando
         function SalvarPlanejamento(form) {
-            console.log(SalvarPlanejamento);
+            //console.log(SalvarPlanejamento);
 
             if (!isClickedTaticoVinculado){
                 isClickedEstrategico = true;
@@ -1343,7 +1410,7 @@
 
         //Verificando
         function EditarPlanejamento(model) {
-            console.log(EditarPlanejamento);
+            //console.log(EditarPlanejamento);
             var title = $('#Header').html();
             var title2 = " > Novo"
             if (isTaticoClicked) {
@@ -1396,19 +1463,19 @@
                     } else {
 
                         $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                        $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-                        $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                         DdlChangeEstrategico();
                     }
                 } else {
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
@@ -1417,6 +1484,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
                 }
 
                 InitDatePiker();
@@ -1503,7 +1571,7 @@
             changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function() {
             })
 
-            console.log('DdlChangeTatico',model)
+            //console.log('DdlChangeTatico',model)
 
             //changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
             //    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'ObjetivoGerencial_Id', function (r) {
@@ -1639,7 +1707,7 @@
 
         //Verificando
         function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
-            console.log(ModalAcao);
+            //console.log(ModalAcao);
             //if (!(planejamentoCorrentId > 0)) {
             //    BuscarPlanejamentos();
             //    return;
@@ -1698,7 +1766,7 @@
 
         //Verificando
         function EditarAcao(html, data) {
-            console.log(EditarAcao);
+            //console.log(EditarAcao);
             var acao = data.Acao;
 
             $('#modalLindo').modal();
@@ -1723,7 +1791,7 @@
             //        $($('[id=adicionar]')[c]).click();
             //});
 
-            //$('#Edit').show();           
+            //$('#Edit').show();
             InitDatePiker();
 
             MoneyMask('R$ ');
@@ -1747,9 +1815,13 @@
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
+                    $('#Pa_IndicadorSgqAcao_Id').select2();
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
                     form.find('.ProbDesv').show();
+                    $('#Level1Id').select2();
+                    $('#Level2Id').select2();
+                    $('#Level3Id').select2();
                 }
 
             });
@@ -1774,25 +1846,25 @@
 
         //Verificando
         function SalvarAcao() {
-            console.log(SalvarAcao);
+            //console.log(SalvarAcao);
             var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
                 listaAcoes.push(SalvarAcaoAvulsa(o));
             });
 
             let isValid = $('.Acao').not(':first').find('.error').length == 0
-            if(listaAcoes[0] != undefined && isValid ){
-                //if(listaAcoes[0].isValid == '0') { return }
+
+            if (ValidaAcao(listaAcoes) && isValid) {
+
                 $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
-                    if(listaAcoes[0].isValid == '0') { return }
+
+                    if (listaAcoes[0].isValid == '0') { return }
+
                     $.post(urlGetPlanejamentoAcao, {}, function (r) {
 
-                        //if (counter == 1 && !jaLiberouCallback) {
                         jaLiberouCallback = true;
                         $('#modalLindo').modal('hide');
                         openMessageModal('Registro salvo com sucesso!', '');
-                        //}
-                        //GerarTabela(r);
                         $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
@@ -1813,8 +1885,17 @@
 
         }
 
+        function ValidaAcao(listaAcoes) {
+
+            if (listaAcoes[0] != undefined) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function SalvarAcaoEditada() {
-            console.log("SalvarAcaoEditada")
+            //console.log("SalvarAcaoEditada")
             var listaAcoes = [];
             $('.Acao').each(function (c, o) {
 
@@ -1838,7 +1919,7 @@
                     //}
                     //GerarTabela(r);
                     $('#btnTop').click();
-                    getAcompanhamento(selecionado.Acao.Id);
+                    //getAcompanhamento(selecionado.Acao.Id);
                 }).fail(function (e, h, x) {
 
                     openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
@@ -1858,7 +1939,7 @@
         var jaLiberouCallback = false;
         //Verificando
         function SalvarAcaoAvulsa(o, isEdit) {
-            console.log(SalvarAcaoAvulsa);
+            //console.log(SalvarAcaoAvulsa);
             var sendObj = $(o).serializeObject();
 
             if (isEdit == undefined && sendObj != undefined) {
@@ -1880,14 +1961,14 @@
 
         //Verificando
         function RemoveAcao(btn) {
-            console.log(RemoveAcao);
+            //console.log(RemoveAcao);
             $(btn).parents('#obj').remove();
         }
         /*Fim Acao*/
 
         //Verificando
         function Adicionar(btn) {
-            console.log(Adicionar);
+            //console.log(Adicionar);
             var $tr = $(btn).closest('.tr_clone');
             var $clone;
 
@@ -1901,13 +1982,13 @@
 
         //Verificando
         function Remover(btn) {
-            console.log(Remover);
+            //console.log(Remover);
             $(btn).parents('tr').remove();
         }
 
         /*Novo item*/
         function Novo(btn, encadeado) {
-            console.log("Novo")
+            //console.log("Novo")
 
             selectPredecessor = encadeado;
 
@@ -2009,7 +2090,7 @@
 
             /*Ajax*/
             $.post(urlGetAutoComplete, {NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3}, function (response) {
-                console.log(response);
+                //console.log(response);
                 $("#tableNovo").html('');
 
                 //Gera a lista
@@ -2702,7 +2783,7 @@
         //}
 
         function TesteRenan(r, tipo, model) {
-            console.log("TesteRenan")
+            //console.log("TesteRenan")
             //console.log(TesteRenan);
             //$('#modalLindo').find('.modal-body').empty().append(r);
 
@@ -2719,18 +2800,20 @@
                 form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                //form.find('#Tatico_Id').val(model.Id);
                 form.attr('id', 'formEditTatico');
 
-                form.find('button').each(function (o,c){
-                    if($(c).attr('onclick').split(',')[1]){
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
-                        before = before.slice(2,before.length)
-                        console.log(before)
+                        before = before.slice(2, before.length)
+                        //console.log(before)
+
+
+
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
-                })
+                });
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
@@ -2753,13 +2836,15 @@
                 form.find('table > tbody > tr:nth-child(16)').hide();
                 form.find('table > tbody > tr:nth-child(17)').hide();
                 form.find('table > tbody > tr:nth-child(18)').hide();
+                form.find('table > tbody > tr:nth-child(19)').hide();
+                form.find('table > tbody > tr:nth-child(20)').hide();
                 form.attr('id', 'formEditEstrategy');
 
                 form.find('button').each(function (o,c){
                     if($(c).attr('onclick').split(',')[1]){
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2,before.length)
-                        console.log(before)
+                        //console.log(before)
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
@@ -2823,7 +2908,7 @@
         }
 
         function getAcompanhamento(acaoCorrentId) {
-            console.log("getAcompanhamento");
+            //console.log("getAcompanhamento");
 
             $('#modalLindo').modal('hide');
 
@@ -2911,7 +2996,7 @@
 
 
         $(function() {
-            console.log( "ready!" );
+            //console.log( "ready!" );
             GetDataTable();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
@@ -2991,7 +3076,7 @@
 
                                 });
                             });
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();                           
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                         });
                     });
                     //HideForOperacional();
@@ -3007,7 +3092,6 @@
                 function (r) {
                     var acao = data.Acao;
 
-
                     $('#Header').html("Editar Ação");
                     //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
                     $('#modalLindo').find('.modal-footer button').hide();
@@ -3020,7 +3104,9 @@
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
-                    $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                    setTimeout(function () {
+                        $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                    }, 1);
 
                     $(r).attr("id", "formEditAcao")
 
@@ -3037,7 +3123,10 @@
 
                     $('.money').each(function () {
                         $(this).maskMoney('mask', $(this).val());
-                    })               
+                    })
+
+                    $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
+                    $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
                 });
         }
 

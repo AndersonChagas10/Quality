@@ -35,16 +35,6 @@
                 </td>
                 <td style="width: 16%;"></td>
             </tr>
-            @*<tr>
-                    <td>
-                        @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
-                        @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
-                    </td>
-                    <td></td>
-                </tr>*@
             <tr class="showAsEstrategy">
                 <td style="width: 43%;">
                     @Html.Label("Tipo de Indicador", htmlAttributes: new { @class = "control-label " })
@@ -88,7 +78,7 @@
             </tr>
 
 
-            <tr class="showAsEstrategy" style="@showTipo1" class="IndicadorOutros">
+            <tr class="showAsEstrategy IndicadorOutros" style="@showTipo1">
                 <td>
                     @Html.LabelFor(r => r.Pa_IndicadorSgqAcao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -254,7 +244,7 @@
                 <td></td>
             </tr>
 
-            @if (Model != null)
+            @*@if (Model != null)
             {
                 if (Model.Id > 0)
                 {
@@ -269,7 +259,7 @@
                         <td></td>
                     </tr>
                 }
-            }
+            }*@
 
             @if (ViewBag.Panejamento != null)
             {
@@ -294,5 +284,6 @@
 </form>
 
 <script>
+ 
 
 </script>
