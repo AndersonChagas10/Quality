@@ -12,9 +12,10 @@
         <div>
             <span class="redLabel">@Resources.Resource.cluster</span>
             <select id="clusterId" data-ng-model="clusterValue"
-                    data-ng-options="c.Id as c.Name for c in cluster |orderBy:'Name' track by c.Id"
+                    @Html.Raw(ViewBag.ClusterIdArr != null ? "multiple='multiple'":"")
                     data-ng-change="GetListStructureVinculadoCluster()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @Html.Raw(ViewBag.ClusterIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                <option ng-repeat="c in cluster |orderBy:'Name' track by c.Id" value="{{c.Id}}">{{c.Name}}</option>
             </select>
         </div>
         @if (GlobalConfig.Brasil)
@@ -22,53 +23,60 @@
             <div>
                 <span class="redLabel">@Resources.Resource.structure</span>
                 <select id="structureId" data-ng-model="structureValue"
-                        data-ng-options="s.Id as s.Name for s in structure |orderBy:'Name' track by s.Id"
+                        @Html.Raw(ViewBag.StructureIdArr != null ? "multiple='multiple'":"")
                         data-ng-change="GetListUnitVinculadoStructure()" class="form-control" style="width:210px">
-                    <option value="">@Resources.Resource.select</option>
+                    @Html.Raw(ViewBag.StructureIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                    <option ng-repeat="s in structure |orderBy:'Name' track by s.Id" value="{{s.Id}}">{{s.Name}}</option>
                 </select>
             </div>
         }
         <div>
             <span class="redLabel">@Resources.Resource.unit</span>
             <select id="unitIdV" data-ng-model="unitValue"
-                    data-ng-options="u.Id as u.Name for u in unit |orderBy:'Name' track by u.Id"
+                    @Html.Raw(ViewBag.UnitIdArr != null ? "multiple='multiple'":"")
                     data-ng-change="AtribuiObject()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @Html.Raw(ViewBag.UnitIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                <option ng-repeat="u in unit |orderBy:'Name' track by u.Id" value="{{u.Id}}">{{u.Name}}</option>
             </select>
         </div>
+
         @*Este campo está sendo utilizado como departamento para a JBS EUA na seguinte data 25/10/2017*@
         <div>
             <span class="redLabel">@Resources.Resource.department</span>
             <select id="criticalLevelId" data-ng-model="criticalLevelValue"
-                    data-ng-options="cl.Id as cl.Name for cl in criticalLevel | orderBy:'Name' track by cl.Id"
+                        @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "multiple='multiple'":"")
                     data-ng-change="GetLevel1ByCriticalLevel()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                <option ng-repeat="cl in criticalLevel | orderBy:'Name' track by cl.Id" value="{{cl.Id}}">{{cl.Name}}</option>
             </select>
         </div>
         <div class="levels">
             <span class="redLabel">@Resources.Resource.level1</span>
             <select id="level1Idv" data-ng-model="level1Value"
-                    data-ng-options="s.Id as s.Name for s in level1 | filter:({ShowScorecard: true} || {ShowScorecard: null}) | orderBy:'Name'"
+                    @Html.Raw(ViewBag.Level1IdArr != null ? "multiple='multiple'":"")
                     data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @Html.Raw(ViewBag.Level1IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                <option ng-repeat="s in level1 | filter:({ShowScorecard: true} || {ShowScorecard: null}) | orderBy:'Name'" value="{{s.Id}}">{{s.Name}}</option>
             </select>
         </div>
 
         <div class="levels">
             <span class="redLabel">@Resources.Resource.level2</span>
             <select id="level2Idv" data-ng-model="level2Value"
-                    data-ng-options="s.Id as s.Name for s in level2 | orderBy:'Name'"
+                    @Html.Raw(ViewBag.Level2IdArr != null ? "multiple='multiple'":"")
                     data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @Html.Raw(ViewBag.Level2IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                <option ng-repeat="s in level2 | orderBy:'Name'" value="{{s.Id}}">{{s.Name}}</option>
             </select>
         </div>
 
         <div  class="levels" style="display:none">
             <span class="redLabel">@Resources.Resource.level3</span>
             <select id="level3Idv" data-ng-model="level3Value"
-                    data-ng-options="s.Id as s.Name for s in level3 | orderBy:'Name'"
+                    @Html.Raw(ViewBag.Level3IdArr != null ? "multiple='multiple'":"")
                     data-ng-change="" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @Html.Raw(ViewBag.Level3IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                <option ng-repeat="s in level3 | orderBy:'Name'" value="{{s.Id}}">{{s.Name}}</option>
             </select>
         </div>
     </div>

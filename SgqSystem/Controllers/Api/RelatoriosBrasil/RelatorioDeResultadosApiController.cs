@@ -43,11 +43,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //Indicador Monitoramento Tarefa Com Unidade
             //Indicador Monitoramento tarefa Sem Unidade
 
-            if (form.level1Id == 0) //Nenhum Indicador Sem Unidade
+            if (form.level1Id == 0 && form.level1IdArr.Length == 0) //Nenhum Indicador Sem Unidade
             {
                 GetResultadosIndicador(form);
             }
-            else if (form.level2Id == 0) //Nenhum Monitoramento Sem Unidade
+            else if (form.level2Id == 0 && form.level2IdArr.Length == 0) //Nenhum Monitoramento Sem Unidade
             {
                 GetResultadosMonitoramento(form);
             }
@@ -69,10 +69,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var userUnits = "";
             var whereStatus = "";
 
-            if (form.unitId != 0)
+            if (form.unitIdArr.Length != 0)
             {
-                whereUnidade = "WHERE ID = " + form.unitId + "";
-                whereUnidade2 = "AND UNI.Id =" + form.unitId + "";
+                whereUnidade = "WHERE ID IN (" + string.Join(",", form.unitIdArr) + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + string.Join(",", form.unitIdArr) + ")";
             }
             else
             {
@@ -90,20 +90,37 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
             }
 
+            if (form.clusterIdArr.Length > 0)
+            {
+                whereCluster = "AND PCC.ParCluster_Id  IN (" + string.Join(",", form.clusterIdArr) + ")";
+            }
+            else
             if (form.clusterSelected_Id != 0)
             {
                 whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
             }
 
+            if (form.structureIdArr.Length > 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")";
+            }
+            else
             if (form.structureId != 0)
             {
                 whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
             }
 
+            if (form.criticalLevelIdArr.Length > 0)
+            {
+                whereCriticalLevel = "AND L1XC.ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ")";
+            }
+            else
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
             }
+
+
 
             var query = @"
  DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
@@ -351,10 +368,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereCriticalLevel = "";
             var userUnits = "";
 
-            if (form.unitId != 0)
+            if (form.unitIdArr.Length != 0)
             {
-                whereUnidade = "WHERE ID = " + form.unitId + "";
-                whereUnidade2 = "AND UNI.Id =" + form.unitId + "";
+                whereUnidade = "WHERE ID  IN (" + string.Join(",", form.unitIdArr) + ")";
+                whereUnidade2 = "AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ")";
             }
             else
             {
@@ -363,16 +380,34 @@ DROP TABLE #AMOSTRATIPO4 ";
                 whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
+
+            if (form.clusterIdArr.Length > 0)
+            {
+                whereCluster = "AND PCC.ParCluster_Id  IN (" + string.Join(",", form.clusterIdArr) + ")";
+            }
+            else
             if (form.clusterSelected_Id != 0)
             {
                 whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
             }
 
+
+            if (form.structureIdArr.Length > 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")";
+            }
+            else
             if (form.structureId != 0)
             {
                 whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
             }
 
+
+            if (form.criticalLevelIdArr.Length > 0)
+            {
+                whereCriticalLevel = "AND L1XC.ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ")";
+            }
+            else
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
@@ -537,10 +572,10 @@ ORDER BY 10 DESC ";
             var whereCriticalLevel = "";
             var userUnits = "";
 
-            if (form.unitId != 0)
+            if (form.unitIdArr.Length != 0)
             {
-                whereUnidade = "WHERE ID = " + form.unitId + "";
-                whereUnidade2 = "AND UNI.Id = " + form.unitId + "";
+                whereUnidade = "WHERE ID  IN (" + string.Join(",", form.unitIdArr) + ")";
+                whereUnidade2 = "AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ")";
             }
             else
             {
@@ -549,21 +584,40 @@ ORDER BY 10 DESC ";
                 whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
+            if (form.level3IdArr.Length > 0)
+            {
+                whereLevel3 = "AND R3.ParLevel3_Id  IN (" + string.Join(",", form.level3IdArr) + ")";
+            }else
             if (form.level3Id != 0)
             {
                 whereLevel3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
             }
 
+            if (form.clusterIdArr.Length > 0)
+            {
+                whereCluster = "AND PCC.ParCluster_Id  IN (" + string.Join(",", form.clusterIdArr) + ")";
+            }
+            else
             if (form.clusterSelected_Id != 0)
             {
                 whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
             }
 
+            if (form.structureIdArr.Length > 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")";
+            }
+            else
             if (form.structureId != 0)
             {
                 whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
             }
 
+            if (form.criticalLevelIdArr.Length > 0)
+            {
+                whereCriticalLevel = "AND L1XC.ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ")";
+            }
+            else
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
@@ -4537,9 +4591,9 @@ DROP TABLE #AMOSTRATIPO4a  ";
         {
             var where1 = "";
 
-            if (form.unitId > 0)
+            if (form.unitIdArr.Length > 0)
             {
-                where1 += " AND C2.UnitId = @UNIDADE ";
+                where1 += " AND C2.UnitId  IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
 
             if (form.structureId > 0 && form.unitId == 0)
@@ -4551,9 +4605,9 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
             var where2 = "";
 
-            if (form.unitId > 0 && form.unitId == 0)
+            if (form.unitIdArr.Length > 0 && form.unitIdArr.Length == 0)
             {
-                where2 = " AND UNI.Id = @UNIDADE ";
+                where2 = " AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
 
             if (form.structureId > 0 && form.unitId == 0)
@@ -4563,26 +4617,26 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
             var where3 = "";
 
-            if (form.level1Id > 0 && form.unitId == 0)
+            if (form.level1Id > 0 && form.unitIdArr.Length == 0)
             {
                 where3 = " AND level1_Id = " + form.level1Id;
             }
 
             var where4 = "";
 
-            if (form.unitId > 0)
+            if (form.unitIdArr.Length > 0)
             {
-                where4 = " AND Unidade_Id = @UNIDADE ";
+                where4 = " AND Unidade_Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
 
-            if (form.structureId > 0 && form.unitId == 0)
+            if (form.structureId > 0 && form.unitIdArr.Length == 0)
             {
                 where4 += " AND Unidade_Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id = " + form.structureId + ") ";
             }
 
             var where5 = "";
 
-            if (form.level1Id > 0 && form.unitId == 0)
+            if (form.level1Id > 0 && form.unitIdArr.Length == 0)
             {
                 where5 = " AND IND.Id = " + form.level1Id;
             }
