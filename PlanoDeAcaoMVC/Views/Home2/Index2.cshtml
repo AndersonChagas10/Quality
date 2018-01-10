@@ -1710,8 +1710,9 @@
                 header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
                 header.find("button[data-toggle='collapse']").html("Nova Ação")
 
-                header.appendTo('#final');
+                header.appendTo('#final');               
                 header.show();
+                header.find("select").select2();
 
                 myfunction();
                 MoneyMask('R$ ');
@@ -1725,10 +1726,11 @@
 
                     width: "280px"
                 });
-            };
+                              
+            };         
 
         })();
-        $('#new').click(addButton);
+        $('#new').click(addButton);      
 
         //Verificando
         function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
@@ -1840,15 +1842,12 @@
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
-                    $('#Pa_IndicadorSgqAcao_Id').select2();
+                    form.find('.IndicadorOutros select').select2();
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
                     form.find('.ProbDesv').show();
-                    $('#Level1Id').select2();
-                    $('#Level2Id').select2();
-                    $('#Level3Id').select2();
+                    form.find('.IndicadorSgq select').select2();
                 }
-
             });
 
             $('[id=CausaGenerica_Id]').off('change').on('change', function () {
