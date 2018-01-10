@@ -509,12 +509,12 @@ $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
     $('#modalLindo').find('.modal-body').empty();
     $('#Header').html("Planejamento Operacional");
 
-    $.get(PlanejamentoDetalhes, {
-        id: planejamentoCorrentId
-    }, function (r) {
+    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+
         $('#modalLindo').find('.modal-body').empty().append(r);
         $('#NovaAcao').show();
         $('#NovaAcao').click();
+
     });
 
 });

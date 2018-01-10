@@ -1534,8 +1534,6 @@
 
         function DdlChangeEstrategico(v1, v2, v3, edit ) {
 
-
-
             var change1 = v1 != undefined ? v1 : "";
             var change2 = v2 != undefined ? v2 : "";
 
@@ -1661,6 +1659,9 @@
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
                     childrenEl.remove();
+
+                    $(idChildren).select2();
+
                     //if($(childrenEl).data('select2'))
                     //    childrenEl.select2('destroy')
                     //childrenEl.select2()
@@ -1710,9 +1711,12 @@
                 header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
                 header.find("button[data-toggle='collapse']").html("Nova Ação")
 
-                header.appendTo('#final');               
+                header.appendTo('#final');
                 header.show();
-                header.find("select").select2();
+
+                setTimeout(function () {
+                    header.find("select").select2();
+                }, 1);
 
                 myfunction();
                 MoneyMask('R$ ');
@@ -1720,17 +1724,17 @@
                 $('.money').each(function () {
                     $(this).maskMoney('mask', $(this).val());
                 });
+
                 InitDatePiker();
 
                 $('div[id = ' + collapseId + '] select').select2({
-
                     width: "280px"
                 });
-                              
-            };         
+
+            };
 
         })();
-        $('#new').click(addButton);      
+        $('#new').click(addButton);
 
         //Verificando
         function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
@@ -1856,14 +1860,17 @@
                 if (valor) {
                     $.get(GETGrupoCausa, { id: valor }, function (r) {
                         form.find('#GrupoCausa').empty().html(r);
+                        $('.showAsEstrategy select').select2();
                     });
                     $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
                         form.find('#ContramedidaGenerica').empty().html(rr);
+                        $('.showAsEstrategy select').select2();
                     });
                 }
                 else {
                     form.find('#GrupoCausa_Id').empty().attr('disabled', true);
                     form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    $('.showAsEstrategy select').select2();
                 }
             });
         } /*Causa Medida Etc...*/
@@ -1911,7 +1918,26 @@
 
         function ValidaAcao(listaAcoes) {
 
-            if (listaAcoes[0] != undefined) {
+            let dataIsValid = true;
+
+            $.each(listaAcoes, function (i, o) {
+
+                let parts = o._QuandoFim.split('/');
+
+                let DataInicio = new Date(parts[2], parts[1], parts[0]);
+
+                parts = o._QuandoInicio.split('/');
+
+                let DataFim = new Date(parts[2], parts[1], parts[0]);
+
+                if (DataInicio < DataFim) {
+                    alert("A Data de Início deve ser menor que a Data Fim!");
+                    dataIsValid = false;
+                    return;
+                }
+            });
+
+            if (listaAcoes[0] != undefined && dataIsValid) {
                 return true;
             } else {
                 return false;
@@ -1930,7 +1956,11 @@
             let isValid = $('.Acao').find('.error').length == 0
             if(!isValid)  {
                 alert("Campos obrigatórios")
-                return
+                return;
+            }
+
+            if (ValidaAcao(listaAcoes)) {
+                return;
             }
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
@@ -2016,8 +2046,8 @@
 
             selectPredecessor = encadeado;
 
-            $('#body').find('select').select2()
-            $('#body').find('select').select2('destroy')
+            //$('#body').find('select').select2()
+            //$('#body').find('select').select2('destroy')
 
             //Remove select caso exista
             $('#encadeado').find('select').remove();
@@ -2044,12 +2074,12 @@
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-                $('#modalNovo select').select2();
-                $('#modalNovo select').select2('destroy');
-                $('#modalNovo select').select2();
+                //$('#modalNovo select').select2();
+                //$('#modalNovo select').select2('destroy');
+                //$('#modalNovo select').select2();
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
-            $('#body').find('select').select2()
+            //$('#body').find('select').select2();
         }
 
         function SalvarNovo() {
@@ -2944,7 +2974,7 @@
                 //$(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
-                //$('select').select2();
+                $('#MailTo').select2();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
@@ -3000,11 +3030,11 @@
             $.LoadingOverlay("hide", true);
             counter--;
 
-            setTimeout(function () {
-                $('select:visible').select2()
-                $('select:visible').select2('destroy')
-                $('select:visible').select2()
-            }, 500)
+            //setTimeout(function () {
+            //    $('select:visible').select2()
+            //    $('select:visible').select2('destroy')
+            //    $('select:visible').select2()
+            //}, 500)
 
             HideForOperacional();
         });
@@ -3090,13 +3120,13 @@
 
                                     $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
 
-                                    try {
-                                        $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
-                                    } catch (e) {
-                                    }
-                                    finally {
-                                        $('#formEditTatico #modalLindo select').select2();
-                                    }
+                                    //try {
+                                    //    $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
+                                    //} catch (e) {
+                                    //}
+                                    //finally {
+                                    //    $('#formEditTatico #modalLindo select').select2();
+                                    //}
 
                                 });
                             });
@@ -3130,6 +3160,7 @@
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
                     setTimeout(function () {
                         $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                        $('.content3 select').select2();
                     }, 1);
 
                     $(r).attr("id", "formEditAcao")
@@ -3151,6 +3182,7 @@
 
                     $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
                     $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
+
                 });
         }
 
