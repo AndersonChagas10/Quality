@@ -2032,7 +2032,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "0";
+                                valueY = "Sem planejamento operacional";
                             else if (valueY == 1)
                                 valueY = "Diretrizes";
                             else if (valueY == 2)
@@ -2063,7 +2063,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "0";
+                                valueY = "Sem planejamento operacional";
                             else if (valueY == 1)
                                 valueY = "Diretrizes";
                             else if (valueY == 2)

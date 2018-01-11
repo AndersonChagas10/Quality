@@ -1702,7 +1702,7 @@
             var counter = 0;
 
             return function () {
-                var objectContainer = $('#obj');
+                var objectContainer = $('#obj:hidden');
                 var header = objectContainer.clone();
                 counter += 1;
                 var collapseId = "collapsible_obj_" + counter;
@@ -1713,9 +1713,11 @@
 
                 header.appendTo('#final');
                 header.show();
-
-                setTimeout(function () {
-                    header.find("select").select2();
+                
+                setTimeout(function () { 
+                    header.find("select.select2-hidden-accessible").next('.select2').remove();
+                    header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
+                    header.find("select:visible").select2();       
                 }, 1);
 
                 myfunction();
@@ -1727,9 +1729,9 @@
 
                 InitDatePiker();
 
-                $('div[id = ' + collapseId + '] select').select2({
-                    width: "280px"
-                });
+                //$('div[id = ' + collapseId + '] select').select2({
+                //    width: "280px"
+                //});
 
             };
 
