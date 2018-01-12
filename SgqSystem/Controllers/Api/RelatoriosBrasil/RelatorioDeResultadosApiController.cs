@@ -2345,7 +2345,6 @@ ORDER BY 8 DESC ";
         [HttpPost]
         [Route("GetHistoricoScoreNumero")]
         public List<RetornoGenerico> GetHistoricoScoreNumero([FromBody] FormularioParaRelatorioViewModel form)
-
         {
             #region consultaPrincipal
 
@@ -3144,7 +3143,6 @@ ORDER BY 8 DESC ";
             return retorno;
         }
 
-
         [HttpPost]
         [Route("GetHistoricoScoreMensal")]
         public List<RetornoGenerico> GetHistoricoScoreMensal([FromBody] FormularioParaRelatorioViewModel form)
@@ -3926,7 +3924,6 @@ ORDER BY 8 DESC ";
 
             return retorno;
         }
-
 
         [HttpPost]
         [Route("GetGraficoHistoricoModalGeral")]

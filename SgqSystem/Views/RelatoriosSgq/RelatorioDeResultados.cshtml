@@ -148,7 +148,7 @@
                 </div>
                 @*<div class="modal-body">
 
-                </div>*@
+                    </div>*@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.no</button>
                     <a id="ftaModalSim" href="#" target="_blank">
@@ -184,7 +184,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
     var Subtitle = "";
 
     //        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
@@ -249,7 +249,7 @@
             }
             EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         }
-        //         EasyAjax(UrlListaSugestoes, enviar, "", "", true);
+        //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
     }
 
@@ -1198,7 +1198,6 @@
             }
         }
     }
-
 
     function GerarGraficoHistoricoUnidade(data) {
 
@@ -2501,10 +2500,16 @@
 
             Send(true);
         });
-        $("#showModulo2").hide();
+
+        //$("#showModulo2").hide();
         formControl.showFullCallendar();
         formControl.showStatusIndicador();
         formControl.showClustRegUnitCriticalLevel123();
+
+        setTimeout(function () {
+            $("#clusterGroupId").find("option").eq(0).remove();
+            $("#clusterGroupId").val(8).change();
+        }, 30);
 
         $('select').select2();
 
@@ -2541,6 +2546,6 @@
         }, 0);
     });
 
-</script>
+    </script>
 
 }
