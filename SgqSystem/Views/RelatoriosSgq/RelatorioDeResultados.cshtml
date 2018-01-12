@@ -198,6 +198,7 @@
             limpaDadosTela();
 
             enviar['auditorId'] = GetUsuarioId();
+            enviar['clusterSelected_Id'] = $('structureId :selected').val();
 
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
             EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
@@ -218,7 +219,9 @@
             } else {
                 EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
             }
-   //         EasyAjax(UrlListaSugestoes, enviar, "", "", true);
+
+
+            //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
         }
 
