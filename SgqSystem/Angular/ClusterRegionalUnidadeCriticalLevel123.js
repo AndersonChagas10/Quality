@@ -231,7 +231,7 @@
                 enviar['level2Id'] = parseInt(document.getElementById('level2Idv').value);
                 enviar['level2IdArr'] = $('#level2Idv').val();
                 //Defining the $http service for getting Level3 By Level2
-                if ($scope.level2Value && !$scope.level1Value) {
+                if ($scope.level2Value) {
                     $http({
                         method: 'POST',
                         url: GetListLevel3VinculadoLevel2,// + "/" + $scope.level2Value,

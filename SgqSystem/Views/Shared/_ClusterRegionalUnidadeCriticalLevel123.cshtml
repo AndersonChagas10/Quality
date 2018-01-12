@@ -1,7 +1,7 @@
 ﻿@using DTO
 <li>
     <div data-ng-controller="CtrlClstRegUnitCriticalLevel123" id="showClustRegUnitCriticalLevel123" style="display:none; margin-left:0px!important">
-        <div id="showModulo2">
+        <div @*id="showModulo2"*@>
             <span class="redLabel">@Resources.Resource.cluster_group</span>
             <select id="clusterGroupId" data-ng-model="clusterGroupValue"
                     data-ng-options="c.Id as c.Name for c in clusterGroup |orderBy:'Name' track by c.Id"
@@ -42,7 +42,7 @@
 
         @*Este campo está sendo utilizado como departamento para a JBS EUA na seguinte data 25/10/2017*@
         <div>
-            <span class="redLabel">@Resources.Resource.department</span>
+            <span class="redLabel">@Resources.Resource.criticalLevel</span>
             <select id="criticalLevelId" data-ng-model="criticalLevelValue"
                         @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "multiple='multiple'":"")
                     data-ng-change="GetLevel1ByCriticalLevel()" class="form-control" style="width:210px">
@@ -50,6 +50,7 @@
                 <option ng-repeat="cl in criticalLevel | orderBy:'Name' track by cl.Id" value="{{cl.Id}}">{{cl.Name}}</option>
             </select>
         </div>
+
         <div class="levels">
             <span class="redLabel">@Resources.Resource.level1</span>
             <select id="level1Idv" data-ng-model="level1Value"
@@ -70,7 +71,7 @@
             </select>
         </div>
 
-        <div  class="levels" style="display:none">
+        <div  class="levels" @*style="display:none"*@>
             <span class="redLabel">@Resources.Resource.level3</span>
             <select id="level3Idv" data-ng-model="level3Value"
                     @Html.Raw(ViewBag.Level3IdArr != null ? "multiple='multiple'":"")

@@ -3935,6 +3935,25 @@ ORDER BY 8 DESC ";
 
             string query = "";
 
+            query = getQueryHistorioGeral(form, false);
+
+            using (var db = new SgqDbDevEntities())
+            {
+
+                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+            }
+
+            //GetMockHistoricoModal();
+            return retorno2;
+        }
+
+        [HttpPost]
+        [Route("GetGraficoHistoricoModalUnidade")]
+        public List<RetornoGenerico> GetGraficoHistoricoModalUnidade([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            string query = "";
+
             query = getQueryHistorioGeral(form);
 
             using (var db = new SgqDbDevEntities())
@@ -4462,7 +4481,7 @@ FROM (SELECT
 			id
 		FROM Parlevel1(nolock)
 		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
-	AND C2.UnitId = @UNIDADE
+	AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + @")
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
 WHERE NA = 2
@@ -4605,7 +4624,7 @@ FROM (SELECT
                 --AND IND.Id <> 43
 			LEFT JOIN ParCompany UNI (NOLOCK)
 				ON UNI.Id = CL1.UnitId
-				AND UNI.Id = @UNIDADE
+				AND UNI.Id IN (" + string.Join(",", form.unitIdArr) + @")
 			LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
 				ON A4.UNIDADE = UNI.Id
 				AND A4.INDICADOR = IND.ID
@@ -4638,8 +4657,8 @@ FROM (SELECT
 				AND NOMES.A4 = UNI.ID)
 				OR (IND.ID IS NULL)) S1) S2
 	WHERE 1 = 1
-	AND level1_Id  = " + form.level1Id + @"
-	AND Unidade_Id = @UNIDADE) ff
+	AND level1_Id  IN (" + string.Join(",",form.level1IdArr) + @")
+	AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + @")) ff
 GROUP BY level1_id
 		,Level1Name
 		,ChartTitle
@@ -4651,69 +4670,71 @@ ORDER BY 10
 DROP TABLE #AMOSTRATIPO4a  ";
         }
 
-        private static string getQueryHistorioGeral(FormularioParaRelatorioViewModel form)
+        private static string getQueryHistorioGeral(FormularioParaRelatorioViewModel form, bool enableFilter = true)
         {
             var where1 = "";
-
+            var where2 = "";
+            var where3 = "";
+            var where4 = "";
+            var where5 = "";
             var whereStatus = "";
 
-            if (form.statusIndicador == 1)
+            if (enableFilter)
             {
-                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 0";
-            }
-            else if (form.statusIndicador == 2)
-            {
-                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
-            }
-       
-            if (form.unitIdArr.Length > 0)
-            {
-                where1 += " AND C2.UnitId  IN (" + string.Join(",", form.unitIdArr) + ") ";
-            }
+                #region Where1
+                if (form.statusIndicador == 1)
+                {
+                    whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 0";
+                }
+                else if (form.statusIndicador == 2)
+                {
+                    whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
+                }
 
-            if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
-            {
-                where1 += " AND C2.UnitId IN (SELECT DISTINCT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id IN (" + string.Join(",", form.structureIdArr) + ") ) ";
-            }
+                if (form.unitIdArr.Length > 0)
+                {
+                    where1 += " AND C2.UnitId  IN (" + string.Join(",", form.unitIdArr) + ") ";
+                }
 
+                if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                {
+                    where1 += " AND C2.UnitId IN (SELECT DISTINCT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id IN (" + string.Join(",", form.structureIdArr) + ") ) ";
+                }
+                #endregion
+                #region Where2
+                if (form.unitIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                {
+                    where2 = " AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
+                }
 
+                if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                {
+                    where2 += " AND UNI.Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")) ";
+                }
+                #endregion
+                #region Where3
+                if (form.level1IdArr.Length > 0 && form.unitIdArr.Length == 0)
+                {
+                    where3 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + ") ";
+                }
+                #endregion
+                #region Where4
+                if (form.unitIdArr.Length > 0)
+                {
+                    where4 = " AND Unidade_Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
+                }
 
-            var where2 = "";
-
-            if (form.unitIdArr.Length > 0 && form.unitIdArr.Length == 0)
-            {
-                where2 = " AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
-            }
-
-            if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
-            {
-                where2 += " AND UNI.Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")) ";
-            }
-
-            var where3 = "";
-
-            if (form.level1IdArr.Length > 0 && form.unitIdArr.Length == 0)
-            {
-                where3 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + ") ";
-            }
-
-            var where4 = "";
-
-            if (form.unitIdArr.Length > 0)
-            {
-                where4 = " AND Unidade_Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
-            }
-
-            if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
-            {
-                where4 += " AND Unidade_Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ") ) ";
-            }
-
-            var where5 = "";
-
-            if (form.level1IdArr.Length > 0 && form.unitIdArr.Length == 0)
-            {
-                where5 = " AND IND.Id IN (" + string.Join(",", form.level1IdArr) + ") ";
+                if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                {
+                    where4 += " AND Unidade_Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ") ) ";
+                }
+                #endregion
+                #region Where2
+                if (form.level1IdArr.Length > 0 && form.unitIdArr.Length == 0)
+                {
+                    where5 = " AND IND.Id IN (" + string.Join(",", form.level1IdArr) + ") ";
+                }
+                #endregion
             }
 
             return @"
