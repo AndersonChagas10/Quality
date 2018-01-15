@@ -228,25 +228,42 @@
         enviarGeral["unitIdArr"] = undefined;
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
-        if (enviar['unitId'] > 0) {
+        //if (enviar['unitId'] > 0) {
+        if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 0) {
+
             //Evolutivo Das Unidades Selecionadas
-            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", undefined);
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+
+            if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 1) {
+
+                EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
+
+            }
+
             if (enviar['level2Id'] > 0) {
+
                 var enviar4 = Object.create(enviar);
+
                 enviar4['level2Id'] = 0;
 
-                EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", true);
+                EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+
                 //EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
+
             } else if (enviar['level1Id'] > 0) {
-                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", true);
+
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
             }
+
         } else {
+
             if (enviar['level1Id'] > 0 || enviar['level1IdArr'].length > 0) {
                 var enviarComIndicador = Object.create(enviar);
                 enviarComIndicador['level2Id'] = undefined;
                 enviarComIndicador['level2IdArr'] = undefined;
                 EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
             }
+
             EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         }
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
@@ -2515,9 +2532,9 @@
 
         $('#level1Idv').on('change', function () {
 
-            let level1 = $('#level1Idv option:selected').val()
+            let level1 = $('#level1Idv').val();
 
-            if (level1 != "" && level1 != undefined) {
+            if (level1.length == 1 && level1.length != "") {
                 $('#statusIndicador').prop("disabled", true);
             } else {
                 $('#statusIndicador').prop("disabled", false);

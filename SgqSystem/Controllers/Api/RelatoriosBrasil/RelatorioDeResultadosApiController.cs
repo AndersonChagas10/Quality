@@ -39,9 +39,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         //    var script = "";
 
         //    script += @"SELECT 
-	       //         AddDate
-	       //         ,REPLACE(CAST(result AS VARCHAR(8000)),'""','''') AS result
-	       //         ,callback
+        //         AddDate
+        //         ,REPLACE(CAST(result AS VARCHAR(8000)),'""','''') AS result
+        //         ,callback
         //            FROM logJson
         //            where callback like 'Relatorio_Nao_Conformidade' and AddDate >= '2017-07-27 11:45:31.4432595'
         //            order by 1 desc
@@ -647,7 +647,8 @@ ORDER BY 10 DESC ";
             if (form.level3IdArr.Length > 0)
             {
                 whereLevel3 = "AND R3.ParLevel3_Id  IN (" + string.Join(",", form.level3IdArr) + ")";
-            }else
+            }
+            else
             if (form.level3Id != 0)
             {
                 whereLevel3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
@@ -2274,12 +2275,12 @@ ORDER BY 8 DESC ";
                 whereCriticalLevel = $@"  AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
-            
+
 
             var where = string.Empty;
             where += "";
 
-            
+
             var query4 =
 
                  "SELECT                     " +
@@ -2335,9 +2336,9 @@ ORDER BY 8 DESC ";
             // var result4 = result.Where(r => r.QUERY == 4).ToList();
             //var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
 
-            var retorno =  result;
+            var retorno = result;
 
-            
+
 
             return retorno;
         }
@@ -4654,7 +4655,7 @@ FROM (SELECT
 				AND NOMES.A4 = UNI.ID)
 				OR (IND.ID IS NULL)) S1) S2
 	WHERE 1 = 1
-	AND level1_Id  IN (" + string.Join(",",form.level1IdArr) + @")
+	AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @")
 	AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + @")) ff
 GROUP BY level1_id
 		,Level1Name
@@ -4675,9 +4676,23 @@ DROP TABLE #AMOSTRATIPO4a  ";
             var where4 = "";
             var where5 = "";
             var whereStatus = "";
+            var whereClusterGroup = "";
+            var whereCluster = "";
+
+
+            if (form.clusterIdArr.Length > 0)
+            {
+                whereCluster = "" + string.Join(",", form.clusterIdArr) + "";
+            }
+
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = "";
+            }
 
             if (enableFilter)
             {
+
                 #region Where1
                 if (form.statusIndicador == 1)
                 {
@@ -4693,24 +4708,24 @@ DROP TABLE #AMOSTRATIPO4a  ";
                     where1 += " AND C2.UnitId  IN (" + string.Join(",", form.unitIdArr) + ") ";
                 }
 
-                if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                if (form.structureIdArr.Length > 0)
                 {
                     where1 += " AND C2.UnitId IN (SELECT DISTINCT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id IN (" + string.Join(",", form.structureIdArr) + ") ) ";
                 }
                 #endregion
                 #region Where2
-                if (form.unitIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                if (form.unitIdArr.Length > 0)
                 {
                     where2 = " AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
                 }
 
-                if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                if (form.structureIdArr.Length > 0)
                 {
                     where2 += " AND UNI.Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")) ";
                 }
                 #endregion
                 #region Where3
-                if (form.level1IdArr.Length > 0 && form.unitIdArr.Length == 0)
+                if (form.level1IdArr.Length > 0)
                 {
                     where3 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + ") ";
                 }
@@ -4721,13 +4736,13 @@ DROP TABLE #AMOSTRATIPO4a  ";
                     where4 = " AND Unidade_Id  IN (" + string.Join(",", form.unitIdArr) + ") ";
                 }
 
-                if (form.structureIdArr.Length > 0 && form.unitIdArr.Length == 0)
+                if (form.structureIdArr.Length > 0)
                 {
                     where4 += " AND Unidade_Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ") ) ";
                 }
                 #endregion
                 #region Where2
-                if (form.level1IdArr.Length > 0 && form.unitIdArr.Length == 0)
+                if (form.level1IdArr.Length > 0)
                 {
                     where5 = " AND IND.Id IN (" + string.Join(",", form.level1IdArr) + ") ";
                 }
@@ -4737,7 +4752,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
             return @"
  DECLARE @dataFim_ datetime = '" + form._dataFimSQL + " 23:59:59" + @"'
   
- DECLARE @dataInicio_ datetime = '" + form._dataInicioSQL +" 00:00:00"+ @"'
+ DECLARE @dataInicio_ datetime = '" + form._dataInicioSQL + " 00:00:00" + @"'
 SET @dataInicio_ = '" + form._dataInicioSQL + " 00:00:00" + @"'
   
  declare @ListaDatas_ table(data_ date)
@@ -5461,8 +5476,10 @@ DROP TABLE #NOMES ";
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }
         public decimal? Meta { get; set; }
-        public string _dateEUA {
-            get {
+        public string _dateEUA
+        {
+            get
+            {
 
                 if (date.HasValue)
                 {
