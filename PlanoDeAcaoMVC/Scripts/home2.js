@@ -509,12 +509,12 @@ $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
     $('#modalLindo').find('.modal-body').empty();
     $('#Header').html("Planejamento Operacional");
 
-    $.get(PlanejamentoDetalhes, {
-        id: planejamentoCorrentId
-    }, function (r) {
+    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+
         $('#modalLindo').find('.modal-body').empty().append(r);
         $('#NovaAcao').show();
         $('#NovaAcao').click();
+
     });
 
 });
@@ -1963,6 +1963,8 @@ function filterPieForDataTable(name) {
 //monta arrau com o filtro do status passado
 function FiltraColunasOfClickPie(array, Atribute, name) {
 
+    Atribute = Atribute == "(vazio)" ? null : Atribute;
+
     let novoArr = [];
 
     array.forEach(function (o, c) {
@@ -2006,6 +2008,8 @@ function filterBar1ForDataTable(name, category, idPanel) {
 
 function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
 
+    Atribute = Atribute == "(vazio)" ? null : Atribute;
+
     let novoArr = [];
     if (categoryY != "" && categoryY != "" && Atribute != "") {
 
@@ -2028,7 +2032,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "0";
+                                valueY = "Sem planejamento operacional";
                             else if (valueY == 1)
                                 valueY = "Diretrizes";
                             else if (valueY == 2)
@@ -2059,7 +2063,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "0";
+                                valueY = "Sem planejamento operacional";
                             else if (valueY == 1)
                                 valueY = "Diretrizes";
                             else if (valueY == 2)
