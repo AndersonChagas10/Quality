@@ -603,9 +603,13 @@ $('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
     if (data.Id > 0) {
 
+        isClickedEstrategico = true;
+
         getPlanOp(data, a, b);
 
     } else if (data.Estrategico_Id > 0) {
+
+        isClickedTaticoVinculado = true;
 
         getPlanEstrat(data, a, b);
     }
