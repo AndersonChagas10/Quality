@@ -670,21 +670,28 @@ FROM (SELECT
 WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
-	TAB.Indicador
-   ,TAB.IndicadorName
-   ,TAB.Monitoramento
-   ,TAB.MonitoramentoName
-   ,TAB.TarefaName AS TarefaName
-   ,TAB.NcSemPeso AS Nc
-   ,TAB.AvSemPeso AS Av
+	Indicador
+   ,IndicadorName
+   ,Monitoramento
+   ,MonitoramentoName
+   ,TarefaName AS TarefaName
+   ,NcSemPeso AS Nc
+   ,AvSemPeso AS Av
    ,[Proc] AS PC
-   ,TAB.TarefaId AS Tarefa
+   ,TarefaId AS Tarefa
    ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    ,Unidade AS Unidade
    ,UnidadeName AS UnidadeName
    ,0 AS Sentido
    ,CAST(1 as bit) as IsTarefa
-FROM (SELECT
+FROM (SELECT  
+		Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName
+			,SUM(NC)NC
+			,SUM(NcSemPeso)NcSemPeso
+			,SUM(AV)AV
+			,SUM(AvSemPeso) AvSemPeso
+			,ISNULL(NULLIF(SUM(NC),0)/SUM(AV),0) [proc]
+	FROM (SELECT
 		UNI.Id AS Unidade
 	   ,UNI.Name AS UnidadeName
 	   ,IND.Name AS IndicadorName
@@ -719,7 +726,7 @@ FROM (SELECT
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
 		END AS AvSemPeso
-	   ,SUM(R3.WeiDefects) /
+	   ,ISNULL(NULLIF(SUM(R3.WeiDefects),0) /
 		CASE
 			WHEN IND.HashKey = 1 THEN ((SELECT top 1 VOLUMEPCC From (
 											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
@@ -729,7 +736,7 @@ FROM (SELECT
 											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
-		END * 100 AS [Proc]
+		END,0) * 100 AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
 	INNER JOIN CollectionLevel2 C2 (NOLOCK)
 		ON C2.Id = R3.CollectionLevel2_Id
@@ -771,8 +778,8 @@ FROM (SELECT
 			,UNI.Id
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
-            ,CL1.ConsolidationDate
-	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
+            ,CL1.ConsolidationDate 
+	/* HAVING SUM(R3.WeiDefects) > 0 */ ) TAB GROUP BY Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName)A
 ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -1339,21 +1346,28 @@ FROM (SELECT
 WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
-	TAB.Indicador
-   ,TAB.IndicadorName
-   ,TAB.Monitoramento
-   ,TAB.MonitoramentoName
-   ,TAB.TarefaName AS TarefaName
-   ,TAB.NcSemPeso AS Nc
-   ,TAB.AvSemPeso AS Av
+	Indicador
+   ,IndicadorName
+   ,Monitoramento
+   ,MonitoramentoName
+   ,TarefaName AS TarefaName
+   ,NcSemPeso AS Nc
+   ,AvSemPeso AS Av
    ,[Proc] AS PC
-   ,TAB.TarefaId AS Tarefa
+   ,TarefaId AS Tarefa
    --,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    --,Unidade AS Unidade
    --,UnidadeName AS UnidadeName
    ,0 AS Sentido
    ,CAST(1 as bit) as IsTarefa
-FROM (SELECT
+FROM (SELECT  
+		IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName
+			,SUM(NC)NC
+			,SUM(NcSemPeso)NcSemPeso
+			,SUM(AV)AV
+			,SUM(AvSemPeso) AvSemPeso
+			,ISNULL(NULLIF(SUM(NC),0)/SUM(AV),0) [proc]
+	FROM (SELECT
 		--UNI.Id AS Unidade
 	   --,UNI.Name AS UnidadeName
 	   --,
@@ -1377,16 +1391,11 @@ FROM (SELECT
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
 		END AS AvSemPeso
-	   ,SUM(R3.WeiDefects) /
+	   ,ISNULL(NULLIF(SUM(R3.WeiDefects),0) /
 		CASE
-			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @NAPCC
-							FROM VolumePcc1b(nolock)
-							WHERE 1=1
-                            --AND ParCompany_id = UNI.Id
-							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
+			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
 			ELSE SUM(R3.WeiEvaluation)
-		END * 100 AS [Proc]
+		END,0) * 100 AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
 	INNER JOIN CollectionLevel2 C2 (NOLOCK)
 		ON C2.Id = R3.CollectionLevel2_Id
@@ -1426,8 +1435,8 @@ FROM (SELECT
 			,R3.ParLevel3_Name
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
-            ,cl1.ConsolidationDate
-	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
+            ,cl1.ConsolidationDate 
+	/* HAVING SUM(R3.WeiDefects) > 0 */) TAB GROUP BY IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName)A
 ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -3972,7 +3981,14 @@ SELECT
    ,date
    --,'Histórico da Tarefa: ' + TAB.TarefaName as ChartTitle
    ,'Histórico da Tarefa' as ChartTitle
-FROM (SELECT
+FROM (SELECT  
+		Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName
+			,SUM(NC)NC
+			,SUM(NcSemPeso)NcSemPeso
+			,SUM(AV)AV
+			,SUM(AvSemPeso) AvSemPeso
+			,ISNULL(NULLIF(SUM(NC),0)/SUM(AV),0) [proc]
+	FROM (SELECT
 		UNI.Id AS Unidade
 	   ,UNI.Name AS UnidadeName
 	   ,IND.Name AS IndicadorName
@@ -3995,15 +4011,17 @@ FROM (SELECT
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
 		END AS AvSemPeso
-	   ,SUM(R3.WeiDefects) /
+	   ,ISNULL(NULLIF(SUM(R3.WeiDefects),0) /
 		CASE
-			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-						SUM(Quartos) / 2
-					FROM VolumePcc1b(nolock)
-					WHERE ParCompany_id = UNI.Id
-					AND CAST(Data AS DATE) = CAST(c2.CollectionDate AS DATE))
+			WHEN IND.HashKey = 1 THEN ((SELECT top 1 VOLUMEPCC From (
+											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
+											FROM VolumePcc1b(nolock)
+											WHERE 1=1 
+											AND Data = cl1.ConsolidationDate
+											AND ParCompany_id = UNI.Id
+											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
-		END * 100 AS [Proc]
+		END,0) * 100 AS [Proc]
 	   ,CAST(c2.CollectionDate AS DATE) AS date
 	FROM Result_Level3 R3 (NOLOCK)
 	INNER JOIN CollectionLevel2 C2 (NOLOCK)
@@ -4035,8 +4053,8 @@ FROM (SELECT
 			,UNI.Id
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
-			,CAST(c2.CollectionDate AS date)
-	/* HAVING SUM(R3.WeiDefects) > 0 */) TAB
+			,CAST(c2.CollectionDate AS date) 
+	 /* HAVING SUM(R3.WeiDefects) > 0 */ ) TAB GROUP BY Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName)A
 ORDER BY 15";
         }
 
