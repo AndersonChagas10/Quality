@@ -676,7 +676,6 @@
                     <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
                         <thead>
                             <tr>
-
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -718,8 +717,6 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-
-
                             </tr>
                         </thead>
                         <tbody>
@@ -765,8 +762,6 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-
-
                             </tr>
                         </tbody>
                     </table>
@@ -803,10 +798,8 @@
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">Novo Planejamento Tático Vinculado a um Planejamento Estratégico</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>
-
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
-
                 </div>
             </div>
         </div>
@@ -887,35 +880,36 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $('.container').each(function (i, o) {
             $(o).removeClass('container').addClass('container-fluid');
         });
 
         var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")'
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")'
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")'
 
-    </script>
+</script>
 
     <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
     <script src="~/Scripts/lodash.min.js"></script>
     @*<script src="~/Scripts/PANovo/js/popper.min.js"></script>
-        <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
-        <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
-        <script src="~/Scripts/PANovo/js/moment.min.js"></script>
-        <script src="~/Scripts/PANovo/js/daterangepicker.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.colVis.min.js"></script>
-        <script src="~/Scripts/PANovo/js/jszip.min.js"></script>
-        <script src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
-        <script src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
-        <script src="~/Scripts/PANovo/js/pt-br.js"></script>
-        <script src="~/Scripts/select2.min.js"></script>
-        <script src="~/Scripts/i18n/pt-BR.js"></script>*@
-
-    @*<script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
+    <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
+    <script src="~/Scripts/PANovo/js/moment.min.js"></script>
+    <script src="~/Scripts/PANovo/js/daterangepicker.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.colVis.min.js"></script>
+    <script src="~/Scripts/PANovo/js/jszip.min.js"></script>
+    <script src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
+    <script src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+    <script src="~/Scripts/PANovo/js/pt-br.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/i18n/pt-BR.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+    <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
     <script src="~/Scripts/PANovo/js/pt-br.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/i18n/pt-BR.js"></script>

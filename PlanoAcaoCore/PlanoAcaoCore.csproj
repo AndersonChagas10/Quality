@@ -91,6 +91,7 @@
     <Compile Include="Acao\Pa_Unidade.cs" />
     <Compile Include="Conn.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
+    <Compile Include="Outros\Pa_Colvis.cs" />
     <Compile Include="Pa_BaseObject.cs" />
     <Compile Include="PaEfConenction.Context.cs">
       <AutoGen>True</AutoGen>
