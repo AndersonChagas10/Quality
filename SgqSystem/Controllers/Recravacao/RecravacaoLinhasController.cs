@@ -23,7 +23,15 @@ namespace SgqSystem.Controllers.Recravacao
         // GET: RecravacaoTipoLata
         public ActionResult Index()
         {
-            var model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas ORDER BY IsActive").OrderByDescending(r=>r.IsActive == false).ToList();
+            var model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas ORDER BY IsActive")
+                .OrderByDescending(r=>r.IsActive == false)
+                .Select(r =>
+                {
+                    r.ParCompany = db.Database.SqlQuery<ParCompany>(string.Format("SELECT * FROM ParCompany where Id = {0}", r.ParCompany_Id)).FirstOrDefault();
+                    r.TipoLata = db.Database.SqlQuery<ParRecravacao_TipoLata>(string.Format("SELECT * FROM ParRecravacao_TipoLata where Id = {0}", r.ParRecravacao_TypeLata_Id)).FirstOrDefault();
+                    return r;
+                })
+                .ToList();
             return View(model);
         }
 
