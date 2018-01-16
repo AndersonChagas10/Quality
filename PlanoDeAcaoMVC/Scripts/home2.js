@@ -177,6 +177,10 @@ function MountDataTable(json) {
                 "render": function (data, type, row, meta) {
                     var html = "";
 
+                    if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
+                        html += "<br>" + btnEditarPlanejamento
+                    }
+
                     if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
                         html += btnNovoTatico;
 
@@ -185,10 +189,6 @@ function MountDataTable(json) {
 
                     if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
                         html += "<br>" + btnAcompanhamento
-
-                    if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
-                        html += "<br>" + btnEditarPlanejamento
-                    }
 
                     return html;
                 }
