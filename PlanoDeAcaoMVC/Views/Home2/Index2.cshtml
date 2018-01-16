@@ -880,7 +880,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $('.container').each(function (i, o) {
             $(o).removeClass('container').addClass('container-fluid');
         });
@@ -889,27 +889,27 @@
         var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")'
         var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")'
 
-</script>
+    </script>
 
     <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
     <script src="~/Scripts/lodash.min.js"></script>
     @*<script src="~/Scripts/PANovo/js/popper.min.js"></script>
-    <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
-    <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
-    <script src="~/Scripts/PANovo/js/moment.min.js"></script>
-    <script src="~/Scripts/PANovo/js/daterangepicker.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.colVis.min.js"></script>
-    <script src="~/Scripts/PANovo/js/jszip.min.js"></script>
-    <script src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
-    <script src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
-    <script src="~/Scripts/PANovo/js/pt-br.js"></script>
-    <script src="~/Scripts/select2.min.js"></script>
-    <script src="~/Scripts/i18n/pt-BR.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-    <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
+        <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
+        <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
+        <script src="~/Scripts/PANovo/js/moment.min.js"></script>
+        <script src="~/Scripts/PANovo/js/daterangepicker.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.colVis.min.js"></script>
+        <script src="~/Scripts/PANovo/js/jszip.min.js"></script>
+        <script src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
+        <script src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
+        <script src="~/Scripts/PANovo/js/pt-br.js"></script>
+        <script src="~/Scripts/select2.min.js"></script>
+        <script src="~/Scripts/i18n/pt-BR.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
     <script src="~/Scripts/PANovo/js/pt-br.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/i18n/pt-BR.js"></script>
@@ -1166,6 +1166,7 @@
 
             $('#campo1Filtro').css('width', '200px');
             $('#valor1Filtro').css('width', '200px');
+
         });
 
         var selectPredecessor;
@@ -1707,11 +1708,11 @@
 
                 header.appendTo('#final');
                 header.show();
-                
-                setTimeout(function () { 
+
+                setTimeout(function () {
                     header.find("select.select2-hidden-accessible").next('.select2').remove();
                     header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
-                    header.find("select:visible").select2();       
+                    header.find("select:visible").select2();
                 }, 1);
 
                 myfunction();
@@ -2888,6 +2889,7 @@
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.find('table > tbody > tr:nth-child(19)').hide();
                 form.find('table > tbody > tr:nth-child(20)').hide();
+                form.find('table > tbody > tr:nth-child(21)').hide();
                 form.attr('id', 'formEditEstrategy');
 
                 form.find('button').each(function (o,c){
@@ -3083,7 +3085,9 @@
             $.get(urlEditPlanOp, { id: data.Id }, function (r) {
                 TesteRenan(r, 'Estrategico', data);
                 $('#modalNovo > div > div > div.modal-footer > button').show();
-                getPlanEstrat(data, a, b);
+                if (data.Estrategico_Id > 0) {
+                    getPlanEstrat(data, a, b);
+                }              
             });
 
         }
@@ -3124,14 +3128,16 @@
                                     //    $('#formEditTatico #modalLindo select').select2();
                                     //}
 
+                                   
                                 });
                             });
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();                            
                         });
                     });
                     //HideForOperacional();
-
-                    getAcao(data, a, b);
+                    if (data.Acao.Id > 0) {
+                        getAcao(data, a, b);
+                    }                  
                 }
             );
         }
@@ -3181,6 +3187,7 @@
 
                 });
         }
+
 
     </script>
 

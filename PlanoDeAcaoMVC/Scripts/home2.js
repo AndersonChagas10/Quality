@@ -11,6 +11,7 @@ var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" 
 var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
 var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
 var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
+var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
 var dados = [];
 var dadosPie2 = [];
 var ColvisarrayVisaoUsuario_show = [];
@@ -184,6 +185,10 @@ function MountDataTable(json) {
 
                     if (!!parseInt(data.Acao.Id) && parseInt(data.Acao.Id) > 0)  // Possui plan Operac
                         html += "<br>" + btnAcompanhamento
+
+                    if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
+                        html += "<br>" + btnEditarPlanejamento
+                    }
 
                     return html;
                 }
@@ -582,6 +587,36 @@ $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
     //Clicked(isTaticoClicked, isNovaAcao);
 
     getAcompanhamento(acaoCorrentId);
+
+});
+
+
+$('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
+
+    //var data = selecionado
+
+    $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
+
+    var data = table.row($(this).parents('tr')).data();
+
+    console.log(data);
+
+    if (data.Id > 0) {
+
+        getPlanOp(data, a, b);
+
+    } else if (data.Estrategico_Id > 0) {
+
+        getPlanEstrat(data, a, b);
+    }
+    //} else if (data.Acao.Id > 0) {
+
+    //    getAcao(data, a, b);
+    //}
+
+    $('#modalLindo').find('.modal-footer button').hide();
+    $('#Header').html("Editar");
+    $('#modalLindo').modal();
 
 });
 
