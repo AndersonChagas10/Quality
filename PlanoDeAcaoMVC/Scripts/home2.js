@@ -11,11 +11,14 @@ var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" 
 var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
 var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
 var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
-
+var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
 var dados = [];
 var dadosPie2 = [];
+var ColvisarrayVisaoUsuario_show = [];
+var ColvisarrayVisaoUsuario_hide = [];
 
 function GetDataTable(campo, filtro) {
+
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
         dados = r;
@@ -63,7 +66,33 @@ function GetDataTable(campo, filtro) {
 
         json = dados;
 
-        MountDataTable(json);
+        //MountDataTable(json);
+
+        //Recupera colunas visíveis do usuário -- Não está em funçao pois dava loop infinito (16/01/2018 - Renan)
+        if (getCookie('webControlCookie')) {
+
+            Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
+
+            $.post(urlGetUserColvis, { "Pa_Quem_Id": Pa_Quem_Id }, function (r) {
+
+                if (r.length > 0) {
+
+                    ColvisarrayVisaoAtual_show = objectToArr(r[0].ColVisShow.split(","));
+                    ColvisarrayVisaoAtual_hide = objectToArr(r[0].ColVisHide.split(","));
+
+                    if (ColvisarrayVisaoAtual_hide.length > 0) {
+                        ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
+                        ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
+                    }
+
+                }
+
+                //Monta a tabela
+                MountDataTable(json);
+
+            });
+        }
+
         $('#spanSubTable').text('TODAS AS TAREFAS PARA FILTRAR');
 
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
@@ -72,6 +101,14 @@ function GetDataTable(campo, filtro) {
 
 
     });
+}
+
+function objectToArr(myObj) {
+    let array = $.map(myObj, function (value, index) {
+        return [value];
+    });
+
+    return array
 }
 
 function MountDataTable(json) {
@@ -86,6 +123,9 @@ function MountDataTable(json) {
     }
 
     table = null;
+
+    console.log(ColvisarrayVisaoAtual_show);
+    console.log(ColvisarrayVisaoAtual_hide);
 
     table = $('#example').DataTable({
         destroy: true,
@@ -112,7 +152,7 @@ function MountDataTable(json) {
             { "mData": "_DataInicio" },
             { "mData": "_DataFim" },
             { "mData": "Responsavel_Projeto_Quem.Name" },
-            { "mData": "Acao.Regional" },            
+            { "mData": "Acao.Regional" },
             { "mData": "Acao.UnidadeName" },
             { "mData": "Acao.TipoIndicadorName" },
             { "mData": "Acao.Level1Name" },
@@ -136,6 +176,10 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     var html = "";
+
+                    if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
+                        html += "<br>" + btnEditarPlanejamento
+                    }
 
                     if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
                         html += btnNovoTatico;
@@ -275,6 +319,18 @@ function MountDataTable(json) {
                 text: 'Atualizar',
                 action: function (e, dt, node, config) {
                     $('#btnTop').click();
+                },
+            },
+            {
+                text: 'Minhas Colunas',
+                extend: 'colvisGroup',
+                show: ColvisarrayVisaoUsuario_show,
+                hide: ColvisarrayVisaoUsuario_hide
+            },
+            {
+                text: 'Salvar Colunas',
+                action: function (e, dt, node, config) {
+                    SaveUserColVis();
                 },
             },
             //novaAcao: {
@@ -420,6 +476,7 @@ function MountDataTable(json) {
     });
 
     setTimeout(function () {
+
         if (ColvisarrayVisaoAtual_hide.length != 0) {
 
             $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
@@ -427,7 +484,9 @@ function MountDataTable(json) {
         } else {
             $('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
         }
+
         $(".dataTables_filter").css("display", "block");
+
     }, 1100);
 
 
@@ -509,12 +568,12 @@ $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
     $('#modalLindo').find('.modal-body').empty();
     $('#Header').html("Planejamento Operacional");
 
-    $.get(PlanejamentoDetalhes, {
-        id: planejamentoCorrentId
-    }, function (r) {
+    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+
         $('#modalLindo').find('.modal-body').empty().append(r);
         $('#NovaAcao').show();
         $('#NovaAcao').click();
+
     });
 
 });
@@ -528,6 +587,41 @@ $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
     //Clicked(isTaticoClicked, isNovaAcao);
 
     getAcompanhamento(acaoCorrentId);
+
+});
+
+
+$('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
+
+    //var data = selecionado
+
+    $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
+
+    var data = table.row($(this).parents('tr')).data();
+
+    console.log(data);
+
+    if (data.Id > 0) {
+
+        isClickedEstrategico = true;
+
+        getPlanOp(data, a, b);
+
+    }
+    //else if (data.Estrategico_Id > 0) {
+
+    //    isClickedTaticoVinculado = true;
+
+    //    getPlanEstrat(data, a, b);
+    //}
+    //} else if (data.Acao.Id > 0) {
+
+    //    getAcao(data, a, b);
+    //}
+
+    $('#modalLindo').find('.modal-footer button').hide();
+    $('#Header').html("Editar");
+    $('#modalLindo').modal();
 
 });
 
@@ -1267,7 +1361,7 @@ function MapeiaValorParaHC(array, prop, isInteger) {
             if (propArray[1] == "TipoIndicador") {
                 var value = o[propArray[0]][propArray[1]];
                 if (value == 0)
-                    value = "0";
+                    value = "Sem planejamento operacional";
                 else if (value == 1)
                     value = "Diretrizes";
                 else if (value == 2)
@@ -1349,18 +1443,18 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (propArrayC[1] == "TipoIndicador") {
                     var value = retornoCategorias;
                     if (value == 0)
-                        value = "0";
+                        value = "Sem planejamento operacional";
                     else if (value == 1)
                         value = "Diretrizes";
                     else if (value == 2)
                         value = "Scorecard";
-                    retornoSeries = value;
+                    retornoCategorias = value;
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
                     var value = retornoSeries;
                     if (value == 0)
-                        value = "0";
+                        value = "Sem planejamento operacional";
                     else if (value == 1)
                         value = "Diretrizes";
                     else if (value == 2)
@@ -1546,11 +1640,10 @@ $(function () {
 
 });
 
-
-
 var btnOrderFilter = "";
 var option = "";
 var campo1Panel5Selected = "";
+
 function filterEixoY(selectId) {
 
     if (campo1Panel5Selected != $('#campo1Panel5 option:selected').val()) {
@@ -1649,7 +1742,7 @@ function distinctFilter(lista, filtro, selectId) {
             $('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador"
         ) {
             if (value == 0)
-                value = "0";
+                value = "Sem planejamento operacional";
             else if (value == 1)
                 value = "Diretrizes";
             else if (value == 2)
@@ -1963,6 +2056,8 @@ function filterPieForDataTable(name) {
 //monta arrau com o filtro do status passado
 function FiltraColunasOfClickPie(array, Atribute, name) {
 
+    Atribute = Atribute == "(vazio)" ? null : Atribute;
+
     let novoArr = [];
 
     array.forEach(function (o, c) {
@@ -2006,6 +2101,8 @@ function filterBar1ForDataTable(name, category, idPanel) {
 
 function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
 
+    Atribute = Atribute == "(vazio)" ? null : Atribute;
+
     let novoArr = [];
     if (categoryY != "" && categoryY != "" && Atribute != "") {
 
@@ -2028,7 +2125,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "0";
+                                valueY = "Sem planejamento operacional";
                             else if (valueY == 1)
                                 valueY = "Diretrizes";
                             else if (valueY == 2)
@@ -2059,7 +2156,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "0";
+                                valueY = "Sem planejamento operacional";
                             else if (valueY == 1)
                                 valueY = "Diretrizes";
                             else if (valueY == 2)
@@ -2378,23 +2475,27 @@ $('#btnpanel6').off('click').on('click', function () {
 })
 
 function setArrayColvisAtual() {
-    ColvisarrayVisaoAtual_show = [];
-    ColvisarrayVisaoAtual_hide = [];
-    var ss = [];
-    $('#example_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
-    $('body > div.dt-button-collection.fixed.four-column').hide();
-    ss = $('.buttons-columnVisibility');
-    ss.each(function (i, o) {
-        if ($(o).hasClass('active')) {
-            ColvisarrayVisaoAtual_show.push(i);
-        } else {
-            ColvisarrayVisaoAtual_hide.push(i);
-        }
-    }).promise().done(function () {
-        $('body > div.dt-button-background').click();
-        //$('body > div.dt-button-collection.fixed.four-column').show();
-    });
 
+    if (table) {
+
+        ColvisarrayVisaoAtual_show = [];
+        ColvisarrayVisaoAtual_hide = [];
+        var ss = [];
+
+        $('#example_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
+        $('body > div.dt-button-collection.fixed.four-column').hide();
+        ss = $('.buttons-columnVisibility');
+        ss.each(function (i, o) {
+            if ($(o).hasClass('active')) {
+                ColvisarrayVisaoAtual_show.push(i);
+            } else {
+                ColvisarrayVisaoAtual_hide.push(i);
+            }
+        }).promise().done(function () {
+            $('body > div.dt-button-background').click();
+            //$('body > div.dt-button-collection.fixed.four-column').show();
+        });
+    }
 }
 
 
@@ -2412,4 +2513,33 @@ $(document).ready(function () {
     setTimeout(atualizarTopFilters, 5000);
 
 });
+
+function SaveUserColVis() {
+
+    setArrayColvisAtual();
+
+    Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
+
+    let objColvis = {
+        "ColVisShow": ColvisarrayVisaoAtual_show.toString(),
+        "ColVisHide": ColvisarrayVisaoAtual_hide.toString(),
+        "Pa_Quem_Id": Pa_Quem_Id
+    }
+
+
+    ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
+    ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
+
+    $.post(urlSaveUserColvis, objColvis, function (r) {
+
+        $('body > div.dt-button-background').click();
+        console.log(r);
+        if (r == "") {
+            openMessageModal("Colunas salvas!", "As Colunas foram salvas com sucesso!");
+        } else {
+            openMessageModal("Erro ao salvar!");
+        }
+    })
+
+}
 

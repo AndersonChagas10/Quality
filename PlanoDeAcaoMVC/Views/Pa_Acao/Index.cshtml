@@ -10,10 +10,10 @@
 }
 <div style="display:none" id="obj">
     <p>
-        <button aria-expanded="false" data-target="#collapsible_obj_0" data-toggle="collapse" class="btn btn-default collapsed">Ação Name</button>
+        <button id="AddAcao" aria-expanded="false" data-target="#collapsible_obj_0" data-toggle="collapse" class="btn btn-default hidden">Ação Name</button>
         &nbsp;<span data-toggle="tooltip" title="Excluir Ação" class="glyphicon glyphicon-trash" style="cursor:pointer" onclick="RemoveAcao(this)"></span>
     </p>
-    <div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse">
+    @*<div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse in">*@
 
         <form id="Acao" class="Acao">
 
@@ -286,8 +286,12 @@
         </form>
     </div>
     <hr />
-</div>
-<div id="final">
+@*</div>*@
+<div id="final"></div>
 
-</div>
+<script>
+    $(function () {
+        $('#AddAcao').click();
+    });
+</script>
 
