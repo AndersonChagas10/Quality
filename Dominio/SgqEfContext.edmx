@@ -3680,25 +3680,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParHeaderField" EntitySet="ParHeaderField" />
             <End Role="ParMultipleValues" EntitySet="ParMultipleValues" />
           </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_Level01" Association="SgqDbModel.FK_CollectionLevel02_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_Level02" Association="SgqDbModel.FK_CollectionLevel02_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="SgqDbModel.FK_CollectionLevel02_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02">
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
-          </AssociationSet>
-          <EntitySet Name="VerificacaoTipificacaoV2" EntityType="SgqDbModel.VerificacaoTipificacaoV2" />
-          <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="ParLevel3Value_Outer" EntityType="SgqDbModel.ParLevel3Value_Outer" />
           <EntitySet Name="ParLevel3" EntityType="SgqDbModel.ParLevel3" />
           <AssociationSet Name="FK_ParCounterLocal_ParLevel3" Association="SgqDbModel.FK_ParCounterLocal_ParLevel3">
@@ -6169,14 +6150,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
-          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
-          <Property Name="ParGroupLevel1_Id" Type="Int32" />
-          <Property Name="AllowAddLevel3" Type="Boolean" />
-          <Property Name="AllowEditPatternLevel3Task" Type="Boolean" />
-          <Property Name="AllowEditWeightOnLevel3" Type="Boolean" />
-          <Property Name="ShowInTablet" Type="Boolean" />
-          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
-          <Property Name="IsRecravacao" Type="Boolean" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
@@ -6406,63 +6379,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ConsolidationLevel1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Evaluation" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="AtualAlert" Type="Int32" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="TotalLevel3Evaluation" Type="Int32" />
-          <Property Name="TotalLevel3WithDefects" Type="Int32" />
-          <Property Name="LastEvaluationAlert" Type="Int32" />
-          <Property Name="EvaluatedResult" Type="Int32" />
-          <Property Name="DefectsResult" Type="Int32" />
-          <Property Name="LastLevel2Alert" Type="Int32" />
-          <Property Name="ReauditIs" Type="Int32" />
-          <Property Name="ReauditNumber" Type="Int32" />
-          <Property Name="Shift" Type="Int32" />
-          <Property Name="Period" Type="Int32" />
-          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
-          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ConsolidationLevel1" ToRole="ParCompany" />
-          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
-          <Property Name="ReauditLevel" Type="Int32" />
-        </EntityType>
-        <Association Name="FK_ConsolidationLevel1_Department">
-          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel1_Level1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ParHeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -6544,57 +6460,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="VerificacaoTipificacaoV2">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="CollectionDate" Type="DateTime" Precision="7" />
-          <Property Name="Sequencial" Type="Int32" />
-          <Property Name="Banda" Type="Int32" />
-          <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="UserSgq_Id" Type="Int32" />
-          <Property Name="cSgCaracteristica" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="GRT_nCdCaracteristicaTipificacao" Type="Int32" />
-          <Property Name="JBS_nCdCaracteristicaTipificacao" Type="Int32" />
-          <Property Name="ResultadoComparacaoGRT_JBS" Type="Boolean" />
-          <Property Name="cIdentificadorTipificacao" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="cNmCaracteristica" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Key" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Deviation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="Evaluation" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="Sample" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="AlertNumber" Type="Int32" Nullable="false" />
-          <Property Name="Defects" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="DeviationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="sendMail" Type="Boolean" />
-          <Property Name="DeviationMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="ParLevel2XHeaderField">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="ParLevel3Value_Outer">
           <Key>
             <PropertyRef Name="Id" />
@@ -6627,27 +6492,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AceitavelEntre_Id" Type="Int32" />
           <Property Name="LimInferior" Type="Decimal" Precision="18" Scale="5" />
           <Property Name="LimSuperior" Type="Decimal" Precision="18" Scale="5" />
-        </EntityType>
-        <EntityType Name="ParLevel3">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
-          <Property Name="IsPointLess" Type="Boolean" />
-          <Property Name="AllowNA" Type="Boolean" />
-          <Property Name="OrderColumn" Type="Int32" />
-          <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterXLocal" />
-          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Level2" />
-          <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Value" />
-          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParLevel3" ToRole="ParNotConformityRuleXLevel" />
-          <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
-          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="ParLevel3" ToRole="Result_Level3" />
         </EntityType>
         <Association Name="FK_ParCounterLocal_ParLevel3">
           <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />

@@ -1,15 +1,10 @@
 ﻿using Helper;
-using Microsoft.ApplicationInsights.Extensibility;
-using SgqSystem.Handlres;
 using SgqSystem.Mappers;
 using System;
 using System.Diagnostics;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Web.Security;
 using Hangfire;
 using DTO;
 using System.Globalization;
@@ -20,7 +15,7 @@ namespace SgqSystem
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private string ScriptFull;
+
         private BackgroundJobServer _backgroundJobServer;
         private string ScriptFull;
 
@@ -30,10 +25,8 @@ namespace SgqSystem
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            BundleTable.EnableOptimizations = true;
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
             GlobalConfig.VerifyConfig("DbContextSgqEUA");
@@ -47,9 +40,10 @@ namespace SgqSystem
             //else if (GlobalConfig.Ytoara)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
 
-#if DEBUG
-            TelemetryConfiguration.Active.DisableTelemetry = true;
-#endif
+            #if DEBUG
+            //TelemetryConfiguration.Active.DisableTelemetry = true;
+            #endif
+
             var options = new SqlServerStorageOptions
             {
                 PrepareSchemaIfNecessary = false,
@@ -67,62 +61,6 @@ namespace SgqSystem
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
             }
-
-            ScriptFull = string.Empty;
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "IsRecravacao", "bit", "default (0)", "IsRecravacao = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowAddLevel3", "bit", "default (0)", "AllowAddLevel3 = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditPatternLevel3Task", "bit", "default (0)", "AllowEditPatternLevel3Task = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditWeightOnLevel3", "bit", "default (0)", "AllowEditWeightOnLevel3 = 0");
-
-            //09/09/2017 CG
-            VerifyColumnExistsNotExistisThenCreate("ParRecravacao_Linhas", "ParLevel2_Id", "int", "default null", "ParLevel2_Id = null");
-            VerifyColumnExistsNotExistisThenCreate("RecravacaoJson", "isValidated", "bit", "default (0)", "IsValidated = 0");
-            VerifyColumnExistsNotExistisThenCreate("RecravacaoJson", "ValidateLockDate", "datetime2(7)", "default null", "ValidateLockDate = null");
-
-            //18 10 2017 CG 
-            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "IsPointLess", "bit", "default (1)", "IsPointLess = 1");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "AllowNA", "bit", "default (0)", "AllowNA = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "OrderColumn", "int", "null", "OrderColumn = 0");
-            ExecuteSql();
-
-        }
-
-        private void ExecuteSql()
-        {
-            using (var db = new Dominio.SgqDbDevEntities())
-            {
-                try
-                {
-                    db.Database.ExecuteSqlCommand(ScriptFull);
-                }
-                catch (Exception e)
-                {
-                    new CreateLog(new Exception("Erro ao criar ao tentar atualizar o DB: " + ScriptFull, e), ControllerAction: "Application_Start");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Verifica se coluna existe se não ele cria, para eveitar conflito entre clientes.
-        /// </summary>
-        /// <param name="table">Ex: "ParLevel1"</param>
-        /// <param name="colmun">Ex: "IsRecravacao"</param>
-        /// <param name="type">Ex: "bit"</param>
-        /// <param name="defaultValue">Ex: "default (0)"</param>
-        /// <param name="setValue">Ex: "IsRecravacao = 0"</param>
-        private void VerifyColumnExistsNotExistisThenCreate(string table, string colmun, string type, string defaultValue, string setValue)
-        {
-
-            ScriptFull += string.Format(@"
-
-IF COL_LENGTH('{0}','{1}') IS NULL
-BEGIN
-/*Column does not exist or caller does not have permission to view the object*/
-Alter table {0} add {1} {2} {3}
-EXEC ('update {0} set {4}')
-END
-
-", table, colmun, type, defaultValue, setValue);
 
             ScriptFull = string.Empty;
 
