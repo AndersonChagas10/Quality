@@ -607,12 +607,13 @@ $('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
         getPlanOp(data, a, b);
 
-    } else if (data.Estrategico_Id > 0) {
-
-        isClickedTaticoVinculado = true;
-
-        getPlanEstrat(data, a, b);
     }
+    //else if (data.Estrategico_Id > 0) {
+
+    //    isClickedTaticoVinculado = true;
+
+    //    getPlanEstrat(data, a, b);
+    //}
     //} else if (data.Acao.Id > 0) {
 
     //    getAcao(data, a, b);

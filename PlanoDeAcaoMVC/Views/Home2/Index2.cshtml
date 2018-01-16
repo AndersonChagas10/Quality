@@ -1944,6 +1944,9 @@
         function SalvarAcaoEditada() {
             //console.log("SalvarAcaoEditada")
             var listaAcoes = [];
+
+            $('#Status').prop("disabled", false);
+
             $('.Acao').each(function (c, o) {
 
                 listaAcoes.push(SalvarAcaoAvulsa(o, true));
@@ -1956,7 +1959,7 @@
                 return;
             }
 
-            if (ValidaAcao(listaAcoes)) {
+            if (!ValidaAcao(listaAcoes)) {
                 return;
             }
 
@@ -3087,14 +3090,13 @@
                 $('#modalNovo > div > div > div.modal-footer > button').show();
                 if (data.Estrategico_Id > 0) {
                     getPlanEstrat(data, a, b);
-                }              
+                }
             });
 
         }
 
         function getPlanEstrat(data, a, b) {
-            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
-                function (r) {
+            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true }, function (r) {
                     TesteRenan(r, 'Tatico', data);
                     $('#modalNovo > div > div > div.modal-footer > button').show();
 
@@ -3128,16 +3130,16 @@
                                     //    $('#formEditTatico #modalLindo select').select2();
                                     //}
 
-                                   
+
                                 });
                             });
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();                            
+                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                         });
                     });
                     //HideForOperacional();
                     if (data.Acao.Id > 0) {
                         getAcao(data, a, b);
-                    }                  
+                    }
                 }
             );
         }
@@ -3156,10 +3158,11 @@
                     $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                    $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
+                    $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status).prop('disabled', true);;
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+
                     setTimeout(function () {
                         $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
                         $('.content3 select').select2();
