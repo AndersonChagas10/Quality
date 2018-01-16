@@ -45,6 +45,9 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlEquipamentos { get; set; }
         public IEnumerable<SelectListItem> DdlCamaras { get; set; }
         public IEnumerable<SelectListItem> DdlPontosDeColeta { get; set; }
+        public IEnumerable<SelectListItem> DdlRaioX { get; set; }
+     
+
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -98,12 +101,7 @@ namespace DTO.DTO.Params
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition.OrderBy(r => r.Name));
 
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.OrderBy(r => r.Name));
-
-            if (GlobalConfig.Eua)
-            {
-                DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.Where(r => r.Id != 2).OrderBy(r => r.Name));
-            }
-
+            
             DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment.OrderBy(r => r.Name));
             DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1.OrderBy(r => r.Name));
             DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1.OrderBy(r => r.Name));
@@ -121,6 +119,8 @@ namespace DTO.DTO.Params
                 DdlEquipamentos = CreateSelectListEquipamentos("Equipamento");
                 DdlCamaras = CreateSelectListEquipamentos("Câmara");
                 DdlPontosDeColeta = CreateSelectListEquipamentos("Ponto de Coleta");
+                DdlRaioX = CreateSelectListEquipamentos("Detector de Metais");
+
             }
 
             DdlScoretype = Guard.CreateDropDownList(ddlScoretype.OrderBy(r => r.Name));

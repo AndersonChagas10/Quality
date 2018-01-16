@@ -131,6 +131,10 @@ namespace SgqSystem.Controllers.Api
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(value, Newtonsoft.Json.Formatting.Indented, settings);
         }
+        public static string GetWebConfigSettings(string key)
+        {
+            return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
 
     }
 }

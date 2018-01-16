@@ -4,22 +4,23 @@
     var urlGet = Url.Action("Get", "api/CartasCep");
 }
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
+        <div id="formBodyContent">
 
-        @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+            <div id="divMensagemVazio" style="display: none" class="alert alert-info" role="alert">
+                <span id="" class="icon-info-sign">@Resources.Resource.no_data_to_show</span>
+            </div>
 
-                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-            </div>*@
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
+            <div id="load"></div>
+            <div id="container"></div>
 
-        <div id="load"></div>
-        <div id="container"></div>
-
+        </div>
     </div>
 </div>
 
@@ -30,20 +31,36 @@
 
         var urlGet = '@Html.Raw(@urlGet)';
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
-
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
+        $('#tipoCEP').change(function (a) {
+            /*if (($('#tipoCEP').val()) == "2") {
+                $('#level3Id').parent().show();
+            } else if (($('#tipoCEP').val()) == "1") {
+                $('#level3Id').val("").trigger('change.select2');
+                $('#level3Id').parent().hide();
+            }*/
+        })
+
         $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-            formControl.showLevel1();
-            closeLeftSidebar();
 
             $("#btnSend").click(function (e) {
+                $('#unitId').change();
                 Send(true);
             });
+
+            formControl.showFullCallendar();
+            formControl.showUnit();
+            formControl.showTipoCEP();
+            formControl.showLevel1();
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            //Remove o 'Todos' da unidade
+            $("#unitId option[value='']").remove();
+            $("#tipoCEP option[value='']").remove();
         });
 
         var $btn = $('#btnSend');
@@ -53,328 +70,383 @@
             $btn.button('loading');
 
             $('#results').empty();
-
+            $('#divMensagemVazio').hide();
+            $('#container').empty();
             $('#divMensagemAlerta').hide();
 
-            //if (!ValidaDadosParaEnvio()) {
-            //    $btn.button('reset');
-            //    return;
-            //}
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
 
             enviar["auditorId"] = GetUsuarioId();
 
             EasyAjax(urlGet, enviar, GerarGrafico, "load", toggle);//AJAX
         };
 
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta(Resources('select_the_unit_first'));//"Por favor selecione uma unidade.");
+                return false;
+            }
+
+            if (!(parseInt($('#level1Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+                GuardJs.exibirMensagemAlerta(Resources('select_the_level1'));
+                return false;
+            }
+
+            if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+                GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
+                return false;
+            }
+
+            if ($('#tipoCEP :selected').val() == 2) {
+
+                if (!(parseInt($('#level3Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+                    GuardJs.exibirMensagemAlerta(Resources('select_the_level3'));
+                    return false;
+                }
+
+            }
+
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
         function GerarGrafico(valorAbsoluto) {
 
-            //MapeiaValorParaHC(objectList, "");
+            if (valorAbsoluto.dados.length > 0) {
 
-            $('#container').empty().highcharts({
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    zoomType: 'x,y'
-                },
-                title: {
-                    text: "Carta CEP",
-                    x: -20 //center
-                },
-                xAxis: {
-                    categories: valorAbsoluto.amostras,
-                    title: {
-                        text: '',
-                        align: 'high'
-                    },
-                    labels:
-                    {
+                var indicador = $("#level1Id option:selected").text();
+                var monitoramento = $("#level2Id option:selected").val() == '' ? '' : ' - ' + $("#level2Id option:selected").text();
+                var tarefa = $("#level3Id option:selected").val() == '' ? '' : ' - ' + $("#level3Id option:selected").text();
+
+                var tipoCarta = $("#tipoCEP option:selected").text();
+
+                //MapeiaValorParaHC(objectList, "");
+
+                $('#container').empty().highcharts({
+                    credits: {
                         enabled: false
-                    }
-                },
-                yAxis: [{ // Primary yAxis
-                    labels: {
-                        format: '',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        },
+                    },
+                    chart: {
+                        zoomType: 'x,y'
                     },
                     title: {
-                        text: '@Resources.Resource.value',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
+                        text: "Carta CEP " + tipoCarta,
+                        //x: -20 //center
                     },
-                    plotLines: [
+
+                    subtitle: {
+                        text: indicador + monitoramento + tarefa
+                    },
+                    xAxis: {
+                        categories: valorAbsoluto.amostras,
+                        title: {
+                            text: '',
+                            align: 'high'
+                        },
+                        labels:
                         {
-                            value: parseFloat(valorAbsoluto.media),
-                            width: 2,
-                            color: 'green',
-                            //dashStyle: 'dash',
-                            zIndex: 4,
-                            label: {
-                                text: @Html.Raw(Json.Encode(Resources.Resource.average)) + ' ' + parseFloat(valorAbsoluto.media).toFixed(2),
-                                align: 'right',
-                                y: -10,
-                                x: 0
+                            enabled: false
+                        }
+                    },
+                    yAxis: [{ // Primary yAxis
+                        labels: {
+                            format: '',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            },
+                        },
+                        title: {
+                            text: '@Resources.Resource.value',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
                             }
                         },
-                    ]
+                        plotLines: [
+                            {
+                                value: parseFloat(valorAbsoluto.media),
+                                width: 2,
+                                color: 'green',
+                                //dashStyle: 'dash',
+                                zIndex: 4,
+                                label: {
+                                    text: @Html.Raw(Json.Encode(Resources.Resource.average)) + ' ' + parseFloat(valorAbsoluto.media).toFixed(2),
+                                    align: 'right',
+                                    y: -10,
+                                    x: 0
+                                }
+                            },
+                        ]
 
-                }],
-                plotOptions: {
-                    series: {
+                    }],
+                    plotOptions: {
+                        series: {
+                            pointStart: 0,
+                        }
+                    },
+                    tooltip: {
+                        //useHTML: true,
+                        formatter: function () {
+
+                            var s = [];
+                            var dia;
+                            var dias_semana = new Array("Domingo", "Segunda-feira",
+                                                        "Terça-feira", "Quarta-feira", "Quinta-feira",
+                                                        "Sexta-feira", "Sábado");
+
+                            $.each(this.points, function (i, point) {
+
+                                if (i == 0)
+
+                                    if (valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)] != undefined) {
+                                        var ssl = $.date(valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)]).split("/");
+                                        var data = new Date(ssl[2], ssl[1] - 1, ssl[0]);
+                                        var ss = data.getDay();
+                                        var dataEHora = valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)].split(" ");
+                                        var hora = getHora(new Date(Date.parse(dataEHora)));
+                                        dia = '<b>Data: </b>' + $.date(valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)]) + "<l>, " + dias_semana[ss] + "<br/> <b>Horário:</b> " + hora + ".</l>";
+                                    }
+
+                                if (this.series.name.indexOf("Series") != 0) {
+                                    if (this.series.name.indexOf("Nível") != 0 && this.series.name.indexOf("@Resources.Resource.ucl") != 0 && this.series.name.indexOf("@Resources.Resource.lcl") != 0) {
+                                        s.push('<a> <b>' + point.series.name + '</b> : ' + point.y + '</a> <br/>');
+                                    } else {
+                                        s.push('<a>' + point.series.name + '</a><br/>');
+                                    }
+                                }
+
+                            });
+
+                            if (dia != undefined)
+                                s.push(dia);
+
+                            return s.join(' ');
+                        },
+                        shared: true,
+                        crosshairs: true
+                    },
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom',
+                        borderWidth: 0
+                    },
+                    series: [{
+                        name: "@Resources.Resource.value",
+                        data: valorAbsoluto.dados,
+                        type: 'spline',
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    //Limites de Especificação
+                    {
+                        name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0],//.toFixed(2),
+                        data: valorAbsoluto.lcsData,
+                        visible: (valorAbsoluto.lcs != 0) ? true : false,
+                        color: "black",
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    {
+                        name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0],//.toFixed(2),
+                        data: valorAbsoluto.lciData,
+                        visible: (valorAbsoluto.lci != 0) ? true : false,
+                        color: "black",
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    {
+                        name: @Html.Raw(Json.Encode(Resources.Resource.average))+": " + parseFloat(valorAbsoluto.media).toFixed(2),
+                        color: "green",
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                    },
+                    //Limites de controle
+                    {
+                        //Superior
+                        name: "LSE: " + parseFloat(valorAbsoluto.lcs).toFixed(2),
+                        data: valorAbsoluto.lcs,
+                        visible: (valorAbsoluto.lcs != 0) ? true : false,
+                        color: "red",
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    {
+                        //Inferior
+                        name: "LIE: " + parseFloat(valorAbsoluto.lci).toFixed(2),
+                        data: valorAbsoluto.lci,
+                        visible: (valorAbsoluto.lci != 0) ? true : false,
+                        color: "red",
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
+                            }
+                        }
+
+                    }
+                    @*//Nivel 1
+                    {
+                        name: '@Resources.Resource.levelSpc 1 Min: ' + (valorAbsoluto.nivel1Min[0] + " | Max: " + valorAbsoluto.nivel1Max[0]),
+                        data: valorAbsoluto.nivel1Min,
+                        color: 'black',
                         pointStart: 0,
-                    }
-                },
-                tooltip: {
-                    //useHTML: true,
-                    formatter: function () {
-
-                        var s = [];
-                        var dia;
-                        var dias_semana = new Array("Domingo", "Segunda-feira",
-                                                    "Terça-feira", "Quarta-feira", "Quinta-feira",
-                                                    "Sexta-feira", "Sábado");
-
-                        $.each(this.points, function (i, point) {
-
-                            if (i == 0)
-
-                                if (valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)] != undefined) {
-                                    var ssl = $.date(valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)]).split("/");
-                                    var data = new Date(ssl[2], ssl[1] - 1, ssl[0]);
-                                    var ss = data.getDay();
-                                    var dataEHora = valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)].split(" ");
-                                    dia = '<b>Data: </b>' + $.date(valorAbsoluto.dataAv[this.point.series.data.indexOf(this.point)]) + "<l>, " + dias_semana[ss] + "<br/> <b>Horário:</b> " + dataEHora[1] + ".</l>";
-                                }
-
-                            if (this.series.name.indexOf("Series") != 0) {
-                                if (this.series.name.indexOf("Nível") != 0 && this.series.name.indexOf("@Resources.Resource.ucl") != 0 && this.series.name.indexOf("@Resources.Resource.lcl") != 0) {
-                                    s.push('<a> <b>' + point.series.name + '</b> : ' + point.y + '</a> <br/>');
-                                } else {
-                                    s.push('<a>' + point.series.name + '</a><br/>');
+                        pointEnd: valorAbsoluto.dados.length,
+                        visible: (valorAbsoluto.nivel1Min[0] != 0 || valorAbsoluto.nivel1Max[0] != 0) ? true : false,
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                                 }
                             }
-
-                        });
-
-                        if (dia != undefined)
-                            s.push(dia);
-
-                        return s.join(' ');
+                        }
                     },
-                    shared: true,
-                    crosshairs: true
-                },
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    borderWidth: 0
-                },
-                series: [{
-                    name: "@Resources.Resource.value",
-                    data: valorAbsoluto.dados,
-                    type: 'spline',
-                    yAxis: 0,
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                    {
+                        data: valorAbsoluto.nivel1Max,
+                        linkedTo: ':previous',
+                        color: 'black',
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
-                    }
-                },
-                //Limites de Especificação
-                {
-                    name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0],//.toFixed(2),
-                    data: valorAbsoluto.lcsData,
-                    visible: (valorAbsoluto.lcs != 0) ? true : false,
-                    color: "red",
-                    type: 'line',
-                    marker: {
-                        enabled: false
                     },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                   //Nivel 2
+                    {
+                        name: '@Resources.Resource.levelSpc 2 Min: ' + (valorAbsoluto.nivel2Min[0] + " | Max: " + valorAbsoluto.nivel2Max[0]),
+                        data: valorAbsoluto.nivel2Min,
+                        visible: (valorAbsoluto.nivel2Min[0] != 0 || valorAbsoluto.nivel2Max[0] != 0) ? true : false,
+                        pointStart: 0,
+                        pointEnd: valorAbsoluto.dados.length - 1,
+                        color: 'black',
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
-                    }
-                },
-                {
-                    name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0],//.toFixed(2),
-                    data: valorAbsoluto.lciData,
-                    visible: (valorAbsoluto.lci != 0) ? true : false,
-                    color: "red",
-                    type: 'line',
-                    marker: {
-                        enabled: false
                     },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                    {
+                        data: valorAbsoluto.nivel2Max,
+                        linkedTo: ':previous',
+                        color: 'black',
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                }
                             }
                         }
-                    }
-                },
-                {
-                    name: @Html.Raw(Json.Encode(Resources.Resource.average))+": " + parseFloat(valorAbsoluto.media).toFixed(2),
-                    color: "green",
-                    type: 'line',
-                    marker: {
-                        enabled: false
                     },
-                },
-                //Limites de controle
-                {
-                    //Superior
-                    name: "LSE: ",
-                    data: valorAbsoluto.lcs,
-                    visible: (valorAbsoluto.lcs != 0) ? true : false,
-                    color: "black",
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                },
-                {
-                    //Inferior
-                    name: "LIE: ",
-                    data: valorAbsoluto.lci,
-                    visible: (valorAbsoluto.lci != 0) ? true : false,
-                    color: "black",
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                }
-                @*//Nivel 1
-                {
-                    name: '@Resources.Resource.levelSpc 1 Min: ' + (valorAbsoluto.nivel1Min[0] + " | Max: " + valorAbsoluto.nivel1Max[0]),
-                    data: valorAbsoluto.nivel1Min,
-                    color: 'black',
-                    pointStart: 0,
-                    pointEnd: valorAbsoluto.dados.length,
-                    visible: (valorAbsoluto.nivel1Min[0] != 0 || valorAbsoluto.nivel1Max[0] != 0) ? true : false,
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                },
-                {
-                    data: valorAbsoluto.nivel1Max,
-                    linkedTo: ':previous',
-                    color: 'black',
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                },
-               //Nivel 2
-                {
-                    name: '@Resources.Resource.levelSpc 2 Min: ' + (valorAbsoluto.nivel2Min[0] + " | Max: " + valorAbsoluto.nivel2Max[0]),
-                    data: valorAbsoluto.nivel2Min,
-                    visible: (valorAbsoluto.nivel2Min[0] != 0 || valorAbsoluto.nivel2Max[0] != 0) ? true : false,
-                    pointStart: 0,
-                    pointEnd: valorAbsoluto.dados.length - 1,
-                    color: 'black',
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                },
-                {
-                    data: valorAbsoluto.nivel2Max,
-                    linkedTo: ':previous',
-                    color: 'black',
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                },
-                //Nivel 3
-                 {
-                     name: '@Resources.Resource.levelSpc 3 Min: ' + (valorAbsoluto.nivel3Min[0] + " | Max: " + valorAbsoluto.nivel3Max[0]),
-                     data: valorAbsoluto.nivel3Min,
-                     color: 'black',
-                     visible: (valorAbsoluto.nivel3Min[0] != 0 || valorAbsoluto.nivel3Max[0] != 0) ? true : false,
-                     type: 'line',
-                     marker: {
-                         enabled: false
-                     },
-                     point: {
-                         events: {
-                             click: function () {
-                                 //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                    //Nivel 3
+                     {
+                         name: '@Resources.Resource.levelSpc 3 Min: ' + (valorAbsoluto.nivel3Min[0] + " | Max: " + valorAbsoluto.nivel3Max[0]),
+                         data: valorAbsoluto.nivel3Min,
+                         color: 'black',
+                         visible: (valorAbsoluto.nivel3Min[0] != 0 || valorAbsoluto.nivel3Max[0] != 0) ? true : false,
+                         type: 'line',
+                         marker: {
+                             enabled: false
+                         },
+                         point: {
+                             events: {
+                                 click: function () {
+                                     //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                 }
                              }
                          }
-                     }
-                 },*@
-                //{
-                //    data: valorAbsoluto.nivel3Max,
-                //    linkedTo: ':previous',
-                //    color: 'black',
-                //    type: 'line',
-                //    marker: {
-                //        enabled: false
-                //    },
-                //    point: {
-                //        events: {
-                //            click: function () {
-                //                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                //            }
-                //        }
-                //    }
-                //},
+                     },*@
+                    //{
+                    //    data: valorAbsoluto.nivel3Max,
+                    //    linkedTo: ':previous',
+                    //    color: 'black',
+                    //    type: 'line',
+                    //    marker: {
+                    //        enabled: false
+                    //    },
+                    //    point: {
+                    //        events: {
+                    //            click: function () {
+                    //                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                    //            }
+                    //        }
+                    //    }
+                    //},
 
-                ]
-            });
+                    ]
+                });
+
+            } else {
+                $('#divMensagemVazio').show();
+            }
         }
 
         $.date = function (dateObject) {
@@ -392,6 +464,21 @@
 
             return date;
         };
+
+        function addZero(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function getHora(d) {
+
+            var h = addZero(d.getHours());
+            var m = addZero(d.getMinutes());
+            var s = addZero(d.getSeconds());
+            return h + ":" + m + ":" + s;
+        }
 
     </script>
 

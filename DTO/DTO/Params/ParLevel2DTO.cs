@@ -43,6 +43,7 @@ namespace DTO.DTO.Params
         public bool HasShowLevel03 { get; set; }
         public bool HasGroupLevel3 { get; set; }
         public bool IsActive { get; set; } = true;
+        public bool HasTakePhoto { get; set; } = false;
 
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParFrequencyDTO parFrequencyDto { get; set; }

@@ -3,12 +3,18 @@
 @using DTO
 <!--MODAL-->
 
+@{
+
+    var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
+
+}
+
 
 
 <div id="newLevel1Modal">
     @using (Html.BeginForm())
     {
-
+        @Html.HiddenFor(r => r.paramsDto.parLevel1Dto.level2Number);
         <div class="row">
             <div class="col-lg-12">
                 <table class="table-erp">
@@ -33,109 +39,27 @@
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
 
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
-                            <td>
-                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.EditLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.has_edit_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_edit_level2)
-                            <td>
-                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.left, null, Resources.Resource.not_applicable_on_level_2_popover)
-                            <td>
-                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
-                            </td>
-                        </tr>
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
                         </tr>
 
-                        @if (!GlobalConfig.Eua)
-                        {
-                            <tr class="row hide">
-                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label(@Resources.Resource.has_real_time_consolidation), Table.PosicaoLabel.left, null, Resources.Resource.defines_consolidation_indicator)
-                            </tr>
-                            <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
-                                @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label(Resources.Resource.time_interval_consolidation, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.time_interval_above_item)
-                            </tr>
-                        }
 
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_group_level2)
-                        </tr>
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
-                        </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>
-                        @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none" >
-                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                            </tr>*@
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allows_less_privileged_users_to_edit_the_tasks_samples)
-                        </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_level3_connection, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_edition_of_the_level3_connection_popover)
-                        </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_less_privileged_users_to_edit_the_monitoring)
-                        </tr>
 
-                        @if (GlobalConfig.Brasil)
-                        {
-                            <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowAddLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Vincular Monitoramentos / Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios possam Vincular Monitoramentos / Tarefas a este Indicador")
-                            </tr>
-                            <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowEditWeightOnLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Editar Peso das Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios editem o Peso de Tarefas Vinculadas a Monitoramentos Vinculados a este Indicador")
-                            </tr>
-                            <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Editar Padrão das Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios possam editar os Padrões dos Tipo de Dados de Entrada em Tarefas Vinculadas a Monitoramentos Vinculados a este Indicador")
-                            </tr>
-                        }
+
+
+
 
                         <tr class="row">
                             <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.standard, new { @class = "" }), Table.PosicaoLabel.left, null, null)
                         </tr>
-                        <tr id="registerTotalEv" class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.register_total_evaluated, new { @class = "" }), Table.PosicaoLabel.left, null, null)
-                        </tr>
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
-                        </tr>
 
 
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
-                        </tr>
 
-                        <!--Partial Save-->
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)
-                        </tr>
 
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsChildren, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.level1_children), Table.PosicaoLabel.left, null, Resources.Resource.level1_children)
-                            <td>
-                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
-                            </td>
-                        </tr>
-                        <tr class="row groupChildren padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Origin_Id, Model.paramsDdl.DdlparLevel1Active, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_origin, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>
-                        <tr class="row groupChildren padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.PointsDestiny, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.points_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.points_destiny)
-                        </tr>
-                        <tr class="row groupChildren padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Destiny_Id, Model.paramsDdl.DdlparLevel1Active, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>
+
+
 
                         <tr class="row" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowInTablet, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.Pl1ShowInTablet), Table.PosicaoLabel.left, null, null)
@@ -149,6 +73,8 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
 
+
+
                         @*<tr class="row">
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                             </tr>*@
@@ -159,6 +85,122 @@
                 @{
                     Model.levelControl = 1;
                 }
+
+                @*Avançado*@
+                <div class="panel-group accordion" id="level1Av_header_accordion">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1Av_header_accordion" href="#level1Av_header_collapse" aria-expanded="false">@Resources.Resource.advanced_itens</a>
+                            </h4>
+                        </div>
+                        <div id="level1Av_header_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table class="table-erp">
+
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
+                                    </tr>
+
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.left, null, Resources.Resource.not_applicable_on_level_2_popover)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.EditLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.has_edit_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_edit_level2)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <!--Partial Save-->
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                   
+                                    <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allows_less_privileged_users_to_edit_the_tasks_samples)
+                                    </tr>
+                                    <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_level3_connection, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_edition_of_the_level3_connection_popover)
+                                    </tr>
+                                    
+                                    <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_less_privileged_users_to_edit_the_monitoring)
+                                    </tr>
+                                    
+                                    @if (GlobalConfig.Brasil)
+                                    {
+                                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowAddLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Vincular Monitoramentos / Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios possam Vincular Monitoramentos / Tarefas a este Indicador")
+                                        </tr>
+                                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowEditWeightOnLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Editar Peso das Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios editem o Peso de Tarefas Vinculadas a Monitoramentos Vinculados a este Indicador")
+                                        </tr>
+                                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Editar Padrão das Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios possam editar os Padrões dos Tipo de Dados de Entrada em Tarefas Vinculadas a Monitoramentos Vinculados a este Indicador")
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowAddLevel3)
+                                        @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowEditWeightOnLevel3)
+                                        @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task)
+                                    }
+                                    
+                                    <tr class="row" style="display:none;">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+
+                                    @if (!GlobalConfig.Eua)
+                                    {
+                                        <tr class="row hide">
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label(@Resources.Resource.has_real_time_consolidation), Table.PosicaoLabel.left, null, Resources.Resource.defines_consolidation_indicator)
+                                        </tr>
+                                        <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
+                                            @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label(Resources.Resource.time_interval_consolidation, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.time_interval_above_item)
+                                        </tr>
+                                    }
+
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_group_level2)
+                                    </tr>                               
+
+                                    <tr id="registerTotalEv" class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.register_total_evaluated, new { @class = "" }), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
+                                    </tr>
+
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsChildren, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.level1_children), Table.PosicaoLabel.left, null, Resources.Resource.level1_children)
+                                        <td>
+                                            @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
+                                        </td>
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowScorecard, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.show_scorecard), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <tr class="row groupChildren padding-left" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Origin_Id, Model.paramsDdl.DdlparLevel1Active, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_origin, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                    <tr class="row groupChildren padding-left" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.PointsDestiny, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.points_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.points_destiny)
+                                    </tr>
+                                    <tr class="row groupChildren padding-left" style="display:none">
+                                        @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Destiny_Id, Model.paramsDdl.DdlparLevel1Active, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 @*Clusters*@
                 @Html.Partial("_ClusterXLevel", Model)
@@ -183,7 +225,7 @@
                                             @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", Resources.Resource.select_the_field_where), null)
                                             @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.type), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", Resources.Resource.select_the_field_type), null)
                                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", Resources.Resource.fill_the_header_name_field), null)
-                                            @*@Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)*@
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp", @checked = false }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)
                                         </tr>
                                     </tbody>
                                 </table>
@@ -191,13 +233,12 @@
                                 <div id="allObjCamposCabecalho">
 
                                     @*Multipla Escolha*@
-                                    <div id="objMultiplaEscolha" style="display:none;">
+                                    <div id="objMultiplaEscolha" style="display:none;" class="margin-top">
                                         <table id="tblOpcaoMultiplaEscolha">
                                             <tbody>
                                                 <tr class="row">
                                                     @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Opção deve ser preenchido para o Cabeçalho."), null)
                                                     @Table.GerarColunaButton(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.punishment_value), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirMultiplaEscolha' onclick='Cabecalhos.IncluirMultiplaEscolha();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -241,12 +282,14 @@
                                         </table>
                                     </div>
 
-                                    @if (GlobalConfig.Brasil)
-                                    {
-                                        @*Obj Integrações*@
-                                        <div id="objIntegracoes" style="display:none;">
-                                            <table id="tblIntegracoes">
-                                                <tbody>
+                                    
+                                    @*Obj Integrações*@
+                                    <div id="objIntegracoes" style="display:none;">
+                                        <table id="tblIntegracoes">
+                                            <tbody>
+
+                                                @if (GlobalConfig.Brasil)
+                                                {
                                                     <tr class="row">
 
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
@@ -254,6 +297,7 @@
                                                         <td style="padding:5px;">@Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })</td>
 
                                                     </tr>
+
                                                     <tr class="row">
 
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
@@ -272,17 +316,50 @@
 
                                                     <tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
-                                                        <td style="padding:5px;">Produtos</td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
+                                                        <td style="padding:5px;">Detector de Metais</td>
+                                                        <td style="padding:5px;">@Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })</td>
+
+                                                    </tr>
+
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
+                                                        <td style="padding:5px;">Família de Produtos</td>
                                                         <td style="padding:5px;"></td>
 
                                                     </tr>
 
-                                                </tbody>
-                                            </table>
-                                            <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
-                                        </div>
-                                    }
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
+                                                        <td style="padding:5px;">Reprocesso Entrada</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                    </tr>
+
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
+                                                        <td style="padding:5px;">Reprocesso Saída</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                    </tr>
+                                                }
+
+                                                <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto" value="integracaoProduto"></td>
+                                                        <td style="padding:5px;">@Resources.Resource.products</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_integrations" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
+                                    </div>
+                                    
                                     <div id="objTexto" style="display:none;">
                                         @*@Table.GerarColuna(@Html.Editor("objTextoName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("objTextoName", "*"), null)*@
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" />
@@ -306,6 +383,15 @@
                                     @*Obj Hora*@
                                     <div id="objIntegracoes" style="display:none;">
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btn ntegracoes" onclick="Cabecalhos.IncluirSalvarIntegracoes(true);" />
+                                    </div>
+
+                                    @*Informações*@
+                                    <div id="objInformacoes" style="display:none;">
+
+                                        @Html.Label(Resources.Resource.valueText): <input type="text" id="objInformacoesTextValue" />
+
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_information" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();" />
+
                                     </div>
 
                                     @*tabela cabecalho itens inputados*@
@@ -353,26 +439,35 @@
 
                                     @*Cabecalho Preview Edicao*@
                                     <div id="cabecalhoPreviewEDICAO" class="table">
-
                                         <div id="alteracao" style="padding: 8px;">
-
-
                                         </div>
                                     </div>
 
+                                    <script>
+                                        function changeColor(a){
+
+                                            if($(a).hasClass("btn btn-success")){
+                                                $(a).removeClass("btn btn-success");
+                                                $(a).addClass("btn btn-danger");
+                                            }else{
+                                                $(a).removeClass("btn btn-danger");
+                                                $(a).addClass("btn btn-success");
+                                            }
+                                        }
+                                    </script>
 
                                     @*Cabecalho Preview inclusao*@
                                     <div id="cabecalhoPreview" class="table">
                                         <table id="tableCabecalhosPreview" class="table">
                                             <thead>
                                                 <tr>
-                                                    <th style="width:20%">@Resources.Resource.field_level</th>
-                                                    <th style="width:17%">@Resources.Resource.name</th>
-                                                    <th style="width:15%">@Resources.Resource.type</th>
-                                                    <th style="width:10%">@Resources.Resource.preview</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:15%">@Resources.Resource.required</th>
-                                                    <th style="width:15%">@Resources.Resource.pattern</th>
+                                                    <th>@Resources.Resource.field_level</th>
+                                                    <th>@Resources.Resource.name</th>
+                                                    <th>@Resources.Resource.type</th>
+                                                    <th>@Resources.Resource.preview</th>                                                    
+                                                    <th>@Resources.Resource.required</th>                                                    
+                                                    <th>@Resources.Resource.pattern</th>
+                                                    <th>@Resources.Resource.action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -381,42 +476,60 @@
                                                     foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                     {
                                                         <tr class="alteracao">
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
                                                                 </td>
-
                                                             }
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                <td>
 
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                <td>
+                                                                   
+                                                                    @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
+
+                                                                        switch (tipo)
+                                                                        {
+                                                                            case ("Equipamento|"):
+                                                                                tipo = "Equipamento";
+                                                                                break;
+                                                                            case ("Câmara|"):
+                                                                                tipo = "Câmara";
+                                                                                break;
+                                                                            case ("Ponto de Coleta|"):
+                                                                                tipo = "Ponto de Coleta de Água";
+                                                                                break;
+                                                                            case ("Detector de Metais|"):
+                                                                                tipo = "Detector de Metais";
+                                                                                break;
+                                                                            case ("familiaProduto"):
+                                                                                tipo = "Família de Produtos";
+                                                                                break;
+                                                                            case ("Produto"):
+                                                                                tipo = Resources.Resource.products;
+                                                                                break;
+                                                                            default:
+                                                                                break;
+                                                                        }
+                                                                    }
+
+                                                                    @tipo;
+
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
+
                                                                 </td>
 
                                                             }
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                     {
@@ -424,71 +537,60 @@
                                                                         @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
                                                                     }
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
+
                                                                 </td>
                                                             }
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
                                                                 </td>
                                                             }
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     <input type="number" class="fixed-width form-control input-sm" />
 
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
+
                                                                 </td>
                                                             }
+
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+
                                                                 <td>
                                                                     <input type="text" class="dataInput active form-control input-sm">
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
+
                                                                 </td>
                                                             }
+
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
                                                             {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+
                                                                 <td>
                                                                     <input type="time" class="active form-control input-sm">
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </button>
+
                                                                 </td>
                                                             }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                            {
+
+                                                                <td>
+                                                                    @parLevel1XHeaderField.ParHeaderField.Description
+
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+
+                                                                </td>
+                                                            }
+                                                            
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                            </td>
-                                                            <td>
-                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control fixed-width input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
                                                                     {
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
@@ -508,14 +610,19 @@
                                                                         <option value="1">@Resources.Resource.yes</option>
                                                                     }
                                                                 </select>
+
+
+
+
                                                             </td>
+
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
                                                                     <div class="input-group">
                                                                         <div class="input-group-btn">
-                                                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
-                                                                                <option value="0" selected>Nenhum</option>
+                                                                            <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
+                                                                                <option value="0" selected>@Resources.Resource.none</option>
                                                                                 @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                                 {
                                                                                     if (radioOpt.IsDefaultOption == true)
@@ -532,7 +639,30 @@
                                                                         </div>
                                                                     </div>
                                                                 }
+                                                            </td>
 
+                                                            <td>
+                                                                @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                {
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                                        <span class="glyphicon glyphicon-duplicate"></span>
+                                                                    </button>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                                        <span class="fa fa-copy"></span>
+                                                                    </button>
+                                                                }
+
+                                                                <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
+                                                                    <span class="fa fa-pencil-square-o"></span>
+                                                                </button>
+
+                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" title="Remover Cabeçalho">
+                                                                    <span class="fa fa-close"></span>
+                                                                </button>
                                                             </td>
 
                                                         </tr>
@@ -556,7 +686,6 @@
 
                 @Html.Partial("_CounterXLevel", Model)
 
-                @*Regra de NC*@
                 <div class="panel-group accordion" id="level1_nc_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -603,12 +732,11 @@
                 </div>
 
                 @Html.Partial("_ReincidenciaXLevel", Model)
-
-
+                
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
-                    }
+    }
 
 </div>
 
@@ -718,6 +846,7 @@
             $('#btnIncluirIntegracoes').hide();
             $('#salvarCabecalho1Div').hide();
             $('#objIntegracoes').hide();
+            $('#objInformacoes').hide();
 
             /*Esconde mensagens*/
             Cabecalhos.EscondeMensagemValidacaoCabecalho();
@@ -734,6 +863,14 @@
             $('#punishmentValueCabecalho1').hide();
             $('#punishmentValueCabecalho2').hide();
         },
+        ShowLinkEvaluation: function (IsShow) {
+            if (IsShow) {
+                $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').parent().parent().parent().show();
+                $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').prop("checked", false);
+            } else {
+                $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').parent().parent().parent().hide();
+            }
+        },
         TipoChange: function () {
 
             var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
@@ -744,6 +881,12 @@
             Cabecalhos.ParBinario = [];
 
             $('#paramsDto_parHeaderFieldDto_Description').parents('td').hide();
+
+            if (escolhaSelecionada >= 1 && escolhaSelecionada <= 3) {
+                Cabecalhos.ShowLinkEvaluation(true);
+            } else {
+                Cabecalhos.ShowLinkEvaluation(false);
+            }
 
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
@@ -766,6 +909,9 @@
                     break;
                 case 7:
                     Cabecalhos.ShowHora();
+                    break;
+                case 8: //Informacoes
+                    Cabecalhos.ShowInformacoes();
                     break;
                 default:
                     Cabecalhos.hideAllObj();
@@ -821,7 +967,7 @@
             var nivelDoCampoVal = $('#headerLevel option:selected').val();
 
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "@Resources.Resource.yes" : "@Resources.Resource.no";
+            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked');
             var tipo = $('#parFieldType option:selected').text();
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
@@ -838,7 +984,8 @@
                 'ParFieldType_Id': tipoVal,
                 'ParLevelDefinition_Id': nivelDoCampoVal,
                 'IsDefaultOption' : false,
-                'PunishmentValue': valor
+                'PunishmentValue': valor,
+                'IsRequired' : null
             });
 
             /*Table*/
@@ -882,19 +1029,22 @@
         },
         SalvaMultiplaEscolha: function () {
 
-            /* <tr><th>Nível do campo</th></tr>
-            <tr><th>Nome</th></tr>
-            <tr><th>Tipo</th></tr>
-            <tr><th>Preview</th></tr>
-            <tr><th></th></tr>*/
+            if ($('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state')) {
+                statusText = "Sim";
+            } else {
+                statusText = "Não";
+            }
+
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
-                          '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
-                          '<option value="-1">"@Resources.Resource.select"</option> ';
+                '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
+                '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
+                '<option value="-1">"@Resources.Resource.select"</option> ';
+            
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
+                Cabecalhos.ParMultiplaEscolhaOpcoes[c].IsRequired =  $('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state');
             });
             example += '</select>';
 
@@ -907,6 +1057,7 @@
                     example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
             }
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"                value="true" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_LinkNumberEvaluetion').is(':checked') + '"/>';
 
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
@@ -916,6 +1067,8 @@
             });
 
             example += '</td>'
+            example += '<td> <label>' + statusText + '</label></td>'; // obrigatoriedade;
+            example += '<td> <label> &nbsp; </label></td>'; //padrão em branco quando insere;
             example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
@@ -984,7 +1137,7 @@
                 var nivelDoCampo = $('#headerLevel option:selected').text();
                 var nivelDoCampoVal = $('#headerLevel option:selected').val();
                 var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-                var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "@Resources.Resource.yes" : "@Resources.Resource.no";
+                var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked');
                 var tipo = $('#parFieldType option:selected').text();
                 var tipoVal = $('#parFieldType option:selected').val();
 
@@ -1058,6 +1211,91 @@
             }else
                 openMessageModal("Máximo de dois binários permitidos.");
         },
+        ShowInformacoes: function () {
+            $('#objInformacoes').show();
+            $('#btnIncluirCabecalho input').hide();
+            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho2').fadeOut();
+            else
+                $('#salvarCabecalho2').fadeIn();
+        },
+        IncluirInformacoes: function (isData) {
+
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //alert('Selecione o Nivel do Cabecalho')
+                return;
+            }
+
+
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                openMessageModal("@Resources.Resource.alert", "Digite o nome para o Campo Texto");
+                //alert('Digite o nome para o Campo Texto');
+                return;
+            }
+
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var nivelCabecalho = $('#headerLevel option:selected').val();
+            var tipo = $('#parFieldType option:selected').val();
+            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+
+            Cabecalhos.AtualizaPreviewCampoInformacoes({
+                Name: nome,
+                Nivel: nivelCabecalho,
+                Type: tipo,
+                IsRemoved: false,
+                Description: "",
+                Link: linkedNumberEvaluation,
+                isDataDefined: isData
+            });
+
+            updateAllTables();
+
+        },AtualizaPreviewCampoInformacoes: function (o) {
+            var tipo = $('#parFieldType option:selected').val();
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            //var example = '<div>';
+            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
+            example += '<td>';
+            if(tipo == 6){
+                example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
+            }else if(tipo == 7){
+                example += '<input type="time" class="form-control input-sm "/>'
+            }else if(tipo == 8){
+                example += $('#objInformacoesTextValue').val();
+            }else{
+                example += '<input type="text" class="form-control input-sm " />';//Input
+            }
+
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + $('#objInformacoesTextValue').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            example += '</td>';
+
+            example += '<td>';
+            example += '<td></td>' //obrigatoriedade ""
+            example += '<td>' //padrão
+            example += Cabecalhos.BtnExcluir();
+            example += '</td>';
+
+            $('#tableCabecalhosPreview').append(example);
+
+            if (o.isDataDefined) {
+                SingleCallendar.IntiFullCallendarByClass('dataInput');
+            }
+
+        },
+        ExcluirCampoInformacoes: function (e) {
+            e.parent().remove();
+            updateAllTables();
+        },
         ShowBinario: function () {
             $('#objBinario').show();
             $('#btnIncluirCabecalho input').hide();
@@ -1091,7 +1329,7 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParBinario[0].ParLevelDefinition_Id + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParBinario[0].ParFieldType_Id + '" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_LinkNumberEvaluetion').is(':checked') + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             Cabecalhos.ParBinario.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
@@ -1100,7 +1338,8 @@
                 }
             });
             example += '</td>';
-
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
             $('#tableCabecalhosPreview').append(example);
@@ -1187,7 +1426,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
-
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' +  Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1268,6 +1508,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1304,8 +1546,21 @@
                 case "integracaoPontoDeColetaValor":
                     description = $('#integracaoPontoDeColetaList').val();
                     break;
+                case "integracaoRaioXValor":
+                    description = $('#integracaoRaioXList').val();
+                    break;
                 case "integracaoProduto":
                     description = "Produto";
+                    break;
+                case "integracaoFamiliaProduto":
+                    description = "familiaProduto";
+                    break;
+                case "integracaoReprocessoEntrada":
+                    description = "ReprocessoEntrada";
+                    break;
+                case "integracaoReprocessoSaida":
+                    description = "ReprocessoSaida";
+                    break;
                 default:
                     description = "";
                     break;
@@ -1329,14 +1584,47 @@
         },
         AtualizaPreviewCampoIntegracoes: function (o) {
 
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var tipo = $('input[name=integracaoRB]:checked').val();
+
+            switch (tipo){
+                case "integracaoEquipamentoValor":
+                    tipo = "Equipamentos";
+                    break;
+                case "integracaoCamaraValor":
+                    tipo = "Câmaras";
+                    break;
+                case "integracaoPontoDeColetaValor":
+                    tipo = "Ponto de Coleta de Água";
+                    break;
+                case "integracaoRaioXValor":
+                    tipo = "Detector de Metais";
+                    break;
+                case "integracaoFamiliaProduto":
+                    tipo = "Família de Produtos";
+                    break;
+                case "integracaoReprocessoEntrada":
+                    description = "ReprocessoEntrada";
+                    break;
+                case "integracaoReprocessoSaida":
+                    description = "ReprocessoSaida";
+                    break;
+                case "integracaoProduto":
+                    tipo = "@Resources.Resource.products";
+                    break;
+                default:
+                    tipo = "";
+                    break;
+            }
+
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class=""> ' + $('.equipamentos').val() + '</label></td>' + // nome
+            example += '<td id=""><label class=""> ' + nome + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            example += '<input class="form-control input-sm" type="number" />';//Input
+            example += tipo;//Input
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
@@ -1345,6 +1633,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1666,5 +1956,21 @@
         }
 
     });
+
+    var urlHeaderLevel1 = '@Html.Raw(@urlHeaderLevel1)';
+
+    var HeaderLevel1 = {
+        object: {
+            Id: 0
+        },
+        Add: function(idHeader, button){
+            HeaderLevel1.object.Id = idHeader;
+
+            $.post(urlHeaderLevel1, HeaderLevel1.object, function(r){
+
+            });
+        }
+    }
+
 
 </script>

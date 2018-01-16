@@ -6,7 +6,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -163,8 +163,8 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" onclick="habilitar()" class="btn btn-default" /> |
-                                                @Html.ActionLink("Voltar para Volume de CEP Vácuo GRD", "Index")
+                                                <input type="submit" value="Salvar" onclick="habilitar()" class="btn btn-primary" />
+                                                @Html.ActionLink("Voltar para Volume de CEP Vácuo GRD", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
@@ -246,4 +246,10 @@
         $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
     }
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

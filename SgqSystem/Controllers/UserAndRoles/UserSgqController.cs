@@ -116,6 +116,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public bool Save(UserDTO userSgqDto)
         {
+            var IsActive = userSgqDto.IsActive;
 
             ValidaUserSgqDto(userSgqDto);
 
@@ -134,6 +135,7 @@ namespace SgqSystem.Controllers
             {
                 userSgqDto.AddDate = DateTime.Now;
                 userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
+                IsActive = true;
             }
             else
             {
@@ -186,7 +188,7 @@ namespace SgqSystem.Controllers
             if (userSgqDto != null)
                 if (GlobalConfig.Eua)
                 {
-                    var ativo = userSgqDto.IsActive ? "1" : "0";
+                    var ativo = IsActive ? "1" : "0";
                     var ativoQuery = "UPDATE UserSgq SET IsActive = " + ativo + " WHERE Id = " + userSgqDto.Id + " SELECT IsActive FROM usersgq WHERE Id = " + userSgqDto.Id;
                     var estadoAtual = db.Database.SqlQuery<bool>(ativoQuery).FirstOrDefault();
                 }
@@ -328,10 +330,14 @@ namespace SgqSystem.Controllers
 
                     myCookie.Values.Add("addDate", userSgq.AddDate.ToString("dd/MM/yyyy"));
 
-                    if (userSgq.Role != null)
+                    
+
+                    if (userSgq.ParCompanyXUserSgq != null)
                         myCookie.Values.Add("roles", userSgq.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
                     else
                         myCookie.Values.Add("roles", "");
+
+                    myCookie.Values.Add("CompanyId", userSgq.ParCompany_Id.ToString());
 
                     if (userSgq.ParCompanyXUserSgq != null)
                         if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))

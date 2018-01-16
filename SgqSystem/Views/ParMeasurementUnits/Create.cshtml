@@ -6,7 +6,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -68,8 +68,8 @@
                                         
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" class="btn btn-default" /> | 
-                                                @Html.ActionLink("Voltar para Unidades de medida", "Index")
+                                                <input type="submit" value="Salvar" class="btn btn-primary" /> 
+                                                @Html.ActionLink("Voltar para Unidades de medida", "Index",null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
@@ -93,4 +93,10 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar5");
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

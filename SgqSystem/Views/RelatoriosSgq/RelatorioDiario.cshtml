@@ -25,33 +25,33 @@
     }
 </style>
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="load"></div>
-        <div id="plotPrincipal2"></div>
-        <div id="plotPrincipal"></div>
-        <div class="panel panel-info" id="PanelFull" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g1">
+        <div id="formBodyContent">
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <div id="load"></div>
+            <div id="plotPrincipal2"></div>
+            <div id="plotPrincipal"></div>
+            <div class="panel panel-info" id="PanelFull" style="display:none">
+                <div class="panel-heading"></div>
+                <div class="panel-body" id="g1">
+                </div>
+                *O Peso atribuído as Tarefas influenciam no resultado gráfico.
             </div>
-            *O Peso atribuído as Tarefas influenciam no resultado gráfico.
+            @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
         </div>
-        @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
     </div>
-</div>
 
-@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+    @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+
+</div>
 
 @section Scripts {
 
 
     <script type="text/javascript">
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -70,13 +70,22 @@
                 Send(true);
             });
 
+            $('.levels').hide();
+
             formControl.showSimpleDate();
             //formControl.showOnlyUnit(); //showOnlyUnit showUnit
-            formControl.showUnit();
+            //formControl.showUnit();
+            formControl.showClustRegUnitCriticalLevel123();
+
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             //Remove o 'Todos' da unidade
-            $("#unitId option[value='']").remove();
+            //$("#unitId option[value='']").remove();
+            $("#unitIdV option[value='']").remove();
+
+            $('.sidebar-nav select').select2();
         });
 
         function Send(toggle) {
@@ -97,6 +106,7 @@
             //FTA._dataFim = FTA._dataInicio,
 
             enviar["auditorId"] = GetUsuarioId();
+            $("#unitIdV").change();
 
             EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);//AJAX
 
@@ -126,7 +136,8 @@
                     var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
                     var dataParaTendencia = $('input[name=datefilter]').val().split('/');
                     var mesDaTendencia = parseInt(dataParaTendencia[1]);
-                    GraficoTendencia(tendencia, div, Resources('audit_tendency') + ": " + removeFtaDaLabel(tendencia[0].Level1Name) + " - " + meses[(mesDaTendencia-1)], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+
+                    GraficoTendencia(tendencia, div, Resources('audit_tendency'), Resources('level1')+": " + removeFtaDaLabel(tendencia[0].Level1Name) + " | " + Resources('period')+": "+meses[(mesDaTendencia-1)], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
                     //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
                     var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
@@ -136,7 +147,7 @@
 
                     var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
                     var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "@Resources.Resource.derivations_per_defects: " + removeFtaDaLabel(tendencia[0].Level1Name));//Processa e cria grafico
+                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, Resources('derivations_per_defects'), Resources('level3')+": " + removeFtaDaLabel(tendencia[0].Level1Name));//Processa e cria grafico
 
                     level2DoLevel1.forEach(function (oo, cc) {
                         var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
@@ -147,12 +158,10 @@
                             dadosFTA['level1Name'] = removeFtaDaLabel(o.Level1Name)
                             dadosFTA['level2Name'] = removeFtaDaLabel(level3DoLevel2[0].Level2Name)
 
-                            GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + removeFtaDaLabel(level3DoLevel2[0].Level2Name), o.level1_Id, dadosFTA);//Processa e cria grafico
+                            GraficoTarefa(level3DoLevel2, divTarefas, Resources('deviations_per_monitoring'), Resources('level3') + ": " + removeFtaDaLabel(level3DoLevel2[0].Level2Name), o.level1_Id, dadosFTA);//Processa e cria grafico
                         }
 
                     });
-
-
 
                 });
             } catch (e) {
@@ -182,7 +191,8 @@
                 //Cria Grafico
                 $('#plotPrincipal2').empty().highcharts({
                     credits: Chart.Credits(),
-                    title: Chart.Titulo("@Resources.Resource.defects_per_audit" + unidadeName),
+                    title: Chart.Titulo(Resources("defects_per_audit")),
+                    subtitle: Chart.Subtitulo(Resources("unit")+ " : " + unidadeName),
                     xAxis: Chart.Xaxis(valoresX),
                     tooltip: Chart.ToolTip(true, true),
                     legend: Chart.Legend(),
@@ -218,8 +228,8 @@
 
         }
 
-        function GraficoTendencia(data, idDiv, titulo, dtInicio, dtFim) {
-            console.log(data);
+        function GraficoTendencia(data, idDiv, titulo, subtitulo, dtInicio, dtFim) {
+            //console.log(data);
             var valoresX = MapeiaValorParaHC(data, "Level1Name")
             var meta = MapeiaValorParaHC(data, "Meta")
             var totalNC = MapeiaValorParaHC(data, "NC")
@@ -233,8 +243,6 @@
             var total = 0;
             //var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
             var dataFim = new Date(parseInt(dtFim));
-
-
 
             valoresYY = {
                 dataInicio: new Date(parseInt(dtInicio/*.replace(/[^0-9]/g, '')*/)),
@@ -309,6 +317,7 @@
             $('#' + idDiv).highcharts({
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitulo),
                 legend: Chart.Legend(),
                 chart: {
                     type: 'column',
@@ -573,7 +582,7 @@
 
         }
         var TarefaFTA = []
-        function GraficoTarefa(data, idDiv, titulo, index, dadosFTA) {
+        function GraficoTarefa(data, idDiv, titulo, subtitle, index, dadosFTA) {
 
             //Auxiliares.loading(idDiv);
 
@@ -597,6 +606,7 @@
             $('#' + idDiv).empty().highcharts({
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitle),
                 xAxis: Chart.Xaxis(dados.x),
                 tooltip: {
                     formatter: function() {
@@ -630,7 +640,7 @@
             //})
         }
 
-        function GraficoTarefaIndicadores(data, idDiv, titulo) {
+        function GraficoTarefaIndicadores(data, idDiv, titulo, subtitle) {
 
             var valoresX = MapeiaValorParaHC(data, "Level3Name")
             var valoresY = {
@@ -650,6 +660,7 @@
             $('#' + idDiv).empty().highcharts({
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitle),
                 xAxis: Chart.Xaxis(valoresX),
                 tooltip: Chart.ToolTip(true, true),
                 legend: Chart.Legend(),
@@ -867,7 +878,7 @@
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
-            if (!($('#unitId :selected').val() > 0)) {
+            if (!($('#unitIdV :selected').val() > 0)) {
                 GuardJs.exibirMensagemAlerta('@Resources.Resource.select_the_unit_first');//"Por favor selecione uma unidade.");
                 return false;
             }
@@ -900,6 +911,12 @@
                 }
             },
             Titulo: function (data) {
+                return {
+                    text: data,
+                    x: -20 //center
+                };
+            },
+            Subtitulo: function (data) {
                 return {
                     text: data,
                     x: -20 //center

@@ -85,6 +85,8 @@ namespace DTO
         public int shift { get; set; }
         public int period { get; set; }
 
+        public int statusIndicador { get; set; }
+        public int criticalLevelId { get; set; }
 
         public int MetaFTA { get; set; }
         public int PercentualNCFTA { get; set; }
@@ -93,12 +95,18 @@ namespace DTO
         public string CallBackTableBody { get; set; }
         public string CallBackTableEsquerda { get; set; }
         public string CallBackTableTituloColunas { get; set; }
+        public string CallBackTableX { get; set; }
         public string Query { get; set; }
         public string Title { get; set; }
         public List<string> ParametroTableRow { get; set; }
         public List<string> ParametroTableCol { get; set; }
 
         public int clusterSelected_Id { get; set; }
+        public int structureId { get; set; }
+        public int clusterGroupId { get; set; }
+        public int departmentId { get; set; }
+        public string departmentName { get; set; }
 
+        public string tipoCEP { get; set; }
     }
 }

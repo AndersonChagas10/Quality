@@ -1,0 +1,114 @@
+/*table {
+
+	table-layout: fixed;
+	word-wrap: break-word;
+}*/
+
+
+table {
+	table-layout: fixed;
+	width: 100%;
+	*margin-left: -100px; /*ie7*/
+}
+
+.fix {
+	position: absolute;
+	*position: relative; /*ie7*/
+	margin-left: -100px;
+	width: 100px;
+}
+
+.outer {
+	position: relative;
+}
+
+.inner {
+
+	width: 100%;
+
+}
+
+.defaultDiv {
+	padding: 3px;
+}
+
+.defaultDivInternal {
+	background-color: #fff;
+	padding: 5px;
+}
+
+.defaultSizeMin {
+	height: 250px;
+}
+
+.defaultSizeMinPanel {
+	height: 150px;
+	width: 100%;
+}
+
+.defaultSizeMed {
+	height: 270px;
+}
+
+.defaultSizeMedPanel {
+	height: 190px;
+	width: 100%;
+}
+
+.defaultSizeMax {
+    height: 561px;
+    font-size: xx-small;
+}
+
+.defaultSizeMaxPanel {
+    height: 521px;
+    width: 100%;
+}
+
+.defaultGroupTitle {
+	float: left;
+	/*width: 100%;*/
+}
+
+.defaultTitle {
+	font-weight: bold;
+	font-size: 14px;
+	float: left;
+}
+
+.defaultSubtitle {
+	font-weight: normal;
+	font-size: 8px;
+	text-transform: uppercase;
+	float: left;
+}
+
+.defaultFilter {
+	float: left;
+	border-bottom: 1px dotted #ccc;
+	margin-bottom:5px;
+	width:100%;
+	padding:2px;
+}
+
+.defaultDivFilter {
+	background-color: #06304e;
+	color: #FFF;
+	position: fixed;
+	z-index: 9999;
+}
+
+.btn-filter {
+	font-size: 12px;
+	height:26px;
+	width:23px;
+	padding:0;
+}
+
+.dropdown-menu open{
+	width:150px;
+}
+
+/*tbody > tr > td {
+	word-break: break-all;
+}*/

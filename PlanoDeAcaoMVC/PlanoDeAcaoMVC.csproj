@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -55,6 +56,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -101,6 +108,12 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
@@ -129,6 +142,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.3.1\lib\net45\System.Web.Http.OData.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -196,6 +210,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\PivotJS\" />
+    <Folder Include="Views\PANovo\" />
     <Folder Include="Views\Shared\DisplayTemplate\" />
     <Folder Include="Views\UserAuthentication\" />
   </ItemGroup>
@@ -207,7 +222,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\ApiGerenciarController.cs" />
     <Compile Include="Controllers\Api\ApiSgqController.cs" />
+    <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
+    <Compile Include="Controllers\Home2Controller.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
@@ -395,6 +412,19 @@
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fonts\font-awesome.css" />
+    <Content Include="Content\fonts\font-awesome.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\PANovo\css\bootstrap-glyphicons.css" />
+    <Content Include="Content\PANovo\css\bootstrap-select.min.css" />
+    <Content Include="Content\PANovo\css\bootstrap-theme.min.css" />
+    <Content Include="Content\PANovo\css\bootstrap.min.css" />
+    <Content Include="Content\PANovo\css\buttons.dataTables.min.css" />
+    <Content Include="Content\PANovo\css\daterangepicker.css" />
+    <Content Include="Content\PANovo\css\jquery.dataTables.min.css" />
+    <Content Include="Content\PANovo\css\style.css" />
+    <Content Include="Content\PANovo\images\sort_asc.png" />
+    <Content Include="Content\PANovo\images\sort_both.png" />
     <Content Include="Content\Reports\Reports - Copy.css" />
     <Content Include="Content\Reports\Reports1.css" />
     <Content Include="favicon.ico" />
@@ -536,17 +566,54 @@
     <Content Include="Scripts\inputmask\min\inputmask\jquery.inputmask.min.js" />
     <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
+    <None Include="Properties\PublishProfiles\Plano de Acao Local.pubxml" />
+    <None Include="Properties\PublishProfiles\PlanoDeAcao.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcaoServidor.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.js" />
+    <Content Include="Scripts\lodash.core.js" />
+    <Content Include="Scripts\lodash.core.min.js" />
+    <Content Include="Scripts\lodash.js" />
+    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\PANovo\js\bootstrap-select.min.js" />
+    <Content Include="Scripts\PANovo\js\bootstrap.min.js" />
+    <Content Include="Scripts\PANovo\js\buttons.colVis.min.js" />
+    <Content Include="Scripts\PANovo\js\buttons.flash.min.js" />
+    <Content Include="Scripts\PANovo\js\buttons.html5.min.js" />
+    <Content Include="Scripts\PANovo\js\buttons.print.min.js" />
+    <Content Include="Scripts\PANovo\js\dataTables.buttons.min.js" />
+    <Content Include="Scripts\PANovo\js\dataTables.fixedColumns.min.js" />
+    <Content Include="Scripts\PANovo\js\daterangepicker.js" />
+    <Content Include="Scripts\PANovo\js\defaults-pt_BR.min.js" />
+    <Content Include="Scripts\PANovo\js\highcharts.js" />
+    <Content Include="Scripts\PANovo\js\jquery-1.12.4.js" />
+    <Content Include="Scripts\PANovo\js\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\PANovo\js\jquery.dataTables.min.js" />
+    <Content Include="Scripts\PANovo\js\jszip.min.js" />
+    <Content Include="Scripts\PANovo\js\moment.min.js" />
+    <Content Include="Scripts\PANovo\js\pdfmake.min.js" />
+    <Content Include="Scripts\PANovo\js\popper.min.js" />
+    <Content Include="Scripts\PANovo\js\pt-br.js" />
+    <Content Include="Scripts\PANovo\js\treemap.js" />
+    <Content Include="Scripts\PANovo\js\underscore-min.js" />
+    <Content Include="Scripts\PANovo\js\vfs_fonts.js" />
     <Content Include="Scripts\pivottable-master\.gitignore" />
     <Content Include="Scripts\pivottable-master\dist\c3_renderers.js" />
     <Content Include="Scripts\pivottable-master\dist\c3_renderers.min.js" />
@@ -813,6 +880,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\home2.js" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -906,6 +974,10 @@
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <Content Include="Views\Gerenciar\Index.cshtml" />
+    <Content Include="Views\Home2\Index.cshtml" />
+    <Content Include="Views\Shared\_Calendar.cshtml" />
+    <Content Include="Views\Home2\Index2.cshtml" />
+    <Content Include="Views\Centauro\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

@@ -83,7 +83,7 @@ namespace PlanoAcaoCore
         public int CausaGenerica_Id { get; set; }
         public string _CausaGenerica { get; set; }
 
-        [Display(Name = "Contramedida Genérica")]
+        [Display(Name = "Ação Genérica")]
         public int ContramedidaGenerica_Id { get; set; }
         public string _ContramedidaGenerica { get; set; }
 
@@ -94,7 +94,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
 
-        [Display(Name = "Contramedida Especifica")]
+        [Display(Name = "Ação Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
         [Display(Name = "Indicador")]
@@ -113,12 +113,16 @@ namespace PlanoAcaoCore
         public string Regional { get; set; }
 
         public int TipoIndicador { get; set; }
+        public string TipoIndicadorName { get; set; }
 
         public string _QuandoFimData
         {
             get
             {
-                return QuandoFim.ToString("dd/MM/yyyy");
+                if (QuandoFim != DateTime.MinValue)
+                    return QuandoFim.ToString("dd/MM/yyyy");
+                else
+                    return string.Empty;
             }
         }
 
@@ -126,7 +130,11 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return QuandoInicio.ToString("dd/MM/yyyy");
+                if (QuandoInicio != DateTime.MinValue)
+                    return QuandoInicio.ToString("dd/MM/yyyy");
+                else
+                    return string.Empty;
+                //return QuandoInicio.ToString("dd/MM/yyyy");
             }
         }
 
@@ -184,7 +192,7 @@ namespace PlanoAcaoCore
 
                 var agora = DateTime.Now;
                 if (QuandoFim > agora)
-                    return string.Format("Faltam {0} dias.", Math.Round((QuandoFim - agora).TotalDays));
+                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
                 else if (QuandoFim < agora)
                     return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
 
@@ -349,13 +357,13 @@ namespace PlanoAcaoCore
                 }
                 if (retorno.Level2Id != null && retorno.Level2Id > 0)
                 {
-                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level2Id).FirstOrDefault();
                     if (level2 != null)
                         retorno._Level2 = level2.Name;
                 }
                 if (retorno.Level3Id != null && retorno.Level3Id > 0)
                 {
-                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level3Id).FirstOrDefault();
                     if (level3 != null)
                         retorno._Level3 = level3.Name;
                 }

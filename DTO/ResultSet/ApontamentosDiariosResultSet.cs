@@ -41,6 +41,11 @@ public class ApontamentosDiariosResultSet
     public string ValueText { get; set; }
     public string HeaderFieldList { get; set; }
 
+    public System.DateTime AddDate { get; set; }
+    public string _AddDate { get { return AddDate.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
+    public string Platform { get; set; }
+    public string Type { get; set; }
+
     public string Select(DataCarrierFormulario form)
     {
         var dtInit = form._dataInicio.ToString("yyyyMMdd");
@@ -81,68 +86,83 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
         }
 
-        return " SELECT                                    " +
-                " \n  C2.CollectionDate AS Data             " +
-                " \n ,L1.Name AS Indicador                  " +
-                " \n ,L2.Name AS Monitoramento              " +
-                " \n ,R3.ParLevel3_Name AS Tarefa           " +
-                " \n ,R3.Weight AS Peso                     " +
-                " \n ,R3.IntervalMin AS 'IntervaloMinimo'   " +
-                " \n ,R3.IntervalMax AS 'IntervaloMaximo'   " +
-                " \n ,R3.Value AS 'Lancado'                 " +
-                " \n ,R3.IsConform AS 'Conforme'            " +
-                " \n ,R3.IsNotEvaluate AS 'NA'              " +
-                " \n ,R3.WeiEvaluation AS 'AV_Peso'         " +
-                " \n ,R3.WeiDefects AS 'NC_Peso'            " +
-                " \n ,case when isnull(R3.ValueText, '') = 'undefined' OR isnull(R3.ValueText, '') = 'null' THEN '' ELSE isnull(R3.ValueText, '') END AS ValueText       " +
-                " \n ,C2.EvaluationNumber AS 'Avaliacao'    " +
-                " \n ,C2.Sample AS 'Amostra'                " +
-                " \n ,C2.Sequential AS 'Sequencial'         " +
-                " \n ,C2.Side as 'Banda'                    " +
-                " \n ,STR(C2.[Shift]) as 'Turno'            " +
-                " \n ,STR(C2.Period) as 'Periodo'           " +
-                " \n ,UN.Name AS 'Unidade'                  " +
-                " \n ,R3.Id AS 'ResultLevel3Id'             " +
-                " \n ,US.Name as 'Auditor'                  " +
-                " \n ,ISNULL(L1.hashKey, '') as 'HashKey'   " +
-                " \n ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList'  " +
-                " \n FROM CollectionLevel2 C2 (nolock)               " +
-                " \n INNER JOIN ParCompany UN (nolock)               " +
-                " \n ON UN.Id = c2.UnitId                   " +
-                " \n INNER JOIN Result_Level3 R3  (nolock)           " +
-                " \n ON R3.CollectionLevel2_Id = C2.Id      " +
-                " \n INNER JOIN ParLevel3 L3 (nolock)                " +
-                " \n ON L3.Id = R3.ParLevel3_Id             " +
-                " \n INNER JOIN ParLevel2 L2 (nolock)                " +
-                " \n ON L2.Id = C2.ParLevel2_Id             " +
-                " \n INNER JOIN ParLevel1 L1 (nolock)                " +
-                " \n ON L1.Id = C2.ParLevel1_Id             " +
-                " \n INNER JOIN UserSgq US (nolock)                  " +
-                " \n ON C2.AuditorId = US.Id                " +
-                " \n LEFT JOIN                              " +
-                " \n (SELECT                                " +
-                " \n     CL2HF.CollectionLevel2_Id,         " +
-                " \n     STUFF(                             " +
-                " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 2 or CL2HF2.ParFieldType_Id = 3 then PMV.Name " +
-                " \n            when CL2HF2.ParFieldType_Id = 6 then " + formatDate + " " +
-                " \n            else CL2HF2.Value end) " +
-                " \n            FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) " +
-                " \n            left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF2.CollectionLevel2_Id " +
-                " \n            left join ParHeaderField HF (nolock) on CL2HF2.ParHeaderField_Id = HF.Id " +
-                " \n            left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id " +
-                " \n            left join ParMultipleValues PMV (nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) " +
-                " \n            WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id " +
-                " \n            FOR XML PATH('') " +
-                " \n            ), 1, 1, '')  AS HeaderFieldList " +
-                " \n    FROM CollectionLevel2XParHeaderField CL2HF (nolock) " +
-                " \n    left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id " +
-                " \n    left join ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id " +
-                " \n    left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id " +
-                " \n    GROUP BY CL2HF.CollectionLevel2_Id " +
-                " \n 	) HF " +
-                " \n on c2.Id = HF.CollectionLevel2_Id " +
-                " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
-                sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
+        return $@" SELECT                                
+                  C2.CollectionDate AS Data            
+                 ,L1.Name AS Indicador                 
+                 ,L2.Name AS Monitoramento             
+                 ,R3.ParLevel3_Name AS Tarefa          
+                 ,R3.Weight AS Peso                    
+                 ,R3.IntervalMin AS 'IntervaloMinimo'  
+                 ,R3.IntervalMax AS 'IntervaloMaximo'  
+                 ,R3.Value AS 'Lancado'                
+                 ,R3.IsConform AS 'Conforme'           
+                 ,R3.IsNotEvaluate AS 'NA'             
+                 ,R3.WeiEvaluation AS 'AV_Peso'        
+                 ,R3.WeiDefects AS 'NC_Peso'              
+                 ,case when isnull(R3.ValueText, '') = 'undefined' OR isnull(R3.ValueText, '') = 'null' THEN '' ELSE isnull(R3.ValueText, '') END AS ValueText 
+                 ,C2.EvaluationNumber AS 'Avaliacao'    
+                 ,C2.Sample AS 'Amostra'                
+                 ,ISNULL(C2.Sequential,0) AS 'Sequencial'
+                 ,ISNULL(C2.Side,0) as 'Banda'          
+                 ,STR(C2.[Shift]) as 'Turno'            
+                 ,STR(C2.Period) as 'Periodo'           
+                 ,UN.Name AS 'Unidade'                  
+                 ,R3.Id AS 'ResultLevel3Id'             
+                 ,US.Name as 'Auditor'                  
+                 ,ISNULL(L1.hashKey, '') as 'HashKey'                      
+                 ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList' 
+                 ,C2.AddDate as AddDate
+                 ,CJ.Device_Id as Platform
+				 , CASE 
+					WHEN C2.AlterDate IS NOT NULL THEN 'EDITADO'
+					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN 'RETROATIVO'
+				   ELSE 'NORMAL'
+				   END
+				 as Type
+                 FROM CollectionLevel2 C2 (nolock)     
+                 INNER JOIN ParCompany UN (nolock)     
+                 ON UN.Id = c2.UnitId                  
+                 INNER JOIN Result_Level3 R3  (nolock) 
+                 ON R3.CollectionLevel2_Id = C2.Id     
+                 INNER JOIN ParLevel3 L3 (nolock)      
+                 ON L3.Id = R3.ParLevel3_Id            
+                 INNER JOIN ParLevel2 L2 (nolock)      
+                 ON L2.Id = C2.ParLevel2_Id            
+                 INNER JOIN ParLevel1 L1 (nolock)      
+                 ON L1.Id = C2.ParLevel1_Id            
+                 INNER JOIN UserSgq US (nolock)        
+                 ON C2.AuditorId = US.Id               
+                 LEFT JOIN                             
+                 (SELECT                               
+                     CL2HF.CollectionLevel2_Id,        
+                     STUFF(   
+                        (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
+                        when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
+                        when CL2HF2.ParFieldType_Id = 2 then EQP.Nome 
+                        when CL2HF2.ParFieldType_Id = 6 then { formatDate }
+                        else CL2HF2.Value end)
+                        FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
+                        left join collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
+                        left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
+                        left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
+                        left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
+                        left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+                        WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+                        FOR XML PATH('')
+                        ), 1, 1, '')  AS HeaderFieldList
+                    FROM CollectionLevel2XParHeaderField CL2HF (nolock) 
+                    left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
+                    left join ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
+                    left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
+                    GROUP BY CL2HF.CollectionLevel2_Id
+                 	) HF 
+                 on c2.Id = HF.CollectionLevel2_Id
+                 LEFT JOIN CollectionLevel2XCollectionJson CLCJ
+                 ON CLCJ.CollectionLevel2_Id = C2.Id
+                 LEFT JOIN CollectionJson CJ
+                 ON CJ.Id = CLCJ.CollectionJson_Id
+                 WHERE C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
+                {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
     }
    
 }

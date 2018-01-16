@@ -30,6 +30,8 @@ namespace Dominio.Interfaces.Services
         ParMultipleValues SetDefaultMultiplaEscolha(int idHeader, int idMultiple);
         ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField);
 
-       
+        ParHeaderField AddRemoveParHeaderDuplicate(ParHeaderField parHeaderField);
+
+
     }
 }

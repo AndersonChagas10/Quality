@@ -45,13 +45,13 @@
                 }
                 else {
                     if (urlParaOptionSelecione) {
-                         $http({
-                             method: 'POST',
-                             url: urlParaOptionSelecione
-                         }).
-                        then(function (r) {
-                            $scope[elementChainedName] = r.data;
-                        });
+                        $http({
+                            method: 'POST',
+                            url: urlParaOptionSelecione
+                        }).
+                       then(function (r) {
+                           $scope[elementChainedName] = r.data;
+                       });
                     }
                     $scope[elementChainedName] = [];
                 }

@@ -23,6 +23,8 @@ namespace Dominio.Interfaces.Repositories
         void ExecuteSql(string sql);
         ParLevel2XHeaderField SaveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField);
 
+        ParHeaderField SaveParHeaderDuplicate(ParHeaderField parHeaderField);
+
         void SaveVinculoL3L2L1(int idLevel1, int idLevel2, int idLevel3, int? userId, int? companyId);
     }
 }

@@ -8,7 +8,8 @@ namespace PlanoAcaoCore
         public string Name { get; set; }
         public string Description { get; set; }
         public int Order { get; set; }
-
+        public int? Pa_IndicadoresDeProjeto_Id { get; set; }
+        
         public void IsValid()
         {
             Name = Guard.CheckStringFullSimple(Name);
@@ -16,7 +17,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_ObjetivoGeral> Listar()
         {
-            var query = "SELECT * FROM Pa_ObjetivoGeral";
+            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE IsActive = 1";
             return ListarGenerico<Pa_ObjetivoGeral>(query);
         }
 
@@ -28,7 +29,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_ObjetivoGeral> GetObjetivoXIndicadoresProjeto(int id)
         {
-            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE Pa_IndicadoresDeProjeto_Id = " + id;
+            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE IsActive = 1 AND  Pa_IndicadoresDeProjeto_Id = " + id;
             return ListarGenerico<Pa_ObjetivoGeral>(query);
         }
 

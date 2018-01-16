@@ -70,6 +70,12 @@
       <HintPath>..\packages\Hangfire.SqlServer.1.6.12\lib\net45\Hangfire.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
@@ -151,6 +157,12 @@
       <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -174,6 +186,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Serialization" />
@@ -306,20 +319,26 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BuildPermissionApiController.cs" />
+    <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
+    <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
+    <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -340,11 +359,14 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
+    <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_TipoLata.cs" />
@@ -382,6 +404,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppSettingsWebConfig.cs" />
+    <Compile Include="Helpers\CommonDate.cs" />
     <Compile Include="Helpers\Handlres\HandleApi.cs" />
     <Compile Include="Helpers\Handlres\HandleController.cs" />
     <Compile Include="Helpers\Handlres\ValidateModelAttribute.cs" />
@@ -529,7 +553,10 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\ClusterGroupCluster.js" />
+    <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
+    <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -723,6 +750,10 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
+    <Content Include="Imagens\A.png" />
+    <Content Include="Imagens\C.png" />
+    <Content Include="Imagens\D.png" />
+    <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
@@ -775,16 +806,24 @@
     <Content Include="Imagens\Brazil.png" />
     <Content Include="Imagens\chart.png" />
     <Content Include="Imagens\JBS_logo.jpg" />
+    <Content Include="Imagens\if_check_406783.png" />
+    <Content Include="Imagens\if_tablet_406729.png" />
+    <Content Include="Imagens\if_target_406854.png" />
+    <Content Include="Imagens\logo-gq.png" />
+    <Content Include="Imagens\logo-jbs.png" />
     <Content Include="Imagens\Logo.png" />
     <Content Include="Imagens\Recravacao\10pts.jpg" />
     <Content Include="Imagens\Recravacao\11pts.png" />
     <Content Include="Imagens\Recravacao\3pts.jpg" />
     <Content Include="Imagens\Recravacao\9pts.jpg" />
+    <Content Include="Imagens\seta.png" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
     <Content Include="Imagens\tablet.png" />
     <Content Include="Imagens\timeout-icon.png" />
+    <Content Include="Imagens\under_construction.png" />
+    <Content Include="Imagens\under_construction_red.png" />
     <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
@@ -1074,6 +1113,7 @@
     <None Include="Properties\PublishProfiles\SGQ BR.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ USA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBr.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqGlobal.pubxml" />
@@ -1082,6 +1122,7 @@
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQYtoara.pubxml" />
     <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />
@@ -1451,6 +1492,19 @@
     <Content Include="Views\RecravacaoLinhas\Details.cshtml" />
     <Content Include="Views\Recravacao\Print.cshtml" />
     <Content Include="Views\Recravacao\Print2.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
+    <Content Include="Views\Shared\_SelectVinculado.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
+    <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
+    <Content Include="Views\ParClusterGroups\Create.cshtml" />
+    <Content Include="Views\ParClusterGroups\Delete.cshtml" />
+    <Content Include="Views\ParClusterGroups\Details.cshtml" />
+    <Content Include="Views\ParClusterGroups\Edit.cshtml" />
+    <Content Include="Views\ParClusterGroups\Index.cshtml" />
+    <Content Include="Views\Params\_ParLevel3Value.cshtml" />
+    <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
+    <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1517,11 +1571,16 @@
     <Content Include="App_GlobalResources\Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resource.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

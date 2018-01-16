@@ -90,6 +90,7 @@ namespace SgqSystem.Controllers
             {
                 cookie.Expires = DateTime.Now.AddMinutes(60);
                 HttpContext.Response.Cookies.Set(cookie);
+                Response.Cookies.Add(cookie);
             }
             else
             {
@@ -124,7 +125,7 @@ namespace SgqSystem.Controllers
                         myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
                 //set cookie expiry date-time. Made it to last for next 12 hours.
-                myCookie.Expires = DateTime.Now.AddMinutes(60);
+                myCookie.Expires = DateTime.Now.AddMinutes(1800);
 
                 //Most important, write the cookie to client.
                 Response.Cookies.Add(myCookie);
@@ -144,6 +145,11 @@ namespace SgqSystem.Controllers
                 Response.SetCookie(currentUserCookie);
             }
 
+        }
+
+        public static string GetWebConfigSettings(string key)
+        {
+            return System.Configuration.ConfigurationManager.AppSettings[key];
         }
     }
 

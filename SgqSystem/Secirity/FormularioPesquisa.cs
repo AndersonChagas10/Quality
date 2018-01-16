@@ -67,6 +67,7 @@ namespace SgqSystem.Secirity
                     filterContext.Controller.ViewBag.Level03 = Mapper.Map<List<ParLevel3DTO>>(db.ParLevel3.ToList());
                     filterContext.Controller.ViewBag.Period = Mapper.Map<List<PeriodDTO>>(db.Period.ToList());
                     filterContext.Controller.ViewBag.Shift = Mapper.Map<List<ShiftDTO>>(db.Shift.ToList());
+                    filterContext.Controller.ViewBag.Department = Mapper.Map<List<ParDepartmentDTO>>(db.ParDepartment.ToList());
 
                     if (!filtraUnidadePorUsuario)/*Se não filtra uNidades por Usuario*/
                     {

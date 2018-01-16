@@ -9,8 +9,10 @@
     @Styles.Render("~/bundles/hcstyle")
     @Styles.Render("~/Content/Tables")
     @Styles.Render("~/Content/select2css")
+    @Styles.Render("~/Content/DatePikerContentCss")
 
     @Scripts.Render("~/bundles/modernizr")
+
 
     <style>
         .message {
@@ -34,6 +36,11 @@
             opacity: 0.5;
             filter: alpha(opacity=10);
             z-index: 9998;
+        }
+
+        .error {
+            /*border-color: red;*/
+            background: pink;
         }
     </style>
 
@@ -68,6 +75,9 @@
             }
         </style>
     }
+
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
 
@@ -116,12 +126,17 @@
                         <a href="@Url.Action("Index","PaPlanejamentoAcao")">Gerenciar</a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index2","Home2")">Dashboard</a>
+                    </li>
+                </ul>
 
             </div>
             <!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="container" id="RederBodyContainer" style="margin-top:20px;" >
+    <div class="container" id="RederBodyContainer" style="margin-top:20px;">
         <hr />
 
         @Html.Partial("~/Views/Shared/_AcessoSgq.cshtml")
@@ -134,7 +149,7 @@
     </div>
 
     <div id="overlay" class="overlay" style="display:none"></div>
-    <div id="messageModal" class="message padding20" style="display:none">
+    <div id="messageModal" class="message padding20" style="display:none; left:0">
         <h1 class="head">Titulo</h1>
         <div class="body font16">Mensagem</div>
         <div class="foot">
@@ -195,7 +210,7 @@
             http://plentz.github.io/jquery-maskmoney/
         */
         function MoneyMask(preffix) {
-            var config = { prefix: '', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, allowZero: true }
+            var config = { prefix: '', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
             if (preffix != undefined) {
                 config.prefix = preffix
             }
@@ -246,6 +261,47 @@
         });
 
         $.fn.serializeObject = function () {
+            var isValid = true
+
+            var tipo = "";
+
+            if (typeof isClickedTaticoVinculado != 'undefined') {
+
+                if (isClickedTaticoVinculado) {
+                    tipo = '.tatico';
+                } else if (isClickedEstrategico) {
+                    tipo = ".estrategico";
+                } else {
+                    tipo = ".operacional";
+                }
+            }
+            //var tipo = "estrategico";
+
+            $(this).find('.error').removeClass('error')
+            $(this).find('select.required:visible' + tipo).each(function (c, o) {
+                if ($(o).find('option:selected').val().length == 0) {
+                    $(o).addClass('error')
+                    $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
+                }
+            });
+
+            $(this).find('input.required').each(function (c, o) {
+                $(o).addClass('error')
+                if (($(this).val().length > 0)) {
+                    $(this).removeClass('error')
+                } else {
+                    $(this).addClass('error')
+                }
+            });
+
+            $(this).find('input.money').each(function (i, e) { $(e).val($(e).val().replace('R$ ', '')); })
+
+            //if ($(this).find('.error').length) {
+            //    alert("Campos obrigatórios");
+            //    return { isValid: '0' }
+            //    throw "Campos obrigatórios";
+            //}
+
             var o = {};
             var a = this.serializeArray();
             $.each(a, function () {
@@ -258,9 +314,11 @@
                     o[this.name] = this.value || '';
                 }
             });
+
+            $(this).find('.error:hidden').removeClass('error');
+
             return o;
         };
-
     </script>
 
 </body>

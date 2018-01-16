@@ -153,12 +153,12 @@
                     <tr>
                         <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
                         <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
-                        <td colspan="4"><span class="tdLabels">CONTRAMEDIDA GENÉRICA</span> </td>
+                        <td colspan="4"><span class="tdLabels">AÇÃO GENÉRICA</span> </td>
                     </tr>
 
                     <tr>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm" })
                             @*<select data-ng-model="FTABody.CausaGenerica_Id"
                                         data-ng-options="s.Id as s.Name for s in CausaGenericas | orderBy:'Name'"
                                         data-ng-change="ChangeCausaGenericas()" class="form-control" style="width:210px">
@@ -166,10 +166,10 @@
                                 </select>*@
                         </td>
                         <td colspan="2">
-                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                     </tr>
 
@@ -179,7 +179,7 @@
                         </td>
                         <td colspan="2" style="border-bottom:0;"></td>
                         <td colspan="4">
-                            <span class="tdLabels">CONTRAMEDIDA ESPECÍFICA</span>
+                            <span class="tdLabels">AÇÃO ESPECÍFICA</span>
                         </td>
                     </tr>
 
@@ -206,7 +206,7 @@
                                 @Html.EditorFor(r => r.ContramedidaEspecifica)
                             </td>*@
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="2">
                             @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
@@ -229,10 +229,10 @@
 
                 <tr>
                     <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     </td>
                     <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     </td>
                 </tr>
                 <tr style="display:none">

@@ -2,7 +2,7 @@
 <div class="modal fade" id="crudNxNEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
     <div class="modal-dialog    " role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header modal-header-gray">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">a</h4>
             </div>
@@ -32,6 +32,9 @@
             return isValid;
         },
         adiciona: function (o, idTable, tdsName) {
+
+            
+           
 
             var tr = "";
             var objData = {};
@@ -86,7 +89,7 @@
             element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
             reloadPopovers();
         },
-        btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
+        btnReActive: '<button type="button" class="btn btn-info btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
         funcReActive: function (e) {
             var obj = $(e).parents('tr').data();
             obj["IsActive"] = true;
@@ -109,7 +112,7 @@
         //    reloadPopovers();
         //},
 
-        btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
+        btnEdit: '<button type="button" class="btn btn-success btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
 
             $('#crudNxNEdit > div > div > div.modal-body').empty();

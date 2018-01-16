@@ -139,7 +139,7 @@
     <value>Home</value>
   </data>
   <data name="jbs_and_grt_aplication" xml:space="preserve">
-    <value>Aplicação JBS e GRT</value>
+    <value>Aplicação GRT</value>
   </data>
   <data name="login" xml:space="preserve">
     <value>Entrar</value>
@@ -484,7 +484,7 @@
     <value>Define se as unidades poderão editar/criar os vínculos com as tarefas</value>
   </data>
   <data name="link_number_evaluation" xml:space="preserve">
-    <value>Link com o número da avaliação</value>
+    <value>Link com a avaliação</value>
   </data>
   <data name="evaluation" xml:space="preserve">
     <value>Avaliação</value>
@@ -649,7 +649,7 @@
     <value>Salvando</value>
   </data>
   <data name="structure_group" xml:space="preserve">
-    <value>Estrutura do Grupo</value>
+    <value>Regional</value>
   </data>
   <data name="company" xml:space="preserve">
     <value>Empresa</value>
@@ -1732,7 +1732,7 @@
     <value>Pontos Disputados</value>
   </data>
   <data name="registers" xml:space="preserve">
-    <value>Registers</value>
+    <value>Registros</value>
   </data>
   <data name="resgisters_page" xml:space="preserve">
     <value>Registros por Pagina</value>
@@ -2017,7 +2017,7 @@
     <value>Fechar todos</value>
   </data>
   <data name="update_tablet" xml:space="preserve">
-    <value>Atualizar Cadastros</value>
+    <value>Atualizar Parametrização</value>
   </data>
   <data name="update_tablet_message" xml:space="preserve">
     <value>Esta ação pode demorar algum tempo, deseja atualizar a parametrização dos tablets? O Loader sumira automaticamente ao finalizar a ação.</value>
@@ -2041,7 +2041,7 @@
     <value>Pontua para o Indicador de Origem</value>
   </data>
   <data name="update_tablet_all" xml:space="preserve">
-    <value>Atualizar todos os Tablets de todas as Unidades</value>
+    <value>Atualizar Parametrização (completo)</value>
   </data>
   <data name="update_all_tablet_message" xml:space="preserve">
     <value>Esta ação pode demorar algum tempo (5 a 25 minutos), deseja atualizar a parametrização dos tablets? O Loader sumira automaticamente ao finalizar a ação.</value>
@@ -2078,6 +2078,222 @@
   </data>
   <data name="allow_less_privileged_users_to_edit_the_monitoring" xml:space="preserve">
     <value>Permitir que usuários menos privilegiados editem o Objetivo da Tarefa vinculadas ao Monitoramento Ligado a este Indicador</value>
+  </data>
+  <data name="unreached_goals" xml:space="preserve">
+    <value>Metas Não Alcançadas</value>
+  </data>
+  <data name="results_reports" xml:space="preserve">
+    <value>Relatório de Resultados</value>
+  </data>
+  <data name="pa_causa_especifica" xml:space="preserve">
+    <value>Causa Específica</value>
+  </data>
+  <data name="pa_ok" xml:space="preserve">
+    <value>ok</value>
+  </data>
+  <data name="desenvolvimento" xml:space="preserve">
+    <value>Em desenvolvimento</value>
+  </data>
+  <data name="take_photo" xml:space="preserve">
+    <value>Tirar foto</value>
+  </data>
+  <data name="criticalLevel" xml:space="preserve">
+    <value>Nível de Criticidade</value>
+  </data>
+  <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
+    <value>Deseja Criar um Formulário de Tratamento de anomalia?</value>
+  </data>
+  <data name="evolutional" xml:space="preserve">
+    <value>Evolutivo</value>
+  </data>
+  <data name="spc_charts" xml:space="preserve">
+    <value>Cartas CEP</value>
+  </data>
+  <data name="criticalLevelDepartment" xml:space="preserve">
+    <value>Nível de Criticidade</value>
+  </data>
+  <data name="fromLevel1" xml:space="preserve">
+    <value>do Indicador</value>
+  </data>
+  <data name="fromLevel2" xml:space="preserve">
+    <value>do Monitoramento</value>
+  </data>
+  <data name="fromPlant" xml:space="preserve">
+    <value>da Unidade</value>
+  </data>
+  <data name="level1Non_Conformities" xml:space="preserve">
+    <value>% de Não Conformidades nos Indicadores</value>
+  </data>
+  <data name="level1Results" xml:space="preserve">
+    <value>Resultados das Avaliações dos Indicadores</value>
+  </data>
+  <data name="level1Status" xml:space="preserve">
+    <value>Status do Indicador</value>
+  </data>
+  <data name="level2Non_Conformities" xml:space="preserve">
+    <value>% de Não Conformidades nos Monitoramentos</value>
+  </data>
+  <data name="level2Results" xml:space="preserve">
+    <value>Resultados das Avaliações dos Monitoramentos</value>
+  </data>
+  <data name="level3Non_Conformities" xml:space="preserve">
+    <value>% de Não Conformidades nas Tarefas</value>
+  </data>
+  <data name="level3Results" xml:space="preserve">
+    <value>Resultados das Avaliações das Tarefas</value>
+  </data>
+  <data name="percentNon_conformities" xml:space="preserve">
+    <value>% de Não Conformidades</value>
+  </data>
+  <data name="perUnit" xml:space="preserve">
+    <value>por Unidade</value>
+  </data>
+  <data name="structure" xml:space="preserve">
+    <value>Regional</value>
+  </data>
+  <data name="fromUnit" xml:space="preserve">
+    <value>da Unidade</value>
+  </data>
+  <data name="listOf" xml:space="preserve">
+    <value>Lista de</value>
+  </data>
+  <data name="could_not_fetch_data" xml:space="preserve">
+    <value>Não foi possivel buscar os dados</value>
+  </data>
+  <data name="history" xml:space="preserve">
+    <value>Histórico</value>
+  </data>
+  <data name="list_results" xml:space="preserve">
+    <value>Listar Resultados</value>
+  </data>
+  <data name="non_conformities_in_period" xml:space="preserve">
+    <value>de Não Conformidades no Período</value>
+  </data>
+  <data name="concluded_actions" xml:space="preserve">
+    <value>Ações Concluídas</value>
+  </data>
+  <data name="consolidated_history" xml:space="preserve">
+    <value>Histórico Consolidado</value>
+  </data>
+  <data name="final_date" xml:space="preserve">
+    <value>Data final</value>
+  </data>
+  <data name="general_cause" xml:space="preserve">
+    <value>Causa Genérica</value>
+  </data>
+  <data name="generic_countermeasure" xml:space="preserve">
+    <value>Contramedida Genérica</value>
+  </data>
+  <data name="group_cause" xml:space="preserve">
+    <value>Grupo Causa</value>
+  </data>
+  <data name="level1_history" xml:space="preserve">
+    <value>Histórico do Indicador</value>
+  </data>
+  <data name="level1_porc_non_conform_evo" xml:space="preserve">
+    <value>Evolutivo de % de não conformidades no Indicador</value>
+  </data>
+  <data name="level2_history" xml:space="preserve">
+    <value>Histórico do Monitoramento</value>
+  </data>
+  <data name="level2_porc_non_conform_evo" xml:space="preserve">
+    <value>Evolutivo de % de não conformidades no Monitoramento</value>
+  </data>
+  <data name="level3_history" xml:space="preserve">
+    <value>Histórico da Tarefa</value>
+  </data>
+  <data name="level3_porc_non_conform_evo" xml:space="preserve">
+    <value>Evolutivo de % de não conformidades na Tarefa</value>
+  </data>
+  <data name="number_of_shares" xml:space="preserve">
+    <value>Número de Ações</value>
+  </data>
+  <data name="off_goal" xml:space="preserve">
+    <value>Fora da Meta</value>
+  </data>
+  <data name="there_are_no_data_for_this_indicador_unit" xml:space="preserve">
+    <value>Não existem dados de ações para este Indicador / Unidade</value>
+  </data>
+  <data name="who" xml:space="preserve">
+    <value>Quem</value>
+  </data>
+  <data name="within_goal" xml:space="preserve">
+    <value>Dentro da Meta</value>
+  </data>
+  <data name="defects_per_deparment" xml:space="preserve">
+    <value>Defeitos por Departamento</value>
+  </data>
+  <data name="next_unfolding" xml:space="preserve">
+    <value>Próximo Desdobramento</value>
+  </data>
+  <data name="new_cluster_group" xml:space="preserve">
+    <value>Novo Módulo</value>
+  </data>
+  <data name="include_information" xml:space="preserve">
+    <value>Incluir campo Informação</value>
+  </data>
+  <data name="fill_the_name" xml:space="preserve">
+    <value>Preencha o Nome</value>
+  </data>
+  <data name="fill_the_description" xml:space="preserve">
+    <value>Preencha a Descrição</value>
+  </data>
+  <data name="show_scorecard" xml:space="preserve">
+    <value>Ativo no Scorecard</value>
+  </data>
+  <data name="value_is_acceptable_greater" xml:space="preserve">
+    <value>O valor aceitável é maior que </value>
+  </data>
+  <data name="textHomeColeta" xml:space="preserve">
+    <value />
+    <comment>Coletar os dados na planta, com um computador ou um tablet, trabalhando até o sol nascer.</comment>
+  </data>
+  <data name="textHomeGestao" xml:space="preserve">
+    <value />
+    <comment>Veja se você bateu a Meta! &lt;br /&gt; Gerenciamento com o método PDCA. Dashboards diversos para analise do negócio.</comment>
+  </data>
+  <data name="textHomeParams" xml:space="preserve">
+    <value />
+    <comment>Parametros de Indicadores, Monitoramentos e tarefas, suas frequencias de coleta, responsáveis e limites.</comment>
+  </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSANDO</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Selecionar Todos</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCESSO</value>
+  </data>
+  <data name="update_selected_units" xml:space="preserve">
+    <value>Atualizar unidades selecionadas</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>PENDENTE</value>
+  </data>
+  <data name="use_active_directory" xml:space="preserve">
+    <value>Usar AD (Active Directory)</value>
+  </data>
+  <data name="products" xml:space="preserve">
+    <value>Produtos</value>
+  </data>
+  <data name="include_integrations" xml:space="preserve">
+    <value>Incluir Integrações</value>
+  </data>
+  <data name="edit_header" xml:space="preserve">
+    <value>Editar cabeçalho</value>
+  </data>
+  <data name="advanced_itens" xml:space="preserve">
+    <value>Itens avançados</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Nenhum</value>
   </data>
   <data name="Pl1ShowInTablet" xml:space="preserve">
     <value>Mostrar Indicador no Tablet</value>

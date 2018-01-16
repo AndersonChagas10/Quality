@@ -6,6 +6,7 @@ using DTO.DTO;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 
@@ -85,7 +86,18 @@ namespace Dominio.Services
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
-           
+
+            if (GetAppSettings("BuildPermission") != null)
+            {
+                var PermissionDate = TransformStringToDateFormat(
+                    Guard.DecryptStringAES(GetAppSettings("BuildPermission")), "dd/MM/yyyy");
+                if (PermissionDate != null)
+                {
+                    if(PermissionDate.CompareTo(DateTime.Now) <= 0)
+                        throw new ExceptionHelper("The access is expired.");
+                }                
+            }
+
             try
             {
                 UserSgq userByName;
@@ -99,20 +111,48 @@ namespace Dominio.Services
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
 
-                if(!userDto.IsWeb)
+                if (!userDto.IsWeb)
                     DescriptografaSenha(userDto);
 
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
+                {
                     isUser = LoginBrasil(userDto, userByName);
+
+                    #region HARDCODE - Verifica se o usuario tem identificador 366 e atribui a Role para 'backdate'
+                    try
+                    {
+                        var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id && r.Role == "366");
+                        if (isProfile366)
+                            using (var db = new SgqDbDevEntities())
+                            {
+                                var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
+                                db.UserSgq.Attach(atualizarUsuario);
+                                if (atualizarUsuario.Role == null || !atualizarUsuario.Role.Contains("backdate"))
+                                {
+                                    if (!string.IsNullOrEmpty(atualizarUsuario.Role))
+                                        atualizarUsuario.Role += ",";
+                                    else
+                                        atualizarUsuario.Role = string.Empty;
+                                    atualizarUsuario.Role += "backdate";
+
+                                    db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
+                    }
+                    catch (Exception e)
+                    { }
+                    #endregion
+                }
 
                 /*Se for Brasil executa RN do Sistema EUA*/
                 if (GlobalConfig.Eua)
                     isUser = LoginEUA(userDto, userByName);
 
-                /*Login Ytoara*/
-                if (GlobalConfig.Ytoara)
+                /*Login SGQ Puro*/
+                if (GlobalConfig.Ytoara || GlobalConfig.Santander)
                     isUser = LoginSgq(userDto, userByName);
 
                 if (isUser.IsNull())
@@ -136,7 +176,7 @@ namespace Dominio.Services
                     //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
                     using (var db = new SgqDbDevEntities())
                     {
-                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r=> r.Id == isUser.Id);
+                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
                         atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
                         db.UserSgq.Attach(atualizarUsuario);
                         db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
@@ -162,7 +202,7 @@ namespace Dominio.Services
         /// <param name="userDto"></param>
         private void DescriptografaSenha(UserDTO userDto)
         {
-             userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            userDto.Password = Guard.DecryptStringAES(userDto.Password);
         }
 
         /// <summary>
@@ -237,7 +277,7 @@ namespace Dominio.Services
 
             return CheckUserAndPassDataBase(userDto);
 
-        } 
+        }
 
         #endregion
 
@@ -266,11 +306,11 @@ namespace Dominio.Services
             //}
 
             /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
-            if (GlobalConfig.mockLoginEUA)
-            {
-                UserSgq userDev = CheckUserAndPassDataBase(userDto);
-                return userDev;
-            }
+            //if (GlobalConfig.mockLoginEUA)
+            //{
+            //    UserSgq userDev = CheckUserAndPassDataBase(userDto);
+            //    return userDev;
+            //}
 
             if (userByName != null)
             {
@@ -278,31 +318,39 @@ namespace Dominio.Services
                 if (!IsActive)
                     throw new Exception("User disabled.");
             }
-
-            /*1*/
-            if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                        
+            if (userByName == null || userByName.UseActiveDirectory)
             {
-              
-
-                /*1.1*/
-                UserSgq isUser = CheckUserAndPassDataBase(userDto);
-
-                /*1.2*/
-                if (userByName.IsNotNull() && isUser.IsNull())
+                /*1*/
+                if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
                 {
-                    isUser = AlteraSenhaAlteradaNoAd(userDto, userByName);
-                    if (isUser.IsNull())
-                        throw new Exception("Error updating password from ADUser.");
+
+
+                    /*1.1*/
+                    UserSgq isUser = CheckUserAndPassDataBase(userDto);
+
+                    /*1.2*/
+                    if (userByName.IsNotNull() && isUser.IsNull())
+                    {
+                        isUser = AlteraSenhaAlteradaNoAd(userDto, userByName);
+                        if (isUser.IsNull())
+                            throw new Exception("Error updating password from ADUser.");
+                    }
+
+                    /*1.3*/
+                    //if (isUser.IsNull())
+                    //return CreateUserFromAd(userDto);
+
+                    return isUser;
+
                 }
-
-                /*1.3*/
-                //if (isUser.IsNull())
-                //return CreateUserFromAd(userDto);
-
-                return isUser;
-
             }
-
+            else
+            {
+                UserSgq userDev = CheckUserAndPassDataBase(userDto);
+                return userDev;
+            }
+            
             return null;
         }
 
@@ -436,7 +484,7 @@ namespace Dominio.Services
 
             #endregion
 
-          
+
 
 
             UserSgq isUser = CheckUserAndPassDataBase(userDto);
@@ -495,6 +543,12 @@ namespace Dominio.Services
                     {
                         usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
                         rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
+
+                        #region Força deletar todos os vinculos com unidades e atualizar os mesmos
+                        _baseParCompanyXUserSgq.RemoveAll(rolesSgqGlobal);
+                        rolesSgqGlobal = new List<ParCompanyXUserSgq>();
+                        #endregion
+
                         allCompanySgqGlobal = _baseParCompany.GetAll();
                     }
                     catch (Exception e)
@@ -575,7 +629,8 @@ namespace Dominio.Services
                             {
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
-                                //Email = existenteNoDbAntigo.cEMail,
+                                Phone = existenteNoDbAntigo.cCelular ?? existenteNoDbAntigo.cTelefone,
+                                Email = existenteNoDbAntigo.cEMail,
                                 Password = Guard.EncryptStringAES(userDto.Password)
                             };
                         }
@@ -606,6 +661,17 @@ namespace Dominio.Services
                     throw e;
                 }
             }
+        }
+
+        private string GetAppSettings(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
+        private DateTime TransformStringToDateFormat(String date, String format)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, format, null);
+            return dateTime;
         }
 
         #endregion

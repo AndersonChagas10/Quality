@@ -2025,4 +2025,16 @@
   <data name="valued" xml:space="preserve">
     <value>Valued</value>
   </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSING</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>WAITING</value>
+  </data>
 </root>

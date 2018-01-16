@@ -88,6 +88,9 @@ namespace DTO.DTO.Params
 
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
+        public bool ShowScorecard { get; set; } = true;
+        
+        public bool HasTakePhoto { get; set; } = false;
 
         public bool ShowInTablet { get; set; } = true;
 
@@ -160,6 +163,7 @@ namespace DTO.DTO.Params
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
 
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
+
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
         /*Props novas*/

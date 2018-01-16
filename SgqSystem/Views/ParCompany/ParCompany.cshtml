@@ -32,7 +32,7 @@
                             <td>@o.CompanyNumber</td>
                             <td>@o.IPServer</td>
                             <td>@o.DBServer</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" onclick='indexParCompany.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
+                            <td><button type="button" class="btn btn-success btn-sm" onclick='indexParCompany.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
                         </tr>
                     }
                 </tbody>
@@ -43,15 +43,15 @@
 
 <script>
 
-    //function clusterListAdd() {
-    //    if ($('#clusterListId :selected').val() != "") {
-    //        if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
-    //            $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+    function clusterListAdd() {
+        if ($('#clusterListId :selected').val() != "") {
+            if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
+                $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
 
-    //        if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 1)
-    //            $("#btnAddCluster").addClass("disabled");
-    //    }             
-    //}
+            if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 1)
+                $("#btnAddCluster").addClass("disabled");
+        }             
+    }
 
     function structureGroupListAdd() {
         if ($('#structureGroupListId :selected').val() != "") {
@@ -60,13 +60,19 @@
         }
     }
 
-    //function removeClusterList(value) {
-    //    $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
-    //    $("#btnAddCluster").removeClass("disabled");
-    //}
+    function removeClusterList(value) {
+        $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
+        $("#btnAddCluster").removeClass("disabled");
+    }
 
     function removeStructureGroupList(value, modal) {
         $('#structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
     }
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace DTO
 {
@@ -26,14 +28,50 @@ namespace DTO
         public bool MockEmail { get; set; }
     }
 
+    public class HtmlDoTablet
+    {
+        public string Html { get; set; }
+        public DateTime? DataInicio { get; set; }
+        public string DataInicioStr { get { return DataInicio == null ? null : DataInicio.Value.ToShortDateString() + " " + DataInicio.Value.ToShortTimeString(); } }
+        public DateTime? DataFim { get; set; }
+        public string DataFimStr { get { return DataFim == null ? null : DataFim.Value.ToShortDateString() + " " + DataFim.Value.ToShortTimeString(); } }
+        public enum StatusType { ERROR, SUCESSO, PROCESSANDO, PENDENTE };
+        public string StackTrace { get; set; }
+        public StatusType Status { get; set; } = StatusType.PENDENTE;
+        public string StatusStr
+        {
+            get
+            {
+                //Gambeta para funcionar o resources no controller
+                var vtnc = CommonDataLocal.getResource("waiting_upper");
+                var str = Resources.Resource.waiting_upper; //CommonDataLocal.getResource("waiting_upper");//
+                switch (Status)
+                {
+                    case StatusType.ERROR:
+                        str = Resources.Resource.error_upper; //CommonDataLocal.getResource("error_upper"); //
+                        break;
+                    case StatusType.SUCESSO:
+                        str = Resources.Resource.success_upper; //CommonDataLocal.getResource("success_upper"); //
+                        break;
+                    case StatusType.PROCESSANDO:
+                        str = Resources.Resource.processing_upper; //CommonDataLocal.getResource("processing_upper"); //
+                        break;
+                }
+                return str.ToString();
+            }
+        }
+    }
+
 
     public static class GlobalConfig
     {
-
-        public static Dictionary<int, string> PaginaDoTablet { get; set; }
+        private static Semaphore _poolSemaphore;
+        public static Semaphore PoolSemaphore { get { if (_poolSemaphore == null) _poolSemaphore = new Semaphore(5, 5); return _poolSemaphore; } }
+        public static Dictionary<int, HtmlDoTablet> PaginaDoTablet { get; set; }
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
         public static bool MockOn { get; set; }
+
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
@@ -41,6 +79,8 @@ namespace DTO
         public static bool Canada { get; set; }
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
+        public static bool Santander { get; set; }
+
 
         /*Resources manager*/
         public static bool LanguageBrasil { get; set; }
@@ -56,7 +96,7 @@ namespace DTO
         public static string urlPreffixAppColleta { get; set; }
         public static string urlAppColleta { get; set; }
         public static string pathFTA { get; set; }
-        
+
         /*Mail*/
         public static string emailPass { get; set; }
         public static bool emailSSL { get; set; }
@@ -135,6 +175,16 @@ namespace DTO
         public static string Verifica { get; set; }
         public static Dictionary<int, string> UsuariosUnidades { get; set; }
 
+        public static string Ambient { get; set; }
+        public enum Ambiets
+        {
+            Homologacao,
+            Producao,
+            Desenvolvimento,
+            DesenvolvimentoDeployServidorGrtParaTeste
+        }
+        public static string UrlEmailAlertas { get; set; }
+
         /// <summary>
         /// Recebe parametros do DB e Configura arquivo de config do web site.
         /// </summary>
@@ -173,6 +223,13 @@ namespace DTO
                     LanguageBrasil = true;
                     Verifica += "Ambiente:  Guarani\n";
                     break;
+                case 6:
+                    Santander = true;
+                    //Brasil = true;
+                    LanguageBrasil = true;
+                    //Brasil = true;
+                    Verifica += "Ambiente:  Santander\n";
+                    break;
                 default:
                     break;
             }
@@ -191,9 +248,14 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
-            pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
-            //pathFTA = "http://localhost:59907//Pa_Acao/NewFTA?";
-            //pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+
+            //pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
+            //pathFTA = "http://localhost:59907/Pa_Acao/NewFTA?";
+            pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+            //pathFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+            //pathFTA = "http://10.190.2.34/ActionPlanHML/Pa_Acao/NewFTA?";
+            //pathFTA = "http://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
+            //pathFTA = "http://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
             Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";
@@ -236,7 +298,6 @@ namespace DTO
             //JBS = false;
 
         }
-
 
     }
 

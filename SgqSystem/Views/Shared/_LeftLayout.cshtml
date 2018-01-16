@@ -7,8 +7,8 @@
 
 &nbsp;
 <div class="page-sidebar-wrapper hide">
-    <div class="page-sidebar navbar-collapse collapse" height 100% !important; z-index 2000;">
-        <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+    <div class="page-sidebar navbar-collapse collapse zindex-control" style="height: 100% !important; z-index: 2000;">
+        <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li class="sidebar-toggler-wrapper hide">
                 <div class="sidebar-toggler">
                     <span></span>icon-home
@@ -23,6 +23,15 @@
             <li class="heading" style="margin-top:20px">
                 <h3 class="uppercase">@Resources.Resource.system</h3>
             </li>
+
+            <li class="nav-item" id="RoleLink4">
+                <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
+                    <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.customization</span>
+                    <span class="selected"></span>
+                </a>
+            </li>
+
             <li class="nav-item" id="RoleLink2">
                 <a href="@urlDataCollection" target="_blank" class="nav-link nav-toggle">
                     <i class="fa fa-tablet"></i>
@@ -45,6 +54,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="@Url.Action("RelatorioDeResultados","RelatoriosSgq")" class="nav-link nav-toggle"><span>@Resources.Resource.evolutional</span></a>
+                    </li>
+                    <li class="nav-item">
                         <a href="@Url.Action("VisaoGeralDaArea", "RelatoriosSgq")" class="nav-link nav-toggle">
                             @*<a href="#" class="nav-link nav-toggle">*@
                             <span class="title">@Resources.Resource.general_view_of_the_area</span>
@@ -53,6 +65,11 @@
                     <li class="nav-item">
                         <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
                             <span class="title">@Resources.Resource.daily_report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("NaoCumprimentoMeta", "RelatoriosSgq")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.recidivism</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -65,6 +82,7 @@
                             <span class="title">@Resources.Resource.daily_apointments</span>
                         </a>
                     </li>
+                    
                     @*}*@
 
                     @if (GlobalConfig.Brasil)
@@ -72,6 +90,12 @@
                         <li class="nav-item">
                             <a href="@Url.Action("VerificacaoTipificacao", "RelatoriosSgq")" class="nav-link nav-toggle">
                                 <span class="title">@Resources.Resource.tipification_verification</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="@Url.Action("Reprocesso", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">Reprocesso (BETA)</span>
                             </a>
                         </li>
                     }
@@ -99,51 +123,30 @@
                         <ul class="sub-menu">
                             <li class="nav-item">
                                 <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
-                                @*<a href="#" class="nav-link">*@
-                            <span class="title">@Resources.Resource.control_charts  (Em Desenvolvimento)</span>
-                        </a>
+                                    @*<a href="#" class="nav-link">*@
+                                    <span class="title">@Resources.Resource.control_charts</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>
-        </ul>
-    </li>
 
-    <li class="nav-item" id="RoleLink4">
-        <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
-            <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
-            <span class="title">@Resources.Resource.customization</span>
-            <span class="selected"></span>
-        </a>
-    </li>
-
-    @if (ViewBag.IsAdmin != null)
-    {
-        if (ViewBag.IsAdmin == true)
-        {
-            <li class="nav-item" id="updateAllTablet">
-                <a href="#" onclick="atualziarAllTablets();" class="nav-link nav-toggle">
-                    <i class="fa fa-cloud-download" aria-hidden="true"></i>
-                    <span class="title">@Resources.Resource.update_tablet_all</span>
+            <li class="nav-item" id="RoleLink15">
+                <a href="@Url.Action("Index", "UpdateTelaTablet")" class="nav-link nav-toggle">
+                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.update_tablet</span>
+                    <span class="selected"></span>
                 </a>
             </li>
-        }
-    }
 
-    <li class="nav-item" id="RoleLink4">
-        <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
-            <i class="fa fa-cloud-download" aria-hidden="true"></i>
-            <span class="title">@Resources.Resource.update_tablet</span>
-            <span class="selected"></span>
-        </a>
-    </li>
-
-    @*<li class="nav-item" id="RoleLink5">
-            <a href="@Url.Action("LeftControlRole", "Role")" class="nav-link nav-toggle">
-                <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                <span class="title">@Resources.Resource.left_menu_control</span>
-                <span class="arrow"></span>
-            </a>
-        </li>*@
+            @*<li class="nav-item" id="RoleLink5">
+                    <a href="@Url.Action("LeftControlRole", "Role")" class="nav-link nav-toggle">
+                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                        <span class="title">@Resources.Resource.left_menu_control</span>
+                        <span class="arrow"></span>
+                    </a>
+                </li>*@
 
             @if (!GlobalConfig.Eua && !GlobalConfig.Ytoara)
             {
@@ -220,10 +223,18 @@
                         </a>
 
                         <ul class="sub-menu">
+
                             <li class="nav-item" id="RoleLink8">
                                 <a href="@Url.Action("Index2", "ParCompany")" class="nav-link nav-toggle">
                                     <i class="fa fa-sitemap" aria-hidden="true"></i>
                                     <span class="title">@Resources.Resource.company_structure</span>
+
+                                </a>
+                            </li>
+                            <li class="nav-item" id="RoleLink8">
+                                <a href="@Url.Action("Index", "ParClusterGroups")" class="nav-link nav-toggle">
+                                    <i class="fa fa-cube" aria-hidden="true"></i>
+                                    <span class="title">@Resources.Resource.cluster_group</span>
 
                                 </a>
                             </li>
@@ -312,6 +323,31 @@
     </div>
 </div>
 
+<div class="modal fade update-all-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalUpdateAllTablets" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <table class="table col-sm-12" id="tableAllUnitTelaTablet">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>Data Inicio</td>
+                        <td>Data Fim</td>
+                        <td>Unidade</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script>
 
 
@@ -341,19 +377,20 @@
     RequestRoleLink.request("RoleLink12", "Index", "ParMeasurementUnits");
     RequestRoleLink.request("RoleLink13", "Index", "Role");
     RequestRoleLink.request("RoleLink14", "Index", "UserSgq");
+    RequestRoleLink.request("RoleLink15", "Index", "UpdateTelaTablet");
 
     function navbarSelect(id) {
         $('.nav-item').removeClass('active').removeClass('start').removeClass('open');
         $('#' + id).addClass('active').addClass('start').addClass('open');
     };
 
-    $('.nav-item').click(function () {
-        if ($(this).hasClass('open')) {
-            $(this).children('.sub-menu').css("display", "none");
-            $(this).removeClass('open');
+    $('.nav-item a').click(function () {
+        if ($(this).parent().hasClass('open')) {
+            $(this).parent().children('.sub-menu').css("display", "none");
+            $(this).parent().removeClass('open');
         } else {
-            $(this).addClass('open');
-            $(this).children('.sub-menu').css("display", "block");
+            $(this).parent().addClass('open');
+            $(this).parent().children('.sub-menu').css("display", "block");
         }
     });
 
@@ -373,6 +410,7 @@
     }
 
     var progress = new LoadingOverlayProgress();
+    var acumulador = 0;
     function atualziarAllTablets() {
         bootbox.confirm(@Html.Raw(Json.Encode(Resources.Resource.update_all_tablet_message)), function (result) {
             if(result){
@@ -386,9 +424,11 @@
                 $.get(root + '/api/AppParams/GetUnits', {}, function (unidadesIds) {
                     var total = unidadesIds.length;
                     var passo = 100/unidadesIds.length;
-                    var acumulador = passo;
+                    acumulador = passo
 
-                    getTelaByTablet(progress, total, passo, acumulador,unidadesIds);
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(0, total/3));
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3, total/3*2));
+                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3*2, unidadesIds.length-1));
 
                 });
 
@@ -396,7 +436,7 @@
         });
     }
 
-    function getTelaByTablet(progress, total, passo, acumulador, unidadesIds){
+    function getTelaByTablet(progress, total, passo, unidadesIds){
         $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidadesIds[0], {}, function (r) {
             acumulador += parseInt(passo)
             progress.Update(acumulador.toFixed(0));
@@ -405,7 +445,7 @@
 
             unidadesIds.splice(0, 1);
             if(unidadesIds.length > 0)
-                getTelaByTablet(progress, total, passo, acumulador, unidadesIds);
+                getTelaByTablet(progress, total, passo, unidadesIds);
         });
     }
 

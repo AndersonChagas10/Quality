@@ -47,7 +47,7 @@
             </td>
             <td></td>
         </tr>
-        @*<tr>
+       <tr>
                 <td>
                     @Html.DisplayNameFor(model => model.TemaAssunto_Id)
                 </td>
@@ -56,39 +56,41 @@
                 </td>
                 <td></td>
             </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.IndicadoresDeProjeto)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.Iniciativa_Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.Iniciativa)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.ObjetivoGerencial)
-                </td>
-                <td></td>
-            </tr>*@
+           @* <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.IndicadoresDeProjeto)
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.Iniciativa_Id)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Iniciativa)
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.ObjetivoGerencial)
+        </td>
+        <td></td>
+    </tr>*@
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.Dimensao)
+                @*@Html.DisplayNameFor(model => model.Dimensao)*@ 
+                Dimensão
             </td>
             <td>
                 @Html.DisplayFor(model => model.Dimensao)
+                
             </td>
             <td></td>
         </tr>
@@ -214,7 +216,7 @@
                 <td>
                     @Html.DisplayNameFor(model => model.ValorDe)
                 </td>
-                <td>
+                <td class="money">
                     @Html.DisplayFor(model => model.ValorDe)
                 </td>
                 <td></td>
@@ -223,7 +225,7 @@
                 <td>
                     @Html.DisplayNameFor(model => model.ValorPara)
                 </td>
-                <td>
+                <td class="money">
                     @Html.DisplayFor(model => model.ValorPara)
                 </td>
                 <td></td>
@@ -269,6 +271,16 @@
     </table>
 }
 <br />
+
+<script>
+
+    $(document).ready(function () {
+        $('td.money').each(function (i, e) {
+            $(e).text('R$ '+$(e).text());
+        })
+    });
+
+</script>
 
 
 

@@ -140,16 +140,21 @@ namespace PlanoDeAcaoMVC.Controllers
             Pa_Acao model;
             using (var dbADO = ConexaoADO())
             {
-                dynamic obj2 = dbADO.QueryNinjaADO("select * from pa_acao where id = " + id).FirstOrDefault();
-                int quemId = obj2.Quem_Id;
-                var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
-                model = Mapper.Map<Pa_Acao>(obj);
-                model.Quem_Id = obj2.Quem_Id;
-                if (quemId > 0)
+                //dynamic obj2 = dbADO.QueryNinjaADO("select * from pa_acao where id = " + id).FirstOrDefault();
+
+                //int quemId = obj2.Quem_Id;
+                //var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
+                //model = Mapper.Map<Pa_Acao>(obj);
+                //model.Quem_Id = obj2.Quem_Id;
+
+                model = Pa_Acao.Get(id);
+
+                if (model.Quem_Id > 0)
                 {
-                    dynamic quem = dbADO.QueryNinjaADO("select * from pa_quem where id = " + quemId).FirstOrDefault();
+                    dynamic quem = dbADO.QueryNinjaADO("select * from pa_quem where id = " + model.Quem_Id).FirstOrDefault();
                     model._Quem = quem.Name;
                 }
+
             }
             //var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
             //var model = Mapper.Map<Pa_Acao>(obj);
@@ -251,6 +256,153 @@ namespace PlanoDeAcaoMVC.Controllers
                 dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
                 string meta2 = meta.META;
                 fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
+            }
+        }
+
+
+        /// <summary>
+        /// FTA Original
+        /// </summary>
+        /// <param name="fta">
+        /// Formulario de tratamento de anomalia propriedades:
+        /// 
+        /// MetaFTA
+        /// PercentualNCFTA
+        /// ReincidenciaDesvioFTA
+        /// Level1Id
+        /// Supervisor_Id
+        /// Unidade_Id (Se 0 considera-se corporativo)
+        /// Departamento_Id
+        /// _DataInicioFTA
+        /// _DataFimFTA
+        /// 
+        /// GET: Pa_Acao/NewFTA?MetaFTA=30&PercentualNCFTA=40&ReincidenciaDesvioFTA=60&Level1Id=1&Supervisor_Id=10&Unidade_Id=3&Departamento_Id=4&_DataInicioFTA="22-05-2017"&_DataFimFTA="22-05-2017"
+        /// 
+        /// FTA2: Permite inserir um FTA Sem Level1, Level2 ou Level3
+        /// 
+        /// </param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult NewFTA2(FTA fta)
+        {
+            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
+            fta.ValidaFTA();
+            NovoFtaModelParaSgq2(fta);
+            fta.IsFTA = true;
+            return View("NewFTA", fta);
+        }
+
+        private static void NovoFtaModelParaSgq2(FTA fta)
+        {
+            //Guard.CheckStringFullSimple(fta._Level1, "_Level1");
+            //Guard.CheckStringFullSimple(fta._Level2, "_Level2");
+            //Guard.CheckStringFullSimple(fta._Level3, "_Level3");
+            Guard.CheckStringFullSimple(fta._DataInicioFTA, "_DataInicioFTA");
+            Guard.CheckStringFullSimple(fta._DataFimFTA, "_DataFimFTA");
+            Guard.ForValidId(fta.Supervisor_Id, "NovoFtaModelParaSgq");
+            //fta._DataInicioFTA = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToShortDateString();
+            //fta._DataFimFTA = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToShortDateString();
+
+            var level1 = new ParLevel1DTO();
+            var level2 = new ParLevel2DTO();
+            var level3 = new ParLevel3DTO();
+            var parDepartment = new ParDepartmentDTO();
+            var metaQuery = "";
+            var aux = "";
+
+            using (var dbFActory = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                if (fta.Level1Id > 0)
+                {
+                    level1 = dbFActory.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE Id = '" + fta.Level1Id + "'").FirstOrDefault(r => r.IsActive);
+                    fta.Level1Id = level1.Id;
+                }
+                if (fta.Level2Id > 0)
+                {
+                    level2 = dbFActory.SearchQuery<ParLevel2DTO>("Select * from parlevel2 WHERE Id = '" + fta.Level2Id + "'").FirstOrDefault(r => r.IsActive);
+                    parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + level2.ParDepartment_Id).FirstOrDefault();
+                    fta.Level2Id = level2.Id;
+                }
+                if (fta.Level3Id > 0)
+                {
+                    level3 = dbFActory.SearchQuery<ParLevel3DTO>("Select * from parlevel3 WHERE Id = '" + fta.Level3Id + "'").FirstOrDefault(r => r.IsActive);
+                    fta.Level3Id = level3.Id;
+                }
+
+                var usersgq = dbFActory.SearchQuery<UserDTO>("Select * from usersgq WHERE ID = " + fta.Supervisor_Id).FirstOrDefault();
+                var parcompany = dbFActory.SearchQuery<ParCompanyDTO>("Select * from parcompany WHERE ID = " + fta.Unidade_Id).FirstOrDefault(r => r.IsActive);
+
+                if (fta.Unidade_Id > 0)
+                {
+                    fta._Unidade = parcompany.Name;
+                }
+                else
+                {
+                    fta._Unidade = "Corporativo";
+                }
+
+                var dtInit = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToString("yyyyMMdd");
+                var dtEnd = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToString("yyyyMMdd");
+
+
+                if (level1.IsNotNull())
+                {
+                    metaQuery = "SELECT ROUND(CASE" +
+"\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
+"\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, AddDate DESC)" +
+"\n     ELSE    " +
+"\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)  " +
+"\n  END,2) " +
+"\n  AS META";
+
+                }
+
+                fta._Level1 = level1.Name;
+                fta._Departamento = parDepartment.Name;
+                fta.Departamento_Id = parDepartment.Id;
+         
+                var PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
+
+                if (fta.Level2Id.IsNotNull())
+                {
+                    aux += level2.Name;
+                }
+
+                if (fta.Level3Id.IsNotNull())
+                {
+                    if (aux == "")
+                    {
+                        aux = level3.Name;
+                    }
+                    else
+                    {
+                        aux += " > " + level3.Name;
+                    }
+                }
+
+                if (aux == "")
+                {
+                    fta.PercentualNCFTA = PercentualNCFTA2f + " %";
+                    fta.ReincidenciaDesvioFTA = fta.ReincidenciaDesvioFTA;
+                }
+                else
+                {
+                    fta.PercentualNCFTA = aux + ": " + PercentualNCFTA2f + " %";
+                    fta.ReincidenciaDesvioFTA = aux + ": " + fta.ReincidenciaDesvioFTA;
+                }
+
+                //fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
+                //fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
+                fta._Supervisor = usersgq.Name;
+
+                if (metaQuery != "")
+                {
+                    dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
+                    string meta2 = meta.META;
+                    fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
+                }
+
+                fta.MetaFTA += " %";
             }
         }
 

@@ -1672,6 +1672,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERROR.
+        /// </summary>
+        internal static string error_upper {
+            get {
+                return ResourceManager.GetString("error_upper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ev.
         /// </summary>
         internal static string ev {
@@ -3823,6 +3832,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PROCESSING.
+        /// </summary>
+        internal static string processing_upper {
+            get {
+                return ResourceManager.GetString("processing_upper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product Disposition.
         /// </summary>
         internal static string product_disposition {
@@ -5038,6 +5056,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SUCCESS.
+        /// </summary>
+        internal static string success_upper {
+            get {
+                return ResourceManager.GetString("success_upper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Supersedes Date.
         /// </summary>
         internal static string supersedes_date {
@@ -5700,6 +5727,15 @@ namespace Resources {
         internal static string volume {
             get {
                 return ResourceManager.GetString("volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WAITING.
+        /// </summary>
+        internal static string waiting_upper {
+            get {
+                return ResourceManager.GetString("waiting_upper", resourceCulture);
             }
         }
         

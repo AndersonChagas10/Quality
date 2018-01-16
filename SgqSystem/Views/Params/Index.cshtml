@@ -41,7 +41,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 650px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">
@@ -81,13 +81,13 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <div class="row">
-                                    <div class="col-xs-3">
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                                         @*@if (!GlobalConfig.Eua)
                                             {*@
-                                        <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
+                                        <button class="btn btn-primary btn-block" id="btnNewLevel1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                         @*}*@
                                     </div>
-                                    <div class="col-xs-9">
+                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-10">
                                         @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
                                     </div>
                                     <hr />
@@ -115,10 +115,11 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-xs-3">
-                                        <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                        <button class="btn btn-warning btn-block" id="btnNewLevel2"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                     </div>
-                                    <div class="col-xs-9" id="partialSelectLevel2">
+
+                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-10" id="partialSelectLevel2">
                                         @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
                                     </div>
                                     <hr />
@@ -149,10 +150,10 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-xs-3">
-                                        <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                        <button class="btn btn-danger btn-block" id="btnNewLevel3"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                     </div>
-                                    <div class="col-xs-9" id="partialSelectLevel3">
+                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-10" id="partialSelectLevel3">
                                         @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
                                     </div>
                                     <hr />
@@ -202,7 +203,7 @@
     <div class="modal fade" id="modalEdicaoCabecalho" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
         <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header modal-header-gray">
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
 
@@ -212,9 +213,8 @@
                     ID: Body
                 </div>
                 <div class="modal-footer">
-
-                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">Fechar</button>
-
+                    <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">@Resources.Resource.close</button>
                 </div>
             </div>
         </div>
@@ -222,6 +222,8 @@
 </div>
 
 <script>
+
+    var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
@@ -421,27 +423,9 @@
     function dirtForm(oldForm, newForm){
         var o = oldForm.serialize().toString();
         var n = newForm.serialize().toString();
-        //if (o != n) {
-        //    return true;
-        //}
         return false;
     }
-
-    //$.fn.isDirty = function () {
-    //    var a = this.serializeArray();
-    //    for(var i = 0; i < a.length; i++){
-    //        if (a[i].value != "" && a[i].value != "0" && a[i].value != 0
-    //            && a[i].value != "-1" && a[i].value != -1
-    //            && a[i].value != "false" && a[i].value != "true") {
-    //            //break;
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //};
-
-    //$.fn.dirty = false;
-
+    
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
@@ -484,9 +468,11 @@
                 dados["paramsDto.parLevel1Dto.IsRuleConformity"] = $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('state');
                 dados["paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"] = $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('state');
 
-                dados["paramsDto.parLevel1Dto.AllowAddLevel3"] = $('#paramsDto_parLevel1Dto_AllowAddLevel3').bootstrapSwitch('state');
-                dados["paramsDto.parLevel1Dto.AllowEditWeightOnLevel3"] = $('#paramsDto_parLevel1Dto_AllowEditWeightOnLevel3').bootstrapSwitch('state');
-                dados["paramsDto.parLevel1Dto.AllowEditPatternLevel3Task"] = $('#paramsDto_parLevel1Dto_AllowEditPatternLevel3Task').bootstrapSwitch('state');
+                if (isBrazil) {
+                    dados["paramsDto.parLevel1Dto.AllowAddLevel3"] = $('#paramsDto_parLevel1Dto_AllowAddLevel3').bootstrapSwitch('state');
+                    dados["paramsDto.parLevel1Dto.AllowEditWeightOnLevel3"] = $('#paramsDto_parLevel1Dto_AllowEditWeightOnLevel3').bootstrapSwitch('state');
+                    dados["paramsDto.parLevel1Dto.AllowEditPatternLevel3Task"] = $('#paramsDto_parLevel1Dto_AllowEditPatternLevel3Task').bootstrapSwitch('state');
+                }
                 //openLoader();
 
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
@@ -1133,12 +1119,7 @@
 
             }else{
 
-
-
             }
-
-
-
 
         });
 
@@ -1147,6 +1128,8 @@
         initialFormLevel3 = $('form')[2];
 
         //TraduzirSelecione();
+
+        closeLeftSidebar();
 
 
     });
@@ -1157,7 +1140,8 @@
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         closeLoader();
-        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');
+        @*openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');*@
+        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
     });
 
     $( document ).ajaxStop(function() {
@@ -1405,7 +1389,7 @@
         idLvl1 = idL1;
         $('#modalEdicaoCabecalho').modal();
         $('#modalEdicaoCabecalho').find('.modal-body').empty();
-        $('#Header').html("Edição de Cabeçalho");
+        $('#Header').html("@Resources.Resource.edit_header");
 
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
@@ -1418,20 +1402,21 @@
 
         $('#Fechar').show();
         $('#Salvar').hide();
-        ///*Fim Botões*/
-
     }
     var controle = 0;
     function addValores() {
-        var divAdd = '<div class="row" id="row'+controle+'"><div class="col-md-1"';
-        divAdd += '<label>Option</label><br /></div><div class="col-md-2">';
-        divAdd += '<input class="input-sm form-control" id="adName'+controle+'" />';
+        var divAdd = '<div class="row" id="row' + controle + '">';
+        divAdd += '<div class="col-md-4">';
+        divAdd += '<label>' + Resources('option') + '</label>';
+        divAdd += '<input class="input-sm form-control" id="adName' + controle + '" />';
         divAdd += '</div>';
-        divAdd += '<div class="col-md-2">';
-        divAdd += '<label>Value</label><br /></div><div class="col-md-2">';
-        divAdd += '<input class="input-sm form-control" id="adValue'+controle+'">';
-        divAdd += '</div><div class="col-md-2">';
-        divAdd += '<button class="btn btn-danger" id="rem'+controle+'" type="button" onclick="removeCampoNovo('+controle+')">Remover Novo Campo</button></div>'
+        divAdd += '<div class="col-md-4">';
+        divAdd += '<label>' + Resources('value') + '</label>';
+        divAdd += '<input class="input-sm form-control" id="adValue' + controle + '">';
+        divAdd += '</div>';
+        divAdd += '<div class="col-md-4">';
+        divAdd += '<button class="btn btn-danger margin-top" id="rem'+controle+'" type="button" onclick="removeCampoNovo('+controle+')">Remover Novo Campo</button>'
+        divAdd += '</div>';
         divAdd += '</div>';
         $('#multiplaEscolha').append(divAdd);
         controle++;

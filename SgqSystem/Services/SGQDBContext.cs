@@ -39,6 +39,8 @@ namespace SGQDBContext
         public bool IsFixedEvaluetionNumber { get; set; }
 
         public bool HasGroupLevel2 { get; set; }
+        public bool HasTakePhoto { get; set; }
+        public bool ShowScorecard { get; set; }
 
         public ParLevel1()
         {
@@ -107,7 +109,7 @@ namespace SGQDBContext
             string whereIsChildren = " AND IsChildren = 0 ";
 
             //SqlConnection db = new SqlConnection(conexao);
-            string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
+            string sql = "\n SELECT P1.Id, P1.Name, P1.HasTakePhoto, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
                          "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber " +
                          "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
@@ -145,6 +147,17 @@ namespace SGQDBContext
             return parLevel1List;
         }
     }
+
+    public partial class Result_Level3_Photo
+    {
+        public int ID { get; set; }
+        public Nullable<int> Result_Level3_Id { get; set; }
+        public String Photo_Thumbnaills { get; set; }
+        public String Photo { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
+    }
+
     public partial class ParLevel1Alertas
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -337,7 +350,7 @@ namespace SGQDBContext
         public DateTime AlterDate { get; set; }
 
         public bool IsActive { get; set; }
-
+        public bool HasTakePhoto { get; set; }
 
         public int ParNotConformityRule_id { get; set; }
 
@@ -433,7 +446,7 @@ namespace SGQDBContext
 
             if (parLevel1.IsFixedEvaluetionNumber == true)
             {
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
                              "\n INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                                                                                                 " +
                              "\n ON P321.ParLevel3Level2_Id = P32.Id                                                                                                                   " +
@@ -449,9 +462,9 @@ namespace SGQDBContext
                              "\n or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "\n ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
                              "\n WHERE P321.ParLevel1_Id = " + parLevel1.Id + "                                                                                                      " +
-                             "\n AND PL2.IsActive = 1                                                                                                                                  " +
+                             "\n AND PL2.IsActive = 1     " +
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
-                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id             ";
+                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto             ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
@@ -465,7 +478,7 @@ namespace SGQDBContext
 
 
 
-                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
+                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
                          "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
                          "\n ON P321.ParLevel3Level2_Id = P32.Id                           " +
@@ -492,7 +505,7 @@ namespace SGQDBContext
                          "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
                          "\n ) temAm) > 0 " +
 
-                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id                 " +
+                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
                          "\n ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
@@ -824,6 +837,7 @@ namespace SGQDBContext
         public decimal PunishmentValue { get; set; }
         public decimal WeiEvaluation { get; set; }
         public int ParCompany_Id { get; set; }
+        public bool HasTakePhoto { get; set; }
 
         private SqlConnection db { get; set; }
         public ParLevel3() { }
@@ -903,7 +917,7 @@ namespace SGQDBContext
             //}
 
             string sql = "\n SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                         "\n L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                       " +
+                         "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3      (nolock)                                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3Value L3V      (nolock)                                                                                                                                                                                                                                                                                                                           " +
                          "           ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
@@ -1002,7 +1016,7 @@ namespace SGQDBContext
                 string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ")";
 
                 sqlFilho = "UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                        "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
+                        " ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
                         "FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
                         "INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
                         "        ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
@@ -1345,6 +1359,8 @@ namespace SGQDBContext
         public string ParHeaderField_Description { get; set; }
         public int ParFieldType_Id { get; set; }
         public int IsRequired { get; set; }
+        public bool LinkNumberEvaluetion { get; set; }
+        public bool duplicate { get; set; }
 
         private SqlConnection db { get; set; }
         public ParLevelHeader() { }
@@ -1357,7 +1373,7 @@ namespace SGQDBContext
         {
             //SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.IsRequired AS IsRequired FROM ParLevel1XHeaderField PL (nolock)   " +
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.LinkNumberEvaluetion AS LinkNumberEvaluetion, PH.IsRequired AS IsRequired, PH.duplicate FROM ParLevel1XHeaderField PL (nolock)   " +
                          "LEFT JOIN ParHeaderField PH (nolock)  ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
                          "LEFT JOIN ParLevelDefiniton PD (nolock)  ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
                          "LEFT JOIN ParFieldType PT (nolock)  ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
@@ -1365,7 +1381,7 @@ namespace SGQDBContext
                          "PD.Id = 1 AND                                                                                                                                                                                  " +
                          "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired, PH.Description                                                                                                                             ";
+                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired, PH.Description, PH.LinkNumberEvaluetion, ph.duplicate                                                                                                                             ";
 
 
 
@@ -1378,7 +1394,7 @@ namespace SGQDBContext
         {
             //SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.IsRequired AS IsRequired FROM ParLevel1XHeaderField PL  (nolock)  " +
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.LinkNumberEvaluetion AS LinkNumberEvaluetion, PH.IsRequired AS IsRequired, PH.duplicate FROM ParLevel1XHeaderField PL  (nolock)  " +
                          "LEFT JOIN ParHeaderField PH  (nolock) ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
                          "LEFT JOIN ParLevelDefiniton PD  (nolock) ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
                          "LEFT JOIN ParFieldType PT  (nolock) ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
@@ -1386,7 +1402,7 @@ namespace SGQDBContext
                          "PD.Id = 2 AND                                                                                                                                                                                  " +
                          "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.Description, PH.IsRequired;                                                                                                                             ";
+                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.Description, PH.IsRequired, PH.LinkNumberEvaluetion, PH.duplicate;                                                                                                                             ";
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 
@@ -1451,7 +1467,7 @@ namespace SGQDBContext
 
             var valores = integracao.Split('|');
 
-            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta")
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais")
             {
                 var subtipo = "";
 
@@ -1465,7 +1481,7 @@ namespace SGQDBContext
                 }
 
                 sql = "\n SELECT Id, Nome as Name, 0 as PunishmentValue, 0 as IsDefaultOption " +
-                             "\n FROM Equipamentos  (nolock) " +
+                             "\n FROM Equipamentos  With (nolock) " +
                              "\n WHERE (Tipo = '" + valores[0] + "' AND " + subtipo + ") " +
                              "\n AND ParCompany_id = " + ParCompany_Id;
 
@@ -1473,12 +1489,73 @@ namespace SGQDBContext
             else if (valores[0] == "Produto")
             {
                 sql = "\n SELECT nCdProduto Id, cast(nCdProduto as varchar) + ' | ' + cNmProduto as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
-                      "\n FROM Produto  (nolock) ";
+                      "\n FROM Produto  With (nolock) ";
+            }
+            else if (valores[0] == "familiaProduto")
+            {
+                //sql = "\n SELECT Id as Id, Name as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
+                //      "\n FROM UserSgq With (nolock) ";
+
+                sql = @"SELECT 
+                        TT.cNrClassificacao as Id,
+                        TT.cNmClassificacao as Name,
+                        0 as  PunishmentValue,
+                        0 as IsDefaultOption
+                        FROM
+                        (
+                        SELECT CL.*, P.* FROM ClassificacaoProduto CP
+                        INNER JOIN (
+                        SELECT CC.cNmClassificacao as Grupo, C.*, C.nCdClassificacao as cod FROM Classificacao C
+                        INNER JOIN (
+	                        SELECT * FROM Classificacao 
+	                        WHERE LEN(cNrClassificacao) = 5
+                        ) CC
+                        ON left(C.cNrClassificacao,5) = CC.cNrClassificacao
+                        ) CL
+                        ON CL.cod = CP.nCdClassificacao
+                        INNER JOIN PRODUTO P
+                        ON P.nCdProduto = CP.nCdProduto
+                        ) TT
+                        WHERE Grupo = 'FAMILIA'
+                        GROUP BY TT.cNrClassificacao, cNmClassificacao
+                        ORDER BY 2";
+            }
+            else if (valores[0] == "ReprocessoEntrada" || valores[0] == "ReprocessoSaida")
+            {
+                sql = "\n SELECT 1 Id, 'Selecione' as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
+                      "\n  ";
             }
 
             var multipleValues = db.Query<ParFieldType>(sql);
 
             return multipleValues;
+        }
+    }
+
+
+
+    public partial class Generico
+    {
+        public string id { get; set; }
+        public string nome { get; set; }
+
+        private SqlConnection db { get; set; }
+        public Generico() { }
+        public Generico(SqlConnection _db)
+        {
+            db = _db;
+        }
+
+        public List<Generico> getProdutos()
+        {
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            db = new SqlConnection(conexaoBR);
+
+            var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
+
+            var lista = db.Query<Generico>(sql).ToList();
+
+            return lista;
         }
     }
 
@@ -2099,7 +2176,7 @@ namespace SGQDBContext
     public partial class CollectionJson
     {
         public int Id { get; set; }
-        public int Unit_Id { get; }
+        public int Unit_Id { get; set; }
         public int Shift { get; set; }
         public int Period { get; set; }
         public int level01_Id { get; set; }
@@ -2124,7 +2201,7 @@ namespace SGQDBContext
         public bool IsProcessed { get; set; }
         public string Device_Mac { get; set; }
         public DateTime AddDate { get; set; }
-        public DateTime? AlterDate { get; set; }
+        public DateTime? AlterDate { get; }
         public string Key { get; set; }
         public string TTP { get; set; }
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

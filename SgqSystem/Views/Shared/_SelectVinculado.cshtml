@@ -1,0 +1,56 @@
+﻿<li>
+    <div data-ng-controller="MeuControle" id="showRegUnidadeVinculados" style="display:none; margin-left:0px!important">
+        <div>
+            <span class="redLabel">@Resources.Resource.structure_group</span>
+            <select id="level1Id"
+                    data-ng-model="level1Value"
+                    data-ng-options="s.Id as s.Name for s in ListaInicial | orderBy:'Name'"
+                    data-ng-change="GetNextDDL(level1Value, '@Url.Action("GetListLevel2VinculadoLevel1", "api/ParamsApi")', 'level2')"
+                    class="form-control"
+                    style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+
+        <div>
+            <span class="redLabel">@Resources.Resource.company</span>
+            <select id="level2Id"
+                    data-ng-model="level2Value"
+                    data-ng-options="s.Id as s.Name for s in level2 | orderBy:'Name'"
+                    data-ng-change=""
+                    class="form-control"
+                    style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+    </div>
+</li>
+
+<script>
+
+
+    @*var UrlListaInicial = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));*@
+    //var viewbag = true;
+
+    var UrlListaInicial = @Html.Raw(Json.Encode(Url.Action("GetRegionaisUsuario", "api/CompanyForm")));
+
+    @*var ListaInicial = @ViewBag.UnidadeUsuario;*@
+
+    var GetListLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));
+    var GetListLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2", "api/ParamsApi")));
+    var GetListLevel3 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3", "api/ParamsApi")));
+    var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2VinculadoLevel1", "api/ParamsApi")));
+    var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2", "api/ParamsApi")));
+    var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2Level1", "api/ParamsApi")));
+
+
+    //$(document).ready(function () {
+    //    $('#level1Id').select2();
+    //    $('#level2Id').select2();
+    //    $('#level3Id').select2();
+    //});
+
+</script>
+
+@*Referencing the Angular library to the page*@
+<script src="~/Angular/SelectVinculado.js"></script>

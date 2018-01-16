@@ -938,6 +938,16 @@ namespace Dominio.Services
             return parLevel2XHeaderField;
         }
 
+        public ParHeaderField AddRemoveParHeaderDuplicate(ParHeaderField parHeaderField)
+        {
+            parHeaderField.AddDate = DateTime.Now;
+            parHeaderField.IsActive = true;
+
+            parHeaderField = _paramsRepo.SaveParHeaderDuplicate(parHeaderField);
+
+            return parHeaderField;
+        }
+
     }
 
 }

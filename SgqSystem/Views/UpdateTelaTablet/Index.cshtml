@@ -1,0 +1,161 @@
+﻿@using DTO.DTO.Params
+@using Resources
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content monitor-get-tela">
+
+        <h2>@Resource.update_tablet</h2>
+
+        <button class="btn btn-primary" style="color:white" id="updateTablets">@Resource.update_selected_units</button>
+        @*<button class="btn btn-success" id="refreshStatus">Atualizar</button>*@
+        <button class="btn btn-info" id="checkAll">@Resource.select_all</button>
+        <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
+
+        @if (ViewBag.UnidadesUsuario != null)
+            {
+            <table class="table" id="tableAllUnitTelaTablete">
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>@Resource.name</th>
+                        <th>@Resource.initial_date</th>
+                        <th>@Resource.final_date</th>
+                        <th>@Resource.status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (ParCompanyDTO v in ViewBag.UnidadesUsuario)
+                    {
+                        <tr data-unit-id="@v.Id">
+                            <td><input type="checkbox" value="@v.Id" name="unitId" /></td>
+                            <td>@v.Id</td>
+                            <td>@v.Name</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        closeLeftSidebar();;
+        const refreshStatusUrl = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
+        const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
+        //const refreshStatusUrl = "/SGQ/api/AppParams/GetGeneratedUnits";
+        //const urlUpdateTablets = "/SGQ/api/AppParams/UpdateGetTelaThread";
+        $(document).ready(function() {
+
+            var things = {'ListUnits':@Html.Raw(Json.Encode(ViewBag.IdUnidadesUsuario))};
+
+            things = JSON.stringify(things);
+
+            var refreshStatus = function () {
+                $('#spamLoading').LoadingOverlay("show");
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: refreshStatusUrl,
+                        data: things,
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            getDataTable(response);
+                            $('#spamLoading').LoadingOverlay("hide");
+
+
+                            setTimeout(function () {
+                                refreshStatus();
+                            }, 3000);
+                        }
+                    });
+            };
+
+
+            var getDataTable = function (response) {
+                $('#tableAllUnitTelaTablet').empty();
+
+                var list = [];
+                //Gera a lista
+                $.each(response, function (index, value) {
+                    var row = $('tr[data-unit-id=' + value.Key + ']').children();
+                    if (value != null) {
+                        list.push([value.Key, value.DataInicioStr, value.DataFimStr, value.StatusStr])
+                    } else {
+                        list.push([value.Key, "-", "-", "-"])
+                    }
+                });
+
+                //Atualiza Html
+                $.each(list, function (index, value) {
+                    var row = $('tr[data-unit-id=' + value[0] + ']').children();
+                    $(row[1]).html(value[0]);
+                    $(row[3]).html(value[1]);
+                    $(row[4]).html(value[2]);
+                    $(row[5]).html(value[3]);
+                });
+            };
+
+            $('#updateTablets').on('click', function () {
+                $.LoadingOverlay("show");
+
+                var listId = [];
+                $("input:checkbox[name=unitId]:checked").each(function () {
+                    listId.push($(this).val());
+                });
+
+                var data = JSON.stringify({ 'ListUnits': listId });
+
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: urlUpdateTablets,
+                        data: data,
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $.LoadingOverlay("hide");
+                        }
+                    });
+
+                $('#updateTablets').LoadingOverlay("show");
+
+                setTimeout(function () {
+                    $('#updateTablets').LoadingOverlay("hide");
+                }, 8000);
+
+                $('.monitor-get-tela input:checkbox').prop('checked', false);
+            });
+
+            var selectedAll = false;
+            $('#checkAll').on('click', function () {
+                $('.monitor-get-tela input:checkbox').prop('checked', !selectedAll);
+                selectedAll = !selectedAll;
+            });
+
+            //$('#refreshStatus').on('click',refreshStatus);
+
+            refreshStatus();
+
+        });
+    </script>
+}

@@ -26,6 +26,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
         [HttpGet]
+        [Route("GetPlanejamentoAcaoRange")]
+        public IEnumerable<Pa_Planejamento> GetPlanejamentoAcaoRange(string startDate, string endDate)
+        {
+            return Pa_Planejamento.GetPlanejamentoAcao(startDate, endDate);
+        }
+
+        [HttpGet]
         [Route("GET")]
         public Pa_Planejamento Get(int id)
         {
@@ -58,70 +65,72 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
-           
-                planejamento.IsValid();
 
-                planejamento.IsfiltrarAcao = null;
+            planejamento.IsValid();
 
-                if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
-                {
-                    if (!string.IsNullOrEmpty(planejamento._ValorDe))
-                        planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
-                    if (!string.IsNullOrEmpty(planejamento._ValorPara))
-                        planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
-                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
-                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
-                }
+            planejamento.IsfiltrarAcao = null;
 
-                if (!planejamento.IsTatico)
-                {
-                    planejamento.Tatico_Id = null;
-                    planejamento.Gerencia_Id = 0;
-                    planejamento.Coordenacao_Id = 0;
-                    planejamento.Iniciativa_Id = 0;
-                    planejamento.ObjetivoGerencial_Id = 0;
-                    planejamento.Responsavel_Projeto = 0;
-                    planejamento.UnidadeDeMedida_Id = 0;
-                    planejamento.IndicadoresDeProjeto_Id = 0;
-                }
-                else if (planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
-                {
-                    planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
-                }
+            if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+            {
+                if (!string.IsNullOrEmpty(planejamento._ValorDe))
+                    planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
+                if (!string.IsNullOrEmpty(planejamento._ValorPara))
+                    planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
+                planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
+                planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
+            }
 
+            if (!planejamento.IsTatico)
+            {
+                planejamento.Tatico_Id = null;
+                planejamento.Gerencia_Id = 0;
+                planejamento.Coordenacao_Id = 0;
+                planejamento.Iniciativa_Id = 0;
+                planejamento.TemaProjeto_Id = 0;
+                planejamento.TipoProjeto_Id = 0;
+                planejamento.ObjetivoGerencial_Id = 0;
+                planejamento.Responsavel_Projeto = 0;
+                planejamento.UnidadeDeMedida_Id = 0;
+                planejamento.IndicadoresDeProjeto_Id = 0;
+            }
+            else if (planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
+            {
+                planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
+            }
+
+            //Pa_BaseObject.SalvarGenerico(planejamento);
+            var a = Mapper.Map<PlanoAcaoEF.Pa_Planejamento>(planejamento);
+
+            if (a.Id > 0)
+            {
+                db.Pa_Planejamento.Attach(a);
+                var entry = db.Entry(a);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                //entry.Property(e => e.Email).IsModified = true;
+                // other changed properties
+                db.SaveChanges();
+            }
+            else
+            {
+                db.Pa_Planejamento.Add(a);
+                db.SaveChanges();
+            }
+
+            #region GAMBIARRA FDP
+
+            if (planejamento.IsTatico)
+            {
+                a.Tatico_Id = a.Id;
                 //Pa_BaseObject.SalvarGenerico(planejamento);
-                var a = Mapper.Map<PlanoAcaoEF.Pa_Planejamento>(planejamento);
 
-                if (a.Id > 0)
-                {
-                    db.Pa_Planejamento.Attach(a);
-                    var entry = db.Entry(a);
-                    entry.State = System.Data.Entity.EntityState.Modified;
-                    //entry.Property(e => e.Email).IsModified = true;
-                    // other changed properties
-                    db.SaveChanges();
-                }
-                else
-                {
-                    db.Pa_Planejamento.Add(a);
-                    db.SaveChanges();
-                }
+                db.Pa_Planejamento.Attach(a);
+                var entry = db.Entry(a);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                //entry.Property(e => e.Email).IsModified = true;
+                // other changed properties
+                db.SaveChanges();
 
-                #region GAMBIARRA FDP
-
-                if (planejamento.IsTatico)
-                {
-                    a.Tatico_Id = a.Id;
-                    //Pa_BaseObject.SalvarGenerico(planejamento);
-
-                    db.Pa_Planejamento.Attach(a);
-                    var entry = db.Entry(a);
-                    entry.State = System.Data.Entity.EntityState.Modified;
-                    //entry.Property(e => e.Email).IsModified = true;
-                    // other changed properties
-                    db.SaveChanges();
-
-                }
+            }
 
             #endregion
 

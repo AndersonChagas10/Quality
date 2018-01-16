@@ -7,7 +7,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -106,7 +106,7 @@
                                         </div>*@
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.VolumeAnimais, "Número de animais", htmlAttributes: new { @class = "control -label col-md-2" })
+                                            @Html.LabelFor(model => model.VolumeAnimais, "Número de animais", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.VolumeAnimais, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.VolumeAnimais, "", new { @class = "text-danger" })
@@ -114,7 +114,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Quartos, "Número de quartos", htmlAttributes: new { @class = "control -label col-md-2" })
+                                            @Html.LabelFor(model => model.Quartos, "Número de quartos", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Quartos, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.ValidationMessageFor(model => model.Quartos, "", new { @class = "text-danger" })
@@ -182,14 +182,12 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" onclick="HabilitaFields()" class="btn btn-default" />
+                                                <input type="submit" value="Salvar" onclick="HabilitaFields()" class="btn btn-primary" />
+                                                @Html.ActionLink("Voltar para Volume de PCC1b", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
                                 }
-                                <div>
-                                    @Html.ActionLink("Voltar para Volume de PCC1b", "Index")
-                                </div>
                             </div>
 
                         </div>
@@ -243,4 +241,10 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

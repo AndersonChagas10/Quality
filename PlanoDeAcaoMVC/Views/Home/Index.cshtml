@@ -2,12 +2,12 @@
 
 <!-- external libs from cdnjs -->
 @*<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>*@
 
 @*<link href="~/Scripts/pivottable-master/dist/pivot.css" rel="stylesheet" />
-<script src="~/Scripts/pivottable-master/dist/pivot.js"></script>
-<script src="~/Scripts/pivottable-master/dist/c3_renderers.min.js"></script>*@
+    <script src="~/Scripts/pivottable-master/dist/pivot.js"></script>
+    <script src="~/Scripts/pivottable-master/dist/c3_renderers.min.js"></script>*@
 
 @{
 
@@ -15,11 +15,11 @@
 }
 <script>
     //JBS
-    //var UrlPa = 'http://mtzsvmqsc/PlanoDeAcao/';
-    //var UrlSgq = 'http://mtzsvmqsc/Sgq/';
+    var UrlPa = 'http://mtzsvmqsc/PlanoDeAcao/';
+    var UrlSgq = 'http://mtzsvmqsc/Sgq/';
     //GRT
-    var UrlPa = 'http://192.168.25.200/PlanoAcao/';
-    var UrlSgq = 'http://192.168.25.200/SgqBr/';
+    //var UrlPa = 'http://192.168.25.200/PlanoAcao/';
+    //var UrlSgq = 'http://192.168.25.200/SgqBr/';
     //Local
     //var UrlPa = 'http://localhost:59907/';
     //var UrlSgq = 'http://192.168.25.200/SgqBr/';
@@ -93,7 +93,7 @@
 
 <div class="row">
 
-    <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:500px;">
+    <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:600px;">
 
         <div class="panel panel-primary">
             <div class="panel-heading" style="text-align:center;">
@@ -115,7 +115,7 @@
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <!--<i class="fa fa-thumbs-up fa-3" aria-hidden="true" style="font-size:30px; color: green"></i>-->
-                                    <img src="@Url.Content(" ~/Imagens/Thumbs-Up-24.png")" />
+                                    <img src="@Url.Content("Imagens/Thumbs-Up-24.png")" />
                                 </div>
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <span id="acoesConcluidas" style="font-size:25px; font-weight:bold; color:#444;"></span>
@@ -135,7 +135,7 @@
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <!--<i class="fa fa-thumbs-down fa-3" aria-hidden="true" style="font-size:30px; color:red"></i>-->
-                                    <img src="@Url.Content(" ~/Imagens/Thumbs-Down-24.png")" />
+                                    <img src="@Url.Content("Imagens/Thumbs-Down-24.png")" />
                                 </div>
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <span id="acoesAtrasadas" style="font-size:25px; font-weight:bold; color:#444;"></span>
@@ -188,6 +188,47 @@
                     </div>
                 </div>
             </div>
+
+            @*<div class="col-xs-12 col-sm-6 col-lg-4">*@
+            @*<div class="panel panel-default">*@
+            <div class="panel-body">
+                <select id="filtroPizza" data-width="80%">
+                    @*<option value="0">Selecione...</option>*@
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa" selected>Projeto / Iniciativa</option>
+                            @*
+                        <option value="7">Projeto / Iniciativa</option>*@
+                    <option value="Unidade">Unidade</option>
+                    @*
+                        <option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status">Status</option>
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status">Status</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Indicador">Indicador</option>
+                    <option value="Monitoramento">Monitoramento</option>
+                    <option value="Tarefa">Tarefa</option>
+                </select>
+
+                <select id="seriesFiltroPizza" data-width="80%">
+                    <option value="0">Selecione...</option>
+                </select>
+
+                <div id="divPizza" style="height:240px;"></div>
+            </div>
+
+            @*</div>
+                </div>*@
+
         </div>
     </div>
 
@@ -195,22 +236,23 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <select id="filtroBar">
-                    <option value="0">Selecione</option>
+                    <option value="0">Selecione...</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
-                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Dimensão" selected>Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
-                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
-                    <option value="7">Projeto / Iniciativa</option>*@
+                        <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*
-                    <option value="9">Indicador Operacional</option>*@
-                    <option value="Responsavel" selected>Quem</option>
+                        <option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel">Quem</option>
                     <option value="Status">Status</option>
                     <option value="Regional">Regional</option>
                     <option value="Indicador">Indicador</option>
@@ -219,26 +261,27 @@
                 </select>
 
                 <select id="seriesBar">
-                    <option value="0">Selecione</option>
+                    <option value="0">Selecione...</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
-                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
-                    <option value="7">Projeto / Iniciativa</option>*@
+                        <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*
-                    <option value="9">Indicador Operacional</option>*@
+                        <option value="9">Indicador Operacional</option>*@
                     <option value="Responsavel">Quem</option>
                     <option value="Status" selected>Status</option>
                 </select>
             </div>
-            <div id="divGrafico1" style="height:240px;"></div>
+            <div id="divGrafico1" style="height:400px;"></div>
         </div>
     </div>
 
@@ -246,24 +289,25 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <select id="filtroBar2">
-                    <option value="0">Selecione</option>
+                    <option value="0">Selecione...</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Gerência" selected>Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
-                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
-                    <option value="7">Projeto / Iniciativa</option>*@
+                        <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*
-                    <option value="9">Indicador Operacional</option>*@
-                    <option value="Responsavel" selected>Quem</option>
+                        <option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel">Quem</option>
                     <option value="Status">Status</option>
-                    <option value="Responsavel" selected>Quem</option>
+                    <option value="Responsavel">Quem</option>
                     <option value="Status">Status</option>
                     <option value="Regional">Regional</option>
                     <option value="Indicador">Indicador</option>
@@ -272,24 +316,25 @@
                 </select>
 
                 <select id="seriesBar2">
-                    <option value="0">Selecione</option>
+                    <option value="0">Selecione...</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
                     <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
                     <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
-                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    <option class="showAsEstrategy" value="Ação Genérica">Ação Genérica</option>
+                    <option class="showAsEstrategy" value="Projeto Iniciativa">Projeto / Iniciativa</option>
                     @*
-                    <option value="7">Projeto / Iniciativa</option>*@
+                        <option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*
-                    <option value="9">Indicador Operacional</option>*@
+                        <option value="9">Indicador Operacional</option>*@
                     <option value="Responsavel">Quem</option>
                     <option value="Status" selected>Status</option>
-                    <option value="Responsavel" selected>Quem</option>
+                    <option value="Responsavel">Quem</option>
                     <option value="Status">Status</option>
                     <option value="Regional">Regional</option>
                     <option value="Indicador">Indicador</option>
@@ -297,9 +342,12 @@
                     <option value="Tarefa">Tarefa</option>
                 </select>
             </div>
-            <div id="divCol" style="height:240px;"></div>
+            <div id="divCol" style="height:400px;"></div>
         </div>
     </div>
+
+
+
 </div>
 
 <div class="row">
@@ -313,21 +361,21 @@
                 <div class="row">
                     <div class="panel-body">
                         <select id="filtroBarInd">
-                            <option value="0">Selecione</option>
+                            <option value="0">Selecione...</option>
                             <option value="Diretoria">Diretoria</option>
                             <option value="Dimensão">Dimensão</option>
-                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                            <option value="Diretriz">Diretriz</option>
                             <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
                             <option value="Gerência">Gerência</option>
                             <option value="Coordenação">Coordenação</option>
                             <option value="Grupo Causa">Grupo Causa</option>
                             <option value="Causa Genérica">Causa Genérica</option>
-                            <option value="Contramedida Genérica">Contramedida Genérica</option>
+                            <option value="Ação Genérica">Ação Genérica</option>
                             @*
-                            <option value="7">Projeto / Iniciativa</option>*@
+                                <option value="7">Projeto / Iniciativa</option>*@
                             <option value="Unidade">Unidade</option>
                             @*
-                            <option value="9">Indicador Operacional</option>*@
+                                <option value="9">Indicador Operacional</option>*@
                             <option value="Responsavel" selected>Quem</option>
                             <option value="Status">Status</option>
                             <option value="Regional">Regional</option>
@@ -337,21 +385,22 @@
                         </select>
 
                         <select id="seriesBarInd">
-                            <option value="0">Selecione</option>
+                            <option value="0">Selecione...</option>
                             <option value="Diretoria">Diretoria</option>
                             <option value="Dimensão">Dimensão</option>
-                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                            <option value="Diretriz">Diretriz</option>
                             <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
                             <option value="Gerência">Gerência</option>
                             <option value="Coordenação">Coordenação</option>
                             <option value="Grupo Causa">Grupo Causa</option>
                             <option value="Causa Genérica">Causa Genérica</option>
-                            <option value="Contramedida Genérica">Contramedida Genérica</option>
+                            <option value="Ação Genérica">Ação Genérica</option>
+                            <option value="Projeto Iniciativa">Projeto / Iniciativa</option>
                             @*
-                            <option value="7">Projeto / Iniciativa</option>*@
+                                <option value="7">Projeto / Iniciativa</option>*@
                             <option value="Unidade">Unidade</option>
                             @*
-                            <option value="9">Indicador Operacional</option>*@
+                                <option value="9">Indicador Operacional</option>*@
                             <option value="Responsavel">Quem</option>
                             <option value="Status" selected>Status</option>
                             <option value="Regional">Regional</option>
@@ -433,11 +482,11 @@
                                 <option value="5">5 Meses</option>
                                 <option value="6">6 Meses</option>
                                 @*<option value="7">7 Meses</option>
-                                <option value="8">8 Meses</option>
-                                <option value="9">9 Meses</option>
-                                <option value="10">10 Meses</option>
-                                <option value="11">11 Meses</option>
-                                <option value="12">12 Meses</option>*@
+                                    <option value="8">8 Meses</option>
+                                    <option value="9">9 Meses</option>
+                                    <option value="10">10 Meses</option>
+                                    <option value="11">11 Meses</option>
+                                    <option value="12">12 Meses</option>*@
                             </select>
                         </div>
                     </div>
@@ -477,16 +526,16 @@
 </div>
 
 @*
-<script src="~/Scripts/moment-with-locales.min.js"></script>*@
+    <script src="~/Scripts/moment-with-locales.min.js"></script>*@
 <script src="~/Scripts/daterangepicker.js"></script>
 <script src="~/Scripts/DatePikerReady.js"></script>
 <link href="~/Content/daterangepicker.css" rel="stylesheet" />
 
 @*
-<script src="~/Views/Home/AuxiliarIndexHome.js"></script>*@
+    <script src="~/Views/Home/AuxiliarIndexHome.js"></script>*@
 
 <script>
-
+    var listaStatus = ["Atrasado", "Cancelado","Concluído", "Concluído com atraso", "Em Andamento","Finalizado","Finalizado com sucesso", "Retorno"];
     Highcharts.setOptions({
         lang: {
             months: moment.monthsShort(),
@@ -503,9 +552,25 @@
     var urlGraficoNumeroDeAcoes = '@Url.Action("NumeroDeAcoes", "api/Relatorios")';
     var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
 
+    function orderArray(array) {
 
+        array.sort(function (a, b) {
+            if (a.name > b.name) {
+                return 1;
+            }
+            if (a.name < b.name) {
+                return -1;
+            }
+
+            return 0;
+        });
+
+        return array;
+    }
     /*Container 1*/
     function GraficoBar(privotY, privotX) {
+
+
         var r = resultGetGrafico
         var title = privotY + " x " + privotX
         var result = r;
@@ -513,16 +578,45 @@
         var serie = [];
         var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
         var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
+        //var eixoX = listaStatus;
 
         eixoX.forEach(function (o, c) {
             var serieData = {};
             serieData["name"] = o;
             serieData["data"] = [];
+
+
             eixoY.forEach(function (oo, cc) {
+                //console.log(oo);
                 serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
             })
             serie.push(serieData);
         });
+        if (privotX == 'Status' && serie != '') {
+
+            Highcharts.setOptions({
+                colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+            });
+
+            var serieAux;
+            var listaVazia;
+            var aux = 0;
+            serieAux = orderArray(serie);
+            serie = [];
+
+            for (var i = 0; i < listaStatus.length; i++) {
+                if (serieAux[aux].name == listaStatus[i]) {
+                    serie.push(serieAux[aux]);
+                    if (serieAux.length > aux + 1) {
+                        aux++;
+                    }
+                } else {
+                    listaVazia = { name: listaStatus[i], data: null, visible: false };
+                    serie.push(listaVazia);
+                }
+            }
+        }
+
 
         Highcharts.chart('divGrafico1', {
             credits: {
@@ -532,7 +626,8 @@
                 enabled: false
             },
             chart: {
-                type: 'bar'
+                type: 'bar',
+                zoomType: 'xy'
             },
             title: {
                 text: title,
@@ -565,7 +660,8 @@
                         fontSize: '10px',
                         fontWeight: 'normal'
                     }
-                }
+                },
+                allowDecimals: false
             },
             legend: {
                 align: 'center',
@@ -580,6 +676,7 @@
                 series: {
                     stacking: 'normal'
                 }
+
             },
             series: serie
         });
@@ -604,6 +701,31 @@
             serie.push(serieData);
         });
 
+        if (privotX == 'Status' && serie != '') {
+
+            Highcharts.setOptions({
+                colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+            });
+
+            var serieAux;
+            var listaVazia;
+            var aux = 0;
+            serieAux = orderArray(serie);
+            serie = [];
+
+            for (var i = 0; i < listaStatus.length; i++) {
+                if (serieAux[aux].name == listaStatus[i]) {
+                    serie.push(serieAux[aux]);
+                    if (serieAux.length > aux + 1) {
+                        aux++;
+                    }
+                } else {
+                    listaVazia = { name: listaStatus[i], data: null, visible: false };
+                    serie.push(listaVazia);
+                }
+            }
+        }
+
         Highcharts.chart('divCol', {
             credits: {
                 enabled: false
@@ -612,7 +734,8 @@
                 enabled: false
             },
             chart: {
-                type: 'column'
+                type: 'bar',
+                zoomType: 'y'
             },
             title: {
                 text: title,
@@ -634,7 +757,7 @@
                         fontSize: '10px',
                         fontWeight: 'normal'
                     }
-                }
+                }               
             },
             yAxis: {
                 labels: {
@@ -652,7 +775,8 @@
                         fontSize: '10px',
                         fontWeight: 'normal'
                     }
-                }
+                },
+                allowDecimals: false
             },
             legend: {
                 align: 'center',
@@ -672,15 +796,46 @@
             series: serie
         });
     }
+    function populaListaStatus(r)
+    {
+        var aux = 0;
+        var re = [];
+        for (var i = 0; i < listaStatus.length; i++) {
+            if (r[aux].name == listaStatus[i]) {
+                re.push(r[aux]);
+                if (r.length > aux+1)
+                {
+                    aux++;
+                }
 
+            } else {
+                var a = { y: null, name: listaStatus[i] };
+                re.push(a);
+            }
+        }
+
+        return re;
+    }
     function GraficoPizza(r) {
+
+        r = populaListaStatus(r);
+
         dadosPie = r;
         var serie = [];
         r.forEach(function (o, c) {
-            serie.push({
-                name: o.name,
-                y: parseInt(o.y)
-            })
+
+            if (o.y == null) {
+                serie.push({
+                    name: o.name,
+                    y: null,
+                    visible: false
+                })
+            } else {
+                serie.push({
+                    name: o.name,
+                    y: parseInt(o.y)
+                })
+            }
         });
 
         Highcharts.chart('divPie', {
@@ -718,15 +873,106 @@
                     cursor: 'pointer',
                     showInLegend: true,
                     dataLabels: {
-                        enabled: false,
-                        format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
+                        enabled: true,
+                        format: '{point.percentage:.1f} %',
+                        distance: 0,
                         style: {
                             color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
                             fontSize: '10px',
                             fontWeight: 'normal',
                         },
                         connectorColor: 'silver'
-                    }
+                    },
+                    colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+
+                }
+            },
+            series: [{
+                name: 'quantidade',
+                colorbypoint: true,
+                data: serie
+            }]
+        });
+    }
+
+    function GraficoPizza2(privotY, privotValue) {
+        var r = resultGetGrafico
+        var title = privotY;
+        var result = r;
+        var series = [];
+        var serie = [];
+        //var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+        //var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
+
+        if (privotValue != "" && privotValue != null) {
+            //Filtra os dados
+            var r = $.grep(r, function (o) {
+                return o[privotY] == privotValue;
+            });
+
+        }
+
+        listaStatus.forEach(function (o, c) {
+
+            var qtdeAcoes = 0;
+
+            r.forEach(function (oo, cc) {
+                if (oo.Status == o) {
+                    qtdeAcoes++;
+                }
+            });
+
+            serie.push({
+                name: o,
+                y: qtdeAcoes,
+                visible: qtdeAcoes > 0 ? true : false
+            });
+
+        });
+
+        Highcharts.chart('divPizza', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                enabled: true,
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            title: {
+                text: false
+            },
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.1f} %',
+                        distance: 0,
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    },
+                    colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"],
+                    showInLegend: true
                 }
             },
             series: [{
@@ -829,7 +1075,7 @@
         var meses = [];
         var valores = MapeiaValorParaHC(dados, "Quantidade", true);
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.Mes]);
+            meses.push(moment.monthsShort()[o.Mes - 1]);
         });
 
         Highcharts.chart('divEstoque1', {
@@ -928,7 +1174,7 @@
         var meses = [];
         var valores = MapeiaValorParaHC(dados, "Quantidade", true);
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.Mes]);
+            meses.push(moment.monthsShort()[o.Mes - 1]);
         });
 
         Highcharts.chart('divEstoque2', {
@@ -1037,7 +1283,7 @@
         });
 
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.MesIniciadas]);
+            meses.push(moment.monthsShort()[o.MesIniciadas - 1]);
 
         });
 
@@ -1156,7 +1402,7 @@
         //var realizado = MapeiaValorParaHC(dados, "Acc", true);
 
         dados.forEach(function (o) {
-            meses.push(moment.monthsShort()[o.MesConcluidas]);
+            meses.push(moment.monthsShort()[o.MesConcluidas-1]);
         });
 
         Highcharts.chart('divIndicador', {
@@ -1286,8 +1532,8 @@
             //});
 
             $.post(UrlSgq + 'api/Scorecard/GetScorecard', { //Url está na linha 16
-                endDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
-                startDate: moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
+                endDate: moment().subtract(i,'months').endOf('month').format('DD/MM/YYYY'),//moment().add(-i, 'month').format('DD/MM/YYYY'),
+                startDate: moment().subtract((i +1) ,'months').endOf('month').add(1, 'days').format('DD/MM/YYYY'),//moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
                 unitId: unidade,
                 auditorId: auditor
             }, function (r) {
@@ -1357,6 +1603,7 @@
                 return oo.Level1Name == indicador
             })[0])
         })
+
         eixoY = MapeiaValorParaHC(eixoY, privotY);
         eixoX = MapeiaValorParaHC(eixoX, privotX);
 
@@ -1633,17 +1880,19 @@
 
         $.post(urlGetPessoasEnvolvidas, enviar, function (rPessoas) {
             resultPessoasEnvolvidas = rPessoas;
-            $('#pessoasEnvolvidas').text(resultPessoasEnvolvidas.length);
+            $('#pessoasEnvolvidas').text(MapeiaValorParaHC(resultPessoasEnvolvidas, 'Responsavel').filter(onlyUnique).length);
         });
         $.post(urlGetGrafico, enviar, function (r) {
             resultGetGrafico = r;
 
             $('#filtroBar').trigger('change');
             $('#filtroBar2').trigger('change');
+            $('#filtroPizza').trigger('change');
             $('#filtroBarInd').trigger('change');
+            $('#seriesFiltroPizza').trigger('change');
 
             $('#acoesConcluidas').text($.grep(resultGetGrafico, function (a, b) {
-                return a.Status == "Concluído";
+                return a.Status == "Concluído" || a.Status == "Concluído com atraso";
             }).length);
 
             $('#acoesAtrasadas').text($.grep(resultGetGrafico, function (a, b) {
@@ -1764,13 +2013,41 @@
         $('#filtroBar2, #seriesBar2').on('change', function () {
             GraficoCol($('#filtroBar2 :selected').val(), $('#seriesBar2 :selected').val())
         });
+
+        $('#filtroPizza').on('change', function () {
+            //GraficoPizza2($('#filtroPizza :selected').val())
+
+            let Filtro = $('#filtroPizza :selected').val();
+
+            $('#seriesFiltroPizza').empty();
+            $('#seriesFiltroPizza').html('<option value="">Selecione...</option>');
+
+            let ListaFiltros = MapeiaValorParaHC(resultGetGrafico, Filtro).filter(onlyUnique)
+
+            ListaFiltros.forEach(function (o) {
+                $('#seriesFiltroPizza').append($('<option>', {
+                    value: o,
+                    text: o
+                }));
+            });
+
+            //$('#seriesFiltroPizza').change();
+
+        });
+
+        $('#seriesFiltroPizza').on('change', function () {
+            GraficoPizza2($('#filtroPizza :selected').val(), $('#seriesFiltroPizza :selected').val());
+        });
+
         $('#filtroBarInd, #seriesBarInd').on('change', function () {
             GraficoIndicadores($('#filtroBarInd :selected').val(), $('#seriesBarInd :selected').val())
         });
 
         $('#filtroBar').trigger('change');
         $('#filtroBar2').trigger('change');
+        $('#filtroPizza').trigger('change');
         $('#filtroBarInd').trigger('change');
+        $('#seriesFiltroPizza').trigger('change');
 
         $('#Unidade_Id, #Indicador_Id, #Mes_Id').on('change', function () {
 
@@ -1785,6 +2062,8 @@
 
         }).change();
 
+        $('select').css({ 'min-width': '150px;' })
+        $('select').select2()
     })
 
 
@@ -1909,9 +2188,15 @@
             concluidas = $.grep(resultGetGrafico, function (a, b) {
                 return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
             });
-        } else {
+        }
+        else if (query == 'Concluído') {
             concluidas = $.grep(resultGetGrafico, function (a, b) {
-                return a.Status == query
+                return a.Status == "Concluído" || a.Status == "Concluído com atraso";
+            });
+        }
+        else {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return a.Status == query;
             });
         }
 

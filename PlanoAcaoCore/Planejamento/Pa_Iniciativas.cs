@@ -16,7 +16,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_Iniciativas> Listar()
         {
-            var query = "SELECT * FROM Pa_Iniciativa";
+            var query = "SELECT * FROM Pa_Iniciativa WHERE IsActive = 1";
             return ListarGenerico<Pa_Iniciativas>(query);
         }
 

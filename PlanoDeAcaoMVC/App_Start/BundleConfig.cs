@@ -115,6 +115,56 @@ namespace PlanoDeAcaoMVC
 
             #endregion
 
+            #region Bundles PANovo
+
+            //Loading Overlay
+            bundles.Add(new ScriptBundle("~/bundles/panovoScriptBundle")
+                .Include(
+                "~/Scripts/PANovo/js/jquery-1.12.4.js",
+                //"~/Scripts/PANovo/js/jquery-3.2.1.slim.min.js",
+                "~/Scripts/PANovo/js/bootstrap.min.js",
+                "~/Scripts/PANovo/js/underscore-min.js",
+                "~/Scripts/PANovo/js/lodash.min.js",
+                "~/Scripts/PANovo/js/popper.min.js",
+                "~/Scripts/PANovo/js/jquery.dataTables.min.js",
+                "~/Scripts/PANovo/js/highcharts.js",
+                "~/Scripts/PANovo/js/treemap.js",
+                "~/Scripts/PANovo/js/bootstrap-select.min.js",
+                "~/Scripts/PANovo/js/defaults-pt_BR.min.js",
+                "~/Scripts/PANovo/js/moment.min.js",
+                "~/Scripts/PANovo/js/daterangepicker.js",
+                "~/Scripts/PANovo/js/jquery.dataTables.min.js",
+                "~/Scripts/PANovo/js/dataTables.buttons.min.js",
+                "~/Scripts/PANovo/js/buttons.flash.min.js",
+                "~/Scripts/PANovo/js/buttons.colVis.min.js",
+                "~/Scripts/PANovo/js/jszip.min.js",
+                "~/Scripts/PANovo/js/pdfmake.min.js",
+                "~/Scripts/PANovo/js/vfs_fonts.js",
+                "~/Scripts/PANovo/js/buttons.html5.min.js",
+                "~/Scripts/PANovo/js/buttons.print.min.js",
+                "~/Scripts/PANovo/js/dataTables.fixedColumns.min.js",
+                "~/Scripts/PANovo/js/pt-br.js",
+                 "~/Scripts/select2.min.js",//Select 2
+                 "~/Scripts/i18n/pt-BR.js",//Select 2
+                "~/Scripts/home2.js")
+            );
+
+            //Reports
+            bundles.Add(new StyleBundle("~/bundles/panovoBundle")
+                .Include("~/Content/Reports/Reports1.css",
+                "~/Content/PANovo/css/style.css",
+                "~/Content/PANovo/css/jquery.dataTables.min.css",
+                "~/Content/PANovo/css/buttons.dataTables.min.css",
+                "~/Content/PANovo/css/bootstrap-select.min.css",
+                "~/Content/PANovo/css/daterangepicker.css",
+                "~/Content/PANovo/css/bootstrap.min.css",
+                "~/Content/PANovo/css/bootstrap-theme.min.css",
+                "~/Content/PANovo/css/bootstrap-glyphicons.css",
+                "~/Content/css/select2.min.css"
+                )
+            );
+            #endregion
+
         }
     }
 }

@@ -59,6 +59,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
+
         /// <summary>
         /// Executa 1 batch pelo caminho indicado, o arquivo deve ter permissão para o usuario do IIS
         /// </summary>
@@ -170,7 +171,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                         emailTo = "gabriel@grtsolucoes.com.br";
                         title += " (Destinatário sem Email)" + paUser.Name;
                     }
-                    //emailTo = "celso.bernar@grtsolucoes.com.br";
+                    //emailTo = "renan.santini@grtsolucoes.com.br";
                     CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
                 }
         }

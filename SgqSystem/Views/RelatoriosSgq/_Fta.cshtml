@@ -1,12 +1,32 @@
 ﻿@using DTO
+@{
+    //EUA PROD
+    //ViewBag.urlRootPa = "https://sgq.jbssa.com/ActionPlan";
+    //ViewBag.urlRootPaFTA = "https://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
 
+    //EUA HML
+    //ViewBag.urlRootPa = "https://sgqtest.jbssa.com/actionPlanHML";
+    //ViewBag.urlRootPaFTA = "https://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
+
+    //EUA GRT
+    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+
+    //BR GRT
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+
+    //JBS HML / PROD
+    //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
+    //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
+ }
 <!-- Modal -->
 <div class="modal fade" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header modal-header-gray">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Deseja Criar um Formulario de Tratamento de anomalia?</h4>
+                <h4 class="modal-title" id="myModalLabel">@Resources.Resource.do_you_want_to_create_an_anomaly_treatment_form</h4>
             </div>
             @*<div class="modal-body">
 
@@ -24,23 +44,22 @@
 
 <script>
 
-    var preffix = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
+    var preffix = @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA));   //Html.Raw(Json.Encode(GlobalConfig.pathFTA));
     var preffixFta = preffix.slice(0, preffix.indexOf("Pa_Acao/NewFTA?"))
-        /*
-        unitName:"Pimenta Bueno"
-        level1Name:"(%) NC Análise Microbiológica em Carcaça"
-        level2Name:"Análise Microbiológica em Carcaça"
-        level3Name:"Enterobactérias"
-        auditorId:"1"
-        PercentualNCFTA:100     //Percentual de NC
-        ReincidenciaDesvioFTA:1 //Quantidade de NC
-        endDate:"27/06/2017"
-        startDate:"29/05/2017"
-        */
+    /*
+    unitName:"Pimenta Bueno"
+    level1Name:"(%) NC Análise Microbiológica em Carcaça"
+    level2Name:"Análise Microbiológica em Carcaça"
+    level3Name:"Enterobactérias"
+    auditorId:"1"
+    PercentualNCFTA:100     //Percentual de NC
+    ReincidenciaDesvioFTA:1 //Quantidade de NC
+    endDate:"27/06/2017"
+    startDate:"29/05/2017"
+    */
     function RedirecionaParaFTA(r) {
         var url = "";
         url += preffix;
-        //url += "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
         url += "MetaFTA=" + r.MetaFTA;
         url += "&PercentualNCFTA=" + r.PercentualNCFTA;
         url += "&ReincidenciaDesvioFTA=" + r.ReincidenciaDesvioFTA;
@@ -48,6 +67,7 @@
         url += "&_Level2=" + encodeURIComponent(r.level2Name);
         url += "&_Level3=" + encodeURIComponent(r.level3Name);
         url += "&Supervisor_Id=" + r.auditorId;
+        url += "&Evaluated=" + r.Evaluated;
 
         if (r.unitId > 0) {
             url += "&Unidade_Id=" + r.unitId;

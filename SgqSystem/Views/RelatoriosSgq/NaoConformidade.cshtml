@@ -1,14 +1,18 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
 @{
     ViewBag.Title = Resources.Resource.defects_reports; //"Não Conformidades";
     var url = Url.Action("Index", "Home");
     var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidade");
+    var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidade");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
     var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidade");
     var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
     var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
     var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidade");
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
+    var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidade");
+    var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidade");
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
 }
 
@@ -28,69 +32,75 @@
         width: 100%;
         height: 100%;
     }
+
+    #CustomPopover {
+        z-index: 1040;
+        border-width: 2px;
+        padding: 8px;
+        border-radius: 2px !important;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        position: absolute;
+        background: white;
+    }
+
+        #CustomPopover .btn {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
 </style>
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+
+    <div id="CustomPopover" class="hide">
+        <h5>@Resources.Resource.next_unfolding</h5>
+        <div>
+            <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
+            <button class="btn btn-sm btn-default" id="btnMonitoramento">Level 2</button>
+            <button class="btn btn-sm btn-default" id="btnShift">Shift</button>
+            <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
+        </div>
+    </div>
 
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="inicio"></div>
-        <div id="btnRGUnidadesGrafico"></div>
+
         <div id="RGUnidadesGrafico"></div>
-
-        <div id="btnRGDepartamentosGrafico"></div>
         <div id="RGDepartamentosGrafico"></div>
-
-        <div id="btnRGOperacoesGrafico"></div>
+        <div id="RGDepartamentosShiftGrafico"></div>
         <div id="RGOperacoesGrafico"></div>
+        <div id="RGOperacoesShiftGrafico"></div>
 
-        <div id="btnRGOperacoesGrafico"></div>
-        <div id="RGOperacoesGrafico"></div>
         <div id="loading"></div>
 
         <div class="panel panel-info" id="PanelFull0" style="display:none">
             <div class="panel-heading"></div>
             <div class="panel-body" id="g0">
-                <div id="btnRGTarefasGrafico"></div>
-                <div id="RGTarefasGrafico"></div>
-
-                <div id="btnRGMonitoramentosGrafico"></div>
                 <div id="RGMonitoramentosGrafico"></div>
+                <div id="RGMonitoramentosShiftGrafico"></div>
+                <div id="RGTarefasGrafico"></div>
             </div>
         </div>
-
-        <div class="panel panel-info" id="PanelFull1" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g1">
-                <div id="btnTarefasAcumuladas"></div>
-                <div id="RGOTarefasAcumuladas"></div>
-                <div id="btnMonitoramentosTarefa"></div>
-                <div id="RGOMonitoramentosTarefa"></div>
-            </div>
-            @**O Peso atribuído as Tarefas influenciam no resultado gráfico.*@
-        </div>
-
     </div>
-
 </div>
 
-@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+    @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+</div>
 
 @section Scripts {
 
-    <script type="text/javascript">
-
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
+<script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
-        var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
+        //var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
+        var Department = '@Resources.Resource.department'
         var GraficoDepto = 'NC por departamento: ';
-        var GraficoIndic = '@Resources.Resource.defects_per_audit:'; //'NC por Indicador: ';
-        var GraficoMon = '@Resources.Resource.defects_per_monitoring:'; //'NC por Monitoramento: ';
-        var GraficoTarefa = '@Resources.Resource.defects_per_tasks:'; //'NC por Tarefa: ';
+        var GraficoIndic = '@Resources.Resource.defects_per_audit'; //'NC por Indicador: ';
+        var GraficoMon = '@Resources.Resource.defects_per_monitoring'; //'NC por Monitoramento: ';
+        var GraficoTarefa = '@Resources.Resource.defects_per_tasks'; //'NC por Tarefa: ';
         var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
         var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
         var $btn = $('#btnSend');
@@ -101,25 +111,41 @@
         var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
         var UnidadeUsuario = (@Html.Raw(Json.Encode(ViewBag.UnidadeUsuario)));
         var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
+        var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
+        var UrlGraficoDepartamentosPorShift = @Html.Raw(Json.Encode(UrlGraficoDepartamentosPorShift));
+        var urlGraficoIndicadorPorShift = @Html.Raw(Json.Encode(UrlGraficoIndicadorPorShift));
+        var urlGetUnitId = '@Url.Action("GetUnitId","api/Fta")'
+        var popoverMain;
+        var Aux;
+        var subtitle = "";
+        var pathDirect = 0; // sum 1 se user optao por departamento, se continuar 0 ele optou por indicador e pulou um método
+        var IsDepartment = false;
+        var IsDepartmentShift = false;
+        var idGrafico = "";
+        var desdobramento = "";
+        var ShiftSelected;
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $(document).ready(function () {
 
             closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
             $("#btnSend").click(function (e) {
                 Send(true);
             });
-            formControl.showFullCallendar();
-            //formControl.showUnit();
 
-            if (UnidadeUsuario.length == 1) {
-                //$('#divFiltrarRegionais').hide();
-                //_RGUnidadeId = UnidadeUsuario[0].Value;
-                //_RGUnidade = UnidadeUsuario[0].Text;
-                //UsarGraficoUnidades = false;
-            }
+            $('.levels').hide();
+
+            formControl.showFullCallendar();
+            formControl.showShift();
+            formControl.showClustRegUnitCriticalLevel123();
+
+            popoverMain = $('#CustomPopover').addClass('hide');
+
+            $('.sidebar-nav select').select2();
         });
 
         function Send(toggle) {
@@ -127,7 +153,20 @@
             $btn.button('loading');
             $('#results').empty();
             $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
             $("#PanelFull0").hide();
+
+            ShiftSelected = $('#shift :selected').val();
+
+            enviar["departmentName"] = $('#criticalLevelId :selected').val();
+
+            enviar["shift"] = ShiftSelected;
+
+            $('#unitIdV').change();
+
+            popoverMain.addClass('hide');
 
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
@@ -135,7 +174,7 @@
             }
 
             enviar["auditorId"] = GetUsuarioId();
-
+            console.log(enviar);
             EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico", toggle);//AJAX
 
         };
@@ -143,11 +182,7 @@
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-            /*Especifico*/
-            //if (!($('#unitId :selected').val() > 0)) {
-            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-            //    return false;
-            //}
+
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();
@@ -157,23 +192,127 @@
 
         /*GET*/
 
-        function GetGraficoIndicadorUnidade (unidade) {
+        function GetGraficoDepartamento(unidade){
+            $("#PanelFull0").hide();
+            $("RGDepartamentosShiftGrafico").empty();
+            enviar["unitName"] = unidade;
+            enviar["shift"] = ShiftSelected;
+            console.log(enviar);
+            EasyAjax(urlGraficoDepartamentos, enviar, GraficoDepartamento, "RGDepartamentosGrafico");
+        }
+
+        function GetGraficoIndicadorDepartamento(departamento){
+            enviar["departmentName"] = departamento;
+            $("#PanelFull0").hide();
+            pathDirect = 1;
+            console.log(enviar);
+            EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
+        }
+
+        function GetGraficoIndicadorUnidade(unidade) {
             $("#PanelFull0").hide();
             enviar["unitName"] = unidade;
+            enviar["shift"] = ShiftSelected;
+            pathDirect = 0;
+            console.log(enviar);
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
-        };
+        }
+
+        function GetPopover(param, grafico, shift) {
+
+            popoverMain.addClass('hide');
+
+            hidePopoverItems();
+
+            IsDepartment = false;
+            Aux = null;
+            Aux = param;
+            desdobramento = grafico;
+
+            popoverMain.css("top", y);
+            popoverMain.css("left", x);
+
+            if (desdobramento == "Departamento") {
+                enviar["shift"] = ShiftSelected;
+                IsDepartmentShift = false;
+            }
+
+            switch (grafico) {
+
+                case "DepartamentoShift":
+
+                    enviar["shift"] = shift;
+                    IsDepartmentShift = true;
+                    GetGraficoIndicadorDepartamento(Aux);
+                    return;
+
+                case "IndicadorShift":
+
+                    enviar["shift"] = shift;
+                    GetMonitoramento(Aux);
+                    return;
+
+                case "Departamento":
+
+                    IsDepartment = true;
+
+                    if (ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
+                        GetGraficoIndicadorDepartamento(Aux);
+                        return;
+                    } else {
+                        showPopover2();
+                        break;
+                    }
+
+                case "Indicador":
+
+                    if (IsDepartmentShift || ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
+                        GetMonitoramento(Aux);
+                        return;
+                    }
+
+                    enviar["shift"] = shift;
+                    IsIndicador = true;
+                    showPopover3();
+                    break;
+
+                default:
+                    IsDepartmentShift = false;
+                    showPopover1();
+                    break;
+            }
+
+            popoverMain.removeClass('hide');
+
+        }
 
         function GetMonitoramento(indicador){
-            $("#PanelFull0").hide();
-            $("#RGMonitoramentosGrafico").empty();
+            //$("#PanelFull0").hide();
+            $("#RGTarefasGrafico").empty();
             enviar["level1Name"] = removeFtaDaLabel(indicador);
-            EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "RGTarefasGrafico");
+            console.log(enviar);
+            EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "RGMonitoramentosGrafico");
         };
 
         function GetTarefa(monitoramento){
             enviar["level2Name"] = removeFtaDaLabel(monitoramento);
-            EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGMonitoramentosGrafico");
+            console.log(enviar);
+            EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGTarefasGrafico");
         };
+
+        function GetGraficoGenerico() {
+            if (desdobramento == "Departamento") {
+                IsDepartment = true;
+                idGrafico = "RGDepartamentosShiftGrafico";
+                $('#RGOperacoesGrafico').empty();
+                console.log(enviar);
+                EasyAjax(UrlGraficoDepartamentosPorShift, enviar, GraficoDepartamentoPorShift, "RGDepartamentosShiftGrafico");
+            } else if (desdobramento == "Indicador") {
+                idGrafico = "RGOperacoesShiftGrafico";
+                console.log(enviar);
+                EasyAjax(urlGraficoIndicadorPorShift, enviar, GraficoIndicadorPorShift, "RGOperacoesShiftGrafico");
+            }
+        }
 
         /*END GET*/
 
@@ -183,28 +322,17 @@
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
             }
-            //UNIDADE
-            //if (data == null) {
-            //    data = _result.unidadeTemp;
-            //}
 
-            //data = Auxiliar.organizarHighCharts(data, coluna, sentido);
-
-            //Done.btnOrdenacao('btnRGUnidadesGrafico', Done.totalNcPorUnidadeProdutiva, btn, sentido)
-            ////////////////////////////////
-
-            /////////////////////////////
             var dataX = MapeiaValorParaHC(data, "UnidadeName");
             var Nc = MapeiaValorParaHC(data, "Nc");
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
 
-            //if (data.length > 0) {
-            //var inverse = sentido == 'desc' ? undefined : 1;
             $('#RGUnidadesGrafico').empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(Grafico1),
+                title: Chart.Titulo(setNameTitulos(Resources('defects_per_unit'))),
+                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -220,26 +348,133 @@
                     }
                 },
                 series: [
-                    //Chart.serie('column', 'Meta', Chart.CorMeta(), )
-                    Chart.ProcNc(Proc, GetGraficoIndicadorUnidade),
-                    Chart.NC(Nc, GetGraficoIndicadorUnidade),
-                    Chart.Av(Av, GetGraficoIndicadorUnidade)
-                    //Chart.curvaPareto(data, nc, 1, inverse),
+                    Chart.ProcNc(Proc, GetPopover, null, "", dataX),
+                    Chart.NC(Nc, GetPopover, null, null, null, "", dataX),
+                    Chart.Av(Av, GetPopover, null, null, null, "", dataX)
                 ]
             });
-
-            //}
-            //else {
-            //        $('#inicio').nextUntil('footer').not('.panel').empty();
-            //        $('#RGUnidadesGrafico').empty().html('<l id="parar">Não existem dados no contexto do filtro selecionado.</l>');
-            //        $("#btnRGUnidadesGrafico input").remove();
-            //}
 
             $('.body-content').css('height', '3350px');
 
         }
 
+        function GraficoDepartamento(data) {
+            pathDirect = 1;
+            var dataX = MapeiaValorParaHC(data, "DepartamentoName");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var selector = "RGDepartamentosGrafico";
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(Resources("defects_per_deparment")),
+                subtitle: Chart.Subtitulo(Resources("unit"), enviar["unitName"]),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    //Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    Chart.ProcNc(Proc, GetPopover, null, "Departamento", dataX),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Departamento", dataX),
+                    Chart.Av(Av, GetPopover, null, null, null, "Departamento", dataX),
+                ]
+            })
+        }
+
+        function GraficoDepartamentoPorShift(data) {
+            pathDirect = 1;
+            var dataX = MapeiaValorParaHC(data, "dataX");
+            var Name = MapeiaValorParaHC(data, "DepartamentoName");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var Shift = MapeiaValorParaHC(data, "Shift");
+            var selector = "RGDepartamentosShiftGrafico";
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(Resources("defects_per_deparment") + " | " + Resources("shift")),
+                subtitle: Chart.Subtitulo(Resources("unit"), enviar["unitName"]),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    //Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    Chart.ProcNc(Proc, GetPopover, null, "DepartamentoShift", Name ,Shift),
+                    Chart.NC(Nc, GetPopover, null, null, null, "DepartamentoShift", Name ,Shift),
+                    Chart.Av(Av, GetPopover, null, null, null, "DepartamentoShift", Name,Shift),
+                ]
+            })
+        }
+
+        function pathChart(data, nameChart) {
+            Subtitle = "";
+            if (nameChart == "Unidade") {
+                Subtitle += Resources("unit") + ": " + data[0].UnidadeName + " | ";
+            }
+            if (data.unitId != '' && data.unitId != undefined) {
+                Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+            }
+            if (data.structureId != '' && data.structureId != undefined) {
+                Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+            }
+            if (data.auditorId != '' && data.auditorId != undefined) {
+                if (!$('#auditorId :selected').text() == "All")
+                    Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+            }
+            if (data.criticalLevelId != '' && data.criticalLevelId != undefined) {
+                Subtitle += Resources("criticalLevel") + ": " + $('#criticalLevelId :selected').text() + " | ";
+            }
+            if (data.level1Id != '' && data != undefined && !isNaN(data.level1Id)) {
+                Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+            }
+            if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+                Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+            }
+            if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+                Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+            }
+        }
+
         function GraficoIndicadorUnidade(data) {
+
+            subtitle = Resources("unit") + ": " + enviar["unitName"];
+
+            if (pathDirect == 1)
+                subtitle += " | " + Resources("department") + ": " + enviar["departmentName"];
+
+            if (enviar["shift"] != "" && enviar["shift"] != undefined)
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
+
 
             var nc = MapeiaValorParaHC(data, "Nc");
             var nome = MapeiaValorParaHC(data, "IndicadorName");
@@ -247,15 +482,16 @@
             var qtdAv = MapeiaValorParaHC(data, "Av");
             var meta = MapeiaValorParaHC(data, "Meta");
             var selector = "RGOperacoesGrafico";
-            //var id = MapeiaValorParaHC(data, "UnidadeName")
-   enviar["level1names"] = nome
-              enviar.isLevel = 1
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
-                 insereLabelFtaPelaColunName(nome, r)
+            //enviar["level1names"] = nome
+            enviar.isLevel = 1
+
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoIndic, enviar["unitName"]),
+                title: Chart.Titulo(GraficoIndic),
+                subtitle: {
+                    text: subtitle
+                },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -271,23 +507,67 @@
                     }
                 },
                 series: [
-                    //Chart.serie('column', 'Meta', Chart.CorMeta(), )
-                    Chart.ProcNc(porc, GetMonitoramento),
-                    Chart.NC(nc, GetMonitoramento),
-                    Chart.Av(qtdAv, GetMonitoramento),
-                     Chart.Meta(meta, GetMonitoramento),
-                    //Chart.curvaPareto(data, nc, 1, inverse),
+                    //Chart.ProcNc(porc, GetMonitoramento),
+                    //Chart.NC(nc, GetMonitoramento),
+                    //Chart.Av(qtdAv, GetMonitoramento),
+                    //Chart.Meta(meta, GetMonitoramento),
+                    Chart.ProcNc(porc, GetPopover, null, "Indicador", nome),
+                    Chart.NC(nc, GetPopover, null, null, null, "Indicador", nome),
+                    Chart.Av(qtdAv, GetPopover, null, null, null, "Indicador", nome),
+                    Chart.Meta(meta, GetPopover, null, null, null, "Indicador"),
                 ]
-            });
-daUmaPintadaNaLabel(selector)
             })
         }
 
-        function GraficoDepartamento() {
+        function GraficoIndicadorPorShift(data) {
 
+            if (pathDirect == 1)
+                subtitle = Resources("unit") + ": " + enviar["unitName"] + " | " + Resources("department") + ": " + enviar["departmentName"];
+            else
+                subtitle = Resources("unit") + ": " + enviar["unitName"];
+
+            var nc = MapeiaValorParaHC(data, "Nc");
+            var dataX = MapeiaValorParaHC(data, "IndicadorName");
+            var shift = MapeiaValorParaHC(data, "Shift");
+            var nome = MapeiaValorParaHC(data, "dataX");
+            var porc = MapeiaValorParaHC(data, "Proc");
+            var qtdAv = MapeiaValorParaHC(data, "Av");
+            var meta = MapeiaValorParaHC(data, "Meta");
+            var selector = "RGOperacoesShiftGrafico";
+            //enviar["level1names"] = nome
+            enviar.isLevel = 1
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(GraficoIndic + " | " + Resources("shift")),
+                subtitle: {
+                    text: subtitle
+                },
+                xAxis: Chart.Xaxis(nome),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(porc, GetPopover, null, "IndicadorShift", dataX, shift),
+                    Chart.NC(nc, GetPopover, null, null, null, "IndicadorShift", dataX, shift),
+                    Chart.Av(qtdAv, GetPopover, null, null, null, "IndicadorShift", dataX, shift),
+                    Chart.Meta(meta, GetPopover, null, null, null, "IndicadorShift"),
+                ]
+            })
         }
 
-        function GraficoMonitoramento(data, tarefa) {
+        function GraficoMonitoramento(data) {
 
             $('#PanelFull0').show();
 
@@ -295,19 +575,29 @@ daUmaPintadaNaLabel(selector)
             var nome = MapeiaValorParaHC(data, "MonitoramentoName")
             var qtdAv = MapeiaValorParaHC(data, "Av")
             var porc = MapeiaValorParaHC(data, "Proc")
-            var selector = "RGTarefasGrafico";
-
-            /*?*/
+            var selector = "RGMonitoramentosGrafico";
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
-   enviar["level2names"] = nome
-              enviar.isLevel = 2
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
-                 insereLabelFtaPelaColunName(nome, r)
+            //enviar["level2names"] = nome
+            enviar.isLevel = 2;
+
+            subtitle = Resources('unit') + ": " + enviar["unitName"];
+
+            if (pathDirect == 1)
+                subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
+
+            subtitle += " | " + Resources('level1') + ": " + enviar["level1Name"];
+
+            if (enviar["shift"] != "" && enviar["shift"] != undefined)
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
+
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoMon, enviar["level1Name"]),
+                title: Chart.Titulo(GraficoMon),
+                subtitle: {
+                    text: subtitle
+                },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -318,19 +608,16 @@ daUmaPintadaNaLabel(selector)
                 },
                 plotOptions: {
                     column: {
-                        //grouping: false,
                         shadow: false,
                         borderWidth: 0
                     }
                 },
                 series: [
-                    Chart.ProcNc(porc, GetTarefa),
-                    Chart.NC(nc, GetTarefa),
-                    Chart.Av(qtdAv, GetTarefa),
+                    Chart.ProcNc(porc, GetTarefa, null, "", nome),
+                    Chart.NC(nc, GetTarefa, null, null, null, "", nome),
+                    Chart.Av(qtdAv, GetTarefa, null, null, null, "", nome),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
-            });
-     daUmaPintadaNaLabel(selector)
             })
 
 
@@ -344,29 +631,30 @@ daUmaPintadaNaLabel(selector)
             var nome = MapeiaValorParaHC(data, "TarefaName")
             var qtdAv = MapeiaValorParaHC(data, "Av")
             var porc = MapeiaValorParaHC(data, "Proc")
-            var selector = "RGMonitoramentosGrafico";
-            enviar["level3names"] = nome
-              enviar.isLevel = 3
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            var selector = "RGTarefasGrafico";
+            //enviar["level3names"] = nome
+            enviar.isLevel = 3;
 
-                //Preenche label x Axys com FTA
-                /*$.each(r, function(i, n){
-                    if(nome.indexOf(i)  != -1 && n > 0){
-                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
-                    }
-                    //console.log("Tratamentos de Anomalia: " + n)
-                });*/
+            subtitle = Resources('unit') + ": " + enviar["unitName"];
 
-                insereLabelFtaPelaColunName(nome, r)
+            if (pathDirect == 1)
+                subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
 
-            /*?*/
+            subtitle += + " | " + Resources('level1') + ": " + enviar["level1Name"] + " | " + Resources('level2') + ": " + enviar["level2Name"];
+
+            if (enviar["shift"] != "" && enviar["shift"] != undefined)
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
+
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
 
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoTarefa, enviar["level2Name"]),
+                title: Chart.Titulo(GraficoTarefa),
+                subtitle: {
+                    text: subtitle
+                },
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -377,32 +665,30 @@ daUmaPintadaNaLabel(selector)
                 },
                 plotOptions: {
                     column: {
-                        //grouping: false,
                         shadow: false,
                         borderWidth: 0
                     }
                 },
                 series: [
                     {
-                        name: '% @Resources.Resource.nonconformity',
-                        color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                        name: '% ' + Resources("nonconformity"),
+                        color: Chart.CorTotalProcNc(),
                         data: porc,
                         yAxis: 1,
                         tooltip: {
                             valueSuffix: ' %'
                         },
-                        //pointPadding: 0.4,
-                        //pointPlacement: -0.2,
                         dataLabels: Chart.DataLabelPadrao('%'),
                         point: {
                             events: {
                                 click: function () {
                                     enviar['level3Name'] = removeFtaDaLabel(this.category);
-                                    enviar['PercentualNCFTA'] = this.y;
+                                    enviar['PercentualNCFTA'] = porc[this.x];
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
+                                    enviar['Evaluated'] = qtdAv[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     enviar['byName'] = true;
-                                    $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
+                                    $.post(urlGetUnitId, enviar, function(c){
                                         enviar["unitId"] = c.unitId;
                                         //enviar["MetaFTA"] = "0";
                                         RedirecionaParaFTA(enviar);
@@ -414,26 +700,25 @@ daUmaPintadaNaLabel(selector)
                         },
                         tooltip: {
                             valueDecimals: 2,
-                            valueSuffix: ' % (@Resources.Resource.nonconformity * @Resources.Resource.weight)'
+                            valueSuffix: ' % (' + Resources("nonconformity") + ' * ' + Resources("weight")
                         }
                     },
                     {
-                        name: '@Resources.Resource.nonconformity',
-                        color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
+                        name: Resources('nonconformity'),
+                        color: Chart.CorTotalNc(),
                         data: nc,
                         yAxis: 0,
-                        //pointPadding: 0.3,
-                        //pointPlacement: -0.2,
                         dataLabels: Chart.DataLabelPadrao(),
                         point: {
                             events: {
                                 click: function () {
                                     enviar['level3Name'] = removeFtaDaLabel(this.category);
-                                    enviar['PercentualNCFTA'] = this.y;
+                                    enviar['PercentualNCFTA'] = porc[this.x];
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
+                                    enviar['Evaluated'] = qtdAv[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     enviar['byName'] = true;
-                                    $.post('@Url.Action("GetUnitId", "api/Fta")', enviar, function(c){
+                                    $.post(urlGetUnitId, enviar, function(c){
                                         enviar["unitId"] = c.unitId;
                                         //enviar["MetaFTA"] = "0";
                                         RedirecionaParaFTA(enviar);
@@ -448,25 +733,16 @@ daUmaPintadaNaLabel(selector)
                             valueSuffix: ' qtd'
                         }
                     },
-                    //Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
-                    //Chart.NC(nc, function() {}),
+
                     Chart.Av(qtdAv, function() {}),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
-            });
-                daUmaPintadaNaLabel(selector)
             })
-
-        }
-
-        function GraficoTarefaAcumulada() {
-
 
         }
 
         function btnOrdenacao(id, func, btn, sentido) {
             var inputTag = document.createElement("div");
-            //??
             if (btn == undefined) {
                 inputTag.innerHTML = '<input type = "button"  id="Nc"  value="NC " >';
                 inputTag.innerHTML += '<input type = "button" id="ProcNc"  value = "% NC " >';
@@ -503,6 +779,27 @@ daUmaPintadaNaLabel(selector)
             EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
         }
 
+        function setNameTitulos(NomeGrafico){
+
+            if (parseInt(enviar.departmentId) > 0) {
+                return NomeGrafico + " | " + Department + ": " + $('#departmentId option:selected').text();
+            }else if (enviar['departmentName'] != "" && enviar['departmentName'] != undefined && enviar['departmentName'] != null) {
+                return NomeGrafico + " | " + Department + ": " + enviar['departmentName'];
+            }else{
+                return NomeGrafico
+            }
+        }
+
+        function setNameSubtitulos(NomeGrafico) {
+
+            if (parseInt(enviar.departmentId) > 0) {
+                return Resources('department') + ": " + $('#departmentId option:selected').text();
+            } else if (enviar['departmentName'] != "" && enviar['departmentName'] != undefined && enviar['departmentName'] != null) {
+                return Resources('department') + ": " + enviar['departmentName'];
+            } else {
+                return "";
+            }
+        }
 
         //http://jsfiddle.net/highcharts/3bDMe/1/
         $('#sort').click(function(chart) {
@@ -527,12 +824,6 @@ daUmaPintadaNaLabel(selector)
         });
 
         var Chart = {
-
-            /*
-                Arry: dadposNC
-                Object: dados
-                Int: axis
-            */
             criaTitulo:  function(prefix, sufix){
                 return prefix + sufix;
             },
@@ -627,7 +918,19 @@ daUmaPintadaNaLabel(selector)
             Titulo: function (data, sufix) {
 
                 if(!!sufix)
-                    data = data + sufix;
+                    data = data + " | " + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+            Subtitulo: function (data, sufix) {
+
+                if (!!sufix)
+                    data = data + ": " + sufix;
 
                 return {
 
@@ -686,9 +989,9 @@ daUmaPintadaNaLabel(selector)
                     categories: dados
                 }];
             },
-            NC: function (data, func, nome, id, funcParaAcumuladas) {
+            NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
                 return {
-                    name: '@Resources.Resource.nonconformity',
+                    name: Resources('nonconformity'),
                     color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
                     data: data,
                     yAxis: 0,
@@ -698,8 +1001,11 @@ daUmaPintadaNaLabel(selector)
                     point: {
                         events: {
                             click: function () {
-                                if(!!func)
-                                    func(this.category);
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico);
+                                }
                             }
                         }
                     },
@@ -710,12 +1016,12 @@ daUmaPintadaNaLabel(selector)
                 }
 
             },
-            ProcNc: function(data, func, funcParaAcumuladas){
+            ProcNc: function (data, func, funcParaAcumuladas, grafico, arr, arr2){
                 $.each(data, function(a, b){
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
                 return {
-                    name: '% @Resources.Resource.nonconformity',
+                    name: '% ' + Resources('nonconformity'),
                     color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
                     data: data,
                     yAxis: 1,
@@ -728,23 +1034,26 @@ daUmaPintadaNaLabel(selector)
                     point: {
                         events: {
                             click: function () {
-                                if(!!func)
-                                    func(this.category);
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico);
+                                }
                             }
                         }
                     },
                     tooltip: {
                         valueDecimals: 2,
-                        valueSuffix: ' % (@Resources.Resource.nonconformity * @Resources.Resource.weight)'
+                        valueSuffix: ' % ('+ Resources('nonconformity') + ' * ' + Resources('weight')
                     }
                 };
 
             },
-            Meta: function(data, func, nome, id, funcParaAcumuladas){
+            Meta: function (data, func, nome, id, funcParaAcumuladas){
 
                 return {
                     visible: false,
-                    name: '% @Resources.Resource.goal',
+                    name: '% ' + Resources('goal'),
                     data: data,
                     color: Chart.CorMeta(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,
@@ -766,11 +1075,11 @@ daUmaPintadaNaLabel(selector)
                 };
 
             },
-            Av: function(data, func, nome, id, funcParaAcumuladas){
+            Av: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2){
 
                 return {
                     visible: false,
-                    name: @Html.Raw(Json.Encode(Resources.Resource.evaluation)),
+                    name: Resources('evaluation'),
                     data: data,
                     color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,
@@ -779,10 +1088,14 @@ daUmaPintadaNaLabel(selector)
                     dataLabels: Chart.DataLabelPadrao(),
                     point: {
                         events: {
-
                             click: function () {
-                                if(!!func)
-                                    func(this.category);
+                                if (!!func)
+                                    if (!!arr2) {
+                                        func(arr[this.x], grafico, arr2[this.x]);
+                                    } else {
+                                        func(arr[this.x], grafico);
+                                    }
+
                             }
                         }
                     },
@@ -812,9 +1125,75 @@ daUmaPintadaNaLabel(selector)
             },
 
         }
-        /*END Charts*/
 
+        $(document).mousemove(function(e) {
+            window.x = e.pageX;
+            window.y = e.pageY;
+        });
 
-    </script>
+        $('#btnIndicador').on('click', function(){
+            popoverMain.addClass('hide');
+            if (!IsDepartment) {
+                $('#RGDepartamentosGrafico').empty();
+                $('#RGDepartamentosShiftGrafico').empty();
+                $('#RGOperacoesShiftGrafico').empty();
+                enviar['departmentName'] = "";
+                GetGraficoIndicadorUnidade(Aux);
+            } else {
+                $('#RGDepartamentosShiftGrafico').empty();
+                $("#PanelFull0").hide();
+                GetGraficoIndicadorDepartamento(Aux);
+            }
+        });
+
+        $('#btnDepartamento').on('click', function(){
+            popoverMain.addClass('hide');
+            $('#RGOperacoesGrafico').empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            GetGraficoDepartamento(Aux);
+        });
+
+        $('#btnMonitoramento').on('click', function () {
+            popoverMain.addClass('hide');
+            $('#RGOperacoesShiftGrafico').empty();
+            GetMonitoramento(Aux);
+        });
+
+        $('#btnShift').on('click', function () {
+            $("#PanelFull0").hide();
+            if (desdobramento == "Indicador") {
+                $('#RGOperacoesShiftGrafico').empty();
+            }
+
+            $('#RGOperacoesShiftGrafico').empty();
+            popoverMain.addClass('hide');
+            GetGraficoGenerico();
+        });
+
+        function hidePopoverItems() {
+            $('#btnIndicador').hide();
+            $('#btnMonitoramento').hide();
+            $('#btnShift').hide();
+            $('#btnDepartamento').hide();
+        }
+
+        function showPopover1() {
+            $('#btnIndicador').show();
+            $('#btnDepartamento').show();
+        }
+
+        function showPopover2() {
+            $('#btnIndicador').show();
+            $('#btnShift').show();
+        }
+
+        function showPopover3() {
+            $('#btnMonitoramento').show();
+            $('#btnShift').show();
+        }
+
+</script>
 
 }

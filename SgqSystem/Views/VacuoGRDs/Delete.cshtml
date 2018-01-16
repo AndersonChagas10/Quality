@@ -11,7 +11,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -64,8 +64,8 @@
                                         @Html.AntiForgeryToken()
 
                                         <div class="form-actions no-color">
-                                            <input type="submit" value="Sim, pode excluir" class="btn btn-default" /> |
-                                            @Html.ActionLink("Voltar", "Index")
+                                            <input type="submit" value="Sim, pode excluir" class="btn btn-danger" />
+                                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
                                         </div>
                                     }
                                 </div>
@@ -86,4 +86,10 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

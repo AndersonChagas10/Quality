@@ -8,119 +8,127 @@
 }
 
 <style>
-
     /*Não quebra a linha nos campos de cabeçalho*/
-    #results>tbody>tr:last-child > td:last-child{
+    #resultsApontamentos > tbody > tr:last-child > td:last-child {
         white-space: nowrap;
     }
 </style>
 
-<div class="page-content" style="min-height: 600px;">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
 
-        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-        </div>
+        <div id="formBodyContent">
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
-        <div id="load"></div>
-        <div id="divTable">
-            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+            <div id="load"></div>
+            <div id="divTable">
+                <table id="resultsApontamentos" class="display" cellspacing="0" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
+    @section Scripts {
 
-    <script type="text/javascript">
+        <script type="text/javascript">
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
+            $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
-        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+            var urlGet = '@Html.Raw(@urlGet)';
+            var urlEdit = '@Html.Raw(@urlEdit)';
+            var urlSave = '@Html.Raw(@urlSave)';
+            var $btn = $('#btnSend');
+            var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
 
-        var urlGet = '@Html.Raw(@urlGet)';
-        var urlEdit = '@Html.Raw(@urlEdit)';
-        var urlSave = '@Html.Raw(@urlSave)';
-        var $btn = $('#btnSend');
-        var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
+            $('#simpleCallendar').hide().attr('disabled', true);
 
-        $('#simpleCallendar').hide().attr('disabled', true);
+            $(document).ready(function () {
 
-        $(document).ready(function () {
+                closeLeftSidebar();
 
-            closeLeftSidebar();
-
-            $("#btnSend").click(function (e) {
-                $('#unitId').change();
-                Send(true);
-            });
-        });
-
-        function Send(toggle) {
-            $btn.button('loading');
-            $('#results').empty();
-
-            if (!ValidaDadosParaEnvio()) {
-                $btn.button('reset');
-                return;
-            }
-
-            $('#divTable').hide();
-
-            enviar["auditorId"] = GetUsuarioId();
-
-            EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
-        };
-
-        function GerarTabela(retornoArray) {
-
-            if(retornoArray.length == 0){
-                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
-            }
-
-            else{
-                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
-
-                var regraEdit = false;
-
-                var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
-                    return a.indexOf('roles') != -1;
-                })[0].split('=')[1].split(',');
-
-                var role = roles.find(function(e) {
-                    return e === 'Admin';
+                $("#btnSend").click(function (e) {
+                    $('#unitId').change();
+                    Send(true);
                 });
+            });
 
-                if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || role == 'Admin') {
-                    regraEdit = true ;
-                }else{
-                    regraEdit = false;
-                }
-                //Fim Regra
+            function Send(toggle) {
+                $btn.button('loading');
+                $('#resultsApontamentos').empty();
 
-                var Tipo1 = {};
-                var Tipo2 = {};
-                if(retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5){
-
-                    Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
-                    Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
-                }else{
-                    Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
-                    Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
+                if (!ValidaDadosParaEnvio()) {
+                    $btn.button('reset');
+                    return;
                 }
 
-                //Fim
+                $('#divTable').hide();
 
-                $('#divTable').show();
-                var table = $('#results').empty().DataTable({
-                    data: retornoArray,
-                    columns: [
+                enviar["auditorId"] = GetUsuarioId();
+
+                EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
+            };
+
+            function GerarTabela(retornoArray) {
+
+                if(retornoArray.length == 0){
+                    GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+                }
+
+                else{
+                    //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
+
+                    var regraEdit = false;
+
+                    var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
+                        return a.indexOf('roles') != -1;
+                    })[0].split('=')[1].split(',');
+
+                    var role = roles.find(function(e) {
+                        return e === 'Admin';
+                    });
+
+                    if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || role == 'Admin') {
+                        regraEdit = true ;
+                    }else{
+                        regraEdit = false;
+                    }
+                    //Fim Regra
+
+                    var Tipo1 = {};
+                    var Tipo2 = {};
+                    if(retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5){
+
+                        Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
+                        Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
+                    }else{
+                        Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
+                        Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
+                    }
+
+                    //Fim
+
+                    $('#divTable').show();
+                    var table = $('#resultsApontamentos').empty().DataTable({
+                        data: retornoArray,
+                        @*columns: [
                         { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
                         { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
@@ -152,180 +160,254 @@
                         Tipo2,
                         { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
 
-                    ],
-                    scrollX: true,
-                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "@Resources.Resource.all"]],
-                    pageLength: 10,
-                    responsive: true,
-                    loadingRecords: true,
-                    destroy: true,
-                    info: true,
-                    responsive: true,
-                    initComplete: function () {
-                        $('#loading').hide();
-                        setTimeout(function (e) {
-                            var oTable = $('#results').dataTable();
-                            if (oTable.length > 0) {
-                                oTable.fnAdjustColumnSizing();
-                            }
-                        }, 100);
+                    ],*@
 
-                        $('#results tbody').on('click', 'button', function (data, a, b) {
-
-                            var data = table.row($(this).parents('tr')).data();
-                            //console.log(data);
-                            $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
-
-                                $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                                $('#ResultLevel3_Id').val(r.Id);
-
-                                $('#changeConform').empty();
-                                //$('#changeConform').append($(r.showIntervalos));
-                                //$('#changeConform').append($(r.showConform));
-                                //$('#changeConform').append($(r.showCalculado));
-                                //$('#changeConform').append($(r.showNumeroDefeitos));
-                                //$('#changeConform').append($(r.showTexto));
-                                $('#changeConform').append($(r.showGeneric));
-                                InitiMasksDefaults();
-                                //console.log(r.Id);
-                            });
-
-                        });
-                    },
-                    createdRow: function (row, data, index) {
+                        columns: [
 
 
-                    },
-                    fnDrawCallback: function (data, d, o) {
 
+                            { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
+                            { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                            { title: "@Resources.Resource.shift", mData: "Turno" },
+                            { title: "@Resources.Resource.period", mData: "Periodo" },
+                            { title: "@Resources.Resource.auditor", mData: "Auditor"},
+                            { title: "@Resources.Resource.date", mData: "_Data" },
+                            { title: "@Resources.Resource.time", mData: "_Hora" },
+                            { title: "@Resources.Resource.audit", mData: "Indicador" },
+                            { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                            { title: "@Resources.Resource.task", mData: "Tarefa" },
+                            { title: "@Resources.Resource.weight", mData: "Peso" },
+                            {
+                                title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
 
-                    }
-                });
+                                    if (isNaN(parseFloat(data))) {
 
-                new $.fn.dataTable.Buttons(table, {
-                    buttons: [
-                        {
-                            extend: 'print',
-                            text: '@Resources.Resource.print',
-                            customize: function (win) {
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
+                                        return data;
+
+                                    } else {
+
+                                        return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                                    }
+
+                                }
                             },
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'excelHtml5',
-                            text: 'Excel',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                         {
-                             extend: 'pdf',
-                             text: 'PDF',
-                             exportOptions: {
-                                 columns: ':visible'
-                             }
-                         },
-                          {
-                              extend: 'colvis',
-                              text: '@Resources.Resource.visible_columns',
-                              exportOptions: {
-                                  columns: ':visible'
-                              }
-                          },
-                    ]
-                });
+                            {
+                                title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
 
-                table.buttons(0, null).container().prependTo(
-                    table.table().container()
-                );
+                                    if (isNaN(parseFloat(data))) {
+
+                                        return data;
+
+                                    } else {
+
+                                        return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                                    }
+
+                                }
+                            },
+                            { title: "@Resources.Resource.value", mData: "Lancado" },
+                            { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                            { title: "@Resources.Resource.na ?", mData: "_NA" },
+                            { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                            { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                            { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                            Tipo1,
+                            Tipo2,
+                            { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"},
+                        { title: "Plataforma", mData: "Platform", "width": "50%"},
+                        { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%"},
+                        { title: "@Resources.Resource.type", mData: "Type", "width": "50%"}
+
+
+                        ],
+
+                        scrollX: true,
+                        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "@Resources.Resource.all"]],
+                        pageLength: 10,
+                        responsive: true,
+                        loadingRecords: true,
+                        destroy: true,
+                        info: true,
+                        responsive: true,
+                        initComplete: function () {
+                            $('#loading').hide();
+                            setTimeout(function (e) {
+                                var oTable = $('#resultsApontamentos').dataTable();
+                                if (oTable.length > 0) {
+                                    oTable.fnAdjustColumnSizing();
+                                }
+                            }, 100);
+
+                            $('#resultsApontamentos tbody').on('click', 'button', function (data, a, b) {
+
+                                var data = table.row($(this).parents('tr')).data();
+                                //console.log(data);
+                                $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+
+                                    $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                                    $('#ResultLevel3_Id').val(r.Id);
+
+                                    $('#changeConform').empty();
+                                    //$('#changeConform').append($(r.showIntervalos));
+                                    //$('#changeConform').append($(r.showConform));
+                                    //$('#changeConform').append($(r.showCalculado));
+                                    //$('#changeConform').append($(r.showNumeroDefeitos));
+                                    //$('#changeConform').append($(r.showTexto));
+                                    $('#changeConform').append($(r.showGeneric));
+                                    InitiMasksDefaults();
+                                    //console.log(r.Id);
+                                });
+
+                            });
+                        },
+                        createdRow: function (row, data, index) {
+
+
+                        },
+                        fnDrawCallback: function (data, d, o) {
+
+
+                        }
+                    });
+
+                    new $.fn.dataTable.Buttons(table, {
+                        buttons: [
+                            {
+                                extend: 'print',
+                                text: '@Resources.Resource.print',
+                                customize: function (win) {
+                                    $(win.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                                },
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                             {
+                                 extend: 'pdf',
+                                 text: 'PDF',
+                                 exportOptions: {
+                                     columns: ':visible'
+                                 }
+                             },
+                              {
+                                  extend: 'colvis',
+                                  text: '@Resources.Resource.visible_columns',
+                                  exportOptions: {
+                                      columns: ':visible'
+                                  }
+                              },
+                        ]
+                    });
+
+                    table.buttons(0, null).container().prependTo(
+                        table.table().container()
+                    );
+
+                }
 
             }
 
-        }
+            function SalvarResultLevel3() {
 
-        function SalvarResultLevel3() {
+                var dadosResultLevel3 = {};
 
-            var dadosResultLevel3 = {};
+                if ($('#sample') != undefined) {
+                    if ($('#sample').val() > $('#numeroDeDefeitos').val()) {
+                        openMessageModal("O numero de defeitos não pode ser maior que o numero avaliado.")
+                        return;
+                    } else {
+                        dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
+                    }
+                }
 
-            if ($('#sample') != undefined) {
-                if ($('#sample').val() > $('#numeroDeDefeitos').val()) {
-                    openMessageModal("O numero de defeitos não pode ser maior que o numero avaliado.")
-                    return;
-                } else {
+                dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
+                dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
+                dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
+                if ($('#decimal').length)
+                    dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
+                if ($('#numeroDeDefeitos').length)
                     dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
+                if ($('#intervaloValor').length)
+                    dadosResultLevel3["Value"] = $('#intervaloValor').val();
+                if ($('#texto').length){
+                    dadosResultLevel3["ValueText"] = $('#texto').val();
+                    if(dadosResultLevel3.ValueText == ""){
+                        dadosResultLevel3.IsNotEvaluate = true;
+                    }
                 }
+
+                $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+                    openMessageModal('@Resources.Resource.done', '@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                }).fail(function (r, x, e) {
+                    console.log(r);
+                    console.log(x);
+                    console.log(e);
+                    openMessageModal('@Resources.Resource.impossible_refresh_result', '@Resources.Resource.impossible_refresh_result');//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+                });
             }
 
-            dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
-            dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
-            dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
-            if ($('#decimal').length)
-                dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
-            if ($('#numeroDeDefeitos').length)
-                dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
-            if ($('#intervaloValor').length)
-                dadosResultLevel3["Value"] = $('#intervaloValor').val();
-            if ($('#texto').length){
-                dadosResultLevel3["ValueText"] = $('#texto').val();
-                if(dadosResultLevel3.ValueText == ""){
-                    dadosResultLevel3.IsNotEvaluate = true;
+            function ValidaDadosParaEnvio() {
+
+                GuardJs.resetForValidation();
+                GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+                if (!(parseInt( $('#unitId').val().replace(/\D/g, ''), 10) > 0)) {
+                    GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
+                    return false;
                 }
-            }
 
-            $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-                openMessageModal('@Resources.Resource.done', '@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
-            }).fail(function (r, x, e) {
-                console.log(r);
-                console.log(x);
-                console.log(e);
-                openMessageModal('@Resources.Resource.impossible_refresh_result', '@Resources.Resource.impossible_refresh_result');//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
-            });
-        }
+                if (!(parseInt( $('#level1Id').val().replace(/\D/g, ''), 10) > 0)) {
+                    GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.select_the_level1)));
+                    return false;
+                }
 
-        function ValidaDadosParaEnvio() {
-
-            GuardJs.resetForValidation();
-            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-
-            if (!(parseInt( $('#unitId').val().replace(/\D/g, ''), 10) > 0)) {
-                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
-                return false;
-            }
-
-            if (!(parseInt( $('#level1Id').val().replace(/\D/g, ''), 10) > 0)) {
-                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.select_the_level1)));
-                return false;
-            }
-
-            @*if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
+                @*if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(@Resources.Resource.select_the_level2)));
                 return false;
             }*@
 
-            if (!GuardJs.isValid)
-                return !GuardJs.isValid;
+                if (!GuardJs.isValid)
+                    return !GuardJs.isValid;
 
-            GuardJs.esconderMensagem();
-            return true;
-        }
+                GuardJs.esconderMensagem();
+                return true;
+            }
 
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-            //formControl.showLevel2();
-            formControl.showLevel1();
+            $(document).ready(function () {
+                formControl.showFullCallendar();
+                formControl.showUnit();
+                //formControl.showLevel2();
+                formControl.showLevel1();
 
-            closeLeftSidebar();
+                closeLeftSidebar();
+                $(".sidebar-toggler").removeClass("hide");
+                $(".page-sidebar-wrapper").removeClass("hide");
+                $('button.refresh-btn-right-top').removeClass("hide");
 
-            //Remove o "Todos" da Unidade
-            $("#unitId option[value='']").remove();
-        });
+                //Remove o "Todos" da Unidade
+                $("#unitId option[value='']").remove();
+            });
 
-    </script>
+        </script>
 
-}
+    }
