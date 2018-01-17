@@ -182,17 +182,17 @@
 
                     <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
                         <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
-                            <label for="" class="">Número do produto</label>
+                            <label for="" class="">Código RP</label>
                             <br />
-                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            <input type="text" ng-change="changeProduto(); salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.Produto" class="form-control" style="width:100%!important" />
                         </div>
                         <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
-                            <label for="" class="">Produto</label>
+                            <label for="" class="">Nome do Produto</label>
                             <br />
-                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            <input type="text" disabled ng-model="linhaSelecionada.form.ProdutoName" class="form-control" style="width:100%!important" />
                         </div>
                         <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
-                            <label for="" class="">Código do produto</label>
+                            <label for="" class="">Código Formulação</label>
                             <br />
                             <input type="text" ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.CodProduto" class="form-control" style="width:100%!important" />
                         </div>
@@ -239,22 +239,26 @@
 
                         <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
 
-                            <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                <button ng-disabled="linhaSelecionada.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
-                                </button>
-                                <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userFinish.Name}}
-                                &nbsp;
-                                <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserFinish}}
-                            </div>
+                            <div class="row">
 
-                            <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="linhaSelecionada.finalizado">
-                                <button ng-disabled="linhaSelecionada.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
-                                </button>
-                                <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userValidacao.Name}}
-                                &nbsp;
-                                <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserValidacao}}
+                                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                    <button ng-disabled="linhaSelecionada.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                                    </button>
+                                    <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userFinish.Name}}
+                                    &nbsp;
+                                    <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserFinish}}
+                                </div>
+
+                                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="linhaSelecionada.finalizado">
+                                    <button ng-disabled="linhaSelecionada.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                                    </button>
+                                    <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userValidacao.Name}}
+                                    &nbsp;
+                                    <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserValidacao}}
+                                </div>
+
                             </div>
                         </div>
                     </form>
@@ -433,14 +437,14 @@
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
                                 <button ng-click="executeDocReady(true, true)" type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
+                                <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
                             </div>
 
                             <div class="modal-body" style="overflow-x:auto">
-                                <span>Horário daretirada da linha</span>
+                                <span>Horário da retirada da linha</span>
                                 <input type="time"
                                        class="form-control"
                                        placeholder=""
@@ -975,7 +979,7 @@
                         item.Lata = vm.lataSelecionada.Name
                         vm.executeDocReady(true)
                     }
-                    //vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
+                    vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                     vm.salvaLinha();
                 }
 
@@ -1301,15 +1305,32 @@
                     linha.counterDeLatas++
                 }
                 vm.deleteLata = function (linha, index, trashBin) {
-                    //if (trashBin)
-                    //    linha.latasBin.push(linha.latas[index])
-                    linha.latas.splice(index, 1)
-                    linha.latas.forEach(function (o, c) {
-                        o.Name = `Lata - ${(c + 1)}`
-                        linha["counterDeLatas"] = (c + 1)
-                    })
-                    linha["counterDeLatas"] = linha["counterDeLatas"] + 1
-                    vm.timer()
+
+                    bootbox.confirm({
+                        message: "Deseja continuar com a exclusão dessa lata?",
+                        buttons: {
+                            confirm: {
+                                label: 'Sim',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Não',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                linha.latas.splice(index, 1)
+                                linha.latas.forEach(function (o, c) {
+                                    o.Name = `Lata - ${(c + 1)}`
+                                    linha["counterDeLatas"] = (c + 1)
+                                })
+                                linha["counterDeLatas"] = linha["counterDeLatas"] + 1
+                                vm.timer()
+                            }                            
+                        }
+                    });
+                    
                 }
 
                 vm.salvaLinhaUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
@@ -1420,7 +1441,7 @@
 
                 vm.getFornecedorLata()
                 vm.getFornecedorTampaLata()
-                vm.getProdutos()
+                //vm.getProdutos()
                 vm.tipoLata()
                 vm.tipoMercado()
                 //vm.padroesAcaoCorretiva()
@@ -1449,6 +1470,15 @@
                         });
                 }
 
+                vm.changeProduto = function () {
+                    vm.searchProduto();
+                }
+
+                vm.searchProduto = function () {
+                    let produto = _.find(vm.produtos, { 'nCdProduto': parseInt(vm.linhaSelecionada.form.Produto) })
+                    vm.linhaSelecionada.form.ProdutoName = !!produto ? produto.cNmProduto : ""
+                }
+                
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
                     $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
@@ -1461,6 +1491,7 @@
                                 toastr.success(r.data.resposta)
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                vm.produtos = r.data.produtos
                                 let novaLinha = []
                                 //vm.linhas.forEach(function (o, c) {
                                 let o = vm.linhaSelecionada
@@ -1852,6 +1883,9 @@
 
                     if (cb)
                         cb()
+
+
+                    vm.searchProduto()
                 }
 
                 vm.newCorrectiveAction = function (add) {

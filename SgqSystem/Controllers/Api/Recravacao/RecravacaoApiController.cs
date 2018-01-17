@@ -34,7 +34,8 @@ namespace SgqSystem.Controllers.Api
             var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
             var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", Company, level1Id, linhaId);
             var results = QueryNinja(db, query);
-            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results });
+            var produtos = db.Database.SqlQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
+            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results, produtos = produtos });
         }
 
         
