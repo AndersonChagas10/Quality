@@ -136,703 +136,705 @@
 <script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
 <div class="page-content-wrapper">
     <div class="page-content">
+        <div class="wrapper">
+            <div ng-controller="recravacaoController as r" style="min-height: 600px;width:100%;">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-        <div ng-controller="recravacaoController as r" style="min-height: 600px;width:100%;">
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav ulIndicador">
+                        <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
+                            <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
+                                <span class="" aria-hidden="true"></span> {{indicador.Name}}
+                            </a>
+                        </li>
+                    </ul>
 
-                <ul class="nav navbar-nav ulIndicador">
-                    <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
-                        <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
-                            <span class="" aria-hidden="true"></span> {{indicador.Name}}
-                        </a>
-                    </li>
-                </ul>
+                    <ul class="nav navbar-nav ulLinha">
+                        <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" ng-show="item.IsActive == 'True'">
+                            <a href="#" ng-class="{active: linhaSelecionada.Name == item.Name}">
+                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
+                                <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                    </ul>
 
-                <ul class="nav navbar-nav ulLinha">
-                    <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" ng-show="item.IsActive == 'True'">
-                        <a href="#" ng-class="{active: linhaSelecionada.Name == item.Name}">
-                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
-                            <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                </ul>
+                </div>
 
-            </div>
+                <br />
 
-            <br />
+                <button ng-if="(linhaSelecionada.Id > 0)" id="btnStartStop"
+                        type="button"
+                        class="floatinBottonButton btn btn-success btn-sm"
+                        data-toggle="modal"
+                        data-target="#modalParadaDeLinha"
+                        ng-class="{'btn-success': (tempoEntreColetaDeLatasExpirado == false), 'btn-danger': (tempoEntreColetaDeLatasExpirado == true)}"
+                        title="Adicionar Observações">
+                    <span style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: left;">&nbsp; Anotações / Observações </span>
+                    <span ng-show="timerDaProximaLata" style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: right;">Horário da ultima coleta: {{timerDaProximaLata}}</span>
+                    <span class="glyphicon glyphicon-time" aria-hidden="true" style="color: #333; float: right; padding: 0px 5px;"></span>
+                </button>
 
-            <button ng-if="(linhaSelecionada.Id > 0)" id="btnStartStop"
-                    type="button"
-                    class="floatinBottonButton btn btn-success btn-sm"
-                    data-toggle="modal"
-                    data-target="#modalParadaDeLinha"
-                    ng-class="{'btn-success': (tempoEntreColetaDeLatasExpirado == false), 'btn-danger': (tempoEntreColetaDeLatasExpirado == true)}"
-                    title="Adicionar Observações">
-                <span style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: left;">&nbsp; Anotações / Observações </span>
-                <span ng-show="timerDaProximaLata" style="Arial, Helvetica, sans-serif;font-weight: bold;color: #333; float: right;">Horário da ultima coleta: {{timerDaProximaLata}}</span>
-                <span class="glyphicon glyphicon-time" aria-hidden="true" style="color: #333; float: right; padding: 0px 5px;"></span>
-            </button>
+                <div ng-show="linhaSelecionada.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
 
-            <div ng-show="linhaSelecionada.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
-
-                <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
-                    <div class="form-group float-label-control col-lg-2 col-md-2 col-sm-2">
-                        <label for="" class="">Código</label>
-                        <br />
-                        <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
-                    </div>
-                    <div class="form-group float-label-control col-lg-4 col-md-10 col-sm-10">
-                        <label for="" class="">Produto</label>
-                        <br />
-                        <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
-                    </div>
-                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
-                        <label for="">Hora do início da Produção</label>
-                        <br />
-                        <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="linhaSelecionada.form.HoraInicioProducao">
-                    </div>
-                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
-                        <label for="">Hora do final da Produção</label>
-                        <br />
-                        <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="linhaSelecionada.form.HoraFimProducao">
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
-                        <label for="" class="">Código do produto</label>
-                        <br />
-                        <input type="text" ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.CodProduto" class="form-control" style="width:100%!important" />
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Data do recebimento das latas</label>
-                        <br />
-                        <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Fornecedor da Lata</label>
-                        <br />
-                        <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Data do recebimento das tampas/fundos das latas</label>
-                        <br />
-                        <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Fornecedor das tampas/fundos das latas</label>
-                        <br />
-                        <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Tipo da Lata</label>
-                        <br />
-                        <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="linhaSelecionada.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
-                    </div>
-
-                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-
-                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                            <button ng-disabled="linhaSelecionada.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
-                            </button>
-                            <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userFinish.Name}}
-                            &nbsp;
-                            <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserFinish}}
+                    <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
+                        <div class="form-group float-label-control col-lg-2 col-md-2 col-sm-2">
+                            <label for="" class="">Código</label>
+                            <br />
+                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                        </div>
+                        <div class="form-group float-label-control col-lg-4 col-md-10 col-sm-10">
+                            <label for="" class="">Produto</label>
+                            <br />
+                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                        </div>
+                        <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                            <label for="">Hora do início da Produção</label>
+                            <br />
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="linhaSelecionada.form.HoraInicioProducao">
+                        </div>
+                        <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                            <label for="">Hora do final da Produção</label>
+                            <br />
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="linhaSelecionada.form.HoraFimProducao">
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                            <label for="" class="">Código do produto</label>
+                            <br />
+                            <input type="text" ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.CodProduto" class="form-control" style="width:100%!important" />
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                            <label for="">Data do recebimento das latas</label>
+                            <br />
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                            <label for="">Fornecedor da Lata</label>
+                            <br />
+                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                            <label for="">Data do recebimento das tampas/fundos das latas</label>
+                            <br />
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                            <label for="">Fornecedor das tampas/fundos das latas</label>
+                            <br />
+                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                            <label for="">Tipo da Lata</label>
+                            <br />
+                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="linhaSelecionada.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
 
-                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="linhaSelecionada.finalizado">
-                            <button ng-disabled="linhaSelecionada.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
-                            </button>
-                            <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userValidacao.Name}}
-                            &nbsp;
-                            <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserValidacao}}
+                        <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+
+                            <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <button ng-disabled="linhaSelecionada.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                                </button>
+                                <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userFinish.Name}}
+                                &nbsp;
+                                <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserFinish}}
+                            </div>
+
+                            <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="linhaSelecionada.finalizado">
+                                <button ng-disabled="linhaSelecionada.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                                </button>
+                                <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userValidacao.Name}}
+                                &nbsp;
+                                <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserValidacao}}
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
 
-            <button class="floatinBottonButton btn btn-danger btn-sm"
-                    ng-show="(saving)">
-                <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Salvando dados...</span></span>
-            </button>
+                <button class="floatinBottonButton btn btn-danger btn-sm"
+                        ng-show="(saving)">
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Salvando dados...</span></span>
+                </button>
 
-            <div class="col-lg-12 col-md-12 col-sm-12"
-                 ng-init="linhaSelecionada.IsStoped = false">
-                <div ng-show="linhaSelecionada.Id > 0 && linhaSelecionada.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="lataEmLataDetalhe in linhaSelecionada.latas track by $index" ng-init="lataIndex = $index; lataEmLataDetalhe.Name = lataEmLataDetalhe.Name" tables>
-                    <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{lataEmLataDetalhe.Name}} <span ng-show="lataEmLataDetalhe.HoraDaRetiradaDaLata"> retirada as: {{lataEmLataDetalhe.HoraDaRetiradaDaLata | date: 'HH:mm'}}</span></div>
+                <div class="col-lg-12 col-md-12 col-sm-12"
+                     ng-init="linhaSelecionada.IsStoped = false">
+                    <div ng-show="linhaSelecionada.Id > 0 && linhaSelecionada.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="lataEmLataDetalhe in linhaSelecionada.latas track by $index" ng-init="lataIndex = $index; lataEmLataDetalhe.Name = lataEmLataDetalhe.Name" tables>
+                        <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{lataEmLataDetalhe.Name}} <span ng-show="lataEmLataDetalhe.HoraDaRetiradaDaLata"> retirada as: {{lataEmLataDetalhe.HoraDaRetiradaDaLata | date: 'HH:mm'}}</span></div>
 
-                    <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
+                        <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
 
-                        <button id="correctiveActionBtn"
-                                type="button" class="btn btn-danger btn-sm"
-                                data-toggle="modal"
-                                data-target="#modalCorrectiveAction"
-                                title="Gerar Ação Corretiva para {{lataEmLataDetalhe.Name}}"
-                                ng-show="lataEmLataDetalhe.showCorrectiveAction"
-                                ng-click="selecionaLata($index, lataSelecionada.haveErrors);  newCorrectiveAction()">
-                            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                        </button>
-                        <button title="Modo Somente Visualização"
-                                type="button"
-                                class="btn btn-info btn-sm"
-                                data-toggle="modal"
-                                data-target="#myModal"
-                                ng-show="lataEmLataDetalhe.finalizado">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(linhaSelecionada, $index)">
-                            <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
-                        </button>
-                        <button type="button"
-                                class="btn btn-warning btn-sm"
-                                data-toggle="modal"
-                                title="Editar {{lataEmLataDetalhe.Name}}"
-                                ng-show="!lataEmLataDetalhe.finalizado"
-                                ng-click="executeDocReady(); selecionaLata($index)"
-                                data-target="#editModal">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm" title="Remover {{lataEmLataDetalhe.Name}}"
-                                ng-show="!lataEmLataDetalhe.finalizado"
-                                ng-click="deleteLata(linhaSelecionada, $index)">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </button>
-                        <button class="btn btn-success btn-sm"
-                                data-toggle="modal"
-                                data-target="#modalAssinaturaFinalizaLata"
-                                title="Assinar {{lataEmLataDetalhe.Name}}"
-                                type="button"
-                                ng-show="verificaSeMostraAssinaturaFinalizaLata(lataEmLataDetalhe)"
-                                ng-click="selecionaLata($index)">
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        </button>
-                    </div>
+                            <button id="correctiveActionBtn"
+                                    type="button" class="btn btn-danger btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#modalCorrectiveAction"
+                                    title="Gerar Ação Corretiva para {{lataEmLataDetalhe.Name}}"
+                                    ng-show="lataEmLataDetalhe.showCorrectiveAction"
+                                    ng-click="selecionaLata($index, lataSelecionada.haveErrors);  newCorrectiveAction()">
+                                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                            </button>
+                            <button title="Modo Somente Visualização"
+                                    type="button"
+                                    class="btn btn-info btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#myModal"
+                                    ng-show="lataEmLataDetalhe.finalizado">
+                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(linhaSelecionada, $index)">
+                                <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-warning btn-sm"
+                                    data-toggle="modal"
+                                    title="Editar {{lataEmLataDetalhe.Name}}"
+                                    ng-show="!lataEmLataDetalhe.finalizado"
+                                    ng-click="executeDocReady(); selecionaLata($index)"
+                                    data-target="#editModal">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" title="Remover {{lataEmLataDetalhe.Name}}"
+                                    ng-show="!lataEmLataDetalhe.finalizado"
+                                    ng-click="deleteLata(linhaSelecionada, $index)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-success btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#modalAssinaturaFinalizaLata"
+                                    title="Assinar {{lataEmLataDetalhe.Name}}"
+                                    type="button"
+                                    ng-show="verificaSeMostraAssinaturaFinalizaLata(lataEmLataDetalhe)"
+                                    ng-click="selecionaLata($index)">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            </button>
+                        </div>
 
-                    <table name="visualizacao" style="width: 100%">
-                        <tbody>
+                        <table name="visualizacao" style="width: 100%">
+                            <tbody>
 
-                            <tr>
-                                <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:32%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
-                            </tr>
+                                <tr>
+                                    <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:32%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                    <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                                </tr>
 
-                            <tr ng-repeat="ParLevel3 in lataEmLataDetalhe.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
-                                <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align:left !important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span> </td>
-                                <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
-                                    ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
-                                    ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                    colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
+                                <tr ng-repeat="ParLevel3 in lataEmLataDetalhe.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
+                                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align:left !important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span> </td>
+                                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
+                                        ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
+                                        ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                        colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
 
-                                    @*1 Binário ok
+                                        @*1 Binário ok
                                     2   Número de defeitos ok
                                     3   Intervalos ok
                                     4   Calculado
                                     5   Texto
                                     99  NOVO CALCULADO POR OUTRO*@
 
-                                    @*1 Binário*@
-                                    <span style="text-align: center;"
-                                          class="label "
-                                          ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
-                                          ng-class="{bgWhite: (!(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true) && !(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false)}">
-                                        <span>
-                                            <span class="validate" ng-if="lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true">
-                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                        @*1 Binário*@
+                                        <span style="text-align: center;"
+                                              class="label "
+                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                              ng-class="{bgWhite: (!(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true) && !(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false)}">
+                                            <span>
+                                                <span class="validate" ng-if="lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true">
+                                                    {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                                </span>
+                                                <span class="validate" ng-if="lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false">
+                                                    {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                                </span>
                                             </span>
-                                            <span class="validate" ng-if="lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false">
-                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                            <span ng-if="(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA')">
+                                                <span class="validate">
+                                                    {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
+                                                </span>
                                             </span>
                                         </span>
-                                        <span ng-if="(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA')">
-                                            <span class="validate">
-                                                {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
-                                            </span>
+                                        @*2 Número de defeitos*@
+                                        <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
                                         </span>
-                                    </span>
-                                    @*2 Número de defeitos*@
-                                    <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                        <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
-                                    </span>
-                                    @*3 Intervalos*@
-                                    <span class="label validate {{lataEmLataDetalhe.class}}"
-                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura)"
-                                          ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
-                                        <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                    </span>
-                                    <span class="label validate"
-                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
-                                          ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
-                                        <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                    </span>
-                                    <span class="label validate"
-                                          ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
-                                          ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed: bgRedEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
-                                        <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                    </span>
-                                    @*5 Texto*@
-                                    <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                        {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
-                                    </label>
-                                    @*99 NOVO CALCULADO POR OUTRO*@
-                                    <span class="label validate"
-                                          ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
-                                          ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                        <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}</span>
-                                    </span>
-                                </td>
-                            </tr>
+                                        @*3 Intervalos*@
+                                        <span class="label validate {{lataEmLataDetalhe.class}}"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura)"
+                                              ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        <span class="label validate"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
+                                              ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        <span class="label validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
+                                              ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed: bgRedEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        @*5 Texto*@
+                                        <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                            {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
+                                        </label>
+                                        @*99 NOVO CALCULADO POR OUTRO*@
+                                        <span class="label validate"
+                                              ng-class="{bgWhite:  (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                              ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}</span>
+                                        </span>
+                                    </td>
+                                </tr>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
-                    <div style="text-align: left; padding-top: 5px; height:40px;">
-                        <div style="float:left;">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{lataEmLataDetalhe.userValidacao.Name}}
+                        <div style="text-align: left; padding-top: 5px; height:40px;">
+                            <div style="float:left;">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{lataEmLataDetalhe.userValidacao.Name}}
+                            </div>
+                            <div style="float:right;">
+                                <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{lataEmLataDetalhe.dataUserValidacao}}
+                            </div>
                         </div>
-                        <div style="float:right;">
-                            <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{lataEmLataDetalhe.dataUserValidacao}}
-                        </div>
+
                     </div>
 
-                </div>
+                    <br />
 
-                <br />
+                    <button ng-show="linhaSelecionada.Id > 0 && !linhaSelecionada.finalizado" ng-click="novaLata(linhaSelecionada); executeDocReady(true)" title="Adicionar Lata" class="btn btn-lg btn-warning btnFloatCircleAdd">
+                        <i id="saveIcon" class="fa fa-plus"></i>
+                        <i id="loadIcon" class="fa fa-circle-o-notch fa-spin" style="display:none;"></i>
+                    </button>
+                    <button ng-show="linhaSelecionada.Id > 0" ng-click="atualizaPrametrizacaoParaNovaColeta(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
+                        <i id="saveIcon" class="fa fa-undo"></i>
+                    </button>
+                    <button ng-show="linhaSelecionada.Id > 0" ng-click="print()" title="Imprimir" class="btn btn-lg btn-info btnFloatCirclePrint">
+                        <i id="saveIcon" class="fa fa-print"></i>
+                    </button>
 
-                <button ng-show="linhaSelecionada.Id > 0 && !linhaSelecionada.finalizado" ng-click="novaLata(linhaSelecionada); executeDocReady(true)" title="Adicionar Lata" class="btn btn-lg btn-warning btnFloatCircleAdd">
-                    <i id="saveIcon" class="fa fa-plus"></i>
-                    <i id="loadIcon" class="fa fa-circle-o-notch fa-spin" style="display:none;"></i>
-                </button>
-                <button ng-show="linhaSelecionada.Id > 0" ng-click="atualizaPrametrizacaoParaNovaColeta(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
-                    <i id="saveIcon" class="fa fa-undo"></i>
-                </button>
-                <button ng-show="linhaSelecionada.Id > 0" ng-click="print()" title="Imprimir" class="btn btn-lg btn-info btnFloatCirclePrint">
-                    <i id="saveIcon" class="fa fa-print"></i>
-                </button>
-
-                @*<button ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" style="margin: 35px;" class="btn btn-primary btn-sm">
+                    @*<button ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" style="margin: 35px;" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
                 </button>
                 <button type="button" ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
                 Atualizar Parametrização / Nova Coleta
                 </button>*@
-            </div>
-            <hr />
+                </div>
+                <hr />
 
-            <!-- Modal Edit-->
-            <div class="modal fade bd-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
+                <!-- Modal Edit-->
+                <div class="modal fade bd-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
-                            <button ng-click="executeDocReady(true, true)" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
+                                <button ng-click="executeDocReady(true, true)" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-                        <div class="modal-body" style="overflow-x:auto">
-                            <span>Horário daretirada da linha</span>
-                            <input type="time"
-                                   class="form-control"
-                                   placeholder=""
-                                   ng-model="lataSelecionada.HoraDaRetiradaDaLata">
-                            <br />
-
-
-                            <table style="width: 100%" id="edit">
-                                <tbody>
-
-                                    <tr>
-                                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:20%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                        <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
-                                    </tr>
-                                    @*MOCK*@
-                                    <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
+                            <div class="modal-body" style="overflow-x:auto">
+                                <span>Horário daretirada da linha</span>
+                                <input type="time"
+                                       class="form-control"
+                                       placeholder=""
+                                       ng-model="lataSelecionada.HoraDaRetiradaDaLata">
+                                <br />
 
 
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align: left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
-                                        <td style="border:1px solid #cccccc; padding: 2px; max-width:65px;"
-                                            ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
-                                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                            colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
+                                <table style="width: 100%" id="edit">
+                                    <tbody>
 
-                                            @*1 Binário ok
+                                        <tr>
+                                            <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:20%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                            <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                                        </tr>
+                                        @*MOCK*@
+                                        <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
+
+
+                                            <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align: left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
+                                            <td style="border:1px solid #cccccc; padding: 2px; max-width:65px;"
+                                                ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
+                                                ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                                colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
+
+                                                @*1 Binário ok
                                             2   Número de defeitos ok
                                             3   Intervalos ok
                                             4   Calculado
                                             5   Texto
                                             99  NOVO CALCULADO POR OUTRO*@
 
-                                            @*3 Intervalos NAO EC ET Espessura*@
-                                            <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura))">
-                                                <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
-                                                    <input style="width:100%;"
-                                                           type="text"
-                                                           title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}} {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}"
-                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                           ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
-                                                           ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
-                                                           id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}' />
+                                                @*3 Intervalos NAO EC ET Espessura*@
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura))">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}} {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}' />
 
-                                                    <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
-                                                </span>
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
 
-                                                <input type="text"
-                                                       style="width:100%; max-width: 65px; display:none"
-                                                       ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
-                                                       id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
-                                                       ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
-                                            </span>
-
-                                            @*3 Intervalos SIM EC ET NAO ESPESSURA MOCK*@
-                                            <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET) && ParLevel3.Id != idEspessura)">
-                                                <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
-                                                    <input style="width:100%;"
-                                                           type="text"
-                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                           ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0)}"
-                                                           ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                    <input type="text"
+                                                           style="width:100%; max-width: 65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
                                                            id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
-                                                           ng-change="calcularEspessura(lataSelecionada)"
-                                                           legal="{{ParLevel3.Id == idEC ? 'EC' : 'ET'}}" />
-
-                                                    <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
                                                 </span>
 
-                                                <input type="text"
-                                                       style="width:100%; max-width: 65px; display:none"
-                                                       ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
-                                                       id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
-                                                       ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
-                                            </span>
+                                                @*3 Intervalos SIM EC ET NAO ESPESSURA MOCK*@
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET) && ParLevel3.Id != idEspessura)">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0)}"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                               ng-change="calcularEspessura(lataSelecionada)"
+                                                               legal="{{ParLevel3.Id == idEC ? 'EC' : 'ET'}}" />
 
-                                            @*3 Intervalos ESPESSURA MOCK*@
-                                            <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)">
-                                                <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
-                                                    <input style="width:100%;"
-                                                           type="text"
-                                                           title="{{lataSelecionada.espessuraTT}}"
-                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                           ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed: bgRedEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
-                                                           ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
+
+                                                    <input type="text"
+                                                           style="width:100%; max-width: 65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
                                                            id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
-                                                           ng-change="calcularEspessura(lataSelecionada)"
-                                                           legal="{{ParLevel3.Id == idEC ? 'EC' : 'ET'}}" />
-
-                                                    <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
                                                 </span>
 
-                                                <input type="text"
-                                                       style="width:100%; max-width: 65px; display:none"
-                                                       ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
-                                                       id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
-                                                       ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
-                                            </span>
+                                                @*3 Intervalos ESPESSURA MOCK*@
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               title="{{lataSelecionada.espessuraTT}}"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed: bgRedEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                               ng-change="calcularEspessura(lataSelecionada)"
+                                                               legal="{{ParLevel3.Id == idEC ? 'EC' : 'ET'}}" />
 
-                                            @*1 Binário*@
-                                            <binario leveltres="ParLevel3" lata="lataSelecionada" indexponto="$index"></binario>
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
 
-                                            @*2 Número de defeitos*@
-                                            <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                                <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
-                                                       style="width:100%; max-width: 65px;"
-                                                       ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
-                                                       ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                       ng-class="{bgWhite:  (lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)].length == 0), bgGreen: (lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] && lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] && lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
-                                                       type="number" />
+                                                    <input type="text"
+                                                           style="width:100%; max-width: 65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
+                                                           id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
+                                                </span>
 
-                                                @*<span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>*@
-                                            </span>
+                                                @*1 Binário*@
+                                                <binario leveltres="ParLevel3" lata="lataSelecionada" indexponto="$index"></binario>
 
-                                            @*5 Texto*@
-                                            <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                                <textarea class="form-control input-sm"
-                                                          style="width:100%; max-width: 65px;"
-                                                          cols="15"
-                                                          id="Observacao"
-                                                          rows="5"
-                                                          ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"></textarea>
-                                            </span>
+                                                @*2 Número de defeitos*@
+                                                <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                                    <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                           style="width:100%; max-width: 65px;"
+                                                           ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                           ng-class="{bgWhite:  (lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)].length == 0), bgGreen: (lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] && lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] && lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
+                                                           type="number" />
 
-                                            @*99 NOVO CALCULADO POR OUTRO*@
-                                            <span style="width:100%; display: block; text-align: right;"
-                                                  title="{{ParLevel3.ParLevel3Value_OuterList[0].AceitavelEntreText}}"
-                                                  ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')"
-                                                  ng-class="{bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}">
-                                                {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, linhaSelecionada.latas.indexOf(lataSelecionada), ParLevel3.Id)}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataSelecionada.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
-                                            </span>
-                                        </td>
+                                                    @*<span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>*@
+                                                </span>
 
-                                    </tr>
+                                                @*5 Texto*@
+                                                <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                                    <textarea class="form-control input-sm"
+                                                              style="width:100%; max-width: 65px;"
+                                                              cols="15"
+                                                              id="Observacao"
+                                                              rows="5"
+                                                              ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"></textarea>
+                                                </span>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                                @*99 NOVO CALCULADO POR OUTRO*@
+                                                <span style="width:100%; display: block; text-align: right;"
+                                                      title="{{ParLevel3.ParLevel3Value_OuterList[0].AceitavelEntreText}}"
+                                                      ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')"
+                                                      ng-class="{bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}">
+                                                    {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, linhaSelecionada.latas.indexOf(lataSelecionada), ParLevel3.Id)}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataSelecionada.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
+                                                </span>
+                                            </td>
 
-                        <div class="modal-footer"
-                             @*ng-mouseover="executeDocReadyComLoader(true)" *@
-                             ng-mouseover="executeDocReady(true)">
+                                        </tr>
 
-                            <button id="correctiveActionBtn"
-                                    type="button" class="btn btn-danger btn-sm"
-                                    data-toggle="modal"
-                                    data-target="#modalCorrectiveAction"
-                                    title="Gerar Ação Corretiva para {{lataSelecionada.Name}}"
-                                    ng-show="lataSelecionada.showCorrectiveAction"
-                                    ng-click="newCorrectiveAction()">
-                                @*ng-blur="executeDocReadyComLoader(true)">*@
-                                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Ação Corretiva
-                            </button>
-
-                            <button class="btn btn-success btn-sm"
-                                    data-toggle="modal"
-                                    data-target="#modalAssinaturaFinalizaLata"
-                                    title="Assinar {{lataSelecionada.Name}}"
-                                    type="button"
-                                    @*ng-blur="executeDocReadyComLoader(true)" *@
-                                    ng-show="verificaSeMostraAssinaturaFinalizaLata()">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assinar
-                            </button>
-                            <button type="button" class="btn btn-success btn-sm" ng-click="executeDocReady(true, true)">Salvar</button>
-                            <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="executeDocReady(true, true)">Fechar</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Finalizar Lata-->
-            <div class="modal fade" id="modalAssinaturaFinalizaLata" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body" style="overflow-x:auto">
-
-                            <form role="form" class="ng-pristine ng-valid">
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
-                                </div>
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
-                                </div>
-                            </form>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" ng-click="validateUserLata(user)">Validar Assinatura</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Finalizar Linha-->
-            <div class="modal fade" id="modalAssinatura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body" style="overflow-x:auto">
-
-                            <form role="form" class="ng-pristine ng-valid">
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
-                                </div>
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
-                                </div>
-                            </form>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" ng-click="finsihLine(user)">Validar Assinatura</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal ValidarLinha-->
-            <div class="modal fade" id="modalAssinaturaValidarLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body" style="overflow-x:auto">
-                            <form role="form" class="ng-pristine ng-valid">
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <input class="form-control input-sm" type="text" ng-model="user.Name" placeholder="Nome de Usuário" />
-                                </div>
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <input class="form-control input-sm" type="password" ng-model="user.Password" placeholder="Senha" />
-                                </div>
-                                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                                    <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="user.Obs" placeholder="Observações e Ações preventivas"></textarea>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" ng-click="validateLine(user)">Validar Assinatura</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal PrventiveAction-->
-            <div class="modal fade" id="modalPreventiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="preventiveAction">Ação Preventiva</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body" style="overflow-x:auto">
-                            <form role="form" class="ng-pristine ng-valid">
-                                <span>Ações anteriores para esta Lata:</span>
-                                <br />
-                                <br />
-                                <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12" ng-repeat="item in lataSelecionada.listPreventiveAction track by $index">
-                                    <span style="word-wrap: break-word; max-width:150px;">{{item.AddDate}}: {{item.Content}}</span>
-                                    <br />
-                                </div>
-                                <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                    <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="lataSelecionada.preventiveAction" placeholder="Observações e Ações preventivas"></textarea>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            <button type="button" class="btn btn-primary" ng-click="insertPreventiveAction(); executeDocReady(true, true)" data-dismiss="modal">Salvar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @*modalCorrectiveAction*@
-            <div class="modal fade" id="modalCorrectiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="preventiveAction">Ação Corretiva</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body" style="overflow-x:auto">
-                            <form role="form" name="formCA" class="ng-pristine ng-valid">
-
-                                <div class="{{formDefault6}}">
-                                    <label>Horário de parada da linha</label>
-                                    <input type="text" class="time form-control" title="Horário de parada da linha" ng-model="lataSelecionada.correctiveAction.HorarioDeParada" />
-                                </div>
-                                <div class="{{formDefault6}}">
-                                    <label>Horário de liberação da linha</label>
-                                    <input type="text"
-                                           class="time form-control"
-                                           title="Horário de liberação da linha"
-                                           ng-model="lataSelecionada.correctiveAction.HorarioDeLiberacao" />
-                                </div>
-
-
-                                <div class="clearfix"></div>
-
-                                <div class="alert alert-info {{formDefault12}}" ng-repeat="ca in lataSelecionada.correctiveActionList track by $index">
-                                    <div style="margin-bottom: 10px;">
-                                        <button type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="lataSelecionada.correctiveActionList.length > 1" ng-click="lataSelecionada.correctiveActionList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
-                                        <br />
-                                        <label>Deficiência:</label>
-                                        <textarea ng-model="ca.DescriptionFailure"
-                                                  ng-required="true"
-                                                  class="form-control custom-control"
-                                                  name="DescriptionFailure"
-                                                  rows="3"
-                                                  style="resize:none; overflow-x: hidden"></textarea>
-                                    </div>
-                                    <correctiveaction lataca="ca.correctiveAction"></correctiveaction>
-                                    <preventiveaction latapa="ca.PreventiveAction"></preventiveaction>
-                                </div>
-
-                            </form>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" ng-click="newCorrectiveAction(true)">Adicionar Ação Corretiva</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="salvaLinha(true, true)">Fechar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Anotações OBs-->
-            <div class="modal fade" id="modalParadaDeLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="preventiveAction">Observações da linha: {{linhaSelecionada.Name}}</h5>
-                            <button ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <form role="form" class="ng-pristine ng-valid col-lg-12 col-md-12 col-sm-12">
-                            <div scroll-to-bottom="linhaSelecionada.ObservacoesList" class="modal-body" style="height: 500px;overflow-y: scroll;">
-                                <div class="{{formDefault12}}" ng-repeat="item in linhaSelecionada.ObservacoesList track by $index"
-                                     ng-class="{'alert alert-info': !(item.LataComAtraso),'alert alert-danger': (item.LataComAtraso)}">
-                                    <div style="margin-bottom: 10px;">
-                                        <button ng-if="!item.LataComAtraso" type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="linhaSelecionada.ObservacoesList.length > 1" ng-click="linhaSelecionada.ObservacoesList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
-                                        <br />
-                                        <label ng-if="item.LataComAtraso">{{item.adDate}} - Observação: Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso</label>
-                                        <label ng-if="!item.LataComAtraso">{{item.adDate}} - Observação: </label>
-                                        <textarea ng-model="item.DescriptionFailure"
-                                                  ng-required="false"
-                                                  class="form-control custom-control"
-                                                  name="DescriptionFailure"
-                                                  rows="3"
-                                                  style="resize:none; overflow-x: hidden"></textarea>
-                                    </div>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
-                        </form>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" ng-show="tempoEntreColetaDeLatasExpirado" ng-disabled="!linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1].DescriptionFailure" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);">Salvar</button>
-                            <button type="button" class="btn btn-success" ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" data-dismiss="modal">Salvar e fechar</button>
+                            <div class="modal-footer"
+                                 @*ng-mouseover="executeDocReadyComLoader(true)" *@
+                                 ng-mouseover="executeDocReady(true)">
+
+                                <button id="correctiveActionBtn"
+                                        type="button" class="btn btn-danger btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#modalCorrectiveAction"
+                                        title="Gerar Ação Corretiva para {{lataSelecionada.Name}}"
+                                        ng-show="lataSelecionada.showCorrectiveAction"
+                                        ng-click="newCorrectiveAction()">
+                                    @*ng-blur="executeDocReadyComLoader(true)">*@
+                                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Ação Corretiva
+                                </button>
+
+                                <button class="btn btn-success btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#modalAssinaturaFinalizaLata"
+                                        title="Assinar {{lataSelecionada.Name}}"
+                                        type="button"
+                                        @*ng-blur="executeDocReadyComLoader(true)" *@
+                                        ng-show="verificaSeMostraAssinaturaFinalizaLata()">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assinar
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm" ng-click="executeDocReady(true, true)">Salvar</button>
+                                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="executeDocReady(true, true)">Fechar</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <!-- Modal Finalizar Lata-->
+                <div class="modal fade" id="modalAssinaturaFinalizaLata" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" ng-click="validateUserLata(user)">Validar Assinatura</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Finalizar Linha-->
+                <div class="modal fade" id="modalAssinatura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" ng-click="finsihLine(user)">Validar Assinatura</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal ValidarLinha-->
+                <div class="modal fade" id="modalAssinaturaValidarLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input class="form-control input-sm" type="text" ng-model="user.Name" placeholder="Nome de Usuário" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input class="form-control input-sm" type="password" ng-model="user.Password" placeholder="Senha" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="user.Obs" placeholder="Observações e Ações preventivas"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" ng-click="validateLine(user)">Validar Assinatura</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal PrventiveAction-->
+                <div class="modal fade" id="modalPreventiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="preventiveAction">Ação Preventiva</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <span>Ações anteriores para esta Lata:</span>
+                                    <br />
+                                    <br />
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12" ng-repeat="item in lataSelecionada.listPreventiveAction track by $index">
+                                        <span style="word-wrap: break-word; max-width:150px;">{{item.AddDate}}: {{item.Content}}</span>
+                                        <br />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="lataSelecionada.preventiveAction" placeholder="Observações e Ações preventivas"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-primary" ng-click="insertPreventiveAction(); executeDocReady(true, true)" data-dismiss="modal">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*modalCorrectiveAction*@
+                <div class="modal fade" id="modalCorrectiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="preventiveAction">Ação Corretiva</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <form role="form" name="formCA" class="ng-pristine ng-valid">
+
+                                    <div class="{{formDefault6}}">
+                                        <label>Horário de parada da linha</label>
+                                        <input type="text" class="time form-control" title="Horário de parada da linha" ng-model="lataSelecionada.correctiveAction.HorarioDeParada" />
+                                    </div>
+                                    <div class="{{formDefault6}}">
+                                        <label>Horário de liberação da linha</label>
+                                        <input type="text"
+                                               class="time form-control"
+                                               title="Horário de liberação da linha"
+                                               ng-model="lataSelecionada.correctiveAction.HorarioDeLiberacao" />
+                                    </div>
+
+
+                                    <div class="clearfix"></div>
+
+                                    <div class="alert alert-info {{formDefault12}}" ng-repeat="ca in lataSelecionada.correctiveActionList track by $index">
+                                        <div style="margin-bottom: 10px;">
+                                            <button type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="lataSelecionada.correctiveActionList.length > 1" ng-click="lataSelecionada.correctiveActionList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
+                                            <br />
+                                            <label>Deficiência:</label>
+                                            <textarea ng-model="ca.DescriptionFailure"
+                                                      ng-required="true"
+                                                      class="form-control custom-control"
+                                                      name="DescriptionFailure"
+                                                      rows="3"
+                                                      style="resize:none; overflow-x: hidden"></textarea>
+                                        </div>
+                                        <correctiveaction lataca="ca.correctiveAction"></correctiveaction>
+                                        <preventiveaction latapa="ca.PreventiveAction"></preventiveaction>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="newCorrectiveAction(true)">Adicionar Ação Corretiva</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="salvaLinha(true, true)">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Anotações OBs-->
+                <div class="modal fade" id="modalParadaDeLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="preventiveAction">Observações da linha: {{linhaSelecionada.Name}}</h5>
+                                <button ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <form role="form" class="ng-pristine ng-valid col-lg-12 col-md-12 col-sm-12">
+                                <div scroll-to-bottom="linhaSelecionada.ObservacoesList" class="modal-body" style="height: 500px;overflow-y: scroll;">
+                                    <div class="{{formDefault12}}" ng-repeat="item in linhaSelecionada.ObservacoesList track by $index"
+                                         ng-class="{'alert alert-info': !(item.LataComAtraso),'alert alert-danger': (item.LataComAtraso)}">
+                                        <div style="margin-bottom: 10px;">
+                                            <button ng-if="!item.LataComAtraso" type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="linhaSelecionada.ObservacoesList.length > 1" ng-click="linhaSelecionada.ObservacoesList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
+                                            <br />
+                                            <label ng-if="item.LataComAtraso">{{item.adDate}} - Observação: Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso</label>
+                                            <label ng-if="!item.LataComAtraso">{{item.adDate}} - Observação: </label>
+                                            <textarea ng-model="item.DescriptionFailure"
+                                                      ng-required="false"
+                                                      class="form-control custom-control"
+                                                      name="DescriptionFailure"
+                                                      rows="3"
+                                                      style="resize:none; overflow-x: hidden"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" ng-show="tempoEntreColetaDeLatasExpirado" ng-disabled="!linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1].DescriptionFailure" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);">Salvar</button>
+                                <button type="button" class="btn btn-success" ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" data-dismiss="modal">Salvar e fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
         </div>
     </div>
 </div>
@@ -975,12 +977,10 @@
                     vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                     vm.salvaLinha();
                 }
-                //f timer test
 
                 //TUDO MOCK MOCK
                 $scope.Date = moment().format('DD/MM/YYYY HH:mm')
-
-
+                
                 vm.mercado = 1
                 vm.limInferiorEspessura
                 vm.limSuperiorEspessura
@@ -1131,9 +1131,11 @@
                 }
 
                 vm.selectIndicador = function (item) {
-                    vm.indicadorSelecionado = item
-                    vm.linhaSelecionada = {}
-                    vm.getParametrizacaoLinhas(item.Id)
+                    if (vm.indicadorSelecionado != item) {
+                        vm.indicadorSelecionado = item
+                        vm.linhaSelecionada = {}
+                        vm.getParametrizacaoLinhas(item.Id)
+                    }                    
                 }
 
                 //vm.company = GetUnidadeUsuario()

@@ -1103,6 +1103,7 @@
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
     <None Include="Properties\PublishProfiles\master2.pubxml" />
@@ -1123,6 +1124,10 @@
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
     <None Include="Properties\PublishProfiles\SGQYtoara.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Local_BR.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Local_US.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Local_Ytoara.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Meu_Local.pubxml" />
     <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />

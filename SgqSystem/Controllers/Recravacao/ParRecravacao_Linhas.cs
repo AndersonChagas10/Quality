@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Recravacao
         [Required(ErrorMessage = "É necessário selecionar um Monitoramento.")]
         public int? ParLevel2_Id { get; set; }
 
-        [Display(Name = "Quantidade de Cabeças")]
+        [Display(Name = "Quantidade de Cabeçotes")]
         [Range(1, 9999999999, ErrorMessage = "Ao menos uma cabeça é necessária.")]
         public int NumberOfHeads { get; set; }
 
