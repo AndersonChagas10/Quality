@@ -1529,8 +1529,8 @@
 
         function DdlChangeEstrategico(v1, v2, v3, edit ) {
 
-            var change1 = v1 != undefined ? v1 : "";
-            var change2 = v2 != undefined ? v2 : "";
+            var change1 = v1 != undefined ? v1 : null;
+            var change2 = v2 != undefined ? v2 : null;
 
             let Dimensao_Id = $('#Dimensao_Id')
             let Objetivo_Id = $('#Objetivo_Id')
@@ -1543,12 +1543,15 @@
                 if (valor) {
                     $.get(GETObjetivo, { id: valor }, function (r) {
                         $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
                         rdy = true;
                     })
                 }
                 else {
-                    $('#Objetivo_Id').val("").attr('disabled', true);
-                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                    $('#Objetivo_Id').val(null).attr('disabled', true);
+                    $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
 
@@ -1559,10 +1562,12 @@
                 if (valor) {
                     $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
                         $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                        $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', false);
                     });
                 }
                 else {
-                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
 
@@ -1571,13 +1576,13 @@
             //$.LoadingOverlay('show')
             if (v2 != undefined) {
                 setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
-            } else {
+            }else {
                 //$('#Objetivo_Id').val(change2).change();
                 setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
             }
 
             if (v3 != undefined) {
-                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },4000)
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
             }
             //}
         }
