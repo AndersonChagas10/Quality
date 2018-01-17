@@ -2113,6 +2113,17 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                 || categoryX == "UnidadeName" || categoryX == "_StatusName" || categoryX == "Regional"
                 || categoryX == "Level1Name" || categoryX == "Level2Name" || categoryX == "Level3Name" || categoryX == "TipoIndicador") {
 
+
+                if (categoryX == "TipoIndicador") {
+
+                    if (name == "Sem planejamento operacional")
+                        name = 0;
+                    else if (name == "Diretrizes")
+                        name = 1;
+                    else if (name == "Scorecard")
+                        name = 2;
+                }
+
                 if (o.Acao[categoryX] == name) {
 
                     if (categoryY == "_Quem" || categoryY == "_GrupoCausa" || categoryY == "_CausaGenerica" || categoryY == "_ContramedidaGenerica"
