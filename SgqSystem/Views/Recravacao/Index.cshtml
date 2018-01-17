@@ -1475,8 +1475,10 @@
                 }
 
                 vm.searchProduto = function () {
-                    let produto = _.find(vm.produtos, { 'nCdProduto': parseInt(vm.linhaSelecionada.form.Produto) })
-                    vm.linhaSelecionada.form.ProdutoName = !!produto ? produto.cNmProduto : ""
+                    if (vm.linhaSelecionada.form) {
+                        let produto = _.find(vm.produtos, { 'nCdProduto': parseInt(vm.linhaSelecionada.form.Produto) })
+                        vm.linhaSelecionada.form.ProdutoName = !!produto ? produto.cNmProduto : ""
+                    }
                 }
                 
                 /*GET os Dados das linhas cadastradas*/
@@ -2148,7 +2150,8 @@
                                 <h3>Ação Corretiva</h3>
                                 <div>
                                     <label>Deficiência:</label>
-                                    <textarea ng-model="ca.DescriptionFailure"
+                                    <textarea ng-disabled="ca.IsAssinada"
+                                                ng-model="ca.DescriptionFailure"
                                                 ng-required="true"
                                                 class="form-control custom-control"
                                                 name="DescriptionFailure"
