@@ -21,6 +21,10 @@
         outline: 0;
     }
 
+    .modal-backdrop {
+        z-index: 3039 !important;
+    }
+
     .btnFloatCircleAdd {
         font-size: 32px !important;
         position: fixed;
@@ -177,35 +181,30 @@
                 <div ng-show="linhaSelecionada.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
 
                     <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
-                        <div class="form-group float-label-control col-lg-2 col-md-2 col-sm-2">
-                            <label for="" class="">Código</label>
+                        <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
+                            <label for="" class="">Número do produto</label>
                             <br />
                             <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
-                        <div class="form-group float-label-control col-lg-4 col-md-10 col-sm-10">
+                        <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
                             <label for="" class="">Produto</label>
                             <br />
                             <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
-                        <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
-                            <label for="">Hora do início da Produção</label>
-                            <br />
-                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="linhaSelecionada.form.HoraInicioProducao">
-                        </div>
-                        <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
-                            <label for="">Hora do final da Produção</label>
-                            <br />
-                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="linhaSelecionada.form.HoraFimProducao">
-                        </div>
-                        <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
                             <label for="" class="">Código do produto</label>
                             <br />
                             <input type="text" ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.CodProduto" class="form-control" style="width:100%!important" />
                         </div>
-                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                            <label for="">Data do recebimento das latas</label>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <label for="">Hora do início da Produção</label>
                             <br />
-                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="linhaSelecionada.form.HoraInicioProducao">
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <label for="">Hora do final da Produção</label>
+                            <br />
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="linhaSelecionada.form.HoraFimProducao">
                         </div>
                         <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                             <label for="">Fornecedor da Lata</label>
@@ -213,9 +212,9 @@
                             <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
                         <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                            <label for="">Data do recebimento das tampas/fundos das latas</label>
+                            <label for="">Data do recebimento das latas</label>
                             <br />
-                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
                         </div>
                         <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                             <label for="">Fornecedor das tampas/fundos das latas</label>
@@ -223,9 +222,19 @@
                             <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
                         <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                            <label for="">Data do recebimento das tampas/fundos das latas</label>
+                            <br />
+                            <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
                             <label for="">Tipo da Lata</label>
                             <br />
                             <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="linhaSelecionada.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <label for="">Tipo de Mercado</label>
+                            <br />
+                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoMercado track by item.Id" ng-model="linhaSelecionada.form.TipoMercado" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
 
                         <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
@@ -272,17 +281,17 @@
                                     ng-click="selecionaLata($index, lataSelecionada.haveErrors);  newCorrectiveAction()">
                                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                             </button>
-                            <button title="Modo Somente Visualização"
+                            @*<button title="Modo Somente Visualização"
                                     type="button"
                                     class="btn btn-info btn-sm"
                                     data-toggle="modal"
                                     data-target="#myModal"
                                     ng-show="lataEmLataDetalhe.finalizado">
                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(linhaSelecionada, $index)">
+                            </button>*@
+                            @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(linhaSelecionada, $index)">
                                 <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
-                            </button>
+                            </button>*@
                             <button type="button"
                                     class="btn btn-warning btn-sm"
                                     data-toggle="modal"
@@ -769,14 +778,6 @@
                                     <div class="alert alert-info {{formDefault12}}" ng-repeat="ca in lataSelecionada.correctiveActionList track by $index">
                                         <div style="margin-bottom: 10px;">
                                             <button type="button" class="close" style="margin-top: 10px;" title="Remover Ação Corretiva / Preventiva" ng-show="lataSelecionada.correctiveActionList.length > 1" ng-click="lataSelecionada.correctiveActionList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
-                                            <br />
-                                            <label>Deficiência:</label>
-                                            <textarea ng-model="ca.DescriptionFailure"
-                                                      ng-required="true"
-                                                      class="form-control custom-control"
-                                                      name="DescriptionFailure"
-                                                      rows="3"
-                                                      style="resize:none; overflow-x: hidden"></textarea>
                                         </div>
                                         <correctiveaction lataca="ca.correctiveAction"></correctiveaction>
                                         <preventiveaction latapa="ca.PreventiveAction"></preventiveaction>
@@ -974,7 +975,7 @@
                         item.Lata = vm.lataSelecionada.Name
                         vm.executeDocReady(true)
                     }
-                    vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
+                    //vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                     vm.salvaLinha();
                 }
 
@@ -1380,6 +1381,18 @@
                         Id: 2
                     })
                 }
+                vm.tipoMercado = function () {
+                    //MOCK
+                    vm.tipoMercado = []
+                    vm.tipoMercado.push({
+                        Name: 'Mercado Interno',
+                        Id: 1
+                    })
+                    vm.tipoMercado.push({
+                        Name: 'Mercado Externo',
+                        Id: 2
+                    })
+                }
                 vm.getFornecedorTampaLata = function () {
                     //MOCK
                     vm.fornecedorTampaLata = []
@@ -1409,6 +1422,7 @@
                 vm.getFornecedorTampaLata()
                 vm.getProdutos()
                 vm.tipoLata()
+                vm.tipoMercado()
                 //vm.padroesAcaoCorretiva()
 
                 /*GET Todas as linhas cadastradas*/
@@ -2098,6 +2112,15 @@
                     },
                     template: `<div class="alert alert-warning {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
                                 <h3>Ação Corretiva</h3>
+                                <div>
+                                    <label>Deficiência:</label>
+                                    <textarea ng-model="ca.DescriptionFailure"
+                                                ng-required="true"
+                                                class="form-control custom-control"
+                                                name="DescriptionFailure"
+                                                rows="3"
+                                                style="resize:none; overflow-x: hidden"></textarea>
+                                </div><br />
                                 <div>
                                     <label>Ação Corretiva: </label><span ng-show="!(ca.ImmediateCorrectiveAction)" class="redDot">* Campo Obrigatório</span>
                                     <label ng-show="$parent.linhaSelecionada.correctiveAction.HorarioDeParada"> Ás {{linhaSelecionada.correctiveAction.HorarioDeParada}} a linha {{linhaSelecionada.Name}} foi paralizada: </label>
