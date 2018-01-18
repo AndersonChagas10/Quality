@@ -158,3 +158,14 @@ insert into Pa_TipoProjeto(name) values ('Implantação')
 alter table Pa_Planejamento add TemaProjeto_Id int null
 
 alter table Pa_Planejamento add TipoProjeto_Id int null
+
+----------------------------------------------------------------------- 16-01-2018 - Renan Adicionar tabela Pa_Colvis (Colunas visíveis do Usuário)
+
+create table Pa_Colvis(
+	[Id] [int] IDENTITY(1,1) NOT NULL primary key,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	ColVisShow varchar(255) null,
+	ColVisHide varchar(255) null,
+	Pa_Quem_Id int not null,
+);

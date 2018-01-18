@@ -676,7 +676,6 @@
                     <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
                         <thead>
                             <tr>
-
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -718,8 +717,6 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-
-
                             </tr>
                         </thead>
                         <tbody>
@@ -765,8 +762,6 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-
-
                             </tr>
                         </tbody>
                     </table>
@@ -803,10 +798,8 @@
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">Novo Planejamento Tático Vinculado a um Planejamento Estratégico</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>
-
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
-
                 </div>
             </div>
         </div>
@@ -893,6 +886,8 @@
         });
 
         var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")'
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")'
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")'
 
     </script>
 
@@ -912,9 +907,8 @@
         <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
         <script src="~/Scripts/PANovo/js/pt-br.js"></script>
         <script src="~/Scripts/select2.min.js"></script>
-        <script src="~/Scripts/i18n/pt-BR.js"></script>*@
-
-    @*<script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
+        <script src="~/Scripts/i18n/pt-BR.js"></script>
+        <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
         <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
     <script src="~/Scripts/PANovo/js/pt-br.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
@@ -1172,6 +1166,7 @@
 
             $('#campo1Filtro').css('width', '200px');
             $('#valor1Filtro').css('width', '200px');
+
         });
 
         var selectPredecessor;
@@ -1534,10 +1529,8 @@
 
         function DdlChangeEstrategico(v1, v2, v3, edit ) {
 
-
-
-            var change1 = v1 != undefined ? v1 : "";
-            var change2 = v2 != undefined ? v2 : "";
+            var change1 = v1 != undefined ? v1 : null;
+            var change2 = v2 != undefined ? v2 : null;
 
             let Dimensao_Id = $('#Dimensao_Id')
             let Objetivo_Id = $('#Objetivo_Id')
@@ -1550,12 +1543,15 @@
                 if (valor) {
                     $.get(GETObjetivo, { id: valor }, function (r) {
                         $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
                         rdy = true;
                     })
                 }
                 else {
-                    $('#Objetivo_Id').val("").attr('disabled', true);
-                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                    $('#Objetivo_Id').val(null).attr('disabled', true);
+                    $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
 
@@ -1566,10 +1562,12 @@
                 if (valor) {
                     $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
                         $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                        $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', false);
                     });
                 }
                 else {
-                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
 
@@ -1578,13 +1576,13 @@
             //$.LoadingOverlay('show')
             if (v2 != undefined) {
                 setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
-            } else {
+            }else {
                 //$('#Objetivo_Id').val(change2).change();
                 setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
             }
 
             if (v3 != undefined) {
-                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },4000)
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
             }
             //}
         }
@@ -1661,6 +1659,9 @@
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
                     childrenEl.remove();
+
+                    $(idChildren).select2();
+
                     //if($(childrenEl).data('select2'))
                     //    childrenEl.select2('destroy')
                     //childrenEl.select2()
@@ -1701,7 +1702,7 @@
             var counter = 0;
 
             return function () {
-                var objectContainer = $('#obj');
+                var objectContainer = $('#obj:hidden');
                 var header = objectContainer.clone();
                 counter += 1;
                 var collapseId = "collapsible_obj_" + counter;
@@ -1713,18 +1714,25 @@
                 header.appendTo('#final');
                 header.show();
 
+                setTimeout(function () {
+                    header.find("select.select2-hidden-accessible").next('.select2').remove();
+                    header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
+                    header.find("select:visible").select2();
+                }, 1);
+
                 myfunction();
                 MoneyMask('R$ ');
 
                 $('.money').each(function () {
                     $(this).maskMoney('mask', $(this).val());
                 });
+
                 InitDatePiker();
 
-                $('div[id = ' + collapseId + '] select').select2({
+                //$('div[id = ' + collapseId + '] select').select2({
+                //    width: "280px"
+                //});
 
-                    width: "280px"
-                });
             };
 
         })();
@@ -1840,15 +1848,12 @@
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
-                    $('#Pa_IndicadorSgqAcao_Id').select2();
+                    form.find('.IndicadorOutros select').select2();
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
                     form.find('.ProbDesv').show();
-                    $('#Level1Id').select2();
-                    $('#Level2Id').select2();
-                    $('#Level3Id').select2();
+                    form.find('.IndicadorSgq select').select2();
                 }
-
             });
 
             $('[id=CausaGenerica_Id]').off('change').on('change', function () {
@@ -1857,14 +1862,17 @@
                 if (valor) {
                     $.get(GETGrupoCausa, { id: valor }, function (r) {
                         form.find('#GrupoCausa').empty().html(r);
+                        $('.showAsEstrategy select').select2();
                     });
                     $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
                         form.find('#ContramedidaGenerica').empty().html(rr);
+                        $('.showAsEstrategy select').select2();
                     });
                 }
                 else {
                     form.find('#GrupoCausa_Id').empty().attr('disabled', true);
                     form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    $('.showAsEstrategy select').select2();
                 }
             });
         } /*Causa Medida Etc...*/
@@ -1912,7 +1920,26 @@
 
         function ValidaAcao(listaAcoes) {
 
-            if (listaAcoes[0] != undefined) {
+            let dataIsValid = true;
+
+            $.each(listaAcoes, function (i, o) {
+
+                let parts = o._QuandoFim.split('/');
+
+                let DataInicio = new Date(parts[2], parts[1], parts[0]);
+
+                parts = o._QuandoInicio.split('/');
+
+                let DataFim = new Date(parts[2], parts[1], parts[0]);
+
+                if (DataInicio < DataFim) {
+                    alert("A Data de Início deve ser menor que a Data Fim!");
+                    dataIsValid = false;
+                    return;
+                }
+            });
+
+            if (listaAcoes[0] != undefined && dataIsValid) {
                 return true;
             } else {
                 return false;
@@ -1922,6 +1949,9 @@
         function SalvarAcaoEditada() {
             //console.log("SalvarAcaoEditada")
             var listaAcoes = [];
+
+            $('#Status').prop("disabled", false);
+
             $('.Acao').each(function (c, o) {
 
                 listaAcoes.push(SalvarAcaoAvulsa(o, true));
@@ -1931,7 +1961,11 @@
             let isValid = $('.Acao').find('.error').length == 0
             if(!isValid)  {
                 alert("Campos obrigatórios")
-                return
+                return;
+            }
+
+            if (!ValidaAcao(listaAcoes)) {
+                return;
             }
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
@@ -2017,8 +2051,8 @@
 
             selectPredecessor = encadeado;
 
-            $('#body').find('select').select2()
-            $('#body').find('select').select2('destroy')
+            //$('#body').find('select').select2()
+            //$('#body').find('select').select2('destroy')
 
             //Remove select caso exista
             $('#encadeado').find('select').remove();
@@ -2045,12 +2079,12 @@
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-                $('#modalNovo select').select2();
-                $('#modalNovo select').select2('destroy');
-                $('#modalNovo select').select2();
+                //$('#modalNovo select').select2();
+                //$('#modalNovo select').select2('destroy');
+                //$('#modalNovo select').select2();
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
-            $('#body').find('select').select2()
+            //$('#body').find('select').select2();
         }
 
         function SalvarNovo() {
@@ -2863,6 +2897,7 @@
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.find('table > tbody > tr:nth-child(19)').hide();
                 form.find('table > tbody > tr:nth-child(20)').hide();
+                form.find('table > tbody > tr:nth-child(21)').hide();
                 form.attr('id', 'formEditEstrategy');
 
                 form.find('button').each(function (o,c){
@@ -2945,7 +2980,7 @@
                 //$(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
-                //$('select').select2();
+                $('#MailTo').select2();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
@@ -3001,11 +3036,11 @@
             $.LoadingOverlay("hide", true);
             counter--;
 
-            setTimeout(function () {
-                $('select:visible').select2()
-                $('select:visible').select2('destroy')
-                $('select:visible').select2()
-            }, 500)
+            //setTimeout(function () {
+            //    $('select:visible').select2()
+            //    $('select:visible').select2('destroy')
+            //    $('select:visible').select2()
+            //}, 500)
 
             HideForOperacional();
         });
@@ -3058,14 +3093,15 @@
             $.get(urlEditPlanOp, { id: data.Id }, function (r) {
                 TesteRenan(r, 'Estrategico', data);
                 $('#modalNovo > div > div > div.modal-footer > button').show();
-                getPlanEstrat(data, a, b);
+                if (data.Estrategico_Id > 0) {
+                    getPlanEstrat(data, a, b);
+                }
             });
 
         }
 
         function getPlanEstrat(data, a, b) {
-            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
-                function (r) {
+            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true }, function (r) {
                     TesteRenan(r, 'Tatico', data);
                     $('#modalNovo > div > div > div.modal-footer > button').show();
 
@@ -3091,13 +3127,14 @@
 
                                     $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
 
-                                    try {
-                                        $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
-                                    } catch (e) {
-                                    }
-                                    finally {
-                                        $('#formEditTatico #modalLindo select').select2();
-                                    }
+                                    //try {
+                                    //    $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
+                                    //} catch (e) {
+                                    //}
+                                    //finally {
+                                    //    $('#formEditTatico #modalLindo select').select2();
+                                    //}
+
 
                                 });
                             });
@@ -3105,8 +3142,9 @@
                         });
                     });
                     //HideForOperacional();
-
-                    getAcao(data, a, b);
+                    if (data.Acao.Id > 0) {
+                        getAcao(data, a, b);
+                    }
                 }
             );
         }
@@ -3125,12 +3163,14 @@
                     $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                    $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
+                    $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status).prop('disabled', true);;
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
                     $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+
                     setTimeout(function () {
                         $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                        $('.content3 select').select2();
                     }, 1);
 
                     $(r).attr("id", "formEditAcao")
@@ -3152,8 +3192,10 @@
 
                     $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
                     $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
+
                 });
         }
+
 
     </script>
 

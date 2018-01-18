@@ -67,9 +67,9 @@
                 }).
                     then(function (r) {
                         $scope.cluster = r.data;
-                    });
+                        AtribuiCluster();
 
-                //}
+                    });
             }
 
             $scope.GetListStructureVinculadoCluster = function () {
@@ -197,6 +197,7 @@
                     }).
                         then(function (r) {
                             $scope.level2 = r.data;
+                            AtribuiLevel2();
                         });
                 }
                 else {
@@ -207,9 +208,11 @@
                         }).
                             then(function (r) {
                                 $scope.level2 = r.data;
+                                AtribuiLevel2();
                             });
                     } else {
                         $scope.level2 = [];
+                        AtribuiLevel2();
                     }
                 }
             }
@@ -254,3 +257,15 @@
 
         }]);
 })();
+
+function AtribuiCluster() {
+    setTimeout(function () {
+        enviar['clusterSelected_Id'] = document.getElementById('clusterId').value;
+    }, 1);
+}
+
+function AtribuiLevel2() {
+    setTimeout(function () {
+        enviar['level2Id'] = document.getElementById('level2Idv').value;
+    }, 1);
+}
