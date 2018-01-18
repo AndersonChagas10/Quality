@@ -472,10 +472,10 @@
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td class="tg-s6z2"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
                     </tr>
                     <tr>
-                        <td class="tg-s6z2"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
                     </tr>
                 </table>
                 <div class="" style="width:100%">
@@ -704,11 +704,11 @@
                                 <col style="width: 28.3%;">
                             </colgroup>
                             @*<tr>
-                                    <th>Hora (1)</th>
-                                    <th>DEFICIÊNCIA (2)</th>
-                                    <th>AÇÃO CORRETIVA (3)</th>
-                                    <th>AÇÃO PREVENTIVA (4)</th>
-                                </tr>*@
+                        <th>Hora (1)</th>
+                        <th>DEFICIÊNCIA (2)</th>
+                        <th>AÇÃO CORRETIVA (3)</th>
+                        <th>AÇÃO PREVENTIVA (4)</th>
+                    </tr>*@
                             <tr>
                                 <td class="tbodyTd">
                                     {{acoes.AddDate}}
@@ -745,7 +745,7 @@
                 </div>
 
                 @*OBS*@
-                <div class="divTableCorrectiveAction" style="padding-top: 20px;">
+                <div ng-show="!seletedLinha.ObservacoesList.length" class="divTableCorrectiveAction" style="padding-top: 20px;">
 
                     <table class="tableCorrectiveAction">
                         <colgroup>
@@ -759,7 +759,11 @@
                     </table>
                 </div>
 
-                <div ng-repeat="item in seletedLinha.ObservacoesList | limitTo:999 track by $index">
+                <div ng-show="seletedLinha.ObservacoesList.length">
+                    <span class="text-center" style="width: 100%">Nenhuma observação registrada</span>
+                </div>
+
+                <div ng-show="seletedLinha.ObservacoesList.length > 0" ng-repeat="item in seletedLinha.ObservacoesList | limitTo:999 track by $index">
 
                     <table class="tableCorrectiveAction" ng-if="item.DescriptionFailure">
                         <colgroup>
@@ -791,7 +795,7 @@
                     </tr>
                 </table>
             </div>
-        </page>
+</page>
     </div>
 </body>
 </html>
