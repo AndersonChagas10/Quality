@@ -26,26 +26,35 @@ namespace SgqSystem.Controllers.Api
         }
 
         // GET: api/RecravacaoApi
-        public HttpResponseMessage Get(int Company, int level1Id, int linhaId)
+        /// <summary>
+        /// Chamado quando requisitados dados de uma coleta existente para uma Linha da Recravação.
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="level1Id"></param>
+        /// <param name="linhaId"></param>
+        /// <returns></returns>
+        public HttpResponseMessage Get(int companyId, int level1Id, int linhaId)
         {
             var requestResults = Request.Content.ReadAsStringAsync().Result;
             var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
-            var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", Company, level1Id, linhaId);
+            var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", companyId, level1Id, linhaId);
             var results = QueryNinja(db, query);
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results });
         }
 
         // POST: api/RecravacaoApi
+        /// <summary>
+        /// Chamado ao salvar uma coleta.
+        /// </summary>
+        /// <returns></returns>
         public HttpResponseMessage Post()
         {
-            ////Teste de erros não controlados
-            //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
+            //TesteDeErrosNaoControlados();
             var model = string.Empty;
 
             try
             {
-                ////Teste de erros controlados
-                //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
+                //TesteDeErrosControlados();
                 model = Request.Content.ReadAsStringAsync().Result;
                 System.Web.Script.Serialization.JavaScriptSerializer json_serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 dynamic dados = json_serializer.DeserializeObject(model);
@@ -57,8 +66,8 @@ namespace SgqSystem.Controllers.Api
                 bool salvoParaInserirNovaColeta = false;
                 bool isValidated = false;
                 var existente = db.RecravacaoJson.FirstOrDefault(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)?.Id;
-                
-                if(IsPropertyExist(dados, "isValidated"))
+
+                if (IsPropertyExist(dados, "isValidated"))
                     isValidated = dados["isValidated"];
 
                 if (IsPropertyExist(dados, "SalvoParaInserirColeta"))
@@ -68,7 +77,7 @@ namespace SgqSystem.Controllers.Api
                     Update(linhaStringFormatada, existente);
                 else
                 {
-                    if (existente.GetValueOrDefault() > 0  && salvoParaInserirNovaColeta == true)
+                    if (existente.GetValueOrDefault() > 0 && salvoParaInserirNovaColeta == true)
                         UpdateRecravacaoJsonParaNovaColeta(linhaStringFormatada, existente.GetValueOrDefault());
                     else
                         Save(linhaStringFormatada, idLinha, idCompany, parLevel1_Id);
@@ -92,23 +101,7 @@ namespace SgqSystem.Controllers.Api
 
         }
 
-        private void UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente)
-        {
-            var updateRecravacaoJsonFinalizaColetaValidada = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
-            updateRecravacaoJsonFinalizaColetaValidada.ObjectRecravacaoJson = linhaStringFormatada;
-            updateRecravacaoJsonFinalizaColetaValidada.AlterDate = DateTime.Now;
-            updateRecravacaoJsonFinalizaColetaValidada.isValidated = true;
-            repo.Save(updateRecravacaoJsonFinalizaColetaValidada);
-        }
-
-        private void UpdateRecravacaoJsonParaNovaColeta(string linhaStringFormatada, int? existente)
-        {
-            var updateRecravacaoJsonNovaColeta = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
-            updateRecravacaoJsonNovaColeta.ObjectRecravacaoJson = linhaStringFormatada;
-            updateRecravacaoJsonNovaColeta.AlterDate = DateTime.Now;
-            updateRecravacaoJsonNovaColeta.SalvoParaInserirNovaColeta = existente;
-            repo.Save(updateRecravacaoJsonNovaColeta);
-        }
+        #region Aux Private
 
         private void Save(string linhaStringFormatada, int idLinha, int idCompany, int parLevel1_Id)
         {
@@ -133,6 +126,24 @@ namespace SgqSystem.Controllers.Api
             repo.Save(updateRecravacaoJson);
         }
 
+        private void UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente)
+        {
+            var updateRecravacaoJsonFinalizaColetaValidada = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
+            updateRecravacaoJsonFinalizaColetaValidada.ObjectRecravacaoJson = linhaStringFormatada;
+            updateRecravacaoJsonFinalizaColetaValidada.AlterDate = DateTime.Now;
+            updateRecravacaoJsonFinalizaColetaValidada.isValidated = true;
+            repo.Save(updateRecravacaoJsonFinalizaColetaValidada);
+        }
+
+        private void UpdateRecravacaoJsonParaNovaColeta(string linhaStringFormatada, int? existente)
+        {
+            var updateRecravacaoJsonNovaColeta = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
+            updateRecravacaoJsonNovaColeta.ObjectRecravacaoJson = linhaStringFormatada;
+            updateRecravacaoJsonNovaColeta.AlterDate = DateTime.Now;
+            updateRecravacaoJsonNovaColeta.SalvoParaInserirNovaColeta = existente;
+            repo.Save(updateRecravacaoJsonNovaColeta);
+        }
+
         private bool IsPropertyExist(dynamic obj, string name)
         {
             try
@@ -149,5 +160,16 @@ namespace SgqSystem.Controllers.Api
             //return obj.GetType().GetProperty(name) != null;
         }
 
+        private static void TesteDeErrosControlados()
+        {
+            throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
+        }
+
+        private static void TesteDeErrosNaoControlados()
+        {
+            throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
+        }
+
+        #endregion
     }
 }

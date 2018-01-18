@@ -873,11 +873,73 @@
         */
         app.controller('recravacaoController', ['$scope', '$http', '$timeout', '$interval',
             function ($scope, $http, $timeout, $interval) {
+
                 let vm = $scope
                 vm.dev = true
                 vm.jbsBrasil = false
 
-                //timer test
+                vm.formDefault = 'form-group float-label-control col-lg-6 col-md-12 col-sm-12'
+                vm.formDefault6 = 'form-group float-label-control col-lg-6 col-md-6 col-sm-6'
+                vm.formDefault12 = 'form-group float-label-control col-lg-12 col-md-12 col-sm-12'
+                vm.Date = moment().format('DD/MM/YYYY HH:mm')
+                vm.mercado = 1
+                vm.limInferiorEspessura
+                vm.limSuperiorEspessura
+                vm.valorEt
+                vm.valorEc
+                vm.linhas = [{}]
+                vm.produtos = [{}]
+                vm.fornecedorLata = [{}]
+                vm.fornecedorTampaLata = [{}]
+                vm.linhaSelecionada = { Id: 0 }
+                vm.lataSelecionada = {}
+                vm.activeInLine = 0
+                vm.semDados = 'bgWhite'
+                vm.na = 'bgYellow'
+                vm.nc = 'bgRed'
+                vm.conform = 'bgGreen'
+
+                vm.espessuraTT = function () {
+                    let lata = vm.lataSelecionada
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
+                            lata.espessuraTT = `Lim. Inferior ${lata["limInferiorEspessura"]}, lim. superior ${lata["limSuperiorEspessura"]}`
+                            //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
+                        else
+                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
+                }
+                vm.bgGreenEspessura = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idEC.toString()]
+                                let valorEt = lata.ResultValue[vm.idET.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                                vm.espessuraTT()
+                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+                vm.bgRedEspessura = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idEC.toString()]
+                                let valorEt = lata.ResultValue[vm.idET.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                                vm.espessuraTT()
+                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+
+                //timer
                 var intervalId;
                 vm.counter = 0;
                 vm.horas = 1
@@ -885,11 +947,9 @@
                 vm.countdown = $scope.initialCountdown;
                 vm.startTime = new Date()
                 vm.myTotal = 3600000 * vm.horas
-                $scope.tempoEntreColetaDeLatasExpirado = false
-                $scope.modalObsAberto = false
-                $scope.firstLataInAftherObs = false
-
-
+                vm.tempoEntreColetaDeLatasExpirado = false
+                vm.modalObsAberto = false
+                vm.firstLataInAftherObs = false
 
                 vm.timer = function (noFlag) {
                     if (intervalId)
@@ -962,63 +1022,7 @@
                     vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                     vm.salvaLinha();
                 }
-                //f timer test
-
-                //TUDO MOCK MOCK
-                $scope.Date = moment().format('DD/MM/YYYY HH:mm')
-
-
-                vm.mercado = 1
-                vm.limInferiorEspessura
-                vm.limSuperiorEspessura
-                vm.valorEt
-                vm.valorEc
-                vm.espessuraTT = function () {
-                    let lata = vm.lataSelecionada
-                    if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
-                            lata.espessuraTT = `Lim. Inferior ${lata["limInferiorEspessura"]}, lim. superior ${lata["limSuperiorEspessura"]}`
-                            //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
-                        else
-                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
-                }
-
-                vm.bgGreenEspessura = function (value, item) {
-                    let lata = item
-                    if (lata)
-                        if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idEC.toString()]
-                                let valorEt = lata.ResultValue[vm.idET.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
-                                vm.espessuraTT()
-                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
-                                    return true
-                            } else
-                                return false
-                }
-                vm.bgRedEspessura = function (value, item) {
-                    let lata = item
-                    if (lata)
-                        if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idEC.toString()]
-                                let valorEt = lata.ResultValue[vm.idET.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
-                                vm.espessuraTT()
-                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
-                                    return true
-                            } else
-                                return false
-                }
-
-
-                vm.semDados = 'bgWhite'
-                vm.na = 'bgYellow'
-                vm.nc = 'bgRed'
-                vm.conform = 'bgGreen'
+                //fim timer
 
                 vm.getClassBinario = function (value, item) {
                     let lata = item
@@ -1035,19 +1039,7 @@
                         return lata["class"]
                     }
                 }
-                //FIM TUDO MOCK MOCK
-
-                vm.formDefault = 'form-group float-label-control col-lg-6 col-md-12 col-sm-12'
-                vm.formDefault6 = 'form-group float-label-control col-lg-6 col-md-6 col-sm-6'
-                vm.formDefault12 = 'form-group float-label-control col-lg-12 col-md-12 col-sm-12'
-
-                vm.linhas = [{}]
-                vm.produtos = [{}]
-                vm.fornecedorLata = [{}]
-                vm.fornecedorTampaLata = [{}]
-                vm.linhaSelecionada = { Id: 0 }
-                vm.lataSelecionada = {}
-                vm.activeInLine = 0
+              
                 vm.getUser = function () {
                     return {
                         Id: GetUsuarioId(),
@@ -1086,7 +1078,7 @@
 
                 }
 
-                $scope.sorterFunc = function (item) {
+                vm.sorterFunc = function (item) {
                     //return parseInt(item['Description']);
                     return item['OrderColumn']
                 };
@@ -1103,7 +1095,7 @@
                 }
 
                 vm.carregaIndicadores = function (showMensagem) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=0&linhaId=0" })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0&linhaId=0" })
                           .then(function (r) {
                               if (r.data.errors) {
                                   r.data.errors.forEach(function (o) {
@@ -1123,7 +1115,6 @@
                     vm.getParametrizacaoLinhas(item.Id)
                 }
 
-                //vm.company = GetUnidadeUsuario()
                 vm.getAllLinha = function (index, needFindIndex, showMensagem) {
                     //vm.linhaSelecionada = vm.linhas[index]
                     //vm.activeInLine = vm.linhaSelecionada.Id
@@ -1324,7 +1315,6 @@
                 }
 
                 //*Carrega DDLs
-
                 vm.getProdutos = function () {
                     //MOCK
                     vm.produtos = []
@@ -1377,29 +1367,14 @@
                         Id: 2
                     })
                 }
-                //vm.padroesAcaoCorretiva = function () {
-                //    //MOCK
-                //    vm.padroesAcaoCorretivaList = []
-                //    vm.padroesAcaoCorretivaList.push({
-                //        Name: 'JBS Lins',
-                //        Id: 1
-                //    })
-                //    vm.padroesAcaoCorretivaList.push({
-                //        Name: 'Outros',
-                //        Id: 2
-                //    })
-                //}
-
                 vm.getFornecedorLata()
                 vm.getFornecedorTampaLata()
                 vm.getProdutos()
                 vm.tipoLata()
-                //vm.padroesAcaoCorretiva()
 
                 /*GET Todas as linhas cadastradas*/
-
                 vm.getParametrizacaoLinhas = function (idLevel1) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1422,7 +1397,7 @@
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
+                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?companyId=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1496,24 +1471,6 @@
                         });
                 }
 
-                //Não utilizado ainda
-                vm.getFormula = function (expressaoArr) {
-                    let expressaoFinal = ''
-                    //expressaoArr.forEach(function(o, c){
-                    for (var i = 0; i < expressaoArr.length; i++) {
-                        let o = expressaoArr[i]
-                        if (o.Operator == "dados") {
-                            expressaoFinal += `(${o.OuterLevel3_Text}) `
-                        } else {
-                            expressaoFinal += `${o.Operator} `
-                        }
-                    }
-                    //})
-                    return expressaoFinal
-                }
-
-                //REAL TIME NA INSERÇÃO DE DADOS
-
                 //OTIMIZAR
                 vm.geraIdCalc = function (ind, expressaoArr, lataIndex, parlevel3Name) {
                     let expressaoFinal = ''
@@ -1558,7 +1515,6 @@
                         return floatValue
                     }
                 }
-                //FIM REAL TIME NA INSERÇÃO DE DADOS
 
                 vm.resultObj = {}
                 vm.SetResult = function (result, data, index) {
@@ -1572,22 +1528,6 @@
                     vm.lataSelecionada.haveErrors = $($event.currentTarget).parents('.modal').find('table').find('.bgRed').length ? true : false
                     console.log(vm.lataSelecionada)
                     console.log(vm.lataSelecionada.haveErrors)
-                }
-
-                //DEPRECIADO
-                vm.saveAndClose = function (item, remove) {
-                    //console.log(item)
-                    //item["liberaAssinaturaLata"] = false
-                    let vmItem = item
-                    let index = vm.linhaSelecionada.latas.indexOf(item)
-                    let numeroDePontos = vm.linhaSelecionada.TipoDeLata.NumberOfPoints
-
-                    vm.salvaLinha()
-                    return true
-
-                    item = vmItem
-                    vm.salvaLinha()
-                    return true
                 }
 
                 vm.validateUserUrl = '@Url.Action("AuthenticationLogin", "api/User")'//"http://localhost:57506/api/User/AuthenticationLogin"
@@ -1665,18 +1605,19 @@
                         });
                 }
 
-                //vm.getParametrizacaoLinhas()
                 vm.carregaIndicadores(true)
 
                 vm.executeDocReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
                     setTimeout(function () { vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) }, 325)
                 }
+
                 vm.executeDocReadyComLoader = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
                     setTimeout(function () {
                         $.LoadingOverlay('show')
                         vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader, function () { $.LoadingOverlay('hide', true) })
                     }, 325)
                 }
+
                 vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader, cb) {
                     $('select').select2({ allowClear: true })
                     $('.decimal').each(function (index) {
@@ -1900,61 +1841,6 @@
                     }
                 }
 
-                vm.TimerOn = function (isLoadData, cb) {
-                    //if (vm.linhaSelecionada.latas)
-                    //    vm.startTime = new Date(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
-                    //else
-                    //    vm.startTime = new Date()
-                    //vm.ExcedidoTempoLimite = false
-                    //vm.StartColetaDeLata = moment();
-                    //vm.TimeoutProximaLata = $timeout($scope.onTimeout, 1000);
-
-                    //if (cb)
-                    //    cb()
-                }
-
-                vm.TimerOff = function () {
-                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
-                    vm.duration = moment.duration(vm.diffTime);
-                    let //years = duration.years(),
-                        days = vm.duration.days(),
-                        hrs = vm.duration.hours(),
-                      mins = vm.duration.minutes(),
-                      secs = vm.duration.seconds();
-                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
-                    $timeout.cancel(vm.mytimeout);
-                }
-
-                vm.diffTime
-                vm.duration
-                $scope.onTimeout = function () {
-                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
-                    vm.duration = moment.duration(vm.diffTime);
-                    let //years = duration.years(),
-                        days = vm.duration.days(),
-                        hrs = vm.duration.hours(),
-                      mins = vm.duration.minutes(),
-                      secs = vm.duration.seconds();
-
-                    //if (hrs > 1)
-                    //    vm.linhaSelecionada.ExcedidoTempoLimite = true
-
-                    //SEM MOCK
-                    if (hrs > 1 || days > 1)
-                        vm.ExcedidoTempoLimite = true
-                    else
-                        vm.ExcedidoTempoLimite = false
-
-                    //MOCK PARA Testes
-                    if (secs > 20 || mins > 1 || hrs > 1 || days > 1)
-                        vm.ExcedidoTempoLimite = true
-                    else
-                        vm.ExcedidoTempoLimite = false
-
-                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
-                    vm.mytimeout = $timeout($scope.onTimeout, 1000);
-                }
-
                 vm.generateIdParaOutroCalculado = function (ParLevel3, index) {
                     return ((ParLevel3.Id + " - " + ParLevel3.Name + (index + 1)).replace(/ /g, '').replace('.', ''))
                 }
@@ -1989,6 +1875,7 @@
                         openInNewTab(urlPrint)
                     }
                 }
+
                 function init() {
                     $(document).on('keydown', function (e) {
                         if (e.ctrlKey && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80)) {
@@ -2019,9 +1906,98 @@
                         vm.idOVERLAP = 3327
                     }
                 }
+
                 init();
 
-                /*Não utilizado FIM*/
+                //DREPRECIADO VERIFICAR
+                vm.diffTime
+
+                vm.duration
+
+                vm.TimerOn = function (isLoadData, cb) {
+                    //if (vm.linhaSelecionada.latas)
+                    //    vm.startTime = new Date(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    //else
+                    //    vm.startTime = new Date()
+                    //vm.ExcedidoTempoLimite = false
+                    //vm.StartColetaDeLata = moment();
+                    //vm.TimeoutProximaLata = $timeout($scope.onTimeout, 1000);
+
+                    //if (cb)
+                    //    cb()
+                }
+
+                vm.TimerOff = function () {
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.duration = moment.duration(vm.diffTime);
+                    let //years = duration.years(),
+                        days = vm.duration.days(),
+                        hrs = vm.duration.hours(),
+                      mins = vm.duration.minutes(),
+                      secs = vm.duration.seconds();
+                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    $timeout.cancel(vm.mytimeout);
+                }
+
+                vm.onTimeout = function () {
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.duration = moment.duration(vm.diffTime);
+                    let //years = duration.years(),
+                        days = vm.duration.days(),
+                        hrs = vm.duration.hours(),
+                      mins = vm.duration.minutes(),
+                      secs = vm.duration.seconds();
+
+                    //if (hrs > 1)
+                    //    vm.linhaSelecionada.ExcedidoTempoLimite = true
+
+                    //SEM MOCK
+                    if (hrs > 1 || days > 1)
+                        vm.ExcedidoTempoLimite = true
+                    else
+                        vm.ExcedidoTempoLimite = false
+
+                    //MOCK PARA Testes
+                    if (secs > 20 || mins > 1 || hrs > 1 || days > 1)
+                        vm.ExcedidoTempoLimite = true
+                    else
+                        vm.ExcedidoTempoLimite = false
+
+                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                    vm.mytimeout = $timeout($scope.onTimeout, 1000);
+                }
+
+                vm.saveAndClose = function (item, remove) {
+                    //console.log(item)
+                    //item["liberaAssinaturaLata"] = false
+                    let vmItem = item
+                    let index = vm.linhaSelecionada.latas.indexOf(item)
+                    let numeroDePontos = vm.linhaSelecionada.TipoDeLata.NumberOfPoints
+
+                    vm.salvaLinha()
+                    return true
+
+                    item = vmItem
+                    vm.salvaLinha()
+                    return true
+                }
+
+                vm.getFormula = function (expressaoArr) {
+                    let expressaoFinal = ''
+                    //expressaoArr.forEach(function(o, c){
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            expressaoFinal += `(${o.OuterLevel3_Text}) `
+                        } else {
+                            expressaoFinal += `${o.Operator} `
+                        }
+                    }
+                    //})
+                    return expressaoFinal
+                }
+
+                //FIM DREPRECIADO VERIFICAR
 
             }])
             .filter('mathPow', function () {
@@ -2194,29 +2170,6 @@
                                 </span>`
                 }
             })
-            //.directive("progressbar", function () {
-            //    return {
-            //        restrict: "A",
-            //        scope: {
-            //            total: "=",
-            //            current: "="
-            //        },
-            //        link: function (scope, element) {
-
-            //            scope.$watch("current", function (value) {
-            //                element.css("width", scope.current / scope.total * 100 + "%");
-            //            });
-            //            scope.$watch("total", function (value) {
-            //                element.css("width", scope.current / scope.total * 100 + "%");
-            //            })
-            //        }
-            //    };
-            //})
-            //.filter('secondsToDateTime', [function () {
-            //    return function (seconds) {
-            //        return new Date(1970, 0, 1).setSeconds(seconds);
-            //    };
-            //}])
 
     })();
 
