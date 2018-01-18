@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Helper;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -50,17 +51,19 @@ namespace SgqSystem.Controllers.Recravacao
             return View("Create", model);
         }
 
-        [HttpPost]
-        public ActionResult Edit(ParRecravacao_Linhas collection)
-        {
-            return Create(collection);
-        }
-
         // GET: RecravacaoTipoLata/Details/5
         public ActionResult Details(int id)
         {
             ParRecravacao_Linhas model = GetTipoLinhas(id);
             return View(model);
+        }
+
+        #region PostBack
+
+        [HttpPost]
+        public ActionResult Edit(ParRecravacao_Linhas collection)
+        {
+            return Create(collection);
         }
 
         // POST: RecravacaoTipoLata/Create
@@ -82,6 +85,10 @@ namespace SgqSystem.Controllers.Recravacao
                 return View();
             }
         }
+
+        #endregion
+
+        #region Aux
 
         private void Save(ParRecravacao_Linhas model)
         {
@@ -135,10 +142,10 @@ namespace SgqSystem.Controllers.Recravacao
                           , model.ParRecravacao_TypeLata_Id.ToString()
                           , model.NumberOfHeads.ToString()
                           , model.Description
-                          , "GETDATE()" 
+                          , "GETDATE()"
                           , model.IsActive ? "1" : "0"
                           , model.ParLevel2_Id
-                          ); 
+                          );
 
                 model.Id = int.Parse(db.Database.SqlQuery<decimal>(insert).FirstOrDefault().ToString());
             }
@@ -151,5 +158,21 @@ namespace SgqSystem.Controllers.Recravacao
                 model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas WHERE Id = " + id).FirstOrDefault();
             return model;
         }
+
+        private List<ParRecravacao_Linhas> ListaLinhas()
+        {
+            var model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas ORDER BY IsActive").OrderByDescending(r => r.IsActive == false).ToList();
+            foreach (var linha in model)
+            {
+                if (linha.ParCompany_Id > 0)
+                    linha.ParCompany = new ParCompany { Name = db.ParCompany.FirstOrDefault(r => r.Id == linha.ParCompany_Id).Name };
+                if (linha.ParRecravacao_TypeLata_Id > 0)
+                    linha.TipoLata = new ParRecravacao_TipoLata { Name = db.Database.SqlQuery<ParRecravacao_TipoLata>($@"SELECT Name FROM ParRecravacao_TipoLata where id = {linha.ParRecravacao_TypeLata_Id}").FirstOrDefault().Name };
+            }
+
+            return model;
+        } 
+
+        #endregion
     }
 }
