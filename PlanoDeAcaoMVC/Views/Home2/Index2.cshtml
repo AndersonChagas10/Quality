@@ -422,18 +422,22 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="col-sm-6">
+                            <h4>Tarefas em Andamento</h4>
                             <table id="tableAndamento" class="table table-striped"></table>
                         </div>
                         <div class="col-sm-6">
+                            <h4>Tarefas Atrasadas</h4>
                             <table id="tableAtrasadas" class="table table-striped"></table>
                         </div>
                     </div>
                     <div style="clear:both; height: 40px;"></div>
                     <div class="col-sm-12">
                         <div class="col-sm-6">
+                            <h4>Próximas Tarefas</h4>
                             <table id="tableProximas" class="table table-striped"></table>
                         </div>
                         <div class="col-sm-6">
+                            <h4>Tarefas em Aberto</h4>
                             <table id="tableAbertas" class="table table-striped"></table>
                         </div>
                     </div>
@@ -449,6 +453,28 @@
 
 <script>
     $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
+
+        let Categories = [];
+        let Data = [];
+
+        Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+       
+        Data = [];
+
+        Categories.forEach(function (c, o) {
+
+            let qtdConcluido = $.grep(dados, function (r) {
+                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
+            }).length;
+
+            let qtdDeGerencia = $.grep(dados, function (r) {
+                return r.Gerencia == c;
+            }).length;
+
+            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+            Data.push(porcConcluidos);
+        });
 
         Highcharts.chart('graficoPorGerencia', {
 
@@ -466,16 +492,35 @@
             },
 
             xAxis: {
-                categories: ['CSC', 'IND', 'COM', 'Automidia']
+                categories: Categories
             },
 
             series: [{
                 type: 'column',
                 colorByPoint: true,
-                data: [100, 94, 100, 61],
+                data: Data,
                 showInLegend: false
             }]
 
+        });
+
+        Categories = Object.values(MapeiaValorParaHC(dados, "Iniciativa").filter(onlyUnique));
+
+        Data = [];
+
+        Categories.forEach(function (c, o) {
+
+            let qtdConcluido = $.grep(dados, function (r) {
+                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+            }).length;
+
+            let qtdDeGerencia = $.grep(dados, function (r) {
+                return r.Iniciativa == c;
+            }).length;
+
+            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+            Data.push(porcConcluidos);
         });
 
         Highcharts.chart('graficoPorProjetos', {
@@ -491,13 +536,13 @@
             },
 
             xAxis: {
-                categories: ['Painel RA', 'Consulta Prazo Liberacao Bloqueios', 'Diferencas de Peso entre coligadas', 'Melhorias Consulta Prazo Liberação Bloqueios', 'Integração Sistema Lab', 'RA Data Produção Motivos', 'Melhorias Questionario']
+                categories: Categories
             },
 
             series: [{
                 type: 'column',
                 colorByPoint: true,
-                data: [100, 100, 100, 89, 93, 100, 61],
+                data: Data,
                 showInLegend: false
             }]
         });
@@ -527,7 +572,16 @@
             { title: "Position" },
         ];
 
-        var tableAndamento = getTableModal("tableAndamento", dataSet, columnsSet);
+        let AcoesEspecificas = [];
+
+        Object.values(MapeiaValorParaHC(dados, "Acao.ContramedidaEspecifica").filter(onlyUnique)).forEach(function (i) {
+            AcoesEspecificas.push([i]);
+        });
+
+       
+        let TituloAcoesEspecificas = [{ title: "Acão Especfica" }]
+
+        var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
         var tableAtrasadas = getTableModal("tableAtrasadas", dataSet, columnsSet);
         var tableProximas = getTableModal("tableProximas", dataSet, columnsSet);
         var tableAbertas = getTableModal("tableAbertas", dataSet, columnsSet);

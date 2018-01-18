@@ -124,8 +124,8 @@ function MountDataTable(json) {
 
     table = null;
 
-    console.log(ColvisarrayVisaoAtual_show);
-    console.log(ColvisarrayVisaoAtual_hide);
+    //console.log(ColvisarrayVisaoAtual_show);
+    //console.log(ColvisarrayVisaoAtual_hide);
 
     table = $('#example').DataTable({
         destroy: true,
