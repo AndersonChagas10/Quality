@@ -172,10 +172,15 @@
     <div ng-show="linhaSelecionada.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
 
         <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
-            <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+            <div class="form-group float-label-control col-lg-2 col-md-2 col-sm-2">
+                <label for="" class="">Código</label>
+                <br />
+                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+            </div>
+            <div class="form-group float-label-control col-lg-4 col-md-10 col-sm-10">
                 <label for="" class="">Produto</label>
                 <br />
-                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="linhaSelecionada.form.Produto" class="form-control" data-placeholder="Selecione..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
             <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
                 <label for="">Hora do início da Produção</label>

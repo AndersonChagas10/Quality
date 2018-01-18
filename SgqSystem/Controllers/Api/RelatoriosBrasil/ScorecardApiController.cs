@@ -76,6 +76,32 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("getProdutoById/{codigoProduto}")]
+        public String getProdutoById(string codigoProduto)
+        {
+            var retorno = "";
+            List<ResultadoUmaColuna> lista = new List<ResultadoUmaColuna>();
+            var query = "select cNmProduto as retorno from Produto where nCdProduto = '" + codigoProduto + "'";
+
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    lista = db.Database.SqlQuery<ResultadoUmaColuna>(query).ToList();
+                }
+
+                retorno = lista[0].retorno;
+
+            }
+            catch
+            {
+                retorno = null;
+            }
+
+            return retorno;
+        }
+
+        [HttpPost]
         [Route("GetScorecard")]
         public List<ScorecardResultSet> GetScorecard([FromBody] FormularioParaRelatorioViewModel form)
         {
