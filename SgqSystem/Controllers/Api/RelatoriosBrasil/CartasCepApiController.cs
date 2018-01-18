@@ -54,12 +54,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 //Carta X
                 query1 = $@" DECLARE @N INT = 1
                  --CASO X, ENTÃO 1                                                                                          
-                 DECLARE @MEDIA DECIMAL(30, 5)
-                 DECLARE @MEDIAAM DECIMAL(30, 5) = 1
-                 DECLARE @UCL DECIMAL(30, 5)
-                 DECLARE @LCL DECIMAL(30, 5)
-                 DECLARE @LSC DECIMAL(30, 5)
-                 DECLARE @LIC DECIMAL(30, 5)
+                 DECLARE @MEDIA DECIMAL(30, 10)
+                 DECLARE @MEDIAAM DECIMAL(30, 10) = 1
+                 DECLARE @UCL DECIMAL(30, 10)
+                 DECLARE @LCL DECIMAL(30, 10)
+                 DECLARE @LSC DECIMAL(30, 10)
+                 DECLARE @LIC DECIMAL(30, 10)
                  DECLARE @DATA_INI DATE = '{ form._dataInicioSQL }'
                  DECLARE @DATA_FIM DATE = '{ form._dataFimSQL }'
                  DECLARE @UNIDADE INT = { form.unitId }
@@ -336,12 +336,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 //Carta P
 
                 query1 = "" +
-                "\n DECLARE @N DECIMAL(30, 5)  --CASO X, ENTÃO 1                                                                                                   " +
-                "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 5) = 2.5                                                                               " +
-                "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 5) = 1                                                                               " +
-                "\n DECLARE @MEDIA DECIMAL(30, 5)                                                                                                           " +
-                "\n DECLARE @LimiteSuperiorControle DECIMAL(30, 5)                                                                                          " +
-                "\n DECLARE @LimiteInferiorControle DECIMAL(30, 5)                                                                                          " +
+                "\n DECLARE @N DECIMAL(30, 10)  --CASO X, ENTÃO 1                                                                                                   " +
+                "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 10) = 2.5                                                                               " +
+                "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 10) = 1                                                                               " +
+                "\n DECLARE @MEDIA DECIMAL(30, 10)                                                                                                           " +
+                "\n DECLARE @LimiteSuperiorControle DECIMAL(30, 10)                                                                                          " +
+                "\n DECLARE @LimiteInferiorControle DECIMAL(30, 10)                                                                                          " +
                 "\n                                                                                                                                         " +
 
                 "\n DECLARE @DATA_INI DATE = '" + form._dataInicioSQL + "'                                                                       " +
@@ -369,7 +369,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n select @MEDIA = AVG(media.VALOR) * 100, @N = avg(N) from                                                                                                  " +
                 "\n --select @MEDIA = AVG(media.DEFEITOS)  from                                                                                             " +
                 "\n (                                                                                                                                       " +
-                "\n select sum(WeiDefects) DEFEITOS, case when (SUM(WeiEvaluation) = 0 or SUM(WeiEvaluation) is null) then 0 else (SUM(WeiDefects) / SUM(WeiEvaluation)) end AS VALOR, SUM(WeiEvaluation) N from CollectionLevel2                                                          " +
+                "\n select sum(WeiDefects) DEFEITOS, case when (SUM(WeiEvaluation) = 0 or SUM(WeiEvaluation) is null) then 0 else (CAST(SUM(WeiDefects) AS DECIMAL(20,10)) / CAST(SUM(WeiEvaluation) AS DECIMAL(20,10))) end AS VALOR, SUM(WeiEvaluation) N from CollectionLevel2                                                          " +
 
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
                 "\n AND UnitId = @UNIDADE                                                                                                                   " +
