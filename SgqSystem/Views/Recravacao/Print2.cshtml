@@ -701,7 +701,7 @@
                 }
 
                 vm.carregaIndicadores = function (showMensagem) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=0" })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0" })
                           .then(function (r) {
                               if (r.data.errors) {
                                   r.data.errors.forEach(function (o) {
@@ -961,7 +961,7 @@
                 /*GET Todas as linhas cadastradas*/
 
                 vm.getParametrizacaoLinhas = function (idLevel1) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {

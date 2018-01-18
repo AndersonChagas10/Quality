@@ -343,3 +343,10 @@ insert into Pa_TipoProjeto(name) values ('Implantação')
 alter table Pa_Planejamento add TemaProjeto_Id int null
 
 alter table Pa_Planejamento add TipoProjeto_Id int null
+
+----------------------------------------------------------- 18-01-2018 - RecravacaoSugestao ---------------------------
+
+CREATE TABLE RecravacaoSugestao (
+	[Id] [int] IDENTITY(1,1) NOT NULL  PRIMARY KEY,
+	[Text] [text] NOT NULL
+)

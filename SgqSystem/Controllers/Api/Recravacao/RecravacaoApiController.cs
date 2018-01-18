@@ -7,7 +7,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
 {
@@ -28,17 +27,19 @@ namespace SgqSystem.Controllers.Api
         }
 
         // GET: api/RecravacaoApi
-        public HttpResponseMessage Get(int Company, int level1Id, int linhaId)
+        public HttpResponseMessage Get(int companyId, int level1Id, int linhaId)
         {
             var requestResults = Request.Content.ReadAsStringAsync().Result;
             var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
-            var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", Company, level1Id, linhaId);
+            var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", companyId, level1Id, linhaId);
             var results = QueryNinja(db, query);
             var produtos = db.Database.SqlQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
-            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results, produtos = produtos });
+            var sugestoes = db.Database.SqlQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList(); 
+            return Request.CreateResponse(HttpStatusCode.OK, 
+                new { resposta = "Dados Recuperados", model = results, produtos = produtos, sugestoes = sugestoes });
         }
 
-        
+
 
         // POST: api/RecravacaoApi
         public HttpResponseMessage Post()

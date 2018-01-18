@@ -25,7 +25,7 @@ namespace SgqSystem.Controllers.Recravacao
         public int? ParLevel2_Id { get; set; }
 
         [Display(Name = "Quantidade de Cabeçotes")]
-        [Range(1, 9999999999, ErrorMessage = "Ao menos uma cabeça é necessária.")]
+        [Range(1, 9999999999, ErrorMessage = "Ao menos um cabeçote é necessário.")]
         public int NumberOfHeads { get; set; }
 
         [Display(Name = "Descrição")]

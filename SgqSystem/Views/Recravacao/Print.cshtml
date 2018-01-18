@@ -483,7 +483,7 @@
                         <tbody>
                             <tr>
                                 <td class="title">Produto</td>
-                                <td>{{seletedLinha.form.Produto.Name}}</td>
+                                <td>{{seletedLinha.form.ProdutoName}}</td>
                                 <td class="title">Hora do início da Produção</td>
                                 <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
                                 <td class="title">Hora do final da Produção</td>
@@ -594,9 +594,9 @@
                 </div>
 
                 <div class="assinaturaValidacao">
-                    <div class="divLabel" style="float:left; margin-left: 5px;">
+                    @*<div class="divLabel" style="float:left; margin-left: 5px;">
                         <span style="font-size: 12px;">Linha Finalizada por {{seletedLinha.userFinish.Name}}, na Data/Hora: {{seletedLinha.dataUserFinish}}</span>
-                    </div>
+                    </div>*@
                     <div class="divLabel" style="float:right; margin-right: 5px;">
                         <span style="font-size: 12px;">Linha Validada por {{seletedLinha.userValidacao.Name}}, na Data/Hora: {{seletedLinha.dataUserValidacao}}</span>
                     </div>
@@ -936,7 +936,7 @@
                 }
 
                 vm.carregaIndicadores = function (showMensagem) {
-                    $http({ method: 'GET', url:  vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=0&linhaId=0" })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0&linhaId=0" })
                           .then(function (r) {
                               if (r.data.errors) {
                                   r.data.errors.forEach(function (o) {
@@ -1210,7 +1210,7 @@
                 /*GET Todas as linhas cadastradas*/
 
                 vm.getParametrizacaoLinhas = function (idLevel1, loadLinha) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1233,7 +1233,7 @@
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: `${vm.saveStateUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
+                    $http({ method: 'GET', url: `${vm.saveStateUrl}?companyId=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
