@@ -2385,15 +2385,12 @@
 
         $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
             $('#modalLindo').find('.modal-body').empty().append(r);
-            HideForOperacional();
             $('#modalLindo').modal();
             $('#Header').html('Acompanhamento do Planejamento Operacional');
-            //$(".select2Init").select2();
             $('.modal .modal-footer button').hide();
             $('#showAcompnhamentoForm').show();
-            $('#MailTo').select2();
+
             $("#SaveAcompanhamento").on("click", function (event) {
-                //event.preventDefault();
                 var obj = $("#acompanhamento").serializeObject();
                 if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
                     alert("Os campos devem ser preenchidos")
@@ -2424,6 +2421,10 @@
                 $('#modalLindo').modal();
             });
 
+            setTimeout(function () {
+                $('#MailTo').select2();
+                $('#Status_Id').select2();
+            }, 1000);
         })
     }
 
@@ -2436,7 +2437,7 @@
         $.LoadingOverlay("hide", true);
         counter--;
 
-        HideForOperacional();
+        //HideForOperacional();
     });
 
     $(document).ajaxError(function (e, h, x) {
@@ -2785,15 +2786,19 @@
 
     function filterDados(prop, value, calback) {
 
-            dadosfilter = $.grep(dados, function (item) {
+        dadosfilter = $.grep(dados, function (item) {
 
-                if (item[prop] == value) {
-                    return item;
-                }
-            });
-            calback();
+            if (item[prop] == value) {
 
-        }
+                return item;
+
+            }
+
+        });
+
+        calback();
+
+     }
 
     function getTablesModal() {
 
@@ -2806,6 +2811,10 @@
 
                 if (o['Acao'].Status == 5) {
                     return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        return "Não possui Ação Específica";
+                    }
                 }
 
             });
@@ -2814,7 +2823,7 @@
                 AcoesEspecificas.push([i]);
             });
 
-            let TituloAcoesEspecificas = [{ title: "Acão Especfica" }]
+            let TituloAcoesEspecificas = [{ title: "Acão Específica" }]
 
             var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -2833,16 +2842,20 @@
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+                    return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
 
                     return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
 
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "Acão Especfica" }, { title: "Dias de Atraso" }]
+            TituloAcoesEspecificas = [{ title: "Acão Específica" }, { title: "Dias de Atraso" }]
 
             var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -2863,12 +2876,16 @@
                     var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleString() };
 
                     return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        return{ 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "Acão Especfica" }, { title: "Data de Inicio" }]
+            TituloAcoesEspecificas = [{ title: "Acão Específica" }, { title: "Data de Inicio" }]
 
             var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -2885,13 +2902,17 @@
                     var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
 
                     return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        return { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
 
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "Acão Especfica" }, { title: "Data de Conclusão" }]
+            TituloAcoesEspecificas = [{ title: "Acão Específica" }, { title: "Data de Conclusão" }]
 
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
