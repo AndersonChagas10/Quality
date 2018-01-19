@@ -99,20 +99,20 @@ a.navbar-sgq-brand{
     margin-left:10px;
 }
 
-#btn-topo{
-  display: none;
-  position: fixed;
-  bottom: 70px;
-  right: 20px;
-  z-index: 99;
-  border: none;
-  outline: none;
-  background-color: #2b3643;
-  color: white;
-  cursor: pointer;
-  padding: 15px;
-  border-radius: 10px;
-  opacity:0.5;
+#btn-topo {
+    display: none;
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    z-index: 5000;
+    border: none;
+    outline: none;
+    background-color: #2b3643;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 10px;
+    opacity: 0.5;
 }
 #btn-topo:hover{
   opacity:0.9;
