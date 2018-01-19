@@ -267,8 +267,6 @@
                 <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
                     <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
                         <span class="" aria-hidden="true"></span> {{indicador.Name}}
-                        @*<span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
-                            <span class="sr-only">(current)</span>*@
                     </a>
                 </li>
             </ul>

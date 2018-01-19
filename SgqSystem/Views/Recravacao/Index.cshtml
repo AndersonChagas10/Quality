@@ -1364,13 +1364,12 @@
                     for (let i = 0; i < quantidadeLatas; i++) {
                         if (linha["counterDeLatas"] == undefined)
                             linha["counterDeLatas"] = 1
-
-                        let lastCounter = isReavaliacao ? latasNaoConformes[i].counter : _.last(linha.latas) ? _.last(linha.latas).counter + 1 : 1;
-                        posicaoCabecote = isReavaliacao ? latasNaoConformes[i].cabecote : posicaoCabecote;
+                        
+                        posicaoCabecote = isReavaliacao ? latasNaoConformes[i].cabecote : i + 1
                         
                         linha.latas.push({
-                            Name: 'Lata - ' + lastCounter + ' Cabeçote - ' + posicaoCabecote,
-                            counter: lastCounter,
+                            Name: 'Lata - ' + linha.counterDeLatas + ' Cabeçote - ' + posicaoCabecote,
+                            counter: linha.counterDeLatas,
                             cabecote: posicaoCabecote,
                             finalizado: false,
                             haveErrors: false,
