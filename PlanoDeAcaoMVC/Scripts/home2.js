@@ -13,6 +13,7 @@ var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn bt
 var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
 var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
 var dados = [];
+var dadosfilter = [];
 var dadosPie2 = [];
 var ColvisarrayVisaoUsuario_show = [];
 var ColvisarrayVisaoUsuario_hide = [];
@@ -23,7 +24,9 @@ function GetDataTable(campo, filtro) {
 
         dados = r;
 
-        dados = $.grep(dados, function (a, b) { return a.Acao._Quem != 'gabrielnunes-mtz' }); //tira gabriel
+        //dados = $.grep(dados, function (a, b) { return a.Acao._Quem != 'gabrielnunes-mtz' }); //tira gabriel
+
+        dadosfilter = dados;
 
         //https://grtsolucoes.atlassian.net/browse/JBS-110
         let usuarioIscorporativo = false//getRole("Admin");
