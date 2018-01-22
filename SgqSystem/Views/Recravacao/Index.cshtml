@@ -2,8 +2,8 @@
     ViewBag.Title = "Coleta de Recravação";
     var urlHome = Url.Action("Index", "Home");
 }
-@*<link href="~/Content/BootStrapRecravacao/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="~/Content/BootStrapRecravacao/js/bootstrap.min.js"></script>*@
+
+
 <style>
     .level3NameDestacado td:first-child {
         color: red !important;
@@ -54,10 +54,6 @@
 
     .page-sidebar-wrapper{
         display: none;
-    }
-
-    .page-content {
-        margin-left: 0px !important;
     }
 
     .menu-toggler {
@@ -155,7 +151,7 @@
 
 <script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
 <div class="page-content-wrapper">
-    <div class="page-content">
+    <div class="page-content" style="margin-left: 0px!important">
         <div class="wrapper">
             <div ng-controller="recravacaoController as r" style="width:100%;">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -876,6 +872,7 @@
                             </form>
 
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="addObservacao();">Nova Observação</button>
                                 <button type="button" class="btn btn-success" ng-show="tempoEntreColetaDeLatasExpirado" ng-disabled="!linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1].DescriptionFailure" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);">Salvar</button>
                                 <button type="button" class="btn btn-success" ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" data-dismiss="modal">Salvar e fechar</button>
                             </div>
@@ -1093,6 +1090,10 @@
                     //vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                     vm.salvaLinha();
                     $('#modalParadaDeLinha').modal('hide')
+                }
+
+                vm.addObservacao = function () {
+                    vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                 }
 
                 //TUDO MOCK MOCK
@@ -1965,6 +1966,7 @@
 
                             }
                         });
+                        
                     });
 
                     if (save)
