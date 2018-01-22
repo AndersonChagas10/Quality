@@ -33,13 +33,15 @@
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
+        $('#level3Id').parent().hide();
+
         $('#tipoCEP').change(function (a) {
-            /*if (($('#tipoCEP').val()) == "2") {
+            if (($('#tipoCEP').val()) == "2") {
                 $('#level3Id').parent().show();
             } else if (($('#tipoCEP').val()) == "1") {
                 $('#level3Id').val("").trigger('change.select2');
                 $('#level3Id').parent().hide();
-            }*/
+            }
         })
 
         $(document).ready(function () {
