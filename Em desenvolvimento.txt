@@ -169,3 +169,9 @@ create table Pa_Colvis(
 	ColVisHide varchar(255) null,
 	Pa_Quem_Id int not null,
 );
+
+----------------------------------------------------------------------- 22-01-2018 - Leo Adicionado duas colunas ParLevel3Value
+
+ALTER TABLE ParLevel3Value ADD ParLevel1_Id INT NULL  References ParLevel1(Id) DEFAULT NULL
+
+ALTER TABLE ParLevel3Value ADD ParLevel2_Id INT NULL  References ParLevel2(Id) DEFAULT NULL

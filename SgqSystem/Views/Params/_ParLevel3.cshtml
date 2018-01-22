@@ -19,12 +19,12 @@
                     </tr>
                     <tr class="row">
 
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm"})
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_name)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
 
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm"})
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_description)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
@@ -58,6 +58,18 @@
                                          , Table.PosicaoLabel.top
                                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
                                     </tr>
+                                    <tr class="row">
+                                        <th>@Resources.Resource.level1</th>
+                                        <th>@Resources.Resource.level2</th>
+                                    </tr>
+                                    <tr class="row">
+                                        <td class="col-sm-6 td-erp">
+                                            @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
+                                        </td>
+                                        <td class="col-sm-6 td-erp">
+                                            @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
+                                        </td>
+                                    </tr>
                                     <tr class="row ParIntervalos" style="display: none;">
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                                         @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
@@ -82,7 +94,6 @@
                                     <tr class="row" id="companyValueL3">
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
                                             , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-
                                     </tr>
                                 </table>
 
@@ -90,6 +101,8 @@
                                     <thead>
                                         <tr>
                                             <th>@Resources.Resource.data_type_entry</th>
+                                            <th>@Resources.Resource.level1</th>
+                                            <th>@Resources.Resource.level2</th>
                                             <th>@Resources.Resource.company</th>
                                             <th>@Resources.Resource.measurement_unit</th>
                                             <th>@Resources.Resource.minimum_range</th>
@@ -117,7 +130,7 @@
                 @*<div id="reincidencia">
                         @Html.Partial("_ReincidenciaXLevel", Model)
                     </div>*@
-                @Html.HiddenFor(r=>r.paramsDto.parLevel3Dto.hasVinculo)
+                @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {
                     @Html.Partial("_Peso", Model)
@@ -239,7 +252,7 @@
         level: "newLevel3Modal",
         listObjSalvo: levelParamsDTO.parLevel3Dto.listLevel3Value,
         idTable: 'tableLevel3Value',//
-        tdsNames: ['ParLevel3InputType_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
+        tdsNames: ['ParLevel3InputType_Name', 'Level1_Name', 'Level2_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
         getObjAdd: function(isEdit, obj){
 
             var preseletor = "";
@@ -251,6 +264,12 @@
 
             var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
             var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
+
+            var level1Name = $('#' + preseletor + ' #parLevel1Select2 :selected').text();
+            var level1Id = $('#' + preseletor + ' #parLevel1Select2 :selected').val();
+
+            var level2Name = $('#' + preseletor + ' #parLevel2Select2 :selected').text();
+            var level2Id = $('#' + preseletor + ' #parLevel2Select2 :selected').val();
 
             var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
             var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
@@ -265,6 +284,16 @@
             var parIntervalosType = $('#' + preseletor + ' #parIntervalosType :selected').val();
             var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
             var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
+
+            if(level1Id == -1){
+                level1Id = null;
+                level1Name = "@Resources.Resource.all";
+            }
+
+            if(level2Id == -1){
+                level2Id = null;
+                level2Name = "@Resources.Resource.all";
+            }
 
             if(companyValue == -1){
                 companyValue = null;
@@ -312,6 +341,11 @@
                 obj.IntervalMin =                    parLevel3Value_IntervalMin;
                 obj.IntervalMax =                    parLevel3Value_IntervalMax;
 
+                obj.Level1_Id =                      level1Id;
+                obj.Level1_Name =                    level1Name;
+                obj.Level2_Id =                      level2Id;
+                obj.Level2_Name =                    level2Name;
+
                 return obj;
 
             }else{
@@ -338,6 +372,11 @@
                     IntervalMin:                 parLevel3Value_IntervalMin,
                     IntervalMax:                 parLevel3Value_IntervalMax,
                     IsActive:                    true,
+
+                    Level1_Id:                      level1Id,
+                    Level1_Name:                    level1Name,
+                    Level2_Id:                      level2Id,
+                    Level2_Name:                    level2Name,
                 };
             }
         },
@@ -407,6 +446,8 @@
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].AcceptableValueBetween"] = o.AcceptableValueBetween;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMin"] = o.IntervalMin;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMinCalculado"] = o.IntervalMin;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel1_Id"] = o.Level1_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel2_Id"] = o.Level2_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
@@ -428,6 +469,18 @@
                     else
                         o["ParCompany_Name"] = "@Resources.Resource.all";
 
+                    try{
+                        if(o.ParLevel1_Name > 0)
+                            o["ParLevel1_Name"] = o.ParLevel1.Name;
+                        else
+                            o["ParLevel1_Name"] = "@Resources.Resource.all";
+
+                        if(o.Level2_Name > 0)
+                            o["ParLevel2_Name"] = o.ParLevel2.Name;
+                        else
+                            o["ParLevel2_Name"] = "@Resources.Resource.all";
+                    }catch(v){}
+
                     if(o.ParLevel3InputType_Id == 1){
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
                         o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
@@ -440,7 +493,7 @@
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    } else if (o.ParLevel3InputType_Id == 3) {                      
+                    } else if (o.ParLevel3InputType_Id == 3) {
                         o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
@@ -449,8 +502,8 @@
                         o["AcceptableValueBetween_Name"] = o.IntervalMin == null ? "@Resources.Resource.acceptable_value_less_than " + o.IntervalMax :
                             (o.IntervalMax == null ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
                             (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
-                        
-                    } else if (o.ParLevel3InputType_Id == 4) {                        
+
+                    } else if (o.ParLevel3InputType_Id == 4) {
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -458,7 +511,7 @@
                         o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
-                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;                     
+                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;
                     }else if(o.ParLevel3InputType_Id == 5){
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
@@ -596,7 +649,7 @@
             $("#crudNxNEdit #parIntervalosType").parents("td").show();
 
         }
-        
+
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && $("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
@@ -610,18 +663,18 @@
             $("#crudNxNEdit #parIntervalosType").parents("td").show();
 
         }
-           
+
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
                     Resources('value_is_acceptable_between')
-                    + "&nbsp;" + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() 
+                    + "&nbsp;" + $("#crudNxNEdit #parLevel3Value_IntervalMin").val()
                     + " " + Resources('and')
                     + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>" +
                 "<option value='1'>" +
                     Resources('value_is_acceptable_less_than')
-                    + " "+ $("#crudNxNEdit #parLevel3Value_IntervalMin").val() 
+                    + " "+ $("#crudNxNEdit #parLevel3Value_IntervalMin").val()
                     + " " + Resources('and_greater_than')
                     + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()
                     + " " + value +
