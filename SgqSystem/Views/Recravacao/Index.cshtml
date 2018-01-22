@@ -775,19 +775,6 @@
 
                             <div class="modal-body" style="overflow-x:auto">
                                 <form role="form" name="formCA" class="ng-pristine ng-valid">
-
-                                    <div class="{{formDefault6}}">
-                                        <label>Horário de parada da linha</label>
-                                        <input type="text" class="time form-control" title="Horário de parada da linha" ng-model="lataSelecionada.correctiveAction.HorarioDeParada" />
-                                    </div>
-                                    <div class="{{formDefault6}}">
-                                        <label>Horário de liberação da linha</label>
-                                        <input type="text"
-                                               class="time form-control"
-                                               title="Horário de liberação da linha"
-                                               ng-model="lataSelecionada.correctiveAction.HorarioDeLiberacao" />
-                                    </div>
-
                                     <div class="clearfix"></div>
 
                                     <div class="alert alert-info {{formDefault12}}" ng-repeat="ca in lataSelecionada.correctiveActionList track by $index">
@@ -1827,6 +1814,19 @@
                     }, 325)
                 }
 
+                vm.updateInputTime = function () {
+                    $(".time").inputmask({
+                        mask: "23:59"
+                        , placeholder: "hh:mm"
+                        , definitions: {
+                            '5': { validator: "[0-5]" }
+                            , '3': { validator: "[0-9]" }
+                            , '2': { validator: "[0-2]" }
+                        }
+                    });
+                    $(".time").attr('placeholder', 'hh:mm')
+                }
+
                 vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader, cb) {
                     $('select').select2({ allowClear: true })
                     $('.decimal').each(function (index) {
@@ -1861,16 +1861,7 @@
                     })
 
                     //Esta mascara tem 1 bug. CG
-                    $(".time").inputmask({
-                        mask: "23:59"
-                    , placeholder: "hh:mm"
-                    , definitions: {
-                        '5': { validator: "[0-5]" }
-                        , '3': { validator: "[0-9]" }
-                        , '2': { validator: "[0-2]" }
-                    }
-                    });
-                    $(".time").attr('placeholder', 'hh:mm')
+                    vm.updateInputTime()
 
                     //{
                     //    alias: 'hh:mm t',
@@ -1993,6 +1984,10 @@
                             AddDate: moment().format("DD/MM/YYYY HH:mm"),
                             userAuditor: vm.getUser()
                         })
+
+                    setTimeout(function () {
+                        vm.updateInputTime();
+                    }, 5)
                 }
 
                 vm.AssinaCorrectiveAction1 = function (item) {
@@ -2279,6 +2274,12 @@
                     template: `<div class="alert alert-warning {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
                                 <br />
                                 <div>
+                                    <label>Horário de parada da linha</label>
+                                    <input type="text" class="time form-control" title="Horário de parada da linha" 
+                                        ng-model="$parent.lataSelecionada.correctiveAction.HorarioDeParada" />
+                                </div>
+                                <br />
+                                <div>
                                     <label>Deficiência:</label>
                                     <textarea ng-disabled="ca.IsAssinada"
                                                 ng-model="ca.DescriptionFailure"
@@ -2338,6 +2339,13 @@
                         pa: '=latapa'
                     },
                     template: `<div class="alert alert-success {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
+                                <br />
+                                <div>
+                                    <label>Horário de liberação da linha</label>
+                                    <input type="text" class="time form-control" title="Horário de liberação da linha"
+                                            ng-model="$parent.lataSelecionada.correctiveAction.HorarioDeLiberacao" />
+                                </div>
+                                <br />
                                 <h3>Ação Preventiva</h3>
                                 <div>
                                     <label>Acão Preventiva:</label>
