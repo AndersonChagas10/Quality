@@ -176,8 +176,6 @@
 
                 </div>
 
-                <br />
-
                 <div class="collapse navbar-collapse" style="margin-right: 15px; margin-left: 15px;">
                     <div class="panel panel-default">
                         <button class="btn btn-primary" ng-class="{active: indicadorSelecionado.Name == indicador.Name}" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -298,7 +296,7 @@
                     <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Salvando dados...</span></span>
                 </button>
 
-                <div class="col-lg-12 col-md-12 col-sm-12"
+                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 90px;"
                      ng-init="linhaSelecionada.IsStoped = false">
                     <div ng-show="linhaSelecionada.Id > 0 && linhaSelecionada.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="lataEmLataDetalhe in linhaSelecionada.latas track by $index" ng-init="lataIndex = $index; lataEmLataDetalhe.Name = lataEmLataDetalhe.Name" tables>
                         <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{lataEmLataDetalhe.Name}} <span ng-show="lataEmLataDetalhe.HoraDaRetiradaDaLata"> retirada as: {{lataEmLataDetalhe.HoraDaRetiradaDaLata | date: 'HH:mm'}}</span></div>
