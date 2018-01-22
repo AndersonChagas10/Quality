@@ -92,21 +92,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
                             AND R3.IsNotEvaluate = 0
-                		INNER JOIN (SELECT DISTINCT
-                				id
-                			   ,ParLevel3_Id
-                			   ,ParLevel3InputType_id
-                			   ,ParCompany_Id
-                			FROM ParLevel3Value
-                			WHERE ParLevel3InputType_id = 3
-                			AND isactive = 1) ParLevel3Value
-                			ON 1 = 1
-                			AND R3.ParLevel3_Id = ParLevel3Value.ParLevel3_Id
-                			AND
-                			CASE
-                				WHEN ParLevel3Value.ParCompany_Id IS NULL THEN NULL
-                				ELSE CL.UnitId
-                			END = ParLevel3Value.ParCompany_Id
+
                 		WHERE CAST(CL.CollectionDate AS DATE) BETWEEN @DATA_INI AND @DATA_FIM
                 		AND CL.UnitId = @UNIDADE
                 		AND CL.ParLevel1_Id = @INDICADOR
@@ -127,21 +113,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
                             AND R3.IsNotEvaluate = 0
-                		INNER JOIN (SELECT DISTINCT
-                				id
-                			   ,ParLevel3_Id
-                			   ,ParLevel3InputType_id
-                			   ,ParCompany_Id
-                			FROM ParLevel3Value
-                			WHERE ParLevel3InputType_id = 3
-                			AND isactive = 1) ParLevel3Value
-                			ON 1 = 1
-                			AND R3.ParLevel3_Id = ParLevel3Value.ParLevel3_Id
-                			AND
-                			CASE
-                				WHEN ParLevel3Value.ParCompany_Id IS NULL THEN NULL
-                				ELSE CL.UnitId
-                			END = ParLevel3Value.ParCompany_Id
+                		
                 		WHERE CAST(CL.CollectionDate AS DATE) BETWEEN @DATA_INI AND @DATA_FIM
                 		AND CL.UnitId = @UNIDADE
                 		AND CL.ParLevel1_Id = @INDICADOR
@@ -172,21 +144,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
                             AND R3.IsNotEvaluate = 0
-                		INNER JOIN (SELECT DISTINCT
-                				id
-                			   ,ParLevel3_Id
-                			   ,ParLevel3InputType_id
-                			   ,ParCompany_Id
-                			FROM ParLevel3Value
-                			WHERE ParLevel3InputType_id = 3
-                			AND isactive = 1) ParLevel3Value
-                			ON 1 = 1
-                			AND R3.ParLevel3_Id = ParLevel3Value.ParLevel3_Id
-                			AND
-                			CASE
-                				WHEN ParLevel3Value.ParCompany_Id IS NULL THEN NULL
-                				ELSE CL.UnitId
-                			END = ParLevel3Value.ParCompany_Id
+                		
                 		WHERE CAST(CL.CollectionDate AS DATE) BETWEEN @DATA_INI AND @DATA_FIM
                 		AND CL.UnitId = @UNIDADE
                 		AND CL.ParLevel1_Id = @INDICADOR
@@ -207,21 +165,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		JOIN Result_Level3 R3
                 			ON R3.CollectionLevel2_Id = CL.id
                             AND R3.IsNotEvaluate = 0
-                		INNER JOIN (SELECT DISTINCT
-                				id
-                			   ,ParLevel3_Id
-                			   ,ParLevel3InputType_id
-                			   ,ParCompany_Id
-                			FROM ParLevel3Value
-                			WHERE ParLevel3InputType_id = 3
-                			AND isactive = 1) ParLevel3Value
-                			ON 1 = 1
-                			AND R3.ParLevel3_Id = ParLevel3Value.ParLevel3_Id
-                			AND
-                			CASE
-                				WHEN ParLevel3Value.ParCompany_Id IS NULL THEN NULL
-                				ELSE CL.UnitId
-                			END = ParLevel3Value.ParCompany_Id
+                		
                 		WHERE CAST(CL.CollectionDate AS DATE) BETWEEN @DATA_INI AND @DATA_FIM
                 		AND CL.UnitId = @UNIDADE
                 		AND CL.ParLevel1_Id = @INDICADOR
@@ -267,21 +211,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 	JOIN Result_Level3 R3
                 		ON R3.CollectionLevel2_Id = CL.id
                         AND R3.IsNotEvaluate = 0
-                	INNER JOIN (SELECT DISTINCT
-                			id
-                		   ,ParLevel3_Id
-                		   ,ParLevel3InputType_id
-                		   ,ParCompany_Id
-                		FROM ParLevel3Value
-                		WHERE ParLevel3InputType_id = 3
-                		AND isactive = 1) ParLevel3Value
-                		ON 1 = 1
-                		AND R3.ParLevel3_Id = ParLevel3Value.ParLevel3_Id
-                		AND
-                		CASE
-                			WHEN ParLevel3Value.ParCompany_Id IS NULL THEN NULL
-                			ELSE CL.UnitId
-                		END = ParLevel3Value.ParCompany_Id
+                	
                 	WHERE CAST(CL.CollectionDate AS DATE) BETWEEN @DATA_INI AND @DATA_FIM
                 	AND CL.UnitId = @UNIDADE
                 	AND CL.ParLevel1_Id = @INDICADOR
@@ -302,21 +232,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 	JOIN Result_Level3 R3
                 		ON R3.CollectionLevel2_Id = CL.id
                         AND R3.IsNotEvaluate = 0
-                	INNER JOIN (SELECT DISTINCT
-                			id
-                		   ,ParLevel3_Id
-                		   ,ParLevel3InputType_id
-                		   ,ParCompany_Id
-                		FROM ParLevel3Value
-                		WHERE ParLevel3InputType_id = 3
-                		AND isactive = 1) ParLevel3Value
-                		ON 1 = 1
-                		AND R3.ParLevel3_Id = ParLevel3Value.ParLevel3_Id
-                		AND
-                		CASE
-                			WHEN ParLevel3Value.ParCompany_Id IS NULL THEN NULL
-                			ELSE CL.UnitId
-                		END = ParLevel3Value.ParCompany_Id
+                	
                 
                 	WHERE CAST(CL.CollectionDate AS DATE) BETWEEN @DATA_INI AND @DATA_FIM
                 	AND CL.UnitId = @UNIDADE
@@ -349,7 +265,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @UNIDADE INT = " + form.unitId + "                                                                                   " +
                 "\n DECLARE @INDICADOR INT = " + form.level1Id + "                                                                               " +
                 "\n DECLARE @MONITORAMENTO INT = " + form.level2Id + "                                                                           " +
+                "\n  DECLARE @TIPOCONSOLIDACAO INT = 0 " +
+                "\n   DECLARE @HASHKEY INT = 0 " +
 
+                "\n   SELECT @TIPOCONSOLIDACAO = ParConsolidationType_Id, @HASHKEY = hashKey FROM PARLEVEL1 WHERE ID = @INDICADOR  " +
                 "\n select top 1                                                                                                                 " +
                 "\n                                                                                                                              " +
                 "\n  @LimiteSuperiorEspecificacao = CASE WHEN L1.IsRuleConformity = 0 THEN PercentValue ELSE 0 END,                              " +
@@ -369,7 +288,59 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n select @MEDIA = AVG(media.VALOR) * 100, @N = avg(N) from                                                                                                  " +
                 "\n --select @MEDIA = AVG(media.DEFEITOS)  from                                                                                             " +
                 "\n (                                                                                                                                       " +
-                "\n select sum(WeiDefects) DEFEITOS, case when (SUM(WeiEvaluation) = 0 or SUM(WeiEvaluation) is null) then 0 else (CAST(SUM(WeiDefects) AS DECIMAL(20,10)) / CAST(SUM(WeiEvaluation) AS DECIMAL(20,10))) end AS VALOR, SUM(WeiEvaluation) N from CollectionLevel2                                                          " +
+                // "\n select sum(WeiDefects) DEFEITOS, case when (SUM(WeiEvaluation) = 0 or SUM(WeiEvaluation) is null) then 0 else (CAST(SUM(WeiDefects) AS DECIMAL(20,10)) / CAST(SUM(WeiEvaluation) AS DECIMAL(20,10))) end AS VALOR, SUM(WeiEvaluation) N from CollectionLevel2                                                          " +
+
+"\n SELECT CASE                                                                                                                                                                                                                                                                           " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 1 THEN SUM(WeiDefects)                                                                                                                                                                                                                             " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 2 THEN SUM(WeiDefects)                                                                                                                                                                                                                             " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 3 THEN SUM(DefectsResult)                                                                                                                                                                                                                          " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 4 THEN SUM(DefectsResult)                                                                                                                                                                                                                          " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     ELSE SUM(WeiEvaluation)                                                                                                                                                                                                                                                     " +
+"\n  END DEFEITOS,                                                                                                                                                                                                                                                                  " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n  case                                                                                                                                                                                                                                                                           " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     when(SUM(WeiEvaluation) = 0 or SUM(WeiEvaluation) is null) then 0                                                                                                                                                                                                           " +
+"\n 	else                                                                                                                                                                                                                                                                        " +
+"\n 	                                                                                                                                                                                                                                                                            " +
+"\n 	CASE                                                                                                                                                                                                                                                                        " +
+"\n         WHEN @HASHKEY = 1 THEN(CAST(SUM(DefectsResult) AS DECIMAL(20, 10)) / CAST((SELECT TOP 1 cast(isnull(Quartos, 0) as decimal(20, 10)) FROM VolumePcc1b WHERE ParCompany_id = @UNIDADE and CAST(Data as date) = CAST(CollectionDate as date)) AS DECIMAL(20, 10)))  --PCC  " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n         WHEN @TIPOCONSOLIDACAO = 1 THEN(CAST(SUM(WeiDefects) AS DECIMAL(20, 10)) / CAST(SUM(WeiEvaluation) AS DECIMAL(20, 10)))                                                                                                                                                 " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n         WHEN @TIPOCONSOLIDACAO = 2 THEN(CAST(SUM(WeiDefects) AS DECIMAL(20, 10)) / CAST(SUM(WeiEvaluation) AS DECIMAL(20, 10)))                                                                                                                                                 " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n         WHEN @TIPOCONSOLIDACAO = 3 THEN(CAST(SUM(DefectsResult) AS DECIMAL(20, 10)) / CAST(SUM(EvaluatedResult) AS DECIMAL(20, 10)))                                                                                                                                            " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n         WHEN @TIPOCONSOLIDACAO = 4 THEN(CAST(SUM(DefectsResult) AS DECIMAL(20, 10)) / CAST(SUM(EvaluatedResult) AS DECIMAL(20, 10)))                                                                                                                                            " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n         ELSE(CAST(SUM(WeiDefects) AS DECIMAL(20, 10)) / CAST(SUM(WeiEvaluation) AS DECIMAL(20, 10)))                                                                                                                                                                            " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     END                                                                                                                                                                                                                                                                         " +
+"\n  end AS VALOR,                                                                                                                                                                                                                                                                  " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n  CASE                                                                                                                                                                                                                                                                           " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @HASHKEY = 1 THEN CAST((SELECT TOP 1 cast(isnull(Quartos, 0) as decimal(20, 10)) FROM VolumePcc1b WHERE ParCompany_id = @UNIDADE and CAST(Data as date) = CAST(CollectionDate as date)) AS DECIMAL(20,10))  --PCC                                                      " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 1 THEN SUM(WeiEvaluation)                                                                                                                                                                                                                          " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 2 THEN SUM(WeiEvaluation)                                                                                                                                                                                                                          " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 3 THEN SUM(EvaluatedResult)                                                                                                                                                                                                                        " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     WHEN @TIPOCONSOLIDACAO = 4 THEN SUM(EvaluatedResult)                                                                                                                                                                                                                        " +
+"\n                                                                                                                                                                                                                                                                                 " +
+"\n     ELSE SUM(WeiEvaluation)                                                                                                                                                                                                                                                     " +
+"\n  END N                                                                                                                                                                                                                                                                          " +
+"\n from CollectionLevel2                                                                                                                                                                                                                                                           " +
+
+
 
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
                 "\n AND UnitId = @UNIDADE                                                                                                                   " +
