@@ -98,12 +98,18 @@
                 return false;
             }
 
-            if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
-                GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
-                return false;
-            }
+            //if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+            //    GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
+            //    return false;
+            //}
 
             if ($('#tipoCEP :selected').val() == 2) {
+
+                if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+                    GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
+                    return false;
+                }
+            
 
                 if (!(parseInt($('#level3Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
                     GuardJs.exibirMensagemAlerta(Resources('select_the_level3'));
