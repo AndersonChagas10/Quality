@@ -280,7 +280,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n  where CAST(G.AddDate AS DATE) <= @DATA_FIM                                                                                  " +
                 "\n  AND(G.ParCompany_id = @UNIDADE OR G.ParCompany_Id is null)                                                                  " +
                 "\n  AND G.ParLevel1_Id = @INDICADOR                                                                                             " +
-                "\n  ORDER BY G.Adddate desc, G.IsActive desc, G.ParCompany_Id desc                                                              " +
+                "\n  ORDER BY G.ParCompany_Id desc, G.Adddate desc, G.IsActive desc                                                            " +
 
 
                 "\n                                                                                                                                         " +
