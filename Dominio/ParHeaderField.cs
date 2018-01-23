@@ -33,6 +33,7 @@ namespace Dominio
         public bool IsActive { get; set; }
         public Nullable<bool> IsRequired { get; set; }
         public bool duplicate { get; set; }
+        public bool CheckBox { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }

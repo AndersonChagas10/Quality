@@ -58,16 +58,18 @@
                                          , Table.PosicaoLabel.top
                                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
                                     </tr>
-                                    <tr class="row">
-                                        <th>@Resources.Resource.level1</th>
-                                        <th>@Resources.Resource.level2</th>
-                                    </tr>
-                                    <tr class="row">
-                                        <td class="col-sm-6 td-erp">
-                                            @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
+                                    <tr class="row VinculoParLevel alert-info" style="">
+                                        <td class="td-erp" colspan="0">
+                                            <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
+                                            <div>
+                                                @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
+                                            </div>
                                         </td>
-                                        <td class="col-sm-6 td-erp">
-                                            @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
+                                        <td class="td-erp">
+                                            <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label> 
+                                            <div>
+                                                @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr class="row ParIntervalos" style="display: none;">
@@ -252,7 +254,7 @@
         level: "newLevel3Modal",
         listObjSalvo: levelParamsDTO.parLevel3Dto.listLevel3Value,
         idTable: 'tableLevel3Value',//
-        tdsNames: ['ParLevel3InputType_Name', 'Level1_Name', 'Level2_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
+        tdsNames: ['ParLevel3InputType_Name', 'ParLevel1_Name', 'ParLevel2_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
         getObjAdd: function(isEdit, obj){
 
             var preseletor = "";
@@ -264,12 +266,12 @@
 
             var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
             var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
-
-            var level1Name = $('#' + preseletor + ' #parLevel1Select2 :selected').text();
-            var level1Id = $('#' + preseletor + ' #parLevel1Select2 :selected').val();
-
-            var level2Name = $('#' + preseletor + ' #parLevel2Select2 :selected').text();
-            var level2Id = $('#' + preseletor + ' #parLevel2Select2 :selected').val();
+            
+            var parLevel1Id = $('#' + preseletor + ' #parLevel1Select2 :selected').val();
+            var parLevel1Name = parLevel1Id + " - " + $('#' + preseletor + ' #parLevel1Select2 :selected').text();
+            
+            var parLevel2Id = $('#' + preseletor + ' #parLevel2Select2 :selected').val();
+            var parLevel2Name = parLevel2Id + " - " +$('#' + preseletor + ' #parLevel2Select2 :selected').text();
 
             var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
             var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
@@ -285,14 +287,14 @@
             var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
             var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
 
-            if(level1Id == -1){
-                level1Id = null;
-                level1Name = "@Resources.Resource.all";
+            if(parLevel1Id == -1){
+                parLevel1Id = null;
+                parLevel1Name = "@Resources.Resource.all";
             }
 
-            if(level2Id == -1){
-                level2Id = null;
-                level2Name = "@Resources.Resource.all";
+            if(parLevel2Id == -1){
+                parLevel2Id = null;
+                parLevel2Name = "@Resources.Resource.all";
             }
 
             if(companyValue == -1){
@@ -341,10 +343,10 @@
                 obj.IntervalMin =                    parLevel3Value_IntervalMin;
                 obj.IntervalMax =                    parLevel3Value_IntervalMax;
 
-                obj.Level1_Id =                      level1Id;
-                obj.Level1_Name =                    level1Name;
-                obj.Level2_Id =                      level2Id;
-                obj.Level2_Name =                    level2Name;
+                obj.ParLevel1_Id =                      parLevel1Id;
+                obj.ParLevel1_Name =                    parLevel1Name;
+                obj.ParLevel2_Id =                      parLevel2Id;
+                obj.ParLevel2_Name =                    parLevel2Name;
 
                 return obj;
 
@@ -373,10 +375,10 @@
                     IntervalMax:                 parLevel3Value_IntervalMax,
                     IsActive:                    true,
 
-                    Level1_Id:                      level1Id,
-                    Level1_Name:                    level1Name,
-                    Level2_Id:                      level2Id,
-                    Level2_Name:                    level2Name,
+                    ParLevel1_Id:                      parLevel1Id,
+                    ParLevel1_Name:                    parLevel1Name,
+                    ParLevel2_Id:                      parLevel2Id,
+                    ParLevel2_Name:                    parLevel2Name,
                 };
             }
         },
@@ -403,11 +405,40 @@
             /*Verifica Unidade*/
             var companySelected = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').val();//
             var display = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').text();//
+
+            var level1Selected = $('#' + seletorTato + ' #parLevel1Select2 :selected').val();//
+            var displayLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2 :selected').text();//
+
+            var level2Selected = $('#' + seletorTato + ' #parLevel2Select2 :selected').val();//
+            var displayLevel2Selected = $('#' + seletorTato + ' #parLevel2Select2 :selected').text();//
+
+            function verify(data){
+                return (data == 0 || data == -1 || data == null) ? 1 : 0;
+            }
+
             var exist = $.grep($('#tableLevel3Value  tbody  tr  td:nth-child(1)'), function(o, c){//
+                var count = 0;
                 if(companySelected == -1){
-                    return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
+                    count += verify($(o).parent().data().ParCompany_Id);
+                }else{
+                    count += $(o).parent().data().ParCompany_Id == companySelected ? 1 : 0;
                 }
-                return $(o).parent().data().ParCompany_Id == companySelected;
+
+                if(level1Selected == -1){
+                    count += verify($(o).parent().data().ParLevel1_Id);
+                }else{
+                    count += $(o).parent().data().ParLevel1_Id == level1Selected ? 1 : 0;
+                }
+
+                if(level2Selected == -1){
+                    count += verify($(o).parent().data().ParLevel2_Id);
+                }else{
+                    count += $(o).parent().data().ParLevel2_Id == level2Selected ? 1 : 0;
+                }
+
+                if(count == 3)
+                    return true;
+                return false;
             });
 
             if(!!isEdit){/*Edição*/
@@ -446,8 +477,8 @@
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].AcceptableValueBetween"] = o.AcceptableValueBetween;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMin"] = o.IntervalMin;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMinCalculado"] = o.IntervalMin;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel1_Id"] = o.Level1_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel2_Id"] = o.Level2_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
@@ -462,6 +493,7 @@
             if( level3Value.listObjSalvo != null){ /*Carrega regras de NC*/
                 level3Value.listObjSalvo.forEach(function (o, c) {
                     console.log('aquii');
+                    console.log(o);
                     o["ParLevel3InputType_Name"] = o.ParLevel3InputType.Name;
 
                     if(o.ParCompany_Id > 0)
@@ -469,17 +501,17 @@
                     else
                         o["ParCompany_Name"] = "@Resources.Resource.all";
 
-                    try{
-                        if(o.ParLevel1_Name > 0)
-                            o["ParLevel1_Name"] = o.ParLevel1.Name;
-                        else
-                            o["ParLevel1_Name"] = "@Resources.Resource.all";
+                    if(o.ParLevel1_Id > 0)
+                        o["ParLevel1_Name"] = o.ParLevel1.Id + " - " + o.ParLevel1.Name;
+                    else
+                        o["ParLevel1_Name"] = "@Resources.Resource.all";
 
-                        if(o.Level2_Name > 0)
-                            o["ParLevel2_Name"] = o.ParLevel2.Name;
-                        else
-                            o["ParLevel2_Name"] = "@Resources.Resource.all";
-                    }catch(v){}
+                    if(o.ParLevel2_Id > 0)
+                        o["ParLevel2_Name"] = o.ParLevel2.Id + " - " +o.ParLevel2.Name;
+                    else
+                        o["ParLevel2_Name"] = "@Resources.Resource.all";
+                    console.log(o["ParLevel2_Name"]);
+                    console.log(o["ParLevel1_Name"]);
 
                     if(o.ParLevel3InputType_Id == 1){
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
