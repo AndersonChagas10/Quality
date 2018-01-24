@@ -221,6 +221,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\ApiGerenciarController.cs" />
+    <Compile Include="Controllers\Api\ApiPa_ColvisController.cs" />
     <Compile Include="Controllers\Api\ApiSgqController.cs" />
     <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
