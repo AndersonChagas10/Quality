@@ -439,11 +439,12 @@ namespace Dominio.Services
             if (paramsDto.parLevel3Dto.listLevel3Value != null)
                 if (paramsDto.parLevel3Dto.listLevel3Value.Count() > 0)
                     paramsDto.parLevel3Dto.listLevel3Value.ForEach(r => r.preparaParaInsertEmBanco());
-            if (paramsDto.parLevel3Dto.listLevel3Value != null)
+            if (paramsDto.parLevel3Dto.listParLevel3EvaluationSample != null)
                 if (paramsDto.parLevel3Dto.listParLevel3EvaluationSample.Count() > 0)
                     paramsDto.parLevel3Dto.listParLevel3EvaluationSample.ForEach(r => r.PreparaParaInsertEmBanco());
 
             List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
+            List<ParLevel3EvaluationSample> listSaveParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSample>>(paramsDto.parLevel3Dto.listParLevel3EvaluationSample);
 
             #endregion
 
@@ -470,7 +471,7 @@ namespace Dominio.Services
             try
             {
 
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listSaveParLevel3EvaluationSample, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
                 if (parLevel3Level2peso != null)
                     foreach (var i in parLevel3Level2peso?.Where(r => r.IsActive))
                         AddVinculoL1L2(paramsDto.level1Selected, paramsDto.level2Selected, saveParamLevel3.Id, 0, i.ParCompany_Id);
@@ -512,6 +513,7 @@ namespace Dominio.Services
             var group = db.ParLevel3Group.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
             var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
+            var level3EvaluationSample = parlevel3.ParLevel3EvaluationSample.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
 
             #endregion
 
@@ -521,6 +523,7 @@ namespace Dominio.Services
             level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(group);//DDL
             level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(level3Level2);
             level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(level3Value);
+            level3.listParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSampleDTO>>(level3EvaluationSample);
             retorno.parLevel3Value = new ParLevel3ValueDTO(); // Mini Gambi....
 
             #endregion
@@ -532,6 +535,9 @@ namespace Dominio.Services
 
             foreach (var Level3Value in level3.listLevel3Value)/*ParLevel 3 Value*/
                 Level3Value.PreparaGet();
+
+            foreach (var parLevel3EvaluationSample in level3.listParLevel3EvaluationSample)/*ParLevel 3 Value*/
+                parLevel3EvaluationSample.PreparaGet();
 
             #endregion
 

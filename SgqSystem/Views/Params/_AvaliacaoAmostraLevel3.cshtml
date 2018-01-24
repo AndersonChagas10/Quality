@@ -96,23 +96,23 @@
     var AvAm3 = {
         /*Setup*/
         levelControl: 3,
-        level: "newLevel3Modal #@id ",
+        level: "newLevel3Modal",
         listObjSalvo: levelParamsDTO.parLevel3Dto.listParLevel3EvaluationSample,
         idTable: 'tableAvAmLevel3',//
         tdsNames: ['CompanyName', 'ParLevel1_Name', 'ParLevel2_Name', 'EvaluationInterval', 'EvaluationNumber', 'SampleNumber', 'btn'],
         getObjAdd: function(isEdit, obj){
             if(isEdit != undefined){
 
-                var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
-                var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
+                var compId = $('#' + isEdit + ' @id3 #avAmCompany :selected').val();
+                var compName = $('#' + isEdit + ' @id3 #avAmCompany :selected').text();
                 if(compId == "-1"){
                     compName = "@Resources.Resource.all"
                 }
-                obj.CompanyId = compId;
+                obj.ParCompany_Id = compId;
                 obj.CompanyName = compName;
 
-                var ParLevel1_Id = $('#' + isEdit + ' #parLevel1Select2 :selected').val();
-                var ParLevel1_Name = $('#' + isEdit + ' #parLevel1Select2 :selected').text();
+                var ParLevel1_Id = $('#' + isEdit + ' @id3 #parLevel1Select2 :selected').val();
+                var ParLevel1_Name = $('#' + isEdit + ' @id3 #parLevel1Select2 :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
                 }
@@ -127,34 +127,34 @@
                 obj.ParLevel2_Id = ParLevel2_Id;
                 obj.ParLevel2_Name = ParLevel2_Name;
 
-                obj.SampleNumber = $('#' + isEdit + ' #amostra').val();
-                obj.EvaluationNumber = $('#' + isEdit + ' #avaliacao').val();
-                obj.EvaluationInterval = $('#' + this.level + ' #intervaloParaAvaliar').val();
+                obj.SampleNumber = $('#' + isEdit + ' @id3 #amostra').val();
+                obj.EvaluationNumber = $('#' + isEdit + ' @id3 #avaliacao').val();
+                obj.EvaluationInterval = $('#' + this.level + ' @id3 #intervaloParaAvaliar').val();
                 return obj;
             }else{
-                var compId = $('#' + this.level + ' #avAmCompany :selected').val();
-                var compName = $('#' + this.level + ' #avAmCompany :selected').text();
+                var compId = $('#' + this.level + ' @id3 #avAmCompany :selected').val();
+                var compName = $('#' + this.level + ' @id3 #avAmCompany :selected').text();
                 if(compId == "-1"){
                     compName = "@Resources.Resource.all"
                 }
 
-                var ParLevel1_Id = $('#' + this.level + ' #parLevel1Select2 :selected').val();
-                var ParLevel1_Name = $('#' + this.level + ' #parLevel1Select2 :selected').text();
+                var ParLevel1_Id = $('#' + this.level + ' @id3 #parLevel1Select2 :selected').val();
+                var ParLevel1_Name = $('#' + this.level + ' @id3 #parLevel1Select2 :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
                 }
 
-                var ParLevel2_Id = $('#' + this.level + ' #parLevel2Select2 :selected').val();
-                var ParLevel2_Name = $('#' + this.level + ' #parLevel2Select2 :selected').text();
+                var ParLevel2_Id = $('#' + this.level + ' @id3 #parLevel2Select2 :selected').val();
+                var ParLevel2_Name = $('#' + this.level + ' @id3 #parLevel2Select2 :selected').text();
                 if(ParLevel2_Id == "-1"){
                     ParLevel2_Name = "@Resources.Resource.all"
                 }
 
                 return {/*Objeto*/
-                    SampleNumber     :  $('#' + this.level + ' #amostra').val(),
-                    EvaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
-                    EvaluationInterval : $('#' + this.level + ' #intervaloParaAvaliar').val(),
-                    CompanyId  :  compId,
+                    SampleNumber     :  $('#' + this.level + ' @id3 #amostra').val(),
+                    EvaluationNumber    : $('#' + this.level + ' @id3 #avaliacao').val(),
+                    EvaluationInterval : $('#' + this.level + ' @id3 #intervaloParaAvaliar').val(),
+                    ParCompany_Id  :  compId,
                     CompanyName  : compName,
                     ParLevel1_Id : ParLevel1_Id,
                     ParLevel1_Name : ParLevel1_Name,
@@ -186,29 +186,36 @@
                 return (data == 0 || data == -1 || data == null) ? 1 : 0;
             }
             /*Verifica Unidade*/
-            var companySelected = $('#' + seletorTato + ' #avAmCompany :selected').val();//
-            var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2 :selected').val();
-            var parLevel2Selected = $('#' + seletorTato + ' #parLevel2Select2 :selected').val();
-            var display = $('#' + seletorTato + ' #avAmCompany :selected').text();//
+            console.log('#' + seletorTato + ' @id3 #avAmCompany :selected');
+            var companySelected = $('#' + seletorTato + ' @id3 #avAmCompany :selected').val();//
+            var parLevel1Selected = $('#' + seletorTato + ' @id3 #parLevel1Select2 :selected').val();
+            var parLevel2Selected = $('#' + seletorTato + ' @id3 #parLevel2Select2 :selected').val();
+            var display = $('#' + seletorTato + ' @id3 #avAmCompany :selected').text();//
             var exist = $.grep($('#tableAvAmLevel3  tbody  tr  td:nth-child(1)'), function(o, c){
 
                 var count = 0;
                 if(companySelected == -1){
-                    count += verify($(o).parent().data().CompanyId);
+                    count += verify($(o).parent().data().ParCompany_Id);
+                    console.log(1);
                 }else{
-                    count += $(o).parent().data().CompanyId == companySelected ? 1 : 0;
+                    count += $(o).parent().data().ParCompany_Id == companySelected ? 1 : 0;
+                    console.log(2);
                 }
 
                 if(parLevel1Selected == -1){
                     count += verify($(o).parent().data().ParLevel1_Id);
+                    console.log(3);
                 }else{
                     count += $(o).parent().data().ParLevel1_Id == parLevel1Selected ? 1 : 0;
+                    console.log(4);
                 }
 
                 if(parLevel2Selected == -1){
                     count += verify($(o).parent().data().ParLevel2_Id);
+                    console.log(5);
                 }else{
                     count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
+                    console.log(6);
                 }
 
                 if(count == 3)
@@ -245,7 +252,7 @@
 
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].SampleNumber"] = o.SampleNumber;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].EvaluationNumber"] = o.EvaluationNumber;
-                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].CompanyId"] = o.CompanyId;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].EvaluationInterval"] = o.EvaluationInterval;
@@ -256,20 +263,20 @@
         },
         carregaDadosDoDb: function(){
             var id = this.level + ' #' + this.idTable;
+            var idPaleativoParaElementosDentroDoCollapse = this.level + ' @id3';
             var tdNamess = this.tdsNames;
             if( this.listObjSalvo != null){ /*Carrega regras de NC*/
                 this.listObjSalvo.forEach(function(o, c){
-                    if(o.CompanyId != null){
-                        if(o.CompanyId != "-1"){
-                            o['CompanyName'] = $('#'+ this.level + ' #avAmCompany option[value=' + o.CompanyId + ']').text();
+                    if(o.ParCompany_Id != null){
+                        if(o.ParCompany_Id != "-1"){
+                            o['CompanyName'] = $('#'+ idPaleativoParaElementosDentroDoCollapse + ' #avAmCompany option[value=' + o.ParCompany_Id + ']').text();
                         }
                     }else{
                         o['CompanyName'] = "@Resources.Resource.all";
                     }
-
                     if(o.ParLevel1_Id != null){
                         if(o.ParLevel1_Id != "-1"){
-                            o['ParLevel1_Name'] = $('#'+ this.level + ' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
+                            o['ParLevel1_Name'] = $('#'+ idPaleativoParaElementosDentroDoCollapse + ' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
                         }
                     }else{
                         o['ParLevel1_Name'] = "@Resources.Resource.all";
@@ -277,7 +284,7 @@
 
                     if(o.ParLevel2_Id != null){
                         if(o.ParLevel2_Id != "-1"){
-                            o['ParLevel2_Name'] = $('#'+ this.level + ' #parLevel2Select2 option[value=' + o.ParLevel2_Id + ']').text();
+                            o['ParLevel2_Name'] = $('#'+ idPaleativoParaElementosDentroDoCollapse + ' #parLevel2Select2 option[value=' + o.ParLevel2_Id + ']').text();
                         }
                     }else{
                         o['ParLevel2_Name'] = "@Resources.Resource.all";

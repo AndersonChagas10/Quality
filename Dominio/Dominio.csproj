@@ -267,6 +267,9 @@
     <Compile Include="ParLevel3BoolTrue.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLevel3EvaluationSample.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevel3Group.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
