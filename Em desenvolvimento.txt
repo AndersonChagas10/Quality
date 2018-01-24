@@ -175,3 +175,7 @@ create table Pa_Colvis(
 ALTER TABLE ParLevel3Value ADD ParLevel1_Id INT NULL  References ParLevel1(Id) DEFAULT NULL
 
 ALTER TABLE ParLevel3Value ADD ParLevel2_Id INT NULL  References ParLevel2(Id) DEFAULT NULL
+
+ALTER TABLE [dbo].[ParHeaderField]
+
+add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
