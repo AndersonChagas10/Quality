@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -750,6 +750,38 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.min.css" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\lobi\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="Content\lobi\bootstrap\dist\js\npm.js" />
+    <Content Include="Content\lobi\css\lobipanel.css" />
+    <Content Include="Content\lobi\demo\demo.css" />
+    <Content Include="Content\lobi\demo\documentation.css" />
+    <Content Include="Content\lobi\dist\css\lobipanel.css" />
+    <Content Include="Content\lobi\dist\css\lobipanel.min.css" />
+    <Content Include="Content\lobi\dist\js\lobipanel.js" />
+    <Content Include="Content\lobi\dist\js\lobipanel.min.js" />
+    <Content Include="Content\lobi\gruntfile.js" />
+    <Content Include="Content\lobi\index.html" />
+    <Content Include="Content\lobi\js\lobipanel.js" />
+    <Content Include="Content\lobi\lib\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\lobi\lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\lobi\lib\highlight\github.css" />
+    <Content Include="Content\lobi\lib\highlight\highlight.pack.js" />
+    <Content Include="Content\lobi\lib\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\lobi\lib\jquery-ui.min.css" />
+    <Content Include="Content\lobi\lib\jquery-ui.min.js" />
+    <Content Include="Content\lobi\lib\jquery-ui.theme.min.css" />
+    <Content Include="Content\lobi\lib\jquery.1.11.min.js" />
+    <Content Include="Content\lobi\lib\jquery.ui.touch-punch.js" />
+    <Content Include="Content\lobi\lib\jquery.ui.touch-punch.min.js" />
     <Content Include="Imagens\A.png" />
     <Content Include="Imagens\C.png" />
     <Content Include="Imagens\D.png" />
@@ -961,6 +993,99 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\lobi\.gitignore" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.css.map" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\lobi\bootstrap\less\.csscomb.json" />
+    <Content Include="Content\lobi\bootstrap\less\.csslintrc" />
+    <Content Include="Content\lobi\bootstrap\less\alerts.less" />
+    <Content Include="Content\lobi\bootstrap\less\badges.less" />
+    <Content Include="Content\lobi\bootstrap\less\bootstrap.less" />
+    <Content Include="Content\lobi\bootstrap\less\breadcrumbs.less" />
+    <Content Include="Content\lobi\bootstrap\less\button-groups.less" />
+    <Content Include="Content\lobi\bootstrap\less\buttons.less" />
+    <Content Include="Content\lobi\bootstrap\less\carousel.less" />
+    <Content Include="Content\lobi\bootstrap\less\close.less" />
+    <Content Include="Content\lobi\bootstrap\less\code.less" />
+    <Content Include="Content\lobi\bootstrap\less\component-animations.less" />
+    <Content Include="Content\lobi\bootstrap\less\dropdowns.less" />
+    <Content Include="Content\lobi\bootstrap\less\forms.less" />
+    <Content Include="Content\lobi\bootstrap\less\glyphicons.less" />
+    <Content Include="Content\lobi\bootstrap\less\grid.less" />
+    <Content Include="Content\lobi\bootstrap\less\input-groups.less" />
+    <Content Include="Content\lobi\bootstrap\less\jumbotron.less" />
+    <Content Include="Content\lobi\bootstrap\less\labels.less" />
+    <Content Include="Content\lobi\bootstrap\less\list-group.less" />
+    <Content Include="Content\lobi\bootstrap\less\media.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\alerts.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\background-variant.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\border-radius.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\buttons.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\center-block.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\clearfix.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\forms.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\gradients.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\grid-framework.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\grid.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\hide-text.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\image.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\labels.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\list-group.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\nav-divider.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\nav-vertical-align.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\opacity.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\pagination.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\panels.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\progress-bar.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\reset-filter.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\reset-text.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\resize.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\responsive-visibility.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\size.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\tab-focus.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\table-row.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\text-emphasis.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\text-overflow.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\vendor-prefixes.less" />
+    <Content Include="Content\lobi\bootstrap\less\modals.less" />
+    <Content Include="Content\lobi\bootstrap\less\navbar.less" />
+    <Content Include="Content\lobi\bootstrap\less\navs.less" />
+    <Content Include="Content\lobi\bootstrap\less\normalize.less" />
+    <Content Include="Content\lobi\bootstrap\less\pager.less" />
+    <Content Include="Content\lobi\bootstrap\less\pagination.less" />
+    <Content Include="Content\lobi\bootstrap\less\panels.less" />
+    <Content Include="Content\lobi\bootstrap\less\popovers.less" />
+    <Content Include="Content\lobi\bootstrap\less\print.less" />
+    <Content Include="Content\lobi\bootstrap\less\progress-bars.less" />
+    <Content Include="Content\lobi\bootstrap\less\responsive-embed.less" />
+    <Content Include="Content\lobi\bootstrap\less\responsive-utilities.less" />
+    <Content Include="Content\lobi\bootstrap\less\scaffolding.less" />
+    <Content Include="Content\lobi\bootstrap\less\tables.less" />
+    <Content Include="Content\lobi\bootstrap\less\theme.less" />
+    <Content Include="Content\lobi\bootstrap\less\thumbnails.less" />
+    <Content Include="Content\lobi\bootstrap\less\tooltip.less" />
+    <Content Include="Content\lobi\bootstrap\less\type.less" />
+    <Content Include="Content\lobi\bootstrap\less\utilities.less" />
+    <Content Include="Content\lobi\bootstrap\less\variables.less" />
+    <Content Include="Content\lobi\bootstrap\less\wells.less" />
+    <Content Include="Content\lobi\less\loading-animation.less" />
+    <Content Include="Content\lobi\less\lobipanel.less" />
+    <Content Include="Content\lobi\less\main.less" />
+    <Content Include="Content\lobi\less\variables.less" />
+    <Content Include="Content\lobi\lib\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\lobi\LICENSE" />
+    <Content Include="Content\lobi\package.json" />
+    <Content Include="Content\lobi\README.md" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1598,12 +1723,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

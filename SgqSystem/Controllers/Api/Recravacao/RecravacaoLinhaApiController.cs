@@ -48,10 +48,50 @@ namespace SgqSystem.Controllers.Api
             }
             else
             {
+                var queryRecravacaoJson = string.Format("SELECT * FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC", companyId, level1Id);
+                var recravacoes = QueryNinja(db, queryRecravacaoJson);
+
                 var query = string.Format(@"SELECT * FROM ParRecravacao_Linhas WHERE 
                         ParCompany_Id = {0} 
                         and ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1)", companyId, level1Id);
                 var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
+
+                foreach (var linha in listLinhasDoLevel1)
+                {
+                    DateTime? ultimaLataRetirada = null;
+
+                    int id = linha.GetValue("Id").Value<int>();
+                    int? horaVerificacao = 2;
+
+                    String recravacaoJson = recravacoes
+                        .Where(r => r.GetValue("Linha_Id").Value<int>() == id)
+                        .FirstOrDefault()?.GetValue("ObjectRecravacaoJson").Value<String>();
+                    
+                    if(recravacaoJson != null)
+                    {
+                        JArray latas = JObject.Parse(recravacaoJson).GetValue("latas").Value<JArray>();
+
+                        horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
+                            JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int?>();
+
+                        foreach (var lata in latas)
+                        {
+                            DateTime? dataRetirada = String.IsNullOrEmpty(((JObject) lata)?.GetValue("HoraDaRetiradaDaLata")?.ToString()) ? null :
+                                    ((JObject)lata).GetValue("HoraDaRetiradaDaLata").Value<DateTime?>();
+
+                            if(dataRetirada != null)
+                            {
+                                ultimaLataRetirada = ultimaLataRetirada == null
+                                    ? dataRetirada : (dataRetirada > ultimaLataRetirada ? dataRetirada : ultimaLataRetirada);
+                            }
+                        }
+                    }
+
+                    linha["UltimaLataRetirada"] = ultimaLataRetirada;
+                    linha["HoraVerificacao"] = horaVerificacao;
+
+                }
+
                 return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de Linhas Concluída", model = listLinhasDoLevel1 });
             }
         }
@@ -78,6 +118,9 @@ namespace SgqSystem.Controllers.Api
             var queryTipoLataPorparRecravacao_TypeLata_Id = "SELECT * FROM ParRecravacao_TipoLata WHERE Id = {0} AND IsActive = 1";
             var results = QueryNinja(db, queryLinhaPorCompanyELevel2).ToList();
 
+            var queryRecravacaoJson = string.Format("SELECT * FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id IN ({1}) AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC", parcompany, level1Ids);
+            var recravacoes = QueryNinja(db, queryRecravacaoJson);
+
             foreach (var linhaDb in results)
             {
                 var listaLevel3 = new List<ParLevel3DTO>();
@@ -92,6 +135,37 @@ namespace SgqSystem.Controllers.Api
                 CriaQueryesParaParLevel3OuterValuesDasLatasDaLinha(parlevel2_Id, parcompany, level1Ids, out queryVinculoLevel21, out queryVinculoLevel32, out queryVinculoLevel321, out hasVinculoLevel21TodasUnidade, out hasVinculoLevel32TodasUnidade, out hasVinculoLevel321TodasUnidade);
 
                 InsereParLevel3OuterValueNaLata(parcompany, listaLevel3, hasVinculoLevel21TodasUnidade, hasVinculoLevel32TodasUnidade, hasVinculoLevel321TodasUnidade);
+
+                DateTime? ultimaLataRetirada = null;
+                
+                int? horaVerificacao = 2;
+
+                String recravacaoJson = recravacoes
+                    .Where(r => r.GetValue("Linha_Id").Value<int>() == Int32.Parse(id))
+                    .FirstOrDefault()?.GetValue("ObjectRecravacaoJson").Value<String>();
+
+                if (recravacaoJson != null)
+                {
+                    JArray latas = JObject.Parse(recravacaoJson).GetValue("latas").Value<JArray>();
+
+                    horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
+                        JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int?>();
+
+                    foreach (var lata in latas)
+                    {
+                        DateTime? dataRetirada = String.IsNullOrEmpty(((JObject)lata)?.GetValue("HoraDaRetiradaDaLata")?.ToString()) ? null :
+                                ((JObject)lata).GetValue("HoraDaRetiradaDaLata").Value<DateTime?>();
+
+                        if (dataRetirada != null)
+                        {
+                            ultimaLataRetirada = ultimaLataRetirada == null
+                                ? dataRetirada : (dataRetirada > ultimaLataRetirada ? dataRetirada : ultimaLataRetirada);
+                        }
+                    }
+                }
+
+                linha["UltimaLataRetirada"] = ultimaLataRetirada;
+                linha["HoraVerificacao"] = horaVerificacao;
 
                 linhaDb["TipoDeLata"] = QueryNinja(db, string.Format(queryTipoLataPorparRecravacao_TypeLata_Id, int.Parse(linhaDb["ParRecravacao_TypeLata_Id"].ToString()))).FirstOrDefault();
                 linhaDb["ListParlevel3"] = JToken.FromObject(listaLevel3, new Newtonsoft.Json.JsonSerializer { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });

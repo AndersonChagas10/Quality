@@ -3,6 +3,7 @@
     var urlHome = Url.Action("Index", "Home");
 }
 
+<link rel="stylesheet" type="text/css" href="~/Content/lobi/css/lobipanel.css"/>
 
 <style>
     .level3NameDestacado td:first-child {
@@ -52,7 +53,7 @@
         border-radius: 33px !important;
     }
 
-    .page-sidebar-wrapper{
+    .page-sidebar-wrapper {
         display: none;
     }
 
@@ -60,7 +61,7 @@
         display: none !important;
     }
 
-    footer{
+    footer {
         display: none !important;
     }
 
@@ -127,55 +128,109 @@
         text-align: center;
     }
 
-        td > span.label {
-            position: absolute;
-            top: 1px;
-            bottom: 1px;
-            left: 1px;
-            right: 1px;
-            color: black;
-        }
+    td > span.label {
+        position: absolute;
+        top: 1px;
+        bottom: 1px;
+        left: 1px;
+        right: 1px;
+        color: black;
+    }
 
-            td > span.label:after {
-                content: '';
-                height: 100%;
-                display: inline-block;
-                vertical-align: middle;
-                color: black;
-            }
+    td > span.label:after {
+        content: '';
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+        color: black;
+    }
 
     .redDot {
         color: red;
     }
+
+    .panel-sm{
+
+    }
+
+    .floating-map {
+        z-index: 9998 !important;
+    }
+    
+    .floating-map .panel-body ul{
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .floating-map .panel-body li{
+        width: 12.5%;
+        float: left;
+        line-height: 1.4;
+        text-align: center;
+        height: 80px;
+        background-color: #f9f9f9;
+        border: 1px solid #fff;
+        padding: 4px;
+        cursor: pointer;
+    }
+    
+    .floating-map .panel-body li span{
+        display: block;
+        text-align: center;
+        word-wrap: break-word;
+        font-size: 11px;
+    }
+
+    .floating-map .panel-body li span strong{
+        font-size: 14px;
+    }
+
+    .floating-map .fa{
+        font-size: 28px!important;
+    }
+
+    .lobipanel-minimized-toolbar{
+        background: none;
+        z-index: 3000;
+    }
+
+    .floating-map.panel-minimized {
+        position: fixed !important;
+        bottom: 35px;
+        right: 265px;
+        height: 40px;
+        width: 40px;
+        min-width: 40px !important;
+        padding: 0px !important;
+        -webkit-border-radius: 33px !important;
+        -moz-border-radius: 33px !important;
+        border-radius: 33px !important;
+
+    }
+
+    .floating-map.panel-minimized .panel-title{
+        max-width: 100px !important;
+    }
+
+    .floating-map.panel-minimized .panel-title h4{
+        margin-left: -7px;
+        margin-top: 7px;
+    }
+
+    .panelDanger {
+        background-color: #ec4040 !important;
+        color: azure !important;
+    }
+
 </style>
 
 <script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
+<script src="~/Content/lobi/js/lobipanel.js"></script>
+
 <div class="page-content-wrapper">
     <div class="page-content" style="margin-left: 0px!important">
         <div class="wrapper">
             <div ng-controller="recravacaoController as r" style="width:100%;">
-                <div class="collapse navbar-collapse" style="display: none" id="bs-example-navbar-collapse-1">
-
-                    <ul class="nav navbar-nav ulIndicador" style="display: none">
-                        <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
-                            <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
-                                <span class="" aria-hidden="true"></span> {{indicador.Name}}
-                            </a>
-                        </li>
-                    </ul>
-
-                    <ul class="nav navbar-nav ulLinha" style="display: none">
-                        <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" ng-show="item.IsActive == 'True'">
-                            <a href="#" ng-class="{active: linhaSelecionada.Name == item.Name}">
-                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
-                                <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-
                 <div class="collapse navbar-collapse" style="margin-right: 15px; margin-left: 15px;">
                     <div class="panel panel-default">
                         <button class="btn btn-primary" ng-class="{active: indicadorSelecionado.Name == indicador.Name}" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -185,9 +240,25 @@
                     <div class="collapse" id="collapseExample">
                         <div class="panel panel-default">
                             <button class="btn btn-default" ng-class="{active: linhaSelecionada.Name == item.Name}" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                {{item.Name}}
+                                {{item.Name}} <strong>{{timerLinha(item).text}}</strong>
                             </button>
                         </div>
+                    </div>
+                </div>
+                
+                <div id="floatingMap" class="panel panel-danger panel-sm floating-map">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4><i class="fa fa-clock-o"></i> Tempo de Coleta</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li ng-class="{panelDanger: timerLinha(item).danger}" ng-click="selectLinha($index)" ng-repeat="item in linhas track by $index">
+                                <span><strong>{{timerLinha(item).text}}</strong></span>
+                                <span>{{item.Name}}</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -259,9 +330,9 @@
                             <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="linhaSelecionada.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
                         <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                            <label for="">Tipo de Mercado</label>
+                            <label for="">Horas de Verificação</label>
                             <br />
-                            <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoMercado track by item.Id" ng-model="linhaSelecionada.form.TipoMercado" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            <select ng-change="changeHoraVerificacao(); salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item.Value as item.Name for item in horasVerificacao track by item.Value" ng-model="linhaSelecionada.HoraVerificacao" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
 
                         <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
@@ -889,6 +960,24 @@
 </div>
 
 <script src="~/Scripts/lodash/lodash.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#floatingMap').lobiPanel({
+            dradraggable: true,
+            resize: 'horizontal',
+            state: 'unpinned',
+            reload: false,
+            close: false,
+            editTitle: false,
+            expand: false,
+            unpin: false,
+            maxWidth: 600,
+            minHeight: 300,
+        });
+    })
+</script>
+
 <script>
     (function () {
         'use strict';
@@ -1006,16 +1095,17 @@
                 //timer
                 var intervalId;
                 vm.counter = 0;
-                vm.horas = 1
+                vm.horas = vm.linhaSelecionada.HoraVerificacao ? vm.linhaSelecionada.HoraVerificacao : 2
                 vm.initialCountdown = 0 * vm.horas;
                 vm.countdown = $scope.initialCountdown;
                 vm.startTime = new Date()
-                vm.myTotal = 3600000 * vm.horas
                 vm.tempoEntreColetaDeLatasExpirado = false
                 vm.modalObsAberto = false
                 vm.firstLataInAftherObs = false
 
                 vm.timer = function (noFlag) {
+                    vm.horas = vm.linhaSelecionada.HoraVerificacao ? vm.linhaSelecionada.HoraVerificacao : 2
+                    vm.myTotal = 3600000 * vm.horas
                     if (intervalId)
                         $interval.cancel(intervalId);
                     vm.startTime = null;
@@ -1034,6 +1124,9 @@
                             vm.timerDaProximaLata = "Linha Não Iniciada"
                             return;
                         }
+
+                        vm.linhaSelecionada.UltimaLataRetirada =  vm.startTime.toISOString()
+
                         vm.diffTime = moment().diff(vm.startTime)
                         vm.duration = moment.duration(vm.diffTime);
                         let days = vm.duration.days(), hrs = vm.duration.hours(),
@@ -1080,14 +1173,38 @@
                     $interval.cancel(intervalId);
                 };
 
+                vm.timerLinha = function (linha) {
+                    if (!!linha.UltimaLataRetirada) {
+                        var dataRetirada = new Date(linha.UltimaLataRetirada);
+                        var agora = new Date();
+
+                        dataRetirada.setDate(agora.getDate());
+                        dataRetirada.setMonth(agora.getMonth());
+                        dataRetirada.setFullYear(agora.getFullYear());
+
+                        dataRetirada.setHours(dataRetirada.getHours() + linha.HoraVerificacao)
+
+                        var distance = dataRetirada.getTime() - agora.getTime();
+
+                        var hours = parseInt((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = parseInt((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                        return {
+                            text: hours + "h " + minutes + "m",
+                            danger: (minutes < 0)
+                        };
+                    }
+                    return {};
+                }
+
                 vm.saveObservacao = function (item) {
 
                     if ($scope.tempoEntreColetaDeLatasExpirado) {
                         item.LataComAtraso = true
                         item.tempoDeAtraso = vm.timerDaProximaLata
-                        vm.novaLata(vm.linhaSelecionada);
+                        //vm.novaLata(vm.linhaSelecionada);
                         item.Lata = vm.lataSelecionada.Name
-                        vm.executeDocReady(true)
+                        //vm.executeDocReady(true)
                     }
                     //vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                     vm.salvaLinha();
@@ -1095,12 +1212,14 @@
                 }
 
                 vm.addObservacao = function () {
+                    if (!vm.linhaSelecionada.ObservacoesList)
+                        vm.linhaSelecionada.ObservacoesList = []
                     vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
                 }
 
                 //TUDO MOCK MOCK
                 $scope.Date = moment().format('DD/MM/YYYY HH:mm')
-                
+
                 vm.mercado = 1
                 vm.limInferiorEspessura
                 vm.limSuperiorEspessura
@@ -1162,7 +1281,7 @@
                         return lata["class"]
                     }
                 }
-              
+
                 vm.getUser = function () {
                     return {
                         Id: GetUsuarioId(),
@@ -1237,7 +1356,26 @@
                         vm.indicadorSelecionado = item
                         vm.linhaSelecionada = {}
                         vm.getParametrizacaoLinhas(item.Id)
-                    }                    
+                    }
+                }
+
+                vm.getLinha = function (c) {
+                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.linhaSelecionada })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                vm.linhas[c] = r.data.model[0]
+                                vm.linhas[c]["latas"] = []
+                                vm.linhas[c].HoraVerificacao = vm.linhaSelecionada.HoraVerificacao
+                                vm.linhas[c].UltimaLataRetirada = vm.linhaSelecionada.UltimaLataRetirada
+                                vm.linhaSelecionada = vm.linhas[c]
+                                vm.activeInLine = vm.linhas[c].Id
+                                vm.getState()
+                            }
+                        });
                 }
 
                 vm.getAllLinha = function (index, needFindIndex, showMensagem) {
@@ -1342,13 +1480,15 @@
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
 
                     vm.linhaSelecionada = vm.linhas[index]
-                    
+
 
 
                     vm.activeInLine = vm.linhaSelecionada.Id
 
                     //vm.executeDocReady(true)
-                    vm.getState()
+                    //vm.getState()
+
+                    vm.getLinha(index);
 
                     //vm.$apply()
                 }
@@ -1385,9 +1525,9 @@
                     for (let i = 0; i < quantidadeLatas; i++) {
                         if (linha["counterDeLatas"] == undefined)
                             linha["counterDeLatas"] = 1
-                        
+
                         posicaoCabecote = isReavaliacao ? latasNaoConformes[i].cabecote : i + 1
-                        
+
                         linha.latas.push({
                             Name: 'Lata - ' + linha.counterDeLatas + ' Cabeçote - ' + posicaoCabecote,
                             counter: linha.counterDeLatas,
@@ -1445,10 +1585,15 @@
                                 })
                                 linha["counterDeLatas"] = linha["counterDeLatas"] + 1
                                 vm.timer()
-                            }                            
+                            }
                         }
                     });
-                    
+
+                }
+
+                vm.changeHoraVerificacao = function () {
+                    vm.horas = vm.linhaSelecionada.HoraVerificacao;
+                    vm.timer();
                 }
 
                 vm.salvaLinhaUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
@@ -1535,16 +1680,16 @@
                         Id: 2
                     })
                 }
-                vm.tipoMercado = function () {
+                vm.horaVerificacao = function () {
                     //MOCK
-                    vm.tipoMercado = []
-                    vm.tipoMercado.push({
-                        Name: 'Mercado Interno',
-                        Id: 1
+                    vm.horasVerificacao = []
+                    vm.horasVerificacao.push({
+                        Name: '1 hora',
+                        Value: 1
                     })
-                    vm.tipoMercado.push({
-                        Name: 'Mercado Externo',
-                        Id: 2
+                    vm.horasVerificacao.push({
+                        Name: '2 horas',
+                        Value: 2
                     })
                 }
                 vm.getFornecedorTampaLata = function () {
@@ -1564,7 +1709,7 @@
                 //vm.getProdutos()
                 //vm.getSugestoes()
                 vm.tipoLata()
-                vm.tipoMercado()
+                vm.horaVerificacao()
                 //vm.padroesAcaoCorretiva()
 
                 /*GET Todas as linhas cadastradas*/
@@ -1584,7 +1729,7 @@
                                     o["latas"] = []
                                 })
                                 //vm.executeDocReady(true)
-                                vm.getAllLinha()
+                                //vm.getAllLinha() -- #linha
                                 //vm.getState()
                             }
                         });
@@ -1600,7 +1745,7 @@
                         vm.linhaSelecionada.form.ProdutoName = !!produto ? produto.cNmProduto : ""
                     }
                 }
-                
+
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
                     $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?companyId=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
@@ -1638,6 +1783,7 @@
 
                                 /**/
 
+                                novaLinha[0].UltimaLataRetirada = vm.linhaSelecionada.UltimaLataRetirada
                                 vm.linhaSelecionada = JSON.parse(JSON.stringify(novaLinha))[0]
 
                                 vm.linhaSelecionada.latas.forEach(function (o, c) {
@@ -1669,7 +1815,7 @@
 
                                 if (vm.linhaSelecionada.ObservacoesList == undefined || vm.linhaSelecionada.ObservacoesList == [])
                                     vm.linhaSelecionada.ObservacoesList = [{ adDate: vm.Date }]
-                                
+
                                 if (!vm.linhaSelecionada.StartAuditTime)
                                     vm.linhaSelecionada.StartAuditTime = moment().format("DD/MM/YYYY HH:mm")
 
@@ -1972,7 +2118,7 @@
 
                             }
                         });
-                        
+
                     });
 
                     if (save)
@@ -2304,7 +2450,7 @@
                                                 rows="3"
                                                 style="resize:none; overflow-x: hidden"></textarea>
                                 </div>
-                                <h3>Ação Corretiva 
+                                <h3>Ação Corretiva
                                     <button data-toggle="modal" type="button" data-target="#modalSugestaoAcao" ng-click="$parent.selecionaAcao($parent.$index)"
                                         class="btn btn-primary btn-sm pull-right">Sugestão de Ação</button>
                                 </h3>
