@@ -34,6 +34,7 @@ namespace Dominio
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
+            this.ParLevel3EvaluationSample = new HashSet<ParLevel3EvaluationSample>();
         }
     
         public int Id { get; set; }
@@ -115,5 +116,7 @@ namespace Dominio
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Value> ParLevel3Value { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel3EvaluationSample> ParLevel3EvaluationSample { get; set; }
     }
 }
