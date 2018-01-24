@@ -1,0 +1,303 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
+
+@{
+    var level = "3";
+    var id = "level" + level + "_AvAmostra_accordion";
+    var id2 = "#level" + level + "__AvAmostra_accordion";
+    var id3 = "#level" + level + "__AvAmostra_collapse";
+    var id4 = "level" + level + "__AvAmostra_collapse";
+    var click = "AvAm" + level + ".adiciona($(this))";
+    //var click = "alert();";
+}
+
+<div class="panel-group accordion" id="@id">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> @Resources.Resource.evaluation_and_sample</a>
+            </h4>
+        </div>
+        <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+
+                <table class="table-erp" id="">
+
+                    <tbody>
+
+                        <tr class="VinculoParLevel alert-info" style="">
+
+                            @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
+                                , @Html.Label(Resources.Resource.company)
+                                , Table.PosicaoLabel.top)
+
+                            <td class="td-erp">
+                                <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
+                                <div>
+                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
+                                </div>
+                            </td>
+                            <td class="td-erp">
+                                <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
+                                <div>
+                                    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            @Table.GerarColuna(@Html.TextBox("intervaloParaAvaliar", 0, htmlAttributes: new { @id = "intervaloParaAvaliar", @class = "form-control input-sm", type = "text" })
+                                , @Html.Label(Resources.Resource.number_samplers)
+                                , Table.PosicaoLabel.top)
+
+                            @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
+                            @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
+                                , @Html.Label(Resources.Resource.evaluation)
+                                , Table.PosicaoLabel.top)
+
+                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
+                            @Table.GerarColunaButton(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
+                                , @Html.Label(Resources.Resource.samples_per_evaluation)
+                                , Table.PosicaoLabel.top
+                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="tableAvAmLevel3" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
+                    <thead>
+                        <tr>
+                            <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.level1</th>
+                            <th>@Resources.Resource.level2</th>
+                            <th>@Resources.Resource.number_samplers</th>
+                            <th>@Resources.Resource.evaluation</th>
+                            <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    //function changeCompanyAvAm() {
+
+    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
+
+    var AvAm3 = {
+        /*Setup*/
+        levelControl: 3,
+        level: "newLevel3Modal #@id ",
+        listObjSalvo: levelParamsDTO.parLevel3Dto.listParLevel3EvaluationSample,
+        idTable: 'tableAvAmLevel3',//
+        tdsNames: ['CompanyName', 'ParLevel1_Name', 'ParLevel2_Name', 'EvaluationInterval', 'EvaluationNumber', 'SampleNumber', 'btn'],
+        getObjAdd: function(isEdit, obj){
+            if(isEdit != undefined){
+
+                var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
+                var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
+                if(compId == "-1"){
+                    compName = "@Resources.Resource.all"
+                }
+                obj.CompanyId = compId;
+                obj.CompanyName = compName;
+
+                var ParLevel1_Id = $('#' + isEdit + ' #parLevel1Select2 :selected').val();
+                var ParLevel1_Name = $('#' + isEdit + ' #parLevel1Select2 :selected').text();
+                if(ParLevel1_Id == "-1"){
+                    ParLevel1_Name = "@Resources.Resource.all"
+                }
+                obj.ParLevel1_Id = ParLevel1_Id;
+                obj.ParLevel1_Name = ParLevel1_Name;
+
+                var ParLevel2_Id = $('#' + isEdit + ' #parLevel2Select2 :selected').val();
+                var ParLevel2_Name = $('#' + isEdit + ' #parLevel2Select2 :selected').text();
+                if(ParLevel2_Id == "-1"){
+                    ParLevel2_Name = "@Resources.Resource.all"
+                }
+                obj.ParLevel2_Id = ParLevel2_Id;
+                obj.ParLevel2_Name = ParLevel2_Name;
+
+                obj.SampleNumber = $('#' + isEdit + ' #amostra').val();
+                obj.EvaluationNumber = $('#' + isEdit + ' #avaliacao').val();
+                obj.EvaluationInterval = $('#' + this.level + ' #intervaloParaAvaliar').val();
+                return obj;
+            }else{
+                var compId = $('#' + this.level + ' #avAmCompany :selected').val();
+                var compName = $('#' + this.level + ' #avAmCompany :selected').text();
+                if(compId == "-1"){
+                    compName = "@Resources.Resource.all"
+                }
+
+                var ParLevel1_Id = $('#' + this.level + ' #parLevel1Select2 :selected').val();
+                var ParLevel1_Name = $('#' + this.level + ' #parLevel1Select2 :selected').text();
+                if(ParLevel1_Id == "-1"){
+                    ParLevel1_Name = "@Resources.Resource.all"
+                }
+
+                var ParLevel2_Id = $('#' + this.level + ' #parLevel2Select2 :selected').val();
+                var ParLevel2_Name = $('#' + this.level + ' #parLevel2Select2 :selected').text();
+                if(ParLevel2_Id == "-1"){
+                    ParLevel2_Name = "@Resources.Resource.all"
+                }
+
+                return {/*Objeto*/
+                    SampleNumber     :  $('#' + this.level + ' #amostra').val(),
+                    EvaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
+                    EvaluationInterval : $('#' + this.level + ' #intervaloParaAvaliar').val(),
+                    CompanyId  :  compId,
+                    CompanyName  : compName,
+                    ParLevel1_Id : ParLevel1_Id,
+                    ParLevel1_Name : ParLevel1_Name,
+                    ParLevel2_Id : ParLevel2_Id,
+                    ParLevel2_Name : ParLevel2_Name,
+                    IsActive: true
+                }
+            }
+        },
+        veifyAdd: function(isEdit) {
+            var seletorTato = !!isEdit ? isEdit : this.level;
+
+            /*Valida se pode criar o objeto*/
+            if($('#' + seletorTato + ' #amostra').val().length == 0){
+                openMessageModal('@Resources.Resource.invalid_samples_number');
+                return false;
+            }
+            if($('#' + seletorTato + ' #avaliacao').val().length == 0){
+                openMessageModal('@Resources.Resource.invalid_evaluations_number');
+                return false;
+            }
+
+            if($('#' + seletorTato + ' #intervaloParaAvaliar').val().length == 0){
+                openMessageModal('@Resources.Resource.number_samplers');
+                return false;
+            }
+
+            function verify(data){
+                return (data == 0 || data == -1 || data == null) ? 1 : 0;
+            }
+            /*Verifica Unidade*/
+            var companySelected = $('#' + seletorTato + ' #avAmCompany :selected').val();//
+            var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2 :selected').val();
+            var parLevel2Selected = $('#' + seletorTato + ' #parLevel2Select2 :selected').val();
+            var display = $('#' + seletorTato + ' #avAmCompany :selected').text();//
+            var exist = $.grep($('#tableAvAmLevel3  tbody  tr  td:nth-child(1)'), function(o, c){
+
+                var count = 0;
+                if(companySelected == -1){
+                    count += verify($(o).parent().data().CompanyId);
+                }else{
+                    count += $(o).parent().data().CompanyId == companySelected ? 1 : 0;
+                }
+
+                if(parLevel1Selected == -1){
+                    count += verify($(o).parent().data().ParLevel1_Id);
+                }else{
+                    count += $(o).parent().data().ParLevel1_Id == parLevel1Selected ? 1 : 0;
+                }
+
+                if(parLevel2Selected == -1){
+                    count += verify($(o).parent().data().ParLevel2_Id);
+                }else{
+                    count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
+                }
+
+                if(count == 3)
+                    return true;
+                return false;
+            });
+
+            if(!!isEdit){/*Edição*/
+
+            } else {/*Inclusão*/
+                if(exist.length){
+
+                    if(companySelected == -1)
+                        display= "@Resources.Resource.all";
+
+                    openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
+                    return false;
+
+                }
+            }
+
+            return true;
+        },
+        incluiNoObjetoParaSubmit: function(dados){
+
+            var level = this.levelControl;
+            $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                var o = $(obj).data();
+                //#edit
+                if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].Id"] = o.Id;
+                }
+
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].SampleNumber"] = o.SampleNumber;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].EvaluationNumber"] = o.EvaluationNumber;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].CompanyId"] = o.CompanyId;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].EvaluationInterval"] = o.EvaluationInterval;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].IsActive"] = o.IsActive;
+
+            });
+
+        },
+        carregaDadosDoDb: function(){
+            var id = this.level + ' #' + this.idTable;
+            var tdNamess = this.tdsNames;
+            if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                this.listObjSalvo.forEach(function(o, c){
+                    if(o.CompanyId != null){
+                        if(o.CompanyId != "-1"){
+                            o['CompanyName'] = $('#'+ this.level + ' #avAmCompany option[value=' + o.CompanyId + ']').text();
+                        }
+                    }else{
+                        o['CompanyName'] = "@Resources.Resource.all";
+                    }
+
+                    if(o.ParLevel1_Id != null){
+                        if(o.ParLevel1_Id != "-1"){
+                            o['ParLevel1_Name'] = $('#'+ this.level + ' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
+                        }
+                    }else{
+                        o['ParLevel1_Name'] = "@Resources.Resource.all";
+                    }
+
+                    if(o.ParLevel2_Id != null){
+                        if(o.ParLevel2_Id != "-1"){
+                            o['ParLevel2_Name'] = $('#'+ this.level + ' #parLevel2Select2 option[value=' + o.ParLevel2_Id + ']').text();
+                        }
+                    }else{
+                        o['ParLevel2_Name'] = "@Resources.Resource.all";
+                    }
+                    crudNxN.adiciona(o,  id, tdNamess);
+                });
+            }
+        },
+        /*Fim Setup*/
+        adiciona: function(e) {
+            if(this.veifyAdd()){
+                var object = this.getObjAdd();
+                crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+
+            }
+        },
+    };
+
+    $(document).ready(function () {
+        AvAm3.carregaDadosDoDb();
+    });
+
+</script>

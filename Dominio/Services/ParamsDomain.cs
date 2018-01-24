@@ -439,6 +439,9 @@ namespace Dominio.Services
             if (paramsDto.parLevel3Dto.listLevel3Value != null)
                 if (paramsDto.parLevel3Dto.listLevel3Value.Count() > 0)
                     paramsDto.parLevel3Dto.listLevel3Value.ForEach(r => r.preparaParaInsertEmBanco());
+            if (paramsDto.parLevel3Dto.listLevel3Value != null)
+                if (paramsDto.parLevel3Dto.listParLevel3EvaluationSample.Count() > 0)
+                    paramsDto.parLevel3Dto.listParLevel3EvaluationSample.ForEach(r => r.PreparaParaInsertEmBanco());
 
             List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
 
