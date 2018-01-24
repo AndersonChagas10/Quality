@@ -103,16 +103,16 @@
         getObjAdd: function(isEdit, obj){
             if(isEdit != undefined){
 
-                var compId = $('#' + isEdit + ' @id3 #avAmCompany :selected').val();
-                var compName = $('#' + isEdit + ' @id3 #avAmCompany :selected').text();
+                var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
+                var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
                 if(compId == "-1"){
                     compName = "@Resources.Resource.all"
                 }
                 obj.ParCompany_Id = compId;
                 obj.CompanyName = compName;
 
-                var ParLevel1_Id = $('#' + isEdit + ' @id3 #parLevel1Select2 :selected').val();
-                var ParLevel1_Name = $('#' + isEdit + ' @id3 #parLevel1Select2 :selected').text();
+                var ParLevel1_Id = $('#' + isEdit + ' #parLevel1Select2 :selected').val();
+                var ParLevel1_Name = $('#' + isEdit + ' #parLevel1Select2 :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
                 }
@@ -127,9 +127,9 @@
                 obj.ParLevel2_Id = ParLevel2_Id;
                 obj.ParLevel2_Name = ParLevel2_Name;
 
-                obj.SampleNumber = $('#' + isEdit + ' @id3 #amostra').val();
-                obj.EvaluationNumber = $('#' + isEdit + ' @id3 #avaliacao').val();
-                obj.EvaluationInterval = $('#' + this.level + ' @id3 #intervaloParaAvaliar').val();
+                obj.SampleNumber = $('#' + isEdit + ' #amostra').val();
+                obj.EvaluationNumber = $('#' + isEdit + ' #avaliacao').val();
+                obj.EvaluationInterval = $('#' + isEdit + ' #intervaloParaAvaliar').val();
                 return obj;
             }else{
                 var compId = $('#' + this.level + ' @id3 #avAmCompany :selected').val();
