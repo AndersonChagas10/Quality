@@ -197,3 +197,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3EvaluationSample' A
 		IsActive bit null,
 	)
 GO
+
+ALTER TABLE [dbo].[ParHeaderField]
+
+add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
