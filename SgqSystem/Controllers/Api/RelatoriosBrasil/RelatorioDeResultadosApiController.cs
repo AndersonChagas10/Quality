@@ -730,9 +730,9 @@ SELECT
    ,TAB.Monitoramento
    ,TAB.MonitoramentoName
    ,TAB.TarefaName AS TarefaName
-   ,TAB.NcSemPeso AS Nc
-   ,TAB.AvSemPeso AS Av
-   ,[Proc] AS PC
+   ,SUM(TAB.NcSemPeso) AS Nc
+   ,SUM(TAB.AvSemPeso) AS Av
+   ,ISNULL(NULLIF(SUM(TAB.Nc),0)/SUM(TAB.AV),0)*100 AS [PC]
    ,TAB.TarefaId AS Tarefa
    ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    ,Unidade AS Unidade
@@ -774,7 +774,7 @@ FROM (SELECT
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
 		END AS AvSemPeso
-	   ,SUM(R3.WeiDefects) /
+	   ,ISNULL(NULLIF(SUM(R3.WeiDefects),0) /
 		CASE
 			WHEN IND.HashKey = 1 THEN ((SELECT top 1 VOLUMEPCC From (
 											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
@@ -784,7 +784,7 @@ FROM (SELECT
 											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
-		END * 100 AS [Proc]
+		END * 100,0) AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
 	INNER JOIN CollectionLevel2 C2 (NOLOCK)
 		ON C2.Id = R3.CollectionLevel2_Id
@@ -807,8 +807,8 @@ FROM (SELECT
 	INNER JOIN ParCompanyCluster PCC (NOLOCK)
 		ON PCC.ParCompany_Id = UNI.Id
         AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1  
-	WHERE IND.Id = " + form.level1Id + @"
-	AND MON.Id = " + form.level2Id + @"
+	WHERE IND.Id IN (" + string.Join(",", form.level1IdArr) + @")
+	AND MON.Id IN (" + string.Join(",", form.level2IdArr) + @")
 	" + whereUnidade2 + @"
     " + whereLevel3 + @"
     " + whereCluster + @"
@@ -828,6 +828,15 @@ FROM (SELECT
 			,ind.ParConsolidationType_Id
             ,CL1.ConsolidationDate
 	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
+	GROUP BY 
+		TAB.Indicador
+	   ,TAB.IndicadorName
+	   ,TAB.Monitoramento
+	   ,TAB.MonitoramentoName
+	   ,TAB.TarefaName 
+	   ,TAB.TarefaId 
+	   ,Unidade 
+	   ,UnidadeName 
 ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -1399,20 +1408,21 @@ SELECT
    ,TAB.Monitoramento
    ,TAB.MonitoramentoName
    ,TAB.TarefaName AS TarefaName
-   ,TAB.NcSemPeso AS Nc
-   ,TAB.AvSemPeso AS Av
-   ,[Proc] AS PC
+   ,SUM(TAB.NcSemPeso) AS Nc
+   ,SUM(TAB.AvSemPeso) AS Av
+   ,ISNULL(NULLIF(SUM(TAB.Nc),0)/SUM(TAB.AV),0)*100 AS [PC]
+   -- ,[Proc] AS PC
    ,TAB.TarefaId AS Tarefa
    --,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
-   --,Unidade AS Unidade
-   --,UnidadeName AS UnidadeName
+   --,TAB.Unidade AS Unidade
+   --,TAB.UnidadeName AS UnidadeName
    ,0 AS Sentido
    ,CAST(1 as bit) as IsTarefa
 FROM (SELECT
 		--UNI.Id AS Unidade
 	   --,UNI.Name AS UnidadeName
 	   --,
-        IND.Name AS IndicadorName
+       IND.Name AS IndicadorName
 	   ,Ind.Id AS Indicador
 	   ,MON.Name AS MonitoramentoName
 	   ,Mon.Id AS Monitoramento
@@ -1432,7 +1442,7 @@ FROM (SELECT
 			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
 			ELSE SUM(R3.Evaluation)
 		END AS AvSemPeso
-	   ,SUM(R3.WeiDefects) /
+	   ,ISNULL(NULLIF(SUM(R3.WeiDefects),0) /
 		CASE
 			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
 								SUM(Quartos) - @NAPCC
@@ -1441,7 +1451,7 @@ FROM (SELECT
                             --AND ParCompany_id = UNI.Id
 							AND CAST(Data AS DATE) = CAST(CL1.ConsolidationDate AS DATE))
 			ELSE SUM(R3.WeiEvaluation)
-		END * 100 AS [Proc]
+		END,0) * 100 AS [Proc]
 	FROM Result_Level3 R3 (NOLOCK)
 	INNER JOIN CollectionLevel2 C2 (NOLOCK)
 		ON C2.Id = R3.CollectionLevel2_Id
@@ -1479,10 +1489,23 @@ FROM (SELECT
 			,MON.Id
 			,R3.ParLevel3_Id
 			,R3.ParLevel3_Name
+			,UNI.Name
+			,UNI.Id
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
-            ,cl1.ConsolidationDate
+            ,CL1.ConsolidationDate
 	/*HAVING SUM(R3.WeiDefects) > 0*/) TAB
+GROUP BY 
+	TAB.Indicador
+   ,TAB.IndicadorName
+   ,TAB.Monitoramento
+   ,TAB.MonitoramentoName
+   ,TAB.TarefaName 
+   ,TAB.TarefaId 
+   --,CONCAT(TarefaName, ' - ', UnidadeName) 
+   --,Unidade 
+   --,UnidadeName 
+
 ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
@@ -4404,6 +4427,29 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
         private static string getQueryHistorioIndicador(FormularioParaRelatorioViewModel form)
         {
+
+            var unitId="";
+            var unitId2="";
+            var unitId3="";
+            var unitId4= "";
+            var unitId5 = "";
+            var levelid1="";
+
+            if (form.level1IdArr.Length > 0)
+            {
+                levelid1 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @") ";
+            }
+
+
+            if (form.unitIdArr.Length > 0)
+            {
+                unitId  = " DECLARE @UNIDADE INT = " + form.unitId+" ";
+                unitId2 = " AND CL1.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId3 = " AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+
             return @" 
  DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
   
@@ -4424,6 +4470,29 @@ SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
  DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
  SET @DATAINICIAL = '" + form._dataInicioSQL + @"'
  DECLARE @UNIDADE INT = " + form.unitId + @"
+
+
+ SELECT 
+	id,
+	ConsolidationDate,
+	UnitId,
+	ParLevel1_Id,
+	DefectsResult,
+	WeiDefects,
+	EvaluatedResult,
+	WeiEvaluation,
+	EvaluateTotal,
+	TotalLevel3WithDefects,
+	DefectsTotal
+INTO #ConsolidationLevel1
+FROM ConsolidationLevel1 WITH (NOLOCK)
+WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+" + unitId4 + @"
+
+CREATE INDEX IDX_HashConsolidationLevel1 ON #ConsolidationLevel1 (ConsolidationDate,UnitId,ParLevel1_Id); 
+CREATE INDEX IDX_HashConsolidationLevel1_id ON #ConsolidationLevel1 (id); 
+
+
 
  CREATE TABLE #AMOSTRATIPO4a (   
  UNIDADE INT NULL,   
@@ -4479,7 +4548,7 @@ FROM (SELECT
 			id
 		FROM Parlevel1(nolock)
 		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
-	AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + @")
+	" + unitId5 + @"
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
 WHERE NA = 2
@@ -4610,11 +4679,7 @@ FROM (SELECT
 				--, CL1.ConsolidationDate as Data  
 			   ,DD.Data_ AS Data
 			FROM @ListaDatas_ DD
-			LEFT JOIN (SELECT
-					*
-				FROM ConsolidationLevel1(nolock)
-				WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-				AND UnitId <> 12341614) CL1
+			LEFT JOIN #ConsolidationLevel1 CL1
 				ON DD.Data_ = CL1.ConsolidationDate
 			LEFT JOIN ParLevel1 IND (NOLOCK)
 				ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
@@ -4622,7 +4687,7 @@ FROM (SELECT
                 --AND IND.Id <> 43
 			LEFT JOIN ParCompany UNI (NOLOCK)
 				ON UNI.Id = CL1.UnitId
-				AND UNI.Id IN (" + string.Join(",", form.unitIdArr) + @")
+				" + unitId2 + @"
 			LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
 				ON A4.UNIDADE = UNI.Id
 				AND A4.INDICADOR = IND.ID
@@ -4633,11 +4698,7 @@ FROM (SELECT
 				   ,CL1.UnitId A4
 				   ,UNI.NAME A5
 				   ,0 AS A6
-				FROM (SELECT
-						*
-					FROM ConsolidationLevel1(nolock)
-					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-					AND UnitId <> 11514) CL1
+				FROM #ConsolidationLevel1 CL1
 				LEFT JOIN ParLevel1 IND (NOLOCK)
 					ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
 					AND IND.Id <> 43 
@@ -4655,8 +4716,8 @@ FROM (SELECT
 				AND NOMES.A4 = UNI.ID)
 				OR (IND.ID IS NULL)) S1) S2
 	WHERE 1 = 1
-	AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @")
-	AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + @")) ff
+	" + levelid1 + @"
+    " + unitId3 + @") ff
 GROUP BY level1_id
 		,Level1Name
 		,ChartTitle
