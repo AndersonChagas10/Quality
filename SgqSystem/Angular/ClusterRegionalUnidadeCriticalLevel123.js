@@ -1,6 +1,9 @@
-﻿(function () {
+﻿var clusterGroupInitialMock = "In-Natura";
+
+(function () {
     app.controller('CtrlClstRegUnitCriticalLevel123', ['$scope', '$http',
         function ($scope, $http) {
+
 
             $http({
                 method: 'POST',
@@ -55,6 +58,7 @@
                     then(function (r) {
                         $scope.level3 = r.data;
                     });
+
             }
 
             $scope.GetListClusterVinculadoClusterGroup = function () {
@@ -202,6 +206,24 @@
                 enviar['level1Id'] = parseInt(document.getElementById('level1Idv').value);
                 enviar['level1IdArr'] = $('#level1Idv').val();
 
+                //Desabilita monitoramento e tarefa quando selecionado mais de um indicador
+                if ($('#level1Idv').val().length > 1) {
+                    $('#level2Idv').attr('disabled', true);
+                    $('#level3Idv').attr('disabled', true);
+                    $scope.level2Value = null;
+                    $scope.level3Value = null;
+                } else {
+                    $('#level2Idv').attr('disabled', false);
+                    $('#level3Idv').attr('disabled', false);
+                }
+
+                //Desabilita tipo de indicador quando há um unico selecionado, caso contrario habilita
+                if ($('#level1Idv').val().length != 1) {
+                    $('#statusIndicador').prop("disabled", false);
+                } else {
+                    $('#statusIndicador').prop("disabled", true);
+                }
+
                 if ($scope.level1Value) {
                     $http({
                         method: 'POST',
@@ -233,6 +255,14 @@
             $scope.GetListLevel3VinculadoLevel2 = function () {
                 enviar['level2Id'] = parseInt(document.getElementById('level2Idv').value);
                 enviar['level2IdArr'] = $('#level2Idv').val();
+
+                if ($('#level2Idv').val().length > 1 || !!$('#level2Idv').attr('disabled')) {
+                    $('#level3Idv').attr('disabled', true);
+                    $scope.level3Value = null;
+                } else {
+                    $('#level3Idv').attr('disabled', false);
+                }
+
                 //Defining the $http service for getting Level3 By Level2
                 if ($scope.level2Value) {
                     $http({
@@ -277,6 +307,8 @@
 function AtribuiCluster() {
     setTimeout(function () {
         enviar['clusterSelected_Id'] = document.getElementById('clusterId').value;
+        var option = $('#clusterGroupId option').filter(function () { return $(this).html() == clusterGroupInitialMock; }).val();
+        $('#clusterGroupId').val(option).trigger("change");
     }, 1);
 }
 

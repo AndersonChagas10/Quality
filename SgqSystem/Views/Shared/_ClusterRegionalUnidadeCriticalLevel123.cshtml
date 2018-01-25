@@ -4,9 +4,9 @@
         <div @*id="showModulo2"*@>
             <span class="redLabel">@Resources.Resource.cluster_group</span>
             <select id="clusterGroupId" data-ng-model="clusterGroupValue"
-                    data-ng-options="c.Id as c.Name for c in clusterGroup |orderBy:'Name' track by c.Id"
                     data-ng-change="GetListClusterVinculadoClusterGroup()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
+                @*<option value="">@Resources.Resource.select</option>*@
+                <option ng-repeat="c in clusterGroup |orderBy:'Name' track by c.Id" value="{{c.Id}}">{{c.Name}}</option>
             </select>
         </div>
         <div>

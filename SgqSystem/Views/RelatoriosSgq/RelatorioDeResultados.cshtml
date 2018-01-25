@@ -2530,18 +2530,18 @@
 
         $('select').select2();
 
-        $('#level1Idv').on('change', function () {
+        //$('#level1Idv').on('change', function () {
 
-            let level1 = $('#level1Idv').val();
+        //    let level1 = $('#level1Idv').val();
 
-                if (level1 != "" && level1 != undefined) {
-                    $('#statusIndicador').prop("disabled", true);
-                    $('#statusIndicador').prop("value", 'Todos').trigger('change');
-                } else {
-                    $('#statusIndicador').prop("disabled", false);
-                }
+        //        if (level1 != "" && level1 != undefined) {
+        //            $('#statusIndicador').prop("disabled", true);
+        //            $('#statusIndicador').prop("value", 'Todos').trigger('change');
+        //        } else {
+        //            $('#statusIndicador').prop("disabled", false);
+        //        }
 
-        }).change()
+        //}).change()
     });
 
     $('#IndicadorXAcaoModal').on('shown.bs.modal', function (e) {
