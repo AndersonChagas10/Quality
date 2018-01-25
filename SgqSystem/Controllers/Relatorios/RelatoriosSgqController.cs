@@ -996,20 +996,20 @@ namespace SgqSystem.Controllers
 
             //Nomes das colunas do corpo da tabela de dados central
             var query0 = "SELECT  distinct(Reg.Name) name, 4 coolspan" +
-                "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                "\n FROM ParStructure Reg  with (nolock)" +
+                    "\n  LEFT JOIN ParCompanyXStructure CS  with (nolock)" +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
+                    "\n  left join ParCompany C  with (nolock)" +
                     "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
+                    "\n  left join ParLevel1 P1 with (nolock) " +
                     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1 " +
 
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP  with (nolock)" +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1  with (nolock)" +
                     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
 
-                    "\n LEFT JOIN #SCORE S " +
+                    "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                     whereClusterGroup +
                     whereCluster +
@@ -1025,20 +1025,20 @@ namespace SgqSystem.Controllers
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '100' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > 100 then 0 else 100 - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > 100 then 0 else (100 - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / 100 * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
-                   "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                   "\n FROM ParStructure Reg  with (nolock)" +
+                    "\n  LEFT JOIN ParCompanyXStructure CS  with (nolock)" +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
+                    "\n  left join ParCompany C  with (nolock)" +
                     "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
+                    "\n  left join ParLevel1 P1  with (nolock)" +
                     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP  with (nolock)" +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1  with (nolock)" +
                     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
 
-                    "\n LEFT JOIN #SCORE S " +
+                    "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                     whereClusterGroup +
                     whereCluster +
@@ -1059,20 +1059,20 @@ namespace SgqSystem.Controllers
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
-                  "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                  "\n FROM ParStructure Reg  with (nolock)" +
+                    "\n  LEFT JOIN ParCompanyXStructure CS  with (nolock)" +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
+                    "\n  left join ParCompany C  with (nolock)" +
                     "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
+                    "\n  left join ParLevel1 P1  with (nolock)" +
                     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP  with (nolock)" +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1  with (nolock)" +
                     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
 
-                    "\n LEFT JOIN #SCORE S " +
+                    "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                     whereClusterGroup +
                     whereCluster +
@@ -1092,20 +1092,20 @@ namespace SgqSystem.Controllers
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
-                  "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                  "\n FROM ParStructure Reg  with (nolock)" +
+                    "\n  LEFT JOIN ParCompanyXStructure CS  with (nolock)" +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
+                    "\n  left join ParCompany C  with (nolock)" +
                     "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
+                    "\n  left join ParLevel1 P1  with (nolock)" +
                     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP  with (nolock)" +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1  with (nolock)" +
                     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
 
-                    "\n LEFT JOIN #SCORE S " +
+                    "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                     whereClusterGroup +
                     whereCluster +
@@ -1125,20 +1125,20 @@ namespace SgqSystem.Controllers
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
-                  "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                  "\n FROM ParStructure Reg  with (nolock)" +
+                    "\n  LEFT JOIN ParCompanyXStructure CS  with (nolock)" +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
+                    "\n  left join ParCompany C  with (nolock)" +
                     "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
+                    "\n  left join ParLevel1 P1  with (nolock)" +
                     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP  with (nolock)" +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1  with (nolock)" +
                     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
 
-                    "\n LEFT JOIN #SCORE S " +
+                    "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                     whereClusterGroup +
                     whereCluster +
@@ -1152,20 +1152,20 @@ namespace SgqSystem.Controllers
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
             var query6 = " SELECT 6 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
-                "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                "\n FROM ParStructure Reg  with (nolock)" +
+                    "\n  LEFT JOIN ParCompanyXStructure CS  with (nolock)" +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
+                    "\n  left join ParCompany C  with (nolock)" +
                     "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
+                    "\n  left join ParLevel1 P1  with (nolock)" +
                     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
 
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP  with (nolock)" +
                     "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1  with (nolock)" +
                     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
 
-                    "\n LEFT JOIN #SCORE S " +
+                    "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                     whereClusterGroup +
                     whereCluster +
