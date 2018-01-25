@@ -1541,83 +1541,83 @@
             SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 2));
 
 
-            chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    type: 'column',
-                    zoomType: 'x,y',
-                    height: 300
-                },
-                title: {
-                    //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
-                    text: TituloGraficoHistoricoIndicador
-                },
-                subtitle: {
-                    text: Subtitle
-                },
-                xAxis: {
-                    categories: dia,
-                    title: {
-                        text: 'Data',
-                    },
-                },
-                yAxis: [
-                    {
-                        //min: 0,
-                        title: {
-                            text: Resources("quantity")
-                        },
-                        labels: {
-                            format: '{value}',
-                            style: {
-                                color: Highcharts.getOptions().colors[1]
-                            }
-                        },
-                    }, {
-                        //min: 0,
-                        labels: {
-                            format: '{value} %',
-                            style: {
-                                color: Highcharts.getOptions().colors[1]
-                            }
-                        },
-                        title: {
-                            text: '% NC',
-                        },
-                        opposite: true
-                    }],
-                legend: {
-                    shadow: false
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    shared: true,
-                    format: '{point.y:.2f}',
-                    format: '{point:.2f}',
-                },
-                plotOptions: {
-                    column: {
-                        grouping: false,
-                        shadow: false,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: 'NC',
-                    color: 'rgba(77,143,189,1)',
-                    data: nc,
-                    yAxis: 0,
-                    type: 'line',
-                    marker: {
+                chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
+                    credits: {
                         enabled: false
                     },
-                    pointPadding: 0.2,
-                    //pointPlacement: -0.2,
-                    point: {
-                        events: {
-                            click: function () {
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x,y',
+                        height: 300
+                    },
+                    title: {
+                        //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                        text: TituloGraficoHistoricoIndicador
+                    },
+                    subtitle: {
+                        text: SubtitleIndicador
+                    },
+                    xAxis: {
+                        categories: dia,
+                        title: {
+                            text: 'Data',
+                        },
+                    },
+                    yAxis: [
+                        {
+                            //min: 0,
+                            title: {
+                                text: Resources("quantity")
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            //min: 0,
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: '% NC',
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        shared: true,
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        pointPadding: 0.2,
+                        //pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
 
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
@@ -2530,17 +2530,18 @@
 
         $('select').select2();
 
-        $('#level1Idv').on('change', function () {
+        //$('#level1Idv').on('change', function () {
 
-            let level1 = $('#level1Idv').val();
+        //    let level1 = $('#level1Idv').val();
 
-            if (level1.length == 1 && level1.length != "") {
-                $('#statusIndicador').prop("disabled", true);
-            } else {
-                $('#statusIndicador').prop("disabled", false);
-            }
+        //        if (level1 != "" && level1 != undefined) {
+        //            $('#statusIndicador').prop("disabled", true);
+        //            $('#statusIndicador').prop("value", 'Todos').trigger('change');
+        //        } else {
+        //            $('#statusIndicador').prop("disabled", false);
+        //        }
 
-        }).change()
+        //}).change()
     });
 
     $('#IndicadorXAcaoModal').on('shown.bs.modal', function (e) {

@@ -155,6 +155,7 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div id="loaderNCGeral"></div>
+            <div id="loaderNCGeral1"></div>
             <div class="totalNC" id="NCGeral" hidden>
                 <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
                     <hh>0 %</hh>
@@ -571,15 +572,14 @@
 
         function Send(toggle) {
 
-            /*Colocando o grafico de histórico geral*/
-            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-            EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
+           
 
 
 
             //EasyAjax(UrlGraficoHistoricoGeralMensal, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
             $('#graficoEvolutivoEmpresa').empty();
+            $('#GraficoHistoricoGeral').empty();
             $('#grafico1').empty();
             $('#grafico2').empty();
             $('#grafico3').empty();
@@ -602,11 +602,6 @@
 
             enviar["auditorId"] = GetUsuarioId();
 
-            // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
-
-
-            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
-
             //enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableTituloColunas"] = "GetFuncoesPorUnidade($(this).attr('dado1'))";
             enviar["CallBackTableBody"] = "GetTabela2($(this).attr('dado3'), $(this).attr('dado1'));";
@@ -618,6 +613,8 @@
             enviar["Title"] = "Pacotes por Regional";
 
 
+            // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
+            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
 
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
@@ -627,6 +624,12 @@
                 heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
                 scroolTable(container)
             }, "tabela1div");
+
+            /*Colocando o grafico de histórico geral*/
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+            EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
+
+            
 
             //EasyAjax(urlGrafico1, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
