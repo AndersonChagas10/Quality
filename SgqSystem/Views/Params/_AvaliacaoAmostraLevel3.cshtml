@@ -29,9 +29,9 @@
 
                             @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
                                 , @Html.Label(Resources.Resource.company)
-                                , Table.PosicaoLabel.top)
+                                , Table.PosicaoLabel.top, colspan: 3)
 
-                            <td class="td-erp">
+                            @*<td class="td-erp">
                                 <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                                 <div>
                                     @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
@@ -42,7 +42,7 @@
                                 <div>
                                     @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
                                 </div>
-                            </td>
+                            </td>*@
                         </tr>
 
                         <tr>
@@ -138,14 +138,14 @@
                     compName = "@Resources.Resource.all"
                 }
 
-                var ParLevel1_Id = $('#' + this.level + ' @id3 #parLevel1Select2 :selected').val();
-                var ParLevel1_Name = $('#' + this.level + ' @id3 #parLevel1Select2 :selected').text();
+                var ParLevel1_Id = $(' #parLevel1Select2 :selected').val();
+                var ParLevel1_Name = $(' #parLevel1Select2 :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
                 }
 
-                var ParLevel2_Id = $('#' + this.level + ' @id3 #parLevel2Select2 :selected').val();
-                var ParLevel2_Name = $('#' + this.level + ' @id3 #parLevel2Select2 :selected').text();
+                var ParLevel2_Id = $(' #parLevel2Select2 :selected').val();
+                var ParLevel2_Name = $(' #parLevel2Select2 :selected').text();
                 if(ParLevel2_Id == "-1"){
                     ParLevel2_Name = "@Resources.Resource.all"
                 }
@@ -188,8 +188,8 @@
             /*Verifica Unidade*/
             console.log('#' + seletorTato + ' @id3 #avAmCompany :selected');
             var companySelected = $('#' + seletorTato + ' @id3 #avAmCompany :selected').val();//
-            var parLevel1Selected = $('#' + seletorTato + ' @id3 #parLevel1Select2 :selected').val();
-            var parLevel2Selected = $('#' + seletorTato + ' @id3 #parLevel2Select2 :selected').val();
+            var parLevel1Selected = $(' #parLevel1Select2 :selected').val();
+            var parLevel2Selected = $(' #parLevel2Select2 :selected').val();
             var display = $('#' + seletorTato + ' @id3 #avAmCompany :selected').text();//
             var exist = $.grep($('#tableAvAmLevel3  tbody  tr  td:nth-child(1)'), function(o, c){
 
@@ -276,7 +276,7 @@
                     }
                     if(o.ParLevel1_Id != null){
                         if(o.ParLevel1_Id != "-1"){
-                            o['ParLevel1_Name'] = $('#'+ idPaleativoParaElementosDentroDoCollapse + ' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
+                            o['ParLevel1_Name'] = $(' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
                         }
                     }else{
                         o['ParLevel1_Name'] = "@Resources.Resource.all";
@@ -284,11 +284,19 @@
 
                     if(o.ParLevel2_Id != null){
                         if(o.ParLevel2_Id != "-1"){
-                            o['ParLevel2_Name'] = $('#'+ idPaleativoParaElementosDentroDoCollapse + ' #parLevel2Select2 option[value=' + o.ParLevel2_Id + ']').text();
+                            o['ParLevel2_Name'] = $(' #parLevel2Select2 option[value=' + o.ParLevel2_Id + ']').text();
                         }
                     }else{
                         o['ParLevel2_Name'] = "@Resources.Resource.all";
                     }
+
+                    if((o.ParLevel1_Id == null 
+                        || o.ParLevel1_Id == "-1" 
+                        || o.ParLevel1_Id == $('#parLevel1Select2 :selected').val())
+                        &&
+                        (o.ParLevel2_Id == null 
+                        || o.ParLevel2_Id == "-1" 
+                        || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
                     crudNxN.adiciona(o,  id, tdNamess);
                 });
             }
