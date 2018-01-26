@@ -4154,6 +4154,28 @@ ORDER BY 15";
 
         private static string getQueryHistoricoMonitoramento(FormularioParaRelatorioViewModel form)
         {
+            var unitId = "";
+            var unitId2 = "";
+            var unitId3 = "";
+            var unitId4 = "";
+            var unitId5 = "";
+            var levelid1 = "";
+
+            if (form.level1IdArr.Length > 0)
+            {
+                levelid1 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @") ";
+            }
+
+
+            if (form.unitIdArr.Length > 0)
+            {
+                unitId = " DECLARE @UNIDADE INT = " + form.unitId + " ";
+                unitId2 = " AND CL1.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId3 = " AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+
             return @" 
  DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
   
@@ -4240,8 +4262,8 @@ SELECT
    ,ff.level2_Id as level2Id
    ,ff.level2Name as Level2Name
    ,ChartTitle
-   ,Unidade_Id AS UnidadeId
-   ,Unidade AS UnidadeName
+   --,Unidade_Id AS UnidadeId
+   --,Unidade AS UnidadeName
    ,SUM(procentagemNc) AS procentagemNc
    ,SUM(Meta) AS Meta
    ,SUM(nc) AS nc
@@ -4384,7 +4406,7 @@ FROM (SELECT
 				AND MON.Id = " + form.level2Id + @"
 			LEFT JOIN ParCompany UNI (NOLOCK)
 				ON UNI.Id = CL1.UnitId
-				AND UNI.Id = @UNIDADE
+				" + unitId2 + @"
 			LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
 				ON A4.UNIDADE = UNI.Id
 				AND A4.INDICADOR = IND.ID
@@ -4429,17 +4451,17 @@ FROM (SELECT
 	WHERE 1 = 1
 	AND level1_Id = " + form.level1Id + @"
     AND S2.level2_Id = " + form.level2Id + @"
-	AND Unidade_Id = @UNIDADE) ff
+    " + unitId3 + @") ff
 GROUP BY level1_id
 		,Level1Name
 		,ChartTitle
-		,Unidade_Id
-		,Unidade
+		--,Unidade_Id
+		--,Unidade
 		,[date]
 		,level2_Id
 		,level2Name
 having sum(av) is not null or sum(nc) is not null
-ORDER BY 12
+ORDER BY 10
 DROP TABLE #AMOSTRATIPO4a  ";
         }
 

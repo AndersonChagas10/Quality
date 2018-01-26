@@ -227,6 +227,10 @@
         enviarGeral["unitId"] = undefined;
         enviarGeral["unitIdArr"] = undefined;
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+        if (enviar['level3Id'] = 0 || enviar['level3IdArr'].length = 0) {
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+        }
 
         //if (enviar['unitId'] > 0) {
         if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 0) {
@@ -262,9 +266,12 @@
                 enviarComIndicador['level2Id'] = undefined;
                 enviarComIndicador['level2IdArr'] = undefined;
                 EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-            }
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+            } 
 
-            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+
+            
+
         }
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
