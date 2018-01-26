@@ -149,14 +149,10 @@
         color: red;
     }
 
-    .panel-sm{
-
-    }
-
     .floating-map {
         z-index: 9998 !important;
     }
-    
+
     .floating-map .panel-body ul{
         list-style: none;
         padding-left: 0;
@@ -173,7 +169,7 @@
         padding: 4px;
         cursor: pointer;
     }
-    
+
     .floating-map .panel-body li span{
         display: block;
         text-align: center;
@@ -240,7 +236,7 @@
                     <div class="collapse" id="collapseExample">
                         <div class="panel panel-default">
                             <button class="btn btn-default" ng-class="{active: linhaSelecionada.Name == item.Name}" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                {{item.Name}} <strong>{{timerLinha(item).text}}</strong>
+                                {{item.Name}} <strong>{{timerLinha(item, $index).text}}</strong>
                             </button>
                         </div>
                     </div>
@@ -254,8 +250,8 @@
                     </div>
                     <div class="panel-body">
                         <ul>
-                            <li ng-class="{panelDanger: timerLinha(item).danger}" ng-click="selectLinha($index)" ng-repeat="item in linhas track by $index">
-                                <span><strong>{{timerLinha(item).text}}</strong></span>
+                            <li ng-class="{panelDanger: timerLinha(item, $index).danger}" ng-click="selectLinha($index)" ng-repeat="item in linhas track by $index">
+                                <span><strong>{{timerLinha(item, $index).text}}</strong></span>
                                 <span>{{item.Name}}</span>
                             </li>
                         </ul>
@@ -332,7 +328,7 @@
                         <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
                             <label for="">Horas de Verificação</label>
                             <br />
-                            <select ng-change="changeHoraVerificacao(); salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item.Value as item.Name for item in horasVerificacao track by item.Value" ng-model="linhaSelecionada.HoraVerificacao" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            <select ng-change="changeHoraVerificacao(); salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item.Id as item.Name for item in horasVerificacao track by item.Id" ng-model="linhaSelecionada.HoraVerificacao" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
                         </div>
 
                         <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
@@ -383,17 +379,6 @@
                                     ng-click="selecionaLata($index, lataSelecionada.haveErrors);  newCorrectiveAction()">
                                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                             </button>
-                            @*<button title="Modo Somente Visualização"
-                        type="button"
-                        class="btn btn-info btn-sm"
-                        data-toggle="modal"
-                        data-target="#myModal"
-                        ng-show="lataEmLataDetalhe.finalizado">
-                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                    </button>*@
-                            @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(linhaSelecionada, $index)">
-                        <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
-                    </button>*@
                             <button type="button"
                                     class="btn btn-warning btn-sm"
                                     data-toggle="modal"
@@ -972,9 +957,10 @@
             editTitle: false,
             expand: false,
             unpin: false,
-            maxWidth: 600,
+            minWidth: 500,
             minHeight: 300,
         });
+        
     })
 </script>
 
@@ -1095,7 +1081,7 @@
                 //timer
                 var intervalId;
                 vm.counter = 0;
-                vm.horas = vm.linhaSelecionada.HoraVerificacao ? vm.linhaSelecionada.HoraVerificacao : 2
+                vm.horas = 2
                 vm.initialCountdown = 0 * vm.horas;
                 vm.countdown = $scope.initialCountdown;
                 vm.startTime = new Date()
@@ -1125,7 +1111,7 @@
                             return;
                         }
 
-                        vm.linhaSelecionada.UltimaLataRetirada =  vm.startTime.toISOString()
+                        vm.linhaSelecionada.UltimaLataRetirada =  vm.startTime
 
                         vm.diffTime = moment().diff(vm.startTime)
                         vm.duration = moment.duration(vm.diffTime);
@@ -1173,7 +1159,7 @@
                     $interval.cancel(intervalId);
                 };
 
-                vm.timerLinha = function (linha) {
+                vm.timerLinha = function (linha, index) {
                     if (!!linha.UltimaLataRetirada) {
                         var dataRetirada = new Date(linha.UltimaLataRetirada);
                         var agora = new Date();
@@ -1188,6 +1174,11 @@
 
                         var hours = parseInt((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         var minutes = parseInt((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                        if (hours == 0 && minutes <= 5 && vm.linhas[index].temAlerta != true) {
+                            vm.linhas[index].temAlerta = true;
+                            toastr.warning("O tempo da linha " + linha.Name+" está acabando.")
+                        }
 
                         return {
                             text: hours + "h " + minutes + "m",
@@ -1481,9 +1472,8 @@
 
                     vm.linhaSelecionada = vm.linhas[index]
 
-
-
                     vm.activeInLine = vm.linhaSelecionada.Id
+                    vm.timer()
 
                     //vm.executeDocReady(true)
                     //vm.getState()
@@ -1685,11 +1675,11 @@
                     vm.horasVerificacao = []
                     vm.horasVerificacao.push({
                         Name: '1 hora',
-                        Value: 1
+                        Id: 1
                     })
                     vm.horasVerificacao.push({
                         Name: '2 horas',
-                        Value: 2
+                        Id: 2
                     })
                 }
                 vm.getFornecedorTampaLata = function () {
@@ -1824,6 +1814,8 @@
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
                                 vm.timer()
+
+                                console.log(linhaSelecionada.HoraVerificacao)
                             }
                         });
                 }
