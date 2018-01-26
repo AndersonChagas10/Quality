@@ -1559,6 +1559,36 @@ namespace SGQDBContext
         }
     }
 
+    public partial class ParLevel3Vinculado
+    {
+        public int Id { get; set; }
+        public int ParCompany_Id { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int ParLevel3_Id { get; set; }
+        public int SampleNumber { get; set; }
+        public int EvaluationNumber { get; set; }
+        public String EvaluationInterval { get; set; }
+
+        private SqlConnection db { get; set; }
+        public ParLevel3Vinculado() { }
+        public ParLevel3Vinculado(SqlConnection _db)
+        {
+            db = _db;
+        }
+
+        public List<ParLevel3Vinculado> getParLevel3Vinculado(int ParCompanyId)
+        {
+            var sql = string.Format(
+                "SELECT * FROM ParLevel3EvaluationSample WHERE(ParCompany_Id = {0} OR ParCompany_Id IS NULL) AND IsActive = 1;", 
+                ParCompanyId);
+
+            var lista = db.Query<ParLevel3Vinculado>(sql).ToList();
+
+            return lista;
+        }
+    }
+
     public partial class ParRelapse
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

@@ -3451,12 +3451,7 @@ namespace SgqSystem.Services
                                         "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("yes").Value.ToString() + " </button></div>                 " +
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("no").Value.ToString() + " </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
-
-            //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
-            //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
-            //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
-            //                    "</div>       
-
+            
             string debug = "<div id = 'ControlaDivDebugAlertas' onclick='showHideDivDebugAlerta();'></div> " +
 
                            "<div id = 'divDebugAlertas' > " +
@@ -3512,6 +3507,12 @@ namespace SgqSystem.Services
 
                            "</div> ";
 
+            SGQDBContext.ParLevel3Vinculado listaProdutos = new ParLevel3Vinculado(db);
+            var listaParLevel3VinculadoJSON = listaProdutos.getParLevel3Vinculado(ParCompany_Id);
+
+            var listaParLevel3Vinculado = 
+                "<script> var listaParLevel3Vinculado = " + System.Web.Helpers.Json.Encode(listaParLevel3VinculadoJSON) + ";</script>";
+
             string local = "";
 
             if (GlobalConfig.Brasil)
@@ -3544,7 +3545,8 @@ namespace SgqSystem.Services
                            modalPCC1B +
                            message +
                            messageConfirm +
-                           debug;
+                           debug+
+                           listaParLevel3Vinculado;
         }
 
 
