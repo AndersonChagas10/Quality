@@ -168,16 +168,28 @@
             var seletorTato = !!isEdit ? isEdit : this.level;
 
             /*Valida se pode criar o objeto*/
-            if($('#' + seletorTato + ' #amostra').val().length == 0){
+            var amostra = $('#' + seletorTato + ' #amostra').val();
+            if(amostra.length == 0 && amostra > 0){
                 openMessageModal('@Resources.Resource.invalid_samples_number');
                 return false;
             }
-            if($('#' + seletorTato + ' #avaliacao').val().length == 0){
+
+            var avaliacao = $('#' + seletorTato + ' #avaliacao').val();
+            if(avaliacao.length == 0 && avaliacao > 0){
                 openMessageModal('@Resources.Resource.invalid_evaluations_number');
                 return false;
             }
+            
+            var interval = $('#' + seletorTato + ' #intervaloParaAvaliar').val();
+            if(interval.length > 0){
+                var aux = $.grep(interval.split(','), function(o){
+                    return o.length > 0;
+                });
+                $('#' + seletorTato + ' #intervaloParaAvaliar').val(aux);
+                interval = $('#' + seletorTato + ' #intervaloParaAvaliar').val();
+            }
 
-            if($('#' + seletorTato + ' #intervaloParaAvaliar').val().length == 0){
+            if(interval.length == 0){
                 openMessageModal('@Resources.Resource.number_samplers');
                 return false;
             }
@@ -217,8 +229,10 @@
                     count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
                     console.log(6);
                 }
+                
+                count += $(o).parent().data().EvaluationNumber == avaliacao ? 1 : 0;
 
-                if(count == 3)
+                if(count == 4)
                     return true;
                 return false;
             });
