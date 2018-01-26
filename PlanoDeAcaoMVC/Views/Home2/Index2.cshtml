@@ -385,6 +385,8 @@
         #percentualConclusao {
             font-size: 40px;
         }
+
+        
     </style>
 
 }
@@ -891,23 +893,23 @@
                                     <div style="display:none" id="encadeado">
                                         <label id="labelPredecessora">Predecessor: </label>
                                     </div>
-                                    <div class="col-sm-12" id="divPredecessora">
+                                    <div class="col-sm-12 borderedNinja" id="divPredecessora">
                                         <label>Predecessor:</label>
                                         <label id="labelPredecessoraValue"></label>
                                         <br />
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 borderedNinja">
                                         <label>Nome do Item:</label>
                                         <textarea style="min-width: 95%; height:150px;" type="text" class="form-control" id="newItem"></textarea>
                                         <input type="hidden" id="newIdItem" />
                                         <br />
                                     </div>
-                                    <div class="col-sm-12" id="divIsActive">
+                                    <div class="col-sm-12 borderedNinja" id="divIsActive">
                                         <label for="newIsActiveItem">Ativo:</label>
                                         <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
                                         <br />
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 borderedNinja">
                                         <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
                                         <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">Salvar Edição</button>
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
