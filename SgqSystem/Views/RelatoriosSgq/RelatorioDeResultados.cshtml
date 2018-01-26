@@ -219,7 +219,10 @@
 
         enviar['auditorId'] = GetUsuarioId();
 
-        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        if (enviar["unitIdArr"].length != 1) {
+
+            EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        }
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
         /*Colocando o grafico de histórunitIdArrico geral*/
@@ -228,7 +231,7 @@
         enviarGeral["unitIdArr"] = undefined;
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
         //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
-        if (enviar['level3Id'] == 0 || enviar['level3IdArr'].length == 0) {
+        if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
             EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         }
 
@@ -261,14 +264,16 @@
 
         } else {
 
-            if (enviar['level1Id'] > 0 || enviar['level1IdArr'].length > 0) {
+            if (enviar['level1Id'] > 0 || (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length > 0)) {
                 var enviarComIndicador = Object.create(enviar);
                 enviarComIndicador['level2Id'] = undefined;
                 enviarComIndicador['level2IdArr'] = undefined;
                 EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
-            } 
+                if (enviar['level2Id'] > 0 || (enviar['level2IdArr'] != undefined && enviar['level2IdArr'].length > 0)) {
+                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
 
+                }
+            }
 
             
 
