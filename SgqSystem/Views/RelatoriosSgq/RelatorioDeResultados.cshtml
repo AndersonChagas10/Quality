@@ -228,7 +228,7 @@
         enviarGeral["unitIdArr"] = undefined;
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
         //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
-        if (enviar['level3Id'] = 0 || enviar['level3IdArr'].length = 0) {
+        if (enviar['level3Id'] == 0 || enviar['level3IdArr'].length == 0) {
             EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         }
 
