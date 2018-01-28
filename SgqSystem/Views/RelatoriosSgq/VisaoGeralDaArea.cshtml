@@ -1118,7 +1118,11 @@
                     zoomType: 'x,y'
                 },
                 title: {
-                    text: enviar.unitName + ' - ' + data[1].level1Name
+                    text: enviar.unitName + ' - ' + enviar["ParametroTableRow"][1]  //data[1].level1Name
+                },
+
+                subtitle: {
+                    text: 'Últimos dois meses do período selecionado'
                 },
                 xAxis: {
                     categories: dia,
@@ -1453,9 +1457,9 @@
 
             enviar.level2names = nome
             enviar.isLevel = 2
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
-                insereLabelFtaPelaColunName(nome, r)
+                //insereLabelFtaPelaColunName(nome, r)
 
                 $('#' + selector).empty().highcharts({
                     credits: Chart.Credits(),
@@ -1496,9 +1500,9 @@
                         Chart.Av(qtdAv, GetTarefa),
                         Chart.curvaPareto(data, nc, 1, inverse)
                     ]
-                });
+                //});
 
-                daUmaPintadaNaLabel(selector)
+                //daUmaPintadaNaLabel(selector)
             })
 
         }
@@ -1694,7 +1698,7 @@
             enviar.level2Name
             enviar.level3names = nome
             enviar.isLevel = 3
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
                 //Preenche label x Axys com FTA
                 /*$.each(r, function(i, n){
@@ -1704,7 +1708,7 @@
                     //console.log("Tratamentos de Anomalia: " + n)
                 });*/
 
-                insereLabelFtaPelaColunName(nome, r)
+                //insereLabelFtaPelaColunName(nome, r)
 
                 /*?*/
                 var sentido = 'desc';
@@ -1756,7 +1760,7 @@
                         }),
                         Chart.curvaPareto(data, nc, 1, inverse)
                     ]
-                });
+                //});
 
                 //DA 1 "PINTADA" NA LABEL
                 /*$('#'+ selector +' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c,o) {
@@ -1765,7 +1769,7 @@
                         $(o).css({ 'fill': "blue" })
                     }
                 })*/
-                daUmaPintadaNaLabel(selector)
+                //daUmaPintadaNaLabel(selector)
             })
 
         }

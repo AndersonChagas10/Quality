@@ -184,7 +184,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
     var Subtitle = "";
 
     //        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
@@ -218,6 +218,8 @@
         limpaDadosTela();
 
         enviar['auditorId'] = GetUsuarioId();
+
+        enviar["unitIdArr"] = enviar["unitIdArr"] == undefined ? [] : enviar["unitIdArr"];
 
         if (enviar["unitIdArr"].length != 1) {
 
@@ -275,7 +277,7 @@
                 }
             }
 
-            
+
 
         }
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
@@ -2576,6 +2578,6 @@
         }, 0);
     });
 
-    </script>
+</script>
 
 }
