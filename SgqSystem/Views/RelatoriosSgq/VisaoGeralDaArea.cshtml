@@ -572,9 +572,17 @@
 
         function Send(toggle) {
 
-           
 
+            enviar["level1Name"] = "";
+            enviar["unitName"] = "";
+            enviar["level2names"] = [];
+            enviar["level2Name"] = "";
+            enviar["level3names"] = [];
+            enviar["level3Name"] = "";
+            enviar["unitId"] = "";
 
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
 
             //EasyAjax(UrlGraficoHistoricoGeralMensal, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
@@ -812,6 +820,14 @@
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTbl2";
             enviar["Title"] = "Indicadores por unidade";
+
+            //enviar["level1Name"] = "";
+            enviar["unitName"] = "";
+            enviar["level2names"] = [];
+            enviar["level2Name"] = "";
+            enviar["level3names"] = [];
+            enviar["level3Name"] = "";
+            enviar["unitId"] = "";
 
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
@@ -1792,6 +1808,12 @@
             });
 
             $('.levels').hide();
+
+            $('#structureId').hide();
+            $('#unitIdV').hide();
+            $('#criticalLevelId').hide();
+            $('#structureId').hide();
+
 
             formControl.showFullCallendar();
             formControl.showClustRegUnitCriticalLevel123();

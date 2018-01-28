@@ -257,6 +257,8 @@
 
         } else {
 
+            enviar['level1IdArr'] = enviar['level1IdArr'] == undefined ? [] : enviar['level1IdArr'];
+
             if (enviar['level1Id'] > 0 || enviar['level1IdArr'].length > 0) {
                 var enviarComIndicador = Object.create(enviar);
                 enviarComIndicador['level2Id'] = undefined;

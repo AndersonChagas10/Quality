@@ -308,6 +308,7 @@ function AtribuiCluster() {
     setTimeout(function () {
         enviar['clusterSelected_Id'] = document.getElementById('clusterId').value;
         var option = $('#clusterGroupId option').filter(function () { return $(this).html() == clusterGroupInitialMock; }).val();
+        if (!$('#clusterGroupId').val())
         $('#clusterGroupId').val(option).trigger("change");
     }, 1);
 }
