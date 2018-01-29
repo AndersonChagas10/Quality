@@ -185,6 +185,7 @@
 @section Scripts {
 
 <script type="text/javascript">
+
     var Subtitle = "";
 
     //        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
@@ -200,7 +201,7 @@
     @*var UrlIndicadorXAcaoModalPA = '@Html.Raw(Url.Action("GetAcoesByDate", "api/RelatorioDeResultados"))';
         var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';*@
 
-
+    var graficoPeriodo;
     var chart;
     var chartHistorico;
     var chartHistoricoGeral;
@@ -478,7 +479,9 @@
             //fazGambipraMenosCem(porc);
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
-            $('#GraficoPeriodo').empty().highcharts({
+            graficoPeriodo = Highcharts.chart('GraficoPeriodo', {
+
+                //$('#GraficoPeriodo').empty().highcharts({
                 credits: {
                     enabled: false
                 },
@@ -2480,7 +2483,8 @@
     function limpaDadosTela() {
         $('#SemDados').hide();
         $('#divMensagemAlerta').hide();
-        $('#GraficoPeriodo').empty();
+        if (graficoPeriodo)
+            graficoPeriodo.destroy();
         $('#GraficoPeriodoSemUnidade').empty();
         $('#GraficoHistoricoIndicador').empty();
         $('#GraficoHistoricoMonitoramento').empty();
