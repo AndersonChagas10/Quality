@@ -219,9 +219,7 @@
 
         enviar['auditorId'] = GetUsuarioId();
 
-        enviar["unitIdArr"] = enviar["unitIdArr"] == undefined ? [] : enviar["unitIdArr"];
-
-        if (enviar["unitIdArr"].length != 1) {
+        if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
 
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         }

@@ -103,11 +103,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //Indicador Monitoramento Tarefa Com Unidade
             //Indicador Monitoramento tarefa Sem Unidade
 
-            if (/*form.level1Id == 0 && */form.level1IdArr.Length == 0) //Nenhum Indicador Sem Unidade
+            if (/*form.level1Id == 0 && */form.level1IdArr.Length != 1) //Nenhum Indicador Sem Unidade
             {
                 GetResultadosIndicador(form);
             }
-            else if (/*form.level2Id == 0 && */form.level2IdArr.Length == 0) //Nenhum Monitoramento Sem Unidade
+            else if (/*form.level2Id == 0 && */form.level2IdArr.Length != 1) //Nenhum Monitoramento Sem Unidade
             {
                 GetResultadosMonitoramento(form);
             }
@@ -128,6 +128,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereCriticalLevel = "";
             var userUnits = "";
             var whereStatus = "";
+            var whereLevel1 = "";
 
             if (form.unitIdArr.Length != 0)
             {
@@ -178,6 +179,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
+            }
+            if (form.level1IdArr.Length != 0)
+            {
+                whereLevel1 = " AND IND.ID IN (" + string.Join(",", form.level1IdArr) + ")";
             }
 
 
@@ -401,6 +406,7 @@ FROM (SELECT
         " + whereCluster + @"
         " + whereStructure + @"
         " + whereCriticalLevel + @"
+        " + whereLevel1 + @"
     -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
 	) S1
 	GROUP BY Unidade
@@ -426,7 +432,8 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereCluster = "";
             var whereStructure = "";
             var whereCriticalLevel = "";
-            var userUnits = "";
+            var userUnits = ""; 
+            var whereLevel2 = ""; 
 
             if (form.unitIdArr.Length != 0)
             {
@@ -471,6 +478,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
+            }
+            if (form.level2IdArr.Length != 0)
+            {
+                whereLevel2 = " AND MON.ID IN (" + string.Join(",", form.level2IdArr) + ")";
             }
 
             var query = @"
@@ -610,6 +621,7 @@ FROM (SELECT
     " + whereCluster + @"
     " + whereStructure + @"
     " + whereCriticalLevel + @"
+    " + whereLevel2 + @"
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id, level1_Id, S1.Level1Name
 -- HAVING SUM(NC) > 0
@@ -858,11 +870,11 @@ FROM (SELECT
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoSemUnidadeTabela([FromBody] FormularioParaRelatorioViewModel form)
         {
 
-            if (form.level1Id == 0) //Nenhum Indicador Sem Unidade
+            if (form.level1IdArr.Length != 1) //Nenhum Indicador Sem Unidade
             {
                 GetResultadosIndicadorSemUnidade(form);
             }
-            else if (form.level2Id == 0) //Nenhum Monitoramento Sem Unidade
+            else if (form.level2IdArr.Length != 1) //Nenhum Monitoramento Sem Unidade
             {
                 GetResultadosMonitoramentoSemUnidade(form);
             }
@@ -883,6 +895,7 @@ FROM (SELECT
             var whereStructure = "";
             var whereCriticalLevel = "";
             var userUnits = "";
+            var whereLevel1 = "";
 
             if (form.unitId != 0)
             {
@@ -918,6 +931,10 @@ FROM (SELECT
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
+            }
+            if (form.level1IdArr.Length != 0)
+            {
+                whereLevel1 = " AND IND.ID IN (" + string.Join(",", form.level1IdArr) + ")";
             }
 
             var query = @"
@@ -1129,6 +1146,7 @@ FROM (SELECT
         " + whereCluster + @"
         " + whereStructure + @"
         " + whereCriticalLevel + @"
+        " + whereLevel1 + @"
 	) S1
 	GROUP BY 
 			Level1Name
@@ -1152,7 +1170,8 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereCluster = "";
             var whereStructure = "";
             var whereCriticalLevel = "";
-            var userUnits = "";
+            var userUnits = ""; 
+            var whereLevel2 = ""; 
 
             if (form.unitId != 0)
             {
@@ -1179,6 +1198,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             if (form.criticalLevelId != 0)
             {
                 whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
+            }
+            if (form.level2IdArr.Length != 0)
+            {
+                whereLevel2 = " AND MON.ID IN (" + string.Join(",", form.level2IdArr) + ")";
             }
 
             var query = @"
@@ -1314,6 +1337,7 @@ FROM (SELECT
     " + whereCluster + @"
     " + whereStructure + @"
     " + whereCriticalLevel + @"
+    " + whereLevel2 + @"
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, level2_Id, level1_Id, S1.Level1Name
 -- HAVING SUM(NC) > 0
@@ -1349,9 +1373,9 @@ ORDER BY 7 DESC ";
             }
 
 
-            if (form.level3Id != 0)
+            if (form.level3IdArr.Length > 0)
             {
-                whereLevel3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
+                whereLevel3 = "AND R3.ParLevel3_Id  IN (" + string.Join(",", form.level3IdArr) + ")";
             }
 
             if (form.clusterSelected_Id != 0)
@@ -4049,6 +4073,30 @@ GROUP BY
 
         private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form)
         {
+            var unitId = "";
+            var unitId2 = "";
+            var unitId3 = "";
+            var unitId4 = "";
+            var unitId5 = "";
+            var unitId6 = "";
+            var levelid1 = "";
+
+            if (form.level1IdArr.Length > 0)
+            {
+                levelid1 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @") ";
+            }
+
+
+            if (form.unitIdArr.Length > 0)
+            {
+                unitId = " DECLARE @UNIDADE INT = " + form.unitId + " ";
+                unitId2 = " AND CL1.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId3 = " AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId6 = " AND UNI.Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+
             return @"
 
 
@@ -4182,10 +4230,10 @@ FROM (SELECT
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
-	WHERE IND.Id = " + form.level1Id + @"
-	AND MON.Id = " + form.level2Id + @"
-	AND UNI.Id = " + form.unitId + @"
-	AND r3.ParLevel3_Id = " + form.level3Id + @"
+	WHERE IND.Id IN (" + string.Join(",", form.level1IdArr) + @")
+	AND MON.Id IN (" + string.Join(",", form.level2IdArr) + @")
+	    " + unitId6 + @"
+	AND r3.ParLevel3_Id IN (" + string.Join(",", form.level3IdArr) + @")
 	AND R3.IsNotEvaluate = 0
 	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	GROUP BY IND.Id
