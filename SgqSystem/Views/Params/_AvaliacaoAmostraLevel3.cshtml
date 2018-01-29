@@ -169,23 +169,29 @@
 
             /*Valida se pode criar o objeto*/
             var amostra = $('#' + seletorTato + ' #amostra').val();
-            if(amostra.length == 0 && amostra > 0){
+            if(amostra.length == 0 || amostra <= 0){
                 openMessageModal('@Resources.Resource.invalid_samples_number');
                 return false;
             }
 
             var avaliacao = $('#' + seletorTato + ' #avaliacao').val();
-            if(avaliacao.length == 0 && avaliacao > 0){
+            if(avaliacao.length == 0 || avaliacao <= 0){
                 openMessageModal('@Resources.Resource.invalid_evaluations_number');
                 return false;
             }
             
             var interval = $('#' + seletorTato + ' #intervaloParaAvaliar').val();
             if(interval.length > 0){
+                //Remove vazio/null
                 var aux = $.grep(interval.split(','), function(o){
                     return o.length > 0;
                 });
-                $('#' + seletorTato + ' #intervaloParaAvaliar').val(aux);
+                //Remove duplicado
+                var uniqueInterval = [];
+                $.each(aux, function(i, el){
+                    if($.inArray(el, uniqueInterval) === -1) uniqueInterval.push(el);
+                });
+                $('#' + seletorTato + ' #intervaloParaAvaliar').val(uniqueInterval);
                 interval = $('#' + seletorTato + ' #intervaloParaAvaliar').val();
             }
 
@@ -230,9 +236,9 @@
                     console.log(6);
                 }
                 
-                count += $(o).parent().data().EvaluationNumber == avaliacao ? 1 : 0;
+                //count += $(o).parent().data().EvaluationNumber == avaliacao ? 1 : 0;
 
-                if(count == 4)
+                if(count == 3)
                     return true;
                 return false;
             });
