@@ -80,6 +80,13 @@
 
                 enviar['clusterIdArr'] = $('#clusterId').val();
 
+                // Desabilita Nivel Critico se processo não selecionado
+                if ($('#clusterId').val().length > 0) {
+                    $('#criticalLevelId').prop("disabled", false);
+                } else {
+                    $('#criticalLevelId').prop("disabled", true);
+                }
+
                 if ($scope.clusterValue) {
 
                     $http({
@@ -205,7 +212,7 @@
             $scope.GetListLevel2VinculadoLevel1 = function () {
                 enviar['level1Id'] = parseInt(document.getElementById('level1Idv').value);
                 enviar['level1IdArr'] = $('#level1Idv').val();
-
+                //
                 //Desabilita monitoramento e tarefa quando selecionado mais de um indicador
                 if ($('#level1Idv').val().length > 1) {
                     $('#level2Idv').attr('disabled', true);
@@ -223,6 +230,7 @@
                 } else {
                     $('#statusIndicador').prop("disabled", true);
                 }
+
 
                 if ($scope.level1Value) {
                     $http({
@@ -308,8 +316,12 @@ function AtribuiCluster() {
     setTimeout(function () {
         enviar['clusterSelected_Id'] = document.getElementById('clusterId').value;
         var option = $('#clusterGroupId option').filter(function () { return $(this).html() == clusterGroupInitialMock; }).val();
-        if (!$('#clusterGroupId').val())
-        $('#clusterGroupId').val(option).trigger("change");
+        if (enviar["clusterGroupId"] == undefined || enviar["clusterGroupId"] <= 0) {
+            $('#clusterGroupId').val(option).trigger("change");
+            enviar["clusterGroupId"] = option;
+            // Inicia o Nivel Critico, desabilitado, por conta de ser dependente da seleção do Processo
+            $('#criticalLevelId').prop("disabled", true);
+        }
     }, 1);
 }
 

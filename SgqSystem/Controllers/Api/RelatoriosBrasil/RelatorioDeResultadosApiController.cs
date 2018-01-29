@@ -4080,12 +4080,38 @@ GROUP BY
             var unitId5 = "";
             var unitId6 = "";
             var levelid1 = "";
+            var levelid2 = "";
+            var levelid3 = "";
 
             if (form.level1IdArr.Length > 0)
             {
-                levelid1 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @") ";
+                levelid1 = " AND IND.ID  IN (" + string.Join(",", form.level1IdArr) + @") ";
+            }
+            else if (form.level1Id > 0)
+            {
+                levelid1 = " AND IND.ID  IN (" + form.level1Id + @") ";
+
             }
 
+            if (form.level2IdArr.Length > 0)
+            {
+                levelid2 = " AND MON.ID  IN (" + string.Join(",", form.level2IdArr) + @") ";
+            }
+            else if (form.level2Id > 0)
+            {
+                levelid2 = " AND MON.ID  IN (" + form.level2Id + @") ";
+
+            }
+
+            if (form.level3IdArr.Length > 0)
+            {
+                levelid3 = " AND r3.ParLevel3_Id  IN (" + string.Join(",", form.level3IdArr) + @") ";
+            }
+            else if (form.level3Id > 0)
+            {
+                levelid3 = " AND r3.ParLevel3_Id  IN (" + form.level3Id + @") ";
+
+            }
 
             if (form.unitIdArr.Length > 0)
             {
@@ -4230,10 +4256,11 @@ FROM (SELECT
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
-	WHERE IND.Id IN (" + string.Join(",", form.level1IdArr) + @")
-	AND MON.Id IN (" + string.Join(",", form.level2IdArr) + @")
-	    " + unitId6 + @"
-	AND r3.ParLevel3_Id IN (" + string.Join(",", form.level3IdArr) + @")
+	WHERE 1=1 
+	    " + levelid1 + @"
+	    " + levelid2 + @"
+	    " + levelid3 + @"
+	    " + unitId6 + @" 
 	AND R3.IsNotEvaluate = 0
 	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	GROUP BY IND.Id
@@ -4258,11 +4285,18 @@ ORDER BY 15";
             var unitId3 = "";
             var unitId4 = "";
             var unitId5 = "";
+            var unitId6 = "";
             var levelid1 = "";
+            var levelid2 = "";
 
             if (form.level1IdArr.Length > 0)
             {
-                levelid1 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @") ";
+                levelid1 = " AND (IND.ID  IN (" + string.Join(",", form.level1IdArr) + @") OR IND.ID IS NULL)";
+            }
+
+            if (form.level2IdArr.Length > 0)
+            {
+                levelid2 = " AND (MON.ID   IN (" + string.Join(",", form.level2IdArr) + @") OR MON.ID IS NULL)";
             }
 
 
@@ -4270,9 +4304,10 @@ ORDER BY 15";
             {
                 unitId = " DECLARE @UNIDADE INT = " + form.unitId + " ";
                 unitId2 = " AND CL1.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
-                unitId3 = " AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId3 = " AND (Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") OR Unidade_Id IS NULL) ";
                 unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId6 = " AND UNI.ID IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
 
             return @" 
@@ -4355,6 +4390,7 @@ FROM (SELECT
 	GROUP BY C2.ID) NA
 WHERE NA = 2
 
+
 SELECT
 	level1_id as level1Id
    ,Level1Name AS Level1Name
@@ -4382,8 +4418,8 @@ FROM (SELECT
 			WHEN IsRuleConformity IS NULL THEN 0
 			ELSE Meta
 		END) AS Meta
-	   ,NcSemPeso AS nc
-	   ,AvSemPeso AS av
+	   ,isnull(NcSemPeso,0) AS nc
+	   ,isnull(AvSemPeso,0) AS av
 	   ,Data AS date
 	FROM (SELECT
 			*
@@ -4498,14 +4534,14 @@ FROM (SELECT
 			LEFT JOIN ParLevel1 IND (NOLOCK)
 				ON IND.Id = CL1.ParLevel1_Id
                 AND ISNULL(IND.ShowScorecard, 1) = 1
-				AND IND.Id = " + form.level1Id + @"
+				-- AND IND.Id = " + form.level1Id + @"
                 -- AND IND.Id <> 43
             LEFT JOIN ParLevel2 MON (NOLOCK)
 				ON MON.Id = CL2.ParLevel2_Id
-				AND MON.Id = " + form.level2Id + @"
+				-- AND MON.Id = " + form.level2Id + @"
 			LEFT JOIN ParCompany UNI (NOLOCK)
 				ON UNI.Id = CL1.UnitId
-				" + unitId2 + @"
+				-- " + unitId2 + @"
 			LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
 				ON A4.UNIDADE = UNI.Id
 				AND A4.INDICADOR = IND.ID
@@ -4530,12 +4566,16 @@ FROM (SELECT
                     AND IND.Id <> 43
 				LEFT JOIN ParLevel2 MON (NOLOCK)
 					ON MON.Id = CL2.ParLevel2_Id
-				--AND IND.ID = 1  
+				-- AND IND.ID = 1  
 				LEFT JOIN ParCompany UNI (NOLOCK)
 					ON UNI.Id = CL1.UnitId
 				LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)
 					ON A4.UNIDADE = UNI.Id
 					AND A4.INDICADOR = IND.ID
+                WHERE 1=1 
+                " + levelid1 + @"
+                " + levelid2 + @"
+                " + unitId6 + @"
 				GROUP BY IND.ID
 						,IND.NAME
 						,MON.Id
@@ -4546,11 +4586,9 @@ FROM (SELECT
 				AND (NOMES.A1 = CL1.ParLevel1_Id
 				AND NOMES.A4 = UNI.ID)
 				OR (IND.ID IS NULL)
-            where CL2.ParLevel2_Id = " + form.level2Id + @") S1) S2
+            ) S1) S2
 	WHERE 1 = 1
-	AND level1_Id = " + form.level1Id + @"
-    AND S2.level2_Id = " + form.level2Id + @"
-    " + unitId3 + @") ff
+) ff
 GROUP BY level1_id
 		,Level1Name
 		,ChartTitle
@@ -4559,7 +4597,8 @@ GROUP BY level1_id
 		,[date]
 		,level2_Id
 		,level2Name
-having sum(av) is not null or sum(nc) is not null
+-- having sum(av) is not null or sum(nc) is not null
+
 ORDER BY 10
 DROP TABLE #AMOSTRATIPO4a  ";
         }
