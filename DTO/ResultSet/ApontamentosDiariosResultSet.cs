@@ -92,8 +92,9 @@ public class ApontamentosDiariosResultSet
                  ,L2.Name AS Monitoramento             
                  ,R3.ParLevel3_Name AS Tarefa          
                  ,R3.Weight AS Peso                    
-                 ,R3.IntervalMin AS 'IntervaloMinimo'  
-                 ,R3.IntervalMax AS 'IntervaloMaximo'  
+                 ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'IntervaloMinimo'  
+                 ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'IntervaloMaximo'
+                  
                  ,R3.Value AS 'Lancado'                
                  ,R3.IsConform AS 'Conforme'           
                  ,R3.IsNotEvaluate AS 'NA'             
