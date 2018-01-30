@@ -3964,15 +3964,15 @@ FROM (SELECT
 WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
-	TAB.Indicador AS level1id
-   ,TAB.IndicadorName AS Level1Name
-   ,TAB.Monitoramento AS level2Id
-   ,TAB.MonitoramentoName AS Level2Name
-   ,TAB.TarefaName AS level3Name
-   ,TAB.NcSemPeso AS nc
-   ,TAB.AvSemPeso AS av
+	Indicador AS level1id
+   ,IndicadorName AS Level1Name
+   ,Monitoramento AS level2Id
+   ,MonitoramentoName AS Level2Name
+   ,TarefaName AS level3Name
+   ,NcSemPeso AS nc
+   ,AvSemPeso AS av
    ,[Proc] AS procentagemNC
-   ,TAB.TarefaId AS level3Id
+   ,TarefaId AS level3Id
    ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    ,Unidade AS UnidadeId
    ,UnidadeName AS UnidadeName
@@ -3982,7 +3982,7 @@ SELECT
    --,'Histórico da Tarefa: ' + TAB.TarefaName as ChartTitle
    ,'Histórico da Tarefa' as ChartTitle
 FROM (SELECT  
-		Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName
+		Date,Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName
 			,SUM(NC)NC
 			,SUM(NcSemPeso)NcSemPeso
 			,SUM(AV)AV
@@ -4017,7 +4017,7 @@ FROM (SELECT
 											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
 											FROM VolumePcc1b(nolock)
 											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
+											AND Data = CAST(c2.CollectionDate AS DATE) 
 											AND ParCompany_id = UNI.Id
 											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
 			ELSE SUM(R3.WeiEvaluation)
@@ -4054,7 +4054,7 @@ FROM (SELECT
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
 			,CAST(c2.CollectionDate AS date) 
-	 /* HAVING SUM(R3.WeiDefects) > 0 */ ) TAB GROUP BY Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName)A
+	 /* HAVING SUM(R3.WeiDefects) > 0 */ ) TAB GROUP BY Date,Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName)A
 ORDER BY 15";
         }
 
