@@ -927,6 +927,11 @@
                 reloadPopovers();
                 defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
+                
+                if($('#parLevel1Select2 option:selected').val() > 0 && $('#parLevel2Select2 option:selected').val() > 0 && $('#parLevel3Select2 option:selected').val() > 0)
+                    $("#level3_required_level1_level2").removeClass('hide');
+                else
+                    $("#level3_required_level1_level2").addClass('hide');
 
             });
         },/*Busca dados do level3 na API*/
@@ -1180,6 +1185,9 @@
                 /*Libera os campos para AV AM*/
                 $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
                 $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+                //Libera campos
+                $('#level3_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
+                $('#level3_AvAmostra_accordion #avAmCompany').find('option').not('[value='+ unitId + ']').remove();
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
@@ -1190,6 +1198,9 @@
                 $('#btnSaveNewLevel2').attr('disabled', true);
                 $('#level2_AvAmostra_accordion').find('input, select').attr("readonly", true);
                 $('#level2_AvAmostra_accordion').find('button').attr("disabled", true);
+                
+                $('#level3_AvAmostra_accordion').find('input, select').attr("readonly", true);
+                $('#level3_AvAmostra_accordion').find('button').attr("disabled", true);
             }
 
             $('#level2_nc_collapse > div > table.table-erp > tbody > tr > td:nth-child(4) > button').attr('disabled', true);
@@ -1219,6 +1230,7 @@
                 $('#selectTipoInput').on('change', function() {
                     $('#level3_data_type_accordion').find('input, select, button').attr("readonly", true);
                 });
+
                 $('#level3_accordion').find('input').attr("readonly", true);
                 $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
@@ -1246,11 +1258,17 @@
                     $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
                     $('#level3_PesoL3_accordion').find('input, select').attr("readonly", false);
                     $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+    
+                    /*Libera os campos para Avaliacao Amostra*/
+                    $('#level3_AvAmostra_accordion').find('button').attr("disabled", false);
+                    $('#level3_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
 
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id != unitId)
+                        if($(this).data().ParCompany_Id != unitId){
                             $(this).find('input, select, button').attr("disabled", true);
+                            $(this).remove();
+                        }
                     });
                     $('#btnSaveCounter').attr("disabled", true);
                     $('#btnSaveNewLevel3').attr('disabled', false);

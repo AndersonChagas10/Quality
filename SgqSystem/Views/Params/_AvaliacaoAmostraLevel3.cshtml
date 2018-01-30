@@ -47,8 +47,9 @@
 
                         <tr>
 
-                            @Table.GerarColuna(@Html.TextBox("intervaloParaAvaliar", 0, htmlAttributes: new { @id = "intervaloParaAvaliar", @class = "form-control input-sm", type = "text" })
-                                , @Html.Label(Resources.Resource.number_samplers)
+                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
+                            @Table.GerarColuna(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
+                                , @Html.Label(Resources.Resource.samples_per_evaluation)
                                 , Table.PosicaoLabel.top)
 
                             @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
@@ -56,9 +57,8 @@
                                 , @Html.Label(Resources.Resource.evaluation)
                                 , Table.PosicaoLabel.top)
 
-                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
-                            @Table.GerarColunaButton(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.samples_per_evaluation)
+                            @Table.GerarColunaButton(@Html.TextBox("intervaloParaAvaliar", 0, htmlAttributes: new { @id = "intervaloParaAvaliar", @class = "form-control input-sm", type = "text" })
+                                , @Html.Label(Resources.Resource.number_samplers)
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
 
@@ -111,7 +111,7 @@
                 obj.ParCompany_Id = compId;
                 obj.CompanyName = compName;
 
-                var ParLevel1_Id = $('#' + isEdit + ' #parLevel1Select2 :selected').val();
+                @*var ParLevel1_Id = $('#' + isEdit + ' #parLevel1Select2 :selected').val();
                 var ParLevel1_Name = $('#' + isEdit + ' #parLevel1Select2 :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
@@ -125,7 +125,7 @@
                     ParLevel2_Name = "@Resources.Resource.all"
                 }
                 obj.ParLevel2_Id = ParLevel2_Id;
-                obj.ParLevel2_Name = ParLevel2_Name;
+                obj.ParLevel2_Name = ParLevel2_Name;*@
 
                 obj.SampleNumber = $('#' + isEdit + ' #amostra').val();
                 obj.EvaluationNumber = $('#' + isEdit + ' #avaliacao').val();

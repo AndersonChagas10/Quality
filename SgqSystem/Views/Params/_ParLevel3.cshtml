@@ -41,17 +41,7 @@
                     </tr>
                 </table>
 
-                @{
-                    Model.levelControl = 3;
-                }
-
-                @*<div id="reincidencia">
-                        @Html.Partial("_ReincidenciaXLevel", Model)
-                    </div>*@
-                @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
-                @if (Model.paramsDto.parLevel3Dto.hasVinculo)
-                {
-
+                <div id="level3_required_level1_level2">
                     <div class="panel-group accordion" id="level3_data_type_accordion">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -135,7 +125,19 @@
                     </div>
 
                     @Html.Partial("_AvaliacaoAmostraLevel3", Model)
+                </div>
 
+                @{
+                    Model.levelControl = 3;
+                }
+
+                @*<div id="reincidencia">
+                        @Html.Partial("_ReincidenciaXLevel", Model)
+                    </div>*@
+                @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
+
+                @if (Model.paramsDto.parLevel3Dto.hasVinculo)
+                {
                     @Html.Partial("_Peso", Model)
                 }
 
@@ -267,12 +269,12 @@
 
             var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
             var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
-            
-            var parLevel1Id = $(' #parLevel1Select2 :selected').val();
-            var parLevel1Name = parLevel1Id + " - " + $(' #parLevel1Select2 :selected').text();
-            
-            var parLevel2Id = $(' #parLevel2Select2 :selected').val();
-            var parLevel2Name = parLevel2Id + " - " +$(' #parLevel2Select2 :selected').text();
+
+            //var parLevel1Id = $(' #parLevel1Select2 :selected').val();
+            //var parLevel1Name = parLevel1Id + " - " + $(' #parLevel1Select2 :selected').text();
+
+            //var parLevel2Id = $(' #parLevel2Select2 :selected').val();
+            //var parLevel2Name = parLevel2Id + " - " +$(' #parLevel2Select2 :selected').text();
 
             var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
             var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
@@ -288,7 +290,7 @@
             var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
             var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
 
-            if(parLevel1Id == -1){
+            @*if(parLevel1Id == -1){
                 parLevel1Id = null;
                 parLevel1Name = "@Resources.Resource.all";
             }
@@ -296,7 +298,7 @@
             if(parLevel2Id == -1){
                 parLevel2Id = null;
                 parLevel2Name = "@Resources.Resource.all";
-            }
+            }*@
 
             if(companyValue == -1){
                 companyValue = null;
@@ -344,10 +346,10 @@
                 obj.IntervalMin =                    parLevel3Value_IntervalMin;
                 obj.IntervalMax =                    parLevel3Value_IntervalMax;
 
-                obj.ParLevel1_Id =                      parLevel1Id;
-                obj.ParLevel1_Name =                    parLevel1Name;
-                obj.ParLevel2_Id =                      parLevel2Id;
-                obj.ParLevel2_Name =                    parLevel2Name;
+                //obj.ParLevel1_Id =                      parLevel1Id;
+                //obj.ParLevel1_Name =                    parLevel1Name;
+                //obj.ParLevel2_Id =                      parLevel2Id;
+                //obj.ParLevel2_Name =                    parLevel2Name;
 
                 return obj;
 
@@ -555,15 +557,15 @@
                         o["IntervalMaxCalculado"] = "";
                     }
                     //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
-                    
-                    if((o.ParLevel1_Id == null 
-                        || o.ParLevel1_Id == "-1" 
+
+                    if((o.ParLevel1_Id == null
+                        || o.ParLevel1_Id == "-1"
                         || o.ParLevel1_Id == $('#parLevel1Select2 :selected').val())
                         &&
-                        (o.ParLevel2_Id == null 
-                        || o.ParLevel2_Id == "-1" 
+                        (o.ParLevel2_Id == null
+                        || o.ParLevel2_Id == "-1"
                         || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
-                    crudNxN.adiciona(o,  id, tdNamess);
+                        crudNxN.adiciona(o,  id, tdNamess);
                 });
             }
         },
