@@ -4122,8 +4122,17 @@ GROUP BY
                 unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId6 = " AND UNI.Id IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
+            else if (form.unitId > 0)
+            {
 
-            return @"
+                unitId2 = " AND CL1.UnitId IN (" + form.unitId + ") ";
+                unitId3 = " AND Unidade_Id IN (" + form.unitId + ") ";
+                unitId4 = " AND unitid IN (" + form.unitId + ") ";
+                unitId5 = " AND C2.UnitId IN (" + form.unitId + ") ";
+                unitId6 = " AND UNI.Id IN (" + form.unitId + ") ";
+            }
+
+                return @"
 
 
 DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
@@ -4301,6 +4310,14 @@ ORDER BY 15";
                 unitId3 = " AND ( Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+            else if (form.unitId > 0)
+            {
+
+                unitId2 = " AND CL1.UnitId IN (" + form.unitId + ") ";               
+                unitId3 = " AND ( Unidade_Id IN (" + form.unitId + ") ";
+                unitId4 = " AND unitid IN (" + form.unitId + ") ";
+                unitId5 = " AND C2.UnitId IN (" + form.unitId + ") ";
             }
 
             return @" 
@@ -4627,6 +4644,13 @@ DROP TABLE #AMOSTRATIPO4a  ";
                 unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
+            else if (form.unitId > 0)
+            {
+                unitId2 = " AND CL1.UnitId IN (" + form.unitId + ") ";
+                unitId3 = " AND Unidade_Id IN (" + form.unitId + ") ";
+                unitId4 = " AND unitid IN (" + form.unitId + ") ";
+                unitId5 = " AND C2.UnitId IN (" + form.unitId + ") ";
+            }
 
             return @" 
  DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
@@ -4732,8 +4756,8 @@ FROM (SELECT
 WHERE NA = 2
 
 SELECT
-	level1_id as level1Id
-   ,Level1Name as Level1Name
+	isnull(level1_id,0) as level1Id
+   ,isnull(Level1Name,'') as Level1Name
    ,ChartTitle
    --,Unidade_Id as UnidadeId
    --,Unidade as UnidadeName
@@ -5277,8 +5301,10 @@ DROP TABLE #NOMES ";
 
         [HttpPost]
         [Route("listaResultados")]
-        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form)
-        {
+        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form) {
+
+
+
             string query = "";
 
             if (form.level3Id != 0)
@@ -5298,6 +5324,11 @@ DROP TABLE #NOMES ";
             {
                 retorno3 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
             }
+
+            //if(retornaSomenteAv == true)
+            //{
+                retorno3 = retorno3.Where(r => r.av > 0).ToList();
+            //}
 
             //GetMockListaResultados();
             return retorno3;

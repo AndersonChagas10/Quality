@@ -184,7 +184,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     var Subtitle = "";
 
@@ -2483,8 +2483,10 @@
     function limpaDadosTela() {
         $('#SemDados').hide();
         $('#divMensagemAlerta').hide();
-        if (graficoPeriodo)
+        if (graficoPeriodo && graficoPeriodo.axes) {
             graficoPeriodo.destroy();
+            graficoPeriodo = null;
+        }
         $('#GraficoPeriodoSemUnidade').empty();
         $('#GraficoHistoricoIndicador').empty();
         $('#GraficoHistoricoMonitoramento').empty();
@@ -2580,6 +2582,6 @@
         }, 0);
     });
 
-</script>
+    </script>
 
 }
