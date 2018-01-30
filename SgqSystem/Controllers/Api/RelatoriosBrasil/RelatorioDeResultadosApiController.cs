@@ -5794,16 +5794,18 @@ DROP TABLE #NOMES ";
             {
                 Wunidade = " AND CL2.UnitId IN (" + form.unitId + ")";
             }
-            // Indicador
-            if (form.level1IdArr.Length > 0 && form.level1IdArr[0] != 0)
-            {
-                Windicador = " AND CL1.ParLevel1_id IN (" + string.Join(",", form.level1IdArr) + ")";
-            }
-            else if (form.level1Id > 0)
-            {
-                Windicador = " AND CL1.ParLevel1_id IN (" + form.level1Id + ")";
-            }
 
+            if(nivel == 1) { 
+            // Indicador
+                if (form.level1IdArr.Length > 0 && form.level1IdArr[0] != 0)
+                {
+                    Windicador = " AND CL1.ParLevel1_id IN (" + string.Join(",", form.level1IdArr) + ")";
+                }
+                else if (form.level1Id > 0)
+                {
+                    Windicador = " AND CL1.ParLevel1_id IN (" + form.level1Id + ")";
+                }
+            }
             // Monitoramento
             if (nivel == 2) {
                 if (form.level2IdArr.Length > 0 && form.level2IdArr[0] != 0)
