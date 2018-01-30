@@ -533,45 +533,6 @@
         timerSession.verificarCookieExiste();
         //FIM Metodo de exibir Modal de alerta de expirar sessão
 
-
-        $(document).ready(function () {
-            //var settngs = $.data($('form')[0], 'validator').settings;
-            //settngs.ignore = ".ignore";
-        });
-
-        @*var cccccounter = 0;
-        if (!!getCookie('webControlCookie')) {
-            var keepAlive = '@Url.Action(ViewBag.KeepAlive, "UserAuthentication")';
-            setTimeout(function () {
-                $.timeoutDialog({
-                    timeout: 305,
-                    countdown: 300,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    keep_alive_url: keepAlive,
-                });
-            }, 300000 * 8);
-
-            console.log("0/3 (300000 * 8): " + new Date());
-
-            setTimeout(function () {
-
-                console.log(cccccounter + "/3 (300000 * 8): " + new Date());
-                cccccounter++;
-
-            }, 100000 * 8);
-        }*@
-
-        @*$(function () {
-            $("#timeout-example").click(function (e) {
-                e.preventDefault();
-                $.timeoutDialog({ timeout: 1,
-                    countdown: 60,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    restart_on_yes: false
-                });
-            });
-        });*@
-
         var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
         var flag_beforeunload = false;
 

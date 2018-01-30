@@ -61,7 +61,7 @@ namespace SgqSystem.Controllers.Api
                     DateTime? ultimaLataRetirada = null;
 
                     int id = linha.GetValue("Id").Value<int>();
-                    int? horaVerificacao = 2;
+                    int horaVerificacao = 2;
 
                     String recravacaoJson = recravacoes
                         .Where(r => r.GetValue("Linha_Id").Value<int>() == id)
@@ -72,7 +72,7 @@ namespace SgqSystem.Controllers.Api
                         JArray latas = JObject.Parse(recravacaoJson).GetValue("latas").Value<JArray>();
 
                         horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
-                            JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int?>();
+                            JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int>();
 
                         foreach (var lata in latas)
                         {
@@ -87,7 +87,9 @@ namespace SgqSystem.Controllers.Api
                         }
                     }
 
-                    linha["UltimaLataRetirada"] = ultimaLataRetirada;
+                    ultimaLataRetirada = ultimaLataRetirada?.AddHours(-2);
+
+                    linha["UltimaLataRetirada"] = ultimaLataRetirada?.ToString("dd/MM/yyyy HH:mm");
                     linha["HoraVerificacao"] = horaVerificacao;
 
                 }
@@ -138,7 +140,7 @@ namespace SgqSystem.Controllers.Api
 
                 DateTime? ultimaLataRetirada = null;
                 
-                int? horaVerificacao = 2;
+                int horaVerificacao = 2;
 
                 String recravacaoJson = recravacoes
                     .Where(r => r.GetValue("Linha_Id").Value<int>() == Int32.Parse(id))
@@ -149,7 +151,7 @@ namespace SgqSystem.Controllers.Api
                     JArray latas = JObject.Parse(recravacaoJson).GetValue("latas").Value<JArray>();
 
                     horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
-                        JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int?>();
+                        JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int>();
 
                     foreach (var lata in latas)
                     {
@@ -164,7 +166,9 @@ namespace SgqSystem.Controllers.Api
                     }
                 }
 
-                linha["UltimaLataRetirada"] = ultimaLataRetirada;
+                ultimaLataRetirada = ultimaLataRetirada?.AddHours(-2);
+
+                linha["UltimaLataRetirada"] = ultimaLataRetirada?.ToString("dd/MM/yyyy HH:mm"); ;
                 linha["HoraVerificacao"] = horaVerificacao;
 
                 linhaDb["TipoDeLata"] = QueryNinja(db, string.Format(queryTipoLataPorparRecravacao_TypeLata_Id, int.Parse(linhaDb["ParRecravacao_TypeLata_Id"].ToString()))).FirstOrDefault();
