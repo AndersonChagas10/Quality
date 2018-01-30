@@ -4124,6 +4124,11 @@ GROUP BY
             }
             else if (form.unitId > 0)
             {
+
+                unitId2 = " AND CL1.UnitId IN (" + form.unitId + ") ";
+                unitId3 = " AND Unidade_Id IN (" + form.unitId + ") ";
+                unitId4 = " AND unitid IN (" + form.unitId + ") ";
+                unitId5 = " AND C2.UnitId IN (" + form.unitId + ") ";
                 unitId6 = " AND UNI.Id IN (" + form.unitId + ") ";
             }
 
@@ -4289,18 +4294,11 @@ ORDER BY 15";
             var unitId3 = "";
             var unitId4 = "";
             var unitId5 = "";
-            var unitId6 = "";
             var levelid1 = "";
-            var levelid2 = "";
 
             if (form.level1IdArr.Length > 0)
             {
-                levelid1 = " AND (IND.ID  IN (" + string.Join(",", form.level1IdArr) + @") OR IND.ID IS NULL)";
-            }
-
-            if (form.level2IdArr.Length > 0)
-            {
-                levelid2 = " AND (MON.ID   IN (" + string.Join(",", form.level2IdArr) + @") OR MON.ID IS NULL)";
+                levelid1 = " AND level1_Id  IN (" + string.Join(",", form.level1IdArr) + @") ";
             }
 
 
@@ -4308,11 +4306,13 @@ ORDER BY 15";
             {
                 unitId = " DECLARE @UNIDADE INT = " + form.unitId + " ";
                 unitId2 = " AND CL1.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
-                unitId3 = " AND (Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") OR Unidade_Id IS NULL) ";
+                //unitId3 = " AND Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+                unitId3 = " AND ( Unidade_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
-                unitId6 = " AND UNI.ID IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
+            else if (form.unitId > 0)
+            {
 
             var script = "";
 
@@ -5424,8 +5424,10 @@ DROP TABLE #NOMES ";
 
         [HttpPost]
         [Route("listaResultados")]
-        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form)
-        {
+        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form) {
+
+
+
             string query = "";
 
             if (form.level3Id != 0)
@@ -5445,6 +5447,11 @@ DROP TABLE #NOMES ";
             {
                 retorno3 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
             }
+
+            //if(retornaSomenteAv == true)
+            //{
+                retorno3 = retorno3.Where(r => r.av > 0).ToList();
+            //}
 
             //GetMockListaResultados();
             return retorno3;
