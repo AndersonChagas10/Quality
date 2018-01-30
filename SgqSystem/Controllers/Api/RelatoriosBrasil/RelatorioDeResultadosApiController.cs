@@ -4311,8 +4311,7 @@ ORDER BY 15";
                 unitId4 = " AND unitid IN (" + string.Join(",", form.unitIdArr) + ") ";
                 unitId5 = " AND C2.UnitId IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
-            else if (form.unitId > 0)
-            {
+
 
             var script = "";
 
