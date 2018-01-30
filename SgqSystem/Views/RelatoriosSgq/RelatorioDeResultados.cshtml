@@ -789,21 +789,6 @@
         }
 
 
-
-        //var limSup = MapeiaValorParaHC(data, "limiteSuperior");
-        //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
-
-        /*Nao exibe no HC atribuindo nulo aonde for ZERO*/
-        //limInferior.forEach(function (o, c) {
-        //    if (o == 0)
-        //        limInferior[c] = null
-        //})
-        //limSup.forEach(function (o, c) {
-        //    if (o == 0)
-        //        limSup[c] = null
-        //})
-        //var NomesDeVerdade = []
-        //pegaNomeDoIndicadorGrafico(nome, NomesDeVerdade)
         $('#GraficoHistoricoModal').removeClass('loader');
 
         $('#GraficoHistoricoModal').empty();
@@ -821,7 +806,7 @@
                 text: TituloHistoricoModal
             },
             subtitle: {
-                text: subtitleAux
+                text: Subtitle
             },
             xAxis: {
                 categories: dia,
@@ -1739,12 +1724,16 @@
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
+            var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+            var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
             var limInferior = MapeiaValorParaHC(data, "limiteInferior");
             //var Subtitle = "";
 
             var sumav = qtdAv.reduce(function (a, b) { return a + b; });
             var sumnc = nc.reduce(function (a, b) { return a + b; });
-            var porcPeriodo = sumnc / sumav * 100;
+            var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+            var porcPeriodo = sumncCP / sumavCP * 100;
 
             let TituloGraficoHistoricoMonitoramento = Resources("level2_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
