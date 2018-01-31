@@ -24,7 +24,7 @@ var jsPOH = { //Print Of Hell
 			});
 		</script>
 	*/
-	
+    sumPage: 0,
 	renderDivName : "divRenderPrint",
 	renderTableName : "renderPrint",
 	headerName : "renderPrintHeader",
@@ -34,7 +34,8 @@ var jsPOH = { //Print Of Hell
 	numberMarginBottom : 5,
 	renderTableMargin : 35,
 	pageMarginHeader : "20 0 0 0",
-	pageMarginFooter : "0 0 20 0",
+    pageMarginFooter: "0 0 20 0",
+    pageMarginBody: "0 0 0 0",
 	
 	Style : function(){
 		this.style =
@@ -67,7 +68,7 @@ var jsPOH = { //Print Of Hell
 		"		padding:"+this.pageMarginFooter+";                                       "+
 		"	}                                                                      "+
 		"	                                                                       "+
-		"	#"+this.bodyName+"{display:block;height:auto;margin:0px;padding:0px;}  "+
+        "	#" + this.bodyName + "{display:block;height:auto;margin:0px;padding:" + this.pageMarginBody +"}  "+
 		"	                                                                       "+
 		"	#"+this.bodyName+", #"+this.headerName+", #"+this.footerName+"{        "+
 		//"		padding-left: 40px;                                                "+
@@ -160,7 +161,7 @@ var jsPOH = { //Print Of Hell
 		//Ajusta o tamanho da A4 considerando DPI
 		var dpi = document.getElementById('dpiDiv').offsetWidth;
 		this.height = 29.7 / 2.54 * dpi;
-		this.width = 21 / 2.54 * dpi;
+		this.width = (21 / 2.54 * dpi)-20;
 	},
 	
 	RemoveExistente : function(){
@@ -172,16 +173,21 @@ var jsPOH = { //Print Of Hell
 			document.body.removeChild(element);
 	},
 	
-	Inicializar : function(config){
+    Inicializar: function (config) {
+
+        if (config.sumPage != undefined)
+            this.sumPage = config.sumPage;
 		
 		if(config.numberMarginRight != undefined)
 			this.numberMarginRight = config.numberMarginRight;
 		if(config.numberMarginBottom != undefined)
 			this.numberMarginBottom = config.numberMarginBottom;
 		if(config.renderTableMargin != undefined)
-			this.renderTableMargin = config.renderTableMargin;
-		if(config.pageMarginHeader != undefined)
-			this.pageMarginHeader = config.pageMarginHeader;
+            this.renderTableMargin = config.renderTableMargin;
+        if (config.pageMarginHeader != undefined)
+            this.pageMarginHeader = config.pageMarginHeader;
+        if (config.pageMarginBody != undefined)
+            this.pageMarginBody = config.pageMarginBody;
 		if(config.pageMarginFooter != undefined)
 			this.pageMarginFooter = config.pageMarginFooter;
 	
@@ -204,14 +210,19 @@ var jsPOH = { //Print Of Hell
 		
 		document.getElementById(this.renderTableName).style.width = this.width+"px";
 		var header = document.getElementById(this.headerName).offsetHeight;
-		var body = document.getElementById(this.bodyName).offsetHeight;
 		var footer = document.getElementById(this.footerName).offsetHeight;
 		var freeHeight = (this.height - header - footer);
-		this.FreeHeight = freeHeight;
+        this.FreeHeight = freeHeight;
+        
+        $.each($('.height-fix'), function (i, o) {
+            $(this).css('min-height', freeHeight-10+'px');
+        });
+
+        var body = document.getElementById(this.bodyName).offsetHeight;
 		var spacer = freeHeight - (body % freeHeight);
-		var numeroPaginas = Math.floor(body/freeHeight)+1;
+		var numeroPaginas = Math.floor(body/freeHeight)+1+this.sumPage;
 		document.getElementById(this.bodyName).style.height= (body+spacer+((numeroPaginas-1)*(header+footer))-16)+"px";
-		
+
 		//ADICIONA PAGINAÇÃO
 		$('span#number').attr('data-content', numeroPaginas);
 

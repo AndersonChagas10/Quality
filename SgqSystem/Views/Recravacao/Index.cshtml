@@ -537,29 +537,20 @@
                                         </tr>
                                         @*MOCK*@
                                         <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
-
-
                                             <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align: left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
                                             <td style="border:1px solid #cccccc; padding: 2px; max-width:65px;"
                                                 ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
                                                 ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
                                                 colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints : 1)}}">
-
-                                                @*1 Binário ok
-                                    2   Número de defeitos ok
-                                    3   Intervalos ok
-                                    4   Calculado
-                                    5   Texto
-                                    99  NOVO CALCULADO POR OUTRO*@
-
+                                                
                                                 @*3 Intervalos NAO EC ET Espessura*@
                                                 <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura))">
                                                     <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                                         <input style="width:100%;"
                                                                 type="text"
-                                                                title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}} {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}"
+                                                                title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 ? ParLevel3.ParLevel3Value[0].IntervalMin.toFixed(2) : ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 ? ParLevel3.ParLevel3Value[0].IntervalMax.toFixed(2) : ParLevel3.ParLevel3Value[0].IntervalMax}} {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}"
                                                                 ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                                ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
+                                                                ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
                                                                 ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
                                                                 id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}' />
 
@@ -579,7 +570,7 @@
                                                         <input style="width:100%;"
                                                                 type="text"
                                                                 ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                                ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0)}"
+                                                                ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0)}"
                                                                 ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
                                                                 id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
                                                                 ng-change="calcularEspessura(lataSelecionada)"
@@ -602,7 +593,7 @@
                                                                 type="text"
                                                                 title="{{lataSelecionada.espessuraTT}}"
                                                                 ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                                ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed: bgRedEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
+                                                                ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed: bgRedEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)], linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
                                                                 ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
                                                                 id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
                                                                 ng-change="calcularEspessura(lataSelecionada)"
@@ -678,7 +669,6 @@
                                         data-target="#modalAssinaturaFinalizaLata"
                                         title="Assinar {{lataSelecionada.Name}}"
                                         type="button"
-                                        @*ng-blur="executeDocReadyComLoader(true)" *@
                                         ng-show="verificaSeMostraAssinaturaFinalizaLata()">
                                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assinar
                                 </button>
@@ -1157,7 +1147,7 @@
                 };
 
                 vm.timerLinha = function (linha, index) {
-                    if (!!linha.UltimaLataRetirada) {
+                    if (!!linha.UltimaLataRetirada && !linha.finalizado) {
                         var dataRetirada = moment(linha.UltimaLataRetirada, 'DD/MM/YYYY HH:mm').toDate();
                         var agora = new Date();
 
@@ -1174,7 +1164,7 @@
 
                         if (hours == 0 && minutes <= 5 && minutes >= 0 && vm.linhas[index].temAlerta != true) {
                             vm.linhas[index].temAlerta = true;
-                            toastr.warning("O tempo da linha " + linha.Name+" está acabando.")
+                            toastr.warning("O tempo da linha " + linha.Name + " está acabando.")
                         } else if (hours <= 0 && minutes < 0 && vm.linhas[index].temAlerta != true) {
                             vm.linhas[index].temAlerta = true;
                             toastr.error("O tempo da linha " + linha.Name + " acabou.")
@@ -1184,7 +1174,7 @@
                             text: hours + "h " + minutes + "m",
                             danger: (minutes < 0)
                         };
-                    }
+                    } 
                     return {};
                 }
 
@@ -1947,6 +1937,16 @@
                         return;
                     }
 
+                    if (!vm.linhaSelecionada.form.HoraInicioProducao) {
+                        toastr.warning("A hora de início da produção precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.HoraFimProducao) {
+                        toastr.warning("A hora do final da produção precisa ser preenchido.");
+                        return;
+                    }
+
                     if (!vm.linhaSelecionada.form.FornecedorLata) {
                         toastr.warning("O fornecedor da lata precisa ser escolhido.");
                         return;
@@ -2052,6 +2052,19 @@
                                 }
                                 else if (currVal.length == 3) {
                                     $(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
+                            }
+                        });
+                    })
+
+                    $('.decimal2').each(function (index) {
+                        $(this).inputmask("decimal", {
+                            rightAlign: true, radixPoint: ',', greedy: false, mask: "99[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                            oncomplete: function (e) {
+                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                if (currVal.length == 4) {
+                                    //$(this).next('.inputs').focus().select();
                                     $(this).closest('td').next().find('input').focus().select();
                                 }
                             }

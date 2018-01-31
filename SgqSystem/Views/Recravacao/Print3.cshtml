@@ -24,15 +24,30 @@
         width: 100%;
     }
 
+    .border {
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    .border-rounded {
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 50px !important;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
     table.headerCA {
         width: 100%;
     }
 
-        table.headerCA td {
-            text-align: left;
-            border: 1px solid black;
-            width: 100%;
-        }
+    table.headerCA td {
+        text-align: left;
+        border: 1px solid black;
+        width: 100%;
+    }
 
     a.active {
         background-color: rgba(128, 128, 128, 0.17);
@@ -58,36 +73,40 @@
         border-spacing: 0;
     }
 
-        .tg td {
-            font-family: Arial, sans-serif;
-            font-size: 7px;
-            border-style: solid;
-            border-width: 1px;
-            overflow: hidden;
-            word-break: normal;
-            text-align: left;
-        }
+    .tg td {
+        font-family: Arial, sans-serif;
+        font-size: 7px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+        text-align: left;
+    }
 
-        .tg th {
-            font-family: Arial, sans-serif;
-            font-size: 7px;
-            font-weight: normal;
-            padding: 0px 1px;
-            border-style: solid;
-            border-width: 1px;
-            overflow: hidden;
-            word-break: normal;
-        }
+    .tg th {
+        font-family: Arial, sans-serif;
+        font-size: 7px;
+        font-weight: normal;
+        padding: 0px 1px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+    }
 
-        .tg .tg-s6z2 {
-            text-align: center;
-            font-size: 11px;
-        }
+    .tg .tg-s6z2 {
+        text-align: center;
+        font-size: 11px;
+    }
 
-        .tg .tg-baqh {
-            text-align: center;
-            vertical-align: top;
-        }
+    p{
+        text-align: left !important;
+    }
+
+    .tg .tg-baqh {
+        text-align: center;
+        vertical-align: top;
+    }
 
     #rcorners2 {
         position: absolute;
@@ -368,10 +387,10 @@
             </ul>
         </div>
 
-        <div id="content" style="display:none">
+        <div id="content" style="display: none;">
 
             <div id="contentHeader">
-                <table class="tg" style="table-layout: fixed; width: 65%">
+                <table class="tg">
                     <colgroup>
                         <col style="width: 41px">
                         <col style="width: 75px;">
@@ -394,117 +413,120 @@
             </div>
 
             <div id="contentBody">
-                <div class="" style="width:100%">
-                    <table class="tableForm" style="width: 75%;">
-                        <tbody>
-                            <tr>
-                                <td class="title">Data de Criação</td>
-                                <td> {{ seletedLinha.StartAuditTime }}</td>
-                                <td class="title">Linha</td>
-                                <td>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}}</td>
-                            </tr>
-                            <tr>
-                                <td class="title">Produto</td>
-                                <td>{{seletedLinha.form.ProdutoName}}</td>
-                                <td class="title">Código do produto</td>
-                                <td>{{seletedLinha.form.CodProduto}}</td>
-                            </tr>
-                            <tr>
-                                <td class="title">Hora do início da Produção</td>
-                                <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
-                                <td class="title">Hora do final da Produção</td>
-                                <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
-                            </tr>
-                            <tr>
-                                <td class="title">Fornecedor da Lata</td>
-                                <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                                <td class="title">Data do recebimento das latas</td>
-                                <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
-                            </tr>
-                            <tr>
-                                <td class="title">Fornecedor das tampas/fundos das latas</td>
-                                <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                                <td class="title">Data do recebimento das tampas/fundos das latas</td>
-                                <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
-                            </tr>
-                            <tr>
-                                <td class="title">Tipo da Lata</td>
-                                <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
-                            </tr>
+                <div class="height-fix">
+                    <div class="">
+                        <table class="tableForm" style="width: 75%;">
+                            <tbody>
+                                <tr>
+                                    <td class="title">Data de Criação</td>
+                                    <td> {{ seletedLinha.StartAuditTime }}</td>
+                                    <td class="title">Linha</td>
+                                    <td>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Produto</td>
+                                    <td>{{seletedLinha.form.ProdutoName}}</td>
+                                    <td class="title">Código do produto</td>
+                                    <td>{{seletedLinha.form.CodProduto}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Hora do início da Produção</td>
+                                    <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
+                                    <td class="title">Hora do final da Produção</td>
+                                    <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Fornecedor da Lata</td>
+                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                                    <td class="title">Data do recebimento das latas</td>
+                                    <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Fornecedor das tampas/fundos das latas</td>
+                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                                    <td class="title">Data do recebimento das tampas/fundos das latas</td>
+                                    <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Tipo da Lata</td>
+                                    <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
+                                </tr>
 
-                        </tbody>
-                    </table>
-                    <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
-                </div>
-                <div id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
-                    <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
-                        <tr>
-                            <td style="border:1px solid #cccccc; text-align: left; width:65%; border-right:0px; border-bottom: 0px; font-size: 8px;">
-                                <strong>{{item.Name}}&nbsp;&nbsp;&nbsp; Horário da retirada da linha:</strong> {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
-                            </td>
-                            <td style="border:1px solid #cccccc; text-align: right; width:35%; border-left:0px; border-bottom: 0px; font-size: 8px;">
-                                <strong>Visto:</strong> {{item.userValidacao.Name}}
-                            </td>
-                        </tr>
-                    </table>
-                    <table ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="tableFirstLeft tablePontos" style="table-layout:fixed">
-                        <tbody>
-
+                            </tbody>
+                        </table>
+                        <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div style="" id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+                        <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                             <tr>
-                                <td class="pontosLabel"> Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                <td class="pontoIndex" style="" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
-                            </tr>
-                            <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
-                                <td style="border:1px solid #cccccc;">
-                                    {{ParLevel3.Name}}
-                                    <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText"
-                                          style="font-size:6px!important;font-weight: 100 !important;">
-                                        ({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
-                                    </span>
+                                <td style="border:1px solid #cccccc; text-align: left; width:65%; border-right:0px; border-bottom: 0px; font-size: 8px;">
+                                    <strong>{{item.Name}}&nbsp;&nbsp;&nbsp; Horário da retirada da linha:</strong> {{item.HoraDaRetiradaDaLata | date: 'HH:mm' }}
                                 </td>
-                                <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
-                                    ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
-                                    ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                    colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
-
-                                    <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                                        <span>
-                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
-                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                                            </span>
-                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false">
-                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-                                            </span>
-                                        </span>
-                                    </span>
-                                    <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                        <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
-                                    </span>
-                                    <span class="validate"
-                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                        <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                        <span style="font-size:9px">
-                                            {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}
-                                        </span>
-                                    </span>
-                                    <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                        {{item.ResultValue[ParLevel3.Id][($index +1)]}}
-                                    </label>
-                                    <span class="validate"
-                                          ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                        <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
-                                        <span style="font-size:9px">
-                                            {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
-                                        </span>
-                                    </span>
+                                <td style="border:1px solid #cccccc; text-align: right; width:35%; border-left:0px; border-bottom: 0px; font-size: 8px;">
+                                    <strong>Visto:</strong> {{item.userValidacao.Name}}
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
+                        </table>
+                        <table ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="tableFirstLeft tablePontos" style="table-layout:fixed">
+                            <tbody>
+
+                                <tr>
+                                    <td class="pontosLabel"> Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                    <td class="pontoIndex" style="" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                                </tr>
+                                <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
+                                    <td style="border:1px solid #cccccc;">
+                                        {{ParLevel3.Name}}
+                                        <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText"
+                                              style="font-size:6px!important;font-weight: 100 !important;">
+                                            ({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
+                                        </span>
+                                    </td>
+                                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
+                                        ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                                        ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                        colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+
+                                        <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                            <span>
+                                                <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
+                                                    {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                                </span>
+                                                <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false">
+                                                    {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
+                                        </span>
+                                        <span class="validate"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                            <span style="font-size:9px">
+                                                {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}
+                                            </span>
+                                        </span>
+                                        <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                            {{item.ResultValue[ParLevel3.Id][($index +1)]}}
+                                        </label>
+                                        <span class="validate"
+                                              ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
+                                            <span style="font-size:9px">
+                                                {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
+                                            </span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="height-fix" style="page-break-before:always;">
-                    <div style="display: block">
+                <div class="height-fix">
+                    <div class="border">
                         <p>AÇÃO CORRETIVA : Ações corretivas adotadas conforme CRF 9 Part 417.3</p>
                         <p>1. Identificar o desvio e eliminá-lo: <u>Caso o overlap esteja abaixo de 1,02mm</u> paralisando e solicitando ajuste do equipamento de recravação ao responsável pelo processo. Se o defeito for causado pela lata de segregar o lote de latas vazias para análise e pos</p>
                         <p>2. Assegurar que o PCC estará sob controle após a ação corretiva: verificar a eficácia da ação corretiva adotada monitorando novamente o PCC previamente ao reinicio da operação;</p>
@@ -541,11 +563,11 @@
                                     <col style="width: 28.3%;">
                                 </colgroup>
                                 @*<tr>
-                                        <th>Hora (1)</th>
-                                        <th>DEFICIÊNCIA (2)</th>
-                                        <th>AÇÃO CORRETIVA (3)</th>
-                                        <th>AÇÃO PREVENTIVA (4)</th>
-                                    </tr>*@
+                            <th>Hora (1)</th>
+                            <th>DEFICIÊNCIA (2)</th>
+                            <th>AÇÃO CORRETIVA (3)</th>
+                            <th>AÇÃO PREVENTIVA (4)</th>
+                        </tr>*@
                                 <tr>
                                     <td class="tbodyTd">
                                         {{acoes.AddDate}}
@@ -611,10 +633,6 @@
                                     {{item.adDate}}
                                 </td>
                                 <td class="tbodyTd">
-                                    <label ng-if="item.LataComAtraso">
-                                        Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso:
-                                    </label>
-                                    <br ng-if="item.LataComAtraso">
                                     <span>{{item.DescriptionFailure}}</span>
                                 </td>
                             </tr>
@@ -627,7 +645,7 @@
                             <td height="20px;">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
                                     <tbody>
-                                        <tr>
+                                        <tr style="height: 100px;">
                                             <td height="20px" width="5%" align="center"></td>
                                             <td width="25%" align="center" style="border-bottom:1px solid black"></td>
                                             <td width="5%" align="center"></td>
@@ -655,7 +673,7 @@
             </div>
 
             <div id="contentFooter">
-                <div>
+                <div class="border-rounded">
                     <table class="table-footer">
                         <tr>
                             <td>
@@ -719,6 +737,7 @@
 
 <script src="~/Scripts/toastr.min.js"></script>
 <script src="~/Scripts/Math/math.js"></script>
+<script src="~/Scripts/Print/print.js"></script>
 
 <script>
 
@@ -1213,11 +1232,12 @@
                                                 headerHtml: document.getElementById('contentHeader').innerHTML,
                                                 bodyHtml: document.getElementById('contentBody').innerHTML,
                                                 footerHtml: document.getElementById('contentFooter').innerHTML,
-                                                numberMarginRight: 10,
-                                                numberMarginBottom: 5,
-                                                renderTableMargin: 10,
-                                                pageMarginHeader: "10 10 10 10",
-                                                pageMarginFooter: "0 40 10 10"
+                                                numberMarginRight: 25,
+                                                numberMarginBottom: 25,
+                                                renderTableMargin: 0,
+                                                pageMarginHeader: "25 25 10 25",
+                                                pageMarginFooter: "10 25 25 25",
+                                                pageMarginBody: "0 25 0 25"
                                             }
                                         );
                                         jsPOH.Imprimir();
