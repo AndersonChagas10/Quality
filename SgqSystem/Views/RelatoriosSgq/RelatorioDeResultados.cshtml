@@ -1264,7 +1264,7 @@
                         text: TituloGraficoHistoricoIndicador
                     },
                     subtitle: {
-                        text: Subtitle
+                        text: SubtitleIndicador
                     },
                     xAxis: {
                         categories: dia,
@@ -2239,6 +2239,7 @@
 
                 if (level1 != "" && level1 != undefined) {
                     $('#statusIndicador').prop("disabled", true);
+                    $('#statusIndicador').prop("value", 'Todos').trigger('change');
                 } else {
                     $('#statusIndicador').prop("disabled", false);
                 }

@@ -169,3 +169,47 @@ create table Pa_Colvis(
 	ColVisHide varchar(255) null,
 	Pa_Quem_Id int not null,
 );
+
+----------------------------------------------------------------------- 30-01-2018 - Gabriel
+
+
+CREATE TABLE [dbo].[ParLevel3EvaluationSample](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ParCompany_Id] [int] NULL,
+	[ParLevel1_Id] [int] NULL,
+	[ParLevel2_Id] [int] NULL,
+	[ParLevel3_Id] [int] NOT NULL,
+	[SampleNumber] [decimal](18, 0) NULL,
+	[EvaluationNumber] [decimal](18, 0) NULL,
+	[EvaluationInterval] [varchar](30) NULL,
+	[AddDate] [datetime] NOT NULL,
+	[AlterDate] [datetime] NULL,
+	[IsActive] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParCompany_Id])
+REFERENCES [dbo].[ParCompany] ([Id])
+GO
+
+ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParLevel1_Id])
+REFERENCES [dbo].[ParLevel1] ([Id])
+GO
+
+ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParLevel2_Id])
+REFERENCES [dbo].[ParLevel2] ([Id])
+GO
+
+ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParLevel3_Id])
+REFERENCES [dbo].[ParLevel3] ([Id])
+GO
+
+
