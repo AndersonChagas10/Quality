@@ -47,14 +47,15 @@
 
                         <tr>
 
-                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
-                            @Table.GerarColuna(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.samples_per_evaluation)
-                                , Table.PosicaoLabel.top)
 
                             @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
                             @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
                                 , @Html.Label(Resources.Resource.evaluation)
+                                , Table.PosicaoLabel.top)
+
+                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
+                            @Table.GerarColuna(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
+                                , @Html.Label(Resources.Resource.samples_per_evaluation)
                                 , Table.PosicaoLabel.top)
 
                             @Table.GerarColunaButton(@Html.TextBox("intervaloParaAvaliar", 0, htmlAttributes: new { @id = "intervaloParaAvaliar", @class = "form-control input-sm", type = "text" })

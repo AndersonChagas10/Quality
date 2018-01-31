@@ -41,7 +41,7 @@
                     </tr>
                 </table>
 
-                <div id="level3_required_level1_level2">
+                <div id="level3_required_level1_level2" class="hide">
                     <div class="panel-group accordion" id="level3_data_type_accordion">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -59,20 +59,23 @@
                                          , Table.PosicaoLabel.top
                                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
                                         </tr>
-                                        @*<tr class="row VinculoParLevel alert-info" style="">
-                                                <td class="td-erp" colspan="0">
-                                                    <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
-                                                    <div>
-                                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
-                                                    </div>
-                                                </td>
-                                                <td class="td-erp">
-                                                    <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
-                                                    <div>
-                                                        @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
-                                                    </div>
-                                                </td>
-                                            </tr>*@
+                                    </table>
+                                    <table class="table-erp">
+                                        <tr class="row">
+                                            @*<tr class="row VinculoParLevel alert-info" style="">
+                                                    <td class="td-erp" colspan="0">
+                                                        <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
+                                                        <div>
+                                                            @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
+                                                        </div>
+                                                    </td>
+                                                    <td class="td-erp">
+                                                        <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
+                                                        <div>
+                                                            @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
+                                                        </div>
+                                                    </td>
+                                                </tr>*@
                                         <tr class="row ParIntervalos" style="display: none;">
                                             @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                                             @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
@@ -94,6 +97,8 @@
                                             @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                                             @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
                                         </tr>
+                                    </table>
+                                    <table class="table-erp">
                                         <tr class="row" id="companyValueL3">
                                             @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
                                             , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
@@ -270,11 +275,11 @@
             var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
             var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
 
-            //var parLevel1Id = $(' #parLevel1Select2 :selected').val();
-            //var parLevel1Name = parLevel1Id + " - " + $(' #parLevel1Select2 :selected').text();
+            var parLevel1Id = $(' #parLevel1Select2 :selected').val();
+            var parLevel1Name = $(' #parLevel1Select2 :selected').text();
 
-            //var parLevel2Id = $(' #parLevel2Select2 :selected').val();
-            //var parLevel2Name = parLevel2Id + " - " +$(' #parLevel2Select2 :selected').text();
+            var parLevel2Id = $(' #parLevel2Select2 :selected').val();
+            var parLevel2Name = $(' #parLevel2Select2 :selected').text();
 
             var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
             var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
@@ -290,7 +295,7 @@
             var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
             var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
 
-            @*if(parLevel1Id == -1){
+            if(parLevel1Id == -1){
                 parLevel1Id = null;
                 parLevel1Name = "@Resources.Resource.all";
             }
@@ -298,7 +303,7 @@
             if(parLevel2Id == -1){
                 parLevel2Id = null;
                 parLevel2Name = "@Resources.Resource.all";
-            }*@
+            }
 
             if(companyValue == -1){
                 companyValue = null;
