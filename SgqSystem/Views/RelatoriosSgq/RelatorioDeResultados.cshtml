@@ -976,26 +976,44 @@
         var porc = [];
 
 
-
         if (data.length > 0) {
+
+
 
             var dia = MapeiaValorParaHC(data, "_date");
             var nc = MapeiaValorParaHC(data, "nc");
-            //var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
-
-            var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
             var avComPeso = MapeiaValorParaHC(data, "avComPeso");
-
-            for (var i = 0; i < data.length; i++) {
-                porc[i] = avComPeso == 0 ? 0 : ncComPeso[i] / avComPeso[i] * 100;
-            }
-
+            var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
             var limInferior = MapeiaValorParaHC(data, "limiteInferior");
-            //var SubTitle = "";
+            //var Subtitle = "";
 
             var sumav = qtdAv.reduce(function (a, b) { return a + b; });
             var sumnc = nc.reduce(function (a, b) { return a + b; });
+            var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+            var porcPeriodo = sumncCP / sumavCP * 100;
+
+
+
+            //var dia = MapeiaValorParaHC(data, "_date");
+            //var nc = MapeiaValorParaHC(data, "nc");
+            //var porc = MapeiaValorParaHC(data, "procentagemNc");
+            //var qtdAv = MapeiaValorParaHC(data, "av");
+
+            //var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+            //var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+
+            //for (var i = 0; i < data.length; i++) {
+            //    porc[i] = avComPeso == 0 ? 0 : ncComPeso[i] / avComPeso[i] * 100;
+            //}
+
+            //var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+            //var SubTitle = "";
+
+            //var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+            //var sumnc = nc.reduce(function (a, b) { return a + b; });
 
             var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
             var sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
@@ -1018,8 +1036,7 @@
 
                 var porcPeriodo = sumnc / sumav * 100;
 
-                var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100;
-
+                var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
 
                 var SubtitleConsolidado = "";
 
@@ -1059,10 +1076,9 @@
                     },
                     yAxis: [
                         {
-                            min: 0,
+                            //min: 0,
                             title: {
                                 text: Resources("quantity")
-
                             },
                             labels: {
                                 format: '{value}',
@@ -1071,7 +1087,7 @@
                                 }
                             },
                         }, {
-                            min: 0,
+                            //min: 0,
                             labels: {
                                 format: '{value} %',
                                 style: {
@@ -1100,6 +1116,7 @@
                         }
                     },
                     series: [{
+                        visible: false,
                         name: 'NC',
                         color: 'rgba(77,143,189,1)',
                         data: nc,
@@ -1108,14 +1125,13 @@
                         marker: {
                             enabled: false
                         },
-                        //pointPadding: 0.2,
+                        pointPadding: 0.2,
                         //pointPlacement: -0.2,
                         point: {
                             events: {
                                 click: function () {
 
                                     //FTA2(enviar, this)
-                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 }
                             }
                         },
@@ -1136,7 +1152,7 @@
                             format: '{point:.2f}',
                         }
                     }, {
-                        visible: false,
+                        visible: true,
                         name: '% NC',
                         color: 'rgba(240,124,0,1)',
                         data: porc,
@@ -1149,7 +1165,6 @@
                             events: {
                                 click: function () {
                                     //FTA2(enviar, this)
-                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 }
                             }
                         },
@@ -1177,19 +1192,17 @@
                             enabled: false
                         },
                         color: 'rgba(81,207,64,1)',
-                        //pointPadding: 0.3,
-                        //pointPlacement: 0.2,
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
                         yAxis: 0,
                         point: {
                             events: {
                                 click: function () {
                                     //FTA2(enviar, this)
-                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 }
                             }
                         },
                         dataLabels: {
-                            //enabled: true,
                             enabled: false,
                             color: 'black',
                             align: 'center',
@@ -1219,22 +1232,39 @@
     function GerarGraficoHistoricoUnidade(data) {
 
         var porc = [];
-
-
-
+        
         if (data.length > 0) {
+
+
 
             var dia = MapeiaValorParaHC(data, "_date");
             var nc = MapeiaValorParaHC(data, "nc");
-            //var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
-
-            var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
             var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+            var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+            var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+            //var Subtitle = "";
 
-            for (var i = 0; i < data.length; i++) {
-                porc[i] = avComPeso == 0 ? 0 : ncComPeso[i] / avComPeso[i] * 100;
-            }
+            var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+            var sumnc = nc.reduce(function (a, b) { return a + b; });
+            var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+            var porcPeriodo = sumncCP / sumavCP * 100;
+
+
+
+            //var dia = MapeiaValorParaHC(data, "_date");
+            //var nc = MapeiaValorParaHC(data, "nc");
+            ////var porc = MapeiaValorParaHC(data, "procentagemNc");
+            //var qtdAv = MapeiaValorParaHC(data, "av");
+
+            //var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+            //var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+
+            //for (var i = 0; i < data.length; i++) {
+            //    porc[i] = avComPeso == 0 ? 0 : ncComPeso[i] / avComPeso[i] * 100;
+            //}
 
             var limInferior = MapeiaValorParaHC(data, "limiteInferior");
             //var SubTitle = "";
@@ -1277,7 +1307,7 @@
 
                 var porcPeriodo = sumnc / sumav * 100;
 
-                var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100;
+                var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
 
 
                 var SubtitleConsolidado = "";
@@ -1329,10 +1359,9 @@
                     },
                     yAxis: [
                         {
-                            min: 0,
+                            //min: 0,
                             title: {
                                 text: Resources("quantity")
-
                             },
                             labels: {
                                 format: '{value}',
@@ -1341,7 +1370,7 @@
                                 }
                             },
                         }, {
-                            min: 0,
+                            //min: 0,
                             labels: {
                                 format: '{value} %',
                                 style: {
@@ -1370,6 +1399,7 @@
                         }
                     },
                     series: [{
+                        visible: false,
                         name: 'NC',
                         color: 'rgba(77,143,189,1)',
                         data: nc,
@@ -1378,14 +1408,13 @@
                         marker: {
                             enabled: false
                         },
-                        //pointPadding: 0.2,
+                        pointPadding: 0.2,
                         //pointPlacement: -0.2,
                         point: {
                             events: {
                                 click: function () {
 
                                     //FTA2(enviar, this)
-                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 }
                             }
                         },
@@ -1406,7 +1435,7 @@
                             format: '{point:.2f}',
                         }
                     }, {
-                        visible: false,
+                        visible: true,
                         name: '% NC',
                         color: 'rgba(240,124,0,1)',
                         data: porc,
@@ -1419,7 +1448,6 @@
                             events: {
                                 click: function () {
                                     //FTA2(enviar, this)
-                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 }
                             }
                         },
@@ -1447,19 +1475,17 @@
                             enabled: false
                         },
                         color: 'rgba(81,207,64,1)',
-                        //pointPadding: 0.3,
-                        //pointPlacement: 0.2,
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
                         yAxis: 0,
                         point: {
                             events: {
                                 click: function () {
                                     //FTA2(enviar, this)
-                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 }
                             }
                         },
                         dataLabels: {
-                            //enabled: true,
                             enabled: false,
                             color: 'black',
                             align: 'center',
@@ -1504,6 +1530,11 @@
             var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
             var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
             var porcPeriodo = sumncCP / sumavCP * 100;
+
+            var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
+
+            var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
 
             let TituloGraficoHistoricoIndicador = Resources("level1_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
@@ -1605,6 +1636,7 @@
                         }
                     },
                     series: [{
+                        visible: false,
                         name: 'NC',
                         color: 'rgba(77,143,189,1)',
                         data: nc,
@@ -1625,12 +1657,12 @@
                         }
                     },
                     dataLabels: {
-                        //enabled: true,
-                        enabled: false,
-                        color: 'black',
-                        align: 'center',
-                        format: '{point.y:.2f}',
-                        style: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    format: '{point.y:.2f}',
+                    style: {
                             fontSize: '10px',
                         }
                     },
@@ -1641,7 +1673,7 @@
                         format: '{point:.2f}',
                     }
                 }, {
-                    visible: false,
+                    visible: true,
                     name: '% NC',
                     color: 'rgba(240,124,0,1)',
                     data: porc,
@@ -1711,7 +1743,7 @@
                     }
                 }]
             }, function () {
-                $('#showNCIndicador > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                $('#showNCIndicador > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
                 $('#NCIndicador').show();
             });
 
@@ -1737,6 +1769,11 @@
             var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
             var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
             var porcPeriodo = sumncCP / sumavCP * 100;
+
+            var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
+
+            var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
 
             let TituloGraficoHistoricoMonitoramento = Resources("level2_history");//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
 
@@ -1810,6 +1847,7 @@
                     }
                 },
                 series: [{
+                    visible: false,
                     name: 'NC',
                     color: 'rgba(77,143,189,1)',
                     data: nc,
@@ -1845,7 +1883,7 @@
                         format: '{point:.2f}',
                     }
                 }, {
-                    visible: false,
+                    visible: true,
                     name: '% NC',
                     color: 'rgba(240,124,0,1)',
                     data: porc,
@@ -1912,7 +1950,7 @@
                     }
                 }]
             }, function () {
-                $('#showNCMonitoramento > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                $('#showNCMonitoramento > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
                 $('#NCMonitoramento').show();
             });
 
@@ -2533,6 +2571,9 @@
         setTimeout(function () {
             $("#clusterGroupId").find("option").eq(0).remove();
             $("#clusterGroupId").val(8).change();
+            if ($("#clusterGroupId").val() == null) {
+                $("#clusterGroupId").val(2).change();
+            }
         }, 30);
 
         $('select').select2();

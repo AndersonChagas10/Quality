@@ -221,7 +221,6 @@
                     $scope.level3Value = null;
                 } else {
                     $('#level2Idv').attr('disabled', false);
-                    $('#level3Idv').attr('disabled', false);
                 }
 
                 //Desabilita tipo de indicador quando há um unico selecionado, caso contrario habilita
@@ -229,6 +228,23 @@
                     $('#statusIndicador').prop("disabled", false);
                 } else {
                     $('#statusIndicador').prop("disabled", true);
+                }
+
+                // 
+                if ($('#level1Idv').val().length === 0) {
+                    $('#level2Idv').attr('disabled', true);
+                    $('#level3Idv').attr('disabled', true);
+                    $scope.level2Value = null;
+                    $scope.level3Value = null;
+                } else {
+                    $('#level2Idv').attr('disabled', false);
+                }
+
+                if ($('#level2Idv').val().length != 0 && $('#level2Idv').val().length === 0) {
+                    $('#level3Idv').attr('disabled', true);
+                    $scope.level3Value = null;
+                } else {
+                    $('#level3Idv').attr('disabled', false);
                 }
 
 

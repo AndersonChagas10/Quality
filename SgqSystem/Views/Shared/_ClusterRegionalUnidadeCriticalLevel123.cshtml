@@ -2,7 +2,7 @@
 <li>
     <div data-ng-controller="CtrlClstRegUnitCriticalLevel123" id="showClustRegUnitCriticalLevel123" style="display:none; margin-left:0px!important">
         <div @*id="showModulo2"*@>
-            <span class="redLabel">@Resources.Resource.cluster_group</span>
+            <span class="redLabel">@Resources.Resource.cluster_group</span><span style="color: #EF0707;">*</span>
             <select id="clusterGroupId" data-ng-model="clusterGroupValue"
                     data-ng-change="GetListClusterVinculadoClusterGroup()" class="form-control" style="width:210px">
                 @*<option value="">@Resources.Resource.select</option>*@
@@ -105,6 +105,10 @@
         //$('#').select2();
         //$('#').select2();
         //$('#').select2();
+
+        // Monitoramento e Tarefa inicia desabilitado
+        $('#level2Idv').attr('disabled', true);
+        $('#level3Idv').attr('disabled', true);
     });
 
 </script>
