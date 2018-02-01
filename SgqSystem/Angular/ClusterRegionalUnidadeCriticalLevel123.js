@@ -230,20 +230,20 @@
                     $('#statusIndicador').prop("disabled", true);
                 }
 
-                // 
+                // Desabilita quando não selecionado desdoramento Pai
                 if ($('#level1Idv').val().length === 0) {
                     $('#level2Idv').attr('disabled', true);
                     $('#level3Idv').attr('disabled', true);
                     $scope.level2Value = null;
                     $scope.level3Value = null;
-                } else {
+                } else if ($('#level1Idv').val().length != 0) {
                     $('#level2Idv').attr('disabled', false);
                 }
 
-                if ($('#level2Idv').val().length != 0 && $('#level2Idv').val().length === 0) {
+                if ($('#level1Idv').val().length != 0 && $('#level2Idv').val().length === 0) {
                     $('#level3Idv').attr('disabled', true);
                     $scope.level3Value = null;
-                } else {
+                } else if ($('#level1Idv').val().length != 0 && $('#level2Idv').val().length != 0) {
                     $('#level3Idv').attr('disabled', false);
                 }
 
