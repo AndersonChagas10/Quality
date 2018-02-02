@@ -214,7 +214,7 @@
                 enviar['level1IdArr'] = $('#level1Idv').val();
                 //
                 //Desabilita monitoramento e tarefa quando selecionado mais de um indicador
-                if ($('#level1Idv').val().length > 1) {
+                if ($('#level1Idv').val().length != 1) {
                     $('#level2Idv').attr('disabled', true);
                     $('#level3Idv').attr('disabled', true);
                     $scope.level2Value = null;
@@ -230,22 +230,22 @@
                     $('#statusIndicador').prop("disabled", true);
                 }
 
-                // Desabilita quando não selecionado desdoramento Pai
-                if ($('#level1Idv').val().length === 0) {
-                    $('#level2Idv').attr('disabled', true);
-                    $('#level3Idv').attr('disabled', true);
-                    $scope.level2Value = null;
-                    $scope.level3Value = null;
-                } else if ($('#level1Idv').val().length != 0) {
-                    $('#level2Idv').attr('disabled', false);
-                }
+                //// Desabilita quando não selecionado desdoramento Pai
+                //if ($('#level1Idv').val().length === 0) {
+                //    $('#level2Idv').attr('disabled', true);
+                //    $('#level3Idv').attr('disabled', true);
+                //    $scope.level2Value = null;
+                //    $scope.level3Value = null;
+                //} else if ($('#level1Idv').val().length != 0) {
+                //    $('#level2Idv').attr('disabled', false);
+                //}
 
-                if ($('#level1Idv').val().length != 0 && $('#level2Idv').val().length === 0) {
-                    $('#level3Idv').attr('disabled', true);
-                    $scope.level3Value = null;
-                } else if ($('#level1Idv').val().length != 0 && $('#level2Idv').val().length != 0) {
-                    $('#level3Idv').attr('disabled', false);
-                }
+                //if ($('#level1Idv').val().length != 0 && $('#level2Idv').val().length === 0) {
+                //    $('#level3Idv').attr('disabled', true);
+                //    $scope.level3Value = null;
+                //} else if ($('#level1Idv').val().length != 0 && $('#level2Idv').val().length != 0) {
+                //    $('#level3Idv').attr('disabled', false);
+                //}
 
 
                 if ($scope.level1Value) {
@@ -280,7 +280,7 @@
                 enviar['level2Id'] = parseInt(document.getElementById('level2Idv').value);
                 enviar['level2IdArr'] = $('#level2Idv').val();
 
-                if ($('#level2Idv').val().length > 1 || !!$('#level2Idv').attr('disabled')) {
+                if ($('#level2Idv').val().length != 1 || !!$('#level2Idv').attr('disabled')) {
                     $('#level3Idv').attr('disabled', true);
                     $scope.level3Value = null;
                 } else {
