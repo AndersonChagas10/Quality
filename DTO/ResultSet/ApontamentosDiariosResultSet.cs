@@ -86,7 +86,7 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
         }
 
-        return $@" SELECT                                
+        var query = $@" SELECT                                
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
@@ -112,7 +112,7 @@ public class ApontamentosDiariosResultSet
                  ,ISNULL(L1.hashKey, '') as 'HashKey'                      
                  ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList' 
                  ,C2.AddDate as AddDate
-                 ,CJ.Device_Id as Platform
+                 ,CJ.AppVersion as Platform
 				 , CASE 
 					WHEN C2.AlterDate IS NOT NULL THEN 'EDITADO'
 					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN 'RETROATIVO'
@@ -163,6 +163,8 @@ public class ApontamentosDiariosResultSet
                  ON CJ.Id = CLCJ.CollectionJson_Id
                  WHERE C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
                 {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
+
+        return query;
     }
    
 }
