@@ -79,8 +79,25 @@ namespace SgqSystem.Controllers.Params
             if (ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal != null)
                 for (int i = 0; i < ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal.Count; i++)
                 {
+
+                    var valor = "";
                     //ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
-                    ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name;
+                    switch (ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name)
+                    {
+                        case "evaluation":
+                            valor = "Avaliação";
+                            break;
+
+                        case "sample":
+                            valor = "Amostra";
+                            break;
+
+                        default:
+                            valor = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name;
+                            break;
+
+                    }
+                    ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = valor;
                     
                     ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
                     //ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name;

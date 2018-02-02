@@ -385,14 +385,16 @@
         #percentualConclusao {
             font-size: 40px;
         }
+
+        
     </style>
 
 }
 
 @*<h2>Plano de Ação</h2>*@
 
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row" style="width:100% !important">
         <div class="col-sm-2">
             <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
         </div>
@@ -891,23 +893,23 @@
                                     <div style="display:none" id="encadeado">
                                         <label id="labelPredecessora">Predecessor: </label>
                                     </div>
-                                    <div class="col-sm-12" id="divPredecessora">
+                                    <div class="col-sm-12 borderedNinja" id="divPredecessora">
                                         <label>Predecessor:</label>
                                         <label id="labelPredecessoraValue"></label>
                                         <br />
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 borderedNinja">
                                         <label>Nome do Item:</label>
                                         <textarea style="min-width: 95%; height:150px;" type="text" class="form-control" id="newItem"></textarea>
                                         <input type="hidden" id="newIdItem" />
                                         <br />
                                     </div>
-                                    <div class="col-sm-12" id="divIsActive">
+                                    <div class="col-sm-12 borderedNinja" id="divIsActive">
                                         <label for="newIsActiveItem">Ativo:</label>
                                         <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
                                         <br />
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 borderedNinja">
                                         <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
                                         <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">Salvar Edição</button>
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
@@ -2868,12 +2870,12 @@
                 dataInicio = new Date(o['Acao'].QuandoInicio);
                 dataHoje = new Date();
 
-                if (dataInicio > dataHoje) {
+                if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
 
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
 
                     return valor;
                 } else {
