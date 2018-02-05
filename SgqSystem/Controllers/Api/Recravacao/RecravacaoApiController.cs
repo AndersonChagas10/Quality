@@ -144,6 +144,7 @@ namespace SgqSystem.Controllers.Api
 
         private void SaveLatas(int? RecravacaoJson_Id, dynamic latas)
         {
+
             Factory factory = new Factory("DbContextSgqEUA");
             factory.ExecuteSql(string.Format("DELETE FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0};", RecravacaoJson_Id));
             foreach (dynamic lata in latas)
