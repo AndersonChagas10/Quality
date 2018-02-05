@@ -61,6 +61,8 @@ namespace SgqSystem.Controllers.Api
         public Result_Level3DTO EditResultLevel3(int id)
         {
             var retorno = Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(id));
+            retorno.IntervalMin = retorno.IntervalMin == "-9999999999999.9000000000" ? "Sem limite mínimo" : retorno.IntervalMin;
+            retorno.IntervalMax = retorno.IntervalMax == "9999999999999.9000000000" ? "Sem limite Máximo" : retorno.IntervalMax;
             return retorno;
         }
 

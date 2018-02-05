@@ -265,13 +265,13 @@
             }
         })
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
-        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()) / $('#QtdadeFamiliaProduto').val());
 
     });
 
     //TASK FORCE
     function applyMath() {
-        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val() / $('#QtdadeFamiliaProduto').val() / $('#QtdadeFamiliaProduto').val()));
         $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
     }
 
