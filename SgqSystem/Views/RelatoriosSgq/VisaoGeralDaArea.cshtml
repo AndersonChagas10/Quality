@@ -834,10 +834,10 @@
             $('#grafico4').empty();
             $('#grafico5').empty();
 
-            enviar["CallBackTableTituloColunas"] = "GetFuncoesPorUnidade($(this).attr('dado1'))";
+            enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
-            //enviar["CallBackTableX"] = function () {};
+            enviar["CallBackTableX"] = function () {};
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetIndicadoresPorUnidadeReg";
             enviar["Title"] = "Indicadores por unidade";

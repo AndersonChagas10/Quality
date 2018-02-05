@@ -2408,7 +2408,7 @@ namespace SgqSystem.Controllers
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
             //tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0] });
-            tabela.trsCabecalho1.Add(new Ths() { name = "" });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Indicadores por Unidades" });
             tabela.trsCabecalho1.Add(new Ths() { name = "Regional: " + form.ParametroTableCol[0] });
             /*Fim  1º*/
 
@@ -8310,6 +8310,7 @@ namespace SgqSystem.Controllers
             tabela.trsCabecalho1 = new List<Ths>();
             tabela.trsCabecalho1.Add(new Ths() { name = "Indicadores por Unidades" });
             tabela.trsCabecalho1.Add(new Ths() { name = "Regional: " + form.ParametroTableCol[0] });
+
             /*Fim  1º*/
 
             #region DESCRIÇÃO
