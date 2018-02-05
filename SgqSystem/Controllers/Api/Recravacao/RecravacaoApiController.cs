@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using Newtonsoft.Json.Linq;
 using SgqSystem.Controllers.Api.Recravacao;
 using System;
@@ -85,6 +86,8 @@ namespace SgqSystem.Controllers.Api
                 //Post Save
                 mensagemSucesso = "Registro atualizado";
 
+                SaveLatas(existente, dados["latas"]);
+
             }
             catch (Exception e)
             {
@@ -97,11 +100,7 @@ namespace SgqSystem.Controllers.Api
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = mensagemSucesso, model = Request.Content.ReadAsStringAsync().Result });
 
         }
-
-        // GET: api/RecravacaoLinhaApi
         
-        
-
         private void UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente)
         {
             var updateRecravacaoJsonFinalizaColetaValidada = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
@@ -141,6 +140,25 @@ namespace SgqSystem.Controllers.Api
             updateRecravacaoJson.ObjectRecravacaoJson = linhaStringFormatada;
             updateRecravacaoJson.AlterDate = DateTime.Now;
             repo.Save(updateRecravacaoJson);
+        }
+
+        private void SaveLatas(int? RecravacaoJson_Id, dynamic latas)
+        {
+            Factory factory = new Factory("DbContextSgqEUA");
+            factory.ExecuteSql(string.Format("DELETE FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0};", RecravacaoJson_Id));
+            foreach (dynamic lata in latas)
+            {
+                var lataStringFormatada = ToJson(lata);
+                factory.ExecuteSql(
+                    string.Format("INSERT INTO RecravacaoLataJson (RecravacaoJson_Id, AddDate, ObjectRecravacaoJson) VALUES ({0}, GETDATE(), '{1}')", RecravacaoJson_Id, lataStringFormatada));
+            }
+        }
+
+        private void UpdateRecravacaoLataJson(int RecravacaoJson_Id, string LataJson)
+        {
+            Factory factory = new Factory("SgqDbDevEntities");
+            factory.ExecuteSql(
+                string.Format("UPDATE RecravacaoLataJson SET AlterDate = GETDATE(), ObjectRecravacaoJson = '{1}' WHERE RecravacaoJson_Id = {0}", RecravacaoJson_Id, LataJson));
         }
 
         private bool IsPropertyExist(dynamic obj, string name)
