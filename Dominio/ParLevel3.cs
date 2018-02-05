@@ -17,11 +17,11 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel3()
         {
-            this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
             this.ParLevel3Level2 = new HashSet<ParLevel3Level2>();
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
+            this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
             this.Result_Level3 = new HashSet<Result_Level3>();
         }
     
@@ -37,8 +37,6 @@ namespace Dominio
         public Nullable<int> OrderColumn { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2> ParLevel3Level2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Value> ParLevel3Value { get; set; }
@@ -46,6 +44,8 @@ namespace Dominio
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Result_Level3> Result_Level3 { get; set; }
     }

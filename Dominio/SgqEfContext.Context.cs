@@ -19,22 +19,15 @@ namespace Dominio
     {
         public SgqDbDevEntities()
             : base("name=SgqDbDevEntities")
-        {   
-    
-            this.Database.CommandTimeout = 9600;
-            this.Database.Log = s => System.Diagnostics.Debug.Write(s);   
-    
-        }
-
-        public SgqDbDevEntities(bool NoLazyLoading)
-            : base("name=SgqDbDevEntities")
         {
-            this.Configuration.LazyLoadingEnabled = NoLazyLoading;
-            this.Database.CommandTimeout = 9600;
-            this.Database.Log = s => System.Diagnostics.Debug.Write(s);
+    
+    
+    this.Database.CommandTimeout = 9600;
+    this.Database.Log = s => System.Diagnostics.Debug.Write(s);
+    
+    
         }
-
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -133,7 +126,7 @@ namespace Dominio
         public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLataImagens> ParLataImagens { get; set; }
         public virtual DbSet<RecravacaoJson> RecravacaoJson { get; set; }
-    
+
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?
