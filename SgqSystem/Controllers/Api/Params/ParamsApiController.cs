@@ -25,6 +25,7 @@ namespace SgqSystem.Controllers.Api.Params
     public class ParamsApiController : ApiController
     {
 
+
         #region Constructor
 
         private IParamsDomain _paramdDomain;
