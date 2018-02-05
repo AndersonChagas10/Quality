@@ -8,7 +8,7 @@
         ValorNbr = Model.NBR ?? 0;
         adicaoEdicao = "Edição";
     }
-    ViewBag.Title = "CEP Recortes - Volume";
+    ViewBag.Title = "CEP Matéria Prima - Volume";
 }
 
 
@@ -32,9 +32,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -101,6 +101,14 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.QtdadeFamiliaProduto, "Número de famílias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto, new { @class = "form-control", @disabled = "true" })
+                                                @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
                                         @*<div class="form-group">
                                                 @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
@@ -142,7 +150,7 @@
                                                     <option value="1">1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
-                                                    
+
                                                 </select>
 
                                                 @*@Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -163,7 +171,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtadeTrabEsteiraRecortes, "Quantidade de Colaboradores Ou Esteiras de Recortes", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtadeTrabEsteiraRecortes, new { @class = "form-control" })
+                                                @Html.TextBox("QtadeTrabEsteiraRecortes", "1", new { @class = "form-control", @readOnly = "readOnly" })
                                                 @Html.ValidationMessageFor(model => model.QtadeTrabEsteiraRecortes, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -171,15 +179,15 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.TotalAvaliaColaborEsteirHoraProd, "Total em KG Para Avaliação Por Colaborador/Esteira, Por Hora de Produção", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.TotalAvaliaColaborEsteirHoraProd, new { @class = "form-control" })
+                                                @Html.TextBoxFor(model => model.TotalAvaliaColaborEsteirHoraProd, new { @class = "form-control", @readOnly = "readOnly" })
                                                 @Html.ValidationMessageFor(model => model.TotalAvaliaColaborEsteirHoraProd, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.TamanhoAmostra, "Tamanho de Cada Amostra (3KG; 4KG ou 5KG)", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.TamanhoAmostra, "Tamanho de Cada Amostra (5KG)", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.TamanhoAmostra, new { @class = "form-control" })
+                                                @Html.TextBox("TamanhoAmostra", "5", new { @class = "form-control", @readOnly = "readOnly" })
                                                 @Html.ValidationMessageFor(model => model.TamanhoAmostra, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -216,11 +224,11 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="Salvar" class="btn btn-primary" />
-                                                @Html.ActionLink("Voltar para Volume de CEP Recortes", "Index", null, new { @class= "btn btn-default" })
+                                                @Html.ActionLink("Voltar para Volume de CEP Matéria Prima", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
-                                            }
+                                }
 
 
                             </div>
@@ -257,6 +265,13 @@
 
             $('#TotalKgAvaliaHoraProd').val(r);
             $('#TotalKgAvaliaHoraProdHidden').val(r);
+            $('#TotalAvaliaColaborEsteirHoraProd').val(r);
+
+            var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
+            $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
+            $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
+            $('#Amostras').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
+            $('#amostraHidden').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
 
         });
 
@@ -265,14 +280,21 @@
     $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
         $('#TotalAvaliaColaborEsteirHoraProd').val(($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
         $('#TotalAvaliaColaborEsteirHoraProdHidden').val(($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+        $('#TotalAvaliaColaborEsteirHoraProd').val($('#TotalKgAvaliaHoraProd').val());
+
+        var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
+        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
+        $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
+        $('#Amostras').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#amostraHidden').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
     });
 
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
         var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
-        $('#Amostras').val((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val());
-        $('#amostraHidden').val((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val());
+        $('#Amostras').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#amostraHidden').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
     });
 
     $('#btnTeste').click(function (e) {
@@ -286,6 +308,22 @@
     //    singleDatePicker: true,
     //    showDropdowns: true
     //});
+
+    $(document).ready(function() {
+        $('#QtdadeFamiliaProduto').val("");
+        $('#ParCompany_id').on('change', function () {
+            if ($('#ParCompany_id').val() > 0) {
+                $.post('@Url.Action("GetVolumeRecortes", "api/Volume")' + "/" + $('#ParCompany_id').val(), {}, function (r) {
+                    $('#QtdadeFamiliaProduto').val(r);
+                    applyMath();
+                });
+            } else {
+                $('#QtdadeFamiliaProduto').val("");
+            }
+        });
+        $('#ParCompany_id').change();
+    })
+
 
     $(document).ready(function () {
 
@@ -321,6 +359,14 @@
 </script>
 
 <script>
+
+    //TASK FORCE
+    function applyMath() {
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val() / $('#QtdadeFamiliaProduto').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+    }
+
+
     $(document).ready(function () {
         closeLeftSidebar();
     });
