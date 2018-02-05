@@ -5,6 +5,7 @@
     var url = Url.Action("Index", "Home");
     var urlTabela1 = Url.Action("GetTable", "RelatoriosSgq");
     var urlTabela2 = Url.Action("GetTable", "RelatoriosSgq");
+    var urlTabela3 = Url.Action("GetTable", "RelatoriosSgq");
     var urlGrafico1 = Url.Action("Grafico1", "api/VisaoGeralDaArea");
     var urlGrafico2 = Url.Action("Grafico2", "api/VisaoGeralDaArea");
     var urlGrafico3 = Url.Action("Grafico3", "api/VisaoGeralDaArea");
@@ -19,6 +20,8 @@
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
 }
+
+
 
 <style>
     #fixarcoluna table {
@@ -231,6 +234,10 @@
 
             <div id="tabela2div"></div>
 
+            <div id="tabela3div"></div>
+
+            <div id="IndicadoresPorUnidadeReg"></div>
+
             <div id="grafico3"></div>
 
             <div id="grafico4"></div>
@@ -244,7 +251,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         var Chart = {
 
@@ -546,6 +553,7 @@
 
         var urlTabela1 = '@Html.Raw(@urlTabela1)';
         var urlTabela2 = '@Html.Raw(@urlTabela2)';
+        var urlTabela3 = '@Html.Raw(@urlTabela3)'
         var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
         var urlGrafico2 = '@Html.Raw(@urlGrafico2)';
         var urlGrafico3 = '@Html.Raw(@urlGrafico3)';
@@ -596,6 +604,7 @@
             $('#tabela1div').empty();
             $('#tabela2div').empty();
             $('#funcoesPorUnidade').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
             $('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
             $('#GraficoHistoricoGeral').empty();
@@ -637,7 +646,7 @@
             EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
             EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
 
-            
+
 
             //EasyAjax(urlGrafico1, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
@@ -649,6 +658,7 @@
             $('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
             $('#tabela2div').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
 
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -660,7 +670,8 @@
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTblFuncoesPorUnidade";
             enviar["Title"] = "Pacotes por Unidade";
-            enviar["CallBackTableX"] = function () {};
+            enviar["CallBackTableX"] = "GetIndicadoresPorUnidadeReg()";
+
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
             //enviar["ParametroTableRow"].push(paramRow);
@@ -681,6 +692,7 @@
             $('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
             $('#tabela2div').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
 
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -714,6 +726,7 @@
             $('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
             $('#tabela2div').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
 
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -747,6 +760,7 @@
             //$('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
             $('#tabela2div').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
 
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -755,7 +769,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
-            enviar["CallBackTableX"] = function () {};
+            enviar["CallBackTableX"] = function () { };
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTblInicadoresPorUnidade3";
             enviar["Title"] = "Indicadores por unidade";
@@ -780,6 +794,7 @@
             $('#inicadoresPorRegional').empty();
             $('#inicadoresPorUnidade').empty();
             $('#tabela2div').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
 
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -788,7 +803,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
-            enviar["CallBackTableX"] = function () {};
+            //enviar["CallBackTableX"] = function () {};
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTblInicadoresPorUnidade";
             enviar["Title"] = "Indicadores por unidade";
@@ -808,6 +823,40 @@
             }, "inicadoresPorRegional");
         }
 
+        function GetIndicadoresPorUnidadeReg() {
+            //$('#funcoesPorUnidade').empty();
+            $('#IndicadoresPorUnidadeReg').empty();
+            $('#inicadoresPorRegional').empty();
+            $('#inicadoresPorUnidade').empty();
+            $('#tabela3div').empty();
+
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = "GetFuncoesPorUnidade($(this).attr('dado1'))";
+            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            //enviar["CallBackTableX"] = function () {};
+            //enviar["Query"] = "GetTbl2SemGrupos";
+            enviar["Query"] = "GetIndicadoresPorUnidadeReg";
+            enviar["Title"] = "Indicadores por unidade";
+
+            enviar["ParametroTableRow"] = [];
+            //enviar["ParametroTableCol"] = [];
+            enviar["ParametroTableRow"][0] = "";
+            //enviar["ParametroTableCol"][0] = "";
+
+            EasyAjax(urlTabela3, enviar, function (r) {
+                $('#IndicadoresPorUnidadeReg').empty().append(r);
+                var container = 'IndicadoresPorUnidadeReg';
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container);
+            }, "IndicadoresPorUnidadeReg");
+        }
+
         function GetTabela2(paramCol, paramRow) {
 
             enviar["level1Name"] = "";
@@ -817,6 +866,7 @@
             enviar["level3names"] = [];
             enviar["level3Name"] = "";
             enviar["unitId"] = "";
+            $('#IndicadoresPorUnidadeReg').empty();
 
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -2397,6 +2447,6 @@
             $(".page-sidebar-wrapper").removeClass("hide");
         });
 
-    </script>
+</script>
 
 }
