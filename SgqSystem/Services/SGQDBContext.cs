@@ -1014,57 +1014,57 @@ namespace SGQDBContext
                     sqlPeso = "0";
                 }
 
-                string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ")";
+                string ParLevel1_IdFilho = "\n  AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ") \n  AND L2.Id = '" + ParLevel2.Id + "'";
 
-                sqlFilho = "UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                        " ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
-                        "FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
-                        "INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
-                        "        ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
-                        "INNER JOIN ParLevel3InputType L3IT  (nolock)                                                                                                                                                                                                                                                                                                                          " +
-                        "        ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
-                        "LEFT JOIN ParLevel3BoolFalse L3BF   (nolock)                                                                                                                                                                                                                                                                                                                          " +
-                        "        ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
-                        "LEFT JOIN ParLevel3BoolTrue L3BT    (nolock)                                                                                                                                                                                                                                                                                                                          " +
-                        "        ON L3BT.Id = L3V.ParLevel3BoolTrue_Id                                                                                                                                                                                                                                                                                                               " +
-                        "LEFT JOIN ParMeasurementUnit MU   (nolock)                                                                                                                                                                                                                                                                                                                            " +
-                        "        ON MU.Id = L3V.ParMeasurementUnit_Id                                                                                                                                                                                                                                                                                                                " +
-                        "LEFT JOIN ParLevel3Level2 L32    (nolock)                                                                                                                                                                                                                                                                                                                             " +
-                        "        ON L32.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
-                        "LEFT JOIN ParLevel3Group L3G  (nolock)                                                                                                                                                                                                                                                                                                                                " +
-                        "        ON L3G.Id = L32.ParLevel3Group_Id                                                                                                                                                                                                                                                                                                                   " +
-                        "INNER JOIN ParLevel2 L2     (nolock)                                                                                                                                                                                                                                                                                                                                  " +
-                        "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
-                        "INNER JOIN ParLevel3Level2Level1 AS L321  (nolock) ON L321.ParLevel3Level2_Id = L32.Id                                                                                                                                                                                                                                                                                 " +
-                        "WHERE  L3.IsActive = 1 AND L32.IsActive = 1                                                                                                                                                                                                                                                                                                                 " +
-
-                        " AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR L32.ParCompany_Id IS NULL) " +
-                        " AND(L3V.ParCompany_Id = '" + ParCompany_Id + "' OR L3V.ParCompany_Id IS NULL) " +
+                sqlFilho = " \n UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
+                        "\n  ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
+                        "\n FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
+                        "\n INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
+                        "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
+                        "\n INNER JOIN ParLevel3InputType L3IT  (nolock)                                                                                                                                                                                                                                                                                                                          " +
+                        "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
+                        "\n LEFT JOIN ParLevel3BoolFalse L3BF   (nolock)                                                                                                                                                                                                                                                                                                                          " +
+                        "\n         ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
+                        "\n LEFT JOIN ParLevel3BoolTrue L3BT    (nolock)                                                                                                                                                                                                                                                                                                                          " +
+                        "\n         ON L3BT.Id = L3V.ParLevel3BoolTrue_Id                                                                                                                                                                                                                                                                                                               " +
+                        "\n LEFT JOIN ParMeasurementUnit MU   (nolock)                                                                                                                                                                                                                                                                                                                            " +
+                        "\n         ON MU.Id = L3V.ParMeasurementUnit_Id                                                                                                                                                                                                                                                                                                                " +
+                        "\n LEFT JOIN ParLevel3Level2 L32    (nolock)                                                                                                                                                                                                                                                                                                                             " +
+                        "\n         ON L32.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
+                        "\n LEFT JOIN ParLevel3Group L3G  (nolock)                                                                                                                                                                                                                                                                                                                                " +
+                        "\n         ON L3G.Id = L32.ParLevel3Group_Id                                                                                                                                                                                                                                                                                                                   " +
+                        "\n INNER JOIN ParLevel2 L2     (nolock)                                                                                                                                                                                                                                                                                                                                  " +
+                        "\n         ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
+                        "\n INNER JOIN ParLevel3Level2Level1 AS L321  (nolock) ON L321.ParLevel3Level2_Id = L32.Id                                                                                                                                                                                                                                                                                 " +
+                        "\n WHERE  L3.IsActive = 1 AND L32.IsActive = 1                                                                                                                                                                                                                                                                                                                 " +
+                         
+                        "\n  AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR L32.ParCompany_Id IS NULL) " +
+                        "\n  AND(L3V.ParCompany_Id = '" + ParCompany_Id + "' OR L3V.ParCompany_Id IS NULL) \n " +
                         ParLevel1_IdFilho +
 
 
                         //queryResult + 
 
 
-                        " GROUP BY " +
-           "   L321.ParLevel1_Id " +
-           " , L2.Id " +
-           " , L3.Id " +
-           " , L3.Name " +
-           " , L3G.Id " +
-           " , L3G.Name " +
-           " , L3IT.Id " +
-           " , L3IT.Name " +
-           " , L3V.ParLevel3BoolFalse_Id " +
-           " , L3BF.Name " +
-           " , L3V.ParLevel3BoolTrue_Id " +
-           " , L3BT.Name " +
-           " , L3V.IntervalMin " +
-           " , L3V.IntervalMax " +
-           " , MU.Name " +
-           " , L32.Weight " +
+                        "\n  GROUP BY " +
+           "\n    L321.ParLevel1_Id " +
+           "\n  , L2.Id " +
+           "\n  , L3.Id " +
+           "\n  , L3.Name " +
+           "\n  , L3G.Id " +
+           "\n  , L3G.Name " +
+           "\n  , L3IT.Id " +
+           "\n  , L3IT.Name " +
+           "\n  , L3V.ParLevel3BoolFalse_Id " +
+           "\n  , L3BF.Name " +
+           "\n  , L3V.ParLevel3BoolTrue_Id " +
+           "\n  , L3BT.Name " +
+           "\n  , L3V.IntervalMin " +
+           "\n  , L3V.IntervalMax " +
+           "\n  , MU.Name " +
+           "\n  , L32.Weight " +
            "\n  , L3V.ParCompany_Id " +
-           " , L32.ParCompany_Id ";
+           "\n  , L32.ParCompany_Id ";
 
 
 
@@ -1072,7 +1072,7 @@ namespace SGQDBContext
 
             sql += sqlFilho;
 
-            sql += "  ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC , 16  DESC  ";
+            sql += "\n   ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC , 16  DESC  ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 

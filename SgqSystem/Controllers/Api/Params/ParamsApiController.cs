@@ -5,6 +5,7 @@ using DTO;
 using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using SgqSystem.Controllers.Api.SelectVinculado;
 //using SGQDBContext;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
@@ -426,6 +427,22 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
+        [Route("GetListLevel2VinculadoLevel1")]
+        public List<ParLevel2DTO> GetListLevel2VinculadoLevel1([FromBody] ModelForm model)
+        {
+            var list = new List<ParLevel2DTO>();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                var result = db.ParLevel3Level2Level1.Where(r => model.Level1IdArr.Contains(r.ParLevel1_Id)).Select(r => r.ParLevel3Level2.ParLevel2).ToList().GroupBy(r => r.Id);
+                list = Mapper.Map<List<ParLevel2DTO>>(result.Select(r => r.First()));
+            }
+
+            return list;
+        }
+
+        [HttpPost]
         [Route("GetListLevel3VinculadoLevel2/{level2Id}")]
         public List<ParLevel3DTO> GetListLevel3VinculadoLevel2(int level2Id)
         {
@@ -436,6 +453,31 @@ namespace SgqSystem.Controllers.Api.Params
                 db.Configuration.LazyLoadingEnabled = false;
                 var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
                 list = Mapper.Map<List<ParLevel3DTO>>(result.Select(r => r.First()));
+            }
+
+            return list;
+        }
+
+        [HttpPost]
+        [Route("GetListLevel3VinculadoLevel2")]
+        public List<ParLevel3DTO> GetListLevel3VinculadoLevel2([FromBody] ModelForm model)
+        {
+            var list = new List<ParLevel3DTO>();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                if (model.Level1IdArr.Length > 0)
+                {
+                    var result = db.ParLevel3Level2Level1.Where(r => model.Level2IdArr.Contains(r.ParLevel3Level2.ParLevel2_Id) && model.Level1IdArr.Contains(r.ParLevel1_Id)).Select(r => r.ParLevel3Level2.ParLevel3).ToList().GroupBy(r => r.Id).Select(r => r.First());
+                    //var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2.Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id).Select(r => r.First());
+                    list = Mapper.Map<List<ParLevel3DTO>>(result);
+                }
+                else
+                {
+                    var result = db.ParLevel3Level2.Where(r => model.Level2IdArr.Contains(r.ParLevel2_Id)).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
+                    list = Mapper.Map<List<ParLevel3DTO>>(result.Select(r => r.First()));
+                }
             }
 
             return list;

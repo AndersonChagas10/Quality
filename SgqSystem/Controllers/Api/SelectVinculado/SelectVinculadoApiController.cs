@@ -108,6 +108,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 {
                     whereCluster = "AND PC.Id = " + model.Cluster;
                 }
+                else
+                if (model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
+                }
 
                 var query = $@"SELECT
                         DISTINCT
@@ -154,10 +159,20 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 {
                     whereStructure = "and PS.Id = " + model.Structure;
                 }
+                else
+                if (model.StructureArr.Length > 0)
+                {
+                    whereStructure = $"AND PS.Id IN ({ string.Join(",", model.StructureArr) })";
+                }
 
                 if (model.Cluster > 0)
                 {
                     whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+                else
+                if (model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
                 }
 
                 var query = $@"SELECT
@@ -202,6 +217,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             {
                 whereCluster = "AND cc.ParCluster_Id = " + model.Cluster;
             }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND cc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
+            }
 
             var query = $@"SELECT
                     	distinct cl.Id, cl.Name
@@ -234,10 +254,20 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             {
                 whereCriticalLevel = "AND pcl.Id = " + model.CriticalLevel;
             }
+            else
+                if (model.CriticalLevelArr.Length > 0)
+            {
+                whereCluster = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
+            }
 
             if (model.Cluster > 0)
             {
                 whereCluster = "AND plc.ParCluster_Id = " + model.Cluster;
+            }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND plc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
             }
 
             var query = $@"SELECT
@@ -294,5 +324,13 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public int Cluster { get; set; }
         public int ClusterGroup { get; set; }
         public int Structure { get; set; }
+        public int[] StructureArr { get; set; } = new int[] { };
+        public int[] ClusterArr { get; set; } = new int[] { };
+        public int[] CriticalLevelArr { get; set; } = new int[] { };
+
+        public int[] Level1IdArr { get; set; } = new int[] { };
+        public int[] Level2IdArr { get; set; } = new int[] { };
+        public int[] Level3IdArr { get; set; } = new int[] { };
+
     }
 }
