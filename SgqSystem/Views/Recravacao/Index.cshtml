@@ -1576,19 +1576,22 @@
 
                 vm.salvaLinhaUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
                 vm.salvaLinha = function (notShowLabel, notShowLoader, salvoParaInserirNovaLinha) {
-                    let model = vm.linhas.filter(function (s) {
+                    const linha = _.clone(vm.linhas.filter(function (s) {
                         return s.Id == vm.activeInLine
-                    })[0]
+                    })[0]);
+                    var latas = _.clone(linha.latas);
+                    linha.latas = []
+
                     vm.TimerOn()
                     if (salvoParaInserirNovaLinha)
-                        model['SalvoParaInserirColeta'] = true
+                        linha['SalvoParaInserirColeta'] = true
                     else
-                        model['SalvoParaInserirColeta'] = false
+                        linha['SalvoParaInserirColeta'] = false
 
-                    model['User'] = vm.userAuditor
-                    model['ParLevel1_Id'] = vm.indicadorSelecionado.Id.toString()
+                    linha['User'] = vm.userAuditor
+                    linha['ParLevel1_Id'] = vm.indicadorSelecionado.Id.toString()
                     vm.start()
-                    $http({ method: 'POST', url: vm.salvaLinhaUrl, data: model, showLoader: notShowLoader ? false : true })
+                    $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1828,6 +1831,8 @@
                                 if (o.HoraDaRetiradaDaLata == 'Invalid Date')
                                     o.HoraDaRetiradaDaLata = '';
                                 vm.linhaSelecionada.latas.push(o);
+
+                                vm.linhaSelecionada.latas = _.orderBy(vm.linhaSelecionada.latas, ['counter'], ['asc']);
                             }
                         });
                 }

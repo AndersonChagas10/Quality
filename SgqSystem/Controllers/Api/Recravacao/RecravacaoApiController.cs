@@ -50,7 +50,7 @@ namespace SgqSystem.Controllers.Api
         }
 
         // POST: api/RecravacaoApi
-        public HttpResponseMessage Post()
+        public HttpResponseMessage Post(dynamic data)
         {
             ////Teste de erros não controlados
             //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
@@ -60,28 +60,27 @@ namespace SgqSystem.Controllers.Api
             {
                 ////Teste de erros controlados
                 //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
-                model = Request.Content.ReadAsStringAsync().Result;
-                System.Web.Script.Serialization.JavaScriptSerializer json_serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                dynamic dados = json_serializer.DeserializeObject(model);
-                var latas = dados["latas"];
-                var linha = ToDynamic(model);
-                dynamic linhaD = linha;
-                linhaD["latas"] = null;
-                var linhaStringFormatada = ToJson(linhaD);
-                int idLinha = int.Parse(dados["Id"]);
-                int idCompany = int.Parse(dados["ParCompany_Id"]);
-                int parLevel1_Id = int.Parse(dados["ParLevel1_Id"]);
+                //model = Request.Content.ReadAsStringAsync().Result;
+                //System.Web.Script.Serialization.JavaScriptSerializer json_serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                //dynamic dados = json_serializer.DeserializeObject(model);
+                var linha = data["linha"];
+                var latas = data["latas"];
+
+                var linhaStringFormatada = ToJson(linha);
+                int idLinha = int.Parse(linha["Id"].ToString());
+                int idCompany = int.Parse(linha["ParCompany_Id"].ToString());
+                int parLevel1_Id = int.Parse(linha["ParLevel1_Id"].ToString());
                 bool salvoParaInserirNovaColeta = false;
                 bool isValidated = false;
                 var existente = db.RecravacaoJson.FirstOrDefault(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)?.Id;
 
                 int RecravacaoJsonId = 0;
                 
-                if(IsPropertyExist(dados, "isValidated"))
-                    isValidated = dados["isValidated"];
+                if(IsPropertyExist(linha, "isValidated"))
+                    isValidated = linha["isValidated"];
 
-                if (IsPropertyExist(dados, "SalvoParaInserirColeta"))
-                    salvoParaInserirNovaColeta = dados["SalvoParaInserirColeta"];
+                if (IsPropertyExist(linha, "SalvoParaInserirColeta"))
+                    salvoParaInserirNovaColeta = linha["SalvoParaInserirColeta"];
 
                 if (existente.GetValueOrDefault() > 0 && salvoParaInserirNovaColeta == false)
                     RecravacaoJsonId = Update(linhaStringFormatada, existente);
