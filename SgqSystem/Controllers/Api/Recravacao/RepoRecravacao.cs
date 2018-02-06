@@ -24,30 +24,33 @@ namespace SgqSystem.Controllers.Api.Recravacao
             db = new SgqDbDevEntities();
         }
 
-        public void Save(T obj)
+        public T Save(T obj)
         {
             if (obj.GetType().GetProperty("Id") != null)
             {
                 var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
                 if (id > 0)
-                    Update(obj, id);
+                    return Update(obj, id);
                 else
-                    Add(obj);
+                    return Add(obj);
             }
+            return null;
         }
 
-        private void Add(T obj)
+        private T Add(T obj)
         {
             Entity.Add(obj);
             Commit();
+            return obj;
         }
 
-        private void Update(T obj, int id)
+        private T Update(T obj, int id)
         {
             var old = Entity.Find(id);
             var entry = db.Entry(old);
             entry.CurrentValues.SetValues(obj);
             Commit();
+            return obj;
         }
 
         public void Delete(T obj)

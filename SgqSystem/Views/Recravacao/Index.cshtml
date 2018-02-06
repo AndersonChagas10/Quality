@@ -1760,11 +1760,18 @@
                                 novaLinha[0].UltimaLataRetirada = vm.linhaSelecionada.UltimaLataRetirada
                                 vm.linhaSelecionada = JSON.parse(JSON.stringify(novaLinha))[0]
 
-                                vm.linhaSelecionada.latas.forEach(function (o, c) {
-                                    o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
-                                    if (o.HoraDaRetiradaDaLata == 'Invalid Date')
-                                        o.HoraDaRetiradaDaLata = ''
-                                })
+                                vm.linhaSelecionada.latas = []
+                                if (r.data.latasId) {
+                                    r.data.latasId.forEach(function (o) {
+                                        vm.getLata(o.Id);
+                                    });
+                                }
+
+                                //vm.linhaSelecionada.latas.forEach(function (o, c) {
+                                //    o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
+                                //    if (o.HoraDaRetiradaDaLata == 'Invalid Date')
+                                //        o.HoraDaRetiradaDaLata = ''
+                                //})
 
                                 if (vm.linhaSelecionada.form) {
 
@@ -1804,6 +1811,23 @@
                                 }, 2);
                                 
 
+                            }
+                        });
+                }
+
+                vm.getLata = function(id) {
+                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?recravacaoLataJsonId=${id}` })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                let o = JSON.parse(JSON.stringify(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)));
+                                o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
+                                if (o.HoraDaRetiradaDaLata == 'Invalid Date')
+                                    o.HoraDaRetiradaDaLata = '';
+                                vm.linhaSelecionada.latas.push(o);
                             }
                         });
                 }
