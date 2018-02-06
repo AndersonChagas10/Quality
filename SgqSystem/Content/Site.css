@@ -146,7 +146,9 @@ div.login div.form-signin h2.form-signin-heading{
 .zindex-control{
     z-index: 3000 !important;
 }
-
+.modal-open .modal {
+    z-index: 2700 !important;
+}
 /*DESCOMENTAR PARA INSERIR ANIMAÇÃO*/
 .page-sidebar-closed .page-sidebar, .page-sidebar .page-sidebar-menu.page-sidebar-menu-closed,
 .page-content, .page-sidebar, #sidebar-wrapper, .wrapper,
