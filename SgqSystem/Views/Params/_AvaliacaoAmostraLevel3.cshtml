@@ -59,7 +59,7 @@
                                 , Table.PosicaoLabel.top)
 
                             @Table.GerarColunaButton(@Html.TextBox("intervaloParaAvaliar", 0, htmlAttributes: new { @id = "intervaloParaAvaliar", @class = "form-control input-sm", type = "text" })
-                                , @Html.Label(Resources.Resource.number_samplers)
+                                , @Html.Label(Resources.Resource.sampleInterval)
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
 
@@ -73,7 +73,7 @@
                             <th>@Resources.Resource.company</th>
                             <th>@Resources.Resource.level1</th>
                             <th>@Resources.Resource.level2</th>
-                            <th>@Resources.Resource.number_samplers</th>
+                            <th>@Resources.Resource.sampleInterval</th>
                             <th>@Resources.Resource.evaluation</th>
                             <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
                             <th class="options"></th>
@@ -180,7 +180,7 @@
                 openMessageModal('@Resources.Resource.invalid_evaluations_number');
                 return false;
             }
-            
+
             var interval = $('#' + seletorTato + ' #intervaloParaAvaliar').val();
             if(interval.length > 0){
                 //Remove vazio/null
@@ -197,7 +197,7 @@
             }
 
             if(interval.length == 0){
-                openMessageModal('@Resources.Resource.number_samplers');
+                openMessageModal('@Resources.Resource.sampleInterval');
                 return false;
             }
 
@@ -236,7 +236,7 @@
                     count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
                     console.log(6);
                 }
-                
+
                 //count += $(o).parent().data().EvaluationNumber == avaliacao ? 1 : 0;
 
                 if(count == 3)
@@ -311,14 +311,14 @@
                         o['ParLevel2_Name'] = "@Resources.Resource.all";
                     }
 
-                    if((o.ParLevel1_Id == null 
-                        || o.ParLevel1_Id == "-1" 
+                    if((o.ParLevel1_Id == null
+                        || o.ParLevel1_Id == "-1"
                         || o.ParLevel1_Id == $('#parLevel1Select2 :selected').val())
                         &&
-                        (o.ParLevel2_Id == null 
-                        || o.ParLevel2_Id == "-1" 
+                        (o.ParLevel2_Id == null
+                        || o.ParLevel2_Id == "-1"
                         || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
-                    crudNxN.adiciona(o,  id, tdNamess);
+                        crudNxN.adiciona(o,  id, tdNamess);
                 });
             }
         },

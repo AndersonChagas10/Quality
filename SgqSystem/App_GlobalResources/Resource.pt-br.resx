@@ -2295,4 +2295,7 @@
   <data name="none" xml:space="preserve">
     <value>Nenhum</value>
   </data>
+  <data name="sampleInterval" xml:space="preserve">
+    <value>Intervalo de Amostras</value>
+  </data>
 </root>
