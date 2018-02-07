@@ -2016,4 +2016,7 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>PENDENTE</value>
   </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>A Descrição deverá ter no mínimo 1 e máximo 300 caracteres</value>
+  </data>
 </root>

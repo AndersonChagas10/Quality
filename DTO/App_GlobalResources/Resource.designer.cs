@@ -1438,6 +1438,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description has to be between 1 and 300 characters.
+        /// </summary>
+        internal static string description_has_between_1_and_300 {
+            get {
+                return ResourceManager.GetString("description_has_between_1_and_300", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description has to be between 3 and 10 characters.
         /// </summary>
         internal static string description_has_between_3_and_10 {

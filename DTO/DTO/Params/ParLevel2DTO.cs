@@ -32,9 +32,10 @@ namespace DTO.DTO.Params
         [MaxLength(300, ErrorMessageResourceName = "maximum_name_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Name { get; set; }
 
-        //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 3 e máximo 10 caracteres.")]
+        //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 1 e máximo 10 caracteres.")]
         //[MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
         //[MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
+        [Required(ErrorMessageResourceName = "description_has_between_1_and_300", ErrorMessageResourceType = typeof(Resource))]
         [MinLength(1, ErrorMessageResourceName = "minimum_description_1_characteres", ErrorMessageResourceType = typeof(Resource))]
         [MaxLength(300, ErrorMessageResourceName = "maximum_description_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Description { get; set; }

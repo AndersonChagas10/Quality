@@ -2037,4 +2037,7 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>WAITING</value>
   </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>Description has to be between 1 and 300 characters</value>
+  </data>
 </root>
