@@ -1430,6 +1430,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsIndicador
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1570,6 +1571,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsMonitoramento
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1715,6 +1717,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsTarefa
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
