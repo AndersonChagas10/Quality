@@ -183,3 +183,7 @@ div.login div.form-signin h2.form-signin-heading{
         outline:0;
         height:0px;
     }
+
+th.options{
+    width:120px;
+}
