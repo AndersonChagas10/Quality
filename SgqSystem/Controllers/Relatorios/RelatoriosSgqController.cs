@@ -653,9 +653,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -932,7 +978,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
