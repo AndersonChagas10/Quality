@@ -22,12 +22,12 @@
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_name)
                          , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_description)
                          , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
 
                     </tr>
@@ -89,9 +89,9 @@
                                                         </td>
                                                     </tr>*@
                                             <tr class="row ParIntervalos" style="display: none;">
-                                                @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                                                @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                                                @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                                                @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>", style: "min-width:100px")
+                                                @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top, style: "min-width:100px")
+                                                @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top, style: "min-width:100px")
                                                 <td style="display: none;">
                                                     <label>@Resources.Resource.values_between</label>
                                                     <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
@@ -105,8 +105,8 @@
                                             </tr>
 
                                             <tr class="row ParBinarios" style="display: none;">
-                                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                                                @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top, style: "width:50%")
+                                                @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>", style: "width:50%")
                                                 @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
                                             </tr>
                                         </table>

@@ -1084,9 +1084,9 @@
         }
 
         if(!hasperm){
-            $('#btnNewLevel1').hide();
-            $('#btnNewLevel2').hide();
-            $('#btnNewLevel3').hide();
+            $('#btnNewLevel1').attr('disabled', true);
+            $('#btnNewLevel2').attr('disabled', true);
+            $('#btnNewLevel3').attr('disabled', true);
             disableEvry();
         }
 
@@ -1261,20 +1261,20 @@
                     
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
-                        if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
-                            $(this).find('input, select, button').attr("disabled", true);
-                        }
-                        if($(this).data().ParCompany_Id != unitId){
+                        //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
+                        //    $(this).find('input, select, button').attr("disabled", true);
+                        //}
+                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
                             $(this).find('input, select, button').attr("disabled", true);
                             $(this).remove();
                         }
                     });
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableAvAmLevel3 > tbody > tr').each(function() {
-                        if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
-                            $(this).find('input, select, button').attr("disabled", true);
-                        }
-                        if($(this).data().ParCompany_Id != unitId){
+                        //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
+                        //    $(this).find('input, select, button').attr("disabled", true);
+                        //}
+                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
                             $(this).remove();
                             $(this).find('input, select, button').attr("disabled", true);
                         }
