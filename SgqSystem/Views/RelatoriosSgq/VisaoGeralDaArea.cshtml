@@ -155,6 +155,7 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div id="loaderNCGeral"></div>
+            <div id="loaderNCGeral1"></div>
             <div class="totalNC" id="NCGeral" hidden>
                 <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
                     <hh>0 %</hh>
@@ -571,15 +572,22 @@
 
         function Send(toggle) {
 
-            /*Colocando o grafico de histórico geral*/
-            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-            EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
 
+            enviar["level1Name"] = "";
+            enviar["unitName"] = "";
+            enviar["level2names"] = [];
+            enviar["level2Name"] = "";
+            enviar["level3names"] = [];
+            enviar["level3Name"] = "";
+            enviar["unitId"] = "";
 
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
 
             //EasyAjax(UrlGraficoHistoricoGeralMensal, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
             $('#graficoEvolutivoEmpresa').empty();
+            $('#GraficoHistoricoGeral').empty();
             $('#grafico1').empty();
             $('#grafico2').empty();
             $('#grafico3').empty();
@@ -602,11 +610,6 @@
 
             enviar["auditorId"] = GetUsuarioId();
 
-            // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
-
-
-            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
-
             //enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableTituloColunas"] = "GetFuncoesPorUnidade($(this).attr('dado1'))";
             enviar["CallBackTableBody"] = "GetTabela2($(this).attr('dado3'), $(this).attr('dado1'));";
@@ -618,6 +621,8 @@
             enviar["Title"] = "Pacotes por Regional";
 
 
+            // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
+            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
 
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
@@ -627,6 +632,12 @@
                 heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
                 scroolTable(container)
             }, "tabela1div");
+
+            /*Colocando o grafico de histórico geral*/
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+            EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
+
+            
 
             //EasyAjax(urlGrafico1, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
@@ -798,6 +809,15 @@
         }
 
         function GetTabela2(paramCol, paramRow) {
+
+            enviar["level1Name"] = "";
+            enviar["unitName"] = "";
+            enviar["level2names"] = [];
+            enviar["level2Name"] = "";
+            enviar["level3names"] = [];
+            enviar["level3Name"] = "";
+            enviar["unitId"] = "";
+
             $('#grafico3').empty();
             $('#grafico4').empty();
             $('#grafico5').empty();
@@ -809,6 +829,14 @@
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTbl2";
             enviar["Title"] = "Indicadores por unidade";
+
+            //enviar["level1Name"] = "";
+            enviar["unitName"] = "";
+            enviar["level2names"] = [];
+            enviar["level2Name"] = "";
+            enviar["level3names"] = [];
+            enviar["level3Name"] = "";
+            enviar["unitId"] = "";
 
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
@@ -1099,7 +1127,11 @@
                     zoomType: 'x,y'
                 },
                 title: {
-                    text: enviar.unitName + ' - ' + data[1].level1Name
+                    text: enviar.unitName + ' - ' + enviar["ParametroTableRow"][1]  //data[1].level1Name
+                },
+
+                subtitle: {
+                    text: 'Últimos dois meses do período selecionado'
                 },
                 xAxis: {
                     categories: dia,
@@ -1434,9 +1466,9 @@
 
             enviar.level2names = nome
             enviar.isLevel = 2
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
-                insereLabelFtaPelaColunName(nome, r)
+                //insereLabelFtaPelaColunName(nome, r)
 
                 $('#' + selector).empty().highcharts({
                     credits: Chart.Credits(),
@@ -1477,9 +1509,9 @@
                         Chart.Av(qtdAv, GetTarefa),
                         Chart.curvaPareto(data, nc, 1, inverse)
                     ]
-                });
+                //});
 
-                daUmaPintadaNaLabel(selector)
+                //daUmaPintadaNaLabel(selector)
             })
 
         }
@@ -1675,7 +1707,7 @@
             enviar.level2Name
             enviar.level3names = nome
             enviar.isLevel = 3
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
                 //Preenche label x Axys com FTA
                 /*$.each(r, function(i, n){
@@ -1685,7 +1717,7 @@
                     //console.log("Tratamentos de Anomalia: " + n)
                 });*/
 
-                insereLabelFtaPelaColunName(nome, r)
+                //insereLabelFtaPelaColunName(nome, r)
 
                 /*?*/
                 var sentido = 'desc';
@@ -1737,7 +1769,7 @@
                         }),
                         Chart.curvaPareto(data, nc, 1, inverse)
                     ]
-                });
+                //});
 
                 //DA 1 "PINTADA" NA LABEL
                 /*$('#'+ selector +' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c,o) {
@@ -1746,7 +1778,7 @@
                         $(o).css({ 'fill': "blue" })
                     }
                 })*/
-                daUmaPintadaNaLabel(selector)
+                //daUmaPintadaNaLabel(selector)
             })
 
         }
@@ -1789,6 +1821,12 @@
             });
 
             $('.levels').hide();
+
+            $('#structureId').hide();
+            $('#unitIdV').hide();
+            $('#criticalLevelId').hide();
+            $('#structureId').hide();
+
 
             formControl.showFullCallendar();
             formControl.showClustRegUnitCriticalLevel123();

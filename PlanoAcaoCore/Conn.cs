@@ -13,8 +13,8 @@
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
-        ////Config para dev GRT
-        //Local Db
+        //////Config para dev GRT
+        ////Local Db
         public static string catalog { get { return "PlanoDeAcao"; } }
         public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         public static string user { get { return "sa"; } }
@@ -43,18 +43,18 @@
         //Config para GABRIEL NUNES 1
         //Local Db
         //public static string catalog { get { return "PlanoDeAcao"; } }
-        //public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
+        //public static string dataSource { get { return @"PCRICARDOGRT"; } }
         //public static string user { get { return "sa"; } }
-        //public static string pass { get { return "betsy1"; } }
+        //public static string pass { get { return "1qazmko0"; } }
 
-        ////Remoto SGQ
+        //////Remoto SGQ
         //public static string catalog2 { get { return "dbGQualidade"; } }
-        //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string dataSource2 { get { return @"PCRICARDOGRT"; } }
         //public static string user2 { get { return "sa"; } }
         //public static string pass2 { get { return "1qazmko0"; } }
 
-        //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
-        //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://localhost/PlanoAcao/"; } }
+        //public static string SgqHost { get { return "http://localhost/SgqSystem/api/User/AuthenticationLogin"; } }
 
         //________________________________________________________________________
 

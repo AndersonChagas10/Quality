@@ -3778,7 +3778,7 @@ namespace SgqSystem.Services
                                             r.Name.Equals("(%) NC CEP Vácuo GRD") ||
                                             r.Name.Equals("(%) NC PCC 1B") ||
                                             r.Name.Equals("(%) NC CEP Desossa") ||
-                                            r.Name.Equals("(%) NC CEP Recortes") ||
+                                            r.Name.Equals("(%) NC CEP Matéria Prima") ||
                                             r.IsFixedEvaluetionNumber == true);
             }
 

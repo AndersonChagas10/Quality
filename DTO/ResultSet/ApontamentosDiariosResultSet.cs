@@ -86,14 +86,15 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
         }
 
-        return $@" SELECT                                
+        var query = $@" SELECT                                
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
                  ,R3.ParLevel3_Name AS Tarefa          
                  ,R3.Weight AS Peso                    
-                 ,R3.IntervalMin AS 'IntervaloMinimo'  
-                 ,R3.IntervalMax AS 'IntervaloMaximo'  
+                 ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'IntervaloMinimo'  
+                 ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'IntervaloMaximo'
+                  
                  ,R3.Value AS 'Lancado'                
                  ,R3.IsConform AS 'Conforme'           
                  ,R3.IsNotEvaluate AS 'NA'             
@@ -112,7 +113,7 @@ public class ApontamentosDiariosResultSet
                  ,ISNULL(L1.hashKey, '') as 'HashKey'                      
                  ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList' 
                  ,C2.AddDate as AddDate
-                 ,CJ.Device_Id as Platform
+                 ,CJ.AppVersion as Platform
 				 , CASE 
 					WHEN C2.AlterDate IS NOT NULL THEN 'EDITADO'
 					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN 'RETROATIVO'
@@ -138,7 +139,7 @@ public class ApontamentosDiariosResultSet
                      STUFF(   
                         (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
                         when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
-                        when CL2HF2.ParFieldType_Id = 2 then EQP.Nome 
+                        when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
                         when CL2HF2.ParFieldType_Id = 6 then { formatDate }
                         else CL2HF2.Value end)
                         FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
@@ -147,6 +148,7 @@ public class ApontamentosDiariosResultSet
                         left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
                         left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
                         left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+                        left join Produto PRD with(nolock) on cast(PRD.nCdProduto as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 2
                         WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
                         FOR XML PATH('')
                         ), 1, 1, '')  AS HeaderFieldList
@@ -163,6 +165,8 @@ public class ApontamentosDiariosResultSet
                  ON CJ.Id = CLCJ.CollectionJson_Id
                  WHERE C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
                 {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
+
+        return query;
     }
    
 }

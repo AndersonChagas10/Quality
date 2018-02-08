@@ -37,5 +37,7 @@ namespace Dominio
     
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
+
+        public Nullable<int> QtdadeFamiliaProduto { get; set; }
     }
 }

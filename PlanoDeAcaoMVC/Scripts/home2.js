@@ -258,25 +258,25 @@ function MountDataTable(json) {
             {
                 extend: 'colvisGroup',
                 text: 'Visão Inicial',
-                show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19],
-                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
+                show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
+                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Estratégico',
-                show: [0, 1, 2, 3, 4, 5, 6, 35, 39],
+                show: [0, 1, 2, 3, 4, 5, 6, 35, 39, 40],
                 hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Tático',
-                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 39],
+                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
                 hide: [0, 1, 2, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
                 text: 'Planejamento Operacional',
-                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38],
+                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
                 hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
             {
@@ -360,7 +360,11 @@ function MountDataTable(json) {
         },
         initComplete: function () {
 
+            $('#example_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').on("click", function () {
 
+                $('body > div.dt-button-collection.fixed.four-column > a:nth-child(40)').hide();
+                $('body > div.dt-button-collection.fixed.four-column > a:nth-child(41)').hide();
+            });
         },
         createdRow: function (row, data, index) {
 
@@ -2497,6 +2501,7 @@ function setArrayColvisAtual() {
         var ss = [];
 
         $('#example_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
+        
         $('body > div.dt-button-collection.fixed.four-column').hide();
         ss = $('.buttons-columnVisibility');
         ss.each(function (i, o) {
@@ -2534,6 +2539,19 @@ function SaveUserColVis() {
 
     Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
 
+    ColvisarrayVisaoAtual_show = $.grep(ColvisarrayVisaoAtual_show, function (arr) {
+        return (arr != 39 && arr != 40);
+    });
+
+    ColvisarrayVisaoAtual_hide = $.grep(ColvisarrayVisaoAtual_hide, function (arr) {
+        return (arr != 39 && arr != 40);
+    });
+
+    ColvisarrayVisaoAtual_show.push(39);
+    ColvisarrayVisaoAtual_show.push(40);
+
+    ColvisarrayVisaoAtual_hide
+
     let objColvis = {
         "ColVisShow": ColvisarrayVisaoAtual_show.toString(),
         "ColVisHide": ColvisarrayVisaoAtual_hide.toString(),
@@ -2556,4 +2574,5 @@ function SaveUserColVis() {
     })
 
 }
+
 

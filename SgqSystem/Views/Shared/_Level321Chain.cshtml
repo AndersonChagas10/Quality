@@ -4,6 +4,7 @@
         <div>
             <span class="redLabel">@Resources.Resource.level1</span>
             <select id="level1Id" data-ng-model="level1Value"
+                    @Html.Raw(ViewBag.Level1IdArr != null ? "multiple='multiple'":"")
                     data-ng-options="s.Id as s.Name for s in level1 | orderBy:'Name'"
                     data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
                 <option value="">@Resources.Resource.select</option>
@@ -14,6 +15,7 @@
             <span class="redLabel">@Resources.Resource.level2</span>
             <select id="level2Id" data-ng-model="level2Value"
                     @*data-ng-disabled="!level2"*@
+                    @Html.Raw(ViewBag.Level2IdArr != null ? "multiple='multiple'":"")
                     data-ng-options="s.Id as s.Name for s in level2 | orderBy:'Name'"
                     data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
                 <option value="">@Resources.Resource.select</option>
@@ -24,6 +26,7 @@
             <span class="redLabel">@Resources.Resource.level3</span>
             <select id="level3Id" data-ng-model="level3Value"
                     @*data-ng-disabled="!level3"*@
+                    @Html.Raw(ViewBag.Level3IdArr != null ? "multiple='multiple'":"")
                     data-ng-options="s.Id as s.Name for s in level3 | orderBy:'Name'"
                     data-ng-change="" class="form-control" style="width:210px">
                 <option value="">@Resources.Resource.select</option>

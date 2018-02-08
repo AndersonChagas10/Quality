@@ -257,12 +257,12 @@
 
         @if (ViewBag.Anos != null)
         {
-            <li>
-                <div class="dropdown" id="showYearManutencao" style="display:none">
-                    <span class="redLabel">Ano</span>
-                    @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
+        <li>
+            <div class="dropdown" id="showYearManutencao" style="display:none">
+                <span class="redLabel">Ano</span>
+                @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
         }
 
         <li>
@@ -288,49 +288,53 @@
 
         @if (ViewBag.Regionais != null)
         {
-            <li>
-                <div class="dropdown" id="showRegionaisManutencao" style="display:none">
-                    <span class="redLabel">Regional</span>
-                    @Html.DropDownList("RegionalId", new SelectList(ViewBag.Regionais, "Nome", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
+        <li>
+            <div class="dropdown" id="showRegionaisManutencao" style="display:none">
+                <span class="redLabel">Regional</span>
+                @Html.DropDownList("RegionalId", new SelectList(ViewBag.Regionais, "Nome", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
         }
         @if (ViewBag.SubRegionais != null)
         {
-            <li>
-                <div class="dropdown" id="showSubRegionaisManutencao" style="display:none">
-                    <span class="redLabel">Sub Regional</span>
-                    @Html.DropDownList("SubRegionalId", new SelectList(ViewBag.SubRegionais, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
+        <li>
+            <div class="dropdown" id="showSubRegionaisManutencao" style="display:none">
+                <span class="redLabel">Sub Regional</span>
+                @Html.DropDownList("SubRegionalId", new SelectList(ViewBag.SubRegionais, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
         }
         @if (ViewBag.Unidades != null)
         {
-            <li>
-                <div class="dropdown" id="showUnidadesManutencao" style="display:none">
-                    <span class="redLabel">Unidades</span>
-                    @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
+        <li>
+            <div class="dropdown" id="showUnidadesManutencao" style="display:none">
+                <span class="redLabel">Unidades</span>
+                @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
         }
 
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
 
+                @if(ViewBag.UnitArr == null){
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                }else{
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px",  @multiple="multiple" })
+                }
             </div>
         </li>
 
         @if (ViewBag.ListaCEP != null)
         {
-            <li>
-                <div id="showTipoCEP" style="display:none">
-                    <span class="redLabel">@Resources.Resource.letters_cep</span>
+        <li>
+            <div id="showTipoCEP" style="display:none">
+                <span class="redLabel">@Resources.Resource.letters_cep</span>
 
-                    @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
-                </div>
-            </li>
+                @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+            </div>
+        </li>
         }
 
         <li>
@@ -353,23 +357,23 @@
 
         @if (GlobalConfig.Eua)
         {
-            <li>
-                <div id="showShift" style="display:none">
-                    <span class="redLabel">@Resources.Resource.shift</span>
-                    @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
+        <li>
+            <div id="showShift" style="display:none">
+                <span class="redLabel">@Resources.Resource.shift</span>
+                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
         }
 
         @if (ViewBag.Department != null)
         {
-            <li>
-                <div id="showDepartment" style="display:none">
-                    <span class="redLabel">Teste@*@Resources.Resource.department*@</span>
+        <li>
+            <div id="showDepartment" style="display:none">
+                <span class="redLabel">Teste@*@Resources.Resource.department*@</span>
 
-                    @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
-                </div>
-            </li>
+                @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+            </div>
+        </li>
         }
 
 
@@ -796,22 +800,52 @@
 
         $(function () {
 
+            function RetornaArrayInteiro(array){
+                for(var i=0; i<array.length;i++) array[i] = parseInt(array[i].replace(/\D/g, ''), 10);
+                return array;
+            }
+
             $('#level1Id').on('change', function (e) {
-                enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
+                @if(ViewBag.Level1IdArr == null){
+                    <text>
+                        enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['level1IdArr'] = RetornaArrayInteiro($('#level1Id').val());
+                    </text>
+                }
                 $('#level2Id').change();
             });
 
             $('#level2Id').on('change', function (e) {
-                enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
+                @if(ViewBag.Level2IdArr == null){
+                    <text>
+                        enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['level2IdArr'] = RetornaArrayInteiro($('#level2Id').val());
+                    </text>
+                }
                 $('#level3Id').change();
             });
 
             $('#level3Id').on('change', function (e) {
-                enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
+                @if(ViewBag.Level3IdArr == null){
+                    <text>
+                        enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['level3IdArr'] = RetornaArrayInteiro($('#level3Id').val());
+                    </text>
+                }
             });
 
             $('#unitId').on('change', function (e) {
                 enviar['unitId'] = $('#unitId option:selected').val();
+                enviar['unitIdArr'] = $('#unitId').val();
             });
 
             $('#tipoCEP').on('change', function (e) {
@@ -847,6 +881,7 @@
             });
 
             $('#unitIdV').on('change',function(e){
+                enviar['unitIdArr'] = $('#unitIdV').val();
                 enviar['unitId'] = $('#unitIdV option:selected').val();
             });
 
@@ -855,17 +890,41 @@
             });
 
             $('#level1Idv').on('change', function (e) {
-                enviar['level1Id'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
+                @if(ViewBag.Level3IdArr == null){
+                    <text>
+                        enviar['level1Idv'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['level1IdArr'] = RetornaArrayInteiro($('#level1Idv').val());
+                    </text>
+                }
                 $('#level2Idv').change();
             });
 
             $('#level2Idv').on('change', function (e) {
-                enviar['level2Id'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
+                @if(ViewBag.Level3IdArr == null){
+                    <text>
+                        enviar['level2Idv'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['level2IdArr'] = RetornaArrayInteiro($('#level2Idv').val());
+                    </text>
+                }
                 $('#level3Idv').change();
             });
 
             $('#level3Idv').on('change', function (e) {
-                enviar['level3Id'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
+                @if(ViewBag.Level3IdArr == null){
+                    <text>
+                        enviar['level3Idv'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['level3IdArr'] = RetornaArrayInteiro($('#level3Idv').val());
+                    </text>
+                }
             });
 
             $('#departmentId').on('change', function(e){
