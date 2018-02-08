@@ -1624,6 +1624,34 @@ namespace SgqSystem.Services
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
                                            string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null)
         {
+
+            var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
+
+            string con = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(con))
+                {
+                    using (SqlCommand command = new SqlCommand(buscaParLevel1HashKey, connection))
+                    {
+                        connection.Open();
+
+                        var reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            hashKey = reader[0].ToString();
+                        }
+
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+            catch
+            {
+
+            }
+
             //Converte a data da coleta
             string sql = null;
             //Se o Id for igual a zero é um insert
