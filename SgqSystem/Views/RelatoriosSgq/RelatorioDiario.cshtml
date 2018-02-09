@@ -719,7 +719,7 @@
                         }
                     },
                     title: {
-                        text: '(%) NC',
+                        text: "% " + Resources("nonconformity"),
                         style: {
                             color: Highcharts.getOptions().colors[0]
                         }
@@ -730,7 +730,7 @@
                         dashStyle: 'dash',
                         zIndex: 4,
                         label: {
-                            text: 'Meta %' + valorAbsoluto.dados.metaReal.Meta,
+                            text: "% " + Resources("goal") + valorAbsoluto.dados.metaReal.Meta,
                             align: 'right',
                             y: -10,
                             x: 0
@@ -740,7 +740,7 @@
                 { // Secondary yAxis
                     gridLineWidth: 0,
                     title: {
-                        text: 'Numero Amostras',
+                        text: Resources("number_samplers"),
                         style: {
                             color: Highcharts.getOptions().colors[2]
                         }
@@ -961,7 +961,7 @@
                         allowDecimals: false,
                         gridLineWidth: 0,
                         title: {
-                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : '@Resources.Resource.derivations',
+                            text: (totalNC == undefined || totalNC == false) ? '@Resources.Resource.number_samplers' : '@Resources.Resource.derivations',
                             style: {
                                 color: "Black"
                             }
@@ -978,7 +978,7 @@
                     return [{ // Primary yAxis
                         gridLineWidth: 0,
                         title: {
-                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : '@Resources.Resource.derivations',
+                            text: (totalNC == undefined || totalNC == false) ? '@Resources.Resource.number_samplers' : '@Resources.Resource.derivations',
                             style: {
                                 color: "Black"
                             }

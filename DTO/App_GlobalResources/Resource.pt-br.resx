@@ -2019,4 +2019,10 @@
   <data name="description_has_between_1_and_300" xml:space="preserve">
     <value>A Descrição deverá ter no mínimo 1 e máximo 300 caracteres</value>
   </data>
+  <data name="data" xml:space="preserve">
+    <value>Dados</value>
+  </data>
+  <data name="weighted" xml:space="preserve">
+    <value>Ponderado</value>
+  </data>
 </root>

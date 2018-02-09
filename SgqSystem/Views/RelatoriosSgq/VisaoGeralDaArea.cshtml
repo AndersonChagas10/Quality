@@ -541,8 +541,8 @@
 
         var GraficoMon = '@Resources.Resource.defects_per_monitoring:'; //'NC por Monitoramento: ';
         var GraficoTarefa = '@Resources.Resource.defects_per_tasks:'; //'NC por Tarefa: ';
-        var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
-        var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
+        var GraficoTarefasAcumuladas ='@Resources.Resource.derivations_per_defects:'; //'NC por Tarefas acumuladas: ';
+        var GraficoMoncomTarefa = '@Resources.Resource.defects_per_monitoring_at_tasks:'; //'NC por Monitoramento na Tarefas: ';
 
         var urlTabela1 = '@Html.Raw(@urlTabela1)';
         var urlTabela2 = '@Html.Raw(@urlTabela2)';
@@ -869,7 +869,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Desempenho das regionais no Scorecard'
+                    text: Resources("performance_of_regions_on_Scorecard")
                 },
                 subtitle: {
                     text: ''
@@ -878,7 +878,7 @@
                     categories: NomeRegional,
                     crosshair: true,
                     title: {
-                        text: 'Regionais',
+                        text: Resources("structure"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -894,7 +894,7 @@
                         }
                     },
                     title: {
-                        text: '% Scorecard',
+                        text: "%" + Resources("scorecard"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -994,7 +994,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Desempenho das unidades no Scorecard'
+                    text: Resources("performance_of_units_on_Scorecard")
                 },
                 subtitle: {
                     text: ''
@@ -1003,7 +1003,7 @@
                     categories: sigla,
                     crosshair: true,
                     title: {
-                        text: 'Unidades',
+                        text: Resources("unit"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1019,7 +1019,7 @@
                         }
                     },
                     title: {
-                        text: '% Scorecard',
+                        text: "%" + Resources("scorecard"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1131,19 +1131,19 @@
                 },
 
                 subtitle: {
-                    text: 'Últimos dois meses do período selecionado'
+                    text: Resources("last_two_months_of_the_selected_period")
                 },
                 xAxis: {
                     categories: dia,
                     title: {
-                        text: 'Data',
+                        text: Resources("data"),
                     },
                 },
                 yAxis: [
                     {
                         min: 0,
                         title: {
-                            text: 'Quantidade'
+                            text: Resources("quantity")
                         },
                         labels: {
                             format: '{value}',
@@ -1159,7 +1159,7 @@
                             }
                         },
                         title: {
-                            text: '% NC',
+                            text: "% " + Resources("nonconformity"),
                         },
                         opposite: true
                     }],
@@ -1311,19 +1311,19 @@
                     type: 'column'
                 },
                 title: {
-                    text: ('Total NC Por Monitoramento - ' + titulo)
+                    text: Resources("total_nonconformity_by_monitoring - " + titulo)
                 },
                 xAxis: {
                     categories: nome,
                     title: {
-                        text: 'Monitoramentos',
+                        text: Resources("level2"),
                     },
                 },
                 yAxis: [
                     {
                         min: 0,
                         title: {
-                            text: 'Quantidade'
+                            text: Resources("quantity")
                         },
                         labels: {
                             format: '{value}',
@@ -1339,7 +1339,7 @@
                             }
                         },
                         title: {
-                            text: '% NC',
+                            text: "% " + Resources("nonconformity"),
                         },
                         opposite: true
                     }],
@@ -1551,19 +1551,19 @@
                     type: 'column'
                 },
                 title: {
-                    text: (enviar.unitName + ' - ' + 'Total NC Por Monitoramento - ' + level2Name)
+                    text: (enviar.unitName + ' - ' + Resources("total_nonconformity_by_monitoring - ") + level2Name)
                 },
                 xAxis: {
                     categories: nome,
                     title: {
-                        text: 'Monitoramentos',
+                        text: Resources("level2"),
                     },
                 },
                 yAxis: [
                     {
                         min: 0,
                         title: {
-                            text: 'Quantidade'
+                            text: Resources("quantity")
                         },
                         labels: {
                             format: '{value}',
@@ -1579,7 +1579,7 @@
                             }
                         },
                         title: {
-                            text: '% NC',
+                            text: "% " + Resources("nonconformity"),
                         },
                         opposite: true
                     }],
@@ -1899,7 +1899,7 @@
             }
             Highcharts.chart('graficoEvolutivoEmpresa', {
                 title: {
-                    text: 'Gráfico Evolutivo por Empresa'
+                    text: Resources("evolutionary_chart_by_company")
                 },
                 xAxis:{
                     categories: mesesaux,
@@ -1914,7 +1914,7 @@
                         //}
                     },
                     title: {
-                        text: '% scorecard'
+                        text: "%" + Resources("scorecard"),
                     }
                 },
                 plotOptions: {
@@ -2023,7 +2023,7 @@
                 yAxis: [{
                     allowDecimals: false,
                     title: {
-                        text: '% scorecard'
+                        text: "%" + Resources("scorecard"),
                     },
                     opposite: true,
                     gridLineWidth: 0
@@ -2166,7 +2166,7 @@
                 yAxis: [{
                     allowDecimals: false,
                     title: {
-                        text: '% scorecard'
+                        text: "%" + Resources("scorecard"),
                     },
                     opposite: true,
                     gridLineWidth: 0
@@ -2290,7 +2290,7 @@
                         xAxis: {
                             categories: dia,
                             title: {
-                                text: 'Data',
+                                text: Resources("data"),
                             },
                         },
                         yAxis: [
@@ -2315,7 +2315,7 @@
                                     }
                                 },
                                 title: {
-                                    text: '% NC',
+                                    text: "% " + Resources("nonconformity"),
                                 },
                                 opposite: true
                             }],
