@@ -400,13 +400,13 @@
 
             if (retornoArray[0].IsMonitoramento) {
                 table.column(3).visible(false);
-                table.column(7).visible(false);
-                table.column(8).visible(false);
+                //table.column(7).visible(false);
+                //table.column(8).visible(false);
             }
 
-            if (retornoArray[0].IsTarefa) {
-                table.column(7).visible(false);
-                table.column(8).visible(false);
+            if (retornoArray[0].IsTarefa) { // Alteração
+                //table.column(7).visible(false);
+                //table.column(8).visible(false);
             }
         }
     }
@@ -741,6 +741,16 @@
                     yAxis: 0,
                     point: {
                         events: {
+                            click: function () {
+                                //FTA2();
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                enviar3 = {};
+                                enviar3['level1Id'] = Indicador[this.x];
+                                enviar3['level2Id'] = Monitoramento[this.x];
+                                enviar3['level3Id'] = Tarefa[this.x];
+
+                                clickSemUnidade(enviar3);
+                            }
                         }
                     },
                     dataLabels: {
@@ -2507,6 +2517,68 @@
         $('#ftaModalSim').attr('href', preServer + str);
     }
 
+    function clickSemUnidade(categoria) {
+
+        var a = 1;
+
+        if (categoria.level3Id != 0) {
+            enviar['level3Id'] = categoria.level3Id;
+            enviar['level3IdArr'] = [categoria.level3Id];
+            $('#level3Idv').prop("value", categoria.level3Id).trigger('change');
+        }
+        if (categoria.level2Id != 0) {
+            enviar['level2Id'] = categoria.level2id;
+            enviar['level2IdArr'] = [categoria.level2Id];
+            $('#level2Idv').prop("value", categoria.level2Id).trigger('change');
+        }
+        if (categoria.level1Id != 0) {
+            enviar['level1Id'] = categoria.level1Id;
+            enviar['level1IdArr'] = [categoria.level1Id];
+            $('#level1Idv').prop("value", categoria.level1Id).trigger('change');
+        }
+
+        //enviar['level3Id'];
+        //enviar['level2Id'];
+        //enviar['level1Id'];
+
+        Send(true);
+    }
+
+    function clickPorUnidade(categoria) {
+
+        var a = 1;
+
+        if (categoria.level3Id != 0) {
+            enviar['level3Id'] = categoria.level3Id;
+            enviar['level3IdArr'] = [categoria.level3Id];
+            $('#level3Idv').prop("value", categoria.level3Id).trigger('change');
+        }
+
+        if (categoria.level2Id != 0) {
+            enviar['level2Id'] = categoria.level2id;
+            enviar['level2IdArr'] = [categoria.level2Id];
+            $('#level2Idv').prop("value", categoria.level2Id).trigger('change');
+        }
+
+        if (categoria.level1Id != 0) {
+            enviar['level1Id'] = categoria.level1Id;
+            enviar['level1IdArr'] = [categoria.level1Id];
+            $('#level1Idv').prop("value", categoria.level1Id).trigger('change');
+        }
+
+        if (categoria.unitId != 0) {
+            enviar['unitId'] = categoria.unitId;
+            enviar['unitIdArr'] = [categoria.unitId];
+            $('#unitIdV').prop("value", categoria.unitId).trigger('change');
+        }
+
+        //enviar['level3Id'];
+        //enviar['level2Id'];
+        //enviar['level1Id'];
+
+        Send(true);
+    }
+
     function limpaDadosTela() {
         $('#SemDados').hide();
         $('#divMensagemAlerta').hide();
@@ -2610,7 +2682,8 @@
         setTimeout(function () {
             $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
         }, 0);
-    });
+        });
+
 
     </script>
 
