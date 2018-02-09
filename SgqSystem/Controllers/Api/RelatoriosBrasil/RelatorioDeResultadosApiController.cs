@@ -221,6 +221,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
+               ,CASE
+                    WHEN IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) > max(ISNULL(Meta,0)) THEN 0
+                    ELSE 1
+                END AS Status
                ,cast(1 as bit) IsIndicador
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
@@ -5572,7 +5576,8 @@ ORDER BY 3
             	,CRL.Name
             	,L1.IsRuleConformity
             
-            
+                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
             	-- DROP TABLE #DIM
             
             	select DISTINCT 
