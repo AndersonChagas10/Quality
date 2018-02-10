@@ -241,10 +241,10 @@
     <value>Permite editar campos do cabeçalho</value>
   </data>
   <data name="allow_specific_register_by_unit" xml:space="preserve">
-    <value>Permite cadastro especifico por unidade</value>
+    <value>Permitir parametrizações específicas por empresa</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Permite editar número de avaliações / amostras</value>
+    <value>Permitir o cadastro de número de avaliações e amostras do monitoramento por empresa</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Permite editar meta do indicador por unidade</value>
@@ -262,7 +262,7 @@
     <value>Agrupador de Monitoramento</value>
   </data>
   <data name="save_button_on_level2" xml:space="preserve">
-    <value>Botão salvar no Monitoramento</value>
+    <value>Exibir o botão "Salvar" na tela dos monitoramentos</value>
   </data>
   <data name="consolidation_type_popover" xml:space="preserve">
     <value>Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.</value>
@@ -301,13 +301,13 @@
     <value>Valor da meta (%)</value>
   </data>
   <data name="limited_number_of_evaluations" xml:space="preserve">
-    <value>Número de Avaliações Limitados</value>
+    <value>Limitar o número de avaliações</value>
   </data>
   <data name="points" xml:space="preserve">
     <value>Pontos</value>
   </data>
   <data name="register_total_evaluated" xml:space="preserve">
-    <value>Define monitoramentos por Família de produtos</value>
+    <value>Definir monitoramentos por família de produtos</value>
   </data>
   <data name="standard" xml:space="preserve">
     <value>Critério</value>
@@ -334,7 +334,7 @@
     <value>Define se irá permitir lançamento de tarefa avulso</value>
   </data>
   <data name="conform" xml:space="preserve">
-    <value>Conforme</value>
+    <value>C</value>
   </data>
   <data name="frequency_popover" xml:space="preserve">
     <value>Define a frequência que o monitoramento será feito/executado: diariamente, semanalmente, mensalmente, etc.</value>
@@ -352,13 +352,13 @@
     <value>Não</value>
   </data>
   <data name="not_applicable_on_level_2" xml:space="preserve">
-    <value>Botão N/A no Monitoramento</value>
+    <value>Exibir o botão "N/A" na tela dos monitoramentos</value>
   </data>
   <data name="not_applicable_on_level_2_popover" xml:space="preserve">
-    <value>Define se haverá botão de não avaliado (n/a) no Monitoramento.</value>
+    <value>Exibe o botão "N/A" (Não avaliado ou Não aplicado) na tela dos monitoramentos, permitindo não avaliar o monitoramento sem entrar na tela das tarefas.</value>
   </data>
   <data name="not_conform" xml:space="preserve">
-    <value>Não conf.</value>
+    <value>NC</value>
   </data>
   <data name="positive_value" xml:space="preserve">
     <value>Valor Positivo</value>
@@ -376,7 +376,7 @@
     <value>Regra para reincidência</value>
   </data>
   <data name="save_button_on_level2_popover" xml:space="preserve">
-    <value>Define se haverá botão de salvar no monitoramento.</value>
+    <value>Exibe o botão "Salvar" na tela dos monitoramentos, permitindo salvar o monitoramento sem entrar na tela de tarefas. Será exigido uma confirmação.</value>
   </data>
   <data name="save_button_on_level3" xml:space="preserve">
     <value>Botão salvar na Tarefa</value>
@@ -400,7 +400,7 @@
     <value>Define se existirão agrupadores de monitoramentos. Se sim, abre uma lista para criar os grupos.</value>
   </data>
   <data name="allow_specific_register_by_unit_popover" xml:space="preserve">
-    <value>Define se as unidades terão liberdade de editar o indicador.  Caso a resposta para essa pergunta seja sim, o campo de cadastros específicos será habilitado para a definição de quais edições estarão à disposição da unidade.</value>
+    <value>Permite que as empresas editem algumas parametrizações do indicador. Caso a resposta para essa pergunta seja sim, os campos de cadastros específicos serão habilitados para a definição de quais edições estarão à disposição da empresa.</value>
   </data>
   <data name="has_alert" xml:space="preserve">
     <value>Emitir alerta</value>
@@ -478,10 +478,10 @@
     <value>Dados Principais</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection" xml:space="preserve">
-    <value>Permite editar vínculo com a tarefa</value>
+    <value>Permitir o vínculo de tarefas em monitoramentos deste indicador por unidade</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection_popover" xml:space="preserve">
-    <value>Define se as unidades poderão editar/criar os vínculos com as tarefas</value>
+    <value>Permite que o usuario vincule tarefas em monitoramentos deste indicador das suas respectivas empresas.</value>
   </data>
   <data name="link_number_evaluation" xml:space="preserve">
     <value>Link com a avaliação</value>
@@ -841,7 +841,7 @@
     <value>Relatório de Não Conformidade</value>
   </data>
   <data name="hascompleteevaluation" xml:space="preserve">
-    <value>Exige Avaliação Completa</value>
+    <value>Exigir avaliação completa</value>
   </data>
   <data name="role_jbs" xml:space="preserve">
     <value>Regra JBS</value>
@@ -1150,7 +1150,7 @@
     <value>Sincronizando a parametrização</value>
   </data>
   <data name="has_group_level2" xml:space="preserve">
-    <value>Agrupamento no Monitoramento</value>
+    <value>Exibir todas as tarefas dos monitoramentos em uma única tela</value>
   </data>
   <data name="acceptable_value_equal_or_greater_than" xml:space="preserve">
     <value>O valor aceitável deve ser igual ou maior que</value>
@@ -1906,7 +1906,7 @@
     <value>Sem monitoramentos para o indicador</value>
   </data>
   <data name="isPartialSave" xml:space="preserve">
-    <value>Permite salvar parcialmente</value>
+    <value>Permitir avaliar os monitoramentos por etapa</value>
   </data>
   <data name="duration_of_validation" xml:space="preserve">
     <value>Duração da Vigência</value>
@@ -2026,10 +2026,10 @@
     <value>Hora</value>
   </data>
   <data name="has_edit_level2" xml:space="preserve">
-    <value>Têm edição de monitoramento</value>
+    <value>Permitir a edição do monitoramento</value>
   </data>
   <data name="level1_children" xml:space="preserve">
-    <value>Indicador Filho</value>
+    <value>Coletar este indicador através de um outro indicador</value>
   </data>
   <data name="level1_destiny" xml:space="preserve">
     <value>Indicador Destino</value>
@@ -2095,7 +2095,7 @@
     <value>Em desenvolvimento</value>
   </data>
   <data name="take_photo" xml:space="preserve">
-    <value>Tirar foto</value>
+    <value>Permitir tirar foto nas tarefas</value>
   </data>
   <data name="criticalLevel" xml:space="preserve">
     <value>Nível de Criticidade</value>
@@ -2239,7 +2239,7 @@
     <value>Preencha a Descrição</value>
   </data>
   <data name="show_scorecard" xml:space="preserve">
-    <value>Ativo no Scorecard</value>
+    <value>Pontuar no Scorecard</value>
   </data>
   <data name="value_is_acceptable_greater" xml:space="preserve">
     <value>O valor aceitável é maior que </value>
@@ -2294,5 +2294,41 @@
   </data>
   <data name="none" xml:space="preserve">
     <value>Nenhum</value>
+  </data>
+  <data name="allow_the_edition_of_the_evaluation_number_popover" xml:space="preserve">
+    <value>Permite que o usuário cadastre o número de avaliações e amostras do monitoramento das suas respectivas empresas.</value>
+  </data>
+  <data name="hascompleteevaluation_popover" xml:space="preserve">
+    <value>Exige que todas as amostras da avaliação atual estejam completas em todos os monitoramentos deste indicador, para permitir o início da auditoria da próxima avaliação.</value>
+  </data>
+  <data name="has_edit_level2_popover" xml:space="preserve">
+    <value>Permite a edição do monitoramento antes de salvar a auditoria</value>
+  </data>
+  <data name="has_group_level2_popover" xml:space="preserve">
+    <value>Exibe todas as tarefas dos monitoramentos do indicador em uma única tela, permitindo salvar todas as tarefas e todos os monitoramentos deste indicador em uma única auditoria.</value>
+  </data>
+  <data name="isPartialSave_popover" xml:space="preserve">
+    <value>Permite avaliar os monitoramentos por etapa, salvando tarefas sem completar todo o monitoramento.</value>
+  </data>
+  <data name="level1_children_popover" xml:space="preserve">
+    <value>Coleta os monitoramentos e suas tarefas utilizando as parametrizações de número de avaliações e amostras de outro indicador, chamado "Indicador de  origem". Caso a resposta para esta pergunta seja sim, os campos de cadastro para indicador de origem e de destino estarão à disposição da empresa</value>
+  </data>
+  <data name="limited_number_of_evaluations_popover" xml:space="preserve">
+    <value>Limita o número de avaliações de acordo com a parametrização do monitoramento. O usuário não conseguirá fazer avaliações "extras", pois a coleta não permitirá.</value>
+  </data>
+  <data name="n" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="register_total_evaluated_popover" xml:space="preserve">
+    <value>Define quais monitoramentos serão coletados no período, por empresa.</value>
+  </data>
+  <data name="show_scorecard_popover" xml:space="preserve">
+    <value>Pontua no Scorecard e em todos os relatórios que utiliza a pontuação do Scorecard</value>
+  </data>
+  <data name="take_photo_popover" xml:space="preserve">
+    <value>Permite que o usuário tire foto como evidencia da coleta da tarefa.</value>
+  </data>
+  <data name="y" xml:space="preserve">
+    <value>S</value>
   </data>
 </root>
