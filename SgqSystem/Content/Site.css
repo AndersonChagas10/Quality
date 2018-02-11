@@ -122,6 +122,10 @@ a.navbar-sgq-brand{
     z-index:2501;
 }
 
+.row .select2-container{
+    z-index:100;
+}
+
 .page-content{
     /*height:600px;*/
 }
@@ -191,4 +195,8 @@ th.options{
 
 div.loader *{
     display:none !important;
+}
+
+#messageModal{
+    z-index:12000;
 }

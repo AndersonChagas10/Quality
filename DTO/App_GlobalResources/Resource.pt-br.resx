@@ -2016,4 +2016,7 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>PENDENTE</value>
   </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Valido Apartir De</value>
+  </data>
 </root>

@@ -2298,4 +2298,7 @@
   <data name="sampleInterval" xml:space="preserve">
     <value>Intervalo de Amostras</value>
   </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Valido Apartir De</value>
+  </data>
 </root>

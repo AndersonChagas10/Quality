@@ -2301,4 +2301,7 @@
   <data name="sampleInterval" xml:space="preserve">
     <value>Sample Interval</value>
   </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Effective Date</value>
+  </data>
 </root>

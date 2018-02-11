@@ -2037,4 +2037,7 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>WAITING</value>
   </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Effective Date</value>
+  </data>
 </root>

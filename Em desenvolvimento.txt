@@ -201,3 +201,12 @@ GO
 ALTER TABLE [dbo].[ParHeaderField]
 
 add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
+
+----------------------------------------------------------------------- 10-02-2018 - Leo Criação coluna 'ValidoApartirDe' para registrar historico parametrização
+
+IF COL_LENGTH('ParLevel1XCluster','ValidoApartirDe') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1XCluster add ValidoApartirDe datetime default '2000-01-01'
+    EXEC ('update ParLevel1XCluster set ValidoApartirDe = 2000-01-01')
+    END
