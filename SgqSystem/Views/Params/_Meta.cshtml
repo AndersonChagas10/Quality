@@ -20,32 +20,29 @@
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalManagerMeta">@Resources.Resource.management</button>
 
-                <table class="table-erp" id="">
+                @*<table class="table-erp" id="">
+                        <tbody>
+                            <tr>
+                                @Table.GerarColuna(@Html.DropDownList("metaCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "metaCompany" })
+                                    , @Html.Label(Resources.Resource.company)
+                                    , Table.PosicaoLabel.top)
 
-                    <tbody>
-                        <tr>
+                                @Table.GerarColunaButton(@Html.TextBox("percentVal", "", htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
+                                    , @Html.Label(Resources.Resource.goal_value)
+                                    , Table.PosicaoLabel.top
+                                    , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                            </tr>
+                        </tbody>
+                    </table>*@
 
-                            @Table.GerarColuna(@Html.DropDownList("metaCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "metaCompany" })
-                                , @Html.Label(Resources.Resource.company)
-                                , Table.PosicaoLabel.top)
-
-                          
-                            @Table.GerarColunaButton(@Html.TextBox("percentVal", "", htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
-                                , @Html.Label(Resources.Resource.goal_value)
-                                , Table.PosicaoLabel.top
-                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table id="tableMeta" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Meta:">
+                <table id="tableMetaActive" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Meta:">
                     <thead>
                         <tr>
                             <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.effectiveDate</th>
                             <th>@Resources.Resource.percentage</th>
-                            <th class="options"></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -54,11 +51,66 @@
             </div>
         </div>
     </div>
+
+    <!--Modal Gerenciar-->
+    <div class="container">
+        <div class="modal fade" id="modalManagerMeta" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+            <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-gray">
+
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+
+                        <h4 class="modal-title" id="Header">@Resources.Resource.management</h4>
+                    </div>
+                    <div class="modal-body" id="body">
+                        <table class="table-erp" id="">
+
+                            <tbody>
+                                <tr>
+
+                                    @Table.GerarColuna(@Html.DropDownList("metaCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "metaCompany" })
+                                , @Html.Label(Resources.Resource.company)
+                                , Table.PosicaoLabel.top)
+
+                                    @Table.GerarColuna(@Html.Editor("effectiveDateMeta", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate), Table.PosicaoLabel.top)
+
+                                    @Table.GerarColunaButton(@Html.TextBox("percentVal", "", htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
+                                , @Html.Label(Resources.Resource.goal_value)
+                                , Table.PosicaoLabel.top
+                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table id="tableMeta" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Meta:">
+                            <thead>
+                                <tr>
+                                    <th>@Resources.Resource.company</th>
+                                    <th>@Resources.Resource.effectiveDate</th>
+                                    <th>@Resources.Resource.percentage</th>
+                                    <th class="options"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">@Resources.Resource.close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
 <script>
+    
 
+    var emptyEffectiveDate = "-";
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
 
     function atribuiVariavelMeta (){
@@ -72,12 +124,17 @@
             listSalvo = paramsDto.parLevel1Dto.listParGoalLevel1;//
             MetaL1 = getCounterObject(levelDomain, listSalvo);//
             MetaL1.carregaDadosDoDb();//
+
+            $('#modalManagerMeta').on('hidden.bs.modal', function () {
+                // do something…
+                MetaL1.atualizaLista();
+            })
         }
 
     }
 
     atribuiVariavelMeta();
-    
+
     function getCounterObject (levelDomain, listSalvo) {
         return {
             /*Setup*/
@@ -85,12 +142,20 @@
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tableMeta',//
-            tdsNames: ['companyName', 'PercentValue', 'btn'],
+            listObjActive: [],
+            idTableActive: 'tableMetaActive',
+            tdsNames: ['companyName', 'EffectiveDate', 'PercentValue', 'btn'],
             getObjAdd: function(isEdit, obj){
                 if(isEdit != undefined){
                     obj.PercentValue = $('#' + isEdit + ' #percentVal').val();
                     obj.ParCompany_Id = $('#' + isEdit + ' #metaCompany :selected').val();
-                    obj.companyName = $('#' + isEdit + ' #metaCompany :selected').text();
+
+                    if(obj.ParCompany_Id == "0" || obj.ParCompany_Id == "-1"){
+                        compName = "@Resources.Resource.all";
+                    }else{
+                        obj.companyName = $('#' + isEdit + ' #metaCompany :selected').text();
+                    }
+                    obj.EffectiveDate = $('#' + isEdit + ' #effectiveDateMeta').val();
                     return obj;
                 }else{
                     var compName =  $('#' + this.level + ' #metaCompany :selected').text();
@@ -103,7 +168,8 @@
                         PercentValue    : $('#' + this.level + ' #percentVal').val(),
                         ParCompany_Id  :  compVal,
                         companyName  :  compName,
-                        IsActive: true
+                        IsActive: true,
+                        EffectiveDate: $('#' + this.level + ' #effectiveDateMeta').val(),
                     }
                 }
             },
@@ -111,7 +177,13 @@
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #percentVal').val().length == 0){
-                    openMessageModal("@Resources.Resource.required_fields_unfilled"+":", "@Resources.Resource.goal_value")
+                    openMessageModal("@Resources.Resource.required_fields_unfilled"+":", "@Resources.Resource.goal_value","")
+                    return false;
+                }
+
+                var $effectiveDate = $('#' + seletorTato + ' #effectiveDateMeta').val();
+                if($effectiveDate.replace(/[^0-9.]/g, '') == ""){
+                    openMessageModal("@Resources.Resource.invalid_value_for \"@Resources.Resource.effectiveDate\"","");
                     return false;
                 }
 
@@ -119,22 +191,22 @@
                 var companySelected = $('#' + seletorTato + ' #metaCompany :selected').val();
                 var exist = $.grep($('#tableMeta  tbody  tr  td:nth-child(1)'), function(o, c){
                     if(companySelected == -1){
-                        return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
+                        return ($(o).parent().data().ParCompany_Id == 0
+                            || $(o).parent().data().ParCompany_Id == -1
+                            || $(o).parent().data().ParCompany_Id == null)
+                            && new Date($(o).parent().data().EffectiveDate).getTime() == new Date($effectiveDate).getTime()
                     }
-                    return $(o).parent().data().ParCompany_Id == companySelected;
+                    return $(o).parent().data().ParCompany_Id == companySelected 
+                        && new Date($(o).parent().data().EffectiveDate).getTime() == new Date($effectiveDate).getTime()
                 });
 
-                if(!!isEdit){/*Edição*/
-                   
-                } else {/*Inclusão*/
-                    if(exist.length){
-                        var display = $('#' + seletorTato + ' #metaCompany :selected').text();
-                        if(companySelected == -1)
-                            display= "@Resources.Resource.all";
+                if(exist.length){
+                    var display = $('#' + seletorTato + ' #metaCompany :selected').text();
+                    if(companySelected == -1)
+                        display= "@Resources.Resource.all";
 
-                        openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
-                        return false;
-                    }
+                    openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
+                    return false;
                 }
 
                 return true;
@@ -149,11 +221,70 @@
                     if((o.Id != null || o.Id != undefined) && o.Id > 0){
                         dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].Id"] = o.Id;
                     }
-                 
+
+                    if(o.EffectiveDate.length < 8){
+                        dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].EffectiveDate"]  = null;
+                    }else{
+                        dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].EffectiveDate"] = o.EffectiveDate;
+                    }
+
                     dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].PercentValue"] = o.PercentValue;
                     dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].IsActive"] = o.IsActive;
 
+                });
+
+            },
+            atualizaLista: function(){
+                $('#'+this.idTableActive+" tbody").empty();
+                var dados = $('#newLevel1Modal > form').serializeObject();
+                this.listObjActive = [];
+                //this.incluiNoObjetoParaSubmit(dados);
+
+                var level = this.levelControl;
+                $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                    //regra para evitar duplicidade considerando a ultima data, desta forma resolve-se o rpoblema de mostrar na tela
+                    //Ajustar layout
+                    //Verificar z-index modal
+
+                    var o = $(obj).data();
+                    if(o.IsActive && (o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date().getTime())){
+                        var index = -1;
+                        $(MetaL1.listObjActive).each(function(i,g){
+                            if(o.companyName == g.companyName){
+                                if(o.EffectiveDate == emptyEffectiveDate && o.EffectiveDate == g.EffectiveDate){
+                                    index = i;
+                                    return;
+                                } else if(o.EffectiveDate == emptyEffectiveDate){
+                                    index = -2;
+                                    return;
+                                } else if(o.EffectiveDate != emptyEffectiveDate &&
+                                    (new Date(o.EffectiveDate).getTime() > new Date(g.EffectiveDate).getTime()
+                                    || g.EffectiveDate == emptyEffectiveDate)){
+                                    index = i;
+                                    return;
+                                }
+                            }
+                        });
+
+                        if(index >= 0){
+                            MetaL1.listObjActive.splice(index, 1);
+                            index = -1;
+                        }
+                        
+                        if(index == -1)
+                            MetaL1.listObjActive.push(o);
+                    }
+                });
+
+
+                $(MetaL1.listObjActive).each(function(i,o){
+                    $('#'+MetaL1.idTableActive+" tbody").append(
+                                '<tr><td>'+o.companyName+'</td>'+
+                                '<td>'+o.EffectiveDate+'</td>'+
+                                '<td>'+o.PercentValue+'</td></tr>'
+                            );
                 });
 
             },
@@ -167,16 +298,25 @@
                         }else{
                             o['companyName'] = "@Resources.Resource.all";
                         }
+                        o["EffectiveDate"] = emptyEffectiveDate;
+                        if(o.EffectiveDate != null)
+                            o["EffectiveDate"] = o.EffectiveDate;
                         o['PercentValue'] = o.PercentValue;
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
+
+                this.atualizaLista();
             },
             /*Fim Setup*/
             adiciona: function(e) {
                 if(this.veifyAdd()){
                     var object = this.getObjAdd();
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+
+                    $('#' + this.level + ' #percentVal').val('');
+                    $('#' + this.level + ' #metaCompany').val('');
+                    $('#' + this.level + ' #effectiveDateMeta').val('');
                 }
             },
         };

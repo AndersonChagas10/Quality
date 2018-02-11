@@ -104,7 +104,7 @@ a.navbar-sgq-brand{
   position: fixed;
   bottom: 70px;
   right: 20px;
-  z-index: 99;
+  z-index: 200;
   border: none;
   outline: none;
   background-color: #2b3643;
