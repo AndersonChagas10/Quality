@@ -180,14 +180,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             SQLcentro = getQuery(form, nivel);
 
             #region Status do Indicador: Fora ou Dentro da Meta
-            if (form.statusIndicador == 1) // Indicadores Dentro Da Meta
+            if (form.statusIndicador == 1) // Indicadores Fora Da Meta
             {
                 SQLcentro += @"";
                 SQLcentro += @"";
                 SQLcentro += getQueryStatusIndicador(form, form.statusIndicador);
             }
             else
-            if (form.statusIndicador == 2) // Indicadores Fora Da Meta
+            if (form.statusIndicador == 2) // Indicadores Dentro Da Meta
             {
                 SQLcentro += @"";
                 SQLcentro += @"";
@@ -221,7 +221,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
+               
+                /*,CASE
+                    WHEN IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) > max(ISNULL(Meta,0)) THEN 0
+                    ELSE 1
+                END AS Status
+                */
+
                ,cast(1 as bit) IsIndicador
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -673,6 +681,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsMonitoramento
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1031,6 +1040,7 @@ ORDER BY 10 DESC ";
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsTarefa
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1427,6 +1437,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsIndicador
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1567,6 +1578,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsMonitoramento
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1712,6 +1724,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsTarefa
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -4809,7 +4822,7 @@ ORDER BY 3
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
-		       ,sum(ISNULL(Meta,0)) AS Meta
+		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -4836,7 +4849,7 @@ ORDER BY 7
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
-		       ,sum(ISNULL(Meta,0)) AS Meta
+		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 ConsolidationDate
@@ -5572,7 +5585,8 @@ ORDER BY 3
             	,CRL.Name
             	,L1.IsRuleConformity
             
-            
+                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
             	-- DROP TABLE #DIM
             
             	select DISTINCT 
@@ -5920,7 +5934,8 @@ ORDER BY 3
             	,CRL.Name
             	,L1.IsRuleConformity
             
-            
+                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
             	-- DROP TABLE #DIM
             
             	select DISTINCT 
@@ -6238,7 +6253,8 @@ ORDER BY 3
         	,L1.IsRuleConformity
         
         
-        
+            update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
         	-- DROP TABLE  #DIM
         
         	select DISTINCT 
@@ -6291,11 +6307,11 @@ ORDER BY 3
             var whereStatusQuery = "";
 
             if(whereStatus == 1){
-                whereStatusQuery = " AND WHERESTATUS.PC > WHERESTATUS.Meta ";
+                whereStatusQuery = " AND WHERESTATUS.PC < WHERESTATUS.Meta ";
             }
             if (whereStatus == 2)
             {
-                whereStatusQuery = " AND WHERESTATUS.PC < WHERESTATUS.Meta ";
+                whereStatusQuery = " AND WHERESTATUS.PC > WHERESTATUS.Meta ";
             }
 
             var Query = "";

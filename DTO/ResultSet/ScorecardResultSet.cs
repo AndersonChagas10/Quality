@@ -402,9 +402,60 @@ public class ScorecardResultSet
            "\n  , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                             " +
            "\n  , L1.Id AS Level1Id                                                                                                                                                                                                                                                " +
            "\n  , L1.Name AS Level1Name                                                                                                                                                                                                                                            " +
-           "\n  , ISNULL(CRL.Id, @CRITERIO) AS Criterio                                                                                                                                                                                                                            " +
-           "\n  , ISNULL(CRL.Name, @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
-           "\n  , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL), @PONTOS) AS Pontos                                                                                                                                                                                                                            " +
+           "\n  , ISNULL( " +
+
+           "( " +
+
+           "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+           "\n             AND L1Ca.IsActive = 1 " +
+
+           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+            "\n	)" +
+
+           "\n , @CRITERIO) AS Criterio                                                                                                                                                                                                                            " +
+           "\n  , ISNULL( " +
+
+           "( " +
+
+           "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+           "\n             AND L1Ca.IsActive = 1 " +
+
+           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+            "\n	)" +
+
+           "\n , @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
+           "\n  , ISNULL(" +
+
+           "( " +
+
+               "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+               "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+               "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+               "\n             AND L1Ca.IsActive = 1 " +
+
+               "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+               "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+                "\n	)" +
+
+           "\n, @PONTOS) AS Pontos                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n  --ISNULL(CL.Id, @CLUSTER) AS Cluster                                                                                                                                                                                                                               " +
            "\n  --, (CL.Name)AS ClusterName                                                                                                                                                                                                                                        " +
@@ -621,9 +672,9 @@ public class ScorecardResultSet
            "\n LEFT JOIN ParConsolidationType CT  (nolock)                                                                                                                                                                                                                                   " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
-           "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
+           "\n --LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
+           "\n --       ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                                                                                                                                                                       " +
@@ -647,7 +698,7 @@ public class ScorecardResultSet
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
            "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
            "\n     , C.Id                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                               " +
            "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n ) FIM                                                                                                                                                                                                                                                               " +
@@ -666,12 +717,65 @@ public class ScorecardResultSet
            "\n , CASE WHEN L1.IsRuleConformity = 0 THEN 1 ELSE 2 END AS TipoIndicador                                                                                                                                                                                              " +
            "\n , CASE WHEN L1.IsRuleConformity = 0 THEN 'Menor' ELSE 'Maior' END AS TipoIndicadorName                                                                                                                                                                              " +
            "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                 " +
-           "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                             " +
-           "\n , CRL.Id AS Criterio                                                                                                                                                                                                                                                " +
-           "\n , CRL.Name AS CriterioName                                                                                                                                                                                                                                          " +
-           "\n , 0  AS AV                                                                                                                                                                                                                                                          " +
-           "\n , 0  AS NC                                                                                                                                                                                                                                                          " +
-           "\n , (select top 1 Points from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL) AS Pontos                                                                                                                                                                                                                                              " +
+           "\n  , L1.Name AS Level1Name                                                                                                                                                                                                                                            " +
+           "\n  , ISNULL( " +
+
+           "( " +
+
+           "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+           "\n             AND L1Ca.IsActive = 1 " +
+
+           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+            "\n	)" +
+
+           "\n , @CRITERIO) AS Criterio                                                                                                                                                                                                                            " +
+           "\n  , ISNULL( " +
+
+           "( " +
+
+           "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+           "\n             AND L1Ca.IsActive = 1 " +
+
+           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+            "\n	)" +
+
+           "\n , @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
+           
+           "\n ,0 as av " +
+           "\n ,0 as nc " +
+
+           "\n  , ISNULL(" +
+
+           "( " +
+
+               "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+               "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+               "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+               "\n             AND L1Ca.IsActive = 1 " +
+
+               "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+               "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+                "\n	)" +
+
+           "\n, @PONTOS) AS Pontos " +
            "\n , 0 AS PontosIndicador                                                                                                                                                                                                                                              " +
            "\n , ROUND(CASE                                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -703,8 +807,8 @@ public class ScorecardResultSet
            "\n ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                        " +
            "\n LEFT JOIN ParConsolidationType CT   (nolock)                                                                                                                                                                                                                                  " +
            "\n ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                               " +
-           "\n INNER JOIN ParLevel1XCluster L1C    (nolock)                                                                                                                                                                                                                                   " +
-           "\n ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                         " +
+           "\n --INNER JOIN ParLevel1XCluster L1C    (nolock)                                                                                                                                                                                                                                   " +
+           "\n --ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                         " +
            "\n INNER JOIN ParCriticalLevel CRL    (nolock)                                                                                                                                                                                                                                    " +
            "\n ON CRL.Id = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                                                                                                                                                                                " +
            "\n WHERE C.Id = @ParCompany_Id                                                                                                                                                                                                                                         " +
