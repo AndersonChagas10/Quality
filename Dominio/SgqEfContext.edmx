@@ -760,6 +760,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ParCriticalLevel_Id" Type="int" />
+          <Property Name="EffectiveDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ParLevel1XHeaderField">
           <Key>
@@ -3309,7 +3310,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParFieldType" EntityType="SgqDbModel.ParFieldType" />
           <EntitySet Name="ParFrequency" EntityType="SgqDbModel.ParFrequency" />
           <EntitySet Name="ParGoal" EntityType="SgqDbModel.ParGoal" />
-          <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="SgqDbModel.ParLevel1XHeaderField" />
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="SgqDbModel.ParLevel2ControlCompany" />
@@ -3370,17 +3370,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParCluster" EntitySet="ParCluster" />
             <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XCluster_ParCluster" Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster">
-            <End Role="ParCluster" EntitySet="ParCluster" />
-            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
-          </AssociationSet>
           <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure">
             <End Role="ParStructure" EntitySet="ParStructure" />
             <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XCluster_ParCriticalLevel" Association="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel">
-            <End Role="ParCriticalLevel" EntitySet="ParCriticalLevel" />
-            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel2_ParDepartment" Association="SgqDbModel.FK_ParLevel2_ParDepartment">
             <End Role="ParDepartment" EntitySet="ParDepartment" />
@@ -3744,10 +3736,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParScoreType" EntitySet="ParScoreType" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
-          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XHeaderField_ParLevel1" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
@@ -3821,6 +3809,19 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK__ParLevel3__ParLe__4F5D9FD3" Association="SgqDbModel.FK__ParLevel3__ParLe__4F5D9FD3">
             <End Role="ParLevel3" EntitySet="ParLevel3" />
             <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
+          </AssociationSet>
+          <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
+          <AssociationSet Name="FK_ParLevel1XCluster_ParCluster" Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParCriticalLevel" Association="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel">
+            <End Role="ParCriticalLevel" EntitySet="ParCriticalLevel" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -4284,22 +4285,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParGoal" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParGoal" ToRole="ParLevel1" />
-        </EntityType>
-        <EntityType Name="ParLevel1XCluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
-          <Property Name="Points" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="ParCriticalLevel_Id" Type="Int32" />
-          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParLevel1XCluster" ToRole="ParCluster" />
-          <NavigationProperty Name="ParCriticalLevel" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParLevel1XCluster" ToRole="ParCriticalLevel" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1XCluster" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1XHeaderField">
           <Key>
@@ -4910,18 +4895,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParLevel1XCluster_ParCluster">
-          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCluster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XCluster">
-              <PropertyRef Name="ParCluster_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ParCompanyXStructure_ParStructure">
           <End Type="SgqDbModel.ParStructure" Role="ParStructure" Multiplicity="1" />
           <End Type="SgqDbModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
@@ -4931,18 +4904,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParCompanyXStructure">
               <PropertyRef Name="ParStructure_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1XCluster_ParCriticalLevel">
-          <End Type="SgqDbModel.ParCriticalLevel" Role="ParCriticalLevel" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCriticalLevel">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XCluster">
-              <PropertyRef Name="ParCriticalLevel_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6344,7 +6305,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="VolumeVacuoGRD" Relationship="SgqDbModel.FK__VolumeVac__ParLe__6D031153" FromRole="ParLevel1" ToRole="VolumeVacuoGRD" />
           <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2Level1" />
           <NavigationProperty Name="ParScoreType" Relationship="SgqDbModel.FK_ParLevel1_ParScoreType" FromRole="ParLevel1" ToRole="ParScoreType" />
-          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
           <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
           <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2ControlCompany" />
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
@@ -6352,6 +6312,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK__ParLevel3__ParLe__0BA79404" FromRole="ParLevel1" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParLevel3EvaluationSample" Relationship="SgqDbModel.FK__ParLevel3__ParLe__4D755761" FromRole="ParLevel1" ToRole="ParLevel3EvaluationSample" />
+          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
@@ -6506,18 +6467,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParLevel1">
               <PropertyRef Name="ParScoreType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1XCluster_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XCluster">
-              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6776,6 +6725,59 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParLevel3EvaluationSample">
               <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ParLevel1XCluster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
+          <Property Name="Points" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ParCriticalLevel_Id" Type="Int32" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParLevel1XCluster" ToRole="ParCluster" />
+          <NavigationProperty Name="ParCriticalLevel" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParLevel1XCluster" ToRole="ParCriticalLevel" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1XCluster" ToRole="ParLevel1" />
+        </EntityType>
+        <Association Name="FK_ParLevel1XCluster_ParCluster">
+          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParCriticalLevel">
+          <End Type="SgqDbModel.ParCriticalLevel" Role="ParCriticalLevel" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCriticalLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParCriticalLevel_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7196,20 +7198,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="PercentValue" ColumnName="PercentValue" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel1XCluster">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XCluster">
-              <MappingFragment StoreEntitySet="ParLevel1XCluster">
-                <ScalarProperty Name="ParCriticalLevel_Id" ColumnName="ParCriticalLevel_Id" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Points" ColumnName="Points" />
-                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -8201,6 +8189,21 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel1XCluster">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XCluster">
+              <MappingFragment StoreEntitySet="ParLevel1XCluster">
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="ParCriticalLevel_Id" ColumnName="ParCriticalLevel_Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
