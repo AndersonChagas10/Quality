@@ -165,7 +165,8 @@ namespace SgqSystem.Helpers
                                             PosicaoLabel posicaoLabel, 
                                             MvcHtmlString error = null, 
                                             string info = null,
-                                            String button = null)
+                                            String button = null,
+                                            int? semCB = null)
         {
             String tr = "";
             String tagInfo = "";
@@ -189,17 +190,41 @@ namespace SgqSystem.Helpers
                         checkbox.ToString() + button +
                      "</td>";
             }
+            else if (posicaoLabel == PosicaoLabel.left && semCB == 1)
+            {
+                tr =
+                    "<td class='td-erp' colspan='2'>" +
+                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'>" +
+                            
+                        "</div>" +
+                        "<div class='col-xs-9 col-sm-9 col-md-9 col-lg-9'>" +
+                            label.ToString() +
+                        "<br>" +
+                            checkbox.ToString() + button +
+                        "</div>" +
+                        "<div class='col-xs-1 col-sm-1 col-md-1 col-lg-1'>" +
+                            tagInfo +
+                        "</div>" +
+                    "</td>";
+
+            }
             else if (posicaoLabel == PosicaoLabel.left)
             {
                 tr =
-                    "<td class='td-erp text-left'>" +
-                        label.ToString() + 
-                        tagInfo + 
-                    "</td>" +
-                    "<td class='td-erp'>" +
-                        checkbox.ToString() + button +
+                    "<td class='td-erp' colspan='2'>" +
+                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'>" +
+                            checkbox.ToString() + button +
+                        "</div>" +
+                        "<div class='col-xs-9 col-sm-9 col-md-9 col-lg-9'>" +
+                            label.ToString() +
+                        "</div>" +
+                        "<div class='col-xs-1 col-sm-1 col-md-1 col-lg-1'>" +
+                            tagInfo +
+                        "</div>" +
                     "</td>";
+                    
             }
+            
             return new MvcHtmlString(tr);
         }
 

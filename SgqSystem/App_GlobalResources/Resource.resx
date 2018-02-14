@@ -2298,4 +2298,40 @@
   <data name="none" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="allow_the_edition_of_the_evaluation_number_popover" xml:space="preserve">
+    <value>Edit evaluation/sample</value>
+  </data>
+  <data name="hascompleteevaluation_popover" xml:space="preserve">
+    <value>Complete Evaluation is Required</value>
+  </data>
+  <data name="has_edit_level2_popover" xml:space="preserve">
+    <value>Level2 edition</value>
+  </data>
+  <data name="has_group_level2_popover" xml:space="preserve">
+    <value>Level 3 Grouped By Level 2</value>
+  </data>
+  <data name="isPartialSave_popover" xml:space="preserve">
+    <value>Is partial save</value>
+  </data>
+  <data name="level1_children_popover" xml:space="preserve">
+    <value>Level1 Children</value>
+  </data>
+  <data name="limited_number_of_evaluations_popover" xml:space="preserve">
+    <value>Limited number of evaluations</value>
+  </data>
+  <data name="n" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="register_total_evaluated_popover" xml:space="preserve">
+    <value>Register Total Evaluated</value>
+  </data>
+  <data name="show_scorecard_popover" xml:space="preserve">
+    <value>Active in scorecard</value>
+  </data>
+  <data name="take_photo_popover" xml:space="preserve">
+    <value>Take photo</value>
+  </data>
+  <data name="y" xml:space="preserve">
+    <value>Y</value>
+  </data>
 </root>

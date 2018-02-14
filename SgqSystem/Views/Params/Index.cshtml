@@ -256,8 +256,8 @@
 
     function defaults() {
         $.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.y';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.n';
         $(".check-box").bootstrapSwitch();
 
         $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('onText', '@Resources.Resource.conform');
@@ -1123,6 +1123,11 @@
 
         closeLeftSidebar();
 
+        $('.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label').css('padding', '2px 10px');
+
+        $('.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label').css('font-size', '8px');
+
+        $('.table-erp').css('font-size', '10px');
 
     });
 
