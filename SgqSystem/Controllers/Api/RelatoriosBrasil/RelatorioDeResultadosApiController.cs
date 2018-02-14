@@ -5407,6 +5407,7 @@ ORDER BY 3
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
             " + Wunidade + @"
             " + Windicador + @"
+            AND CL1.ParLevel1_Id != 43
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
@@ -5747,6 +5748,7 @@ ORDER BY 3
             " + Wunidade + @"
             " + Windicador + @"
             " + Wmonitoramento + @"
+            AND CL1.ParLevel1_Id != 43
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level2 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id); 
@@ -6101,6 +6103,7 @@ ORDER BY 3
         " + Windicador + @"
         " + Wmonitoramento + @"
         " + Wtarefa + @"
+        AND CL1.ParLevel1_Id != 43
         
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
