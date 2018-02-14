@@ -204,9 +204,16 @@ add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
 
 ----------------------------------------------------------------------- 10-02-2018 - Leo Criação coluna 'ValidoApartirDe' para registrar historico parametrização
 
-IF COL_LENGTH('ParLevel1XCluster','ValidoApartirDe') IS NULL
+IF COL_LENGTH('ParLevel1XCluster','EffectiveDate') IS NULL
     BEGIN
     /*Column does not exist or caller does not have permission to view the object*/
-    Alter table ParLevel1XCluster add ValidoApartirDe datetime default '2000-01-01'
-    EXEC ('update ParLevel1XCluster set ValidoApartirDe = 2000-01-01')
+    Alter table ParLevel1XCluster add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParLevel1XCluster set EffectiveDate = 2000-01-01')
+    END
+
+IF COL_LENGTH('ParGoal','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParGoal add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParGoal set EffectiveDate = 2000-01-01')
     END

@@ -643,6 +643,7 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="EffectiveDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ParGoalScorecard">
           <Key>
@@ -4285,6 +4286,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParGoal" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParGoal" ToRole="ParLevel1" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ParLevel1XHeaderField">
           <Key>
@@ -7193,6 +7195,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParGoal">
             <EntityTypeMapping TypeName="SgqDbModel.ParGoal">
               <MappingFragment StoreEntitySet="ParGoal">
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />

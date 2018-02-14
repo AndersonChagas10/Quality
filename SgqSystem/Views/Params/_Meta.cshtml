@@ -20,8 +20,10 @@
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalManagerMeta">@Resources.Resource.management</button>
-
+                <h5>
+                    @Resources.Resource.active_goals
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalManagerMeta">@Resources.Resource.to_manager</button>
+                </h5>
                 @*<table class="table-erp" id="">
                         <tbody>
                             <tr>
@@ -36,6 +38,10 @@
                             </tr>
                         </tbody>
                     </table>*@
+
+                <div class="alert alert-info" id="withoutMetaActive">
+                    <strong>@Resources.Resource.without @Resources.Resource.active_goals</strong>
+                </div>
 
                 <table id="tableMetaActive" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Meta:">
                     <thead>
@@ -108,7 +114,7 @@
 
 
 <script>
-    
+
 
     var emptyEffectiveDate = "-";
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
@@ -196,7 +202,7 @@
                             || $(o).parent().data().ParCompany_Id == null)
                             && new Date($(o).parent().data().EffectiveDate).getTime() == new Date($effectiveDate).getTime()
                     }
-                    return $(o).parent().data().ParCompany_Id == companySelected 
+                    return $(o).parent().data().ParCompany_Id == companySelected
                         && new Date($(o).parent().data().EffectiveDate).getTime() == new Date($effectiveDate).getTime()
                 });
 
@@ -272,12 +278,11 @@
                             MetaL1.listObjActive.splice(index, 1);
                             index = -1;
                         }
-                        
+
                         if(index == -1)
                             MetaL1.listObjActive.push(o);
                     }
                 });
-
 
                 $(MetaL1.listObjActive).each(function(i,o){
                     $('#'+MetaL1.idTableActive+" tbody").append(
@@ -286,6 +291,14 @@
                                 '<td>'+o.PercentValue+'</td></tr>'
                             );
                 });
+                
+                if($('#'+this.idTableActive+' tbody tr').length > 0){
+                    $('#'+this.idTableActive).attr('style','');
+                    $('#withoutMetaActive').attr('style','display:none;');
+                }else{
+                    $('#'+this.idTableActive).attr('style','display:none;');
+                    $('#withoutMetaActive').attr('style','');
+                }
 
             },
             carregaDadosDoDb: function(){
@@ -298,9 +311,10 @@
                         }else{
                             o['companyName'] = "@Resources.Resource.all";
                         }
-                        o["EffectiveDate"] = emptyEffectiveDate;
                         if(o.EffectiveDate != null)
-                            o["EffectiveDate"] = o.EffectiveDate;
+                            o["EffectiveDate"] = moment(new Date(parseInt(o.EffectiveDate.substr(6)))).format("YYYY-MM-DD");
+                        else
+                            o["EffectiveDate"] = emptyEffectiveDate;
                         o['PercentValue'] = o.PercentValue;
                         crudNxN.adiciona(o,  id, tdNamess);
                     });

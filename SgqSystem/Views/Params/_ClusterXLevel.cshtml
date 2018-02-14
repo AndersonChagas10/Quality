@@ -20,8 +20,10 @@
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalManagerCluster">@Resources.Resource.management</button>
-
+                <h5>
+                    @Resources.Resource.active_clusters
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalManagerCluster">@Resources.Resource.to_manager</button>
+                </h5>
                 @*<table class="table-erp" id="camposCluster">
                         <tbody>
                             <tr class="row">
@@ -34,7 +36,11 @@
                         </tbody>
                     </table>*@
 
-                <table id="tableClustersActive" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Cluster:">
+                <div class="alert alert-info" id="withoutClustersActive">
+                    <strong>@Resources.Resource.without @Resources.Resource.active_clusters</strong>
+                </div>
+
+                <table id="tableClustersActive" class="table table-condensed table-responsive no-margin margin-top">
                     <thead>
                         <tr>
                             <th>@Resources.Resource.cluster_name</th>
@@ -262,7 +268,6 @@
                     }
                 });
 
-
                 $(ClusterL1.listObjActive).each(function(i,o){
                     $('#'+ClusterL1.idTableActive+" tbody").append(
                                 '<tr><td>'+o.Cluster_Name+'</td>'+
@@ -272,6 +277,14 @@
                             );
                 });
 
+                if($('#'+this.idTableActive+' tbody tr').length > 0){
+                    $('#'+this.idTableActive).attr('style','');
+                    $('#withoutClustersActive').attr('style','display:none;');
+                }else{
+                    $('#'+this.idTableActive).attr('style','display:none;');
+                    $('#withoutClustersActive').attr('style','');
+                }
+
             },
             carregaDadosDoDb: function(){
                 var id = this.level + ' #' + this.idTable;
@@ -280,9 +293,11 @@
                     this.listObjSalvo.forEach(function(o, c){
                         o["Cluster_Name"] = o.ParCluster.Name;
                         o["ParCriticalLevel_Name"] = o.ParCriticalLevel.Name;
-                        o["EffectiveDate"] = emptyEffectiveDate;
                         if(o.EffectiveDate != null)
-                            o["EffectiveDate"] = o.EffectiveDate;
+                            o["EffectiveDate"] = moment(new Date(parseInt(o.EffectiveDate.substr(6)))).format("YYYY-MM-DD");
+                        else
+                            o["EffectiveDate"] = emptyEffectiveDate;
+
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }

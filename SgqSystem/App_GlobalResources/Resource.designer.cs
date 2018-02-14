@@ -169,6 +169,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actives.
+        /// </summary>
+        internal static string actives {
+            get {
+                return ResourceManager.GetString("actives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Clusters.
+        /// </summary>
+        internal static string active_clusters {
+            get {
+                return ResourceManager.GetString("active_clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Goals.
+        /// </summary>
+        internal static string active_goals {
+            get {
+                return ResourceManager.GetString("active_goals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         internal static string add {
@@ -6064,6 +6091,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Manager.
+        /// </summary>
+        internal static string to_manager {
+            get {
+                return ResourceManager.GetString("to_manager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trying Again.
         /// </summary>
         internal static string trying_again {
@@ -6573,6 +6609,15 @@ namespace Resources {
         internal static string within_goal {
             get {
                 return ResourceManager.GetString("within_goal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Without.
+        /// </summary>
+        internal static string without {
+            get {
+                return ResourceManager.GetString("without", resourceCulture);
             }
         }
         
