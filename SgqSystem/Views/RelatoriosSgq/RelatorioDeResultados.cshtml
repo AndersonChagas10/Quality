@@ -184,7 +184,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var Subtitle = "";
 
@@ -288,9 +288,9 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↑</b></i></p>'
+                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></p>'
                 else
-                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↓</b></i></p>';
+                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></p>';
                 counter++;
             }
             var table = $('#DataTable').empty().DataTable({
@@ -1243,7 +1243,7 @@
     function GerarGraficoHistoricoUnidade(data) {
 
         var porc = [];
-        
+
         if (data.length > 0) {
 
 
@@ -2686,6 +2686,6 @@
         });
 
 
-    </script>
+</script>
 
 }
