@@ -233,7 +233,7 @@
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
         //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
-            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
         }
 
         //if (enviar['unitId'] > 0) {
@@ -302,6 +302,8 @@
                     { title: Resources("level3"), mData: "TarefaName" },
                     { title: "Av", mData: "Av" },
                     { title: Resources("nonconformity"), mData: "Nc" },
+                    { title: "Av Com Peso", mData: "avComPeso" },
+                    { title: "Nc Com Peso", mData: "ncComPeso" },
                     {
                         title: Resources("percentNon_conformities"), mData: "Pc",
                         render: $.fn.dataTable.render.number(',', '.', 2, '')
@@ -657,7 +659,8 @@
             //fazGambipraMenosCem(porc);
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
-            $('#GraficoPeriodoSemUnidade').empty().highcharts({
+            GraficoPeriodoSemUnidade = Highcharts.chart('GraficoPeriodoSemUnidade', {
+            //$('#GraficoPeriodoSemUnidade').empty().highcharts({
                 credits: {
                     enabled: false
                 },
@@ -2587,10 +2590,14 @@
             graficoPeriodo.destroy();
             graficoPeriodo = null;
         }
-        $('#GraficoPeriodoSemUnidade').empty();
+        if (GraficoPeriodoSemUnidade && GraficoPeriodoSemUnidade.axes) {
+            GraficoPeriodoSemUnidade.destroy();
+            GraficoPeriodoSemUnidade = null;
+        }
+        //$('#GraficoPeriodoSemUnidade').empty();
         $('#GraficoHistoricoIndicador').empty();
         $('#GraficoHistoricoMonitoramento').empty();
-        $('#GraficoPeriodoSemUnidade').empty();
+        //$('#GraficoPeriodoSemUnidade').empty();
         $('.totalNC').hide();
         $('#Titulo').html("");
         $('#TituloTabela').html("");
