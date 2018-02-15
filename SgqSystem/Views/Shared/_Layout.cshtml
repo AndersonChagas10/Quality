@@ -55,7 +55,9 @@
     <link href="~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="~/Content/datatableGRT.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     @if (IsSectionDefined("Styles"))
     {
@@ -65,7 +67,7 @@
     <script>
         var hideMenu = false;
 
-        function HideMenuLayout(){
+        function HideMenuLayout() {
             hideMenu = true;
         }
     </script>
@@ -626,15 +628,15 @@
 
     <script>
         $(document).ready(function () {
-            if(!hideMenu){
+            if (!hideMenu) {
                 $(".sidebar-toggler").removeClass("hide");
                 $(".page-sidebar-wrapper").removeClass("hide");
                 closeLeftSidebar();
             }
         });
-        
+
         // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function() {scrollFunction()};
+        window.onscroll = function () { scrollFunction() };
 
         function scrollFunction() {
             if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {

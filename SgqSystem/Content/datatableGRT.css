@@ -4,27 +4,25 @@
 .dataTables_scrollBody {
     height: 410px;
 }
-tbody > tr {
-    white-space: nowrap;
-    font-size: 10px;
+.table_GRT tbody > tr {
+    white-space: nowrap !important;
+    font-size: 10px !important;
 }
-thead > tr {
-    white-space: nowrap;
-    font-size: 7.9pt;
+.dataTable thead > tr > th {
+    white-space: nowrap !important;
+    font-size: 7.9pt !important;
 }
-tbody > tr > td {
-    font-size: 7.9pt;
-    line-height: 1.6;
+.table_GRT tbody > tr > td {
+    font-size: 7.9pt !important;
+    line-height: 1.6 !important;
 }
-#linkbutton {
-    display: none
-}
+
 .modal-content {
     margin-top: 70px;
 }
 button.btn.btn-link.custom-button {
-    font-size: 6.7pt;
-    padding: 0px;
+    font-size: 6.7pt !important;
+    padding: 0px !important;
 }
 td.dt-center {
     padding: 0px 30px !important;
@@ -67,13 +65,45 @@ div#resultsApontamentos_info {
 div#resultsApontamentos_paginate {
     font-size: 7.9pt;
 }
+
+#dataTable_wrapper select {
+    padding: 5px;
+    font-size: 7.9pt;
+    border-radius: 0px !important;
+}
+
+div#dataTable_filter {
+    font-size: 7.9pt;
+    padding-left: 6px;
+}
+
+div#dataTable_length {
+    font-size: 7.9pt;
+    padding-left: 6px;
+}
+
+.dt-button-collection {
+    width: 240px !important;
+}
+
+div.dt-button-collection span {
+    font-size: 7.9pt;
+}
+
+div#dataTable_info {
+    font-size: 7.9pt;
+}
+
+div#dataTable_paginate {
+    font-size: 7.9pt;
+}
 a.paginate_button.current {
     border-radius: 0px !important;
     border: none !important;
     background: #337ab7 !important;
 }
 input[type="search"] {
-    border-radius: 0px !important;
+    border-radius: 0px;
     font-size: 7.9pt;
     padding: 4px;
     border: 1px solid #6666667a;
@@ -85,4 +115,7 @@ button#btnSend {
 a.paginate_button:hover {
     background: #337ab7 !important;
     border: 0px !important;
+}
+.RLR_Table tbody > tr > td p{
+    margin: 0px 0;
 }
