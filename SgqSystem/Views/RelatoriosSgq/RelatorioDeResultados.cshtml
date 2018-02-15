@@ -1796,6 +1796,31 @@
             $('#GraficoHistoricoMonitoramento').empty();
 
 
+            SubtitleMonitoramento = "";
+            if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+            }
+            if (enviar.structureId != '' && enviar.structureId != undefined) {
+                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+            }
+            if (enviar.unitId != '' && enviar.unitId != undefined) {
+                SubtitleMonitoramento += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+            }
+            if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+                if (!$('#auditorId :selected').text() == "All")
+                    SubtitleMonitoramento += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+            }
+            if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+            }
+            if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+                SubtitleMonitoramento += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+            }
+            if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+                SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+            }
+            
+            SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 2));
 
             chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
                 credits: {
@@ -2540,6 +2565,36 @@
             enviar['level1IdArr'] = [categoria.level1Id];
             $('#level1Idv').prop("value", categoria.level1Id).trigger('change');
         }
+
+
+        Subtitle = "";
+        if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+        }
+        if (enviar.structureId != '' && enviar.structureId != undefined) {
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+        }
+        if (enviar.unitId != '' && enviar.unitId != undefined) {
+            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+        }
+        if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+            if (!$('#auditorId :selected').text() == "All")
+                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+        }
+        if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+        }
+        if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+        }
+        if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+        }
+        if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+        }
+        Subtitle = Subtitle.substring(0, (Subtitle.length - 2));
+
 
         //enviar['level3Id'];
         //enviar['level2Id'];

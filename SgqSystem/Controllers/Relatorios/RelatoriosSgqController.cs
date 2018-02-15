@@ -25,8 +25,6 @@ namespace SgqSystem.Controllers
         private FormularioParaRelatorioViewModel form;
 
 
-
-
         public RelatoriosSgqController(IRelatorioColetaDomain relatorioColetaDomain)
         {
 
@@ -1080,12 +1078,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null";
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null ";
 
 
             //Dados das colunas do corpo da tabela de dados central
@@ -1109,13 +1107,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
-
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
                   "\n GROUP BY Reg.Name, PP1.Name" +
                   "\n --ORDER BY 1, 2";
 
@@ -1143,12 +1140,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
                     "\n  WHERE 1 = 1 " +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
 
                   "\n GROUP BY PP1.Name " +
                   "\n --ORDER BY 1";
@@ -1176,12 +1173,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
 
                   "\n GROUP BY Reg.Name " +
                   "\n --ORDER BY 1";
@@ -1209,12 +1206,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
 
                   "\n";
 
@@ -1236,12 +1233,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S  with (nolock)" +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
                     "\n  WHERE 1 = 1 " +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
                     "\n GROUP BY PP1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -2244,15 +2241,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
 
                     "\n ORDER BY 1";
 
@@ -2278,15 +2275,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY PP1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
@@ -2314,15 +2311,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY PP1.Name " +
                   "\n --ORDER BY 1";
@@ -2350,15 +2347,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
@@ -2386,15 +2383,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -2416,15 +2413,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY PP1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -3373,7 +3370,7 @@ namespace SgqSystem.Controllers
 
             if (form.clusterGroupId > 0)
             {
-                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+           whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
             }
 
             if (form.clusterSelected_Id > 0)
@@ -3427,14 +3424,14 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    " "+   whereClusterGroup +
+                    " "+   whereCluster +
+                    " "+   whereStructure +
+                    " "+   whereCriticalLevel +
+                    " "+   whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
                     "\n where Reg.ParStructureParent_Id = 1 " +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                     "\n ORDER BY 1";
@@ -3461,15 +3458,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    " " + whereClusterGroup +
+                    " " + whereCluster +
+                    " " + whereStructure +
+                    " " + whereCriticalLevel +
+                    " " + whereUnit +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n GROUP BY P1.Name, Reg.Name " +
                   "\n --ORDER BY 1, 2";
@@ -3497,15 +3494,14 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
-                    //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    " " + whereClusterGroup +
+                    " " + whereCluster +
+                    " " + whereStructure +
+                    " " + whereCriticalLevel +
+                    " " + whereUnit +
+                    //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
@@ -3533,16 +3529,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
-                    //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                    " " + whereClusterGroup +
+                    " " + whereCluster +
+                    " " + whereStructure +
+                    " " + whereCriticalLevel +
+                    " " + whereUnit +
+                    //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                   "\n GROUP BY Reg.Name " +
                   "\n --ORDER BY 1";
 
@@ -3569,15 +3564,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n where Reg.ParStructureParent_Id = 1 " +
+                    " " + whereClusterGroup +
+                    " " + whereCluster +
+                    " " + whereStructure +
+                    " " + whereCriticalLevel +
+                    " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
-                    "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n";
 
@@ -3599,15 +3594,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n where Reg.ParStructureParent_Id = 1 " +
+                    " " + whereClusterGroup +
+                    " " + whereCluster +
+                    " " + whereStructure +
+                    " " + whereCriticalLevel +
+                    " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
-                    "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                     "\n GROUP BY P1.Name";
 
@@ -4611,15 +4606,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n WHERE 1=1 "+
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
-
-            "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
                     "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
@@ -4644,15 +4639,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n WHERE 1=1 "+
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
-
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
 
@@ -4679,15 +4674,16 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n WHERE 1=1 "+
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
 
@@ -4714,15 +4710,16 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n  WHERE 1=1 " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
 
@@ -4749,15 +4746,16 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n  WHERE 1=1 " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -4779,15 +4777,16 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
+                    "\n  WHERE 1=1  " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -5790,15 +5789,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE C.Initials = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
                     "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
@@ -5823,15 +5822,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE C.Initials = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
 
@@ -5858,15 +5857,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE C.Initials = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
 
@@ -5893,15 +5892,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE C.Initials = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
 
@@ -5928,15 +5927,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE C.Initials = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -5958,15 +5957,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE C.Initials = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -6915,7 +6914,7 @@ namespace SgqSystem.Controllers
 
             if (form.clusterGroupId > 0)
             {
-                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+           whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
             }
 
             if (form.clusterSelected_Id > 0)
@@ -6969,15 +6968,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
                     "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
@@ -7002,15 +7001,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
 
@@ -7037,15 +7036,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
 
@@ -7072,15 +7071,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
 
@@ -7107,15 +7106,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -7137,15 +7136,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -8095,7 +8094,7 @@ namespace SgqSystem.Controllers
 
             if (form.clusterGroupId > 0)
             {
-                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+           whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
             }
 
             if (form.clusterSelected_Id > 0)
@@ -8149,15 +8148,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
                     "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
@@ -8182,15 +8181,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
 
@@ -8217,15 +8216,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
 
@@ -8252,15 +8251,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
 
@@ -8287,15 +8286,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -8317,15 +8316,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     //"\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -9275,7 +9274,7 @@ namespace SgqSystem.Controllers
 
             if (form.clusterGroupId > 0)
             {
-                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+           whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
             }
 
             if (form.clusterSelected_Id > 0)
@@ -9329,15 +9328,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
 
                     "\n ORDER BY 1";
 
@@ -9363,15 +9362,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
@@ -9399,15 +9398,14 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
-
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
@@ -9435,15 +9433,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
@@ -9471,15 +9469,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -9501,15 +9499,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -10458,7 +10456,7 @@ namespace SgqSystem.Controllers
 
             if (form.clusterGroupId > 0)
             {
-                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+           whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
             }
 
             if (form.clusterSelected_Id > 0)
@@ -10511,13 +10509,13 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null";
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null ";
 
 
             //Dados das colunas do corpo da tabela de dados central
@@ -10541,13 +10539,13 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
 
                   "\n GROUP BY Reg.Name, P1.Name" +
                   "\n --ORDER BY 1, 2";
@@ -10576,12 +10574,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n  WHERE 1 = 1 " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null" +
 
                   "\n GROUP BY P1.Name " +
@@ -10610,13 +10608,13 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
 
                   "\n GROUP BY Reg.Name " +
                   "\n --ORDER BY 1";
@@ -10644,13 +10642,13 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
 
                   "\n";
 
@@ -10672,12 +10670,12 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n  WHERE 1 = 1 " +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null " +
                     "\n GROUP BY P1.Name";
 
@@ -11679,15 +11677,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
 
                     "\n ORDER BY 1";
 
@@ -11713,15 +11711,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " "+ whereClusterGroup +
+                     " "+ whereCluster +
+                     " "+ whereStructure +
+                     " "+ whereCriticalLevel +
+                     " "+ whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
@@ -11749,15 +11747,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                      " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
@@ -11785,15 +11783,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+               " "+  whereClusterGroup +
+               " "+ whereCluster +
+                  " "+   whereStructure +
+                  " "+   whereCriticalLevel +
+                    whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n GROUP BY C.Initials " +
                   "\n --ORDER BY 1";
@@ -11821,15 +11819,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+               " "+  whereClusterGroup +
+               " "+ whereCluster +
+                  " "+   whereStructure +
+                  " "+   whereCriticalLevel +
+                    whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -11851,15 +11849,15 @@ namespace SgqSystem.Controllers
 
                     "\n LEFT JOIN #SCORE S " +
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                     " " + whereClusterGroup +
+                     " " + whereCluster +
+                     " " + whereStructure +
+                     " " + whereCriticalLevel +
+                     " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
