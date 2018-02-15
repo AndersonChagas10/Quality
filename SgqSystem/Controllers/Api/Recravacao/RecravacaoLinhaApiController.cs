@@ -64,27 +64,27 @@ namespace SgqSystem.Controllers.Api
 
                     int? recravacaoId = recravacoes?.FirstOrDefault()?.GetValue("Id").Value<int>();
 
-                    var recravacaoJson = recravacoes.FirstOrDefault();
+                    //var recravacaoJson = recravacoes.FirstOrDefault();
 
-                    if (recravacaoId != null)
-                    {
-                        List<JObject> latas = QueryNinja(db, string.Format("SELECT * FROM RecravacaoLataJson where RecravacaoJson_Id = {0}", recravacaoId)).ToList();
+                    //if (recravacaoId != null)
+                    //{
+                    //    List<JObject> latas = QueryNinja(db, string.Format("SELECT * FROM RecravacaoLataJson where RecravacaoJson_Id = {0}", recravacaoId)).ToList();
 
-                        horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
-                            JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int>();
+                    //    horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
+                    //        JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int>();
 
-                        foreach (var lata in latas)
-                        {
-                            DateTime? dataRetirada = String.IsNullOrEmpty((lata)?.GetValue("HoraDaRetiradaDaLata")?.ToString()) ? null :
-                                    ((JObject)lata).GetValue("HoraDaRetiradaDaLata").Value<DateTime?>();
+                    //    foreach (var lata in latas)
+                    //    {
+                    //        DateTime? dataRetirada = String.IsNullOrEmpty((lata)?.GetValue("HoraDaRetiradaDaLata")?.ToString()) ? null :
+                    //                ((JObject)lata).GetValue("HoraDaRetiradaDaLata").Value<DateTime?>();
 
-                            if (dataRetirada != null)
-                            {
-                                ultimaLataRetirada = ultimaLataRetirada == null
-                                    ? dataRetirada : (dataRetirada > ultimaLataRetirada ? dataRetirada : ultimaLataRetirada);
-                            }
-                        }
-                    }
+                    //        if (dataRetirada != null)
+                    //        {
+                    //            ultimaLataRetirada = ultimaLataRetirada == null
+                    //                ? dataRetirada : (dataRetirada > ultimaLataRetirada ? dataRetirada : ultimaLataRetirada);
+                    //        }
+                    //    }
+                    //}
 
                     ultimaLataRetirada = ultimaLataRetirada?.AddHours(-2);
 
