@@ -2016,4 +2016,22 @@
   <data name="waiting_upper" xml:space="preserve">
     <value>PENDENTE</value>
   </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Valido Apartir De</value>
+  </data>
+  <data name="actives" xml:space="preserve">
+    <value>Ativos</value>
+  </data>
+  <data name="active_clusters" xml:space="preserve">
+    <value>Processos Ativos</value>
+  </data>
+  <data name="active_goals" xml:space="preserve">
+    <value>Metas Ativas</value>
+  </data>
+  <data name="to_manager" xml:space="preserve">
+    <value>Gerenciar</value>
+  </data>
+  <data name="without" xml:space="preserve">
+    <value>Sem</value>
+  </data>
 </root>

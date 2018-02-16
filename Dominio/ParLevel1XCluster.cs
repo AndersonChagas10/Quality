@@ -22,6 +22,7 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> ParCriticalLevel_Id { get; set; }
+        public Nullable<System.DateTime> EffectiveDate { get; set; }
     
         public virtual ParCluster ParCluster { get; set; }
         public virtual ParCriticalLevel ParCriticalLevel { get; set; }

@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -165,6 +165,33 @@ namespace Resources {
         internal static string action_required {
             get {
                 return ResourceManager.GetString("action_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actives.
+        /// </summary>
+        internal static string actives {
+            get {
+                return ResourceManager.GetString("actives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Clusters.
+        /// </summary>
+        internal static string active_clusters {
+            get {
+                return ResourceManager.GetString("active_clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Goals.
+        /// </summary>
+        internal static string active_goals {
+            get {
+                return ResourceManager.GetString("active_goals", resourceCulture);
             }
         }
         
@@ -664,7 +691,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CEP Recortes.
+        ///   Looks up a localized string similar to CEP Matéria Prima.
         /// </summary>
         internal static string cep_recortes {
             get {
@@ -1722,6 +1749,15 @@ namespace Resources {
         internal static string edit_user {
             get {
                 return ResourceManager.GetString("edit_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Effective Date.
+        /// </summary>
+        internal static string effectiveDate {
+            get {
+                return ResourceManager.GetString("effectiveDate", resourceCulture);
             }
         }
         
@@ -6154,6 +6190,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Manager.
+        /// </summary>
+        internal static string to_manager {
+            get {
+                return ResourceManager.GetString("to_manager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trying Again.
         /// </summary>
         internal static string trying_again {
@@ -6672,6 +6717,15 @@ namespace Resources {
         internal static string y {
             get {
                 return ResourceManager.GetString("y", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Without.
+        /// </summary>
+        internal static string without {
+            get {
+                return ResourceManager.GetString("without", resourceCulture);
             }
         }
         

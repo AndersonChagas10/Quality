@@ -33,8 +33,8 @@
         },
         adiciona: function (o, idTable, tdsName) {
 
-            
-           
+
+
 
             var tr = "";
             var objData = {};
@@ -161,13 +161,18 @@
             else if ($(e).parents('#level1_cluster_accordion').length) {
                 crudNxN.modalAlterarCluster(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                    var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
-                    $(e).parents('tr').removeData();
-                    $(e).parents('tr').data(editado);
-                    $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
-                    $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
-                    $($(e).parents('tr').find('td')[2]).html(editado.Points)//
-                    $('#crudNxNEdit').modal('hide');
+
+                    /*Valida se pode criar o objeto*/
+                    if (ClusterL1.veifyAdd('crudNxNEdit')) {
+                        var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.Points)//
+                        $('#crudNxNEdit').modal('hide');
+                    }
                 });
             }
                 /*Grupo L2*/
@@ -226,7 +231,8 @@
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.PercentValue)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.EffectiveDate)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.PercentValue)//
                         $('#crudNxNEdit').modal('hide');
                     }
 
@@ -277,7 +283,7 @@
 
                 });
             }
-            
+
 
             $('#crudNxNEdit').modal();
 
@@ -381,6 +387,8 @@
 
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #percentVal').val(obj.PercentValue);
+            $('#crudNxNEdit #effectiveDateMeta').val(obj.EffectiveDate);
+
             $('#crudNxNEdit #metaCompany').attr("disabled", true);
             if (obj.ParCompany_Id > 0)
                 $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
@@ -442,7 +450,7 @@
             $('#crudNxNEdit #myModalLabel').html($('#tablePeso').attr('nameModal'));
         },
 
-        modalAlterarMeta: function(obj) {
+        modalAlterarMeta: function (obj) {
             var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
@@ -568,13 +576,14 @@
             $('#crudNxNEdit #myModalLabel').html($('#tableClusters').attr('nameModal'));
             $('#crudNxNEdit #valueCluster').val(obj.ParCluster_Id).attr('disabled', true);/*Preenche*/
             $('#crudNxNEdit #valCrit').val(obj.ParCriticalLevel_Id);/*Preenche*/
+            $('#crudNxNEdit #effectiveDate').val(obj.EffectiveDate);/*Preenche*/
             $('#crudNxNEdit #pontosCluster').val(obj.Points);/*Preenche*/
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
         },
         retornaObjetoAlteradoCluster: function (obj) {
             /*Valida se pode criar o objeto*/
-            ClusterL1.veifyAdd('crudNxNEdit')
+            //ClusterL1.veifyAdd('crudNxNEdit')
             ClusterL1.getObjAdd('crudNxNEdit', obj);
             return obj;
         },
