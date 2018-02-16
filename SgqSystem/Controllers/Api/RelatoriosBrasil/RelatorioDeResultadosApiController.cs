@@ -3423,7 +3423,7 @@ FROM (SELECT
 
             if (form.unitId > 0)
             {
-                whereUnit = $@"AND C.Id = { form.unitId }";
+                whereUnit = $@" AND C.Id = { form.unitId }";
             }
 
             if (form.criticalLevelId > 0)
@@ -3446,7 +3446,7 @@ FROM (SELECT
                 "\n   ,'a4' as UnidadeName            " +
                 "\n   ,20.0 AS procentagemNc          " +
                 "\n   ,10.0 AS Meta                   " +
-                "\n   ,CAST(ISNULL(case when sum(av) is null or sum(av) = 0 then '0'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end, 0) AS DECIMAL(10,2)) AS nc        " +
+                "\n   ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end AS nc        " +
                                  //case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end
                 "\n   ,50.0 as av                     " +
                 "\n   ,max(mesData) as [date]                 " +
@@ -3463,14 +3463,15 @@ FROM (SELECT
      LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
   ON PP.ParGroupParLevel1_Id = PP1.Id
      LEFT JOIN #SCORE S  with (nolock)
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
   WHERE 1 = 1 
-  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null "+
+  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
                     whereClusterGroup +
                     whereCluster +
                     whereStructure +
                     whereCriticalLevel +
-                    whereUnit +
+                    // whereUnit +
                     "\n  ORDER BY 10";
 
             #endregion

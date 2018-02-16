@@ -1689,7 +1689,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 @"
      SELECT
-    @valorEmpresa = case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end
+    @valorEmpresa = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end
         FROM ParStructure Reg  with(nolock)
      LEFT JOIN ParCompanyXStructure CS  with(nolock)
   ON CS.ParStructure_Id = Reg.Id
@@ -1702,11 +1702,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
      LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
   ON PP.ParGroupParLevel1_Id = PP1.Id
      LEFT JOIN #SCORE S  with (nolock)
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
   WHERE 1 = 1
   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
-
-"+
+  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+" +
 
 
 ////query 2 retorna o valor da regional       
@@ -1745,7 +1745,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  { whereCluster }
  { whereStructure }
  { whereCriticalLevel }
- { whereUnit }
+ -- { whereUnit }
  GROUP BY Reg.Name , Reg.id
  ORDER BY 4 DESC ";
 
@@ -1852,7 +1852,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
      whereCluster +
      whereStructure  +
      whereCriticalLevel +
-     whereUnit +
+     // whereUnit +
 "\n  GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials ORDER BY 2 DESC ";
 
             using (var db = new SgqDbDevEntities())
