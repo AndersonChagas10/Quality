@@ -184,7 +184,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var Subtitle = "";
 
@@ -233,7 +233,7 @@
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
         //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
-            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
         }
 
         //if (enviar['unitId'] > 0) {
@@ -288,9 +288,9 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↑</b></i></p>'
+                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></p>'
                 else
-                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↓</b></i></p>';
+                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></p>';
                 counter++;
             }
             var table = $('#DataTable').empty().DataTable({
@@ -302,6 +302,8 @@
                     { title: Resources("level3"), mData: "TarefaName" },
                     { title: "Av", mData: "Av" },
                     { title: Resources("nonconformity"), mData: "Nc" },
+                    { title: "Av Com Peso", mData: "avComPeso" },
+                    { title: "Nc Com Peso", mData: "ncComPeso" },
                     {
                         title: Resources("percentNon_conformities"), mData: "Pc",
                         render: $.fn.dataTable.render.number(',', '.', 2, '')
@@ -657,7 +659,8 @@
             //fazGambipraMenosCem(porc);
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
-            $('#GraficoPeriodoSemUnidade').empty().highcharts({
+            GraficoPeriodoSemUnidade = Highcharts.chart('GraficoPeriodoSemUnidade', {
+            //$('#GraficoPeriodoSemUnidade').empty().highcharts({
                 credits: {
                     enabled: false
                 },
@@ -870,6 +873,7 @@
                 }
             },
             series: [{
+                visible: false,
                 name: 'NC',
                 color: 'rgba(77,143,189,1)',
                 data: nc,
@@ -905,7 +909,7 @@
                     format: '{point:.2f}',
                 }
             }, {
-                visible: false,
+                visible: true,
                 name: '% NC',
                 color: 'rgba(240,124,0,1)',
                 data: porc,
@@ -1242,7 +1246,7 @@
     function GerarGraficoHistoricoUnidade(data) {
 
         var porc = [];
-        
+
         if (data.length > 0) {
 
 
@@ -1792,6 +1796,31 @@
             $('#GraficoHistoricoMonitoramento').empty();
 
 
+            SubtitleMonitoramento = "";
+            if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+            }
+            if (enviar.structureId != '' && enviar.structureId != undefined) {
+                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+            }
+            if (enviar.unitId != '' && enviar.unitId != undefined) {
+                SubtitleMonitoramento += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+            }
+            if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+                if (!$('#auditorId :selected').text() == "All")
+                    SubtitleMonitoramento += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+            }
+            if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+            }
+            if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+                SubtitleMonitoramento += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+            }
+            if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+                SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+            }
+            
+            SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 2));
 
             chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
                 credits: {
@@ -2537,6 +2566,36 @@
             $('#level1Idv').prop("value", categoria.level1Id).trigger('change');
         }
 
+
+        Subtitle = "";
+        if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+        }
+        if (enviar.structureId != '' && enviar.structureId != undefined) {
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+        }
+        if (enviar.unitId != '' && enviar.unitId != undefined) {
+            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+        }
+        if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+            if (!$('#auditorId :selected').text() == "All")
+                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+        }
+        if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+        }
+        if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+        }
+        if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+        }
+        if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+        }
+        Subtitle = Subtitle.substring(0, (Subtitle.length - 2));
+
+
         //enviar['level3Id'];
         //enviar['level2Id'];
         //enviar['level1Id'];
@@ -2586,10 +2645,14 @@
             graficoPeriodo.destroy();
             graficoPeriodo = null;
         }
-        $('#GraficoPeriodoSemUnidade').empty();
+        if (GraficoPeriodoSemUnidade && GraficoPeriodoSemUnidade.axes) {
+            GraficoPeriodoSemUnidade.destroy();
+            GraficoPeriodoSemUnidade = null;
+        }
+        //$('#GraficoPeriodoSemUnidade').empty();
         $('#GraficoHistoricoIndicador').empty();
         $('#GraficoHistoricoMonitoramento').empty();
-        $('#GraficoPeriodoSemUnidade').empty();
+        //$('#GraficoPeriodoSemUnidade').empty();
         $('.totalNC').hide();
         $('#Titulo').html("");
         $('#TituloTabela').html("");
@@ -2685,6 +2748,6 @@
         });
 
 
-    </script>
+</script>
 
 }
