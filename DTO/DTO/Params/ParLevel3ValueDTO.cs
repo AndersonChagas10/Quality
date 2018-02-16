@@ -13,6 +13,8 @@ namespace DTO.DTO.Params
         public int? ParLevel3BoolFalse_Id { get; set; }
         public int? ParLevel3BoolTrue_Id { get; set; }
         public int? ParCompany_Id { get; set; }
+        public int? ParLevel1_Id { get; set; }
+        public int? ParLevel2_Id { get; set; }
         public int? ParMeasurementUnit_Id { get; set; }
         public bool? AcceptableValueBetween { get; set; }
 
@@ -28,6 +30,8 @@ namespace DTO.DTO.Params
         //public ParCompanyDTO parCompany { get; set; }
         //public ParLevel3DTO parLevel3 { get; set; }
         public ParCompanyDTO ParCompany { get; set; }
+        public ParLevel1DTO ParLevel1 { get; set; }
+        public ParLevel2DTO ParLevel2 { get; set; }
         public ParLevel3BoolFalseDTO ParLevel3BoolFalse { get; set; }
         public ParLevel3BoolTrueDTO ParLevel3BoolTrue { get; set; }
         public ParLevel3InputTypeDTO ParLevel3InputType { get; set; }
@@ -57,6 +61,12 @@ namespace DTO.DTO.Params
 
             if (ParCompany_Id <= 0)
                 ParCompany_Id = null;
+
+            if (ParLevel1_Id <= 0)
+                ParLevel1_Id = null;
+
+            if (ParLevel2_Id <= 0)
+                ParLevel2_Id = null;
 
         }
 

@@ -242,18 +242,42 @@
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.ParCompany_Name)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.ParMeasurementUnit_Name)//
-                        $($(e).parents('tr').find('td')[3]).html(editado.IntervalMin)//
-                        $($(e).parents('tr').find('td')[4]).html(editado.IntervalMax)//
-                        $($(e).parents('tr').find('td')[5]).html(editado.AcceptableValueBetween_Name)//
-                        $($(e).parents('tr').find('td')[6]).html(editado.ParLevel3BoolFalse_Name)//
-                        $($(e).parents('tr').find('td')[7]).html(editado.ParLevel3BoolTrue_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.ParCompany_Name)//
+                        $($(e).parents('tr').find('td')[4]).html(editado.ParMeasurementUnit_Name)//
+                        $($(e).parents('tr').find('td')[5]).html(editado.IntervalMin)//
+                        $($(e).parents('tr').find('td')[6]).html(editado.IntervalMax)//
+                        $($(e).parents('tr').find('td')[7]).html(editado.AcceptableValueBetween_Name)//
+                        $($(e).parents('tr').find('td')[8]).html(editado.ParLevel3BoolFalse_Name)//
+                        $($(e).parents('tr').find('td')[9]).html(editado.ParLevel3BoolTrue_Name)//
                         $('#crudNxNEdit').modal('hide');
                     }
 
                 });
             }
+                /*Configuracao Amostra\Avaliacoes L3*/
+            else if ($(e).parents('#level3_AvAmostra_accordion').length) {
+                console.log(obj);
+                crudNxN.modalAlterarAvAmL3(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+
+                    if (AvAm3.veifyAdd('crudNxNEdit')) {//
+                        var editado = AvAm3.getObjAdd('crudNxNEdit', obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParCompany_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.EvaluationInterval)//
+                        $($(e).parents('tr').find('td')[4]).html(editado.EvaluationNumber)//
+                        $($(e).parents('tr').find('td')[5]).html(editado.SampleNumber)//
+                        $('#crudNxNEdit').modal('hide');
+                    }
+
+                });
+            }
+            
 
             $('#crudNxNEdit').modal();
 
@@ -263,9 +287,18 @@
         modalAlterarLevel3Value: function (obj) {
             var divDeEdicao;
 
-            divDeEdicao = $('#companyValueL3 > td').clone();
+            divDeEdicao = $('#companyValueL3 > td').parent().clone();
             $(divDeEdicao).show();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            divDeEdicao = $('.VinculoParLevel').clone();
+            $(divDeEdicao).show();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            /*if (obj.ParLevel1_Id > 0)
+                $('#crudNxNEdit #parLevel1Select2').val(obj.ParLevel1_Id).change();
+            if (obj.ParLevel2_Id > 0)
+                $('#crudNxNEdit #parLevel2Select2').val(obj.ParLevel2_Id).change();*/
 
             if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 4) {
 
@@ -329,11 +362,13 @@
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
             }
 
-            divDeEdicao = $('#selectTipoInput');
+            divDeEdicao = $('#selectTipoInput').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #selectTipoInput').val(obj.ParLevel3InputType_Id).change().hide();
 
-            $('#crudNxNEdit #selectUnidadeParL3Value').attr("disabled", true).parents('tr').show();
+            $('#crudNxNEdit #selectUnidadeParL3Value').attr("disabled", true).parents('tr').hide();
+            //$('#crudNxNEdit #parLevel1Select2').attr("disabled", true).parents('tr').show();
+            //$('#crudNxNEdit #parLevel2Select2').attr("disabled", true).parents('tr').show();
             $('#crudNxNEdit > div > div > div.modal-body').show();
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableLevel3Value').attr('nameModal'));
@@ -365,6 +400,29 @@
             $('#crudNxNEdit #avAmCompany').attr("disabled", true);
             if (obj.companyId > 0)
                 $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
+
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
+        },
+        modalAlterarAvAmL3: function (obj) {
+            var divDeEdicao = $('#level3_AvAmostra_accordion > div  table.table-erp').clone();
+
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            $('#crudNxNEdit #avaliacao').val(obj.EvaluationNumber);
+            $('#crudNxNEdit #amostra').val(obj.SampleNumber);
+            $('#crudNxNEdit #intervaloParaAvaliar').val(obj.EvaluationInterval);
+            $('#crudNxNEdit #avAmCompany').attr("disabled", true);
+            if (obj.ParCompany_Id > 0)
+                $('#crudNxNEdit #avAmCompany').val(obj.ParCompany_Id).change();
+
+            $('#crudNxNEdit #parLevel1Select2').attr("disabled", true);
+            if (obj.ParLevel1_Id > 0)
+                $('#crudNxNEdit #parLevel1Select2').val(obj.ParLevel1_Id).change();
+
+            $('#crudNxNEdit #parLevel2Select2').attr("disabled", true);
+            if (obj.ParLevel2_Id > 0)
+                $('#crudNxNEdit #parLevel2Select2').val(obj.ParLevel2_Id).change();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));

@@ -184,6 +184,11 @@ div.login div.form-signin h2.form-signin-heading{
         height:0px;
     }
 
+th.options{
+    width:120px;
+}
+    }
+
 div.loader *{
     display:none !important;
 }

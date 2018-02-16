@@ -200,6 +200,15 @@
         <AssociationConnector Association="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" />
         <AssociationConnector Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField" />
+        <AssociationConnector Association="SgqDbModel.FK__Correctiv__Email__554B8353" />
+        <AssociationConnector Association="SgqDbModel.FK__Deviation__Email__53633AE1" />
+        <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__0BA79404" />
+        <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__1EBA6878" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3EvaluationSample" Width="1.5" PointX="27.875" PointY="45.5" />
+        <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParCo__4C813328" />
+        <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__4D755761" />
+        <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__4E697B9A" />
+        <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__4F5D9FD3" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

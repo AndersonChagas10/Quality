@@ -14,6 +14,13 @@ namespace Dominio
     
     public partial class EmailContent
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public EmailContent()
+        {
+            this.CorrectiveAction = new HashSet<CorrectiveAction>();
+            this.Deviation = new HashSet<Deviation>();
+        }
+    
         public int Id { get; set; }
         public Nullable<System.DateTime> AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
@@ -25,5 +32,10 @@ namespace Dominio
         public Nullable<bool> IsBodyHtml { get; set; }
         public string From { get; set; }
         public string Subject { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Deviation> Deviation { get; set; }
     }
 }

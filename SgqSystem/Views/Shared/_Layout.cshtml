@@ -576,7 +576,7 @@
         var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
         var flag_beforeunload = false;
 
-        var pressedCtrl = false;
+        @*var pressedCtrl = false;
         document.onkeydown=function(e){
             var winObj = checkEventObj(e);
             var intCtrlKey = winObj.ctrlKey;
@@ -602,7 +602,7 @@
                     return "Write something clever here...";
                 }
             }
-        }
+        }*@
         function checkEventObj ( _event_ ){
             // --- IE explorer
             if ( window.event )

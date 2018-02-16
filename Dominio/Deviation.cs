@@ -28,5 +28,8 @@ namespace Dominio
         public string DeviationMessage { get; set; }
         public string Status { get; set; }
         public string SendDate { get; set; }
+        public Nullable<int> EmailContent_Id { get; set; }
+    
+        public virtual EmailContent EmailContent { get; set; }
     }
 }

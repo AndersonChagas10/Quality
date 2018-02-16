@@ -655,7 +655,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CEP Matéria Prima.
+        ///   Looks up a localized string similar to CEP Recortes.
         /// </summary>
         internal static string cep_recortes {
             get {
@@ -4845,6 +4845,15 @@ namespace Resources {
         internal static string sample {
             get {
                 return ResourceManager.GetString("sample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample Interval.
+        /// </summary>
+        internal static string sampleInterval {
+            get {
+                return ResourceManager.GetString("sampleInterval", resourceCulture);
             }
         }
         

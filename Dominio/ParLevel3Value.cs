@@ -27,6 +27,8 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<int> ParLevel1_Id { get; set; }
+        public Nullable<int> ParLevel2_Id { get; set; }
     
         public virtual ParLevel3 ParLevel3 { get; set; }
         public virtual ParLevel3BoolFalse ParLevel3BoolFalse { get; set; }
@@ -34,5 +36,7 @@ namespace Dominio
         public virtual ParLevel3InputType ParLevel3InputType { get; set; }
         public virtual ParMeasurementUnit ParMeasurementUnit { get; set; }
         public virtual ParCompany ParCompany { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
+        public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }
