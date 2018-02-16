@@ -22,21 +22,22 @@
                     </tr>
                 </table>
                 <table class="table-erp">
-                    <tr class="row">
-                        @*<tr class="row VinculoParLevel alert-info" style="">
-                                <td class="td-erp" colspan="0">
-                                    <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
-                                    <div>
-                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
-                                    </div>
-                                </td>
-                                <td class="td-erp">
-                                    <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
-                                    <div>
-                                        @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
-                                    </div>
-                                </td>
-                            </tr>*@
+                    <tr class="row VinculoParLevel alert-info" style="">
+                        <td class="td-erp" colspan="0">
+                            <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
+                            <div>
+                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@ , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
+                            </div>
+                        </td>
+                        <td class="td-erp">
+                            <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
+                            <div>
+                                @Html.DropDownList("paramsDto.parLevel2Selected",
+                               new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }
+                               @*Model.paramsDdl.DdlparLevel2*@, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2TipoDadosEntrada", style = "width: 100%" })
+                            </div>
+                        </td>
+                    </tr>
                     <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>", style: "min-width:100px")
                         @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top, style: "min-width:100px")
@@ -112,11 +113,11 @@
             var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
             var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
 
-            var parLevel1Id = $(' #parLevel1Select2 :selected').val();
-            var parLevel1Name = $(' #parLevel1Select2 :selected').text();
+            var parLevel1Id = $(' #parLevel1Select2TipoDadosEntrada :selected').val();
+            var parLevel1Name = $(' #parLevel1Select2TipoDadosEntrada :selected').text();
 
-            var parLevel2Id = $(' #parLevel2Select2 :selected').val();
-            var parLevel2Name = $(' #parLevel2Select2 :selected').text();
+            var parLevel2Id = $(' #parLevel2Select2TipoDadosEntrada :selected').val();
+            var parLevel2Name = $(' #parLevel2Select2TipoDadosEntrada :selected').text();
 
             var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
             var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
@@ -251,8 +252,8 @@
             var companySelected = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').val();//
             var display = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').text();//
 
-            var level1Selected = $(' #parLevel1Select2 :selected').val();//
-            var displayLevel1Selected = $(' #parLevel1Select2 :selected').text();//
+            var level1Selected = $(' #parLevel1Select2TipoDadosEntrada :selected').val();//
+            var displayLevel1Selected = $(' #parLevel1Select2TipoDadosEntrada :selected').text();//
 
             var level2Selected = $(' #parLevel2Select2 :selected').val();//
             var displayLevel2Selected = $(' #parLevel2Select2 :selected').text();//
@@ -410,6 +411,15 @@
                         crudNxN.adiciona(o, id, tdNamess);
                 });
             }
+
+            $('#parLevel1Select2TipoDadosEntrada').prepend($("<option></option>")
+                    .attr("value",$('#parLevel1Select2 :selected').val())
+                    .text($('#parLevel1Select2 :selected').text()));
+            $('#parLevel1Select2TipoDadosEntrada').val($('#parLevel1Select2 :selected').val());
+            $('#parLevel2Select2TipoDadosEntrada').prepend($("<option></option>")
+                    .attr("value",$('#parLevel2Select2 :selected').val())
+                    .text($('#parLevel2Select2 :selected').text()));
+            $('#parLevel2Select2TipoDadosEntrada').val($('#parLevel2Select2 :selected').val());
         },
         /*Fim Setup*/
         adiciona: function (e) {
@@ -579,6 +589,7 @@
             $('.ParBinarios').hide();
 
             $('#companyValueL3').hide();
+            $('.VinculoParLevel').hide();
         }
 
         //Binários
@@ -589,6 +600,7 @@
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
             $('#companyValueL3').fadeIn();
+            $('.VinculoParLevel').fadeIn();
         }
 
         //Numero de defeitos
@@ -663,6 +675,7 @@
             $('.ParBinarios').hide();
             $('.ParIntervalos').hide();
             $('#companyValueL3').show();
+            $('.VinculoParLevel').show();
         }
 
         CorrigirLarguraColunas();
@@ -687,6 +700,7 @@
         $('#selectConforme').val(-1);
         $('#selectNaoConforme').val(-1);
         $('#companyValueL3').fadeIn();
+        $('.VinculoParLevel').fadeIn();
     }
 
     function resetaParDefeitos(){

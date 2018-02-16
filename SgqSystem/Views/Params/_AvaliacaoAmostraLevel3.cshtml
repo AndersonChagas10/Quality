@@ -25,24 +25,24 @@
 
                     <tbody>
 
-                        <tr class="VinculoParLevel alert-info" style="">
+                        <tr class="alert-info" style="">
 
                             @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
                                 , @Html.Label(Resources.Resource.company)
-                                , Table.PosicaoLabel.top, colspan: 3)
+                                , Table.PosicaoLabel.top, colspan: 1)
 
-                            @*<td class="td-erp">
+                            <td class="td-erp">
                                 <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                                 <div>
-                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
+                                    @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2AmostraLevel3", style = "width: 100%" })
                                 </div>
                             </td>
                             <td class="td-erp">
                                 <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
                                 <div>
-                                    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2", style = "width: 100%" })
+                                    @Html.DropDownList("paramsDto.parLevel2Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel2*@, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2AmostraLevel3", style = "width: 100%" })
                                 </div>
-                            </td>*@
+                            </td>
                         </tr>
 
                         <tr>
@@ -140,14 +140,14 @@
                     compName = "@Resources.Resource.all"
                 }
 
-                var ParLevel1_Id = $(' #parLevel1Select2 :selected').val();
-                var ParLevel1_Name = $(' #parLevel1Select2 :selected').text();
+                var ParLevel1_Id = $(' #parLevel1Select2AmostraLevel3 :selected').val();
+                var ParLevel1_Name = $(' #parLevel1Select2AmostraLevel3 :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
                 }
 
-                var ParLevel2_Id = $(' #parLevel2Select2 :selected').val();
-                var ParLevel2_Name = $(' #parLevel2Select2 :selected').text();
+                var ParLevel2_Id = $(' #parLevel2Select2AmostraLevel3 :selected').val();
+                var ParLevel2_Name = $(' #parLevel2Select2AmostraLevel3 :selected').text();
                 if(ParLevel2_Id == "-1"){
                     ParLevel2_Name = "@Resources.Resource.all"
                 }
@@ -208,8 +208,8 @@
             /*Verifica Unidade*/
             console.log('#' + seletorTato + ' @id3 #avAmCompany :selected');
             var companySelected = $('#' + seletorTato + ' @id3 #avAmCompany :selected').val();//
-            var parLevel1Selected = $(' #parLevel1Select2 :selected').val();
-            var parLevel2Selected = $(' #parLevel2Select2 :selected').val();
+            var parLevel1Selected = $(' #parLevel1Select2AmostraLevel3 :selected').val();
+            var parLevel2Selected = $(' #parLevel2Select2AmostraLevel3 :selected').val();
             var display = $('#' + seletorTato + ' @id3 #avAmCompany :selected').text();//
             var exist = $.grep($('#tableAvAmLevel3  tbody  tr  td:nth-child(1)'), function(o, c){
 
@@ -322,6 +322,15 @@
                         crudNxN.adiciona(o,  id, tdNamess);
                 });
             }
+
+            $('#parLevel1Select2AmostraLevel3').prepend($("<option></option>")
+                    .attr("value",$('#parLevel1Select2 :selected').val())
+                    .text($('#parLevel1Select2 :selected').text()));
+            $('#parLevel1Select2AmostraLevel3').val($('#parLevel1Select2 :selected').val());
+            $('#parLevel2Select2AmostraLevel3').prepend($("<option></option>")
+                    .attr("value",$('#parLevel2Select2 :selected').val())
+                    .text($('#parLevel2Select2 :selected').text()));
+            $('#parLevel2Select2AmostraLevel3').val($('#parLevel2Select2 :selected').val());
         },
         /*Fim Setup*/
         adiciona: function(e) {
