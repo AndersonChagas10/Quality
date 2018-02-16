@@ -480,7 +480,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             AND L1Ca.IsActive = 1 " +
+    "\n             -- AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -497,7 +497,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             AND L1Ca.IsActive = 1 " +
+    "\n            -- AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -513,7 +513,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             AND L1Ca.IsActive = 1 " +
+    "\n           --  AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1254,7 +1254,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n             AND L1Ca.IsActive = 1 " +
+     "\n           --  AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1271,7 +1271,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n             AND L1Ca.IsActive = 1 " +
+     "\n           --  AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1287,7 +1287,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n             AND L1Ca.IsActive = 1 " +
+     "\n           --  AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 

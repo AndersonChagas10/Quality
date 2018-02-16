@@ -3042,7 +3042,7 @@ FROM (SELECT
 
    "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-   "\n             AND L1Ca.IsActive = 1 " +
+   "\n           --  AND L1Ca.IsActive = 1 " +
 
    "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -3059,7 +3059,7 @@ FROM (SELECT
 
    "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-   "\n             AND L1Ca.IsActive = 1 " +
+   "\n           --  AND L1Ca.IsActive = 1 " +
 
    "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -3075,7 +3075,7 @@ FROM (SELECT
 
    "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-   "\n             AND L1Ca.IsActive = 1 " +
+   "\n           --  AND L1Ca.IsActive = 1 " +
 
    "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
