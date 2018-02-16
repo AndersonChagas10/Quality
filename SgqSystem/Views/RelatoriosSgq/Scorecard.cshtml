@@ -190,17 +190,17 @@
                         text: '@Resources.Resource.analytical',
                         show: ':hidden'
                     },
-                    {
-                        extend: 'print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
+                    //{
+                    //    extend: 'print',
+                    //    customize: function (win) {
+                    //        $(win.document.body).find('table')
+                    //            .addClass('compact')
+                    //            .css('font-size', 'inherit');
+                    //    },
+                    //    exportOptions: {
+                    //        columns: ':visible'
+                    //    }
+                    //},
                     {
                         extend: 'excelHtml5',
 
@@ -208,7 +208,7 @@
                             columns: ':visible'
                         }
                     },
-                    'pdf',
+                    //'pdf',
                 ]
             });
 
