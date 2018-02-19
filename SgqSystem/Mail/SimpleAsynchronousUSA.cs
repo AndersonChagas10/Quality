@@ -221,6 +221,22 @@ namespace SgqSystem.Mail
 
                             ca.AlertNumber = db.Database.SqlQuery<int>(alertNivelQuery).FirstOrDefault();
 
+                            #region Captura ultimo body do email content enviado
+                            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta =
+                                $@"SELECT  top 1 ec.Body   FROM  CollectionLevel2 cl2                                                 
+                                    INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
+                                    INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND   d.ParCompany_Id = cl2.UnitId
+                                    INNER JOIN EmailContent ec ON ec.Id = ca.EmailContent_Id   
+                                    WHERE                                         
+                                    CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)        
+                                    AND cl2.ParLevel1_Id = { ca.ParLevel1_Id }                                           
+                                    AND cl2.UnitId = { ca.ParCompany_Id }
+                                    AND ca.Id <= { ca.Id }
+                                    order by ec.id desc";
+
+                            var ultimoBodyEmailContent = "<div style='color:red'>"+db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault()+"</div>";
+                            #endregion
+
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
                             var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel1_Id).Name;
                             var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel2_Id).Name;
@@ -243,12 +259,12 @@ namespace SgqSystem.Mail
                             };
 
                             var model = controller.GetCorrectiveActionById(ca.Id);
-                            newMail.Body = subject + "<br><br>" + model.EmailBodyCorrectiveAction;
+                            newMail.Body = subject + "<br><br>" + model.EmailBodyCorrectiveAction + "<br><br>" + ultimoBodyEmailContent;
                             newMail.To = DestinatariosSGQJBSUSAPorAlertaEAssinatura(newMail, ca, model);
                             db.EmailContent.Add(newMail);
                             db.SaveChanges();
 
-                            db.Database.ExecuteSqlCommand("UPDATE CorrectiveAction SET MailProcessed = 1 WHERE Id = " + ca.Id);
+                            db.Database.ExecuteSqlCommand($"UPDATE CorrectiveAction SET MailProcessed = 1, EmailContent_Id = { newMail.Id } WHERE Id = { ca.Id }");
                             db.SaveChanges();
                         }
                     }
