@@ -214,7 +214,7 @@
                         Tipo1,
                         Tipo2,
                         { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"},
-                        { title: "Plataforma", mData: "Platform", "width": "50%"},
+                        { title: "@Resources.Resource.platform", mData: "Platform", "width": "50%"},
                         { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%"},
                         { title: "@Resources.Resource.type", mData: "Type", "width": "50%"}
 
@@ -272,7 +272,7 @@
 
                 new $.fn.dataTable.Buttons(table, {
                     buttons: [
-                        {
+                        @*{
                             extend: 'print',
                             text: '@Resources.Resource.print',
                             customize: function (win) {
@@ -283,7 +283,7 @@
                             exportOptions: {
                                 columns: ':visible'
                             }
-                        },
+                        },*@
                         {
                             extend: 'excelHtml5',
                             text: 'Excel',
@@ -291,13 +291,13 @@
                                 columns: ':visible'
                             }
                         },
-                         {
-                             extend: 'pdf',
-                             text: 'PDF',
-                             exportOptions: {
-                                 columns: ':visible'
-                             }
-                         },
+                         //{
+                         //    extend: 'pdf',
+                         //    text: 'pdf',
+                         //    exportoptions: {
+                         //        columns: ':visible'
+                         //    }
+                         //},
                           {
                               extend: 'colvis',
                               text: '@Resources.Resource.visible_columns',

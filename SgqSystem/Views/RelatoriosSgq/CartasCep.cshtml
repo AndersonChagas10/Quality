@@ -43,6 +43,7 @@
                 $('#level3Id').parent().hide();
             }
         })
+        $('#tipoCEP').change();
 
         $(document).ready(function () {
 
@@ -148,7 +149,7 @@
                         zoomType: 'x,y'
                     },
                     title: {
-                        text: "Carta CEP " + tipoCarta,
+                        text: Resources("letters_cep") + tipoCarta,
                         //x: -20 //center
                     },
 

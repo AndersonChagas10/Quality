@@ -1159,6 +1159,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data.
+        /// </summary>
+        internal static string data {
+            get {
+                return ResourceManager.GetString("data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data already register on company.
         /// </summary>
         internal static string data_already_register_on_company {
@@ -1461,6 +1470,15 @@ namespace Resources {
         internal static string description_failure {
             get {
                 return ResourceManager.GetString("description_failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description has to be between 1 and 300 characters.
+        /// </summary>
+        internal static string description_has_between_1_and_300 {
+            get {
+                return ResourceManager.GetString("description_has_between_1_and_300", resourceCulture);
             }
         }
         
@@ -5799,6 +5817,15 @@ namespace Resources {
         internal static string weight {
             get {
                 return ResourceManager.GetString("weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weighted.
+        /// </summary>
+        internal static string weighted {
+            get {
+                return ResourceManager.GetString("weighted", resourceCulture);
             }
         }
         

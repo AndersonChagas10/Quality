@@ -2355,4 +2355,58 @@
   <data name="without" xml:space="preserve">
     <value>Without</value>
   </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>Description has to be between 1 and 300 characters</value>
+  </data>
+  <data name="apartmentarea" xml:space="preserve">
+    <value>Apartment/Area</value>
+  </data>
+  <data name="check_sheet_per_work" xml:space="preserve">
+    <value>Check sheet for work</value>
+  </data>
+  <data name="construction" xml:space="preserve">
+    <value>construction</value>
+  </data>
+  <data name="data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="defects_per_monitoring_at_tasks" xml:space="preserve">
+    <value>Defects per monitoring at tasks</value>
+  </data>
+  <data name="evolutionary_chart_by_company" xml:space="preserve">
+    <value>Evolutionary Chart by Company</value>
+  </data>
+  <data name="last_two_months_of_the_selected_period" xml:space="preserve">
+    <value>Last two months of the selected period</value>
+  </data>
+  <data name="pavement" xml:space="preserve">
+    <value>Pavement</value>
+  </data>
+  <data name="performance_of_regions_on_Scorecard" xml:space="preserve">
+    <value>Performance of regions on Scorecard</value>
+  </data>
+  <data name="performance_of_units_on_Scorecard" xml:space="preserve">
+    <value>Performance of units on Scorecard</value>
+  </data>
+  <data name="platform" xml:space="preserve">
+    <value>Platform</value>
+  </data>
+  <data name="real" xml:space="preserve">
+    <value>Real</value>
+  </data>
+  <data name="rooms" xml:space="preserve">
+    <value>Rooms</value>
+  </data>
+  <data name="total_nonconformity_by_monitoring" xml:space="preserve">
+    <value>Total nonconformity By Monitoring</value>
+  </data>
+  <data name="towersuburb" xml:space="preserve">
+    <value>Tower/Suburb</value>
+  </data>
+  <data name="type_of_pavement" xml:space="preserve">
+    <value>Type of pavement</value>
+  </data>
+  <data name="weighted" xml:space="preserve">
+    <value>Weighted</value>
+  </data>
 </root>

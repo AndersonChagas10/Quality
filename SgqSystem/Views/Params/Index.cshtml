@@ -425,7 +425,7 @@
         var n = newForm.serialize().toString();
         return false;
     }
-    
+
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
@@ -657,6 +657,7 @@
                     }
                     disableEvry()
                 }).fail(function (e, h, x) {
+                    var $btn = $('#btnSaveNewLevel2');
                     try {
                         closeLoader();
                         $btn.button('reset');
@@ -1143,8 +1144,12 @@
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         closeLoader();
-        @*openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');*@
-        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
+
+        @*try {
+            openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
+        } catch (ex) {
+            openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');
+        }*@
     });
 
     $( document ).ajaxStop(function() {

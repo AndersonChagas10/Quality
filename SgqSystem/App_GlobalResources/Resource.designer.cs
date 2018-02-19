@@ -493,6 +493,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apartment/Area.
+        /// </summary>
+        internal static string apartmentarea {
+            get {
+                return ResourceManager.GetString("apartmentarea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to April.
         /// </summary>
         internal static string april {
@@ -759,6 +768,15 @@ namespace Resources {
         internal static string changing_unit_preferences {
             get {
                 return ResourceManager.GetString("changing_unit_preferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check sheet for work.
+        /// </summary>
+        internal static string check_sheet_per_work {
+            get {
+                return ResourceManager.GetString("check_sheet_per_work", resourceCulture);
             }
         }
         
@@ -1069,6 +1087,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to construction.
+        /// </summary>
+        internal static string construction {
+            get {
+                return ResourceManager.GetString("construction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Controller.
         /// </summary>
         internal static string controller {
@@ -1254,6 +1281,15 @@ namespace Resources {
         internal static string daily_report {
             get {
                 return ResourceManager.GetString("daily_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data.
+        /// </summary>
+        internal static string data {
+            get {
+                return ResourceManager.GetString("data", resourceCulture);
             }
         }
         
@@ -1456,6 +1492,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Defects per monitoring at tasks.
+        /// </summary>
+        internal static string defects_per_monitoring_at_tasks {
+            get {
+                return ResourceManager.GetString("defects_per_monitoring_at_tasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Defects Per Tasks.
         /// </summary>
         internal static string defects_per_tasks {
@@ -1569,6 +1614,15 @@ namespace Resources {
         internal static string description_failure {
             get {
                 return ResourceManager.GetString("description_failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description has to be between 1 and 300 characters.
+        /// </summary>
+        internal static string description_has_between_1_and_300 {
+            get {
+                return ResourceManager.GetString("description_has_between_1_and_300", resourceCulture);
             }
         }
         
@@ -1947,6 +2001,15 @@ namespace Resources {
         internal static string evolutional {
             get {
                 return ResourceManager.GetString("evolutional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evolutionary Chart by Company.
+        /// </summary>
+        internal static string evolutionary_chart_by_company {
+            get {
+                return ResourceManager.GetString("evolutionary_chart_by_company", resourceCulture);
             }
         }
         
@@ -2838,6 +2901,15 @@ namespace Resources {
         internal static string last {
             get {
                 return ResourceManager.GetString("last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last two months of the selected period.
+        /// </summary>
+        internal static string last_two_months_of_the_selected_period {
+            get {
+                return ResourceManager.GetString("last_two_months_of_the_selected_period", resourceCulture);
             }
         }
         
@@ -4210,6 +4282,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pavement.
+        /// </summary>
+        internal static string pavement {
+            get {
+                return ResourceManager.GetString("pavement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PCC1B.
         /// </summary>
         internal static string pcc1b {
@@ -4251,6 +4332,24 @@ namespace Resources {
         internal static string performance {
             get {
                 return ResourceManager.GetString("performance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performance of regions on Scorecard.
+        /// </summary>
+        internal static string performance_of_regions_on_Scorecard {
+            get {
+                return ResourceManager.GetString("performance_of_regions_on_Scorecard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performance of units on Scorecard.
+        /// </summary>
+        internal static string performance_of_units_on_Scorecard {
+            get {
+                return ResourceManager.GetString("performance_of_units_on_Scorecard", resourceCulture);
             }
         }
         
@@ -4305,6 +4404,15 @@ namespace Resources {
         internal static string planning {
             get {
                 return ResourceManager.GetString("planning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Platform.
+        /// </summary>
+        internal static string platform {
+            get {
+                return ResourceManager.GetString("platform", resourceCulture);
             }
         }
         
@@ -4584,6 +4692,15 @@ namespace Resources {
         internal static string ready {
             get {
                 return ResourceManager.GetString("ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real.
+        /// </summary>
+        internal static string real {
+            get {
+                return ResourceManager.GetString("real", resourceCulture);
             }
         }
         
@@ -4926,6 +5043,15 @@ namespace Resources {
         internal static string role_sgq {
             get {
                 return ResourceManager.GetString("role_sgq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rooms.
+        /// </summary>
+        internal static string rooms {
+            get {
+                return ResourceManager.GetString("rooms", resourceCulture);
             }
         }
         
@@ -6199,6 +6325,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total nonconformity By Monitoring.
+        /// </summary>
+        internal static string total_nonconformity_by_monitoring {
+            get {
+                return ResourceManager.GetString("total_nonconformity_by_monitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tower/Suburb.
+        /// </summary>
+        internal static string towersuburb {
+            get {
+                return ResourceManager.GetString("towersuburb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trying Again.
         /// </summary>
         internal static string trying_again {
@@ -6231,6 +6375,15 @@ namespace Resources {
         internal static string type_of_data_entry {
             get {
                 return ResourceManager.GetString("type_of_data_entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of pavement.
+        /// </summary>
+        internal static string type_of_pavement {
+            get {
+                return ResourceManager.GetString("type_of_pavement", resourceCulture);
             }
         }
         
@@ -6672,6 +6825,15 @@ namespace Resources {
         internal static string weight {
             get {
                 return ResourceManager.GetString("weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weighted.
+        /// </summary>
+        internal static string weighted {
+            get {
+                return ResourceManager.GetString("weighted", resourceCulture);
             }
         }
         
