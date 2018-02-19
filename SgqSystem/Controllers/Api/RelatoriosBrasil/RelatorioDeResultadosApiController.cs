@@ -89,6 +89,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         //}
 
 
+
         [HttpPost]
         [Route("listaResultadosPeriodoTabela")]
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela([FromBody] FormularioParaRelatorioViewModel form)
@@ -127,7 +128,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -577,7 +578,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -934,7 +935,7 @@ ORDER BY 10 DESC ";
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1338,7 +1339,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1477,7 +1478,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1621,7 +1622,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4337,7 +4338,7 @@ FROM (SELECT
 
             #region Filtros
             
-            var titulo = "Historico da Tarefa";
+            var titulo = "Histórico da Tarefa";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4461,6 +4462,10 @@ FROM (SELECT
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
+			   ,max(MonitoramentoName) level2Name
+			   ,max(TarefaName) level3Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4486,7 +4491,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4606,6 +4611,9 @@ ORDER BY 7
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
+			   ,max(MonitoramentoName) level2Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4630,7 +4638,7 @@ ORDER BY 3
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4746,6 +4754,8 @@ ORDER BY 3
                '"+ titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4769,7 +4779,7 @@ ORDER BY 3
 
             #region Filtros
 
-            var titulo = "Historico Consolidado";
+            var titulo = "Histórico Consolidado";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4884,6 +4894,7 @@ ORDER BY 7
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName) UnidadeName
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV

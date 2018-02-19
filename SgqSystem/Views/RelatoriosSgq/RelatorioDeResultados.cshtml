@@ -478,6 +478,10 @@
             var porc = MapeiaValorParaHC(data, "Pc");
             var Monitoramento = MapeiaValorParaHC(data, "Monitoramento");
             var Tarefa = MapeiaValorParaHC(data, "Tarefa");
+
+
+
+
             //fazGambipraMenosCem(porc);
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
@@ -792,16 +796,29 @@
         var limInferior = MapeiaValorParaHC(data, "limiteInferior");
 
         let TituloHistoricoModal = "";
+
         subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
+
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name;
-        } else if (data[0].ChartTitle == "Histórico do Monitoramento") {
+        }
+        if (data[0].ChartTitle == "Histórico do Monitoramento") {
+            TituloHistoricoModal += Resources("level1_history");
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
+
             TituloHistoricoModal += Resources("level2_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level2Name;
-        } else if (data[0].ChartTitle == "Histórico da Tarefa") {
+            subtitleAux += Resources('level2') + ": " + data[0].level2Name;
+        }
+        if (data[0].ChartTitle == "Histórico da Tarefa") {
+            TituloHistoricoModal += Resources("level1_history");
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
+
+            TituloHistoricoModal += Resources("level2_history");
+            subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
+
             TituloHistoricoModal += Resources("level3_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level3Name;
+            subtitleAux += Resources('level3') + ": " + data[0].level3Name;
         }
 
 
@@ -822,7 +839,7 @@
                 text: TituloHistoricoModal
             },
             subtitle: {
-                text: Subtitle
+                text: subtitleAux
             },
             xAxis: {
                 categories: dia,
@@ -2087,21 +2104,21 @@
 
         let enviarAxI = jQuery.extend({}, enviar)
 
-        var aux = "";
+        //var aux = "";
 
-        if (data[0].level3Id > 0) {
-            aux = Resources("level1_porc_non_conform_evo");
-            subtitleAux = Resources('level3') + ": " + data[0].level3Name + " | ";
-            enviarAxI.isLevel = 3;
-        } else if (data[0].level2Id > 0) {
-            aux = Resources("level1_porc_non_conform_evo");
-            subtitleAux = Resources('level2') + ": " + data[0].level2Name + " | ";
-            enviarAxI.isLevel = 2;
-        } else if (data[0].level1Id > 0) {
-            aux = Resources("level1_porc_non_conform_evo");
-            subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
-            enviarAxI.isLevel = 1;
-        }
+        //if (data[0].level3Id > 0) {
+        //    aux = Resources("level1_porc_non_conform_evo");
+        //    subtitleAux = Resources('level3') + ": " + data[0].level3Name + " | ";
+        //    enviarAxI.isLevel = 3;
+        //} else if (data[0].level2Id > 0) {
+        //    aux = Resources("level1_porc_non_conform_evo");
+        //    subtitleAux = Resources('level2') + ": " + data[0].level2Name + " | ";
+        //    enviarAxI.isLevel = 2;
+        //} else if (data[0].level1Id > 0) {
+        //    aux = Resources("level1_porc_non_conform_evo");
+        //    subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
+        //    enviarAxI.isLevel = 1;
+        //}
 
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
@@ -2109,7 +2126,7 @@
         enviarAxI['unitId'] = enviar3.unitId;
 
         //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
-        subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
+        //subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
         $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI, function (r) {
             //$.post(UrlIndicadorXAcaoModalPA, enviarAxI , function (r) {
 
@@ -2124,6 +2141,34 @@
                 }
 
             });
+
+
+            var subtitleAux = ""
+            let TituloHistoricoModal = "";
+
+            subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
+
+            if (data[0].ChartTitle == "Histórico do Indicador") {
+                TituloHistoricoModal += Resources("level1_history");
+                subtitleAux += Resources('level1') + ": " + data[0].level1Name;
+            }
+            if (data[0].ChartTitle == "Histórico do Monitoramento") {
+                TituloHistoricoModal += Resources("level1_history");
+                subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
+
+                TituloHistoricoModal += Resources("level2_history");
+                subtitleAux += Resources('level2') + ": " + data[0].level2Name;
+            }
+            if (data[0].ChartTitle == "Histórico da Tarefa") {
+                TituloHistoricoModal += Resources("level1_history");
+                subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
+
+                TituloHistoricoModal += Resources("level2_history");
+                subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
+
+                TituloHistoricoModal += Resources("level3_history");
+                subtitleAux += Resources('level3') + ": " + data[0].level3Name;
+            }
 
             let numeroAcoesConcluidas = MapeiaValorParaHC(r, "QteConcluidas");
 
