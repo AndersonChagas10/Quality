@@ -2905,7 +2905,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3029,6 +3029,7 @@ namespace SgqSystem.Controllers
 //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
 //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
+
 "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
@@ -3038,9 +3039,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -3102,7 +3149,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n       CASE                                                                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3116,7 +3163,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n       CASE                                                                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3137,7 +3184,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -3159,7 +3206,7 @@ namespace SgqSystem.Controllers
            "\n           /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                      " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -3173,7 +3220,7 @@ namespace SgqSystem.Controllers
            "\n                /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                 " +
            "\n           CASE                                                                                                                                                                                                                                                      " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3186,7 +3233,7 @@ namespace SgqSystem.Controllers
            "\n           /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                      " +
            "\n           CASE                                                                                                                                                                                                                                                      " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3204,7 +3251,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -3231,7 +3278,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -3317,9 +3364,10 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
-           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                       " +
+           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -4086,7 +4134,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -4220,9 +4268,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -4284,7 +4378,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n       CASE                                                                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -4298,7 +4392,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n       CASE                                                                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -4319,7 +4413,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -4341,7 +4435,7 @@ namespace SgqSystem.Controllers
            "\n           /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                      " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -4355,7 +4449,7 @@ namespace SgqSystem.Controllers
            "\n                /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                 " +
            "\n           CASE                                                                                                                                                                                                                                                      " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -4368,7 +4462,7 @@ namespace SgqSystem.Controllers
            "\n           /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                      " +
            "\n           CASE                                                                                                                                                                                                                                                      " +
            "\n                                                                                                                                                                                                                                                                     " +
-           ////"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -4386,7 +4480,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -4413,7 +4507,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                          " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -4499,7 +4593,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -5269,7 +5364,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -5403,9 +5498,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -5430,7 +5571,7 @@ namespace SgqSystem.Controllers
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -5451,7 +5592,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -5596,7 +5737,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -5682,7 +5823,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -6448,7 +6590,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -6582,9 +6724,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -6609,7 +6797,7 @@ namespace SgqSystem.Controllers
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -6630,7 +6818,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -6775,7 +6963,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -6861,7 +7049,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -7627,7 +7816,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -7761,9 +7950,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -7788,7 +8023,7 @@ namespace SgqSystem.Controllers
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -7809,7 +8044,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -7954,7 +8189,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -8040,7 +8275,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -8808,7 +9044,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -8918,22 +9154,22 @@ namespace SgqSystem.Controllers
            "\n (                                                                                                                                                                                                                                                                   " +
            "\n SELECT                                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
- //"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
- //"\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
- //"\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
- //"\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
- //"\n , ISNULL(CL1.UnitId, ft.ParCompany_id) AS ParCompanyId                                                                                                                                                                                                                       " +
- //"\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
- //"\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
- //"\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
- //"\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
- //"\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Criterio                                                                                                                                                                      " +
- //"\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS CriterioName                                                                                                                                                                  " +
- //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
- //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
+//"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
+//"\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
+//"\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
+//"\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
+//"\n , ISNULL(CL1.UnitId, ft.ParCompany_id) AS ParCompanyId                                                                                                                                                                                                                       " +
+//"\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
+//"\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
+//"\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
+//"\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
+//"\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Criterio                                                                                                                                                                      " +
+//"\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS CriterioName                                                                                                                                                                  " +
+//"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
+//"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
 
- "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
+"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
   "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = 0)) AS RegionalName                                                                                                                                                                         " +
@@ -8942,9 +9178,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -8969,7 +9251,7 @@ namespace SgqSystem.Controllers
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -8990,7 +9272,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -9135,7 +9417,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -9221,7 +9503,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -10114,6 +10397,7 @@ namespace SgqSystem.Controllers
 //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
 //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
+
 "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
@@ -10123,9 +10407,55 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -10150,7 +10480,7 @@ namespace SgqSystem.Controllers
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -10171,7 +10501,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -10402,7 +10732,8 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
            "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -11102,7 +11433,7 @@ namespace SgqSystem.Controllers
 "\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
 "\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
 "\n                WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           						                                           " +
-"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(L1.ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
+"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
 "\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
 "\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
 "\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
@@ -11157,7 +11488,7 @@ namespace SgqSystem.Controllers
            "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -11281,6 +11612,7 @@ namespace SgqSystem.Controllers
 //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
 //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
+
 "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
@@ -11290,11 +11622,56 @@ namespace SgqSystem.Controllers
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
-  "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
+  "\n , ISNULL(" +
+  "( " +
 
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n             --AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
 "\n                                                                                                                                                                                                                                                                     " +
@@ -11318,7 +11695,7 @@ namespace SgqSystem.Controllers
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -11339,7 +11716,7 @@ namespace SgqSystem.Controllers
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -11484,7 +11861,7 @@ namespace SgqSystem.Controllers
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -11570,9 +11947,10 @@ namespace SgqSystem.Controllers
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
-           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                     " +
+           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
