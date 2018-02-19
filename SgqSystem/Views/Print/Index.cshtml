@@ -1,0 +1,116 @@
+﻿@using DTO.DTO.Params
+@using Resources
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+
+        <h2>@Resource.print</h2>
+
+        <button class="btn btn-info" id="btnPrint">@Resource.print</button>
+
+        <div id="contentHeader">
+            <strong>TESTE CABECALHO</strong>
+        </div>
+
+        <div id="contentFooter">
+            <strong>TESTE RODAPE</strong>
+        </div>
+
+        <div id="contentBody">
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br />
+            <strong>CORPO</strong><br/>
+
+            <div class="height-fix">
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+                <strong>CORPO</strong><br />
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Print/printGRT.js"></script>
+
+    <script>
+        printGRT.Inicializar(
+            {
+                headerHtml: document.getElementById('contentHeader').innerHTML,
+                bodyHtml: document.getElementById('contentBody').innerHTML,
+                footerHtml: document.getElementById('contentFooter').innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25 25 10 25",
+                pageMarginFooter: "10 25 25 25",
+                pageMarginBody: "0 25 0 25"
+            }
+        );
+
+        $('#btnPrint').on('click', function () {
+            printGRT.Imprimir();
+        });
+    </script>
+}
