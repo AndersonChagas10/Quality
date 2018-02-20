@@ -65,7 +65,7 @@
 		"		padding:" + this.pageMarginHeader + ";                                       " +
 		"	}                                                                      " +
 		"	#" + this.footerName + "{                                                  " +
-		"		padding:" + this.pageMarginFooter + ";                                       " +
+		"		padding:" + this.pageMarginFooter + "; text-align:left;                                       " +
 		"	}                                                                      " +
 		"	                                                                       " +
         "	#" + this.bodyName + "{display:block;height:auto;margin:0px;padding:" + this.pageMarginBody + "}  " +
