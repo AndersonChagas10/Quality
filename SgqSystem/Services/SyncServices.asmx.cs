@@ -4634,7 +4634,8 @@ namespace SgqSystem.Services
                                                       return;
                                                    }		                                               
                                                 }
-                                                $(a).next().html('Nenhum produto');
+                                                $(a).val('');
+                                                $(a).next().html('');
                                             }
 
                                             function validaProduto(a,valor){
