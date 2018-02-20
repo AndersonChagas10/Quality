@@ -5855,7 +5855,6 @@ ORDER BY 3
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
             				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.WeiEvaluation)
-            				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
             				-- WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
