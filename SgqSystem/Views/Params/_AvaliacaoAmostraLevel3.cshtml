@@ -21,7 +21,7 @@
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
 
-                <table class="table-erp" id="">
+                <table class="table-erp">
 
                     <tbody>
 
@@ -31,20 +31,31 @@
                                 , @Html.Label(Resources.Resource.company)
                                 , Table.PosicaoLabel.top, colspan: 1)
 
-                            <td class="td-erp">
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table-erp">
+                    <tbody>
+                        <tr class="alert-info" style="">
+                            <td class="td-erp col-sm-6">
                                 <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                                 <div>
                                     @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2AmostraLevel3", style = "width: 100%" })
                                 </div>
                             </td>
-                            <td class="td-erp">
+                            <td class="td-erp col-sm-6">
                                 <label for="paramsDto.parLevel2Selected">@Resources.Resource.level2</label>
                                 <div>
                                     @Html.DropDownList("paramsDto.parLevel2Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel2*@, htmlAttributes: new { @class = "form-control select2", @id = "parLevel2Select2AmostraLevel3", style = "width: 100%" })
                                 </div>
                             </td>
                         </tr>
+                    </tbody>
+                </table>
+                <table class="table-erp">
 
+                    <tbody>
                         <tr>
 
 
@@ -74,9 +85,9 @@
                             <th>@Resources.Resource.company</th>
                             <th>@Resources.Resource.level1</th>
                             <th>@Resources.Resource.level2</th>
-                            <th>@Resources.Resource.sampleInterval</th>
                             <th>@Resources.Resource.evaluation</th>
                             <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
+                            <th>@Resources.Resource.sampleInterval</th>
                             <th class="options"></th>
                         </tr>
                     </thead>
@@ -101,7 +112,7 @@
         level: "newLevel3Modal",
         listObjSalvo: levelParamsDTO.parLevel3Dto.listParLevel3EvaluationSample,
         idTable: 'tableAvAmLevel3',//
-        tdsNames: ['CompanyName', 'ParLevel1_Name', 'ParLevel2_Name', 'EvaluationInterval', 'EvaluationNumber', 'SampleNumber', 'btn'],
+        tdsNames: ['CompanyName', 'ParLevel1_Name', 'ParLevel2_Name', 'EvaluationNumber', 'SampleNumber', 'EvaluationInterval', 'btn'],
         getObjAdd: function(isEdit, obj){
             if(isEdit != undefined){
 
@@ -338,6 +349,14 @@
                 var object = this.getObjAdd();
                 crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
 
+                $("#parLevel1Select2AmostraLevel3").val($("#parLevel1Select2AmostraLevel3 option:first").val());
+                $("#parLevel2Select2AmostraLevel3").val($("#parLevel2Select2AmostraLevel3 option:first").val());
+                $("#avAmCompany").val($("#avAmCompany option:first").val());
+
+                $("input[name=avaliacao]").val('');
+                $("input[name=amostra]").val('');
+                $("input[name=intervaloParaAvaliar]").val('');
+                
             }
         },
     };
