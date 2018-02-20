@@ -2104,21 +2104,21 @@
 
         let enviarAxI = jQuery.extend({}, enviar)
 
-        //var aux = "";
+        var aux = "";
 
-        //if (data[0].level3Id > 0) {
-        //    aux = Resources("level1_porc_non_conform_evo");
-        //    subtitleAux = Resources('level3') + ": " + data[0].level3Name + " | ";
-        //    enviarAxI.isLevel = 3;
-        //} else if (data[0].level2Id > 0) {
-        //    aux = Resources("level1_porc_non_conform_evo");
-        //    subtitleAux = Resources('level2') + ": " + data[0].level2Name + " | ";
-        //    enviarAxI.isLevel = 2;
-        //} else if (data[0].level1Id > 0) {
-        //    aux = Resources("level1_porc_non_conform_evo");
-        //    subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
-        //    enviarAxI.isLevel = 1;
-        //}
+        if (data[0].level3Id > 0) {
+            aux = Resources("level1_porc_non_conform_evo");
+            //subtitleAux = Resources('level3') + ": " + data[0].level3Name + " | ";
+            enviarAxI.isLevel = 3;
+        } else if (data[0].level2Id > 0) {
+            aux = Resources("level1_porc_non_conform_evo");
+            //subtitleAux = Resources('level2') + ": " + data[0].level2Name + " | ";
+            enviarAxI.isLevel = 2;
+        } else if (data[0].level1Id > 0) {
+            aux = Resources("level1_porc_non_conform_evo");
+            //subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
+            enviarAxI.isLevel = 1;
+        }
 
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
