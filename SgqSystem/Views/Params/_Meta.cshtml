@@ -255,6 +255,7 @@
                     //Verificar z-index modal
 
                     var o = $(obj).data();
+                    debugger
                     if(o.IsActive && (o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date().getTime())){
                         var index = -1;
                         $(MetaL1.listObjActive).each(function(i,g){
@@ -262,7 +263,7 @@
                                 if(o.EffectiveDate == emptyEffectiveDate && o.EffectiveDate == g.EffectiveDate){
                                     index = i;
                                     return;
-                                } else if(o.EffectiveDate == emptyEffectiveDate){
+                                } else if(o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date(g.EffectiveDate).getTime()){
                                     index = -2;
                                     return;
                                 } else if(o.EffectiveDate != emptyEffectiveDate &&
@@ -299,6 +300,8 @@
                     $('#'+this.idTableActive).attr('style','display:none;');
                     $('#withoutMetaActive').attr('style','');
                 }
+                
+                this.atualizarDataLista();
 
             },
             carregaDadosDoDb: function(){
@@ -331,8 +334,15 @@
                     $('#' + this.level + ' #percentVal').val('');
                     $('#' + this.level + ' #metaCompany').val('');
                     $('#' + this.level + ' #effectiveDateMeta').val('');
+
+                    this.atualizarDataLista();
                 }
             },
+            atualizarDataLista: function(){
+                ConverterData('#'+this.idTable,2);
+                $('#'+this.idTable).find('button[onclick="crudNxN.funcEdit($(this));"]').remove();
+                ConverterData('#'+this.idTableActive,2);
+            }
         };
     }
 

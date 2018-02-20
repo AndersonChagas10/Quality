@@ -171,6 +171,7 @@
                         $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
                         $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate)//
                         $($(e).parents('tr').find('td')[3]).html(editado.Points)//
+                        ClusterL1.atualizarDataLista();
                         $('#crudNxNEdit').modal('hide');
                     }
                 });
@@ -233,6 +234,7 @@
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
                         $($(e).parents('tr').find('td')[1]).html(editado.EffectiveDate)//
                         $($(e).parents('tr').find('td')[2]).html(editado.PercentValue)//
+                        MetaL1.atualizarDataLista();
                         $('#crudNxNEdit').modal('hide');
                     }
 

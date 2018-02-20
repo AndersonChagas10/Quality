@@ -199,7 +199,7 @@
                     EffectiveDate: $('#' + seletorTato + ' #effectiveDate').val()
                 });
 
-                return true && validate;
+                return validate;
 
             },
             incluiNoObjetoParaSubmit: function(dados){
@@ -247,7 +247,7 @@
                                 if(o.EffectiveDate == emptyEffectiveDate && o.EffectiveDate == g.EffectiveDate){
                                     index = i;
                                     return;
-                                } else if(o.EffectiveDate == emptyEffectiveDate){
+                                } else if(o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date(g.EffectiveDate).getTime()){
                                     index = -2;
                                     return;
                                 } else if(o.EffectiveDate != emptyEffectiveDate &&
@@ -285,6 +285,8 @@
                     $('#withoutClustersActive').attr('style','');
                 }
 
+                this.atualizarDataLista();
+
             },
             carregaDadosDoDb: function(){
                 var id = this.level + ' #' + this.idTable;
@@ -310,25 +312,32 @@
             adiciona: function(e) {
                 valid = this.veifyAdd();
                 var object = this.getObjAdd();
-                var validDupl = this.verifyJaExiste(object);
-                if(valid && validDupl){
+                if(valid){
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
 
                     $('#' + this.level + ' #valueCluster').val('');
                     $('#' + this.level + ' #valCrit').val('');
                     $('#' + this.level + ' #pontosCluster').val('');
                     $('#' + this.level + ' #effectiveDate').val('');
+
+                    this.atualizarDataLista();
                 }
             },
             verifyJaExiste: function(obj) {
                 var isValid  = true;
                 $('#'+this.level + ' #' + this.idTable).find('tbody > tr').each(function(c, o) {
                     if($(o).data().ParCluster_Id == obj.ParCluster_Id && $(o).data().EffectiveDate == obj.EffectiveDate){
-                        openMessageModal("@Resources.Resource.cluster_can_not_be_duplicated")
-                        isValid = false
+                        openMessageModal("@Resources.Resource.cluster_can_not_be_duplicated");
+                        isValid = false;
+                        return;
                     }
                 });
                 return isValid;
+            },
+            atualizarDataLista: function(){
+                ConverterData('#'+this.idTable,3);
+                $('#'+this.idTable).find('button[onclick="crudNxN.funcEdit($(this));"]').remove();
+                ConverterData('#'+this.idTableActive,3);
             }
         };
     }

@@ -425,7 +425,7 @@
         var n = newForm.serialize().toString();
         return false;
     }
-    
+
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
@@ -927,7 +927,7 @@
                 reloadPopovers();
                 defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
-                
+
                 if($('#parLevel1Select2 option:selected').val() > 0 && $('#parLevel2Select2 option:selected').val() > 0 && $('#parLevel3Select2 option:selected').val() > 0)
                     $("#level3_required_level1_level2").removeClass('hide');
                 else
@@ -1198,7 +1198,7 @@
                 $('#btnSaveNewLevel2').attr('disabled', true);
                 $('#level2_AvAmostra_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
                 $('#level2_AvAmostra_accordion').find('button').attr("disabled", true);
-                
+
                 $('#level3_AvAmostra_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
                 $('#level3_AvAmostra_accordion').find('button').attr("disabled", true);
             }
@@ -1254,11 +1254,11 @@
                     $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
-    
+
                     /*Libera os campos para Avaliacao Amostra*/
                     $('#level3_AvAmostra_accordion').find('button').attr("disabled", false);
                     $('#level3_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                    
+
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
                         //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
@@ -1460,3 +1460,32 @@
     }
 
 </script>
+
+
+
+@if (GlobalConfig.Brasil)
+{
+    <script>
+        function ConverterData(idTabela, coluna){
+            debugger
+            $(idTabela+' > tbody > tr td:nth-child('+coluna+')').each(function(i,o){
+                if($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1,'days').format("DD/MM/YYYY"))
+            });
+        }
+    </script>
+}
+
+
+@if (GlobalConfig.Eua)
+{
+    <script>
+        function ConverterData(idTabela, coluna){
+            debugger
+            $(idTabela+' > tbody > tr td:nth-child('+coluna+')').each(function(i,o){
+                if($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1,'days').format("YYYY-MM-DD"))
+            });
+        }
+    </script>
+}
