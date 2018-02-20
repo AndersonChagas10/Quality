@@ -5853,29 +5853,32 @@ ORDER BY 3
             											) ,0)
             											-
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiEvaluation)
+            				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
             				ELSE SUM(0)
             	 END AS [AVComPeso]
             	,CASE 
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(c1.DefectsResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(c1.TotalLevel3WithDefects)
             				ELSE SUM(0)
@@ -5888,29 +5891,31 @@ ORDER BY 3
             											),0)
             											-
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
             				ELSE SUM(0)
             	 END AS [AV]
             	,CASE 
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.DefectsResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.TotalLevel3WithDefects)
             				ELSE SUM(0)
