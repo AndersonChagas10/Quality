@@ -228,6 +228,7 @@
                     $('#statusIndicador').prop("disabled", false);
                 } else {
                     $('#statusIndicador').prop("disabled", true);
+                    $('#statusIndicador').prop("value", 'Todos').trigger('change');
                 }
 
                 //// Desabilita quando não selecionado desdoramento Pai

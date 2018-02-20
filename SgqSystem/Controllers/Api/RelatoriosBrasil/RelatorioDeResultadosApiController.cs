@@ -89,6 +89,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         //}
 
 
+
         [HttpPost]
         [Route("listaResultadosPeriodoTabela")]
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela([FromBody] FormularioParaRelatorioViewModel form)
@@ -127,7 +128,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -584,7 +585,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -941,7 +942,7 @@ ORDER BY 10 DESC ";
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1345,7 +1346,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1484,7 +1485,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1628,7 +1629,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4344,7 +4345,7 @@ FROM (SELECT
 
             #region Filtros
             
-            var titulo = "Historico da Tarefa";
+            var titulo = "Histórico da Tarefa";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4468,6 +4469,10 @@ FROM (SELECT
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
+			   ,max(MonitoramentoName) level2Name
+			   ,max(TarefaName) level3Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4493,7 +4498,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4613,6 +4618,9 @@ ORDER BY 7
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
+			   ,max(MonitoramentoName) level2Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4637,7 +4645,7 @@ ORDER BY 3
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4753,6 +4761,8 @@ ORDER BY 3
                '"+ titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4776,7 +4786,7 @@ ORDER BY 3
 
             #region Filtros
 
-            var titulo = "Historico Consolidado";
+            var titulo = "Histórico Consolidado";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4891,6 +4901,7 @@ ORDER BY 7
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName) UnidadeName
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -5849,29 +5860,31 @@ ORDER BY 3
             											) ,0)
             											-
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
             				ELSE SUM(0)
             	 END AS [AVComPeso]
             	,CASE 
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(c1.DefectsResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(c1.TotalLevel3WithDefects)
             				ELSE SUM(0)
@@ -5884,29 +5897,31 @@ ORDER BY 3
             											),0)
             											-
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
             				ELSE SUM(0)
             	 END AS [AV]
             	,CASE 
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.DefectsResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.TotalLevel3WithDefects)
             				ELSE SUM(0)

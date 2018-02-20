@@ -143,7 +143,7 @@
         //public static string pass2 { get { return "grJsoluco3s"; } }
 
         //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
-        //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcaoNovo/"; } }
+        ////public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcaoNovo/"; } }
         //public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
 
         //public static string emailFrom = "sgq@jbs.com.br";
