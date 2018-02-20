@@ -77,14 +77,87 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("SaveFTA")]
         public FTA SaveFTA(FTA obj)
         {
-            obj.ValidaFTA();
-            obj.IsValid();
-            var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
-            var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
-            SalvaFTA(fta);
-            acao.Fta_Id = fta.Id;
-            SalvarAcao(acao, obj.IsFTA);
-            CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA);
+            try
+            {
+                obj.ValidaFTA();
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("obj.ValidaFTA(); " + ex.StackTrace.ToString()));
+            }
+
+            try
+            {
+                obj.IsValid();
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("obj.IsValid(); " + ex.StackTrace.ToString()));
+            }
+
+            var acao = new PlanoAcaoEF.Pa_Acao();
+            var fta = new PlanoAcaoEF.Pa_FTA();
+
+            try
+            {
+                acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj); " + ex.StackTrace.ToString()));
+            }
+
+            try
+            {
+                fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj); " + ex.StackTrace.ToString()));
+            }
+
+
+
+
+            try
+            {
+                SalvaFTA(fta);
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("SalvaFTA(fta); " + ex.StackTrace.ToString()));
+            }
+
+            try
+            {
+                acao.Fta_Id = fta.Id;
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("acao.Fta " + ex.StackTrace.ToString()));
+            }
+
+            try
+            {
+                SalvarAcao(acao, obj.IsFTA);
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception(" SalvarAcao(acao, obj.IsFTA); " + ex.StackTrace.ToString()));
+            }
+
+            try
+            {
+                CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA);
+            }
+            catch (Exception ex)
+            {
+                throw (new Exception("CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA); " + ex.StackTrace.ToString()));
+            }
+
+
+
+
             return obj;
         }
 
@@ -179,7 +252,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     //Atribui o Id da Unidade do PA na Acao
                     using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
                     {
-                        acao.Unidade_Id = QueryNinja(dbPa, "SELECT * from PA_UNIDADE WHERE DESCRIPTION = '" + acao.UnidadeName + "'").FirstOrDefault().GetValue("Id").Value<int>();
+                        acao.Unidade_Id = QueryNinja(dbPa, "SELECT Id from PA_UNIDADE WHERE DESCRIPTION = '" + acao.UnidadeName + "'").FirstOrDefault().GetValue("Id").Value<int>();
                     }
                 }
                 else//Pelo PA
