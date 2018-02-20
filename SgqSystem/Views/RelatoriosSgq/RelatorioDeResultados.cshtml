@@ -2718,6 +2718,13 @@
         $(".page-sidebar-wrapper").removeClass("hide");
 
         $("#btnSend").click(function (e) {
+
+            // Botão desabilita até retorno
+
+            $('#btnSend').prop("disabled", true);
+
+
+
             Subtitle = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
                 Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
@@ -2747,6 +2754,11 @@
             Subtitle = Subtitle.substring(0, (Subtitle.length - 2));
 
             Send(true);
+
+            setTimeout(function () {
+                $('#btnSend').prop("disabled", false);
+            }, 10000);
+
         });
 
         //$("#showModulo2").hide();
