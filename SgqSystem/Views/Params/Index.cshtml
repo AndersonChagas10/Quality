@@ -804,8 +804,10 @@
                 var dados = $('#newLevel3Modal > form').serializeObject();
 
                 //ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
-                level3Value.incluiNoObjetoParaSubmit(dados);
-                AvAm3.incluiNoObjetoParaSubmit(dados);
+                if(typeof level3Value != "undefined")
+                    level3Value.incluiNoObjetoParaSubmit(dados);
+                if(typeof AvAm3 != "undefined")
+                    AvAm3.incluiNoObjetoParaSubmit(dados);
 
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
