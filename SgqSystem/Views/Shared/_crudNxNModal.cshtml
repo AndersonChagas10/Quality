@@ -171,6 +171,7 @@
                         $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
                         $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate)//
                         $($(e).parents('tr').find('td')[3]).html(editado.Points)//
+                        ClusterL1.atualizarDataLista();
                         $('#crudNxNEdit').modal('hide');
                     }
                 });
@@ -233,6 +234,7 @@
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
                         $($(e).parents('tr').find('td')[1]).html(editado.EffectiveDate)//
                         $($(e).parents('tr').find('td')[2]).html(editado.PercentValue)//
+                        MetaL1.atualizarDataLista();
                         $('#crudNxNEdit').modal('hide');
                     }
 
@@ -301,10 +303,10 @@
             $(divDeEdicao).show();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
-            /*if (obj.ParLevel1_Id > 0)
-                $('#crudNxNEdit #parLevel1Select2').val(obj.ParLevel1_Id).change();
-            if (obj.ParLevel2_Id > 0)
-                $('#crudNxNEdit #parLevel2Select2').val(obj.ParLevel2_Id).change();*/
+            //if (obj.ParLevel1_Id > 0)
+            //    $('#crudNxNEdit #parLevel1Select2TipoDadosEntrada').val(obj.ParLevel1_Id).change();
+            //if (obj.ParLevel2_Id > 0)
+            //    $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').val(obj.ParLevel2_Id).change();
 
             if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 4) {
 
@@ -373,8 +375,9 @@
             $('#crudNxNEdit #selectTipoInput').val(obj.ParLevel3InputType_Id).change().hide();
 
             $('#crudNxNEdit #selectUnidadeParL3Value').attr("disabled", true).parents('tr').hide();
-            //$('#crudNxNEdit #parLevel1Select2').attr("disabled", true).parents('tr').show();
-            //$('#crudNxNEdit #parLevel2Select2').attr("disabled", true).parents('tr').show();
+            $('#crudNxNEdit #parLevel1Select2TipoDadosEntrada').attr("disabled", true).parents('tr').hide();
+            $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').attr("disabled", true).parents('tr').hide();
+            //$('#crudNxNEdit .VinculoParLevel').hide();
             $('#crudNxNEdit > div > div > div.modal-body').show();
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableLevel3Value').attr('nameModal'));
