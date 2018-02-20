@@ -448,6 +448,8 @@
 
         enviarDadosParaApi: function (e) {
 
+            $("#paramsDto_parLevel1Dto_Name").val($.trim($("#paramsDto_parLevel1Dto_Name").val().replace(/  +/g, ' ')));
+
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
@@ -482,6 +484,7 @@
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
+                    var $btn = $('#btnSaveNewLevel1');
                     $btn.button('reset');
                     if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
                         indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
@@ -490,6 +493,7 @@
 
                 }).fail(function (e, h, x) {
                     //closeLoader();
+                    var $btn = $('#btnSaveNewLevel1');
                     try {
                         closeLoader();
                         $btn.button('reset');
@@ -624,6 +628,8 @@
 
         enviarDadosParaApi: function (e) {
 
+            $("#paramsDto_parLevel2Dto_Name").val($.trim($("#paramsDto_parLevel2Dto_Name").val().replace(/  +/g, ' ')));
+           
             $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
 
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -796,6 +802,9 @@
 
 
         enviarDadosParaApi: function (e) {
+
+            $("#paramsDto_parLevel3Dto_Name").val($.trim($("#paramsDto_parLevel3Dto_Name").val().replace(/  +/g, ' ')));
+
             $('#selectTipoInput').val(-1).change();
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
@@ -829,6 +838,7 @@
                 $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
 
+                    var $btn = $('#btnSaveNewLevel3');
                     $btn.button('loading');
 
                     if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
@@ -839,6 +849,7 @@
                     initialFormLevel3 = $($('form')[2]).clone();
 
                 }).fail(function (e, h, x) {
+                    var $btn = $('#btnSaveNewLevel3');
                     try {
                         $btn.button('reset');
                         openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
