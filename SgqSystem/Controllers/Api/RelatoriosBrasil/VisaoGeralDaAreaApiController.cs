@@ -480,7 +480,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             AND L1Ca.IsActive = 1 " +
+    "\n             -- AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -497,7 +497,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             AND L1Ca.IsActive = 1 " +
+    "\n            -- AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -513,7 +513,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             AND L1Ca.IsActive = 1 " +
+    "\n           --  AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1254,7 +1254,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n             AND L1Ca.IsActive = 1 " +
+     "\n           --  AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1271,7 +1271,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n             AND L1Ca.IsActive = 1 " +
+     "\n           --  AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1287,7 +1287,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n             AND L1Ca.IsActive = 1 " +
+     "\n           --  AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
 
@@ -1829,12 +1829,61 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = VisaoGeralDaAreaApiController.sqlBase(form) +
 
+//  "\n declare @valorEmpresa decimal(5,2) " +
+//"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
+//"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 " +
+
+
 "\n declare @valorEmpresa decimal(5,2) " +
 "\n declare @valorRegional decimal(5, 2) " +
-"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
-"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2" +
-"\n  select @valorRegional = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 " +
- "\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.id = '" + form.Query.ToString() + "' and Reg.ParStructureGroup_Id = 2" +
+
+@"
+     SELECT
+    @valorEmpresa = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end
+        FROM ParStructure Reg  with(nolock)
+     LEFT JOIN ParCompanyXStructure CS  with(nolock)
+  ON CS.ParStructure_Id = Reg.Id
+     left join ParCompany C  with(nolock)
+  on C.Id = CS.ParCompany_Id
+     left join ParLevel1 P1  with(nolock)
+  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
+     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
+  ON PP.ParLevel1_Id = P1.Id
+     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
+  ON PP.ParGroupParLevel1_Id = PP1.Id
+     LEFT JOIN #SCORE S  with (nolock)
+  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
+  WHERE 1 = 1
+  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
+  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+" +
+
+
+@"
+     SELECT
+    @valorRegional = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end
+        FROM ParStructure Reg  with(nolock)
+     LEFT JOIN ParCompanyXStructure CS  with(nolock)
+  ON CS.ParStructure_Id = Reg.Id
+     left join ParCompany C  with(nolock)
+  on C.Id = CS.ParCompany_Id
+     left join ParLevel1 P1  with(nolock)
+  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
+     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
+  ON PP.ParLevel1_Id = P1.Id
+     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
+  ON PP.ParGroupParLevel1_Id = PP1.Id
+     LEFT JOIN #SCORE S  with (nolock)
+  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
+	INNER JOIN ParCompany PC 
+  ON S.ParCompany_id = pc.id 
+  WHERE 1 = 1
+  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
+  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+" +
+"\n  AND Reg.Id = '" + form.Query.ToString() + "' AND pC.IsActive = 1 " +
+
+
 "\n  SELECT " +
 "\n  C.Initials companySigla, " +
 "\n  case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end companyScorecard, " +
