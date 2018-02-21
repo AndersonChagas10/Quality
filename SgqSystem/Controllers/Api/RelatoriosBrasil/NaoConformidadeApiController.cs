@@ -857,6 +857,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n UNIDADE INT NULL, " +
                 "\n INDICADOR INT NULL, " +
+                "\n DATA DATETIME, " +
                 "\n AM INT NULL, " +
                 "\n DEF_AM INT NULL " +
                 "\n ) " +
@@ -864,7 +865,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n INSERT INTO #AMOSTRATIPO4 " +
 
                 "\n SELECT " +
-                "\n  UNIDADE, INDICADOR, " +
+                "\n  UNIDADE, INDICADOR, DATA, " +
                 "\n COUNT(1) AM " +
                 "\n ,SUM(DEF_AM) DEF_AM " +
                 "\n FROM " +
@@ -888,7 +889,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     and L1.ParConsolidationType_Id = 4 " +
                 "\n     group by C.Id, ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
                 "\n ) TAB " +
-                "\n GROUP BY UNIDADE, INDICADOR " +
+                "\n GROUP BY UNIDADE, INDICADOR, DATA " +
 
                 "\n --------------------------------                                                                                                                     " +
                 "\n                                                                                                                                                      " +
@@ -1028,6 +1029,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         LEFT JOIN #AMOSTRATIPO4 A4  (nolock)" +
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +
+                "\n         AND A4.DATA = CL1.ConsolidationDate " +
 
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n         AND UNI.Name = '" + form.unitName + "'" +
@@ -1112,7 +1114,8 @@ FROM PARCOMPANY
 WHERE NAME = '{ form.unitName }'
  CREATE TABLE #AMOSTRATIPO4 ( 
  UNIDADE INT NULL, 
- INDICADOR INT NULL, 
+ INDICADOR INT NULL,
+ DATA DATETIME,
  AM INT NULL, 
  DEF_AM INT NULL 
  )
@@ -1120,6 +1123,7 @@ INSERT INTO #AMOSTRATIPO4
 	SELECT
 		UNIDADE
 	   ,INDICADOR
+       ,DATA
 	   ,COUNT(1) AM
 	   ,SUM(DEF_AM) DEF_AM
 	FROM (SELECT
@@ -1148,6 +1152,7 @@ INSERT INTO #AMOSTRATIPO4
 				,CAST(CollectionDate AS DATE)) TAB
 	GROUP BY UNIDADE
 			,INDICADOR
+            ,DATA
 --------------------------------                                                                                                                     
                                                                                                                                                       
                                                                                                                                                       
@@ -1279,6 +1284,7 @@ FROM (SELECT
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
 			ON A4.UNIDADE = UNI.Id
 			AND A4.INDICADOR = IND.ID
+            AND A4.DATA = CL1.ConsolidationDate
 		INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
 			ON CL2.ConsolidationLevel1_id = CL1.Id
 		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
@@ -1371,6 +1377,7 @@ INSERT INTO #AMOSTRATIPO4
 	SELECT
 		UNIDADE
 	   ,INDICADOR
+       ,DATA
 	   ,COUNT(1) AM
 	   ,SUM(DEF_AM) DEF_AM
 	FROM (SELECT
@@ -1399,6 +1406,7 @@ INSERT INTO #AMOSTRATIPO4
 				,CAST(CollectionDate AS DATE)) TAB
 	GROUP BY UNIDADE
 			,INDICADOR
+            ,DATA
 --------------------------------                                                                                                                     
 
 SELECT TOP 1
@@ -1539,6 +1547,7 @@ FROM (SELECT
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
 			ON A4.UNIDADE = UNI.Id
 			AND A4.INDICADOR = IND.ID
+			AND A4.DATA = CL1.ConsolidationDate
 		INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
 			ON CL2.ConsolidationLevel1_id = CL1.Id
 		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
