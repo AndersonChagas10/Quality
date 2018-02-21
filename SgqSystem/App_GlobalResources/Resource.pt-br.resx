@@ -334,7 +334,7 @@
     <value>Define se irá permitir lançamento de tarefa avulso</value>
   </data>
   <data name="conform" xml:space="preserve">
-    <value>C</value>
+    <value>Conforme</value>
   </data>
   <data name="frequency_popover" xml:space="preserve">
     <value>Define a frequência que o monitoramento será feito/executado: diariamente, semanalmente, mensalmente, etc.</value>
