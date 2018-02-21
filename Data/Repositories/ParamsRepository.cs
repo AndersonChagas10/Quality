@@ -492,7 +492,7 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id)
+        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id)
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
@@ -503,6 +503,10 @@ namespace Data.Repositories
                 if (listParamLevel3Value != null)
                     if (listParamLevel3Value.Count() > 0)
                         AddUpdateParLevel3Value(listParamLevel3Value, paramLevel3.Id);
+
+                if (listParLevel3EvaluationSample != null)
+                    if (listParLevel3EvaluationSample.Count() > 0)
+                        AddUpdateParLevel3EvaluationSample(listParLevel3EvaluationSample, paramLevel3.Id);
 
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
@@ -565,6 +569,29 @@ namespace Data.Repositories
                 {
                     Guard.verifyDate(i, "AlterDate");
                     db.ParLevel3Value.Attach(i);
+                    db.Entry(i).State = EntityState.Modified;
+                    db.Entry(i).Property(e => e.AddDate).IsModified = false;
+                }
+            }
+
+            db.SaveChanges();
+        }
+        
+        public void AddUpdateParLevel3EvaluationSample(List<ParLevel3EvaluationSample> paramLevel3EvaluationSample, int ParLevel3_Id)
+        {
+            paramLevel3EvaluationSample.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
+
+            if (paramLevel3EvaluationSample.Any(r => r.Id == 0))
+            {
+                db.ParLevel3EvaluationSample.AddRange(paramLevel3EvaluationSample.Where(r => r.Id == 0));
+            }
+
+            if (paramLevel3EvaluationSample.Any(r => r.Id > 0))
+            {
+                foreach (var i in paramLevel3EvaluationSample.Where(r => r.Id > 0))
+                {
+                    Guard.verifyDate(i, "AlterDate");
+                    db.ParLevel3EvaluationSample.Attach(i);
                     db.Entry(i).State = EntityState.Modified;
                     db.Entry(i).Property(e => e.AddDate).IsModified = false;
                 }
@@ -648,7 +675,7 @@ namespace Data.Repositories
                         }
 
                     }
-                    
+
 
                     /**/
                     existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2 && r.ParCompany_Id == companyId);

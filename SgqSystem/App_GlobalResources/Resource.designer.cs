@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -165,6 +165,33 @@ namespace Resources {
         internal static string action_required {
             get {
                 return ResourceManager.GetString("action_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actives.
+        /// </summary>
+        internal static string actives {
+            get {
+                return ResourceManager.GetString("actives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Clusters.
+        /// </summary>
+        internal static string active_clusters {
+            get {
+                return ResourceManager.GetString("active_clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Goals.
+        /// </summary>
+        internal static string active_goals {
+            get {
+                return ResourceManager.GetString("active_goals", resourceCulture);
             }
         }
         
@@ -336,6 +363,15 @@ namespace Resources {
         internal static string allow_the_edition_of_the_evaluation_number {
             get {
                 return ResourceManager.GetString("allow_the_edition_of_the_evaluation_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit evaluation/sample.
+        /// </summary>
+        internal static string allow_the_edition_of_the_evaluation_number_popover {
+            get {
+                return ResourceManager.GetString("allow_the_edition_of_the_evaluation_number_popover", resourceCulture);
             }
         }
         
@@ -1771,6 +1807,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Effective Date.
+        /// </summary>
+        internal static string effectiveDate {
+            get {
+                return ResourceManager.GetString("effectiveDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string email {
@@ -2374,6 +2419,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete Evaluation is Required.
+        /// </summary>
+        internal static string hascompleteevaluation_popover {
+            get {
+                return ResourceManager.GetString("hascompleteevaluation_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HashKey.
         /// </summary>
         internal static string hashkey {
@@ -2410,11 +2464,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level2 edition.
+        /// </summary>
+        internal static string has_edit_level2_popover {
+            get {
+                return ResourceManager.GetString("has_edit_level2_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 3 Grouped By Level 2.
         /// </summary>
         internal static string has_group_level2 {
             get {
                 return ResourceManager.GetString("has_group_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3 Grouped By Level 2.
+        /// </summary>
+        internal static string has_group_level2_popover {
+            get {
+                return ResourceManager.GetString("has_group_level2_popover", resourceCulture);
             }
         }
         
@@ -2752,6 +2824,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is partial save.
+        /// </summary>
+        internal static string isPartialSave_popover {
+            get {
+                return ResourceManager.GetString("isPartialSave_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is active.
         /// </summary>
         internal static string is_active {
@@ -2910,6 +2991,15 @@ namespace Resources {
         internal static string level1_children {
             get {
                 return ResourceManager.GetString("level1_children", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level1 Children.
+        /// </summary>
+        internal static string level1_children_popover {
+            get {
+                return ResourceManager.GetString("level1_children_popover", resourceCulture);
             }
         }
         
@@ -3207,6 +3297,15 @@ namespace Resources {
         internal static string limited_number_of_evaluations {
             get {
                 return ResourceManager.GetString("limited_number_of_evaluations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limited number of evaluations.
+        /// </summary>
+        internal static string limited_number_of_evaluations_popover {
+            get {
+                return ResourceManager.GetString("limited_number_of_evaluations_popover", resourceCulture);
             }
         }
         
@@ -3558,6 +3657,15 @@ namespace Resources {
         internal static string must_select_complete_link_to_perform {
             get {
                 return ResourceManager.GetString("must_select_complete_link_to_perform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N.
+        /// </summary>
+        internal static string n {
+            get {
+                return ResourceManager.GetString("n", resourceCulture);
             }
         }
         
@@ -4705,6 +4813,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register Total Evaluated.
+        /// </summary>
+        internal static string register_total_evaluated_popover {
+            get {
+                return ResourceManager.GetString("register_total_evaluated_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record successfully changed (Please refresh the dealy reports table)..
         /// </summary>
         internal static string registry_alter_success {
@@ -4971,6 +5088,15 @@ namespace Resources {
         internal static string sample {
             get {
                 return ResourceManager.GetString("sample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample Interval.
+        /// </summary>
+        internal static string sampleInterval {
+            get {
+                return ResourceManager.GetString("sampleInterval", resourceCulture);
             }
         }
         
@@ -5623,6 +5749,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active in scorecard.
+        /// </summary>
+        internal static string show_scorecard_popover {
+            get {
+                return ResourceManager.GetString("show_scorecard_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Side.
         /// </summary>
         internal static string side_banda {
@@ -5947,6 +6082,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Take photo.
+        /// </summary>
+        internal static string take_photo_popover {
+            get {
+                return ResourceManager.GetString("take_photo_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The target was exceed.
         /// </summary>
         internal static string target_exceed {
@@ -6168,6 +6312,15 @@ namespace Resources {
         internal static string total_evaluated_parts_exceed {
             get {
                 return ResourceManager.GetString("total_evaluated_parts_exceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Manager.
+        /// </summary>
+        internal static string to_manager {
+            get {
+                return ResourceManager.GetString("to_manager", resourceCulture);
             }
         }
         
@@ -6717,6 +6870,24 @@ namespace Resources {
         internal static string within_goal {
             get {
                 return ResourceManager.GetString("within_goal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        internal static string y {
+            get {
+                return ResourceManager.GetString("y", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Without.
+        /// </summary>
+        internal static string without {
+            get {
+                return ResourceManager.GetString("without", resourceCulture);
             }
         }
         

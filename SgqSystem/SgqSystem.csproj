@@ -424,6 +424,7 @@
     <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
@@ -1462,6 +1463,8 @@
     <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
     <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
+    <Content Include="Views\Params\_AvaliacaoAmostraLevel3.cshtml" />
+    <Content Include="Views\Params\_TipoDadosEntrada.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

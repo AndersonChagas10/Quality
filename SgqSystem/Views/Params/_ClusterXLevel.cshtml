@@ -20,25 +20,33 @@
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
-                
-                <table class="table-erp" id="camposCluster">
-                    <tbody>
-                        <tr class="row">
-                            @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
-                            @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
-                            @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top
-                           , button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='" + @click + ";'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                        </tr>
-                    </tbody>
-                </table>
+                <h5>
+                    @Resources.Resource.active_clusters
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalManagerCluster">@Resources.Resource.to_manager</button>
+                </h5>
+                @*<table class="table-erp" id="camposCluster">
+                        <tbody>
+                            <tr class="row">
+                                @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
+                                @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
+                                @Table.GerarColuna(@Html.Editor("dataVigencia", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
+                                @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top
+                               , button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='" + @click + ";'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                            </tr>
+                        </tbody>
+                    </table>*@
 
-                <table id="tableClusters" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Cluster:">
+                <div class="alert alert-info" id="withoutClustersActive">
+                    <strong>@Resources.Resource.without @Resources.Resource.active_clusters</strong>
+                </div>
+
+                <table id="tableClustersActive" class="table table-condensed table-responsive no-margin margin-top">
                     <thead>
                         <tr>
                             <th>@Resources.Resource.cluster_name</th>
                             <th>@Resources.Resource.group</th>
+                            <th>@Resources.Resource.effectiveDate</th>
                             <th>@Resources.Resource.cluster_points</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -47,8 +55,53 @@
             </div>
         </div>
     </div>
-</div>
 
+    <!--Modal Gerenciar-->
+    <div class="container">
+        <div class="modal fade" id="modalManagerCluster" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+            <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-gray">
+
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+
+                        <h4 class="modal-title" id="Header">@Resources.Resource.management</h4>
+                    </div>
+                    <div class="modal-body" id="body">
+                        <table class="table-erp" id="camposCluster">
+                            <tbody>
+                                <tr class="row">
+                                    @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
+                                    @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
+                                    @Table.GerarColuna(@Html.Editor("effectiveDate", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate), Table.PosicaoLabel.top)
+                                    @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top
+                           , button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='" + @click + ";'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table id="tableClusters" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Cluster:">
+                            <thead>
+                                <tr>
+                                    <th>@Resources.Resource.cluster_name</th>
+                                    <th>@Resources.Resource.group</th>
+                                    <th>@Resources.Resource.effectiveDate</th>
+                                    <th>@Resources.Resource.cluster_points</th>
+                                    <th class="options"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">@Resources.Resource.close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <script>
 
@@ -64,6 +117,11 @@
             listSalvo = paramsDto.parLevel1Dto.listLevel1XClusterDto;//
             ClusterL1 = getCounterObject(levelDomain, listSalvo);//
             ClusterL1.carregaDadosDoDb();//
+
+            $('#modalManagerCluster').on('hidden.bs.modal', function () {
+                // do something…
+                ClusterL1.atualizaLista();
+            })
         }
         //if(levelControl == 2){
         //    levelDomain = "newLevel2Modal";
@@ -79,6 +137,8 @@
         //}
     }
 
+    var emptyEffectiveDate = "-";
+
     atribuiLevelDivCluster();
     function getCounterObject (levelDomain, listSalvo) {
         return {
@@ -87,7 +147,9 @@
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tableClusters',//
-            tdsNames: ['Cluster_Name','ParCriticalLevel_Name', 'Points',  'btn'],
+            listObjActive: [],
+            idTableActive: 'tableClustersActive',
+            tdsNames: ['Cluster_Name','ParCriticalLevel_Name', 'EffectiveDate', 'Points',  'btn'],
             getObjAdd: function(isEdit, obj){
                 if(isEdit != undefined){
                     obj.Cluster_Name = $('#' + isEdit + ' #valueCluster :selected').text();
@@ -95,6 +157,7 @@
                     obj.ParCriticalLevel_Name = $('#' + isEdit + ' #valCrit :selected').text();
                     obj.ParCriticalLevel_Id = $('#' + isEdit + ' #valCrit :selected').val();
                     obj.Points = $('#' + isEdit + ' #pontosCluster').val();
+                    obj.EffectiveDate = $('#' + isEdit + ' #effectiveDate').val();
                     return obj;
                 }else{
                     return {/*Objeto*/
@@ -103,6 +166,7 @@
                         ParCriticalLevel_Name: $('#' + this.level + ' #valCrit :selected').text(),
                         ParCriticalLevel_Id: $('#' + this.level + ' #valCrit :selected').val(),
                         Points: $('#' + this.level + ' #pontosCluster').val(),
+                        EffectiveDate: $('#' + this.level + ' #effectiveDate').val(),
                         IsActive: true,
                     };
                 }
@@ -111,20 +175,31 @@
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #valueCluster :selected').val() <= 0){
-                    openMessageModal("@Resources.Resource.select_the_cluster");
+                    openMessageModal("@Resources.Resource.select_the_cluster","");
                     return false;
                 }
 
                 if($('#' + seletorTato + ' #valCrit :selected').val() <= 0){
-                    openMessageModal("@Resources.Resource.select_the_critical_level");
+                    openMessageModal("@Resources.Resource.select_the_critical_level","");
+                    return false;
+                }
+
+                if($('#' + seletorTato + ' #effectiveDate').val().replace(/[^0-9.]/g, '') == ""){
+                    openMessageModal("@Resources.Resource.invalid_value_for \"@Resources.Resource.effectiveDate\"","");
                     return false;
                 }
 
                 if($('#' + seletorTato + ' #pontosCluster').val().replace(/[^0-9.]/g, '') == ""){
-                    openMessageModal("@Resources.Resource.fill_the_cluster_points");
+                    openMessageModal("@Resources.Resource.fill_the_cluster_points","");
                     return false;
                 }
-                return true;
+
+                var validate = this.verifyJaExiste({
+                    ParCluster_Id: $('#' + seletorTato + ' #valueCluster :selected').val(),
+                    EffectiveDate: $('#' + seletorTato + ' #effectiveDate').val()
+                });
+
+                return validate;
 
             },
             incluiNoObjetoParaSubmit: function(dados){
@@ -140,10 +215,77 @@
 
                     dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].ParCluster_Id"] = o.ParCluster_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].ParCriticalLevel_Id"] = o.ParCriticalLevel_Id;
+                    if(o.EffectiveDate.length < 8){
+                        dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].EffectiveDate"]  = null;
+                    }else{
+                        dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].EffectiveDate"] = o.EffectiveDate;
+                    }
                     dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].Points"] = o.Points;
                     dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].IsActive"] = o.IsActive;
                     //
                 });
+
+            },
+            atualizaLista: function(){
+                $('#'+this.idTableActive+" tbody").empty();
+                var dados = $('#newLevel1Modal > form').serializeObject();
+                this.listObjActive = [];
+                //this.incluiNoObjetoParaSubmit(dados);
+
+                var level = this.levelControl;
+                $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                    //regra para evitar duplicidade considerando a ultima data, desta forma resolve-se o rpoblema de mostrar na tela
+                    //Ajustar layout
+                    //Verificar z-index modal
+
+                    var o = $(obj).data();
+                    if(o.IsActive && (o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date().getTime())){
+                        var index = -1;
+                        $(ClusterL1.listObjActive).each(function(i,g){
+                            if(o.Cluster_Name == g.Cluster_Name){
+                                if(o.EffectiveDate == emptyEffectiveDate && o.EffectiveDate == g.EffectiveDate){
+                                    index = i;
+                                    return;
+                                } else if(o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date(g.EffectiveDate).getTime()){
+                                    index = -2;
+                                    return;
+                                } else if(o.EffectiveDate != emptyEffectiveDate &&
+                                    (new Date(o.EffectiveDate).getTime() > new Date(g.EffectiveDate).getTime() || g.EffectiveDate == emptyEffectiveDate)){
+                                    index = i;
+                                    return;
+                                }
+                            }
+                        });
+
+                        if(index >= 0){
+                            ClusterL1.listObjActive.splice(index, 1);
+                            index = -1;
+                        }
+
+                        if(index == -1)
+                            ClusterL1.listObjActive.push(o);
+                    }
+                });
+
+                $(ClusterL1.listObjActive).each(function(i,o){
+                    $('#'+ClusterL1.idTableActive+" tbody").append(
+                                '<tr><td>'+o.Cluster_Name+'</td>'+
+                                '<td>'+o.ParCriticalLevel_Name+'</td>'+
+                                '<td>'+o.EffectiveDate+'</td>'+
+                                '<td>'+o.Points+'</td></tr>'
+                            );
+                });
+
+                if($('#'+this.idTableActive+' tbody tr').length > 0){
+                    $('#'+this.idTableActive).attr('style','');
+                    $('#withoutClustersActive').attr('style','display:none;');
+                }else{
+                    $('#'+this.idTableActive).attr('style','display:none;');
+                    $('#withoutClustersActive').attr('style','');
+                }
+
+                this.atualizarDataLista();
 
             },
             carregaDadosDoDb: function(){
@@ -153,28 +295,49 @@
                     this.listObjSalvo.forEach(function(o, c){
                         o["Cluster_Name"] = o.ParCluster.Name;
                         o["ParCriticalLevel_Name"] = o.ParCriticalLevel.Name;
+                        if(o.EffectiveDate != null)
+                            o["EffectiveDate"] = moment(new Date(parseInt(o.EffectiveDate.substr(6)))).format("YYYY-MM-DD");
+                        else
+                            o["EffectiveDate"] = emptyEffectiveDate;
+
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
+
+                this.atualizaLista();
+
+
             },
             /*Fim Setup*/
             adiciona: function(e) {
                 valid = this.veifyAdd();
                 var object = this.getObjAdd();
-                var valid = this.verifyJaExiste(object);
                 if(valid){
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+
+                    $('#' + this.level + ' #valueCluster').val('');
+                    $('#' + this.level + ' #valCrit').val('');
+                    $('#' + this.level + ' #pontosCluster').val('');
+                    $('#' + this.level + ' #effectiveDate').val('');
+
+                    this.atualizarDataLista();
                 }
             },
             verifyJaExiste: function(obj) {
                 var isValid  = true;
                 $('#'+this.level + ' #' + this.idTable).find('tbody > tr').each(function(c, o) {
-                    if($(o).data().ParCluster_Id == obj.ParCluster_Id){
-                        openMessageModal("@Resources.Resource.cluster_can_not_be_duplicated")
-                        isValid = false
+                    if($(o).data().ParCluster_Id == obj.ParCluster_Id && $(o).data().EffectiveDate == obj.EffectiveDate){
+                        openMessageModal("@Resources.Resource.cluster_can_not_be_duplicated");
+                        isValid = false;
+                        return;
                     }
                 });
                 return isValid;
+            },
+            atualizarDataLista: function(){
+                ConverterData('#'+this.idTable,3);
+                $('#'+this.idTable).find('button[onclick="crudNxN.funcEdit($(this));"]').remove();
+                ConverterData('#'+this.idTableActive,3);
             }
         };
     }

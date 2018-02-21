@@ -89,6 +89,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         //}
 
 
+
         [HttpPost]
         [Route("listaResultadosPeriodoTabela")]
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela([FromBody] FormularioParaRelatorioViewModel form)
@@ -127,7 +128,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -180,14 +181,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             SQLcentro = getQuery(form, nivel);
 
             #region Status do Indicador: Fora ou Dentro da Meta
-            if (form.statusIndicador == 1) // Indicadores Dentro Da Meta
+            if (form.statusIndicador == 1) // Indicadores Fora Da Meta
             {
                 SQLcentro += @"";
                 SQLcentro += @"";
                 SQLcentro += getQueryStatusIndicador(form, form.statusIndicador);
             }
             else
-            if (form.statusIndicador == 2) // Indicadores Fora Da Meta
+            if (form.statusIndicador == 2) // Indicadores Dentro Da Meta
             {
                 SQLcentro += @"";
                 SQLcentro += @"";
@@ -221,7 +222,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
+               
+                /*,CASE
+                    WHEN IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) > max(ISNULL(Meta,0)) THEN 0
+                    ELSE 1
+                END AS Status
+                */
+
                ,cast(1 as bit) IsIndicador
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -576,7 +585,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -673,6 +682,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsMonitoramento
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -932,7 +942,7 @@ ORDER BY 10 DESC ";
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1031,6 +1041,7 @@ ORDER BY 10 DESC ";
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsTarefa
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1335,7 +1346,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1427,6 +1438,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsIndicador
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1473,7 +1485,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1567,6 +1579,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsMonitoramento
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -1616,7 +1629,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -1712,6 +1725,7 @@ FROM (SELECT
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,max(ISNULL(Meta,0)) AS Meta
                ,cast(1 as bit) IsTarefa
+               ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -2710,7 +2724,7 @@ FROM (SELECT
                 //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
                 "\n     FROM CollectionLevel2 C2 (nolock) " +
                 "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
-                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1 " +
+                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1" +
 
                 "\n     INNER JOIN ParCompany C (nolock)  " +
                 "\n     ON C.Id = C2.UnitId " +
@@ -2790,7 +2804,7 @@ FROM (SELECT
 "\n    LEFT JOIN ParLevel1XCluster L1C                                                                                                                                                                                                                                                                                                     " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1    AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                                                              " +
+"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1                                                                                                                                                                                                                                                " +
 "\n    LEFT JOIN ParCriticalLevel CRL                                                                                                                                                                                                                                                                                                      " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
@@ -3017,6 +3031,7 @@ FROM (SELECT
 //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
 //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
+
 "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
@@ -3026,9 +3041,55 @@ FROM (SELECT
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n           --  AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  "" +
+  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n           --  AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+    "\n	)" +
+  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+  "\n , ISNULL(" +
+  "( " +
+
+   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+   "\n           --  AND L1Ca.IsActive = 1 " +
+
+   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+
+   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+    "\n	)" +
+  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -3053,7 +3114,7 @@ FROM (SELECT
 
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -3074,7 +3135,7 @@ FROM (SELECT
            "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -3219,7 +3280,7 @@ FROM (SELECT
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
+           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -3252,7 +3313,7 @@ FROM (SELECT
            "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
            "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                 " +
+           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
@@ -3305,9 +3366,10 @@ FROM (SELECT
            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
            "\n     , ST.Name                                                                                                                                                                                                                                                       " +
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
+           "\n     , L1.HashKey " +
+           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
-           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                       " +
+           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3369,7 +3431,7 @@ FROM (SELECT
 
             if (form.unitId > 0)
             {
-                whereUnit = $@"AND C.Id = { form.unitId }";
+                whereUnit = $@" AND C.Id = { form.unitId }";
             }
 
             if (form.criticalLevelId > 0)
@@ -3392,34 +3454,32 @@ FROM (SELECT
                 "\n   ,'a4' as UnidadeName            " +
                 "\n   ,20.0 AS procentagemNc          " +
                 "\n   ,10.0 AS Meta                   " +
-                "\n   ,CAST(ISNULL(case when sum(av) is null or sum(av) = 0 then '0'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end, 0) AS DECIMAL(10,2)) AS nc        " +
+                "\n   ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end AS nc        " +
+                                 //case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end
                 "\n   ,50.0 as av                     " +
                 "\n   ,max(mesData) as [date]                 " +
 
-
-                  "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
-                    "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
-                    "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
-                    "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
-
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
-                    "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
-                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
-
-                    "\n INNER JOIN #SCORE S " +
-                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-
-                    "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
+  @"      FROM ParStructure Reg  with(nolock)
+     LEFT JOIN ParCompanyXStructure CS  with(nolock)
+  ON CS.ParStructure_Id = Reg.Id
+     left join ParCompany C  with(nolock)
+  on C.Id = CS.ParCompany_Id
+     left join ParLevel1 P1  with(nolock)
+  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
+     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
+  ON PP.ParLevel1_Id = P1.Id
+     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
+  ON PP.ParGroupParLevel1_Id = PP1.Id
+     LEFT JOIN #SCORE S  with (nolock)
+  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
+  WHERE 1 = 1 
+  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
+  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
                     whereClusterGroup +
                     whereCluster +
                     whereStructure +
                     whereCriticalLevel +
-                    whereUnit +
+                    // whereUnit +
                     "\n  ORDER BY 10";
 
             #endregion
@@ -4285,7 +4345,7 @@ FROM (SELECT
 
             #region Filtros
             
-            var titulo = "Historico da Tarefa";
+            var titulo = "Histórico da Tarefa";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4409,6 +4469,10 @@ FROM (SELECT
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
+			   ,max(MonitoramentoName) level2Name
+			   ,max(TarefaName) level3Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4434,7 +4498,7 @@ FROM (SELECT
 
             #region Filtros
 
-            var titulo = "Historico do Monitoramento";
+            var titulo = "Histórico do Monitoramento";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4554,6 +4618,9 @@ ORDER BY 7
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
+			   ,max(MonitoramentoName) level2Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4578,7 +4645,7 @@ ORDER BY 3
 
             #region Filtros
 
-            var titulo = "Historico do Indicador";
+            var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4694,6 +4761,8 @@ ORDER BY 3
                '"+ titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName)UnidadeName
+			   ,max(IndicadorName) level1Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -4717,7 +4786,7 @@ ORDER BY 3
 
             #region Filtros
 
-            var titulo = "Historico Consolidado";
+            var titulo = "Histórico Consolidado";
 
             var Wmodulo = "";
             var Wprocesso = "";
@@ -4809,7 +4878,7 @@ ORDER BY 3
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
-		       ,sum(ISNULL(Meta,0)) AS Meta
+		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 Indicador 
@@ -4832,11 +4901,12 @@ ORDER BY 7
                '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+			   ,max(UnidadeName) UnidadeName
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
-		       ,sum(ISNULL(Meta,0)) AS Meta
+		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 ConsolidationDate
@@ -5273,7 +5343,7 @@ ORDER BY 3
             }
 
 
-                var Query = "";
+            var Query = "";
 
             if (nivel == 1 || nivel == 4 || nivel == 5)
             {
@@ -5394,6 +5464,7 @@ ORDER BY 3
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
             " + Wunidade + @"
             " + Windicador + @"
+            AND CL1.ParLevel1_Id != 43
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
@@ -5487,32 +5558,52 @@ ORDER BY 3
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.TotalLevel3WithDefects)
             				ELSE SUM(0)
             	 END AS [NC]
-            	,CASE
-            		WHEN (SELECT
-            					COUNT(1)
-            				FROM ParGoal G WITH (NOLOCK)
-            				WHERE G.ParLevel1_Id = C1.ParLevel1_Id
-            				AND (G.ParCompany_Id = C1.UnitId
-            				OR G.ParCompany_id IS NULL)
-            				AND G.AddDate <= C1.ConsolidationDate)
-            			> 0 THEN (SELECT TOP 1
-            					ISNULL(G.PercentValue, 0)
-            				FROM ParGoal G WITH (NOLOCK)
-            				WHERE G.ParLevel1_id = C1.ParLevel1_Id
-            				AND (G.ParCompany_id = C1.UnitId
-            				OR G.ParCompany_id IS NULL)
-            				AND G.AddDate <= C1.ConsolidationDate
-            				ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-            
-            		ELSE (SELECT TOP 1
-            					ISNULL(G.PercentValue, 0)
-            				FROM ParGoal G WITH (NOLOCK)
-            				WHERE G.ParLevel1_id = C1.ParLevel1_Id
-            				AND (G.ParCompany_id = C1.UnitId
-            				OR G.ParCompany_id IS NULL)
-            				ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-            			END
-            			AS Meta
+            	--,CASE
+            	--	WHEN (SELECT
+            	--				COUNT(1)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_Id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_Id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			AND G.AddDate <= C1.ConsolidationDate)
+            	--		> 0 THEN (SELECT TOP 1
+            	--				ISNULL(G.PercentValue, 0)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			AND G.AddDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+                --
+            	--	ELSE (SELECT TOP 1
+            	--				ISNULL(G.PercentValue, 0)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+            	--		END
+            	--		AS Meta
+                ,ISNULL((  SELECT TOP 1
+					                PercentValue
+					            FROM ParGoal pg
+					            WHERE 1=1
+					            AND pg.IsActive = 1
+					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
+					            AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
+					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
+					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC),
+					            (  SELECT TOP 1
+					                PercentValue
+					            FROM ParGoal pg
+					            WHERE 1=1
+					            AND pg.IsActive = 1
+					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
+					            --AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
+					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
+					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC))	AS Meta
             	INTO #CUBO
             	FROM #ConsolidationLevel C1
             	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -5572,7 +5663,8 @@ ORDER BY 3
             	,CRL.Name
             	,L1.IsRuleConformity
             
-            
+                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
             	-- DROP TABLE #DIM
             
             	select DISTINCT 
@@ -5733,6 +5825,7 @@ ORDER BY 3
             " + Wunidade + @"
             " + Windicador + @"
             " + Wmonitoramento + @"
+            AND CL1.ParLevel1_Id != 43
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level2 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id); 
@@ -5767,29 +5860,31 @@ ORDER BY 3
             											) ,0)
             											-
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
             				ELSE SUM(0)
             	 END AS [AVComPeso]
             	,CASE 
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(c1.DefectsResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(c1.TotalLevel3WithDefects)
             				ELSE SUM(0)
@@ -5802,59 +5897,81 @@ ORDER BY 3
             											),0)
             											-
             										ISNULL((SELECT SUM(NA) AS NA FROM #NA NA WHERE NA.UnitId = C1.UnitId AND NA.CollectionDate = C1.ConsolidationDate),0)
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(AM) AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
             				ELSE SUM(0)
             	 END AS [AV]
             	,CASE 
+            				WHEN C1.ParLevel1_Id = 36 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.DefectsResult)
-            				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
-            																WHERE 1=1 
-            																  AND C1.Unitid = A4.UNIDADE 
-            																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
-            															,0)
+            				-- WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
+            				-- 												WHERE 1=1 
+            				-- 												  AND C1.Unitid = A4.UNIDADE 
+            				-- 												  AND C1.ParLevel1_id = A4.INDICADOR 
+            				-- 												  AND C1.ConsolidationDate = A4.DATA)
+            				-- 											,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.TotalLevel3WithDefects)
             				ELSE SUM(0)
             	 END AS [NC]
-            	,CASE
-            		WHEN (SELECT
-            					COUNT(1)
-            				FROM ParGoal G WITH (NOLOCK)
-            				WHERE G.ParLevel1_Id = C1.ParLevel1_Id
-            				AND (G.ParCompany_Id = C1.UnitId
-            				OR G.ParCompany_id IS NULL)
-            				AND G.AddDate <= C1.ConsolidationDate)
-            			> 0 THEN (SELECT TOP 1
-            					ISNULL(G.PercentValue, 0)
-            				FROM ParGoal G WITH (NOLOCK)
-            				WHERE G.ParLevel1_id = C1.ParLevel1_Id
-            				AND (G.ParCompany_id = C1.UnitId
-            				OR G.ParCompany_id IS NULL)
-            				AND G.AddDate <= C1.ConsolidationDate
-            				ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-            
-            		ELSE (SELECT TOP 1
-            					ISNULL(G.PercentValue, 0)
-            				FROM ParGoal G WITH (NOLOCK)
-            				WHERE G.ParLevel1_id = C1.ParLevel1_Id
-            				AND (G.ParCompany_id = C1.UnitId
-            				OR G.ParCompany_id IS NULL)
-            				ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-            			END
-            			AS Meta
+            	--,CASE
+            	--	WHEN (SELECT
+            	--				COUNT(1)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_Id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_Id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			AND G.AddDate <= C1.ConsolidationDate)
+            	--		> 0 THEN (SELECT TOP 1
+            	--				ISNULL(G.PercentValue, 0)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			AND G.AddDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+                --
+            	--	ELSE (SELECT TOP 1
+            	--				ISNULL(G.PercentValue, 0)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+            	--		END
+            	--		AS Meta
+                ,ISNULL((  SELECT TOP 1
+					                PercentValue
+					            FROM ParGoal pg
+					            WHERE 1=1
+					            AND pg.IsActive = 1
+					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
+					            AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
+					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
+					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC),
+					            (  SELECT TOP 1
+					                PercentValue
+					            FROM ParGoal pg
+					            WHERE 1=1
+					            AND pg.IsActive = 1
+					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
+					            --AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
+					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
+					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC))	AS Meta
             	INTO #CUBO
             	FROM #ConsolidationLevel C1
             	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -5920,7 +6037,8 @@ ORDER BY 3
             	,CRL.Name
             	,L1.IsRuleConformity
             
-            
+                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
             	-- DROP TABLE #DIM
             
             	select DISTINCT 
@@ -5960,6 +6078,7 @@ ORDER BY 3
                 #endregion
 
             }
+
             else if (nivel == 3)
             { 
 
@@ -6086,6 +6205,7 @@ ORDER BY 3
         " + Windicador + @"
         " + Wmonitoramento + @"
         " + Wtarefa + @"
+        AND CL1.ParLevel1_Id != 43
         
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
@@ -6140,32 +6260,52 @@ ORDER BY 3
         		WHEN L1.ParConsolidationType_Id = 2 THEN SUM(WeiDefects)
         		ELSE SUM(Defects)
         	END AS [NC]
-        	,CASE
-        		WHEN (SELECT
-        					COUNT(1)
-        				FROM ParGoal G WITH (NOLOCK)
-        				WHERE G.ParLevel1_Id = C1.ParLevel1_Id
-        				AND (G.ParCompany_Id = C1.UnitId
-        				OR G.ParCompany_id IS NULL)
-        				AND G.AddDate <= C1.ConsolidationDate)
-        			> 0 THEN (SELECT TOP 1
-        					ISNULL(G.PercentValue, 0)
-        				FROM ParGoal G WITH (NOLOCK)
-        				WHERE G.ParLevel1_id = C1.ParLevel1_Id
-        				AND (G.ParCompany_id = C1.UnitId
-        				OR G.ParCompany_id IS NULL)
-        				AND G.AddDate <= C1.ConsolidationDate
-        				ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-        
-        		ELSE (SELECT TOP 1
-        					ISNULL(G.PercentValue, 0)
-        				FROM ParGoal G WITH (NOLOCK)
-        				WHERE G.ParLevel1_id = C1.ParLevel1_Id
-        				AND (G.ParCompany_id = C1.UnitId
-        				OR G.ParCompany_id IS NULL)
-        				ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-        			END
-        			AS Meta
+            	--,CASE
+            	--	WHEN (SELECT
+            	--				COUNT(1)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_Id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_Id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			AND G.AddDate <= C1.ConsolidationDate)
+            	--		> 0 THEN (SELECT TOP 1
+            	--				ISNULL(G.PercentValue, 0)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			AND G.AddDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+                --
+            	--	ELSE (SELECT TOP 1
+            	--				ISNULL(G.PercentValue, 0)
+            	--			FROM ParGoal G WITH (NOLOCK)
+            	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
+            	--			AND (G.ParCompany_id = C1.UnitId
+            	--			OR G.ParCompany_id IS NULL)
+            	--			ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+            	--		END
+            	--		AS Meta
+                ,ISNULL((  SELECT TOP 1
+					                PercentValue
+					            FROM ParGoal pg
+					            WHERE 1=1
+					            AND pg.IsActive = 1
+					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
+					            AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
+					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
+					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC),
+					            (  SELECT TOP 1
+					                PercentValue
+					            FROM ParGoal pg
+					            WHERE 1=1
+					            AND pg.IsActive = 1
+					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
+					            --AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
+					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
+					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC))	AS Meta
         	INTO #CUBO
         	FROM #ConsolidationLevel C1
         	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -6238,7 +6378,8 @@ ORDER BY 3
         	,L1.IsRuleConformity
         
         
-        
+            update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+
         	-- DROP TABLE  #DIM
         
         	select DISTINCT 
@@ -6291,11 +6432,11 @@ ORDER BY 3
             var whereStatusQuery = "";
 
             if(whereStatus == 1){
-                whereStatusQuery = " AND WHERESTATUS.PC > WHERESTATUS.Meta ";
+                whereStatusQuery = " AND WHERESTATUS.PC < WHERESTATUS.Meta ";
             }
             if (whereStatus == 2)
             {
-                whereStatusQuery = " AND WHERESTATUS.PC < WHERESTATUS.Meta ";
+                whereStatusQuery = " AND WHERESTATUS.PC > WHERESTATUS.Meta ";
             }
 
             var Query = "";

@@ -31,10 +31,12 @@ namespace Dominio
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
         public Nullable<bool> MailProcessed { get; set; }
+        public Nullable<int> EmailContent_Id { get; set; }
     
         public virtual UserSgq UserSgq { get; set; }
         public virtual UserSgq UserSgq1 { get; set; }
         public virtual UserSgq UserSgq2 { get; set; }
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
+        public virtual EmailContent EmailContent { get; set; }
     }
 }

@@ -114,13 +114,18 @@
         else if ($(e).parents('#level1_cluster_accordion').length) {
             crudNxN.modalAlterarCluster(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
-                $(e).parents('tr').removeData();
-                $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
-                $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
-                $($(e).parents('tr').find('td')[2]).html(editado.Points)//
-                $('#crudNxNEdit').modal('hide');
+
+                /*Valida se pode criar o objeto*/
+                if (ClusterL1.veifyAdd('crudNxNEdit')) {
+                    var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
+                    $(e).parents('tr').removeData();
+                    $(e).parents('tr').data(editado);
+                    $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
+                    $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
+                    $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate)//
+                    $($(e).parents('tr').find('td')[3]).html(editado.Points)//
+                    $('#crudNxNEdit').modal('hide');
+                }
             });
         }
         else if ($(e).parents('#level2_GroupLevel_accordion').length) {
@@ -231,11 +236,10 @@
         $('#crudNxNEdit #valueCluster').val(obj.ParCluster_Id).attr('disabled', true);/*Preenche*/
         $('#crudNxNEdit #valCrit').val(obj.ParCriticalLevel_Id);/*Preenche*/
         $('#crudNxNEdit #pontosCluster').val(obj.Points);/*Preenche*/
+        $('#crudNxNEdit #effectiveDate').val(obj.EffectiveDate);/*Preenche*/
         $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
     },
     retornaObjetoAlteradoCluster: function (obj) {
-        /*Valida se pode criar o objeto*/
-        ClusterL1.veifyAdd('crudNxNEdit')
         ClusterL1.getObjAdd('crudNxNEdit', obj);
         return obj;
     },

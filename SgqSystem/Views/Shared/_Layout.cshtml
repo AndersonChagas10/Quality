@@ -309,21 +309,25 @@
 
 
         var rangesEUA = {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            //'Today': [moment(), moment()],
+            '⊲ Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            '⊲ Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            '⊲ Last 365 Days': [moment().subtract(12, 'month'), moment()],
+            '⬚ This Month': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
         }
 
         var rangesBR = {
-            'Hoje': [moment(), moment()],
-            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
-            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-            'Este mês': [moment().startOf('month'), moment().endOf('month')],
-            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            //'Hoje': [moment(), moment()],
+            '⊲ Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            '⊲ Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '⊲ Últimos 365 Dias': [moment().subtract(12, 'month'), moment()],
+            '⬚ Este Mês': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Último Ano': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
         }
 
         var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
@@ -576,7 +580,7 @@
         var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
         var flag_beforeunload = false;
 
-        var pressedCtrl = false;
+        @*var pressedCtrl = false;
         document.onkeydown=function(e){
             var winObj = checkEventObj(e);
             var intCtrlKey = winObj.ctrlKey;
@@ -602,7 +606,7 @@
                     return "Write something clever here...";
                 }
             }
-        }
+        }*@
         function checkEventObj ( _event_ ){
             // --- IE explorer
             if ( window.event )
