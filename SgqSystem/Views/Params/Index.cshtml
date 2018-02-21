@@ -629,7 +629,7 @@
         enviarDadosParaApi: function (e) {
 
             $("#paramsDto_parLevel2Dto_Name").val($.trim($("#paramsDto_parLevel2Dto_Name").val().replace(/  +/g, ' ')));
-           
+
             $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
 
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -1241,9 +1241,17 @@
             var hasVinculoLevel3  = $('[name="paramsDto.parLevel3Dto.hasVinculo"]').val() == "True"
 
             $('#vinculoLevel1').attr("disabled", true);
-            if(permiteVincularMonitoramentosTarefas){
+            if (permiteVincularMonitoramentosTarefas) {
+
+                $('#vinculoLevel1').attr("disabled", false);
+
+            }
+
+            if ($('#btnNewLevel2').attr('disabled') == undefined) {
                 $('#vinculoLevel1').attr("disabled", false);
             }
+
+            
 
             if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
@@ -1328,6 +1336,11 @@
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
                 $('#vinculoLevel1').attr("disabled", true);
+
+                if ($('#btnNewLevel2').attr('disabled') == undefined) {
+                    $('#vinculoLevel1').attr("disabled", false);
+                }
+
                 //console.log('permite editar vinculo unidade Parlevel3')
                 $('#tablePeso > tbody > tr').each(function() {
                     $(this).find('input, select, button').attr("disabled", true);
@@ -1489,11 +1502,11 @@
 @if (GlobalConfig.Brasil)
 {
     <script>
-        function ConverterData(idTabela, coluna){
+        function ConverterData(idTabela, coluna) {
             debugger
-            $(idTabela+' > tbody > tr td:nth-child('+coluna+')').each(function(i,o){
-                if($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
-                    $(o).html(moment(new Date($(o).html())).add(1,'days').format("DD/MM/YYYY"))
+            $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
+                if ($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("DD/MM/YYYY"))
             });
         }
     </script>
@@ -1503,11 +1516,11 @@
 @if (GlobalConfig.Eua)
 {
     <script>
-        function ConverterData(idTabela, coluna){
+        function ConverterData(idTabela, coluna) {
             debugger
-            $(idTabela+' > tbody > tr td:nth-child('+coluna+')').each(function(i,o){
-                if($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
-                    $(o).html(moment(new Date($(o).html())).add(1,'days').format("YYYY-MM-DD"))
+            $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
+                if ($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("YYYY-MM-DD"))
             });
         }
     </script>
