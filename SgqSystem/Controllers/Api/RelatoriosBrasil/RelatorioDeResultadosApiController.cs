@@ -1852,6 +1852,29 @@ FROM (SELECT
 "\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
 
 
+@"            SELECT 
+
+                CL1.id,
+            	CL1.ConsolidationDate,
+            	CL1.UnitId,
+            	CL1.ParLevel1_Id,
+            	CL1.DefectsResult,
+            	CL1.WeiDefects,
+            	CL1.EvaluatedResult,
+            	CL1.WeiEvaluation,
+            	CL1.EvaluateTotal,
+            	CL1.TotalLevel3WithDefects,
+            	CL1.DefectsTotal
+            INTO #ConsolidationLevel
+            FROM ConsolidationLevel1 CL1 WITH(NOLOCK)
+            WHERE 1 = 1
+            AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+            CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
+            CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
+            CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
+            CREATE INDEX IDX_HashConsolidationLevel_id ON #ConsolidationLevel (id); " +
+
 
                // Alteração
                "\n CREATE TABLE #AMOSTRATIPO4 ( " +
@@ -2405,10 +2428,10 @@ FROM (SELECT
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                            " +
-           "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
+           "\n FROM ParLevel1(nolock) L1    -- (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
+           "\n LEFT JOIN #ConsolidationLevel CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
+           "\n        ON L1.Id = CL1.ParLevel1_Id AND ISNULL(ShowScorecard, 1) = 1                                                                                                                                                                                                                                " +
            "\n LEFT JOIN ParScoreType ST  (nolock)                                                                                                                                                                                                                                           " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                " +
@@ -2686,6 +2709,30 @@ FROM (SELECT
 "\n      																																																																					                                               " +
 "\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
 "\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
+
+
+@"            SELECT 
+
+                CL1.id,
+            	CL1.ConsolidationDate,
+            	CL1.UnitId,
+            	CL1.ParLevel1_Id,
+            	CL1.DefectsResult,
+            	CL1.WeiDefects,
+            	CL1.EvaluatedResult,
+            	CL1.WeiEvaluation,
+            	CL1.EvaluateTotal,
+            	CL1.TotalLevel3WithDefects,
+            	CL1.DefectsTotal
+            INTO #ConsolidationLevel
+            FROM ConsolidationLevel1 CL1 WITH(NOLOCK)
+            WHERE 1 = 1
+            AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+            CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
+            CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
+            CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
+            CREATE INDEX IDX_HashConsolidationLevel_id ON #ConsolidationLevel (id); " +
 
 
 
@@ -3273,10 +3320,10 @@ FROM (SELECT
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
-           "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
+           "\n FROM ParLevel1(nolock) L1    -- (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
+           "\n LEFT JOIN #ConsolidationLevel CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
+           "\n        ON L1.Id = CL1.ParLevel1_Id AND ISNULL(ShowScorecard, 1) = 1                                                                                                                                                                                                                                " +
            "\n LEFT JOIN ParScoreType ST  (nolock)                                                                                                                                                                                                                                           " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                " +
@@ -3552,6 +3599,29 @@ FROM (SELECT
 "\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
 "\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
 
+
+@"            SELECT 
+
+                CL1.id,
+            	CL1.ConsolidationDate,
+            	CL1.UnitId,
+            	CL1.ParLevel1_Id,
+            	CL1.DefectsResult,
+            	CL1.WeiDefects,
+            	CL1.EvaluatedResult,
+            	CL1.WeiEvaluation,
+            	CL1.EvaluateTotal,
+            	CL1.TotalLevel3WithDefects,
+            	CL1.DefectsTotal
+            INTO #ConsolidationLevel
+            FROM ConsolidationLevel1 CL1 WITH(NOLOCK)
+            WHERE 1 = 1
+            AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+            CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
+            CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
+            CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
+            CREATE INDEX IDX_HashConsolidationLevel_id ON #ConsolidationLevel (id); " +
 
 
                // Alteração
@@ -4106,10 +4176,10 @@ FROM (SELECT
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM      (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
-           "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
+           "\n FROM ParLevel1(nolock) L1    -- (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
+           "\n LEFT JOIN #ConsolidationLevel CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
+           "\n        ON L1.Id = CL1.ParLevel1_Id AND ISNULL(ShowScorecard, 1) = 1                                                                                                                                                                                                                                " +
            "\n LEFT JOIN ParScoreType ST  (nolock)                                                                                                                                                                                                                                           " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                " +
