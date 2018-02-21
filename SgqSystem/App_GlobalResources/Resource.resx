@@ -2409,4 +2409,7 @@
   <data name="weighted" xml:space="preserve">
     <value>Weighted</value>
   </data>
+  <data name="conform2" xml:space="preserve">
+    <value>Conform</value>
+  </data>
 </root>

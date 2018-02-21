@@ -2406,4 +2406,7 @@
   <data name="weighted" xml:space="preserve">
     <value>Ponderado</value>
   </data>
+  <data name="conform2" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
 </root>
