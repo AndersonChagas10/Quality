@@ -1708,6 +1708,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Editado.
+        /// </summary>
+        internal static string edited {
+            get {
+                return ResourceManager.GetString("edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit header.
         /// </summary>
         internal static string edit_header {
@@ -3787,6 +3796,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        internal static string normal {
+            get {
+                return ResourceManager.GetString("normal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not in Accordance.
         /// </summary>
         internal static string not_accordance {
@@ -4791,6 +4809,15 @@ namespace Resources {
         internal static string result_evaluation_and_deviation_communication {
             get {
                 return ResourceManager.GetString("result_evaluation_and_deviation_communication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retroativo.
+        /// </summary>
+        internal static string retroactive {
+            get {
+                return ResourceManager.GetString("retroactive", resourceCulture);
             }
         }
         
