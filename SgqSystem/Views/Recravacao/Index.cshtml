@@ -1079,7 +1079,7 @@
                         }
                     }
                     intervalId = $interval(function () {
-                        if (!vm.startTime) {                     
+                        if (!vm.startTime) {
                             vm.timerDaProximaLata = "Linha Não Iniciada";
                             return;
                         }
@@ -1163,7 +1163,7 @@
                             text: hours + "h " + minutes + "m",
                             danger: (minutes < 0)
                         };
-                    } 
+                    }
                     return {};
                 }
 
@@ -1442,6 +1442,7 @@
                                 vm.linhas[index] = r.data.model[0]
                                 vm.linhas[index]["latas"] = []
                                 vm.linhaSelecionada = vm.linhas[index]
+                                $('.select2[multiple]').empty().trigger("change")
                                 vm.activeInLine = vm.linhaSelecionada.Id
                                 vm.salvaLinha(undefined, undefined, novaLinha)
                                 //vm.executeDocReady(true)
@@ -1812,7 +1813,7 @@
                                 setTimeout(function () {
                                     $('#HoraVerificacao').val(vm.linhaSelecionada.HoraVerificacao).trigger('change');
                                 }, 2);
-                                
+
 
                             }
                         });
@@ -1952,6 +1953,11 @@
 
                     if (!vm.linhaSelecionada.form || !vm.linhaSelecionada.form.Produto) {
                         toastr.warning("O produto precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.CodProduto) {
+                        toastr.warning("Código formulação precisa ser preenchido.");
                         return;
                     }
 

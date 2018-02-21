@@ -48,9 +48,6 @@ namespace SgqSystem.Controllers.Api
             }
             else
             {
-                var queryRecravacaoJson = string.Format("SELECT * FROM RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1} AND ParLevel1_Id = {2} AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC", linhaId, companyId, level1Id);
-                var recravacoes = QueryNinja(db, queryRecravacaoJson);
-
                 var query = string.Format(@"SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0} 
                         and ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1)", companyId, level1Id);
                 var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
@@ -62,29 +59,36 @@ namespace SgqSystem.Controllers.Api
                     int id = linha.GetValue("Id").Value<int>();
                     int horaVerificacao = 2;
 
-                    int? recravacaoId = recravacoes?.FirstOrDefault()?.GetValue("Id").Value<int>();
+                    var queryRecravacaoJson = string.Format("SELECT * FROM RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1} AND ParLevel1_Id = {2} AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC",id, companyId, level1Id);
+                    var recravacoes = QueryNinja(db, queryRecravacaoJson);
 
-                    //var recravacaoJson = recravacoes.FirstOrDefault();
+                    int? recravacaoId = recravacoes.FirstOrDefault()?.GetValue("Id").Value<int>();
 
-                    //if (recravacaoId != null)
-                    //{
-                    //    List<JObject> latas = QueryNinja(db, string.Format("SELECT * FROM RecravacaoLataJson where RecravacaoJson_Id = {0}", recravacaoId)).ToList();
+                    if (recravacaoId != null)
+                    {
+                        horaVerificacao = recravacoes.FirstOrDefault().GetValue("HoraVerificacao") == null ? 2 :
+                                recravacoes.FirstOrDefault().GetValue("HoraVerificacao").Value<int>();
 
-                    //    horaVerificacao = JObject.Parse(recravacaoJson).GetValue("HoraVerificacao") == null ? 2 :
-                    //        JObject.Parse(recravacaoJson).GetValue("HoraVerificacao").Value<int>();
+                        var queryRecravacaoLataJson = string.Format("SELECT ObjectRecravacaoJson FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0}", recravacaoId);
+                        var recravacaoLatas = QueryNinja(db, queryRecravacaoLataJson);
 
-                    //    foreach (var lata in latas)
-                    //    {
-                    //        DateTime? dataRetirada = String.IsNullOrEmpty((lata)?.GetValue("HoraDaRetiradaDaLata")?.ToString()) ? null :
-                    //                ((JObject)lata).GetValue("HoraDaRetiradaDaLata").Value<DateTime?>();
+                        foreach (var lata in recravacaoLatas)
+                        {
+                            dynamic objectRecravacaoJson = String.IsNullOrEmpty((lata)?.GetValue("ObjectRecravacaoJson")?.ToString()) ? null :
+                                    (lata).GetValue("ObjectRecravacaoJson").Value<dynamic>();
 
-                    //        if (dataRetirada != null)
-                    //        {
-                    //            ultimaLataRetirada = ultimaLataRetirada == null
-                    //                ? dataRetirada : (dataRetirada > ultimaLataRetirada ? dataRetirada : ultimaLataRetirada);
-                    //        }
-                    //    }
-                    //}
+                            String dataRetirada = JObject.Parse(objectRecravacaoJson.ToString())?.GetValue("HoraDaRetiradaDaLata")?.ToString();
+
+                            if (dataRetirada != null)
+                            {
+                                DateTime _dataRetirada;
+                                DateTime.TryParse(dataRetirada, out _dataRetirada);
+
+                                ultimaLataRetirada = ultimaLataRetirada == null
+                                    ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
+                            }
+                        }
+                    }
 
                     ultimaLataRetirada = ultimaLataRetirada?.AddHours(-2);
 
@@ -141,9 +145,33 @@ namespace SgqSystem.Controllers.Api
                 
                 int horaVerificacao = 2;
 
-                String recravacaoJson = recravacoes
-                    .Where(r => r.GetValue("Linha_Id").Value<int>() == Int32.Parse(id))
-                    .FirstOrDefault()?.GetValue("ObjectRecravacaoJson").Value<String>();
+                int? recravacaoId = recravacoes.FirstOrDefault()?.GetValue("Id").Value<int>();
+                
+                if(recravacaoId != null)
+                {
+                    horaVerificacao = recravacoes.FirstOrDefault().GetValue("HoraVerificacao") == null ? 2 :
+                            recravacoes.FirstOrDefault().GetValue("HoraVerificacao").Value<int>();
+
+                    var queryRecravacaoLataJson = string.Format("SELECT ObjectRecravacaoJson FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0}", recravacaoId);
+                    var recravacaoLatas = QueryNinja(db, queryRecravacaoLataJson);
+
+                    foreach(var lata in recravacaoLatas)
+                    {
+                        dynamic objectRecravacaoJson = String.IsNullOrEmpty((lata)?.GetValue("ObjectRecravacaoJson")?.ToString()) ? null :
+                                (lata).GetValue("ObjectRecravacaoJson").Value<dynamic>();
+
+                        String dataRetirada = JObject.Parse(objectRecravacaoJson.ToString())?.GetValue("HoraDaRetiradaDaLata")?.ToString();
+
+                        if (dataRetirada != null)
+                        {
+                            DateTime _dataRetirada;
+                            DateTime.TryParse(dataRetirada, out _dataRetirada);
+
+                            ultimaLataRetirada = ultimaLataRetirada == null
+                                ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
+                        }
+                    }
+                }
 
                 //if (recravacaoJson != null)
                 //{

@@ -258,62 +258,58 @@
         float: left;
     }
 
-        .tableForm td {
-            font-family: verdana, arial, sans-serif;
-            /*font-size: 12px;*/
-            text-align: left;
-        }
+    .tableForm td {
+        font-family: verdana, arial, sans-serif;
+        /*font-size: 12px;*/
+        text-align: left;
+    }
 
-            .tableForm td.title {
-                font-weight: bold;
-            }
+    .tableForm td.title {
+        font-weight: bold;
+    }
 
-        .tableForm th,
-        .tableForm td {
-            padding: 4px 4px 4px 4px;
-        }
+    .tableForm th,
+    .tableForm td {
+        padding: 4px 4px 4px 4px;
+    }
 
-        .tableForm th {
-            border-bottom: 2px solid #333333;
-        }
+    .tableForm th {
+        border-bottom: 2px solid #333333;
+    }
 
-        .tableForm td {
-            border-bottom: 1px dotted #999999;
-        }
+    .tableForm td {
+        border-bottom: 1px dotted #999999;
+    }
 
-        .tableForm tfoot td {
-            border-bottom-width: 0px;
-            border-top: 2px solid #333333;
-            padding-top: 20px;
-        }
-</style>
+    .tableForm tfoot td {
+        border-bottom-width: 0px;
+        border-top: 2px solid #333333;
+        padding-top: 20px;
+    }
 
-<style>
     /*Tabela Pontos*/
     .tablePontos {
         width: 100%;
     }
 
-        .tablePontos td.pontosLabel {
-            border: 1px solid #cccccc;
-            text-align: right;
-            font-weight: bold;
-            width: 110px;
-        }
+    .tablePontos td.pontosLabel {
+        border: 1px solid #cccccc;
+        text-align: right;
+        font-weight: bold;
+        width: 110px;
+    }
 
-        .tablePontos td.pontoIndex {
-            border: 1px solid #cccccc;
-            text-align: center;
-            font-weight: bold;
-            background-color: #dddddd;
-        }
+    .tablePontos td.pontoIndex {
+        border: 1px solid #cccccc;
+        text-align: center;
+        font-weight: bold;
+        background-color: #dddddd;
+    }
 
-        .tablePontos td {
-            line-height: 7px;
-        }
-</style>
+    .tablePontos td {
+        line-height: 7px;
+    }
 
-<style>
     .divTableCorrectiveAction {
         margin-left: 4px;
         margin-right: 4px;
@@ -1153,16 +1149,13 @@
                                     toastr.error(o)
                                 })
                             } else {
-                                //toastr.success(r.data.resposta)
-                                //toastr.success('Recuperada coleta persistida \n na Base de Dados')
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 vm.linhas = r.data.model
                                 vm.linhas.forEach(function (o, c) {
                                     o["latas"] = []
                                 })
-                                //vm.executeDocReady(true)
+
                                 vm.getAllLinha(null,null, false, loadLinha)
-                                //vm.getState()
+
                             }
                         });
                 }
@@ -1176,14 +1169,10 @@
                                     toastr.error(o)
                                 })
                             } else {
-                                //toastr.success(r.data.resposta)
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                                let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                let linhasSalvas = r.data.model
                                 let novaLinha = []
-                                //vm.linhas.forEach(function (o, c) {
                                 let o = vm.seletedLinha
 
-                                /*Recebe objeto salvo no banco de dados compara se é ativo na parametrização e subistiu caso seja ativo.*/
                                 var objetoSalvo = linhasSalvas.filter(function (objArr) {
                                     let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
                                     if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
@@ -1197,11 +1186,15 @@
                                     novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
                                 else
                                     novaLinha.push(JSON.parse(JSON.stringify(o)))
-                                //})
-
-                                /**/
 
                                 vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
+
+                                vm.seletedLinha.latas = []
+                                if (r.data.latasId) {
+                                    r.data.latasId.forEach(function (o) {
+                                        vm.getLata(o.Id);
+                                    });
+                                }
 
                                 if (vm.seletedLinha.form) {
                                     if (vm.seletedLinha.form.HoraInicioProducao)
@@ -1243,6 +1236,25 @@
                                         jsPOH.Imprimir();
                                     }
                                 }, 1000)
+                            }
+                        });
+                }
+
+                vm.getLata = function (id) {
+                    $http({ method: 'GET', url: `${vm.saveStateUrl}?recravacaoLataJsonId=${id}` })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                let o = JSON.parse(JSON.stringify(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)));
+                                o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
+                                if (o.HoraDaRetiradaDaLata == 'Invalid Date')
+                                    o.HoraDaRetiradaDaLata = '';
+                                vm.seletedLinha.latas.push(o);
+
+                                vm.seletedLinha.latas = _.orderBy(vm.seletedLinha.latas, ['counter'], ['asc']);
                             }
                         });
                 }
