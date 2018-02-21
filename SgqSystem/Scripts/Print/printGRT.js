@@ -1,5 +1,7 @@
 ﻿var printGRT = { //Print Of Hell
 
+    //OBS: THEAD em tabelas internas quebram o plugin devido a ser configurado o thead para se manter no topo de cada pagina.
+
     //Precisa de JQuery 
     //Inserir .avoid-break-page em elementos que não podem ser quebrados no momento da impressão.
     //Inserir <div style="clear:both"> no final de div com elementos flutuantes (Cabeçalho e Rodapé)
@@ -174,6 +176,8 @@
     },
 
     Inicializar: function (config) {
+
+        $('#' + this.renderDivName).remove();
 
         if (config.sumPage != undefined)
             this.sumPage = config.sumPage;

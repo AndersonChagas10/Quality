@@ -13,5 +13,23 @@ namespace SgqSystem.Controllers
         {
             return View();
         }
+
+        // GET: Print
+        public ActionResult Template1()
+        {
+            return View();
+        }
+
+        // GET: Print
+        public ActionResult Template2()
+        {
+            return View();
+        }
+
+        // GET: Print
+        public ActionResult Template3()
+        {
+            return View();
+        }
     }
 }

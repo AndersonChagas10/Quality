@@ -1465,6 +1465,9 @@
     <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
     <Content Include="Views\Print\Index.cshtml" />
+    <Content Include="Views\Print\Template1.cshtml" />
+    <Content Include="Views\Print\Template2.cshtml" />
+    <Content Include="Views\Print\Template3.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
