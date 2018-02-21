@@ -198,16 +198,13 @@ namespace SgqSystem.Helpers
             {
                 tr =
                     "<td class='td-erp' colspan='2'>" +
-                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'>" +
+                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-1'>" +
                             
                         "</div>" +
-                        "<div class='col-xs-9 col-sm-9 col-md-9 col-lg-9'>" +
+                        "<div class='col-xs-10 col-sm-10 col-md-10 col-lg-10'>" +
                             label.ToString() +
                         "<br>" +
-                            checkbox.ToString() + button +
-                        "</div>" +
-                        "<div class='col-xs-1 col-sm-1 col-md-1 col-lg-1'>" +
-                            tagInfo +
+                            checkbox.ToString() + button + tagInfo+
                         "</div>" +
                     "</td>";
 
@@ -216,14 +213,11 @@ namespace SgqSystem.Helpers
             {
                 tr =
                     "<td class='td-erp' colspan='2'>" +
-                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'>" +
+                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-1'>" +
                             checkbox.ToString() + button +
                         "</div>" +
-                        "<div class='col-xs-9 col-sm-9 col-md-9 col-lg-9'>" +
-                            label.ToString() +
-                        "</div>" +
-                        "<div class='col-xs-1 col-sm-1 col-md-1 col-lg-1'>" +
-                            tagInfo +
+                        "<div class='col-xs-10 col-sm-10 col-md-10 col-lg-10'>" +
+                            label.ToString() + tagInfo+
                         "</div>" +
                     "</td>";
                     
