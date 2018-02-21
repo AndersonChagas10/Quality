@@ -100,11 +100,12 @@
 
 
                     if (!$scope.structureValue) {
+                        var structureValue = [$scope.structureValue];
                         $http({
                             method: 'POST',
                             url: GetListUnitVinculado,
                             data: JSON.stringify({
-                                "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": $scope.structureValue
+                                "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": structureValue
                         })
                         }).
                             then(function (r) {
@@ -142,15 +143,15 @@
             }
 
             $scope.GetListUnitVinculadoStructure = function () {
-
+                enviar['structureIdArr'] = []
                 enviar['structureId'] = document.getElementById('structureId').value;
-                enviar['structureIdArr'] = $('#structureId').val();
+                enviar['structureIdArr'] = [$('#structureId').val()];
 
                 if ($scope.clusterValue && !$scope.structureValue) {
                     $http({
                         method: 'POST',
                         url: GetListUnitVinculado,
-                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": [$scope.clusterValue] })
                     }).
                         then(function (r) {
                             $scope.unit = r.data;
@@ -162,7 +163,7 @@
                     $http({
                         method: 'POST',
                         url: GetListUnitVinculado,
-                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": $scope.structureValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": [$scope.clusterValue], "StructureArr": [$scope.structureValue] })
                     }).
                         then(function (r) {
                             $scope.unit = r.data;
@@ -172,7 +173,7 @@
                     $http({
                         method: 'POST',
                         url: GetListUnitVinculado,
-                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": $scope.structureValue })
+                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": [$scope.clusterValue], "StructureArr": [$scope.structureValue] })
                     }).
                         then(function (r) {
                             $scope.unit = r.data;
