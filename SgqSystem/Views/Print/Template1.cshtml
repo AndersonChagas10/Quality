@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "Index.cshtml";
+}
+
+<strong>CADASTRO DE ESTRUTURA</strong>
+<table class="table-erp table table-condensed table-bordered table-margin">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Grupo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>JBS</td>
+            <td>JBS</td>
+            <td>Empresa</td>
+        </tr>
+        <tr>
+            <td>REG 1 (BA -GO - MG)</td>
+            <td>REG_1</td>
+            <td>Regional</td>
+        </tr>
+        <tr>
+            <td>REG 1 (MS - SP)</td>
+            <td>REG_2</td>
+            <td>Regional</td>
+        </tr>
+        <tr>
+            <td>REG 2 (AC - MT - RO)</td>
+            <td>REG_3</td>
+            <td>Regional</td>
+        </tr>
+        <tr>
+            <td>REG 2 (MA - MT - PA - TO)</td>
+            <td>SUB_REG_1 1</td>
+            <td>Regional</td>
+        </tr>
+        <tr>
+            <td>SUB_REG_1 2</td>
+            <td>SUB_REG_1 2</td>
+            <td>Sub-Regional</td>
+        </tr>
+        <tr>
+            <td>SUB_REG_2 1</td>
+            <td>SUB_REG_2 1</td>
+            <td>Sub-Regional</td>
+        </tr>
+        <tr>
+            <td>SUB_REG_2 2</td>
+            <td>SUB_REG_2 2</td>
+            <td>Sub-Regional</td>
+        </tr>
+        <tr>
+            <td>SUB_REG_3 1</td>
+            <td>SUB_REG_3 1</td>
+            <td>Sub-Regional</td>
+        </tr>
+        <tr>
+            <td>SUB_REG_3 2</td>
+            <td>SUB_REG_3 2</td>
+            <td>Sub-Regional</td>
+        </tr>
+        <tr>
+            <td>INDUSTRIALIZADOS</td>
+            <td>INDUSTRIALIZADOS</td>
+            <td>Regional</td>
+        </tr>
+        <tr>
+            <td>Supergelados</td>
+            <td>Supergelados</td>
+            <td>Sub-Regional</td>
+        </tr>
+    </tbody>
+</table>
+<div class="height-fix avoid-break-page">
+    <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
+        <tbody>
+            <tr>
+                <td><strong>Assinatura dos responsáveis pela avaliação deste relatório.</strong></td>
+            </tr>
+            <tr><td height="30px;"></td></tr>
+            <tr>
+                <td height="20px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                        <tbody>
+                            <tr>
+                                <td height="20px" width="15%" align="center"></td>
+                                <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                <td width="10%" align="center"></td>
+                                <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                <td width="15%" align="center"></td>
+                            </tr>
+                            <tr>
+                                <td height="40px" width="15%" align="center"></td>
+                                <td width="30%" align="center"><span id="nomePessoa"></span><br>Monitor GQ</td>
+                                <td width="10%" align="center"></td>
+                                <td width="30%" align="center">Estoque Físico<br>&nbsp;</td>
+                                <td width="15%" align="center"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr><td height="30px;"></td></tr>
+            <tr>
+                <td height="20px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                        <tbody>
+                            <tr>
+                                <td height="20px" width="15%" align="center"></td>
+                                <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                <td width="10%" align="center"></td>
+                                <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                <td width="15%" align="center"></td>
+                            </tr>
+                            <tr>
+                                <td height="20px" width="15%" align="center"></td>
+                                <td width="30%" align="center">Gerente Industrial</td>
+                                <td width="10%" align="center"></td>
+                                <td width="30%" align="center">Garantia da Qualidade</td>
+                                <td width="15%" align="center"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr><td><div id="divRodape"><table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;"></table></div></td></tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $('body').on('click', '#btnPrint', function () {
+            PrepararImpressao(
+                'Relatório de cadastro de estrutura',
+                "Leonardo Matheus Trench",
+                "Gabriel Nunes",
+                "Código do Relatório <u>332225-x1234</u>",
+                'contentBody',
+                "../Imagens/logo-jbs.png",
+                "../Imagens/logo-gq.png");
+        });
+    </script>
+}
+

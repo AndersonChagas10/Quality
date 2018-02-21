@@ -211,6 +211,7 @@
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="moment.js" />
 /// <reference path="moment-with-locales.js" />
+/// <reference path="print/printgrt.js" />
 /// <reference path="respond.js" />
 /// <reference path="select2.js" />
 /// <reference path="smart-table.min.js" />
