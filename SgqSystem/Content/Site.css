@@ -146,9 +146,9 @@ div.login div.form-signin h2.form-signin-heading{
 .zindex-control{
     z-index: 3000 !important;
 }
-.modal-open .modal {
+/*.modal-open .modal {
     z-index: 2700 !important;
-}
+}*/
 /*a.custom-button {
     width: 47px;
 }
