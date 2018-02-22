@@ -140,7 +140,7 @@
 
                 new $.fn.dataTable.Buttons(table, {
                     buttons: [
-                        {
+                        @*{
                             extend: 'print',
                             text: '@Resources.Resource.print',
                             customize: function (win) {
@@ -151,7 +151,7 @@
                             exportOptions: {
                                 columns: ':visible'
                             }
-                        },
+                        },*@
                         {
                             extend: 'excelHtml5',
                             text: 'Excel',
@@ -159,13 +159,13 @@
                                 columns: ':visible'
                             }
                         },
-                         {
-                             extend: 'pdf',
-                             text: 'PDF',
-                             exportOptions: {
-                                 columns: ':visible'
-                             }
-                         },
+                         //{
+                         //    extend: 'pdf',
+                         //    text: 'PDF',
+                         //    exportOptions: {
+                         //        columns: ':visible'
+                         //    }
+                         //},
                           {
                               extend: 'colvis',
                               text: '@Resources.Resource.visible_columns',

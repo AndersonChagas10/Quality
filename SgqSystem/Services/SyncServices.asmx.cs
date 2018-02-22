@@ -1624,6 +1624,34 @@ namespace SgqSystem.Services
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
                                            string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null)
         {
+
+            var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
+
+            string con = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(con))
+                {
+                    using (SqlCommand command = new SqlCommand(buscaParLevel1HashKey, connection))
+                    {
+                        connection.Open();
+
+                        var reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            hashKey = reader[0].ToString();
+                        }
+
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+            catch
+            {
+
+            }
+
             //Converte a data da coleta
             string sql = null;
             //Se o Id for igual a zero é um insert
@@ -3451,12 +3479,7 @@ namespace SgqSystem.Services
                                         "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("yes").Value.ToString() + " </button></div>                 " +
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("no").Value.ToString() + " </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
-
-            //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
-            //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
-            //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
-            //                    "</div>       
-
+            
             string debug = "<div id = 'ControlaDivDebugAlertas' onclick='showHideDivDebugAlerta();'></div> " +
 
                            "<div id = 'divDebugAlertas' > " +
@@ -3512,6 +3535,12 @@ namespace SgqSystem.Services
 
                            "</div> ";
 
+            SGQDBContext.ParLevel3Vinculado listaProdutos = new ParLevel3Vinculado(db);
+            var listaParLevel3VinculadoJSON = listaProdutos.getParLevel3Vinculado(ParCompany_Id);
+
+            var listaParLevel3Vinculado = 
+                "<script> var listaParLevel3Vinculado = " + System.Web.Helpers.Json.Encode(listaParLevel3VinculadoJSON) + ";</script>";
+
             string local = "";
 
             if (GlobalConfig.Brasil)
@@ -3544,7 +3573,8 @@ namespace SgqSystem.Services
                            modalPCC1B +
                            message +
                            messageConfirm +
-                           debug;
+                           debug+
+                           listaParLevel3Vinculado;
         }
 
 
@@ -3766,7 +3796,7 @@ namespace SgqSystem.Services
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId, dateCollection: dateCollect);
 
             if (isVolume)
             {
@@ -4604,7 +4634,8 @@ namespace SgqSystem.Services
                                                       return;
                                                    }		                                               
                                                 }
-                                                $(a).next().html('Nenhum produto');
+                                                $(a).val('');
+                                                $(a).next().html('');
                                             }
 
                                             function validaProduto(a,valor){
@@ -4621,9 +4652,9 @@ namespace SgqSystem.Services
                                             }
                                             </script> ";
 
-                            form_control += " <input class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \">";
+                            form_control += " <input class=\"form-control input-sm\" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \">";
                             form_control += " <label></label>";
-                            form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('integer');</script>";
+                            //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
                         }
                         /* se for um combobox integrado*/
                         else

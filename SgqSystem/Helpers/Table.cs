@@ -31,7 +31,9 @@ namespace SgqSystem.Helpers
                                                 PosicaoLabel posicaoLabel, 
                                                 MvcHtmlString error = null, 
                                                 string info = null,
-                                                int colspan = 0)
+                                                int colspan = 0,
+                                                string classTd = null,
+                                                string style = null)
         {
             String tr = "";
             String tagInfo = "";
@@ -49,7 +51,7 @@ namespace SgqSystem.Helpers
 
             if (posicaoLabel == PosicaoLabel.top)
             {
-                tr = "<td class='td-erp' colspan='" + colspan + "'>" +
+                tr = "<td class='td-erp "+ classTd +"' colspan='" + colspan + "' style='" + style + "'>" +
                         label.ToString() + " " +
                         tagInfo +
                         "<div>"+
@@ -61,11 +63,11 @@ namespace SgqSystem.Helpers
             else if(posicaoLabel == PosicaoLabel.left)
             {
                 tr =
-                    "<td class='td-erp text-left'>" +
+                    "<td class='td-erp text-left "+ classTd + "' style='" + style + "'>" +
                         label.ToString() +" "+
                         tagInfo +
                     "</td>" +
-                    "<td class='td-erp'>" +
+                    "<td class='td-erp "+ classTd + "' style='" + style + "'>" +
                         input.ToString() +
                         tagError+
                     "</td>";
@@ -96,7 +98,9 @@ namespace SgqSystem.Helpers
                                                 PosicaoLabel posicaoLabel,
                                                 MvcHtmlString error = null,
                                                 string info = null,
-                                                String button = null)
+                                                String button = null,
+                                                string classTd = null,
+                                                string style = null)
         {
             String tr = "";
             String tagInfo = "";
@@ -114,7 +118,7 @@ namespace SgqSystem.Helpers
 
             if (posicaoLabel == PosicaoLabel.top)
             {
-                tr = "<td class='td-erp'>" +
+                tr = "<td class='td-erp "+ classTd + "' style='"+ style + "'>" +
                         label.ToString() + " " +
                         tagInfo +
                         "<div class=\"input-group\">" +
@@ -129,11 +133,11 @@ namespace SgqSystem.Helpers
             else if (posicaoLabel == PosicaoLabel.left)
             {
                 tr =
-                    "<td class='td-erp text-left'>" +
+                    "<td class='td-erp text-left  " + classTd + "' style='" + style + "'>" +
                         label.ToString() + " " +
                         tagInfo +
                     "</td>" +
-                    "<td class='td-erp'>" +
+                    "<td class='td-erp  " + classTd + "' style='" + style + "'>" +
                         input.ToString() +
                         tagError +
                     "</td>";
@@ -165,7 +169,8 @@ namespace SgqSystem.Helpers
                                             PosicaoLabel posicaoLabel, 
                                             MvcHtmlString error = null, 
                                             string info = null,
-                                            String button = null)
+                                            String button = null,
+                                            int? semCB = null)
         {
             String tr = "";
             String tagInfo = "";
@@ -189,17 +194,35 @@ namespace SgqSystem.Helpers
                         checkbox.ToString() + button +
                      "</td>";
             }
+            else if (posicaoLabel == PosicaoLabel.left && semCB == 1)
+            {
+                tr =
+                    "<td class='td-erp' colspan='2'>" +
+                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-1'>" +
+                            
+                        "</div>" +
+                        "<div class='col-xs-10 col-sm-10 col-md-10 col-lg-10'>" +
+                            label.ToString() +
+                        "<br>" +
+                            checkbox.ToString() + button + tagInfo+
+                        "</div>" +
+                    "</td>";
+
+            }
             else if (posicaoLabel == PosicaoLabel.left)
             {
                 tr =
-                    "<td class='td-erp text-left'>" +
-                        label.ToString() + 
-                        tagInfo + 
-                    "</td>" +
-                    "<td class='td-erp'>" +
-                        checkbox.ToString() + button +
+                    "<td class='td-erp' colspan='2'>" +
+                        "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-1'>" +
+                            checkbox.ToString() + button +
+                        "</div>" +
+                        "<div class='col-xs-10 col-sm-10 col-md-10 col-lg-10'>" +
+                            label.ToString() + tagInfo+
+                        "</div>" +
                     "</td>";
+                    
             }
+            
             return new MvcHtmlString(tr);
         }
 

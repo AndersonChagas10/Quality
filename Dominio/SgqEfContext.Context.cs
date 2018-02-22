@@ -19,10 +19,12 @@ namespace Dominio
     {
         public SgqDbDevEntities()
             : base("name=SgqDbDevEntities")
-        {   
+        {
     
-            this.Database.CommandTimeout = 9600;
-            this.Database.Log = s => System.Diagnostics.Debug.Write(s);   
+    
+    this.Database.CommandTimeout = 9600;
+    this.Database.Log = s => System.Diagnostics.Debug.Write(s);
+    
     
         }
 
@@ -33,7 +35,6 @@ namespace Dominio
             this.Database.CommandTimeout = 9600;
             this.Database.Log = s => System.Diagnostics.Debug.Write(s);
         }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -70,7 +71,6 @@ namespace Dominio
         public virtual DbSet<ParFieldType> ParFieldType { get; set; }
         public virtual DbSet<ParFrequency> ParFrequency { get; set; }
         public virtual DbSet<ParGoal> ParGoal { get; set; }
-        public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
@@ -130,6 +130,8 @@ namespace Dominio
         public virtual DbSet<Result_Level3_Photos> Result_Level3_Photos { get; set; }
         public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
         public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
+        public virtual DbSet<ParLevel3EvaluationSample> ParLevel3EvaluationSample { get; set; }
+        public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

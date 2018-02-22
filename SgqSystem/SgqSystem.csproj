@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -363,6 +363,7 @@
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
+    <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
@@ -424,6 +425,7 @@
     <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
@@ -1078,7 +1080,6 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -1096,6 +1097,7 @@
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\SgqTablet.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
     <None Include="Properties\PublishProfiles\SGQYtoara.pubxml" />
@@ -1223,6 +1225,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Print\printGRT.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
@@ -1462,6 +1465,12 @@
     <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
     <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
+    <Content Include="Views\Print\Index.cshtml" />
+    <Content Include="Views\Print\Template1.cshtml" />
+    <Content Include="Views\Print\Template2.cshtml" />
+    <Content Include="Views\Print\Template3.cshtml" />
+    <Content Include="Views\Params\_AvaliacaoAmostraLevel3.cshtml" />
+    <Content Include="Views\Params\_TipoDadosEntrada.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1552,7 +1561,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

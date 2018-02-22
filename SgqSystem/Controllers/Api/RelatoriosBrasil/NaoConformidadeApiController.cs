@@ -230,6 +230,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 			ON IND.Id = CL1.ParLevel1_Id 
                             AND isnull(IND.ShowScorecard,1) = 1
                             AND IND.IsActive = 1
+                            AND IND.ID != 43
                 		INNER JOIN ParCompany UNI (NOLOCK)
                 			ON UNI.Id = CL1.UnitId
                             and UNI.IsActive = 1
@@ -505,6 +506,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             				ON IND.Id = CL1.ParLevel1_Id
                             AND ISNULL(IND.ShowScorecard,1) = 1
                             AND IND.IsActive = 1
+                            AND IND.ID != 43
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
             				ON CL2.ConsolidationLevel1_id = CL1.Id
             			INNER JOIN ParLevel2 L2 WITH (NOLOCK)
@@ -777,6 +779,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			FROM ConsolidationLevel1 CL1 (NOLOCK)
             			INNER JOIN ParLevel1 IND (NOLOCK)
             				ON IND.Id = CL1.ParLevel1_Id
+                            AND IND.ID != 43
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
             				ON CL2.ConsolidationLevel1_id = CL1.Id
             			INNER JOIN ParLevel2 L2 WITH (NOLOCK)
@@ -1011,6 +1014,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n            ON IND.Id = CL1.ParLevel1_Id  "+
                 "\n            AND ISNULL(IND.ShowScorecard,1) = 1 " +
                 "\n            AND IND.IsActive = 1 " +
+                "\n            AND IND.ID != 43 " +
                 "\n         INNER JOIN ConsolidationLevel2 CL2 with (nolock) " +
                 "\n         ON CL2.ConsolidationLevel1_id = CL1.Id " +
                 "\n         INNER JOIN ParLevel2 L2 with (nolock) " +
@@ -1269,6 +1273,7 @@ FROM (SELECT
 			ON IND.Id = CL1.ParLevel1_Id
               AND ISNULL(IND.ShowScorecard,1) = 1 
               AND IND.IsActive = 1 
+              AND IND.ID != 43 
         INNER JOIN ParCompany UNI (NOLOCK)
 			ON UNI.Id = CL1.UnitId
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)

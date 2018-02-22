@@ -104,7 +104,7 @@ a.navbar-sgq-brand{
   position: fixed;
   bottom: 70px;
   right: 20px;
-  z-index: 99;
+  z-index: 200;
   border: none;
   outline: none;
   background-color: #2b3643;
@@ -120,6 +120,10 @@ a.navbar-sgq-brand{
 
 .select2-container{
     z-index:2501;
+}
+
+.row .select2-container{
+    z-index:100;
 }
 
 .page-content{
@@ -272,6 +276,12 @@ a.paginate_button:hover {
         height:0px;
     }
 
-div.loader *{
-    display:none !important;
+th.options{
+    width:120px;
+}
+    
+.loader *{ display:none !important;}
+
+#messageModal{
+    z-index:12000;
 }
