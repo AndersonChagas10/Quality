@@ -150,11 +150,99 @@ div.login div.form-signin h2.form-signin-heading{
 .zindex-control{
     z-index: 3000 !important;
 }
-
-/*DESCOMENTAR PARA INSERIR ANIMAÇÃO*/
-.page-sidebar-closed .page-sidebar, .page-sidebar .page-sidebar-menu.page-sidebar-menu-closed,
-.page-content, .page-sidebar, #sidebar-wrapper, .wrapper,
-.page-sidebar a, .page-sidebar span {
+.modal-open .modal {
+    z-index: 2700 !important;
+}
+/*a.custom-button {
+    width: 47px;
+}
+.dataTables_scrollBody {
+    height: 410px;
+}
+tbody > tr {
+    white-space: nowrap;
+    font-size: 10px;
+}
+thead > tr {
+    white-space: nowrap;
+    font-size: 7.9pt;
+}
+tbody > tr > td {
+    font-size: 7.9pt;
+    line-height: 1.6;
+}
+#linkbutton {
+    display: none
+}
+.modal-content {
+    margin-top: 70px;
+}
+button.btn.btn-link.custom-button {
+    font-size: 6.7pt;
+    padding: 0px;
+}
+td.dt-center {
+    padding: 0px 30px !important;
+}
+a.dt-button {
+    font-size: 12pt;
+    padding: 2px;
+    padding-left: 13px;
+    color: #fff;
+    padding-right: 13px;
+    border-radius: 0px !important;
+    border: none;
+    background: #337ab7 !important;
+}
+    a.dt-button:hover {
+        border: none;
+    }
+#resultsApontamentos_wrapper select {
+    padding: 5px;
+    font-size: 7.9pt;
+    border-radius: 0px !important;
+}
+div#resultsApontamentos_filter {
+    font-size: 7.9pt;
+        padding-left: 6px;
+}
+div#resultsApontamentos_length {
+    font-size: 7.9pt;
+    padding-left: 6px;
+}
+.dt-button-collection {
+    width: 240px !important;
+}
+div.dt-button-collection span {
+    font-size: 7.9pt;
+}
+div#resultsApontamentos_info {
+    font-size: 7.9pt;
+}
+div#resultsApontamentos_paginate {
+    font-size: 7.9pt;
+}
+a.paginate_button.current {
+    border-radius: 0px !important;
+    border: none !important;
+    background: #337ab7 !important;
+}
+input[type="search"] {
+    border-radius: 0px !important;
+    font-size: 7.9pt;
+    padding: 4px;
+    border: 1px solid #6666667a;
+}
+button#btnSend {
+    font-size: 7.9pt;
+    border-radius: 0px !important;
+}
+a.paginate_button:hover {
+    background: #337ab7 !important;
+    border: 0px !important;
+}*/
+    /*DESCOMENTAR PARA INSERIR ANIMAÇÃO*/
+    .page-sidebar-closed .page-sidebar, .page-sidebar .page-sidebar-menu.page-sidebar-menu-closed, .page-content, .page-sidebar, #sidebar-wrapper, .wrapper, .page-sidebar a, .page-sidebar span {
     /*-webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;

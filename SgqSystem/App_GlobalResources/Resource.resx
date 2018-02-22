@@ -2409,4 +2409,16 @@
   <data name="weighted" xml:space="preserve">
     <value>Weighted</value>
   </data>
+  <data name="conform2" xml:space="preserve">
+    <value>Conform</value>
+  </data>
+  <data name="edited" xml:space="preserve">
+    <value>Editado</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroativo</value>
+  </data>
 </root>

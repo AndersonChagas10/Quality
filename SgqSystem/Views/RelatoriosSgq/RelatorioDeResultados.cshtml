@@ -310,14 +310,16 @@
                     },
                     { title: "% " + Resources("goal"), mData: "Meta" },
                     { title: "Status", mData: "Status" },
-                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-target="#modalHistorico" >' + Resources("history") + '</button>', "orderable": false },
-                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalResultados">' + Resources("list_results") + '</button>', "orderable": false },
+                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm btn-link" data-target="#modalHistorico" >' + Resources("history") + '</button>', "orderable": false },
+                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm btn-link" data-toggle="modal" data-target="#modalResultados">' + Resources("list_results") + '</button>', "orderable": false },
                 ],//onclick="loadHistorico()"
                 responsive: true,
+                pageLength: 13,
                 loadingRecords: true,
                 destroy: true,
                 "scrollX": true,
                 initComplete: function () {
+                    $("#DataTable").addClass("table_GRT RLR_Table");
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         enviar2 = {};

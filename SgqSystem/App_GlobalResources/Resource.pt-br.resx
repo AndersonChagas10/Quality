@@ -2335,7 +2335,7 @@
     <value>S</value>
   </data>
   <data name="effectiveDate" xml:space="preserve">
-    <value>Valido Apartir De</value>
+    <value>Data Vigente</value>
   </data>
   <data name="actives" xml:space="preserve">
     <value>Ativos</value>
@@ -2405,5 +2405,17 @@
   </data>
   <data name="weighted" xml:space="preserve">
     <value>Ponderado</value>
+  </data>
+  <data name="conform2" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="edited" xml:space="preserve">
+    <value>Editado</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroativo</value>
   </data>
 </root>

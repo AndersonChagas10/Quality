@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -1042,6 +1042,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conform.
+        /// </summary>
+        internal static string conform2 {
+            get {
+                return ResourceManager.GetString("conform2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Consolidated History.
         /// </summary>
         internal static string consolidated_history {
@@ -1767,6 +1776,15 @@ namespace Resources {
         internal static string edit {
             get {
                 return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editado.
+        /// </summary>
+        internal static string edited {
+            get {
+                return ResourceManager.GetString("edited", resourceCulture);
             }
         }
         
@@ -3931,6 +3949,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        internal static string normal {
+            get {
+                return ResourceManager.GetString("normal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not in Accordance.
         /// </summary>
         internal static string not_accordance {
@@ -4989,6 +5016,15 @@ namespace Resources {
         internal static string result_evaluation_and_deviation_communication {
             get {
                 return ResourceManager.GetString("result_evaluation_and_deviation_communication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retroativo.
+        /// </summary>
+        internal static string retroactive {
+            get {
+                return ResourceManager.GetString("retroactive", resourceCulture);
             }
         }
         
@@ -6316,15 +6352,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To Manager.
-        /// </summary>
-        internal static string to_manager {
-            get {
-                return ResourceManager.GetString("to_manager", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total nonconformity By Monitoring.
         /// </summary>
         internal static string total_nonconformity_by_monitoring {
@@ -6339,6 +6366,15 @@ namespace Resources {
         internal static string towersuburb {
             get {
                 return ResourceManager.GetString("towersuburb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Manager.
+        /// </summary>
+        internal static string to_manager {
+            get {
+                return ResourceManager.GetString("to_manager", resourceCulture);
             }
         }
         
@@ -6874,20 +6910,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Y.
-        /// </summary>
-        internal static string y {
-            get {
-                return ResourceManager.GetString("y", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Without.
         /// </summary>
         internal static string without {
             get {
                 return ResourceManager.GetString("without", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        internal static string y {
+            get {
+                return ResourceManager.GetString("y", resourceCulture);
             }
         }
         

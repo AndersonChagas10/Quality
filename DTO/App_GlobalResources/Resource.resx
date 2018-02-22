@@ -2055,6 +2055,15 @@
   <data name="without" xml:space="preserve">
     <value>Without</value>
   </data>
+  <data name="edited" xml:space="preserve">
+    <value>Editado</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroativo</value>
+  </data>
   <data name="description_has_between_1_and_300" xml:space="preserve">
     <value>Description has to be between 1 and 300 characters</value>
   </data>

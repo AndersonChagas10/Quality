@@ -115,9 +115,9 @@ public class ApontamentosDiariosResultSet
                  ,C2.AddDate as AddDate
                  ,CJ.AppVersion as Platform
 				 , CASE 
-					WHEN C2.AlterDate IS NOT NULL THEN 'EDITADO'
-					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN 'RETROATIVO'
-				   ELSE 'NORMAL'
+					WHEN C2.AlterDate IS NOT NULL THEN '{Resources.Resource.edited}'
+					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN '{Resources.Resource.retroactive}'
+				   ELSE '{Resources.Resource.normal}'
 				   END
 				 as Type
                  FROM CollectionLevel2 C2 (nolock)     
