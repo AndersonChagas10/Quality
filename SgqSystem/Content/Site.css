@@ -279,11 +279,8 @@ a.paginate_button:hover {
 th.options{
     width:120px;
 }
-    }
-
-div.loader *{
-    display:none !important;
-}
+    
+.loader *{ display:none !important;}
 
 #messageModal{
     z-index:12000;
