@@ -1600,7 +1600,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editado.
+        ///   Looks up a localized string similar to Edited.
         /// </summary>
         internal static string edited {
             get {
@@ -4264,7 +4264,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retroativo.
+        ///   Looks up a localized string similar to Retroactive.
         /// </summary>
         internal static string retroactive {
             get {
