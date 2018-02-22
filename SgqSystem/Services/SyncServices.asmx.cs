@@ -3796,7 +3796,7 @@ namespace SgqSystem.Services
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId, dateCollection: dateCollect);
 
             if (isVolume)
             {
