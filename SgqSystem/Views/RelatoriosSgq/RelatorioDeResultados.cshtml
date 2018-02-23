@@ -92,7 +92,7 @@
             <br />
             <h3 id="TituloTabela"></h3>
             <br />
-            <table id="DataTable" style="margin-left: 0px !important;"></table>
+            <table id="DataTable"></table>
 
         </div>
     </div>
@@ -288,14 +288,36 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></p>'
+                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></span>'
                 else
-                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></p>';
+                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></span>';
                 counter++;
             }
-            var table = $('#DataTable').empty().DataTable({
-                data: retornoArray,
-                columns: [
+
+            var columnDefs = [];
+            if (retornoArray[0].IsIndicador) {
+                //table.column(2).visible(false);
+                //table.column(3).visible(false);
+                columnDefs.push({ "targets": [2], "visible": false });
+                columnDefs.push({ "targets": [3], "visible": false });
+            }
+
+            if (retornoArray[0].IsMonitoramento) {
+                columnDefs.push({ "targets": [3], "visible": false });
+                //table.column(7).visible(false);
+                //table.column(8).visible(false);
+            }
+
+            if (retornoArray[0].IsTarefa) { // Alteração
+                //table.column(7).visible(false);
+                //table.column(8).visible(false);
+            }
+
+            var table = datatableGRT.Inicializar({
+                idTabela: "DataTable",
+                listaDeDados: retornoArray,
+                definicaoColuna: columnDefs,
+                colunaDosDados: [
                     { title: Resources("unit"), mData: "UnidadeName" },
                     { title: Resources("level1"), mData: "IndicadorName" },
                     { title: Resources("level2"), mData: "MonitoramentoName" },
@@ -312,12 +334,13 @@
                     { title: "Status", mData: "Status" },
                     { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm btn-link" data-target="#modalHistorico" >' + Resources("history") + '</button>', "orderable": false },
                     { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm btn-link" data-toggle="modal" data-target="#modalResultados">' + Resources("list_results") + '</button>', "orderable": false },
-                ],//onclick="loadHistorico()"
-                responsive: true,
-                pageLength: 13,
+                ],
+                numeroLinhasNaTabela: 13,
+                aplicarResponsividade: true,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
                 loadingRecords: true,
                 destroy: true,
-                "scrollX": true,
+                info: true,
                 initComplete: function () {
                     $("#DataTable").addClass("table_GRT RLR_Table");
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
@@ -347,71 +370,9 @@
                             }, "GraficoHistoricoModal")
                         }
                     });
-                }
+                },
+                createdRow: function (row, data, index) { }
             });
-
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                      //{
-                      //    extend: 'colvisGroup',
-                      //    text: 'Mostrar Todos',
-                      //    show: ':hidden'
-                      //},
-                    //{
-                    //    extend: 'print',
-                    //    text: Resources("print"),
-                    //    customize: function (win) {
-                    //        $(win.document.body).find('table')
-                    //            .addClass('compact')
-                    //            .css('font-size', 'inherit');
-                    //    },
-                    //    exportOptions: {
-                    //        columns: ':visible'
-                    //    }
-                    //},
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     //{
-                     //    extend: 'pdf',
-                     //    text: 'PDF',
-                     //    exportOptions: {
-                     //        columns: ':visible'
-                     //    }
-                     //},
-                      //{
-                      //    extend: 'colvis',
-                      //    text: 'Colunas Visíveis',
-                      //    collectionLayout: 'fixed two-column',
-                      //    exportOptions: {
-                      //        columns: ':visible',
-                      //    }
-                      //},
-                ]
-            });
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
-
-            if (retornoArray[0].IsIndicador) {
-                table.column(2).visible(false);
-                table.column(3).visible(false);
-            }
-
-            if (retornoArray[0].IsMonitoramento) {
-                table.column(3).visible(false);
-                //table.column(7).visible(false);
-                //table.column(8).visible(false);
-            }
-
-            if (retornoArray[0].IsTarefa) { // Alteração
-                //table.column(7).visible(false);
-                //table.column(8).visible(false);
-            }
         }
     }
 
@@ -2020,15 +1981,18 @@
         var counter = 0;
         while (counter < retornoArray.length) {
             if (retornoArray[counter]["nc"] <= 0)
-                retornoArray[counter]["status"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></p>'
+                retornoArray[counter]["status"] = '<span style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></span>'
             else
-                retornoArray[counter]["status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
+                retornoArray[counter]["status"] = '<span style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></span>';
             counter++;
         }
         //console.log(retornoArray);
-        var tableResultados = $('#DataTableResultados').empty().DataTable({
-            data: retornoArray,
-            columns: [
+
+
+        var table = datatableGRT.Inicializar({
+            idTabela: "DataTableResultados",
+            listaDeDados: retornoArray,
+            colunaDosDados: [
                 { title: Resources("date"), mData: "_dateEUA" },
                 { title: Resources("unit"), mData: "UnidadeName" },
                 { title: Resources("level1"), mData: "level1Name" },
@@ -2040,58 +2004,9 @@
                 { title: Resources("goal"), mData: "Meta" },
                 { title: "Status", mData: "status" },
             ],
-            responsive: true,
-            loadingRecords: true,
-            destroy: true,
-            "scrollX": true
+            numeroLinhasNaTabela: 20
         });
 
-        new $.fn.dataTable.Buttons(tableResultados, {
-            buttons: [
-                    //{
-                  //    extend: 'colvisGroup',
-                  //    text: 'Mostrar Todos',
-                  //    show: ':hidden'
-                  //},
-                    {
-                        extend: 'print',
-                        text: Resources("print"),
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    //{
-                 //    extend: 'pdf',
-                 //    text: 'PDF',
-                 //    exportOptions: {
-                 //        columns: ':visible'
-                 //    }
-                 //},
-                  //{
-                  //    extend: 'colvis',
-                  //    text: 'Colunas Visíveis',
-                  //    collectionLayout: 'fixed two-column',
-                  //    exportOptions: {
-                  //        columns: ':visible',
-                  //    }
-                  //},
-            ]
-        });
-        tableResultados.buttons(0, null).container().prependTo(
-            tableResultados.table().container()
-        );
     }
 
     function CBGAcoesXIndicador(data) {
@@ -2803,16 +2718,6 @@
             chartHistorico.reflow();
         }
     });
-
-    $(document).on('show.bs.modal', '.modal', function (event) {
-        var zIndex = 1040 + (10 * $('.modal:visible').length);
-        $(this).css('z-index', zIndex);
-        setTimeout(function () {
-            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-        }, 0);
-        });
-
-
 </script>
 
 }
