@@ -1015,7 +1015,7 @@
                     let lata = vm.lataSelecionada
                     if (lata.ResultValue)
                         if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
-                            lata.espessuraTT = `Lim. Inferior ${lata["limInferiorEspessura"]}, lim. superior ${lata["limSuperiorEspessura"]}`
+                            lata.espessuraTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)}, lim. superior ${parseFloat(lata["limSuperiorEspessura"]).toFixed(2)}`
                             //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
                         else
                             lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
@@ -1199,7 +1199,7 @@
                     let lata = vm.lataSelecionada
                     if (lata.ResultValue)
                         if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
-                            lata.espessuraTT = `Lim. Inferior ${lata["limInferiorEspessura"]}, lim. superior ${lata["limSuperiorEspessura"]}`
+                            lata.espessuraTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)}, lim. superior ${parseFloat(lata["limSuperiorEspessura"]).toFixed(2)}`
                             //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
                         else
                             lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
@@ -1442,12 +1442,14 @@
                                 vm.linhas[index] = r.data.model[0]
                                 vm.linhas[index]["latas"] = []
                                 vm.linhaSelecionada = vm.linhas[index]
-                                $('.select2[multiple]').empty().trigger("change")
                                 vm.activeInLine = vm.linhaSelecionada.Id
                                 vm.salvaLinha(undefined, undefined, novaLinha)
                                 //vm.executeDocReady(true)
                                 //vm.linhaSelecionada = { Id: 0 }
                                 //vm.getState()
+                                setTimeout(function () {
+                                    $('.select2[multiple]').empty().trigger("change")
+                                }, 100)
                             }
                         });
 
