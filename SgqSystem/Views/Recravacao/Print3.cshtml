@@ -43,11 +43,11 @@
         width: 100%;
     }
 
-    table.headerCA td {
-        text-align: left;
-        border: 1px solid black;
-        width: 100%;
-    }
+        table.headerCA td {
+            text-align: left;
+            border: 1px solid black;
+            width: 100%;
+        }
 
     a.active {
         background-color: rgba(128, 128, 128, 0.17);
@@ -73,33 +73,33 @@
         border-spacing: 0;
     }
 
-    .tg td {
-        font-family: Arial, sans-serif;
-        font-size: 7px;
-        border-style: solid;
-        border-width: 1px;
-        overflow: hidden;
-        word-break: normal;
-        text-align: left;
-    }
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 7px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            text-align: left;
+        }
 
-    .tg th {
-        font-family: Arial, sans-serif;
-        font-size: 7px;
-        font-weight: normal;
-        padding: 0px 1px;
-        border-style: solid;
-        border-width: 1px;
-        overflow: hidden;
-        word-break: normal;
-    }
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 7px;
+            font-weight: normal;
+            padding: 0px 1px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
 
-    .tg .tg-s6z2 {
-        text-align: center;
-        font-size: 11px;
-    }
+        .tg .tg-s6z2 {
+            text-align: center;
+            font-size: 11px;
+        }
 
-    p{
+    p {
         text-align: left !important;
     }
 
@@ -258,57 +258,57 @@
         float: left;
     }
 
-    .tableForm td {
-        font-family: verdana, arial, sans-serif;
-        /*font-size: 12px;*/
-        text-align: left;
-    }
+        .tableForm td {
+            font-family: verdana, arial, sans-serif;
+            /*font-size: 12px;*/
+            text-align: left;
+        }
 
-    .tableForm td.title {
-        font-weight: bold;
-    }
+            .tableForm td.title {
+                font-weight: bold;
+            }
 
-    .tableForm th,
-    .tableForm td {
-        padding: 4px 4px 4px 4px;
-    }
+        .tableForm th,
+        .tableForm td {
+            padding: 4px 4px 4px 4px;
+        }
 
-    .tableForm th {
-        border-bottom: 2px solid #333333;
-    }
+        .tableForm th {
+            border-bottom: 2px solid #333333;
+        }
 
-    .tableForm td {
-        border-bottom: 1px dotted #999999;
-    }
+        .tableForm td {
+            border-bottom: 1px dotted #999999;
+        }
 
-    .tableForm tfoot td {
-        border-bottom-width: 0px;
-        border-top: 2px solid #333333;
-        padding-top: 20px;
-    }
+        .tableForm tfoot td {
+            border-bottom-width: 0px;
+            border-top: 2px solid #333333;
+            padding-top: 20px;
+        }
 
     /*Tabela Pontos*/
     .tablePontos {
         width: 100%;
     }
 
-    .tablePontos td.pontosLabel {
-        border: 1px solid #cccccc;
-        text-align: right;
-        font-weight: bold;
-        width: 110px;
-    }
+        .tablePontos td.pontosLabel {
+            border: 1px solid #cccccc;
+            text-align: right;
+            font-weight: bold;
+            width: 110px;
+        }
 
-    .tablePontos td.pontoIndex {
-        border: 1px solid #cccccc;
-        text-align: center;
-        font-weight: bold;
-        background-color: #dddddd;
-    }
+        .tablePontos td.pontoIndex {
+            border: 1px solid #cccccc;
+            text-align: center;
+            font-weight: bold;
+            background-color: #dddddd;
+        }
 
-    .tablePontos td {
-        line-height: 7px;
-    }
+        .tablePontos td {
+            line-height: 7px;
+        }
 
     .divTableCorrectiveAction {
         margin-left: 4px;
@@ -453,7 +453,7 @@
                         <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
                         <div class="clearfix"></div>
                     </div>
-                    <div style="" id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+                    <div style="height: 200px;" id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
                         <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                             <tr>
                                 <td style="border:1px solid #cccccc; text-align: left; width:65%; border-right:0px; border-bottom: 0px; font-size: 8px;">
@@ -559,11 +559,11 @@
                                     <col style="width: 28.3%;">
                                 </colgroup>
                                 @*<tr>
-                            <th>Hora (1)</th>
-                            <th>DEFICIÊNCIA (2)</th>
-                            <th>AÇÃO CORRETIVA (3)</th>
-                            <th>AÇÃO PREVENTIVA (4)</th>
-                        </tr>*@
+                                        <th>Hora (1)</th>
+                                        <th>DEFICIÊNCIA (2)</th>
+                                        <th>AÇÃO CORRETIVA (3)</th>
+                                        <th>AÇÃO PREVENTIVA (4)</th>
+                                    </tr>*@
                                 <tr>
                                     <td class="tbodyTd">
                                         {{acoes.AddDate}}
@@ -731,6 +731,7 @@
 </html>
 
 
+<script src="~/Scripts/lodash/lodash.js"></script>
 <script src="~/Scripts/toastr.min.js"></script>
 <script src="~/Scripts/Math/math.js"></script>
 <script src="~/Scripts/Print/print.js"></script>
