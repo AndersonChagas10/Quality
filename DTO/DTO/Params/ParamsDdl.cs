@@ -13,6 +13,7 @@ namespace DTO.DTO.Params
 
         public IEnumerable<SelectListItem> DdlParConsolidation { get; set; }
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
+        public IEnumerable<SelectListItem> DdlparScoreType { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel1 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel2 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel3 { get; set; }
