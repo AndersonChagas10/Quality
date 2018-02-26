@@ -285,3 +285,32 @@ th.options{
 #messageModal{
     z-index:12000;
 }
+
+div.loader *{
+    display:none !important;
+}
+
+.select2-selection__choice {
+    width: 98%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+a.selecionarTudo{
+    display:inline !important;
+    color:#000 !important;
+}
+
+a.selecionarTudo:hover{
+    color:#999 !important;
+}
+
+.select2-selection__choice{
+    z-index:2600 !important;
+}
+
+.select2-selection {
+    overflow-y:auto;
+    max-height:150px;
+    overflow-x:hidden;
+}
