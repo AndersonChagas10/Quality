@@ -88,6 +88,9 @@
                                         <tr class="row hide">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                         </tr>
+                                        <tr class="row hide">
+                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.IntegrationId", new { @id = "parCompanyDTO_IntegrationId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                                        </tr>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
                                         </tr>
@@ -101,7 +104,7 @@
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.SIF", new { htmlAttributes = new { @id = "parCompanyDTO_SIF", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.sif), Table.PosicaoLabel.top)
                                         </tr>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm", @type = "number" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
                                         </tr>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.IPServer", new { htmlAttributes = new { @id = "parCompanyDTO_IPServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.ip_server), Table.PosicaoLabel.top)
@@ -278,7 +281,10 @@
             for (var i = 0; i < companyClusterList.length; i++) {
                 var ParCompanyClusterDTO = { 'ParCompany_Id': $('#parCompanyDTO_Id').val(), 'ParCluster_Id': $(companyClusterList[i]).attr('value') };
                 dados['parCompanyDTO.ListParCompanyCluster'].push(ParCompanyClusterDTO);
+
             }
+
+            dados['parCompanyDTO.IntegrationId'] = dados['parCompanyDTO.CompanyNumber'];
 
             $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                 console.log(objetoReturn);
