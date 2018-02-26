@@ -44,6 +44,11 @@
         if (config.definicaoColuna != undefined)
             this.definicaoColuna = config.definicaoColuna;
 
+        if ($.inArray(this.numeroLinhasNaTabela, this.tamanhosDoMenu[0]) < 0) {
+            this.tamanhosDoMenu[0].push(this.numeroLinhasNaTabela);
+            this.tamanhosDoMenu[1].push(this.numeroLinhasNaTabela);
+        }
+
         $('#' + config.idTabela).empty()
         return $('#' + config.idTabela).DataTable({
             data: this.listaDeDados,
@@ -68,7 +73,7 @@
                     },
                     footer: true,
                     autoPrint: false
-                }, {
+                }/*, {
                     extend: 'copy',
                     text: '<i class="fa fa-copy" title="Copy"></i>',
                     exportOptions: {
@@ -76,7 +81,7 @@
                             page: ':visible'
                         }
                     }
-                }],
+                }*/],
                 dom: {
                     container: {
                         className: 'dt-buttons'
