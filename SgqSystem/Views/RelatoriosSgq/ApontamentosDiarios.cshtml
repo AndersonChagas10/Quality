@@ -24,32 +24,14 @@
 
             <div id="load"></div>
             <div id="divTable">
-                <table id="resultsApontamentos" class="display 2 table_GRT " cellspacing="0" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <table id="resultsApontamentos" class="table table-striped"></table>
             </div>
         </div>
     </div>
 </div>
 @section Scripts {
-<script type="text/javascript">
+
+    <script type="text/javascript">
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         var urlGet = '@Html.Raw(@urlGet)';
@@ -124,46 +106,9 @@
                 }
 
                 $('#divTable').show();
-                var table = $('#resultsApontamentos').empty().DataTable({
-                    data: retornoArray,
-                    @*columns: [
-                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
-                        { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
-                        { title: "@Resources.Resource.shift", mData: "Turno" },
-                        { title: "@Resources.Resource.period", mData: "Periodo" },
-                        { title: "@Resources.Resource.auditor", mData: "Auditor"},
-                        { title: "@Resources.Resource.date", mData: "_Data" },
-                        { title: "@Resources.Resource.time", mData: "_Hora" },
-                        { title: "@Resources.Resource.audit", mData: "Indicador" },
-                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
-                        { title: "@Resources.Resource.task", mData: "Tarefa" },
-                        { title: "@Resources.Resource.weight", mData: "Peso" },
-                        {
-                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
-                                return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
-                            }
-                        },
-                        {
-                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
-                                return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
-                            }
-                        },
-                        { title: "@Resources.Resource.value", mData: "Lancado" },
-                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
-                        { title: "@Resources.Resource.na ?", mData: "_NA" },
-                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
-                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
-                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
-                        Tipo1,
-                        Tipo2,
-                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
 
-                    ],*@
-
-                    columns: [
-
-
-
+                var colunas =
+                    [
                         { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
                         { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
@@ -214,118 +159,61 @@
                         { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"},
                         { title: "@Resources.Resource.platform", mData: "Platform", "width": "50%"},
                         { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%"},
-                        { title: "@Resources.Resource.type", mData: "Type", "width": "50%"}
+                        {
+                            title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
+
+                                if (data == "2") {
+                                    return '@Resources.Resource.retroactive';
+                                }else if(data == '1'){
+                                    return '@Resources.Resource.edited';
+                                }else{
+                                    return '@Resources.Resource.normal';
+                                }
+                            }
+                        }
+
+                    ];
+
+                var initDatatable = function () {
+
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#resultsApontamentos').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                    $('#resultsApontamentos tbody').on('click', 'button', function (data, a, b) {
+
+                        var data = table.row($(this).parents('tr')).data();
+                        //console.log(data);
+                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+
+                            $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                            $('#ResultLevel3_Id').val(r.Id);
+
+                            $('#changeConform').empty();
+                            $('#changeConform').append($(r.showGeneric));
+                            InitiMasksDefaults();
+                        });
+
+                    });
+                }
 
 
-                    ],
-                    scrollX: true,
-                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "@Resources.Resource.all"]],
-                    pageLength: 22,
-                    responsive: true,
+                var table = datatableGRT.Inicializar({
+                    idTabela: "resultsApontamentos",
+                    listaDeDados: retornoArray,
+                    colunaDosDados: colunas,
+                    numeroLinhasNaTabela: 25,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
                     loadingRecords: true,
                     destroy: true,
                     info: true,
-                    responsive: true,
-                    initComplete: function () {
-         
-                        $('#loading').hide();
-                        setTimeout(function (e) {
-                            var oTable = $('#resultsApontamentos').dataTable();
-                            if (oTable.length > 0) {
-                                oTable.fnAdjustColumnSizing();
-                            }
-                        }, 100);
-                        $('#resultsApontamentos tbody').on('click', 'button', function (data, a, b) {
-
-                            var data = table.row($(this).parents('tr')).data();
-                            //console.log(data);
-                            $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
-
-                                $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                                $('#ResultLevel3_Id').val(r.Id);
-
-                                $('#changeConform').empty();
-                                //$('#changeConform').append($(r.showIntervalos));
-                                //$('#changeConform').append($(r.showConform));
-                                //$('#changeConform').append($(r.showCalculado));
-                                //$('#changeConform').append($(r.showNumeroDefeitos));
-                                //$('#changeConform').append($(r.showTexto));
-                                $('#changeConform').append($(r.showGeneric));
-                                InitiMasksDefaults();
-                                //console.log(r.Id);
-                            });
-
-                        });
-
-                    },
-                    createdRow: function (row, data, index) {
-
-
-                    },
-                     "drawCallback": function (settings) {
-
-                        var tfoot = "<tfoot><tr class='search-input-tfoot-tr'>";
-                        $('#resultsApontamentos_wrapper thead th').each(function (i) {
-                            var th = $('#resultsApontamentos_wrapper thead th').eq($(this).index());
-
-                            var tfootAtual = $('#resultsApontamentos_wrapper .dataTables_scrollHead table').find('tfoot');
-                            if (tfootAtual.length > 0) {
-                                $(tfootAtual).find('input[data-index=' + i + ']').css('width', (th.width() + 30) + 'px');
-                            } else {
-                                var title = th.text();
-                                tfoot += '<td style="padding-left:5px; padding-right:5px;"><input type="text" class="search-input-tfoot" style="font-size:7.9pt; width:' + (th.width() + 30) + 'px !important" placeholder="' + title + '" data-index="' + i + '" /></td>';
-                            }
-                        });
-                        tfoot += "</tr></tfoot>";
-
-                        if (!($('#resultsApontamentos_wrapper .dataTables_scrollHead table').find('tfoot').length > 0))
-                            $('#resultsApontamentos_wrapper .dataTables_scrollHead table').append(tfoot);
-                    }
+                    initComplete: initDatatable,
+                    createdRow: function (row, data, index) {}
                 });
-                // Filter event handler
-                $(table.table().container()).on('keyup', 'tfoot input', function () {
-                    table
-                        .column($(this).data('index'))
-                        .search(this.value)
-                        .draw();
-                });
-
-                table.draw();
-                new $.fn.dataTable.Buttons(table, {
-                    buttons: [
-                        @*{
-                            extend: 'print',
-                            text: '<i class="fa fa-print"></i>',
-                            customize: function (win) {
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            },
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },*@
-                        {
-                            extend: 'excelHtml5',
-                            text: '<i class="fa fa-file-excel-o"></i>',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                          {
-                              extend: 'colvis',
-                              text: '<i class="fa fa-table"></i>',
-                              exportOptions: {
-                                  columns: ':visible'
-                              }
-                          },
-                    ]
-                });
-
-                table.buttons(0, null).container().prependTo(
-                    table.table().container()
-                );
-
             }
 
         }
@@ -409,6 +297,6 @@
             //Remove o "Todos" da Unidade
             $("#unitId option[value='']").remove();
         });
-</script>
+    </script>
 
 }

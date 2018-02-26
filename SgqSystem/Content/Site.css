@@ -150,9 +150,9 @@ div.login div.form-signin h2.form-signin-heading{
 .zindex-control{
     z-index: 3000 !important;
 }
-.modal-open .modal {
+/*.modal-open .modal {
     z-index: 2700 !important;
-}
+}*/
 /*a.custom-button {
     width: 47px;
 }
@@ -279,12 +279,38 @@ a.paginate_button:hover {
 th.options{
     width:120px;
 }
-    }
+    
+.loader *{ display:none !important;}
+
+#messageModal{
+    z-index:12000;
+}
 
 div.loader *{
     display:none !important;
 }
 
-#messageModal{
-    z-index:12000;
+.select2-selection__choice {
+    width: 98%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+a.selecionarTudo{
+    display:inline !important;
+    color:#000 !important;
+}
+
+a.selecionarTudo:hover{
+    color:#999 !important;
+}
+
+.select2-selection__choice{
+    z-index:2600 !important;
+}
+
+select[multiple].select2-selection {
+    overflow-y:auto;
+    max-height:150px;
+    overflow-x:hidden;
 }
