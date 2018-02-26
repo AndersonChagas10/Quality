@@ -309,7 +309,7 @@ a.selecionarTudo:hover{
     z-index:2600 !important;
 }
 
-.select2-selection {
+select[multiple].select2-selection {
     overflow-y:auto;
     max-height:150px;
     overflow-x:hidden;
