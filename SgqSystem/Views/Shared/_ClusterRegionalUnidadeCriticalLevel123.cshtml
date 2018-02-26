@@ -146,6 +146,11 @@
         $('#level2Idv').attr('disabled', true);
         $('#level3Idv').attr('disabled', true);
 
+        $('.selecionarTudo').each(function(i,o){
+            if(!($(o).parent().next('select[multiple]').length > 0))
+                $(o).removeClass('selecionarTudo').hide();
+        });
+
         $('.selecionarTudo').on('click',function(){
             if($(this).parent().next('select').is(':disabled')){
                 return;
