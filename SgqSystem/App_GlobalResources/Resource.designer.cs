@@ -2698,6 +2698,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Indicators by Regionals.
+        /// </summary>
+        internal static string indicators_regionals {
+            get {
+                return ResourceManager.GetString("indicators_regionals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         internal static string info {
@@ -4255,6 +4264,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Packages by Regional.
+        /// </summary>
+        internal static string packages_regional {
+            get {
+                return ResourceManager.GetString("packages_regional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Packages.
+        /// </summary>
+        internal static string packages_unit {
+            get {
+                return ResourceManager.GetString("packages_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pareto.
         /// </summary>
         internal static string pareto_chart {
@@ -4404,6 +4431,15 @@ namespace Resources {
         internal static string perUnit {
             get {
                 return ResourceManager.GetString("perUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Per Unit Indicators.
+        /// </summary>
+        internal static string per_unit_indicators {
+            get {
+                return ResourceManager.GetString("per_unit_indicators", resourceCulture);
             }
         }
         

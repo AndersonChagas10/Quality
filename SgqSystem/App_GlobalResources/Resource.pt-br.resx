@@ -2418,4 +2418,16 @@
   <data name="retroactive" xml:space="preserve">
     <value>Retroativo</value>
   </data>
+  <data name="indicators_regionals" xml:space="preserve">
+    <value>Indicadores por Regionais</value>
+  </data>
+  <data name="packages_regional" xml:space="preserve">
+    <value>Pacotes por Regional</value>
+  </data>
+  <data name="packages_unit" xml:space="preserve">
+    <value>Pacotes por Unidade</value>
+  </data>
+  <data name="per_unit_indicators" xml:space="preserve">
+    <value>Indicadores por unidade</value>
+  </data>
 </root>
