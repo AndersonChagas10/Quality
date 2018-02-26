@@ -1320,8 +1320,8 @@
                                   if (showMensagem)
                                       if (vm.indicadores.length == 0)
                                           toastr.success('Nehum indicador de Recravação foi encontrado.')
-                                      else
-                                          toastr.success('Indicador de Recravação encontrado.')
+                                      //else
+                                      //    toastr.success('Indicador de Recravação encontrado.')
 
                                   if (vm.indicadores.length)
                                       vm.selectIndicador(vm.indicadores[0])
@@ -1733,7 +1733,7 @@
                                     toastr.error(o)
                                 })
                             } else {
-                                toastr.success(r.data.resposta)
+                                //toastr.success(r.data.resposta)
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
                                 vm.produtos = r.data.produtos
