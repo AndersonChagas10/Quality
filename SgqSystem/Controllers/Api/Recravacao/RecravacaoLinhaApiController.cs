@@ -84,7 +84,7 @@ namespace SgqSystem.Controllers.Api
                                 DateTime _dataRetirada;
                                 DateTime.TryParse(dataRetirada, out _dataRetirada);
 
-                                ultimaLataRetirada = ultimaLataRetirada == null
+                                ultimaLataRetirada = ValidDate(ultimaLataRetirada)
                                     ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
                             }
                         }
@@ -99,6 +99,13 @@ namespace SgqSystem.Controllers.Api
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de Linhas Concluída", model = listLinhasDoLevel1 });
             }
+        }
+
+        private bool ValidDate(DateTime? dateTime)
+        {
+            if (dateTime.ToString() == "00-00-0000 00:00" || dateTime == null)
+                return false;
+            return true;
         }
 
         // GET: api/RecravacaoLinhaApi
