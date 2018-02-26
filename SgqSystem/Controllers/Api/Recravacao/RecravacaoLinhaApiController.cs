@@ -66,8 +66,8 @@ namespace SgqSystem.Controllers.Api
 
                     if (recravacaoId != null)
                     {
-                        horaVerificacao = recravacoes.FirstOrDefault().GetValue("HoraVerificacao") == null ? 2 :
-                                recravacoes.FirstOrDefault().GetValue("HoraVerificacao").Value<int>();
+                        horaVerificacao = JObject.Parse(recravacoes.FirstOrDefault().GetValue("ObjectRecravacaoJson").ToString()).GetValue("HoraVerificacao") == null ? 2 :
+                                JObject.Parse(recravacoes.FirstOrDefault().GetValue("ObjectRecravacaoJson").ToString()).GetValue("HoraVerificacao").Value<int>();
 
                         var queryRecravacaoLataJson = string.Format("SELECT ObjectRecravacaoJson FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0}", recravacaoId);
                         var recravacaoLatas = QueryNinja(db, queryRecravacaoLataJson);
@@ -84,8 +84,9 @@ namespace SgqSystem.Controllers.Api
                                 DateTime _dataRetirada;
                                 DateTime.TryParse(dataRetirada, out _dataRetirada);
 
-                                ultimaLataRetirada = ValidDate(ultimaLataRetirada)
-                                    ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
+                                if(ValidDate(_dataRetirada))
+                                    ultimaLataRetirada = ultimaLataRetirada == null
+                                        ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
                             }
                         }
                     }
@@ -103,7 +104,7 @@ namespace SgqSystem.Controllers.Api
 
         private bool ValidDate(DateTime? dateTime)
         {
-            if (dateTime.ToString() == "00-00-0000 00:00" || dateTime == null)
+            if (dateTime.ToString() == "01/01/0001 00:00:00" || dateTime == null)
                 return false;
             return true;
         }
@@ -156,8 +157,8 @@ namespace SgqSystem.Controllers.Api
                 
                 if(recravacaoId != null)
                 {
-                    horaVerificacao = recravacoes.FirstOrDefault().GetValue("HoraVerificacao") == null ? 2 :
-                            recravacoes.FirstOrDefault().GetValue("HoraVerificacao").Value<int>();
+                    horaVerificacao = JObject.Parse(recravacoes.FirstOrDefault().GetValue("ObjectRecravacaoJson").ToString()).GetValue("HoraVerificacao") == null ? 2 :
+                            JObject.Parse(recravacoes.FirstOrDefault().GetValue("ObjectRecravacaoJson").ToString()).GetValue("HoraVerificacao").Value<int>();
 
                     var queryRecravacaoLataJson = string.Format("SELECT ObjectRecravacaoJson FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0}", recravacaoId);
                     var recravacaoLatas = QueryNinja(db, queryRecravacaoLataJson);
@@ -174,7 +175,8 @@ namespace SgqSystem.Controllers.Api
                             DateTime _dataRetirada;
                             DateTime.TryParse(dataRetirada, out _dataRetirada);
 
-                            ultimaLataRetirada = ultimaLataRetirada == null
+                            if (ValidDate(_dataRetirada))
+                                ultimaLataRetirada = ultimaLataRetirada == null
                                 ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
                         }
                     }
