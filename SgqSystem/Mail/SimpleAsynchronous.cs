@@ -259,24 +259,31 @@ namespace SgqSystem.Mail
 
             
             var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
-                $@"SELECT  top 1 ec.Body   FROM  CollectionLevel2 cl2                                                 
-                                    INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
-                                    INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND   d.ParCompany_Id = cl2.UnitId
-                                    INNER JOIN EmailContent ec ON ec.Id = ca.EmailContent_Id   
-                                    WHERE                                         
-                                    CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)        
-                                    AND cl2.ParLevel1_Id = { m.ParLevel1_Id }                                           
-                                    AND cl2.UnitId = { m.ParCompany_Id }
-                                    AND ca.Id <= { m.Id }
-                                    order by ec.id desc";
+                $@"
+                SELECT  top 1 ca.id   FROM  CollectionLevel2 cl2                                                 
+                INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
+                INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND d.ParCompany_Id = cl2.UnitId AND d.ParLevel2_Id = cl2.ParLevel2_Id AND d.Evaluation = cl2.EvaluationNumber AND d.Sample = cl2.Sample AND d.DeviationDate = cl2.CollectionDate
+                INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
+                WHERE                                         
+                CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)          
+                AND cl2.ParLevel1_Id = { m.ParLevel1_Id }                                           
+                AND cl2.UnitId = { m.ParCompany_Id }
+                AND ca.Id <= { m.Id }
+                order by ec.id desc";
 
             var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
-            var valor2 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
+            var valor2 = db.Database.SqlQuery<int>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
 
             //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
             #endregion
 
-            var ultimoBodyEmailContent = "<div style='color:red'>" + valor1 + "<br><br><br>" + valor2 + "</div>";
+            var ultimoBodyEmailContent = "";
+            if (valor2 > 0)
+            {
+                var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
+                ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
+            }
+            ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
             #endregion
 
             var newMail = new EmailContent()
