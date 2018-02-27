@@ -247,7 +247,7 @@ namespace SgqSystem.Mail
             var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
 
             #region Captura ultimo body do email content enviado
-            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta =
+            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta1 =
                 $@"select top 1 ec.Body from deviation d
                                 INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
                                 WHERE
@@ -257,7 +257,26 @@ namespace SgqSystem.Mail
                                 and d.alertnumber > 0
                                 order by d.alertnumber desc";
 
-            var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
+            
+            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
+                $@"SELECT  top 1 ec.Body   FROM  CollectionLevel2 cl2                                                 
+                                    INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
+                                    INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND   d.ParCompany_Id = cl2.UnitId
+                                    INNER JOIN EmailContent ec ON ec.Id = ca.EmailContent_Id   
+                                    WHERE                                         
+                                    CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)        
+                                    AND cl2.ParLevel1_Id = { m.ParLevel1_Id }                                           
+                                    AND cl2.UnitId = { m.ParCompany_Id }
+                                    AND ca.Id <= { m.Id }
+                                    order by ec.id desc";
+
+            var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
+            var valor2 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
+
+            //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
+            #endregion
+
+            var ultimoBodyEmailContent = "<div style='color:red'>" + valor1 + "<br><br><br>" + valor2 + "</div>";
             #endregion
 
             var newMail = new EmailContent()
@@ -430,7 +449,7 @@ namespace SgqSystem.Mail
                 }
         }
 
-        #endregion
+      
 
         #region ResendProcessJson
 
