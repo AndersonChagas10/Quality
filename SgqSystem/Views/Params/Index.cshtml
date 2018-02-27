@@ -455,6 +455,8 @@
 
             if ($('#newLevel1Modal > form').valid()) {
 
+                $("#newLevel1Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
+
                 var $btn = $('#btnSaveNewLevel1');
                 $btn.button('loading');
 
@@ -504,6 +506,8 @@
                         openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
                         console.log(e);
                     }
+                }).always(function(){
+                    $("#newLevel1Modal .voltarDisabled").removeClass('voltarDisabled').prop("disabled", true);
                 });
             }
 
@@ -639,6 +643,9 @@
                 //Cabecalhos.UpdateCabecalhos();
                 //Cluster.UpdateCounter();
                 //CounterLevel2.UpdateCounters();
+
+                $("#newLevel2Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
+
                 var dados = $('#newLevel2Modal > form').serializeObject();
 
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
@@ -674,6 +681,8 @@
                         openMessageModal("@Resources.Resource.alert", "Não foi possivel concluir a ação.");
                         console.log(e);
                     }
+                }).always(function(){
+                    $("#newLevel2Modal .voltarDisabled").removeClass('voltarDisabled').prop("disabled", true);
                 });
             }
 
@@ -811,6 +820,8 @@
 
             if ($('#newLevel3Modal > form').valid()) {
 
+                $("#newLevel3Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
+
                 var dados = $('#newLevel3Modal > form').serializeObject();
 
                 //ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
@@ -862,6 +873,8 @@
                         openMessageModal("@Resources.Resource.alert", "Não foi possivel concluir a ação.");
                         console.log(e);
                     }
+                }).always(function(){
+                    $("#newLevel3Modal .voltarDisabled").removeClass('voltarDisabled').prop("disabled", true);
                 });
 
             }
