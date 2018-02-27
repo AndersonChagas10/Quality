@@ -4,6 +4,17 @@
 }
 
 <style type="text/css">
+    .level3NameDestacado td:first-child {
+        color: red !important;
+        border: 1px solid #e43a45 !important;
+        padding: 1px !important;
+        font-weight: bold !important;
+    }
+
+    .nav.navbar-nav{
+        display: none;
+    }
+
     .jbsLogo {
 
     }
@@ -346,6 +357,30 @@
     .tableCorrectiveAction td.tbodyTd {
         height: 35px;
     }
+
+    .bgRed {
+        background-color: rgba(248, 2, 2, 0.29) !important;
+        display: block;
+    }
+
+    .bgGreen {
+        background-color: rgba(0, 128, 0, 0.23) !important;
+        display: block;
+    }
+
+    .bgYellow {
+        background-color: rgba(233, 248, 2, 0.29) !important;
+        display: block;
+    }
+
+    .bgWhite {
+        background-color: white !important;
+    }
+
+    td > span.label {
+        position: absolute;
+    }
+
 </style>
 
 <html xmlns="">
@@ -407,7 +442,7 @@
                     <div class="">
                         <table class="tableForm" style="width: 75%;">
                             <tbody>
-                                <tr>
+                                <tr class="red">
                                     <td class="title">Data de Criação</td>
                                     <td> {{ seletedLinha.StartAuditTime }}</td>
                                     <td class="title">Linha</td>
@@ -465,7 +500,7 @@
                                     <td class="pontosLabel"> Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
                                     <td class="pontoIndex" style="" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
                                 </tr>
-                                <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
+                                <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
                                     <td style="border:1px solid #cccccc;">
                                         {{ParLevel3.Name}}
                                         <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText"
@@ -478,7 +513,8 @@
                                         ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
                                         colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
 
-                                        <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                        <span ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Id][($index +1)] === true) && !(item.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] === false)}"
+                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
                                             <span>
                                                 <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
                                                     {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
@@ -492,6 +528,7 @@
                                             <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
                                         </span>
                                         <span class="validate"
+                                              ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
                                               ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                                             <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                                             <span style="font-size:9px">
@@ -502,6 +539,7 @@
                                             {{item.ResultValue[ParLevel3.Id][($index +1)]}}
                                         </label>
                                         <span class="validate"
+                                              ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
                                               ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
                                             <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
                                             <span style="font-size:9px">
@@ -607,8 +645,10 @@
                         </table>
                     </div>
 
-                    <div ng-if="seletedLinha.ObservacoesList.length == 0">
-                        <span class="text-center" style="width: 100%">Nenhuma observação registrada</span>
+                    <div ng-if="!seletedLinha.ObservacoesList || !seletedLinha.ObservacoesList.length">
+                        <span class="text-center" style="width: 100%; padding-top: 20px; padding-bottom: 20px;">
+                            Nenhuma observação registrada
+                        </span>
                     </div>
 
                     <div ng-if="seletedLinha.ObservacoesList.length > 0" ng-repeat="item in seletedLinha.ObservacoesList | limitTo:999 track by $index">
@@ -800,8 +840,8 @@
         app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
             function ($scope, $http, $timeout) {
                 let vm = $scope
-                vm.dev = false
-                vm.jbsBrasil = true
+                vm.dev = true
+                vm.jbsBrasil = false
                 //vm.dev = false
                 //vm.jbsBrasil = true
 
@@ -1214,22 +1254,20 @@
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
                                 setTimeout(function () {
-                                    if (vm.jbsBrasil) {
-                                        jsPOH.Inicializar(
-                                            {
-                                                headerHtml: document.getElementById('contentHeader').innerHTML,
-                                                bodyHtml: document.getElementById('contentBody').innerHTML,
-                                                footerHtml: document.getElementById('contentFooter').innerHTML,
-                                                numberMarginRight: 25,
-                                                numberMarginBottom: 25,
-                                                renderTableMargin: 0,
-                                                pageMarginHeader: "25 25 10 25",
-                                                pageMarginFooter: "10 25 25 25",
-                                                pageMarginBody: "0 25 0 25"
-                                            }
-                                        );
-                                        jsPOH.Imprimir();
-                                    }
+                                    jsPOH.Inicializar(
+                                        {
+                                            headerHtml: document.getElementById('contentHeader').innerHTML,
+                                            bodyHtml: document.getElementById('contentBody').innerHTML,
+                                            footerHtml: document.getElementById('contentFooter').innerHTML,
+                                            numberMarginRight: 25,
+                                            numberMarginBottom: 25,
+                                            renderTableMargin: 0,
+                                            pageMarginHeader: "25 25 10 25",
+                                            pageMarginFooter: "10 25 25 25",
+                                            pageMarginBody: "0 25 0 25"
+                                        }
+                                    );
+                                    jsPOH.Imprimir();
                                 }, 1000)
                             }
                         });
@@ -1424,41 +1462,41 @@
                 }
 
                 vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
-                    $('select').select2({ allowClear: true })
-                    $('.decimal').each(function (index) {
-                        $(this).inputmask("decimal", {
-                            rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
-                            oncomplete: function (e) {
-                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
-                                if (currVal.length == 4) {
-                                    //$(this).next('.inputs').focus().select();
-                                    $(this).closest('td').next().find('input').focus().select();
-                                }
-                            }
-                        });
-                    })
+                    //$('select').select2({ allowClear: true })
+                    //$('.decimal').each(function (index) {
+                    //    $(this).inputmask("decimal", {
+                    //        rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                    //        oncomplete: function (e) {
+                    //            var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                    //            if (currVal.length == 4) {
+                    //                //$(this).next('.inputs').focus().select();
+                    //                $(this).closest('td').next().find('input').focus().select();
+                    //            }
+                    //        }
+                    //    });
+                    //})
 
-                    $('.percentage').each(function (index) {
-                        $(this).val($(this).val().replace(',', '.'));
-                        $(this).inputmask('Regex', {
-                            regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
-                            oncomplete: function (e) {
-                                //var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
-                                //if (currVal <= 100currVal.length == 2) {
-                                //    //$(this).next('.inputs').focus().select();
-                                //    $(this).closest('td').next().find('input').focus().select();
-                                //}else if (currVal.length == 3)
-                                //    $(this).closest('td').next().find('input').focus().select();
-                            }
-                        });
-                    })
+                    //$('.percentage').each(function (index) {
+                    //    $(this).val($(this).val().replace(',', '.'));
+                    //    $(this).inputmask('Regex', {
+                    //        regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
+                    //        oncomplete: function (e) {
+                    //            //var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                    //            //if (currVal <= 100currVal.length == 2) {
+                    //            //    //$(this).next('.inputs').focus().select();
+                    //            //    $(this).closest('td').next().find('input').focus().select();
+                    //            //}else if (currVal.length == 3)
+                    //            //    $(this).closest('td').next().find('input').focus().select();
+                    //        }
+                    //    });
+                    //})
 
-                    $(".time").inputmask({
-                        alias: 'hh:mm t',
-                        showMaskOnHover: false,
-                        showMaskOnFocus: false,
-                        //oncomplete: function(){  },
-                    })
+                    //$(".time").inputmask({
+                    //    alias: 'hh:mm t',
+                    //    showMaskOnHover: false,
+                    //    showMaskOnFocus: false,
+                    //    //oncomplete: function(){  },
+                    //})
 
                     if (executaVerificacaoParaAcao) {
                         vm.seletedLinha.HaveCorrectiveAction = false
@@ -1534,14 +1572,7 @@
                                     prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                                 }
                             }
-                            //$(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                         });
-
-
-                        ////
-                        setTimeout(function () {
-                            console.log(vm.seletedLinha.ObservacoesList, vm.seletedLinha.ObservacoesList.length)
-                        }, 2000)
                     });
 
                     if (save)

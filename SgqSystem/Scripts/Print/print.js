@@ -54,8 +54,8 @@ var jsPOH = { //Print Of Hell
 		"	}                                                                      "+
 		"		                                                                   "+
 		"	#"+this.renderTableName+"{margin:0px;padding:0px "+this.renderTableMargin+"px;}"+
-		"	#"+this.renderTableName+" *{                                           "+
-		"		-webkit-print-color-adjust: exact;                                 "+
+		"	table#"+this.renderTableName+" *{                                           "+
+		"		-webkit-print-color-adjust: exact !important;                                 "+
 		"	}                                                                      "+
 		"	                                                                       "+
 		"	#"+this.headerName+", #"+this.footerName+"{                            "+
@@ -76,7 +76,10 @@ var jsPOH = { //Print Of Hell
 		"	}                                                                      "+
 		"	                                                                       "+
 		"	@media print                                                           "+
-		"	{                                                                      "+
+        "	{                                                                      " +
+        "	table#" + this.renderTableName + " *{                                           " +
+        "		-webkit-print-color-adjust: exact !important;                                 " +
+        "	}                                                                      " +
 		"		body, html{ margin:0; padding:0}                                   "+
 		"		#"+this.renderTableName+" .avoid-break-page{ page-break-inside:avoid; }"+
 		"		tr    { page-break-inside:avoid; page-break-after:auto }           "+

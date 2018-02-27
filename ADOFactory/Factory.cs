@@ -12,7 +12,6 @@ namespace ADOFactory
     {
         public SqlConnection connection;
         private SqlConnectionStringBuilder connectionString;
-        private SqlConnectionStringBuilder connectionString1;
 
         /// <summary>
         /// 
