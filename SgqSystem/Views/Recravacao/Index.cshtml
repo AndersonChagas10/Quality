@@ -1189,7 +1189,7 @@
                 vm.addObservacao = function () {
                     if (!vm.linhaSelecionada.ObservacoesList)
                         vm.linhaSelecionada.ObservacoesList = []
-                    vm.linhaSelecionada.ObservacoesList.push({ adDate: vm.Date });
+                    vm.linhaSelecionada.ObservacoesList.push({ adDate: moment().format('DD/MM/YYYY HH:mm') });
                 }
 
                 //TUDO MOCK MOCK
@@ -1913,9 +1913,11 @@
                                 vm.linhaSelecionada.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
                                 vm.linhaSelecionada.isValidated = true
                                 vm.linhaSelecionada.obs = vm.user.Obs
-                                vm.linhaSelecionada.ObservacoesList.push({
-                                    DescriptionFailure: vm.user.Obs, adDate: vm.Date
-                                });
+                                if (vm.user.Obs) {
+                                    vm.linhaSelecionada.ObservacoesList.push({
+                                        DescriptionFailure: vm.user.Obs, adDate: moment().format('DD/MM/YYYY HH:mm')
+                                    });
+                                }                                
                                 vm.user = { Name: "", Password: "" }
                                 $('.modal').modal('hide')
                                 let naoFinalizados = vm.linhaSelecionada.latas.filter(r=> { return !r.finalizado })
