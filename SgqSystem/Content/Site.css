@@ -207,8 +207,8 @@ a.selecionarTudo:hover{
     z-index:2600 !important;
 }
 
-select[multiple].select2-selection {
-    overflow-y:auto;
-    max-height:150px;
-    overflow-x:hidden;
+span.select2-selection--multiple {
+    overflow-y: auto;
+    max-height: 150px;
+    overflow-x: hidden;
 }
