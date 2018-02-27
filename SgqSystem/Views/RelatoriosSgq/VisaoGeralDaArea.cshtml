@@ -1360,51 +1360,51 @@
                                 //console.log(id[this.x])
                                 Grafico2(id[this.x]);
 
+                                }
                             }
-                        }
-                    },
-                    type: 'column',
-                    yAxis: 0,
-                    color: Highcharts.getOptions().colors[0],
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'right',
-                        formatter: function () {
-                            return Highcharts.numberFormat(this.y,2);
                         },
-                        style: {
-                            fontSize: '10px',
-                            fontFamily: 'Verdana, sans-serif'
+                        type: 'column',
+                        yAxis: 0,
+                        color: Highcharts.getOptions().colors[0],
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y,2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: '%'
+                        },
+                        zones: [{
+                            value: 69,
+                            color: 'rgba(189,76,76,1)'
+                        }, {
+                            value: 83,
+                            color: 'rgba(207,206,64,1)'
+                        }, {
+                            color: 'rgba(81,207,64,1)'
+                        }],
+                    },
+                    {
+                        name: 'Scorecard JBS',
+                        data: scorecardJbs,
+                        color: 'rgba(170,0,0,1)',
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: '%'
                         }
-                    },
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: '%'
-                    },
-                    zones: [{
-                        value: 69,
-                        color: 'rgba(189,76,76,1)'
-                    }, {
-                        value: 83,
-                        color: 'rgba(207,206,64,1)'
-                    }, {
-                        color: 'rgba(81,207,64,1)'
-                    }],
-                },
-                {
-                    name: 'Scorecard JBS',
-                    data: scorecardJbs,
-                    color: 'rgba(170,0,0,1)',
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: '%'
                     }
-                }
-            ]
-        });
-
-    }
+                ]
+            });
+            openclosefilters();
+        }
 
         function Grafico2(id) {
 
@@ -2923,6 +2923,11 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
     });
+
+        function openclosefilters() {
+            $('#menu-toggle').click();
+            $('#menu-toggle').click();
+        }
 
 </script>
 
