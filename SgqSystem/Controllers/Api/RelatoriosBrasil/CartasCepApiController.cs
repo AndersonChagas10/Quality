@@ -192,13 +192,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		WHEN TB1.defeitos IS NULL THEN TB2.defeitos
                 		ELSE ABS(TB2.defeitos - TB1.defeitos)
                 	END AM
-                   ,@MEDIA AS pbar
-                   ,@MEDIAAM AS 'AM LM'
-                   ,@UCL AS UCL
-                   ,@LCL AS LCL
+                   ,isnull(@MEDIA,0) AS pbar
+                   ,isnull(@MEDIAAM,0) AS 'AM LM'
+                   ,isnull(@UCL,0) AS UCL
+                   ,isnull(@LCL,0) AS LCL
                    ,TB1.IntervalMax AS LSE
                    ,TB1.IntervalMin AS LIE
-                   ,@LSC AS LSC
+                   ,isnull(@LSC,0) AS LSC
                 FROM (SELECT
                 		ROW_NUMBER() OVER (ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#
                 	   ,CL.CollectionDate DATA
