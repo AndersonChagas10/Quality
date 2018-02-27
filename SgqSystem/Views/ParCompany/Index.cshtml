@@ -104,7 +104,7 @@
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.SIF", new { htmlAttributes = new { @id = "parCompanyDTO_SIF", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.sif), Table.PosicaoLabel.top)
                                         </tr>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm", @type = "number" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
                                         </tr>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.IPServer", new { htmlAttributes = new { @id = "parCompanyDTO_IPServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.ip_server), Table.PosicaoLabel.top)
@@ -471,5 +471,8 @@
 <script>
     $(document).ready(function () {
         closeLeftSidebar();
+        $('#parCompanyDTO_CompanyNumber').inputmask("integer", { allowMinus: false });
+        $('#parCompanyDTO_CompanyNumber').css("text-align", "left");
+        
     });
 </script>
