@@ -218,6 +218,33 @@
 
         limpaDadosTela();
 
+        // Verificar se é mostrar tudo e aplicar vazio
+
+        if ($('#clusterId').prev().find('a.actived').length > 0) {
+            enviar['clusterIdArr'] = [];
+            enviar['clusterSelected_Id'] = [];
+        }
+        if ($('#unitIdV').prev().find('a.actived').length > 0) {
+            enviar['unitId'] = 0;
+            enviar['unitIdArr'] = [];
+        }
+        if ($('#level1Idv').prev().find('a.actived').length > 0) {
+            enviar['level1Id'] = 0;
+            enviar['level1IdArr'] = [];
+        }
+        if ($('#level2Idv').prev().find('a.actived').length > 0) {
+            enviar['level2Id'] = 0;
+            enviar['level2IdArr'] = [];
+        }
+        if ($('#level3Idv').prev().find('a.actived').length > 0) {
+            enviar['level3Id'] = 0;
+            enviar['level3IdArr'] = [];
+        }
+        if ($('#criticalLevelId').prev().find('a.actived').length > 0) {
+            enviar['criticalLevelId'] = 0;
+            enviar['criticalLevelIdArr'] = [];
+        }
+
         enviar['auditorId'] = GetUsuarioId();
 
         if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
@@ -409,29 +436,32 @@
             var SubtitleIndicador = "";
 
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
-                    SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                    SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " | ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleIndicador += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+                SubtitleIndicador += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
             }
 
-            SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 2));
+            SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
+
+            //SubtitleIndicador = SubtitleIndicador.substring(0, 100) + " entre outros ...";
+
 
             SetTitulo(Level);
 
@@ -624,6 +654,10 @@
             var Monitoramento = MapeiaValorParaHC(data, "Monitoramento");
             var Tarefa = MapeiaValorParaHC(data, "Tarefa");
             //fazGambipraMenosCem(porc);
+            var SubtitleSemUnidade="";
+
+            SubtitleSemUnidade = Subtitle;
+            //SubtitleSemUnidade = Subtitle.substring(0, 100)+" ...";
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
             GraficoPeriodoSemUnidade = Highcharts.chart('GraficoPeriodoSemUnidade', {
@@ -640,7 +674,7 @@
                     text: Titulo,
                 },
                 subtitle: {
-                    text: Subtitle,
+                    text: SubtitleSemUnidade,
                 },
                 xAxis: {
                     categories: IndicadorName,
@@ -1307,19 +1341,18 @@
                 var SubtitleConsolidado = "";
 
                 if (enviar.unitId != null || enviar.unitId != "") {
-                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | "
-                }
-                ;
-
+                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  "
+                };
+                
                 SubtitleConsolidado = "";
                 if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
                 }
                 if (enviar.structureId != '' && enviar.structureId != undefined) {
-                    SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                    SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
                 }
                 if (enviar.unitId != '' && enviar.unitId != undefined) {
-                    SubtitleConsolidado += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                    SubtitleConsolidado += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
                 }
 
                 SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 2));
@@ -1540,30 +1573,30 @@
             var SubtitleIndicador = "";
 
             if (enviar.unitId != null || enviar.unitId != "") {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | "
+                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/> "
             }
             ;
             SubtitleIndicador = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
-                    SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                    SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
-            SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 2));
+            SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
 
 
                 chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
@@ -1778,29 +1811,29 @@
 
             SubtitleMonitoramento = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleMonitoramento += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                SubtitleMonitoramento += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
-                    SubtitleMonitoramento += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                    SubtitleMonitoramento += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleMonitoramento += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                SubtitleMonitoramento += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+                SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
             }
             
-            SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 2));
+            SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 0));
 
             chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
                 credits: {
@@ -2322,18 +2355,18 @@
                       //    text: 'Mostrar Todos',
                       //    show: ':hidden'
                       //},
-                      {
-                          extend: 'print',
-                          text: Resources("print"),
-                          customize: function (win) {
-                              $(win.document.body).find('table')
-                                  .addClass('compact')
-                                  .css('font-size', 'inherit');
-                          },
-                          exportOptions: {
-                              columns: ':visible'
-                          }
-                      },
+                      //{
+                      //    extend: 'print',
+                      //    text: Resources("print"),
+                      //    customize: function (win) {
+                      //        $(win.document.body).find('table')
+                      //            .addClass('compact')
+                      //            .css('font-size', 'inherit');
+                      //    },
+                      //    exportOptions: {
+                      //        columns: ':visible'
+                      //    }
+                      //},
                       {
                           extend: 'excelHtml5',
                           text: 'Excel',
@@ -2531,31 +2564,31 @@
 
         Subtitle = "";
         if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
         }
         if (enviar.structureId != '' && enviar.structureId != undefined) {
-            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
         }
         if (enviar.unitId != '' && enviar.unitId != undefined) {
-            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
         }
         if (enviar.auditorId != '' && enviar.auditorId != undefined) {
             if (!$('#auditorId :selected').text() == "All")
-                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
         }
         if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
         }
         if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
         }
         if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
         }
         if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
-            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + " entre outros ..." + " |   ";
         }
-        Subtitle = Subtitle.substring(0, (Subtitle.length - 2));
+        Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
 
         //enviar['level3Id'];
@@ -2644,31 +2677,31 @@
 
             Subtitle = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " | ";
+                Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " | ";
+                Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text() + " | ";
+                Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
-                    Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text() + " | ";
+                    Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | ";
+                Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text() + " | ";
+                Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text() + " | ";
+                Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
             }
             if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
-                Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text() + " | ";
+                Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
             }
-            Subtitle = Subtitle.substring(0, (Subtitle.length - 2));
+            Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
             Send(true);
 
