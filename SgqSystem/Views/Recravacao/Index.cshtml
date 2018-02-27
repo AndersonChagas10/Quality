@@ -741,10 +741,10 @@
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
                             </div>
 
                             <div class="modal-body" style="overflow-x:auto">
@@ -1095,6 +1095,7 @@
                             mins = vm.duration.minutes(), secs = vm.duration.seconds();
 
                         vm.timerDaProximaLata = (/*years + ' years ' + Dias + ' days ' +*/ hrs + ' hrs ' + mins + ' min ' + secs + ' seg');
+                        vm.timerDaLataAtrasada = (/*years + ' years ' + Dias + ' days ' +*/ (hrs - vm.horas) + ' hrs ' + mins + ' min ' + secs + ' seg');
 
                         $scope.counter = vm.duration._milliseconds //Math.floor((new Date - vm.startTime) / 1000);
                         $scope.countdown = $scope.myTotal - $scope.counter;
@@ -1106,7 +1107,11 @@
                                     $scope.modalObsAberto = true
 
                                     if (vm.linhaSelecionada.ObservacoesList == undefined || vm.linhaSelecionada.ObservacoesList == [])
-                                        vm.linhaSelecionada.ObservacoesList = [{ adDate: vm.Date }]
+                                        vm.linhaSelecionada.ObservacoesList = [{
+                                            adDate: vm.Date,
+                                            LataComAtraso : true,
+                                            tempoDeAtraso: vm.timerDaLataAtrasada
+                                        }]
                                 }
                             } else {
                                 if ($scope.modalObsAberto)
@@ -1171,7 +1176,7 @@
 
                     if ($scope.tempoEntreColetaDeLatasExpirado) {
                         item.LataComAtraso = true
-                        item.tempoDeAtraso = vm.timerDaProximaLata
+                        item.tempoDeAtraso = vm.timerDaLataAtrasada
                         //vm.novaLata(vm.linhaSelecionada);
                         item.Lata = vm.lataSelecionada.Name
                         //vm.executeDocReady(true)
@@ -1423,10 +1428,6 @@
                 }
 
                 vm.getParansLinha = function (index, needFindIndex, showMensagem, novaLinha) {
-                    //vm.linhaSelecionada = vm.linhas[index]
-                    //vm.activeInLine = vm.linhaSelecionada.Id
-                    //if (needFindIndex)
-
                     index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
                     $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.linhaSelecionada })
                         .then(function (r) {
@@ -1435,8 +1436,6 @@
                                     toastr.error(o)
                                 })
                             } else {
-                                //toastr.success(r.data.resposta)
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 if (showMensagem)
                                     toastr.success('Recuperada linha parametrizada \n da base de dados')
                                 vm.linhas[index] = r.data.model[0]
@@ -1444,11 +1443,8 @@
                                 vm.linhaSelecionada = vm.linhas[index]
                                 vm.activeInLine = vm.linhaSelecionada.Id
                                 vm.salvaLinha(undefined, undefined, novaLinha)
-                                //vm.executeDocReady(true)
-                                //vm.linhaSelecionada = { Id: 0 }
-                                //vm.getState()
                                 setTimeout(function () {
-                                    $('.select2[multiple]').empty().trigger("change")
+                                    $('.select2[multiple]').val(0).trigger("change")
                                 }, 100)
                             }
                         });
@@ -1543,33 +1539,40 @@
                     linha.latas.push(cloned)
                     linha.counterDeLatas++
                 }
-                vm.deleteLata = function (linha, index, trashBin) {
+                vm.deleteLata = function (linha, index, trashBin, notConfirm) {
 
-                    bootbox.confirm({
-                        message: "Deseja continuar com a exclusão dessa lata?",
-                        buttons: {
-                            confirm: {
-                                label: 'Sim',
-                                className: 'btn-success'
+                    if (notConfirm) {
+                        linha.latas.splice(index, 1)
+                        linha.latas.forEach(function (o, c) {
+                            linha["counterDeLatas"] = (c + 1)
+                        })
+                        linha["counterDeLatas"] = linha["counterDeLatas"] + 1
+                        vm.timer();
+                    } else {
+                        bootbox.confirm({
+                            message: "Deseja continuar com a exclusão dessa lata?",
+                            buttons: {
+                                confirm: {
+                                    label: 'Sim',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'Não',
+                                    className: 'btn-danger'
+                                }
                             },
-                            cancel: {
-                                label: 'Não',
-                                className: 'btn-danger'
+                            callback: function (result) {
+                                if (result) {
+                                    linha.latas.splice(index, 1)
+                                    linha.latas.forEach(function (o, c) {
+                                        linha["counterDeLatas"] = (c + 1)
+                                    })
+                                    linha["counterDeLatas"] = linha["counterDeLatas"] + 1
+                                    vm.timer()
+                                }
                             }
-                        },
-                        callback: function (result) {
-                            if (result) {
-                                linha.latas.splice(index, 1)
-                                linha.latas.forEach(function (o, c) {
-                                    //o.Name = `Lata - ${(c + 1)}`
-                                    linha["counterDeLatas"] = (c + 1)
-                                })
-                                linha["counterDeLatas"] = linha["counterDeLatas"] + 1
-                                vm.timer()
-                            }
-                        }
-                    });
-
+                        });
+                    }
                 }
 
                 vm.changeHoraVerificacao = function () {
@@ -1607,9 +1610,7 @@
                         });
                 }
 
-                //*Carrega DDLs
                 vm.getProdutos = function () {
-                    //MOCK
                     vm.produtos = []
                     vm.produtos.push({
                         Name: 'Picanha',
@@ -1625,7 +1626,6 @@
                     })
                 }
                 vm.getSugestoes = function () {
-                    //MOCK
                     vm.sugestoes = []
                     vm.sugestoes.push({
                         Name: 'Teste 1  de sugestao',
@@ -1641,7 +1641,6 @@
                     })
                 }
                 vm.getFornecedorLata = function () {
-                    //MOCK
                     vm.fornecedorLata = []
                     vm.fornecedorLata.push({
                         Name: 'JBS Lins',
@@ -1653,7 +1652,6 @@
                     })
                 }
                 vm.tipoLata = function () {
-                    //MOCK
                     vm.tipoLataLista = []
                     vm.tipoLataLista.push({
                         Name: 'Litografada',
@@ -1677,7 +1675,6 @@
                     })
                 }
                 vm.getFornecedorTampaLata = function () {
-                    //MOCK
                     vm.fornecedorTampaLata = []
                     vm.fornecedorTampaLata.push({
                         Name: 'JBS Lins',
@@ -1690,13 +1687,9 @@
                 }
                 vm.getFornecedorLata()
                 vm.getFornecedorTampaLata()
-                //vm.getProdutos()
-                //vm.getSugestoes()
                 vm.tipoLata()
                 vm.horaVerificacao()
-                //vm.padroesAcaoCorretiva()
 
-                /*GET Todas as linhas cadastradas*/
                 vm.getParametrizacaoLinhas = function (idLevel1) {
                     $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
                         .then(function (r) {
@@ -1735,16 +1728,13 @@
                                     toastr.error(o)
                                 })
                             } else {
-                                //toastr.success(r.data.resposta)
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                                let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                let linhasSalvas = r.data.model
                                 vm.produtos = r.data.produtos
                                 vm.sugestoes = r.data.sugestoes
                                 let novaLinha = []
                                 //vm.linhas.forEach(function (o, c) {
                                 let o = vm.linhaSelecionada
-
-                                /*Recebe objeto salvo no banco de dados compara se é ativo na parametrização e subistiu caso seja ativo.*/
+                                
                                 var objetoSalvo = linhasSalvas.filter(function (objArr) {
                                     let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
                                     if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
@@ -1759,9 +1749,6 @@
                                     novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
                                 else
                                     novaLinha.push(JSON.parse(JSON.stringify(o)))
-                                //})
-
-                                /**/
 
                                 novaLinha[0].UltimaLataRetirada = vm.linhaSelecionada.UltimaLataRetirada
                                 vm.linhaSelecionada = JSON.parse(JSON.stringify(novaLinha))[0]
@@ -1772,13 +1759,7 @@
                                         vm.getLata(o.Id);
                                     });
                                 }
-
-                                //vm.linhaSelecionada.latas.forEach(function (o, c) {
-                                //    o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
-                                //    if (o.HoraDaRetiradaDaLata == 'Invalid Date')
-                                //        o.HoraDaRetiradaDaLata = ''
-                                //})
-
+                                
                                 if (vm.linhaSelecionada.form) {
 
 
@@ -1810,13 +1791,11 @@
                                 vm.TimerOn()
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
-                                vm.timer()
 
                                 setTimeout(function () {
                                     $('#HoraVerificacao').val(vm.linhaSelecionada.HoraVerificacao).trigger('change');
                                 }, 2);
-
-
+                                
                             }
                         });
                 }
@@ -1836,6 +1815,7 @@
                                 vm.linhaSelecionada.latas.push(o);
 
                                 vm.linhaSelecionada.latas = _.orderBy(vm.linhaSelecionada.latas, ['counter'], ['asc']);
+                                vm.timer()
                             }
                         });
                 }
@@ -1927,17 +1907,20 @@
                     $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
                         .then(function (r) {
                             if (r.data.Retorno) {
-                                vm.user = { Name: "", Password: "" }
                                 toastr.success("Usuário validado com sucesso!")
                                 r.data.Retorno.ParCompanyXUserSgq = []
                                 vm.linhaSelecionada.userValidacao = r.data.Retorno
                                 vm.linhaSelecionada.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
                                 vm.linhaSelecionada.isValidated = true
                                 vm.linhaSelecionada.obs = vm.user.Obs
+                                vm.linhaSelecionada.ObservacoesList.push({
+                                    DescriptionFailure: vm.user.Obs, adDate: vm.Date
+                                });
+                                vm.user = { Name: "", Password: "" }
                                 $('.modal').modal('hide')
                                 let naoFinalizados = vm.linhaSelecionada.latas.filter(r=> { return !r.finalizado })
                                 naoFinalizados.forEach(function (o, c) {
-                                    vm.deleteLata(vm.linhaSelecionada, vm.linhaSelecionada.latas.indexOf(o))
+                                    vm.deleteLata(vm.linhaSelecionada, vm.linhaSelecionada.latas.indexOf(o), null, true)
                                 })
                                 vm.stop()
                                 vm.salvaLinha()
