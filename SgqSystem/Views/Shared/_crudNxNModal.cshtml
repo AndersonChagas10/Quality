@@ -76,6 +76,8 @@
         },
         btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.remove" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
         funcRemove: function (e) {
+            if ($(e).parents('table').find('tr').length <= 2)
+                $(e).parents('table').css('display', 'none');
             $(e).parents('tr').remove();
         },
         btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.inactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
