@@ -122,6 +122,12 @@ jQuery.fn.dataTable.Api.register('sum()', function () {
 /*Ajax tratado e com suporte a loader, utilizar ao montar graficos e tabelas*/
 function EasyAjax(url, dados, callback, loader, toggle) {
 
+    if (typeof (contadorAJAX) != "undefined") {
+        console.log("Tem contador de AJAX!");
+        contadorAJAX++;
+        console.log("Contador: " + contadorAJAX);
+    }
+
     if (!!loader)
         $('#' + loader).empty().addClass('loader');
 
@@ -142,8 +148,10 @@ function EasyAjax(url, dados, callback, loader, toggle) {
 
         } catch (e) {
             console.log(e);
+           
         } finally {
             $btn.button('reset');
+            
         }
     }).fail(function (e, h, x) {
         $btn.button('reset');
@@ -152,7 +160,13 @@ function EasyAjax(url, dados, callback, loader, toggle) {
         } else {
             GuardJs.exibirMensagemAlerta(Resources("could_not_fetch_data") + ": " + e.responseJSON.Message);
         }
-    }).always(function () {
+        }).always(function () {
+
+            if (typeof (contadorAJAX) != "undefined") {
+                console.log("Subtrai contador de AJAX!");
+                contadorAJAX--;
+                console.log("Contador: " + contadorAJAX);
+            }
         if (!!loader)
             $('#' + loader).removeClass('loader');
     });
