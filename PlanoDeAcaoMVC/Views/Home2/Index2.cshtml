@@ -875,7 +875,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Leo cara de Pastel</h4>
+                    <h4 class="modal-title">Alterar planejamento</h4>
                 </div>
                 <div class="modal-body">
                     <table id="tablePessego"></table>
@@ -3051,7 +3051,7 @@
 
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="'+row.Id+'">Lindos!</button>';
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">Selecionar</button>';
                 }});
                 datatableGRT.Inicializar({
                     idTabela: "tablePessego",
