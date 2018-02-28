@@ -2656,6 +2656,7 @@
                             events: {
                                 click: function () {
                                     filterDados("Gerencia", this.category, getTablesModal);
+                                    getGraficoPorProjetos("Gerencia", this.category, true);
                                 }
                             }
                         },
@@ -2676,80 +2677,82 @@
 
             });
 
-            Categories = Object.values(MapeiaValorParaHC(dados, "Iniciativa").filter(onlyUnique));
+            //Categories = Object.values(MapeiaValorParaHC(dados, "Iniciativa").filter(onlyUnique));
 
-            Data = [];
+            //Data = [];
 
-            Categories.forEach(function (c, o) {
+            //Categories.forEach(function (c, o) {
 
-                let qtdConcluido = $.grep(dados, function (r) {
-                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
-                }).length;
+            //    let qtdConcluido = $.grep(dados, function (r) {
+            //        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+            //    }).length;
 
-                let qtdDeGerencia = $.grep(dados, function (r) {
-                    return r.Iniciativa == c;
-                }).length;
+            //    let qtdDeGerencia = $.grep(dados, function (r) {
+            //        return r.Iniciativa == c;
+            //    }).length;
 
-                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+            //    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-                Data.push(porcConcluidos);
-            });
+            //    Data.push(porcConcluidos);
+            //});
 
-            Highcharts.chart('graficoPorProjetos', {
+            //Highcharts.chart('graficoPorProjetos', {
 
-                title: {
-                    text: '% CONCLUÍDA - DEMANDAS'
-                },
-                credits: {
-                    enabled: false
-                },
-                subtitle: {
-                    text: ''
-                },
-                yAxis: {
-                    title: {
-                        text: '% de Conclusão'
-                    }
-                },
-                xAxis: {
-                    categories: Categories,
-                },
-                plotOptions: {
-                    column: {
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.0f} %',
-                            //distance: -10,
-                            style: {
-                                color: 'black',
-                                fontSize: '10px',
-                            },
-                            //connectorColor: 'silver'
-                        },
-                        point: {
-                            events: {
-                                click: function () {
-                                    console.log(this.category)
+            //    title: {
+            //        text: '% CONCLUÍDA - DEMANDAS'
+            //    },
+            //    credits: {
+            //        enabled: false
+            //    },
+            //    subtitle: {
+            //        text: ''
+            //    },
+            //    yAxis: {
+            //        title: {
+            //            text: '% de Conclusão'
+            //        }
+            //    },
+            //    xAxis: {
+            //        categories: Categories,
+            //    },
+            //    plotOptions: {
+            //        column: {
+            //            dataLabels: {
+            //                enabled: true,
+            //                format: '{point.y:.0f} %',
+            //                //distance: -10,
+            //                style: {
+            //                    color: 'black',
+            //                    fontSize: '10px',
+            //                },
+            //                //connectorColor: 'silver'
+            //            },
+            //            point: {
+            //                events: {
+            //                    click: function () {
+            //                        console.log(this.category)
 
-                                    filterDados("Iniciativa", this.category, getTablesModal)
-                                }
-                            }
-                        },
-                    },
-                },
-                tooltip: {
-                    pointFormat: '{point.y:.0f} %'
-                },
-                series: [{
-                    type: 'column',
-                    colorByPoint: true,
-                    data: Data,
-                    showInLegend: false
-                }]
-            });
+            //                        filterDados("Iniciativa", this.category, getTablesModal)
+            //                    }
+            //                }
+            //            },
+            //        },
+            //    },
+            //    tooltip: {
+            //        pointFormat: '{point.y:.0f} %'
+            //    },
+            //    series: [{
+            //        type: 'column',
+            //        colorByPoint: true,
+            //        data: Data,
+            //        showInLegend: false
+            //    }]
+            //});
 
-            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
-            $('#percentualConclusao').html(PercentualTotal + " %");
+            //let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            //$('#percentualConclusao').html(PercentualTotal + " %");
+
+            getGraficoPorProjetos(null, null, false);
 
             getTablesModal();
         });
@@ -2821,120 +2824,227 @@
 
         function getTablesModal() {
 
-            // Acão Em Andamento
-            let AcoesEspecificas = [];
+        // Acão Em Andamento
+        let AcoesEspecificas = [];
 
-            var arrayRetorno = $.map(dadosfilter, function (o, c) {
+        var arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-                var valor = o['Acao'].ContramedidaEspecifica;
+            var valor = o['Acao'].ContramedidaEspecifica;
 
-                if (o['Acao'].Status == 5) {
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        return "Não possui Ação Específica";
-                    }
+            if (o['Acao'].Status == 5) {
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return "Não possui Ação Específica";
                 }
+            }
 
-            });
+        });
 
-            Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
-                AcoesEspecificas.push([i]);
-            });
+        Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
+            AcoesEspecificas.push([i]);
+        });
 
-            let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
+        let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
 
-            var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
-
-
-            //Acoes Atrasadas
-            AcoesEspecificas = [];
-
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
-
-                if (o['Acao'].Status == 1) {
-
-                    dataFim = new Date(o['Acao'].QuandoFim);
-                    dataHoje = new Date();
-
-                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
 
 
-                    return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+        //Acoes Atrasadas
+        AcoesEspecificas = [];
 
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        valor = { 0: "Não possui Ação Específica", 1: "" };
-                    }
-                }
+        arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            });
+            if (o['Acao'].Status == 1) {
 
-            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
-
-            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Dias de Atraso" }]
-
-            var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
-
-
-            //Proximas
-            AcoesEspecificas = [];
-
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
-
-                dataInicio = new Date(o['Acao'].QuandoInicio);
+                dataFim = new Date(o['Acao'].QuandoFim);
                 dataHoje = new Date();
 
-                if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
+                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
 
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        return { 0: "Não possui Ação Específica", 1: "" };
-                    }
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    valor = { 0: "Não possui Ação Específica", 1: "" };
                 }
-            });
+            }
 
-            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+        });
 
-            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Inicio" }]
+        AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
+        TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Dias de Atraso" }]
+
+        var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
 
 
-            //Concluidas
-            AcoesEspecificas = [];
+        //Proximas
+        AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+        arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-                if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+            dataInicio = new Date(o['Acao'].QuandoInicio);
+            dataHoje = new Date();
 
-                    let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+            if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        return { 0: "Não possui Ação Específica", 1: "" };
-                    }
+                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return { 0: "Não possui Ação Específica", 1: "" };
                 }
+            }
+        });
 
+        AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+        TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Inicio" }]
+
+        var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
+
+
+        //Concluidas
+        AcoesEspecificas = [];
+
+        arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+            if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+
+                let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+
+                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return { 0: "Não possui Ação Específica", 1: "" };
+                }
+            }
+
+        });
+
+        AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+        TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Conclusão" }]
+
+        var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
+    }
+
+    function getGraficoPorProjetos(prop, value, isFilter) {
+
+        let Categories = [];
+
+        let dadosInternos = dados;
+
+
+
+        if (isFilter) {
+
+            dadosInternos = $.grep(dados, function (r) {
+
+                return r[prop] == value ;
+          
             });
-
-            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
-
-            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Conclusão" }]
-
-            var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
+
+        Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
+
+        Data = [];
+
+        let dados2 = dados;
+
+        if (isFilter) {
+            dados2 = $.grep(dados, function (item) {
+
+                if (item[prop] == value) {
+
+                    return item;
+
+                }
+            });
+        }
+
+        Categories.forEach(function (c, o) {
+
+            let qtdConcluido = $.grep(dados2, function (r) {
+                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+            }).length;
+
+            let qtdDeGerencia = $.grep(dados2, function (r) {
+                return r.Iniciativa == c;
+            }).length;
+
+            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+            Data.push(porcConcluidos);
+        });
+
+        Highcharts.chart('graficoPorProjetos', {
+
+            title: {
+                text: '% CONCLUÍDA - DEMANDAS'
+            },
+            credits: {
+                enabled: false
+            },
+            subtitle: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: '% de Conclusão'
+                }
+            },
+            xAxis: {
+                categories: Categories,
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f} %',
+                        //distance: -10,
+                        style: {
+                            color: 'black',
+                            fontSize: '10px',
+                        },
+                        //connectorColor: 'silver'
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                console.log(this.category)
+
+                                filterDados("Iniciativa", this.category, getTablesModal)
+                            }
+                        }
+                    },
+                },
+            },
+            tooltip: {
+                pointFormat: '{point.y:.0f} %'
+            },
+            series: [{
+                type: 'column',
+                colorByPoint: true,
+                data: Data,
+                showInLegend: false
+            }]
+        });
+
+            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            $('#percentualConclusao').html(PercentualTotal + " %");
+
+    }
 
         function changePlanejamento(tipo,form){
             $.post('@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")/'+tipo,function(r){
