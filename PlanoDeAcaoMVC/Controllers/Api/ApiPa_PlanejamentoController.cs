@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Pa_Planejamento")]
-    public class ApiPa_PlanejamentoController : ApiController
+    public class ApiPa_PlanejamentoController : BaseApiController
     {
         PlanoAcaoEF.PlanoDeAcaoEntities db;
 
@@ -218,6 +218,43 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
 
             db.SaveChanges();
+        }
+
+
+        [HttpPost]
+        [Route("GetListPlanejamento/{tipo}")]
+        public dynamic GetListPlanejamento(string tipo)
+        {
+            string query = "";
+            if (tipo == "tatico")
+            {
+                query = "SELECT * FROM PA_PLANEJAMENTO WHERE ESTRATEGICO_ID IS NULL";
+            }else if(tipo == "acao")
+            {
+                query = "SELECT * FROM PA_PLANEJAMENTO WHERE ESTRATEGICO_ID IS NOT NULL";
+            }
+
+            return QueryNinjaDataTable(db, query);
+        }
+
+
+        [HttpPost]
+        [Route("Cereja/{tipo}/{id}/{idParaMudar}")]
+        public dynamic Cereja(string tipo, int id, int idParaMudar)
+        {
+            string query = "";
+            if (tipo == "tatico")
+            {
+                query = $"UPDATE PA_PLANEJAMENTO SET ESTRATEGICO_ID = {idParaMudar} WHERE ID = {id}";
+            }
+            else if(tipo == "acao")
+            {
+                query = $"UPDATE PA_ACAO SET PANEJAMENTO_ID = {idParaMudar} WHERE ID = {id}";
+            }
+
+            db.Database.ExecuteSqlCommand(query);
+
+            return true;//QueryNinjaDataTable(db, query);
         }
 
     }
