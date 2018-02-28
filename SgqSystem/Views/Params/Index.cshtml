@@ -1367,10 +1367,10 @@
                 $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
             }
 
-            if ($('#tableAvAmLevel3 > tbody > tr').length <= 2)
+            if ($('#tableAvAmLevel3 > tbody > tr').length == 0)
                 $('#tableAvAmLevel3').css('display', 'none');
             
-            if ($('#tableLevel3Value > tbody > tr').length <= 2)
+            if ($('#tableLevel3Value > tbody > tr').length == 0)
                 $('#tableLevel3Value').css('display', 'none');
 
         });
