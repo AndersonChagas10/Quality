@@ -228,10 +228,53 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             string query = "";
             if (tipo == "tatico")
             {
-                query = "SELECT * FROM PA_PLANEJAMENTO WHERE ESTRATEGICO_ID IS NULL";
+                query = @"SELECT
+                        P.Id
+                        , D.Name AS Diretoria
+                        , M.Name AS Missão
+                        , V.Name AS Visão
+                        , DR.Name AS Diretriz
+                        , IND.Name AS [Indicador da Diretriz]
+                        FROM PA_PLANEJAMENTO P
+                        LEFT JOIN Pa_Diretoria D
+                        ON D.Id = P.Diretoria_Id
+                        LEFT JOIN PA_Missao M
+                        ON M.Id = P.Missao_Id
+                        LEFT JOIN Pa_Visao V
+                        ON V.Id = P.Visao_Id
+                        LEFT JOIN Pa_TemaAssunto DR
+                        ON DR.Id = P.TemaAssunto_Id
+                        LEFT JOIN PA_IndicadoresDiretriz IND
+                        ON IND.Id = P.Indicadores_Id
+                        WHERE P.ESTRATEGICO_ID IS NULL";
+
             }else if(tipo == "acao")
             {
-                query = "SELECT * FROM PA_PLANEJAMENTO WHERE ESTRATEGICO_ID IS NOT NULL";
+                query = @"SELECT
+                        P.Id
+                        , G.Name AS Gerência
+                        , C.Name AS Coordenação
+                        , TIP.Name AS [Tipo de projeto]
+                        , TP.Name AS [Tema do projeto]
+                        , PR.Name AS Projeto
+                        , OB.Name AS [Objetivo Gerencial]
+                        , Q.Name AS [Responsável]
+                        FROM PA_PLANEJAMENTO P
+                        LEFT JOIN Pa_Gerencia G
+                        ON G.ID = P.Gerencia_Id
+                        LEFT JOIN Pa_Coordenacao C
+                        ON C.Id = P.Coordenacao_Id
+                        LEFT JOIN Pa_Iniciativa PR
+                        ON PR.Id = P.Iniciativa_Id
+                        LEFT JOIN Pa_ObjetivoGeral OB
+                        ON OB.Id = P.ObjetivoGerencial_Id
+                        LEFT JOIN Pa_TemaProjeto TP
+                        ON TP.Id = P.TemaProjeto_Id
+                        LEFT JOIN Pa_TipoProjeto TIP
+                        ON TIP.Id = P.TipoProjeto_Id
+                        LEFT JOIN Pa_Quem Q
+                        ON Q.Id = P.Responsavel_Projeto
+                        WHERE P.ESTRATEGICO_ID IS NOT NULL";
             }
 
             return QueryNinjaDataTable(db, query);
