@@ -392,11 +392,12 @@
 
 <div class="container-fluid">
     <div class="row" style="width:100% !important">
-        <div class="col-sm-2">
+        <div class="col-md-12" style="margin-left:10px;">
             <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
-        </div>
-        <div class="col-sm-10">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos">Visão Geral dos Projetos</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">Visão Geral dos Projetos Diretriz</button>
         </div>
     </div>
 </div>
@@ -421,6 +422,7 @@
                             </div>
                             <div>
                                 <div id="graficoPorGerencia"></div>
+                                <div id="graficoPorDiretriz"></div>
                             </div>
                         </div>
                         <div class="col-sm-8">
@@ -973,6 +975,8 @@
         /**/
         var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")'
         /**/
+
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")
 
     </script>
 
@@ -2596,166 +2600,182 @@
 
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
+            debugger
+
+            $('#graficoPorDiretriz').empty();
+            $('#graficoPorGerencia').empty();
 
             let Categories = [];
             let Data = [];
 
             dadosfilter = dados;
 
-            Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+            if (TipoGrafico == "Gerencia") {
 
-            Data = [];
+                Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
 
-            Categories.forEach(function (c, o) {
+                Data = [];
 
-                let qtdConcluido = $.grep(dados, function (r) {
-                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
-                }).length;
+                Categories.forEach(function (c, o) {
 
-                let qtdDeGerencia = $.grep(dados, function (r) {
-                    return r.Gerencia == c;
-                }).length;
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
+                    }).length;
 
-                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+                    let qtdDeGerencia = $.grep(dados, function (r) {
+                        return r.Gerencia == c;
+                    }).length;
 
-                Data.push(porcConcluidos);
-            });
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-            Highcharts.chart('graficoPorGerencia', {
+                    Data.push(porcConcluidos);
+                });
 
-                title: {
-                    text: '% CONCLUÍDA - ÁREA'
-                },
-                chart: {
-                    height: 230
-                },
-                credits: {
-                    enabled: false
-                },
-                subtitle: {
-                    text: ''
-                },
-                yAxis: {
+                Highcharts.chart('graficoPorGerencia', {
+
                     title: {
-                        text: '% de Conclusão'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.0f} %',
-                            //distance: -10,
-                            style: {
-                                color: 'black',
-                                fontSize: '10px',
+                        text: '% CONCLUÍDA - ÁREA'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '% de Conclusão'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
                             },
-                            //connectorColor: 'silver'
-                        },
-                        point: {
-                            events: {
-                                click: function () {
-                                    filterDados("Gerencia", this.category, getTablesModal);
-                                    getGraficoPorProjetos("Gerencia", this.category, true);
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("Gerencia", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Gerencia", this.category, true);
+                                    }
                                 }
-                            }
+                            },
                         },
                     },
-                },
-                xAxis: {
-                    categories: Categories
-                },
-                tooltip: {
-                    pointFormat: '{point.y:.0f} %'
-                },
-                series: [{
-                    type: 'column',
-                    colorByPoint: true,
-                    data: Data,
-                    showInLegend: false
-                }]
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
 
-            });
+                });
 
-            //Categories = Object.values(MapeiaValorParaHC(dados, "Iniciativa").filter(onlyUnique));
+            } else {
 
-            //Data = [];
+                Categories = Object.values(MapeiaValorParaHC(dados, "IndicadoresDiretriz").filter(onlyUnique));
 
-            //Categories.forEach(function (c, o) {
+                Data = [];
 
-            //    let qtdConcluido = $.grep(dados, function (r) {
-            //        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
-            //    }).length;
+                Categories.forEach(function (c, o) {
 
-            //    let qtdDeGerencia = $.grep(dados, function (r) {
-            //        return r.Iniciativa == c;
-            //    }).length;
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
+                    }).length;
 
-            //    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+                    let qtdDeDiretriz = $.grep(dados, function (r) {
+                        return r.IndicadoresDiretriz == c;
+                    }).length;
 
-            //    Data.push(porcConcluidos);
-            //});
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
 
-            //Highcharts.chart('graficoPorProjetos', {
+                    Data.push(porcConcluidos);
+                });
 
-            //    title: {
-            //        text: '% CONCLUÍDA - DEMANDAS'
-            //    },
-            //    credits: {
-            //        enabled: false
-            //    },
-            //    subtitle: {
-            //        text: ''
-            //    },
-            //    yAxis: {
-            //        title: {
-            //            text: '% de Conclusão'
-            //        }
-            //    },
-            //    xAxis: {
-            //        categories: Categories,
-            //    },
-            //    plotOptions: {
-            //        column: {
-            //            dataLabels: {
-            //                enabled: true,
-            //                format: '{point.y:.0f} %',
-            //                //distance: -10,
-            //                style: {
-            //                    color: 'black',
-            //                    fontSize: '10px',
-            //                },
-            //                //connectorColor: 'silver'
-            //            },
-            //            point: {
-            //                events: {
-            //                    click: function () {
-            //                        console.log(this.category)
+                Highcharts.chart('graficoPorDiretriz', {
 
-            //                        filterDados("Iniciativa", this.category, getTablesModal)
-            //                    }
-            //                }
-            //            },
-            //        },
-            //    },
-            //    tooltip: {
-            //        pointFormat: '{point.y:.0f} %'
-            //    },
-            //    series: [{
-            //        type: 'column',
-            //        colorByPoint: true,
-            //        data: Data,
-            //        showInLegend: false
-            //    }]
-            //});
+                    title: {
+                        text: '% CONCLUÍDA - ÁREA'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '% de Conclusão'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("IndicadoresDiretriz", this.category, getTablesModal);
+                                        getGraficoPorProjetos("IndicadoresDiretriz", this.category, true);
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
 
-            //let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
-            //$('#percentualConclusao').html(PercentualTotal + " %");
+                });
+
+            }
 
             getGraficoPorProjetos(null, null, false);
 
             getTablesModal();
         });
+
+        var TipoGrafico = null;
+
+        function vgp(tipoGrafico){
+            TipoGrafico = tipoGrafico;
+        }
 
         function getAcoesEspecificas(arrayRetorno) {
 
@@ -2824,10 +2844,10 @@
 
         function getTablesModal() {
 
-        // Acão Em Andamento
-        let AcoesEspecificas = [];
+            // Acão Em Andamento
+            let AcoesEspecificas = [];
 
-        var arrayRetorno = $.map(dadosfilter, function (o, c) {
+            var arrayRetorno = $.map(dadosfilter, function (o, c) {
 
             var valor = o['Acao'].ContramedidaEspecifica;
 
@@ -2841,19 +2861,18 @@
 
         });
 
-        Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
+            Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
             AcoesEspecificas.push([i]);
         });
 
-        let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
+            let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
 
-        var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
+            var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
 
+            //Acoes Atrasadas
+            AcoesEspecificas = [];
 
-        //Acoes Atrasadas
-        AcoesEspecificas = [];
-
-        arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
 
             if (o['Acao'].Status == 1) {
 
@@ -2875,17 +2894,17 @@
 
         });
 
-        AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-        TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Dias de Atraso" }]
+            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Dias de Atraso" }]
 
-        var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
+            var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
 
 
-        //Proximas
-        AcoesEspecificas = [];
+            //Proximas
+            AcoesEspecificas = [];
 
-        arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
 
             dataInicio = new Date(o['Acao'].QuandoInicio);
             dataHoje = new Date();
@@ -2905,17 +2924,17 @@
             }
         });
 
-        AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-        TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Inicio" }]
+            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Inicio" }]
 
-        var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
+            var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
 
 
-        //Concluidas
-        AcoesEspecificas = [];
+            //Concluidas
+            AcoesEspecificas = [];
 
-        arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
 
             if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
 
@@ -2932,48 +2951,46 @@
 
         });
 
-        AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-        TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Conclusão" }]
+            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Conclusão" }]
 
-        var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
-    }
+            var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
+        }
 
-    function getGraficoPorProjetos(prop, value, isFilter) {
+        function getGraficoPorProjetos(prop, value, isFilter) {
 
-        let Categories = [];
+            let Categories = [];
 
-        let dadosInternos = dados;
+            let dadosInternos = dados;
 
-
-
-        if (isFilter) {
+            if (isFilter) {
 
             dadosInternos = $.grep(dados, function (r) {
 
                 return r[prop] == value ;
-          
+
             });
         }
 
-        Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
+            Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
 
-        Data = [];
+            Data = [];
 
-        let dados2 = dados;
+            let dados2 = dados;
 
-        if (isFilter) {
-            dados2 = $.grep(dados, function (item) {
+            if (isFilter) {
+                dados2 = $.grep(dados, function (item) {
 
-                if (item[prop] == value) {
+                    if (item[prop] == value) {
 
-                    return item;
+                        return item;
 
-                }
-            });
-        }
+                    }
+                });
+            }
 
-        Categories.forEach(function (c, o) {
+            Categories.forEach(function (c, o) {
 
             let qtdConcluido = $.grep(dados2, function (r) {
                 return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
@@ -2988,7 +3005,7 @@
             Data.push(porcConcluidos);
         });
 
-        Highcharts.chart('graficoPorProjetos', {
+            Highcharts.chart('graficoPorProjetos', {
 
             title: {
                 text: '% CONCLUÍDA - DEMANDAS'
@@ -3044,10 +3061,10 @@
             let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
             $('#percentualConclusao').html(PercentualTotal + " %");
 
-    }
+        }
 
         function changePlanejamento(tipo,form){
-            $.post('@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")/'+tipo,function(r){
+            $.post(urlGetListPlanejamento +'/'+tipo,function(r){
 
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
@@ -3075,7 +3092,7 @@
                 });
             });
         }
-
+        
     </script>
 
 }
