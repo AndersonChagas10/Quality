@@ -429,13 +429,13 @@
             if (obj.ParCompany_Id > 0)
                 $('#crudNxNEdit #avAmCompany').val(obj.ParCompany_Id).change();
 
-            $('#crudNxNEdit #parLevel1Select2').attr("disabled", true);
-            if (obj.ParLevel1_Id > 0)
-                $('#crudNxNEdit #parLevel1Select2').val(obj.ParLevel1_Id).change();
+            $('#crudNxNEdit #parLevel1Select2AmostraLevel3').attr("disabled", true);
+            //if (obj.ParLevel1_Id > 0)
+                $('#crudNxNEdit #parLevel1Select2AmostraLevel3').val(obj.ParLevel1_Id).change();
 
-            $('#crudNxNEdit #parLevel2Select2').attr("disabled", true);
-            if (obj.ParLevel2_Id > 0)
-                $('#crudNxNEdit #parLevel2Select2').val(obj.ParLevel2_Id).change();
+            $('#crudNxNEdit #parLevel2Select2AmostraLevel3').attr("disabled", true);
+            //if (obj.ParLevel2_Id > 0)
+                $('#crudNxNEdit #parLevel2Select2AmostraLevel3').val(obj.ParLevel2_Id).change();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
