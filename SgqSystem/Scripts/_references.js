@@ -212,6 +212,7 @@
 /// <reference path="moment.js" />
 /// <reference path="moment-with-locales.js" />
 /// <reference path="plugingrt/datatablegrt.js" />
+/// <reference path="plugingrt/mandalagrt.js" />
 /// <reference path="print/printgrt.js" />
 /// <reference path="respond.js" />
 /// <reference path="select2.js" />
