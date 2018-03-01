@@ -4502,7 +4502,7 @@ FROM (SELECT
                ,Monitoramento AS level2Id
                ,MonitoramentoName AS Level2Name
                ,Tarefa AS level3Id
-               ,TarefaName AS level3IdName
+               ,TarefaName AS level3Name
                ,'" + titulo + @"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
