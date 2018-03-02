@@ -14,13 +14,14 @@
     elementoDeCentro: "",
     estiloDoElemento: "background: steelblue;border-radius: 100%;",
 
-    SubstituirVariaveis(texto, posicao) {
+    SubstituirVariaveis(texto, objeto) {
         var regExp = new RegExp('({([^{]|)*})', 'g');
         var match = texto.match(regExp);
-        for (var j = 0; j < match.length; j++) {
-            var valorTemp = this.listaDeDados[posicao][match[j].replace("{", "").replace("}", "")];
-            texto = texto.replace(match[j], valorTemp != undefined ? valorTemp : undefined);
-        }
+        if(match != null)
+            for (var j = 0; j < match.length; j++) {
+                var valorTemp = objeto[match[j].replace("{", "").replace("}", "")];
+                texto = texto.replace(match[j], valorTemp != undefined ? valorTemp : undefined);
+            }
         return texto;
     },
 
@@ -37,7 +38,7 @@
         return [x, y];
     },
 
-    PlotaBolas(lista, raio) {
+    RenderizaElemento(lista, raio) {
 
         var quantidadeElementos = lista.length;
         var graus = 360 / quantidadeElementos;
@@ -55,8 +56,8 @@
     },
 
     CriaElementos(posicao) {
-        var estiloAuxiliar = this.SubstituirVariaveis(this.estiloDoElemento, posicao - 1);
-        var atributosHtml = this.SubstituirVariaveis(this.atributosElemento, posicao - 1);
+        var estiloAuxiliar = this.SubstituirVariaveis(this.estiloDoElemento, this.listaDeDados[posicao - 1]);
+        var atributosHtml = this.SubstituirVariaveis(this.atributosElemento, this.listaDeDados[posicao - 1]);
         $('#' + this.idElemento).prepend('<a href="#" class="mandala-item item-' + posicao + ' item" ' + atributosHtml + ' style="position: absolute;width:' + this.tamanhoDoElemento + 'px;height:' + this.tamanhoDoElemento + 'px;' + estiloAuxiliar + '"></a>');
     },
 
@@ -95,11 +96,16 @@
         });
         $('#' + this.idElemento).css('padding', (this.margemDoCentro + raioElemento) + 'px');
 
-        if (this.elementoDeCentro.length > 0)
+        //Elemento de centro
+        if (this.elementoDeCentro.length > 0) {
+            //Alinha o elemento no centro
+            this.elementoDeCentro = this.SubstituirVariaveis(this.elementoDeCentro, { Style: 'width:' + (this.margemDoCentro) + 'px;height:' + (this.margemDoCentro) + 'px;position:absolute;display:block;margin-left:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;margin-top:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;transform:translate3d(0px, 0px, 0)' });
             $('#' + this.idElemento).append(this.elementoDeCentro);
+        }
 
-        this.PlotaBolas(this.listaDeDados, this.margemDoCentro);
+        this.RenderizaElemento(this.listaDeDados, this.margemDoCentro);
 
+        //Aplica fade no evento :hover
         $('#' + this.idElemento+ ' a').hover(function () {
             $(this).css("opacity", "0.5");
             $(this).css("filter", "alpha(opacity = 50)");

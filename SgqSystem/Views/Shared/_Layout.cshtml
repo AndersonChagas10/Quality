@@ -664,60 +664,66 @@
     <script src="~/Scripts/PluginGRT/mandalaGRT.js"></script>
 
     <script>
-        var lista = [
-             {Unidade:"Campo Grande", Texto:"5/8 Avaliações", Color:"green"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"green"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"green"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"green"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"green"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"yellow"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"yellow"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"yellow"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"yellow"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"yellow"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"yellow"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"red"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"red"}
-            ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"red"}
-            ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"red"}
-        ];
-	
-        mandalaGRT.Inicializar({
-            idElemento: "mandala",
-            listaDeDados: lista,
-            margemDoCentro: 40,
-            tamanhoDoElemento: 18,
-            posicaoNaTela: 'left bottom',
-            estiloDoElemento: "background: {Color};border-radius: 100% !important;",
-            atributosElemento: 'data-unidade="{Unidade}" data-cor="{Color}" data-texto="{Texto}"'
-        });
-        
-        $('#' + mandalaGRT.idElemento+ ' a').hover(function () {
-            $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
-            $('#mandalaModal').find('.modal-header').css('background-color',$(this).attr('data-cor'));
-            $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
-            $('#mandalaModal').modal('show');
-        }, function () {
-            $('#mandalaModal').modal('hide');
-        });
-        
-        $('#' + mandalaGRT.idElemento+ ' a').on('click',function () {
+        function MostrarIndicador (){
             var lista = [
-                 {Indicador:"Esfola", Texto:"5/18 Avaliações", Color:"green"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"green"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"green"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"green"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"yellow"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"yellow"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"yellow"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"yellow"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"yellow"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"yellow"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"red"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"red"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"red"}
-                ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"red"}
-                ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"red"}
+                 {Unidade:"Campo Grande", Texto:"5/8 Avaliações", Color:"green"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"green"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"green"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"green"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"green"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"yellow"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"yellow"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"yellow"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"yellow"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"yellow"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"yellow"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"red"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"red"}
+                ,{Unidade:"Campo Grande II", Texto:"7/8 Avaliações", Color:"red"}
+                ,{Unidade:"Lins", Texto:"2/8 Avaliações", Color:"red"}
+            ];
+        
+            mandalaGRT.Inicializar({
+                idElemento: "mandala",
+                listaDeDados: lista,
+                margemDoCentro: 40,
+                tamanhoDoElemento: 18,
+                posicaoNaTela: 'left bottom',
+                estiloDoElemento: "background: {Color};border-radius: 100% !important;",
+                atributosElemento: 'data-unidade="{Unidade}" data-cor="{Color}" data-texto="{Texto}"',
+                elementoDeCentro: ""
+            });
+        
+            $('#' + mandalaGRT.idElemento+ ' a').hover(function () {
+                $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
+                $('#mandalaModal').find('.modal-header').css('background-color',$(this).attr('data-cor'));
+                $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
+                $('#mandalaModal').modal('show');
+            }, function () {
+                $('#mandalaModal').modal('hide');
+            });
+
+            $('#' + mandalaGRT.idElemento+ ' a').on('click',function () {
+                MostrarMonitoramento();
+            });
+        }
+        function MostrarMonitoramento(){
+            var lista = [
+                     {Indicador:"Esfola", Texto:"5/18 Avaliações", Color:"green"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"green"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"green"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"green"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"yellow"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"yellow"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"yellow"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"yellow"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"yellow"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"yellow"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"red"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"red"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"red"}
+                    ,{Indicador:"Vácuo GRD", Texto:"7/38 Avaliações", Color:"red"}
+                    ,{Indicador:"CEP Desossa", Texto:"2/8 Avaliações", Color:"red"}
             ];
 	
             mandalaGRT.Inicializar({
@@ -727,8 +733,8 @@
                 tamanhoDoElemento: 18,
                 posicaoNaTela: 'left bottom',
                 estiloDoElemento: "background: {Color};border-radius: 100% !important;",
-                atributosElemento: 'data-indicador="{Indicador}" data-cor="{Color}" data-texto="{Texto}"',
-                //elementoDeCentro : '<button style="position:absolute;display:block;width:50px;left:0;right:0;">vVv</button>'
+                atributosElemento: 'data-indicador="{Indicador}" data-cor="{Color}" data-texto="{Texto}"',    
+                elementoDeCentro : '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
             });
         
             $('#' + mandalaGRT.idElemento+ ' a').hover(function () {
@@ -741,45 +747,58 @@
             });
             
             $('#' + mandalaGRT.idElemento+ ' a').on('click',function () {
-                var lista = [
-                     {Monitoramento:"Picanha", Texto:"5/38 Avaliações", Color:"green"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"green"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"green"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"green"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"green"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
-                    ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"red"}
-                ];
-	
-                mandalaGRT.Inicializar({
-                    idElemento: "mandala",
-                    listaDeDados: lista,
-                    margemDoCentro: 40,
-                    tamanhoDoElemento: 18,
-                    posicaoNaTela: 'left bottom',
-                    estiloDoElemento: "background: {Color};border-radius: 100% !important;",
-                    atributosElemento: 'data-monitoramento="{Monitoramento}" data-cor="{Color}" data-texto="{Texto}"',
-                    //elementoDeCentro : '<a class="" style="position:absolute;display:block;width:50px;margin-left:-25px;">v</a>'
-                });
-        
-                $('#' + mandalaGRT.idElemento+ ' a').hover(function () {
-                    $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento'));
-                    $('#mandalaModal').find('.modal-header').css('background-color',$(this).attr('data-cor'));
-                    $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
-                    $('#mandalaModal').modal('show');
-                }, function () {
-                    $('#mandalaModal').modal('hide');
-                });
+                MostrarTarefa();
             });
-        });
+
+            $('#mandalaVoltar').on('click',function(){
+                MostrarIndicador();
+            });
+        }
+        function MostrarTarefa(){
+            var lista = [
+                         {Monitoramento:"Picanha", Texto:"5/38 Avaliações", Color:"green"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"green"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"green"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"green"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"green"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Acém", Texto:"7/38 Avaliações", Color:"yellow"}
+                        ,{Monitoramento:"Patinho", Texto:"2/38 Avaliações", Color:"red"}
+            ];
+	
+            mandalaGRT.Inicializar({
+                idElemento: "mandala",
+                listaDeDados: lista,
+                margemDoCentro: 40,
+                tamanhoDoElemento: 18,
+                posicaoNaTela: 'left bottom',
+                estiloDoElemento: "background: {Color};border-radius: 100% !important;",
+                atributosElemento: 'data-monitoramento="{Monitoramento}" data-cor="{Color}" data-texto="{Texto}"',
+                elementoDeCentro : '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
+            });
+        
+            $('#' + mandalaGRT.idElemento+ ' a').hover(function () {
+                $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento'));
+                $('#mandalaModal').find('.modal-header').css('background-color',$(this).attr('data-cor'));
+                $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
+                $('#mandalaModal').modal('show');
+            }, function () {
+                $('#mandalaModal').modal('hide');
+            });
+
+            $('#mandalaVoltar').on('click',function(){
+                MostrarMonitoramento();
+            });
+        }
+
+        MostrarIndicador ();
     </script>
 
     <div id="mandalaModal" class="modal" role="dialog" style="z-index:9999998">
