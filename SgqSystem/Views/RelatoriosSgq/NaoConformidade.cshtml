@@ -143,6 +143,14 @@
             formControl.showShift();
             formControl.showClustRegUnitCriticalLevel123();
 
+            //setTimeout(function () {
+                $("#clusterGroupId").find("option").eq(0).remove();
+                $("#clusterGroupId").val(8).change();
+                if ($("#clusterGroupId").val() == null) {
+                    $("#clusterGroupId").val(2).change();
+                }
+            //}, 3);
+
             popoverMain = $('#CustomPopover').addClass('hide');
 
             $('.sidebar-nav select').select2();
