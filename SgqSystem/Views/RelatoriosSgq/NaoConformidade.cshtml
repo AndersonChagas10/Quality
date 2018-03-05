@@ -97,12 +97,12 @@
 
         //var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
         var Department = '@Resources.Resource.department'
-        var GraficoDepto = 'NC por departamento: ';
+        var GraficoDepto = '@Resources.Resource.defects_per_deparment'; //'NC por departamento';
         var GraficoIndic = '@Resources.Resource.defects_per_audit'; //'NC por Indicador: ';
         var GraficoMon = '@Resources.Resource.defects_per_monitoring'; //'NC por Monitoramento: ';
         var GraficoTarefa = '@Resources.Resource.defects_per_tasks'; //'NC por Tarefa: ';
-        var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
-        var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
+        var GraficoTarefasAcumuladas ='@Resources.Resource.derivations_per_defects'; // 'NC por Tarefas acumuladas: '; 
+        var GraficoMoncomTarefa = '@Resources.Resource.defects_per_monitoring_at_tasks'; //'NC por Monitoramento na Tarefa: ';
         var $btn = $('#btnSend');
         var urlGraficoUnidades = @Html.Raw(Json.Encode(urlGraficoUnidades));
         var urlGraficoIndicador = @Html.Raw(Json.Encode(urlGraficoNcPorUnidadeIndicador));
@@ -142,6 +142,14 @@
             formControl.showFullCallendar();
             formControl.showShift();
             formControl.showClustRegUnitCriticalLevel123();
+
+            //setTimeout(function () {
+                $("#clusterGroupId").find("option").eq(0).remove();
+                $("#clusterGroupId").val(8).change();
+                if ($("#clusterGroupId").val() == null) {
+                    $("#clusterGroupId").val(2).change();
+                }
+            //}, 3);
 
             popoverMain = $('#CustomPopover').addClass('hide');
 

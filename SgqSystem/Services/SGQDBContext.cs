@@ -97,7 +97,7 @@ namespace SGQDBContext
             }
         }
 
-        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id, string Level1ListId)
+        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id, string Level1ListId, DateTime dateCollection)
         {
 
             /*
@@ -109,35 +109,59 @@ namespace SGQDBContext
             string whereIsChildren = " AND IsChildren = 0 ";
 
             //SqlConnection db = new SqlConnection(conexao);
-            string sql = "\n SELECT P1.Id, P1.Name, P1.HasTakePhoto, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-                         "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber " +
-                         "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
-                         "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
-                         "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
-                         "\n INNER JOIN ParLevel1XCluster P1C  (nolock)                                                                                           " +
-                         "\n ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
-                         "\n INNER JOIN ParCluster C    (nolock)                                                                                                  " +
-                         "\n ON C.Id = P1C.ParCluster_Id                                                                                                " +
-                         "\n INNER JOIN ParCompanyCluster CC   (nolock)                                                                                           " +
-                         "\n ON CC.ParCluster_Id = P1C.ParCluster_Id  and CC.Active = 1                                                               " +
-                         "\n INNER JOIN ParCriticalLevel CL     (nolock)                                                                                          " +
-                         "\n ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
-                         "\n LEFT JOIN ParNotConformityRuleXLevel AL    (nolock)                                                                                 " +
-                         "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
+            //string sql1 = "\n SELECT P1.Id, P1.Name, P1.HasTakePhoto, " +
+            //             "\n (1) AS ParCriticalLevel_Id, ('Gabriel') AS ParCriticalLevel_Name, " +
+            //             "\n P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
+            //             "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
+            //             "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber " +
+            //             "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
+            //             "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
+            //             "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
+            //             "\n INNER JOIN ParLevel1XCluster P1C  (nolock)                                                                                           " +
+            //             "\n ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
+            //             "\n INNER JOIN ParCluster C    (nolock)                                                                                                  " +
+            //             "\n ON C.Id = P1C.ParCluster_Id                                                                                                " +
+            //             "\n INNER JOIN ParCompanyCluster CC   (nolock)                                                                                           " +
+            //             "\n ON CC.ParCluster_Id = P1C.ParCluster_Id  and CC.Active = 1                                                               " +
+            //             "\n INNER JOIN ParCriticalLevel CL     (nolock)                                                                                          " +
+            //             "\n ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
+            //             "\n LEFT JOIN ParNotConformityRuleXLevel AL    (nolock)                                                                                 " +
+            //             "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
-                         "\n INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + "')) A GROUP BY ParLevel1_Id) G  " +
-                         "\n ON P1.Id = G.ParLevel1_Id                                                                                        " +
+            //             "\n INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + "')) A GROUP BY ParLevel1_Id) G  " +
+            //             "\n ON P1.Id = G.ParLevel1_Id                                                                                        " +
 
-                         "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-                         "\n " + whereIsChildren + "                                                                                                       " +
-                         "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
+            //             "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
+            //             "\n " + whereIsChildren + "                                                                                                       " +
+            //             "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
+
+            string sql = @"SELECT * FROM (
+                        SELECT P1.Id, P1.Name, P1.HasTakePhoto, 
+                        (select top 1 id from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
+                        (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
+                        P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     
+                        P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave
+                        ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber 
+                        FROM ParLevel1 P1  (nolock)                                                                                                         
+                        INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     
+                        ON P321.ParLevel1_Id = P1.Id                                                                                               
+                        LEFT JOIN ParNotConformityRuleXLevel AL    (nolock)                                                                                 
+                        ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               
+                        INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + @"')) A GROUP BY ParLevel1_Id) G  
+                        ON P1.Id = G.ParLevel1_Id                                                                                        
+                        WHERE 1 =1                                                                          
+                        AND IsChildren = 0 
+                        " + whereIsChildren + @"
+                        AND P1.IsActive = 1 ";
+
             if (Level1ListId != "" && Level1ListId != null)
             {
                 sql += " AND P1.Id IN (" + Level1ListId.Substring(0, Level1ListId.Length - 1) + ") ";
             }
 
-            sql += "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
+            sql += @") A
+                    where ParCriticalLevel_id is not null  
+                    ORDER BY 5, 2";
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
@@ -920,7 +944,8 @@ namespace SGQDBContext
                          "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3      (nolock)                                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3Value L3V      (nolock)                                                                                                                                                                                                                                                                                                                           " +
-                         "           ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)" +
+                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc) " +
+                        // "           ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)" +
                         // "\n and (ParLevel1_id = " + ParLevel1.Id + " or ParLevel1_id is null) and (ParLevel2_id = " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel2_Id desc, ParLevel1_Id desc)                                                                                                       " +
                          "\n INNER JOIN ParLevel3InputType L3IT    (nolock)                                                                                                                                                                                                                                                                                                                        " +
                          "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
@@ -1555,6 +1580,36 @@ namespace SGQDBContext
             var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
 
             var lista = db.Query<Generico>(sql).ToList();
+
+            return lista;
+        }
+    }
+
+    public partial class ParLevel3Vinculado
+    {
+        public int Id { get; set; }
+        public int ParCompany_Id { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int ParLevel3_Id { get; set; }
+        public int SampleNumber { get; set; }
+        public int EvaluationNumber { get; set; }
+        public String EvaluationInterval { get; set; }
+
+        private SqlConnection db { get; set; }
+        public ParLevel3Vinculado() { }
+        public ParLevel3Vinculado(SqlConnection _db)
+        {
+            db = _db;
+        }
+
+        public List<ParLevel3Vinculado> getParLevel3Vinculado(int ParCompanyId)
+        {
+            var sql = string.Format(
+                "SELECT * FROM ParLevel3EvaluationSample WHERE(ParCompany_Id = {0} OR ParCompany_Id IS NULL) AND IsActive = 1;", 
+                ParCompanyId);
+
+            var lista = db.Query<ParLevel3Vinculado>(sql).ToList();
 
             return lista;
         }

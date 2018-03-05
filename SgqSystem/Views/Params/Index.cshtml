@@ -256,8 +256,8 @@
 
     function defaults() {
         $.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.y';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.n';
         $(".check-box").bootstrapSwitch();
 
         $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('onText', '@Resources.Resource.conform');
@@ -425,7 +425,7 @@
         var n = newForm.serialize().toString();
         return false;
     }
-    
+
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
@@ -448,10 +448,14 @@
 
         enviarDadosParaApi: function (e) {
 
+            $("#paramsDto_parLevel1Dto_Name").val($.trim($("#paramsDto_parLevel1Dto_Name").val().replace(/  +/g, ' ')));
+
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
             if ($('#newLevel1Modal > form').valid()) {
+
+                $("#newLevel1Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
 
                 var $btn = $('#btnSaveNewLevel1');
                 $btn.button('loading');
@@ -482,6 +486,7 @@
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
+                    var $btn = $('#btnSaveNewLevel1');
                     $btn.button('reset');
                     if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
                         indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
@@ -490,6 +495,7 @@
 
                 }).fail(function (e, h, x) {
                     //closeLoader();
+                    var $btn = $('#btnSaveNewLevel1');
                     try {
                         closeLoader();
                         $btn.button('reset');
@@ -500,6 +506,8 @@
                         openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
                         console.log(e);
                     }
+                }).always(function(){
+                    $("#newLevel1Modal .voltarDisabled").removeClass('voltarDisabled').prop("disabled", true);
                 });
             }
 
@@ -624,6 +632,8 @@
 
         enviarDadosParaApi: function (e) {
 
+            $("#paramsDto_parLevel2Dto_Name").val($.trim($("#paramsDto_parLevel2Dto_Name").val().replace(/  +/g, ' ')));
+
             $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
 
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -633,6 +643,9 @@
                 //Cabecalhos.UpdateCabecalhos();
                 //Cluster.UpdateCounter();
                 //CounterLevel2.UpdateCounters();
+
+                $("#newLevel2Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
+
                 var dados = $('#newLevel2Modal > form').serializeObject();
 
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
@@ -657,6 +670,7 @@
                     }
                     disableEvry()
                 }).fail(function (e, h, x) {
+                    var $btn = $('#btnSaveNewLevel2');
                     try {
                         closeLoader();
                         $btn.button('reset');
@@ -667,6 +681,8 @@
                         openMessageModal("@Resources.Resource.alert", "Não foi possivel concluir a ação.");
                         console.log(e);
                     }
+                }).always(function(){
+                    $("#newLevel2Modal .voltarDisabled").removeClass('voltarDisabled').prop("disabled", true);
                 });
             }
 
@@ -795,16 +811,24 @@
 
 
         enviarDadosParaApi: function (e) {
+
+            $("#paramsDto_parLevel3Dto_Name").val($.trim($("#paramsDto_parLevel3Dto_Name").val().replace(/  +/g, ' ')));
+
             $('#selectTipoInput').val(-1).change();
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
             if ($('#newLevel3Modal > form').valid()) {
 
+                $("#newLevel3Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
+
                 var dados = $('#newLevel3Modal > form').serializeObject();
 
                 //ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
-                level3Value.incluiNoObjetoParaSubmit(dados);
+                if(typeof level3Value != "undefined")
+                    level3Value.incluiNoObjetoParaSubmit(dados);
+                if(typeof AvAm3 != "undefined")
+                    AvAm3.incluiNoObjetoParaSubmit(dados);
 
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
@@ -827,6 +851,7 @@
                 $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
 
+                    var $btn = $('#btnSaveNewLevel3');
                     $btn.button('loading');
 
                     if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
@@ -837,6 +862,7 @@
                     initialFormLevel3 = $($('form')[2]).clone();
 
                 }).fail(function (e, h, x) {
+                    var $btn = $('#btnSaveNewLevel3');
                     try {
                         $btn.button('reset');
                         openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
@@ -847,6 +873,8 @@
                         openMessageModal("@Resources.Resource.alert", "Não foi possivel concluir a ação.");
                         console.log(e);
                     }
+                }).always(function(){
+                    $("#newLevel3Modal .voltarDisabled").removeClass('voltarDisabled').prop("disabled", true);
                 });
 
             }
@@ -926,6 +954,11 @@
                 reloadPopovers();
                 defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
+
+                if($('#parLevel1Select2 option:selected').val() > 0 && $('#parLevel2Select2 option:selected').val() > 0 && $('#parLevel3Select2 option:selected').val() > 0)
+                    $("#level3_required_level1_level2").removeClass('hide');
+                else
+                    $("#level3_required_level1_level2").addClass('hide');
 
             });
         },/*Busca dados do level3 na API*/
@@ -1078,9 +1111,9 @@
         }
 
         if(!hasperm){
-            $('#btnNewLevel1').hide();
-            $('#btnNewLevel2').hide();
-            $('#btnNewLevel3').hide();
+            $('#btnNewLevel1').attr('disabled', true);
+            $('#btnNewLevel2').attr('disabled', true);
+            $('#btnNewLevel3').attr('disabled', true);
             disableEvry();
         }
 
@@ -1123,6 +1156,11 @@
 
         closeLeftSidebar();
 
+        $('.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label').css('padding', '2px 10px');
+
+        $('.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label').css('font-size', '8px');
+
+        $('.table-erp').css('font-size', '10px');
 
     });
 
@@ -1132,8 +1170,12 @@
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         closeLoader();
-        @*openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');*@
-        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
+
+        @*try {
+            openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
+        } catch (ex) {
+            openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');
+        }*@
     });
 
     $( document ).ajaxStop(function() {
@@ -1155,7 +1197,7 @@
         $('#btnSaveNewLevel1').attr('disabled', true);
         $.post('@Url.Action("GetAutorizacoes", "api/ParamsApi")' + '/' + l1 + '/' + l2 + '/' + l3, function(r){
 
-            $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("readonly", true);
+            $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("disabled", true).attr("readonly", true);
             $(':checkbox').bootstrapSwitch('readonly',true);
             $('#desviculol3l2').attr("disabled", true);
             $('#crudNxNEdit').find('input, select').attr("readonly", false);
@@ -1177,8 +1219,11 @@
 
                 $('#btnSaveNewLevel2').attr('disabled', false);
                 /*Libera os campos para AV AM*/
-                $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
+                $('#level2_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                 $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+                //Libera campos
+                $('#level3_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
+                $('#level3_AvAmostra_accordion #avAmCompany').find('option').not('[value='+ unitId + ']').remove();
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
@@ -1187,8 +1232,11 @@
                 });
             }else{
                 $('#btnSaveNewLevel2').attr('disabled', true);
-                $('#level2_AvAmostra_accordion').find('input, select').attr("readonly", true);
+                $('#level2_AvAmostra_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
                 $('#level2_AvAmostra_accordion').find('button').attr("disabled", true);
+
+                $('#level3_AvAmostra_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
+                $('#level3_AvAmostra_accordion').find('button').attr("disabled", true);
             }
 
             $('#level2_nc_collapse > div > table.table-erp > tbody > tr > td:nth-child(4) > button').attr('disabled', true);
@@ -1206,50 +1254,74 @@
             var hasVinculoLevel3  = $('[name="paramsDto.parLevel3Dto.hasVinculo"]').val() == "True"
 
             $('#vinculoLevel1').attr("disabled", true);
-            if(permiteVincularMonitoramentosTarefas){
+            if (permiteVincularMonitoramentosTarefas) {
+
+                $('#vinculoLevel1').attr("disabled", false);
+
+            }
+
+            if ($('#btnNewLevel2').attr('disabled') == undefined) {
                 $('#vinculoLevel1').attr("disabled", false);
             }
+
+            
 
             if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
 
                 /*Bloqueia os campos para Tipos de dados de entrada*/
-                $('#level3_data_type_accordion').find('input, select, button').attr("readonly", true);
+                $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
                 $('#selectTipoInput').on('change', function() {
-                    $('#level3_data_type_accordion').find('input, select, button').attr("readonly", true);
+                    $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
                 });
-                $('#level3_accordion').find('input').attr("readonly", true);
+
+                $('#level3_accordion').find('input').attr("disabled", true).attr("readonly", true);
                 $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
                 $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
-                $('#level3_PesoL3_accordion').find('input, select').attr("readonly", true);
+                $('#level3_PesoL3_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
                 $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
-
-                /*habilita Edicao do Tipos de dados de entrada*/
-                $('#tableLevel3Value > tbody > tr').each(function() {
-                    $(this).find('input, select, button').attr("disabled", true);
-                });
+                3
                 $('#level3_data_type_accordion').find('button').attr("disabled", true);
                 $('#btnSaveNewLevel3').attr('disabled', true);
 
                 if(permiteEditarPadrãoDasTarefas  && level2Vinculado && hasVinculoLevel3){
                     /*Libera os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('button').attr("disabled", false);
-                    $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
+                    $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                     $('#selectTipoInput').on('change', function() {
-                        $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
+                        $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                     });
-                    $('#level3_accordion').find('input').attr("readonly", true);
+                    $('#level3_accordion').find('input').attr("disabled", false).attr("readonly", false);
                     $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
                     $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
-                    $('#level3_PesoL3_accordion').find('input, select').attr("readonly", false);
+                    $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+
+                    /*Libera os campos para Avaliacao Amostra*/
+                    $('#level3_AvAmostra_accordion').find('button').attr("disabled", false);
+                    $('#level3_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
 
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id != unitId)
+                        //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
+                        //    $(this).find('input, select, button').attr("disabled", true);
+                        //}
+                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
                             $(this).find('input, select, button').attr("disabled", true);
+                            $(this).remove();
+                        }
+                    });
+                    /*habilita Edicao do Tipos de dados de entrada*/
+                    $('#tableAvAmLevel3 > tbody > tr').each(function() {
+                        //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
+                        //    $(this).find('input, select, button').attr("disabled", true);
+                        //}
+                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
+                            $(this).remove();
+                            $(this).find('input, select, button').attr("disabled", true);
+                        }
                     });
                     $('#btnSaveCounter').attr("disabled", true);
                     $('#btnSaveNewLevel3').attr('disabled', false);
@@ -1277,12 +1349,29 @@
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
                 $('#vinculoLevel1').attr("disabled", true);
+
+                if ($('#btnNewLevel2').attr('disabled') == undefined) {
+                    $('#vinculoLevel1').attr("disabled", false);
+                }
+
                 //console.log('permite editar vinculo unidade Parlevel3')
                 $('#tablePeso > tbody > tr').each(function() {
                     $(this).find('input, select, button').attr("disabled", true);
                 });
+                $('#tableLevel3Value > tbody > tr').each(function() {
+                    $(this).find('input, select, button').attr("disabled", true);
+                });
+                $('#tableAvAmLevel3 > tbody > tr').each(function() {
+                    $(this).find('input, select, button').attr("disabled", true);
+                });
                 $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
             }
+
+            if ($('#tableAvAmLevel3 > tbody > tr').length == 0)
+                $('#tableAvAmLevel3').css('display', 'none');
+            
+            if ($('#tableLevel3Value > tbody > tr').length == 0)
+                $('#tableLevel3Value').css('display', 'none');
 
         });
 
@@ -1426,3 +1515,32 @@
     }
 
 </script>
+
+
+
+@if (GlobalConfig.Brasil)
+{
+    <script>
+        function ConverterData(idTabela, coluna) {
+            debugger
+            $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
+                if ($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("DD/MM/YYYY"))
+            });
+        }
+    </script>
+}
+
+
+@if (GlobalConfig.Eua)
+{
+    <script>
+        function ConverterData(idTabela, coluna) {
+            debugger
+            $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
+                if ($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("YYYY-MM-DD"))
+            });
+        }
+    </script>
+}

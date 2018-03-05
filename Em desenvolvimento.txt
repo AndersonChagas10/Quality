@@ -170,46 +170,69 @@ create table Pa_Colvis(
 	Pa_Quem_Id int not null,
 );
 
------------------------------------------------------------------------ 30-01-2018 - Gabriel
+----------------------------------------------------------------------- 22-01-2018 - Leo Adicionado duas colunas ParLevel3Value
 
+ALTER TABLE ParLevel3Value ADD ParLevel1_Id INT NULL  References ParLevel1(Id) DEFAULT NULL
 
-CREATE TABLE [dbo].[ParLevel3EvaluationSample](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[ParCompany_Id] [int] NULL,
-	[ParLevel1_Id] [int] NULL,
-	[ParLevel2_Id] [int] NULL,
-	[ParLevel3_Id] [int] NOT NULL,
-	[SampleNumber] [decimal](18, 0) NULL,
-	[EvaluationNumber] [decimal](18, 0) NULL,
-	[EvaluationInterval] [varchar](30) NULL,
-	[AddDate] [datetime] NOT NULL,
-	[AlterDate] [datetime] NULL,
-	[IsActive] [bit] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE ParLevel3Value ADD ParLevel2_Id INT NULL  References ParLevel2(Id) DEFAULT NULL
 
+----------------------------------------------------------------------- 24-01-2018 - Leo Criação tabela para permitir configuração de avaliação/amostra por tarefa
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3EvaluationSample' AND xtype='U')
+    CREATE TABLE ParLevel3EvaluationSample (
+		Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+		ParCompany_Id int null
+		FOREIGN KEY REFERENCES ParCompany(Id),
+		ParLevel1_Id int null
+		FOREIGN KEY REFERENCES ParLevel1(Id),
+		ParLevel2_Id int null
+		FOREIGN KEY REFERENCES ParLevel2(Id),
+		ParLevel3_Id int not null
+		FOREIGN KEY REFERENCES ParLevel3(Id),
+		SampleNumber Decimal null,
+		EvaluationNumber Decimal null,
+		EvaluationInterval varchar(30) null,
+		AddDate Datetime not null,
+		AlterDate Datetime null,
+		IsActive bit null,
+	)
 GO
 
-SET ANSI_PADDING OFF
-GO
+ALTER TABLE [dbo].[ParHeaderField]
 
-ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParCompany_Id])
-REFERENCES [dbo].[ParCompany] ([Id])
-GO
+add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
 
-ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParLevel1_Id])
-REFERENCES [dbo].[ParLevel1] ([Id])
-GO
+----------------------------------------------------------------------- 10-02-2018 - Leo Criação coluna 'ValidoApartirDe' para registrar historico parametrização
 
-ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParLevel2_Id])
-REFERENCES [dbo].[ParLevel2] ([Id])
-GO
+IF COL_LENGTH('ParLevel1XCluster','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1XCluster add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParLevel1XCluster set EffectiveDate = 2000-01-01')
+    END
 
-ALTER TABLE [dbo].[ParLevel3EvaluationSample]  WITH CHECK ADD FOREIGN KEY([ParLevel3_Id])
-REFERENCES [dbo].[ParLevel3] ([Id])
-GO
+IF COL_LENGTH('ParGoal','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParGoal add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParGoal set EffectiveDate = 2000-01-01')
+    END
 
+-------------------------------------------------------------------- 19 02 2017 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
 
+IF COL_LENGTH('Deviation','EmailContent_Id') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table Deviation add EmailContent_Id int default (null)
+    Alter table Deviation ADD FOREIGN KEY (EmailContent_Id) REFERENCES EmailContent(Id);
+    EXEC ('update Deviation set EmailContent_Id = null')
+    END
+
+IF COL_LENGTH('CorrectiveAction','EmailContent_Id') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CorrectiveAction add EmailContent_Id int default (null)
+    Alter table CorrectiveAction ADD FOREIGN KEY (EmailContent_Id) REFERENCES EmailContent(Id);
+    EXEC ('update CorrectiveAction set EmailContent_Id = null')
+    END
+ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0

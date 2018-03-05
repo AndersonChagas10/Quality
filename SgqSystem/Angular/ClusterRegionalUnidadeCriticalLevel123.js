@@ -100,11 +100,12 @@
 
 
                     if (!$scope.structureValue) {
+                        var structureValue = $scope.structureValue;
                         $http({
                             method: 'POST',
                             url: GetListUnitVinculado,
                             data: JSON.stringify({
-                                "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": $scope.structureValue
+                                "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": structureValue
                         })
                         }).
                             then(function (r) {
@@ -142,9 +143,9 @@
             }
 
             $scope.GetListUnitVinculadoStructure = function () {
-
+                enviar['structureIdArr'] = []
                 enviar['structureId'] = document.getElementById('structureId').value;
-                enviar['structureIdArr'] = $('#structureId').val();
+                enviar['structureIdArr'] = [$('#structureId').val()];
 
                 if ($scope.clusterValue && !$scope.structureValue) {
                     $http({
@@ -228,6 +229,7 @@
                     $('#statusIndicador').prop("disabled", false);
                 } else {
                     $('#statusIndicador').prop("disabled", true);
+                    $('#statusIndicador').prop("value", 'Todos').trigger('change');
                 }
 
                 //// Desabilita quando não selecionado desdoramento Pai

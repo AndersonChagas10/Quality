@@ -48,41 +48,121 @@
                 <ul class="sub-menu">
                     @*@if (GlobalConfig.Brasil)
                         {*@
+
                     <li class="nav-item">
-                        <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.scorecard</span>
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.planning</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="@Url.Action("VisaoGeralDaArea", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    @*<a href="#" class="nav-link nav-toggle">*@
+                                    <span class="title">@Resources.Resource.general_view_of_the_area</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
                     <li class="nav-item">
-                        <a href="@Url.Action("RelatorioDeResultados","RelatoriosSgq")" class="nav-link nav-toggle"><span>@Resources.Resource.evolutional</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("VisaoGeralDaArea", "RelatoriosSgq")" class="nav-link nav-toggle">
-                            @*<a href="#" class="nav-link nav-toggle">*@
-                            <span class="title">@Resources.Resource.general_view_of_the_area</span>
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.data_collect_execution_and_action_plan</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.daily_apointments</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
                     <li class="nav-item">
-                        <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.daily_report</span>
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.result_evaluation_and_deviation_communication</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.scorecard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("RelatorioDeResultados","RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span>@Resources.Resource.evolutional</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.daily_report</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("NaoCumprimentoMeta", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.recidivism</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.defects_reports</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.statistical_report</span>
+                                    <span class="arrow"></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
+                                            @*<a href="#" class="nav-link">*@
+                                            <span class="title">@Resources.Resource.control_charts</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("NaoCumprimentoMeta", "RelatoriosSgq")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.recidivism</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.defects_reports</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.daily_apointments</span>
-                        </a>
-                    </li>
-                    
+
+                    @*<li class="nav-item">
+                            <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.scorecard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("RelatorioDeResultados","RelatoriosSgq")" class="nav-link nav-toggle"><span>@Resources.Resource.evolutional</span></a>
+                        </li>*@
+                    @*<li class="nav-item">
+                            <a href="@Url.Action("VisaoGeralDaArea", "RelatoriosSgq")" class="nav-link nav-toggle">
+
+                                <span class="title">@Resources.Resource.general_view_of_the_area</span>
+                            </a>
+                        </li>*@
+                    @*<li class="nav-item">
+                            <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.daily_report</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("NaoCumprimentoMeta", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.recidivism</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.defects_reports</span>
+                            </a>
+                        </li>*@
+                    @*<li class="nav-item">
+                            <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.daily_apointments</span>
+                            </a>
+                        </li>*@
+
                     @*}*@
 
                     @if (GlobalConfig.Brasil)
@@ -115,7 +195,7 @@
                             </li>*@
                     }
 
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <span class="title">@Resources.Resource.statistical_report</span>
                             <span class="arrow"></span>
@@ -123,12 +203,12 @@
                         <ul class="sub-menu">
                             <li class="nav-item">
                                 <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
-                                    @*<a href="#" class="nav-link">*@
+                                    
                                     <span class="title">@Resources.Resource.control_charts</span>
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li>*@
                 </ul>
             </li>
 

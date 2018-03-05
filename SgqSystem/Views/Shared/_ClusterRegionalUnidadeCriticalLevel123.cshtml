@@ -10,9 +10,15 @@
             </select>
         </div>
         <div>
-            <span class="redLabel">@Resources.Resource.cluster</span>
+            <span class="redLabel">
+                @Resources.Resource.cluster
+                <a class="selecionarTudo" data-select="clusterId">
+                    <i class="fa fa-square-o"></i>
+                </a>
+            </span>
+
             <select id="clusterId" data-ng-model="clusterValue"
-                    @Html.Raw(ViewBag.ClusterIdArr != null ? "multiple='multiple'":"")
+                    @Html.Raw(ViewBag.ClusterIdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="GetListStructureVinculadoCluster()" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.ClusterIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="c in cluster |orderBy:'Name' track by c.Id" value="{{c.Id}}">{{c.Name}}</option>
@@ -21,9 +27,14 @@
         @if (GlobalConfig.Brasil)
         {
             <div>
-                <span class="redLabel">@Resources.Resource.structure</span>
+                <span class="redLabel">
+                    @Resources.Resource.structure
+                    <a class="selecionarTudo" data-select="structureId">
+                        <i class="fa fa-square-o"></i>
+                    </a>
+                </span>
                 <select id="structureId" data-ng-model="structureValue"
-                        @Html.Raw(ViewBag.StructureIdArr != null ? "multiple='multiple'":"")
+                        @Html.Raw(ViewBag.StructureIdArr != null ? "multiple='multiple'" : "")
                         data-ng-change="GetListUnitVinculadoStructure()" class="form-control" style="width:210px">
                     @Html.Raw(ViewBag.StructureIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                     <option ng-repeat="s in structure |orderBy:'Name' track by s.Id" value="{{s.Id}}">{{s.Name}}</option>
@@ -31,9 +42,14 @@
             </div>
         }
         <div>
-            <span class="redLabel">@Resources.Resource.unit</span>
+            <span class="redLabel">
+                @Resources.Resource.unit
+                <a class="selecionarTudo" data-select="unitIdV">
+                    <i class="fa fa-square-o"></i>
+                </a>
+            </span>
             <select id="unitIdV" data-ng-model="unitValue"
-                    @Html.Raw(ViewBag.UnitIdArr != null ? "multiple='multiple'":"")
+                    @Html.Raw(ViewBag.UnitIdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="AtribuiObject()" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.UnitIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="u in unit |orderBy:'Name' track by u.Id" value="{{u.Id}}">{{u.Name}}</option>
@@ -42,9 +58,14 @@
 
         @*Este campo está sendo utilizado como departamento para a JBS EUA na seguinte data 25/10/2017*@
         <div>
-            <span class="redLabel">@Resources.Resource.criticalLevel</span>
+            <span class="redLabel">
+                @Resources.Resource.criticalLevel
+                <a class="selecionarTudo" data-select="criticalLevelId">
+                    <i class="fa fa-square-o"></i>
+                </a>
+            </span>
             <select id="criticalLevelId" data-ng-model="criticalLevelValue"
-                        @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "multiple='multiple'":"")
+                    @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="GetLevel1ByCriticalLevel()" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="cl in criticalLevel | orderBy:'Name' track by cl.Id" value="{{cl.Id}}">{{cl.Name}}</option>
@@ -52,9 +73,14 @@
         </div>
 
         <div class="levels">
-            <span class="redLabel">@Resources.Resource.level1</span>
+            <span class="redLabel">
+                @Resources.Resource.level1
+                <a class="selecionarTudo" data-select="level1Idv">
+                    <i class="fa fa-square-o"></i>
+                </a>
+            </span>
             <select id="level1Idv" data-ng-model="level1Value"
-                    @Html.Raw(ViewBag.Level1IdArr != null ? "multiple='multiple'":"")
+                    @Html.Raw(ViewBag.Level1IdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.Level1IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="s in level1 | filter:({ShowScorecard: true} || {ShowScorecard: null}) | orderBy:'Name'" value="{{s.Id}}">{{s.Name}}</option>
@@ -62,19 +88,29 @@
         </div>
 
         <div class="levels">
-            <span class="redLabel">@Resources.Resource.level2</span>
+            <span class="redLabel">
+                @Resources.Resource.level2
+                <a class="selecionarTudo" data-select="level2Idv">
+                    <i class="fa fa-square-o"></i>
+                </a>
+            </span>
             <select id="level2Idv" data-ng-model="level2Value"
-                    @Html.Raw(ViewBag.Level2IdArr != null ? "multiple='multiple'":"")
+                    @Html.Raw(ViewBag.Level2IdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.Level2IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="s in level2 | orderBy:'Name'" value="{{s.Id}}">{{s.Name}}</option>
             </select>
         </div>
 
-        <div  class="levels" @*style="display:none"*@>
-            <span class="redLabel">@Resources.Resource.level3</span>
+        <div class="levels" @*style="display:none"*@>
+            <span class="redLabel">
+                @Resources.Resource.level3
+                <a class="selecionarTudo" data-select="level3Idv">
+                    <i class="fa fa-square-o"></i>
+                </a>
+            </span>
             <select id="level3Idv" data-ng-model="level3Value"
-                    @Html.Raw(ViewBag.Level3IdArr != null ? "multiple='multiple'":"")
+                    @Html.Raw(ViewBag.Level3IdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.Level3IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="s in level3 | orderBy:'Name'" value="{{s.Id}}">{{s.Name}}</option>
@@ -85,7 +121,7 @@
 
 <script>
     //var UserId = GetUsuarioId();
-    var UnitList = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));   
+    var UnitList = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));
     var GetListClusterGroup = @Html.Raw(Json.Encode(Url.Action("GetParClusterGroup", "api/SelectVinculadoApi")));
     var GetListCluster = @Html.Raw(Json.Encode(Url.Action("GetParCluster", "api/SelectVinculadoApi")));
     var GetListStructure = @Html.Raw(Json.Encode(Url.Action("GetParStructure", "api/SelectVinculadoApi")));
@@ -98,7 +134,7 @@
     var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2VinculadoLevel1", "api/ParamsApi")));
     var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2", "api/ParamsApi")));
     var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2Level1", "api/ParamsApi")));
-    
+
 
 
     $(document).ready(function () {
@@ -109,6 +145,54 @@
         // Monitoramento e Tarefa inicia desabilitado
         $('#level2Idv').attr('disabled', true);
         $('#level3Idv').attr('disabled', true);
+
+        $('.selecionarTudo').each(function(i,o){
+            if(!($(o).parent().next('select[multiple]').length > 0))
+                $(o).removeClass('selecionarTudo').hide();
+        });
+
+        $('.selecionarTudo').on('click',function(){
+            if($(this).parent().next('select').is(':disabled')){
+                return;
+            }
+            var selectId = $(this).attr("data-select");
+            $(this).find('i').removeClass("fa-check-square-o");
+            $(this).find('i').removeClass("fa-square-o");
+
+            if($(this).hasClass('actived')){
+                $('#'+selectId+' option').each(function(i,o){
+                    $(o).prop('selected', false)
+                });
+                $(this).find('i').addClass("fa-square-o");
+                $(this).removeClass("actived");
+                $('#'+selectId).trigger('change');
+            }else{
+                if($('#'+selectId+' option').length > 0){
+                    $('#'+selectId+' option').each(function(i,o){
+                        $(o).prop('selected', true)
+                    });
+                    $(this).find('i').addClass("fa-check-square-o");
+                    $(this).addClass("actived");
+                    $('#'+selectId).trigger('change');
+
+                    $('#'+selectId).one("change", function() {
+                        $(this).prev().find('a').find('i').removeClass("fa-check-square-o");
+                        $(this).prev().find('a').find('i').addClass("fa-square-o");
+                        $(this).prev().find('a').removeClass("actived");
+                    });
+                }
+            }
+        });
+
+        $("body").on("select2:unselect","select", function (evt) {
+            if (!evt.params.originalEvent) {
+                return;
+            }
+
+            evt.params.originalEvent.stopPropagation();
+
+            $(this).next().focus();
+        });
     });
 
 </script>
