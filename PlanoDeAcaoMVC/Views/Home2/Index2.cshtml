@@ -389,6 +389,18 @@
         
     </style>
 
+    <script>
+        /**/
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
+        /**/
+        /**/
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
+        /**/
+    </script>
+
 }
 
 @*<h2>Plano de Ação</h2>*@
@@ -947,16 +959,6 @@
     $('.container').each(function (i, o) {
         $(o).removeClass('container').addClass('container-fluid');
     });
-
-    /**/
-    var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")'
-    /**/
-    /**/
-    var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")'
-    /**/
-    /**/
-    var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")'
-    /**/
 
     </script>
 
