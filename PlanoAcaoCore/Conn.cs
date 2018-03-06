@@ -100,23 +100,23 @@ namespace PlanoAcaoCore
         //public static string SgqHost { get { return "http://ytoara.no-ip.info:8081/WQS/api/User/AuthenticationLogin"; } }
 
         //////WQS Db
-        public static string catalog { get { return "EmptySGQ"; } }
-        public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
-        public static string user { get { return "sa"; } }
-        public static string pass { get { return "betsy1"; } }
+        //public static string catalog { get { return "EmptySGQ"; } }
+        //public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
+        //public static string user { get { return "sa"; } }
+        //public static string pass { get { return "betsy1"; } }
         //public static string catalog { get { return "PlanoDeAcao"; } }
         //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         //public static string user { get { return "sa"; } }
         //public static string pass { get { return "1qazmko0"; } }
 
         //Remoto SGQ
-        public static string catalog2 { get { return "EmptySGQ"; } }
-        public static string dataSource2 { get { return @"DESKTOP-6M17EOF"; } }
-        public static string user2 { get { return "sa"; } }
-        public static string pass2 { get { return "betsy1"; } }
+        //public static string catalog2 { get { return "EmptySGQ"; } }
+        //public static string dataSource2 { get { return @"DESKTOP-6M17EOF"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "betsy1"; } }
 
-        public static string selfRoot { get { return "http://ytoara.no-ip.info:8081/WQS_PA/"; } }
-        public static string SgqHost { get { return "http://ytoara.no-ip.info:8081/WQS/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://ytoara.no-ip.info:8081/WQS_PA/"; } }
+        //public static string SgqHost { get { return "http://ytoara.no-ip.info:8081/WQS/api/User/AuthenticationLogin"; } }
         //public static string catalog2 { get { return "dbGQualidade"; } }
         //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         //public static string user2 { get { return "sa"; } }
