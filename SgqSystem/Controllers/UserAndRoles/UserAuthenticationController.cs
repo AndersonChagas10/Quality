@@ -5,6 +5,7 @@ using DTO.Helpers;
 using Helper;
 using SgqSystem.ViewModels;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,12 +32,20 @@ namespace SgqSystem.Controllers.Api
         [AllowAnonymous]
         public ActionResult LogIn()
         {
+            #region Redireciona se for a configuração inicial do sistema*/
+            SgqDbDevEntities db = new SgqDbDevEntities();
+            if (!db.UserSgq.Any())
+            {
+                return RedirectToAction("Index", "FirstConfig");
+            }
+            #endregion
+
             HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
             if (currentUserCookie != null)
                 return RedirectToAction("Index", "Home");
 
             ExpireCookie();
-            return View(new UserViewModel() { IsWeb = true});
+            return View(new UserViewModel() { IsWeb = true });
         }
 
         [HttpPost]
@@ -79,7 +88,7 @@ namespace SgqSystem.Controllers.Api
             ExpireCookie();
         }
 
-       
+
 
         [HttpGet]
         public ActionResult KeepAlive(int id)

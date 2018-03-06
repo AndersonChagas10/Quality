@@ -19,7 +19,7 @@ namespace DTO
         public bool mockLoginEUA { get; set; }
 
 
-        /*Emial*/
+        /*Email*/
         public string MailFrom { get; set; }
         public string MailPass { get; set; }
         public bool MailSSL { get; set; }
