@@ -578,6 +578,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
     <None Include="Properties\PublishProfiles\Plano de Acao Local.pubxml" />
+    <None Include="Properties\PublishProfiles\Plano De Ação.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcao.pubxml" />
     <None Include="Properties\PublishProfiles\PlanoDeAcaoServidor.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />

@@ -2844,7 +2844,7 @@
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
 
-                    return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+                    return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays - 1) + " Dias" };
 
                     return valor;
                 } else {
