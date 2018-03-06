@@ -4,78 +4,171 @@
     ViewBag.Title = "Config";
 }
 
-<div style="background-color:white">
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
 
 
-    <h2>@ViewBag.Title</h2>
+        <h1>@ViewBag.Title</h1>
 
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <h4>GlobalConfigDTO</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @*@Html.HiddenFor(model => model.Id)*@
+            <div class="form-horizontal">
+                <hr />
+                <h4>Configuração do Global Config</h4>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.HiddenFor(model => model.Id)*@
 
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ActiveIn, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.ActiveIn, ViewBag.ActiveIn as SelectList, Resources.Resource.select + "...")
-                    @*@Html.EditorFor(model => model.ActiveIn, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.ValidationMessageFor(model => model.ActiveIn, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ActiveIn, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SgqConfig.ActiveIn", ViewBag.ActiveIn as SelectList, Resources.Resource.select + "...", new { @class = "form-control" })
+                        @*@Html.EditorFor(model => model.ActiveIn, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.ActiveIn, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.recoveryPassAvaliable, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.recoveryPassAvaliable)
-                        @Html.ValidationMessageFor(model => model.recoveryPassAvaliable, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.recoveryPassAvaliable, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-sm-1">
+                        @Html.Editor("SgqConfig.recoveryPassAvaliable", new { htmlAttributes = new { @class = "form -control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.urlPreffixAppColleta, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("SgqConfig.urlPreffixAppColleta", new { htmlAttributes = new { @class = "form -control" } })
+                        @Html.ValidationMessageFor(model => model.urlPreffixAppColleta, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.urlAppColleta, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("SgqConfig.urlAppColleta", new { htmlAttributes = new { @class = "form -control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.mockLoginEUA, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-sm-1">
+                        @Html.Editor("SgqConfig.mockLoginEUA", new { htmlAttributes = new { @class = "form -control" } })
                     </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.urlPreffixAppColleta, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.urlPreffixAppColleta, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.urlPreffixAppColleta, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+                <hr />
+                <h4>Configuração da Compania</h4>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("parCompanyDto.Name", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("parCompanyDto.Description", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.initials, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("parCompanyDto.Phone", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.urlAppColleta, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.urlAppColleta, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-horizontal">
+                <hr />
+                <h4>Configuração do Primeiro Usuario</h4>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.HiddenFor(model => model.Id)*@
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.fullname, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("userSgqDto.FullName", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("userSgqDto.Email", new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("userSgqDto.Phone", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div id="passwordContainer">
+                    <div class="form-group">
+                        @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.mockLoginEUA, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.mockLoginEUA, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
+
+            <hr />
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
+                    <input type="submit" value="Configurar" class="btn btn-primary" />
                 </div>
             </div>
-        </div>
-    }
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
+        }
+        <div class="clearfix"></div>
     </div>
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+
+        $(document).ready(function () {
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").remove();
+            closeLeftSidebar();
+        });
+
+        var version = '@Html.Raw(ViewBag.Asembly)';
+
+
+    </script>
+
 }
