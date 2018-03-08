@@ -26,7 +26,6 @@ namespace Dominio
             this.ParCompanyXStructure = new HashSet<ParCompanyXStructure>();
             this.ParCompanyXUserSgq = new HashSet<ParCompanyXUserSgq>();
             this.ParEvaluation = new HashSet<ParEvaluation>();
-            this.ParGoal = new HashSet<ParGoal>();
             this.ParLevel2ControlCompany = new HashSet<ParLevel2ControlCompany>();
             this.ParLevel3Level2 = new HashSet<ParLevel3Level2>();
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
@@ -35,6 +34,7 @@ namespace Dominio
             this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.ParLevel3EvaluationSample = new HashSet<ParLevel3EvaluationSample>();
+            this.ParGoal = new HashSet<ParGoal>();
         }
     
         public int Id { get; set; }
@@ -70,8 +70,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParEvaluation> ParEvaluation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParGoal> ParGoal { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2> ParLevel3Level2 { get; set; }
@@ -87,5 +85,7 @@ namespace Dominio
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3EvaluationSample> ParLevel3EvaluationSample { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParGoal> ParGoal { get; set; }
     }
 }

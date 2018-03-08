@@ -30,7 +30,7 @@ namespace SgqSystem.Controllers.Api
         public VTVerificacaoTipificacaoApiController()
         {
 
-            //dbGlobal = new SGQ_GlobalEntities();
+            //dbGlobal = new SgqDbDevEntities();
             //dbGlobal.Configuration.LazyLoadingEnabled = false;
             //dbGlobal.Configuration.ValidateOnSaveEnabled = false;
 
@@ -1303,7 +1303,7 @@ namespace SgqSystem.Controllers.Api
         //                                                string idCaracteristicaTipificacaoVTR, string idCaracteristicaTipificacaoVTV)
         //{
 
-        //    //using (var db = new SGQ_GlobalEntities())
+        //    //using (var db = new SgqDbDevEntities())
         //    //{
         //    try
         //    {
@@ -1337,7 +1337,7 @@ namespace SgqSystem.Controllers.Api
         //[HttpPost]
         //public void Reconsolidation(DateTime date)
         //{
-        //    //using (var db = new SGQ_GlobalEntities())
+        //    //using (var db = new SgqDbDevEntities())
         //    //{
         //    var seguinte = date;
         //    seguinte = seguinte.AddDays(1);

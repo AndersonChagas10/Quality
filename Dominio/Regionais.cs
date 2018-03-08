@@ -14,7 +14,16 @@ namespace Dominio
     
     public partial class Regionais
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Regionais()
+        {
+            this.Unidades = new HashSet<Unidades>();
+        }
+    
         public int Id { get; set; }
         public string Nome { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Unidades> Unidades { get; set; }
     }
 }
