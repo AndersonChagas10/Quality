@@ -37,7 +37,7 @@ namespace Helper
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (_isLogin)
-                if (!GlobalConfig.VerifyConfig("DbContextSgqEUA"))
+                if (!GlobalConfig.VerifyConfig("DefaultConnection"))
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "FirstConfig", action = "Index" }));
 
             if (!_isLogin)

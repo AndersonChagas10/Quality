@@ -50,7 +50,7 @@
         }
 
         $('#' + config.idTabela).empty()
-        return $('#' + config.idTabela).DataTable({
+        var table = $('#' + config.idTabela).DataTable({
             data: this.listaDeDados,
             "columnDefs": this.definicaoColuna,
             columns: this.colunaDosDados,
@@ -131,5 +131,6 @@
         });
 
         table.draw();
+        return table;
     }
 };

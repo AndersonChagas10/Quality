@@ -180,7 +180,7 @@ namespace DTO.DTO.Params
         {
             IEnumerable<SelectListItem> retorno;
 
-            var context = "SGQ_GlobalADO";
+            var context = "DefaultConnection";
             
             using (var db = new Factory(context))
             {

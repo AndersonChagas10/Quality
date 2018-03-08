@@ -13,7 +13,7 @@ namespace SGQDBContext
 {
     public partial class ParLevel1
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int hashKey { get; set; }
@@ -184,7 +184,7 @@ namespace SGQDBContext
 
     public partial class ParLevel1Alertas
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
         public string Nivel3 { get; set; }
@@ -360,7 +360,7 @@ namespace SGQDBContext
 
     public partial class ParLevel2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -541,7 +541,7 @@ namespace SGQDBContext
 
     public partial class ParLevel2Evaluate
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -695,7 +695,7 @@ namespace SGQDBContext
     }
     public partial class ParLevel2Sample
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -842,7 +842,7 @@ namespace SGQDBContext
     }
     public partial class ParLevel3
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1176,7 +1176,7 @@ namespace SGQDBContext
 
     public partial class Level2Result
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Key { get; set; }
@@ -1254,7 +1254,7 @@ namespace SGQDBContext
 
     public partial class ParLevel1ConsolidationXParFrequency
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int ParLevel1_Id { get; set; }
         public int ParFrequency_Id { get; set; }
@@ -1298,7 +1298,7 @@ namespace SGQDBContext
     }
     public partial class ConsolidationResultL1L2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int AlertLevelL1 { get; set; }
         public decimal WeiEvaluationL1 { get; set; }
@@ -1378,7 +1378,7 @@ namespace SGQDBContext
 
     public partial class ParLevelHeader
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int ParHeaderField_Id { get; set; }
         public string ParHeaderField_Name { get; set; }
@@ -1457,7 +1457,7 @@ namespace SGQDBContext
     }
     public partial class ParFieldType
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1486,7 +1486,7 @@ namespace SGQDBContext
 
         public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
-            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
@@ -1574,7 +1574,7 @@ namespace SGQDBContext
 
         public List<Generico> getProdutos()
         {
-            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
@@ -1617,7 +1617,7 @@ namespace SGQDBContext
 
     public partial class ParRelapse
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int ParFrequency_Id { get; set; }
@@ -1646,7 +1646,7 @@ namespace SGQDBContext
     }
     public partial class Result_Level3
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         private SqlConnection db { get; set; }
@@ -1673,7 +1673,7 @@ namespace SGQDBContext
 
     public partial class ParLevel1VariableProduction
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1700,7 +1700,7 @@ namespace SGQDBContext
 
     public partial class ParConfSGQContext
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public bool HaveUnitLogin { get; set; }
@@ -1747,7 +1747,7 @@ namespace SGQDBContext
 
         public UserSGQ getUserByLoginOrId(string userLogin = null, int id = 0)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1800,7 +1800,7 @@ namespace SGQDBContext
         }
         public IEnumerable<ParCompanyXUserSgq> getCompanyUsers(int ParCompany_Id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1821,7 +1821,7 @@ namespace SGQDBContext
         /// <returns></returns>
         public IEnumerable<ParCompanyXUserSgq> getUserCompany(int UserSgq_Id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1858,7 +1858,7 @@ namespace SGQDBContext
         /// <returns></returns>
         public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id, int ParCompany_id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1879,7 +1879,7 @@ namespace SGQDBContext
     }
     public partial class VolumePcc1b
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int VolumeAnimais { get; set; }
@@ -1906,7 +1906,7 @@ namespace SGQDBContext
     }
     public partial class CaracteristicaTipificacao
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public String nCdCaracteristica { get; set; }
         public String cNmCaracteristica { get; set; }
@@ -1977,7 +1977,7 @@ namespace SGQDBContext
     }
     public partial class VerificacaoTipificacaoTarefaIntegracao
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int TarefaId { get; set; }
@@ -2019,7 +2019,7 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionLevel2Consolidation() { }
@@ -2074,7 +2074,7 @@ namespace SGQDBContext
             db = _db;
         }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public ConsolidationLevel1XConsolidationLevel2 getConsolidation(int ConsolidationLevel1_Id)
         {
@@ -2119,7 +2119,7 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ConsolidationLevel1() { }
         public ConsolidationLevel1(SqlConnection _db)
@@ -2164,7 +2164,7 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public ConsolidationLevel2() { }
@@ -2260,7 +2260,7 @@ namespace SGQDBContext
         public DateTime? AlterDate { get; }
         public string Key { get; set; }
         public string TTP { get; set; }
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionJson() { }
@@ -2291,7 +2291,7 @@ namespace SGQDBContext
         public string Level { get; set; }
         public string indicador { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public ParCounter() { }
@@ -2374,7 +2374,7 @@ namespace SGQDBContext
         public int Id { get; set; }
         public decimal Value { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public NotConformityRule() { }
         public NotConformityRule(SqlConnection _db)
@@ -2445,7 +2445,7 @@ namespace SGQDBContext
         public int DefectsResult { get; set; }
         public bool IsEmptyLevel3 { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionLevel2() { }
@@ -2474,7 +2474,7 @@ namespace SGQDBContext
 
     public partial class UpdateCollectionLevel2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public UpdateCollectionLevel2() { }
         public UpdateCollectionLevel2(SqlConnection _db)
@@ -2562,7 +2562,7 @@ namespace SGQDBContext
         public int CountPeriod { get; set; }
         public int CountShift { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ResultPhase() { }
         public ResultPhase(SqlConnection _db)
@@ -2681,7 +2681,7 @@ namespace SGQDBContext
         public int Period { get; set; }
         public int Shift { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ResultEvaluationDefects() { }
         public ResultEvaluationDefects(SqlConnection _db)
@@ -2716,7 +2716,7 @@ namespace SGQDBContext
          */
     public partial class ResultadoUmaColuna
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public string retorno { get; set; }
 

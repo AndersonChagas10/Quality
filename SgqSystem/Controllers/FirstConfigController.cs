@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers
         public ActionResult Index(FirstConfigDTO cfg)
         {
 
-            using (var db = new ADOFactory.Factory("DbContextSgqEUA"))/*Caso nao configurado, procura config no DB*/
+            using (var db = new ADOFactory.Factory("DefaultConnection"))/*Caso nao configurado, procura config no DB*/
             {
                 var identityId = " \n SELECT CAST(scope_identity() AS int)";
 

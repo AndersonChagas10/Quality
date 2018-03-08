@@ -312,7 +312,7 @@ namespace SgqSystem.Controllers.Api.Params
          */
         public partial class ResultadoUmaColuna
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             public string retorno { get; set; }
 
