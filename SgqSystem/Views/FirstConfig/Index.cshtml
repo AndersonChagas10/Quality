@@ -37,7 +37,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.recoveryPassAvaliable, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-sm-1">
-                        @Html.Editor("SgqConfig.recoveryPassAvaliable", new { htmlAttributes = new { @class = "form -control" } })
+                        @Html.Editor("SgqConfig.recoveryPassAvaliable", new { htmlAttributes = new { @class = "form-control check-box", @type= "checkbox" } })
                     </div>
                 </div>
 
@@ -59,7 +59,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.mockLoginEUA, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-sm-1">
-                        @Html.Editor("SgqConfig.mockLoginEUA", new { htmlAttributes = new { @class = "form -control" } })
+                        @Html.Editor("SgqConfig.mockLoginEUA", new { htmlAttributes = new { @class = "form-control check-box", @type = "checkbox" } })
                     </div>
                 </div>
             </div>
