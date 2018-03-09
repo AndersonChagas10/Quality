@@ -225,11 +225,16 @@
                 }
 
                 //Desabilita tipo de indicador quando há um unico selecionado, caso contrario habilita
+                //Desabilita tipo de indicador quando há um unico selecionado, caso contrario habilita
                 if ($('#level1Idv').val().length != 1) {
                     $('#statusIndicador').prop("disabled", false);
+                    $('#createActionPlane').prop("disabled", false);
                 } else {
                     $('#statusIndicador').prop("disabled", true);
+                    $('#createActionPlane').prop("disabled", true);
+
                     $('#statusIndicador').prop("value", 'Todos').trigger('change');
+                    $('#createActionPlane').prop("value", 'Todos').trigger('change');
                 }
 
                 //// Desabilita quando não selecionado desdoramento Pai
