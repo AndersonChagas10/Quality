@@ -8,6 +8,7 @@ using System.Threading;
 using System.Collections;
 using SgqSystem.Services;
 using DTO;
+using ADOFactory;
 
 namespace SGQDBContext
 {
@@ -1001,17 +1002,14 @@ namespace SGQDBContext
             string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
             string ParLevel1Origin_Id = "";
 
-            using (var db = new Dominio.SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                var list = db.Database.SqlQuery<ResultadoUmaColuna>(possuiIndicadorFilho).ToList();
-
+                var list = factory.SearchQuery<ResultadoUmaColuna>(possuiIndicadorFilho);
                 for (var i = 0; i < list.Count(); i++)
                 {
                     ParLevel1Origin_Id += list[i].retorno.ToString() + ", ";
                 }
             }
-
-
 
             ParLevel1Origin_Id += "null";
 
@@ -1024,9 +1022,9 @@ namespace SGQDBContext
             {
                 string IndicadorFilhoPeso = "SELECT cast(PointsDestiny as varchar(3)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
 
-                using (var db = new Dominio.SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    var list = db.Database.SqlQuery<ResultadoUmaColuna>(IndicadorFilhoPeso).ToList();
+                    var list = factory.SearchQuery<ResultadoUmaColuna>(IndicadorFilhoPeso).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {

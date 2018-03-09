@@ -1,8 +1,10 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
 
@@ -43,7 +45,7 @@ namespace SgqSystem.Controllers.Api
             var TransformedDate = CommonDate.TransformDateFormatToAnother(
                                                     Date, "MMddyyyy", "yyyy-MM-dd");
 
-            var SelectQuery =
+            var sql =
                 "SELECT                                                                        " +
                 "C.ParLevel1_Id AS ParLevel1_Id,                                               " +
                 "C.ParLevel2_Id AS ParLevel2_Id,                                               " +
@@ -61,11 +63,14 @@ namespace SgqSystem.Controllers.Api
                 "C.CollectionDate BETWEEN '" + TransformedDate + " 00:00' AND                  " +
                 "'" + TransformedDate + " 23:59'";
 
-            using (var context = new SgqDbDevEntities())
+            List<CollectionHeaderField> Lista1 = new List<CollectionHeaderField>();
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                return context.Database.SqlQuery<CollectionHeaderField>(SelectQuery).ToList();
+                Lista1 = factory.SearchQuery<CollectionHeaderField>(sql);
             }
 
+
+            return Lista1;
         }
 
         [HttpGet]
@@ -82,7 +87,7 @@ namespace SgqSystem.Controllers.Api
                 P.Name 
                 FROM ParMultipleValuesXParCompany PP 
                 LEFT JOIN ParMultipleValues P on P.Id = PP.ParMultipleValues_Id
-                WHERE PP.IsActive = 1 and ParCompany_Id = " +  UnitId ;
+                WHERE PP.IsActive = 1 and ParCompany_Id = " + UnitId;
 
             using (var context = new SgqDbDevEntities())
             {

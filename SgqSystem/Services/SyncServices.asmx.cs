@@ -317,11 +317,10 @@ namespace SgqSystem.Services
 
                         List<ResultadoUmaColuna> list;
 
-                        using (var db = new Dominio.SgqDbDevEntities())
+                        using (Factory factory = new Factory("DefaultConnection"))
                         {
-                            list = db.Database.SqlQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                            list = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
                         }
-
 
                         string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
                         string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
@@ -380,10 +379,10 @@ namespace SgqSystem.Services
                                                  "\n  and p1.isActive = 1 " +
                                                  "\n  and p321.Active = 1 " +
                                                  "\n  and p32.IsActive = 1";
-                            using (var db = new Dominio.SgqDbDevEntities())
-                            {
 
-                                level01Id = db.Database.SqlQuery<ResultadoUmaColuna>(p1Undefined).FirstOrDefault().retorno;
+                            using (Factory factory = new Factory("DefaultConnection"))
+                            {
+                                level01Id = factory.SearchQuery<ResultadoUmaColuna>(p1Undefined).FirstOrDefault().retorno;
                             }
                         }
 
@@ -605,7 +604,7 @@ namespace SgqSystem.Services
                             var indicadorFilho_id = "";
                             var monitoramentoFilho_id = "";
 
-                            using (var db = new Dominio.SgqDbDevEntities())
+                            using (Factory factory = new Factory("DefaultConnection"))
                             {
 
                                 //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
@@ -619,9 +618,7 @@ namespace SgqSystem.Services
                                                       "\n  and p321.Active = 1 " +
                                                       "\n  and p32.IsActive = 1";
 
-                                list2 = db.Database.SqlQuery<ResultadoUmaColuna>(indicadorFilho).ToList();
-
-
+                                list2 = factory.SearchQuery<ResultadoUmaColuna>(indicadorFilho).ToList();
 
                                 for (var l = 0; l < list2.Count(); l++)
                                 {
@@ -635,7 +632,7 @@ namespace SgqSystem.Services
                                                             "\n on p321.parlevel3level2_id = p32.id " +
                                                             "\n where p321.parlevel1_id = " + indicadorFilho_id;
 
-                                list2 = db.Database.SqlQuery<ResultadoUmaColuna>(monitoramentoFilho).ToList();
+                                list2 = factory.SearchQuery<ResultadoUmaColuna>(monitoramentoFilho).ToList();
 
                                 for (var l = 0; l < list2.Count(); l++)
                                 {
@@ -930,12 +927,12 @@ namespace SgqSystem.Services
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey);
-                    
+
                     if (arrayHeader.Length > 30)
                     {
                         string reprocesso = DefaultValueReturn(arrayHeader[30], null);
 
-                        if(reprocesso != null)
+                        if (reprocesso != null)
                             InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
                     }
 
@@ -2155,7 +2152,7 @@ namespace SgqSystem.Services
 
                 if (id == "0")
                 {
-                    var parLevel3_Name = parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)) != null ? 
+                    var parLevel3_Name = parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)) != null ?
                         parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") : "";
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
@@ -2725,11 +2722,12 @@ namespace SgqSystem.Services
 
             string retorno = "";
 
-            using (var db = new Dominio.SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
+
                 string sql = "EXEC grtSP_getConsolidation '" + dataIni + "', " + ParCompany_Id;
 
-                var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+                var list = factory.SearchQuery<ResultadoUmaColuna>(sql).ToList();
 
                 for (var i = 0; i < list.Count(); i++)
                 {
@@ -3479,7 +3477,7 @@ namespace SgqSystem.Services
                                         "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("yes").Value.ToString() + " </button></div>                 " +
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("no").Value.ToString() + " </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
-            
+
             string debug = "<div id = 'ControlaDivDebugAlertas' onclick='showHideDivDebugAlerta();'></div> " +
 
                            "<div id = 'divDebugAlertas' > " +
@@ -3538,7 +3536,7 @@ namespace SgqSystem.Services
             SGQDBContext.ParLevel3Vinculado listaProdutos = new ParLevel3Vinculado(db);
             var listaParLevel3VinculadoJSON = listaProdutos.getParLevel3Vinculado(ParCompany_Id);
 
-            var listaParLevel3Vinculado = 
+            var listaParLevel3Vinculado =
                 "<script> var listaParLevel3Vinculado = " + System.Web.Helpers.Json.Encode(listaParLevel3VinculadoJSON) + ";</script>";
 
             string local = "";
@@ -3573,7 +3571,7 @@ namespace SgqSystem.Services
                            modalPCC1B +
                            message +
                            messageConfirm +
-                           debug+
+                           debug +
                            listaParLevel3Vinculado;
         }
 
@@ -4544,7 +4542,7 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
-            
+
 
 
 
@@ -4606,7 +4604,7 @@ namespace SgqSystem.Services
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() +"\">" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsMultiple + "</select>";
 
 
                         break;
@@ -5409,7 +5407,7 @@ namespace SgqSystem.Services
                 var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter.Name == "defects" && r.IsActive);
                 if (level2 != null)
                 {
-                    var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id, ParCompany_Id);
+                    var teste = new ContadoresXX().GetContadoresXX(dbEf,ParLevel1.Id, ParCompany_Id);
 
                     //MOCK
                     var listaShift = new List<int>();
@@ -6768,9 +6766,11 @@ namespace SgqSystem.Services
                 "\n                                                                                                                                                     " +
                 "\n DROP TABLE #TBL_RESPOSTA DROP TABLE #COLETASLEVEL3 ";
 
-
-
-            List<ResultadoUmaColuna> Lista1 = dbEf.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+            List<ResultadoUmaColuna> Lista1 = new List<ResultadoUmaColuna>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                Lista1 = factory.SearchQuery<ResultadoUmaColuna>(sql);
+            }
 
             foreach (var i in Lista1)
             {
@@ -7135,7 +7135,7 @@ namespace SgqSystem.Services
 
         }
 
-        public void InsertCollectionLevel2XCollectionJson(List<KeyValuePair<int,int>> list)
+        public void InsertCollectionLevel2XCollectionJson(List<KeyValuePair<int, int>> list)
         {
             string sql = $@"INSERT INTO CollectionLevel2XCollectionJson
                         (CollectionLevel2_Id,CollectionJson_Id)
@@ -7144,7 +7144,7 @@ namespace SgqSystem.Services
             StringBuilder query = new StringBuilder();
             for (int i = 0; i < list.Count; i++)
             {
-                if(i % 1000 == 0)
+                if (i % 1000 == 0)
                 {
                     if (query.Length > 0)
                         query.Append(" GO ");
