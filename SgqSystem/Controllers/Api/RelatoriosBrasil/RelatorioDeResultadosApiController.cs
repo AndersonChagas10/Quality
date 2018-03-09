@@ -1365,7 +1365,7 @@ ORDER BY 10 DESC ";
 
 
         }
-
+         
         [HttpPost]
         [Route("GetGraficoHistoricoModal")]
         public List<RetornoGenerico> GetGraficoHistoricoModal([FromBody] FormularioParaRelatorioViewModel form)
