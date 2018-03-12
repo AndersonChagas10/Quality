@@ -157,9 +157,14 @@ namespace ADOFactory
                             try
                             {
                                 if (!reader.IsDBNull(i))
-                                    if (instance.GetType().GetProperty(reader.GetName(i)) != null)
-                                        instance.GetType().GetProperty(reader.GetName(i))
-                                            .SetValue(instance, Convert.ChangeType(reader[i], instance.GetType().GetProperty(reader.GetName(i)).PropertyType));
+                                {
+                                    var info = instance.GetType().GetProperty(reader.GetName(i));
+                                    if (info != null)
+                                    {
+                                        Type type = Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType;
+                                        info.SetValue(instance, Convert.ChangeType(reader[i], type));
+                                    }
+                                }
                             }
                             catch (Exception e)
                             {
