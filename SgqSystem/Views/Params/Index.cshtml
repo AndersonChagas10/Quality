@@ -483,6 +483,8 @@
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
 
+                dados["paramsDto.parLevel1Dto.removerParHeaderField"] = []
+
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
