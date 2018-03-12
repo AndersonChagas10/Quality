@@ -447,15 +447,13 @@ namespace SgqSystem.Controllers.Api
             try
             {
 
-                using (var db = new Dominio.SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
                     var sql = "select distinct '<div class=\"Key\" date=\"" + Date + "\" unidadeid=\"" + UnidadeId + "\" key=\"'+ [Key] +'\"></div>' as retorno from VerificacaoTipificacaoV2 (nolock)  " +
                           " where FORMAT(CollectionDate, 'MMddyyyy') = '" + Date + "' and        " +
                           " ParCompany_Id = " + UnidadeId + ";                              ";
 
-                    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-                    var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+                    var list = factory.SearchQuery<ResultadoUmaColuna>(sql).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {

@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO;
 using DTO.Helpers;
 using DTO.ResultSet;
@@ -66,7 +67,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return _mock;
         }
 
-        public static string sqlBase(DataCarrierFormulario form, bool evolutivo =false)
+        public static string sqlBase(DataCarrierFormulario form, bool evolutivo = false)
         {
             DateTime dtIni = form._dataInicio;
             if (evolutivo)
@@ -1754,19 +1755,19 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 " +
 
 
-////query 2 retorna o valor da regional       
-//"\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
-//"\n   Reg.Name regName,                                                                                                                                                                                                                                                                                                                " +
-//"\n   Reg.Id regId,                                                                                                                                                                                                                                                                                                                      " +
-//"\n @valorEmpresa as scorecardJbs, " +
-////"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbs,                                                                                                                                                                               " +
-//"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbsReg                                                                                                                                                                             " +
-//"\n   FROM ParStructure Reg                                                                                                                                                                                                                                                                                                                " +
-//"\n   left join #SCORE S                                                                                                                                                                                                                                                                                                                   " +
-//"\n   on S.Regional = Reg.Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id                                                                                                                                                                                                                                                                                                               " +
-//"\n   where                                                                                                                                                                                                                                                                                                            " +
-//"\n   Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 AND PC.IsActive = 1                                                                                                                                                                                                                                                                                                                  " +
-//"\n   GROUP BY Reg.Name, Reg.id ORDER BY 4 DESC   ";
+            ////query 2 retorna o valor da regional       
+            //"\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
+            //"\n   Reg.Name regName,                                                                                                                                                                                                                                                                                                                " +
+            //"\n   Reg.Id regId,                                                                                                                                                                                                                                                                                                                      " +
+            //"\n @valorEmpresa as scorecardJbs, " +
+            ////"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbs,                                                                                                                                                                               " +
+            //"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbsReg                                                                                                                                                                             " +
+            //"\n   FROM ParStructure Reg                                                                                                                                                                                                                                                                                                                " +
+            //"\n   left join #SCORE S                                                                                                                                                                                                                                                                                                                   " +
+            //"\n   on S.Regional = Reg.Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id                                                                                                                                                                                                                                                                                                               " +
+            //"\n   where                                                                                                                                                                                                                                                                                                            " +
+            //"\n   Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 AND PC.IsActive = 1                                                                                                                                                                                                                                                                                                                  " +
+            //"\n   GROUP BY Reg.Name, Reg.id ORDER BY 4 DESC   ";
 
             $@" SELECT Reg.Name as regName, Reg.id as regId,
  @valorEmpresa as scorecardJbs,
@@ -1796,10 +1797,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
 
-
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<VisaoGeralDaAreaResultSet>(query).ToList();
+                _list = factory.SearchQuery<VisaoGeralDaAreaResultSet>(query).ToList();
             }
 
             //return _list;
@@ -1944,14 +1944,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n  where Reg.Id = '" + form.Query.ToString() + "' AND pC.IsActive = 1 " +
      whereClusterGroup +
      whereCluster +
-     whereStructure  +
+     whereStructure +
      whereCriticalLevel +
-     // whereUnit +
+// whereUnit +
 "\n  GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials ORDER BY 2 DESC ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<VisaoGeralDaAreaResultSet>(query).ToList();
+                _list = factory.SearchQuery<VisaoGeralDaAreaResultSet>(query).ToList();
             }
 
         }
@@ -2278,9 +2278,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  " \n ORDER BY 10" +
                  " \n DROP TABLE #AMOSTRATIPO4a  ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<VisaoGeralDaAreaResultSet>(query).ToList();
+                _list = factory.SearchQuery<VisaoGeralDaAreaResultSet>(query).ToList();
             }
 
 
@@ -2401,25 +2401,25 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         private void CriaMockGraficoEvolutivoEmpresa(DataCarrierFormulario form)
         {
             _list = new List<VisaoGeralDaAreaResultSet>();
-           
-            string query = VisaoGeralDaAreaApiController.sqlBase(form,true) +
-                
+
+            string query = VisaoGeralDaAreaApiController.sqlBase(form, true) +
+
 //query 2 retorna o valor da regional       
 "\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
 "\n   case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as real,                                                                                                                                                                               " +
-"\n   100 as orcado,"+
+"\n   100 as orcado," +
 "\n   100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end ) as desvio," +
 "\n   (100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end )) / 100 as desviopercentual," +
 "\n   cast(month(cast(s.mesData as date)) as varchar) as mes" +
 "\n   FROM ParStructure Reg left join ParCompanyXStructure pcs on reg.Id = pcs.ParStructure_Id" +
-"\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id"+
+"\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id" +
 "\n   group by month(cast(s.mesData as date))";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _listEvol = db.Database.SqlQuery<ResultQueryEvolutivo>(query).ToList();
+                _listEvol = factory.SearchQuery<ResultQueryEvolutivo>(query).ToList();
             }
-            
+
         }
         [HttpPost]
         [Route("GraficoEvolutivoRegional")]
@@ -2433,10 +2433,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         {
             // Busca as regionais
             List<ParStructure> list = null;
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
                 string consulta = "select * from parstructure where parstructuregroup_id =2";
-                list = db.Database.SqlQuery<ParStructure>(consulta).ToList();
+
+                list = factory.SearchQuery<ParStructure>(consulta).ToList();
             }
             //Busca os dados por regional 
             listaRegs = new List<ListResultQueryEvolutivo>();
@@ -2457,13 +2458,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         "\n   group by reg.name, reg.id, month(cast(s.mesData as date))" +
         "\n   order by reg.id, mes ";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
                     ListResultQueryEvolutivo it = new ListResultQueryEvolutivo();
-                    it.lista = db.Database.SqlQuery<ResultQueryEvolutivo>(query).ToList();
+                    it.lista = factory.SearchQuery<ResultQueryEvolutivo>(query).ToList();
                     listaRegs.Add(it);
                 }
-                
+
             }
         }
         [HttpPost]
@@ -2478,10 +2479,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         {
             // Busca as unidades na regional
             List<ParCompanyXStructure> list = null;
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                string consulta = "select * from ParCompanyXStructure where ParStructure_Id ="+form.Query;
-                list = db.Database.SqlQuery<ParCompanyXStructure>(consulta).ToList();
+                string consulta = "select * from ParCompanyXStructure where ParStructure_Id =" + form.Query;
+                list = factory.SearchQuery<ParCompanyXStructure>(consulta).ToList();
             }
             //Busca os dados por unidade 
             listaUnidades = new List<ListResultQueryEvolutivo>();
@@ -2502,10 +2503,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         "\n   group by s.ParCompanyName,s.parCompany_id,month(cast(s.mesData as date))" +
         "\n   order by mes ";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
                     ListResultQueryEvolutivo it = new ListResultQueryEvolutivo();
-                    it.lista = db.Database.SqlQuery<ResultQueryEvolutivo>(query).ToList();
+                    it.lista = factory.SearchQuery<ResultQueryEvolutivo>(query).ToList();
                     if (it.lista.Count > 0)
                         listaUnidades.Add(it);
                 }
@@ -2524,11 +2525,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public decimal DESVIOPERCENTUAL { get; set; }
         public decimal REAL { get; set; }
         public string mes { get; set; } = null;
-        
+
     }
     public class ListResultQueryEvolutivo
     {
         public List<ResultQueryEvolutivo> lista { get; set; }
-        
+
     }
 }

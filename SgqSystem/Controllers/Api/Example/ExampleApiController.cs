@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
@@ -124,10 +125,10 @@ namespace SgqSystem.Controllers.Api.Example
             newAlbum.NewProperty = "something new";
             newAlbum.Songs = new JArray();
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
                 dynamic teste = new JObject();
-                teste = db.Database.SqlQuery<JObject>("Select * from SgqConfig").FirstOrDefault();
+                teste = factory.SearchQuery<JObject>("Select * from SgqConfig").FirstOrDefault();
             }
             //foreach (dynamic song in album.Songs)
             //{

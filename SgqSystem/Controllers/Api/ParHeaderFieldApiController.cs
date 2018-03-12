@@ -89,9 +89,9 @@ namespace SgqSystem.Controllers.Api
                 LEFT JOIN ParMultipleValues P on P.Id = PP.ParMultipleValues_Id
                 WHERE PP.IsActive = 1 and ParCompany_Id = " + UnitId;
 
-            using (var context = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                return context.Database.SqlQuery<ParMultipleValuesXParCompany>(SelectQuery).ToList();
+                return factory.SearchQuery<ParMultipleValuesXParCompany>(SelectQuery).ToList();
             }
 
         }

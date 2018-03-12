@@ -243,9 +243,6 @@ namespace SgqSystem.Controllers.Api
         {
 
             Factory factory = new Factory("DefaultConnection");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
-
-            sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
             var query = @"select max(p3u.name) unidade from parlevel3 p3
                             left join parlevel3value p3v
@@ -256,7 +253,7 @@ namespace SgqSystem.Controllers.Api
 
             string valor = "";
 
-            valor = sgqDbDevEntities.Database.SqlQuery<string>(query).FirstOrDefault();
+            valor = factory.SearchQuery<string>(query).FirstOrDefault();
 
             return valor;
         }

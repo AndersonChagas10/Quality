@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -569,10 +570,10 @@ DROP TABLE #AMOSTRATIPO4 ";
 */
 
             #endregion
-
-            using (var db = new SgqDbDevEntities())
+            
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
         }
 
@@ -927,9 +928,9 @@ ORDER BY 10 DESC ";
 
             #endregion
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
         }
@@ -1310,9 +1311,9 @@ FROM (SELECT
  */
             #endregion
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
         }
@@ -1472,9 +1473,9 @@ FROM (SELECT
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
         }
 
@@ -1615,9 +1616,9 @@ FROM (SELECT
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
         }
@@ -1763,9 +1764,9 @@ FROM (SELECT
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
 
@@ -1792,10 +1793,9 @@ FROM (SELECT
                 query = getQueryHistorioIndicador(form, true,1); // 0: Listagem / 1: Evolutivo 
             }
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno2 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
@@ -2642,12 +2642,16 @@ FROM (SELECT
                     "\n group by mesData ORDER BY 10";
 
             #endregion
-            var db = new SgqDbDevEntities();
+
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query4;
 
-            var result = db.Database.SqlQuery<RetornoGenerico>(grandeQuery).ToList();
+            var result = new List<RetornoGenerico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
+            }
 
             //var result1 = result.Where(r => r.QUERY == 1).ToList();
             //var result2 = result.Where(r => r.QUERY == 2).ToList();
@@ -3530,12 +3534,16 @@ FROM (SELECT
                     "\n  ORDER BY 10";
 
             #endregion
-            var db = new SgqDbDevEntities();
+
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query4;
 
-            var result = db.Database.SqlQuery<RetornoGenerico>(grandeQuery).ToList();
+            var result = new List<RetornoGenerico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
+            }
 
             //var result1 = result.Where(r => r.QUERY == 1).ToList();
             //var result2 = result.Where(r => r.QUERY == 2).ToList();
@@ -4352,12 +4360,16 @@ FROM (SELECT
                     "\n group by mesData ORDER BY 10";
 
             #endregion
-            var db = new SgqDbDevEntities();
+
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query4;
 
-            var result = db.Database.SqlQuery<RetornoGenerico>(grandeQuery).ToList();
+            var result = new List<RetornoGenerico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
+            }
 
             //var result1 = result.Where(r => r.QUERY == 1).ToList();
             //var result2 = result.Where(r => r.QUERY == 2).ToList();
@@ -4381,10 +4393,9 @@ FROM (SELECT
 
             query = getQueryHistorioGeral(form,true,5);
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno2 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
@@ -4400,10 +4411,9 @@ FROM (SELECT
 
             query = getQueryHistorioGeral(form,true,4);
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno2 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
@@ -5011,9 +5021,9 @@ ORDER BY 3
                 query = getQueryHistorioIndicador(form,false,1);
             }
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno3 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno3 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //if(retornaSomenteAv == true)
@@ -5044,11 +5054,10 @@ ORDER BY 3
             {
                 query = getQueryHistorioIndicador(form, false, 1);
             }
-
-
-            using (var db = new SgqDbDevEntities())
+            
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno4 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno4 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             return retorno4;
@@ -5233,9 +5242,9 @@ ORDER BY 3
                 DROP TABLE #ListaDatas_";
 
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<AcoesConcluidas>(query).ToList();
+                    retorno = factory.SearchQuery<AcoesConcluidas>(query).ToList();
                 }
 
                 return retorno;
@@ -5332,9 +5341,9 @@ ORDER BY 3
                             LEFT JOIN Pa_Status S
                             	ON S.Id = PA.Status";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<Pa_Acao>(query).ToList();
+                    retorno = factory.SearchQuery<Pa_Acao>(query).ToList();
                 }
 
                 return retorno;

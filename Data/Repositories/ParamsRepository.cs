@@ -340,7 +340,7 @@ namespace Data.Repositories
         public void AddUpdateParLevel2(ParLevel2 paramLevel2)
         {
             //Mock
-            if (paramLevel2.ParDepartment_Id == null)
+            if (paramLevel2.ParDepartment_Id <= 0)
             {
                 paramLevel2.ParDepartment_Id = 1;
             }

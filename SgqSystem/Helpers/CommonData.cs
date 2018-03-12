@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO;
 using DTO.Helpers;
 using System;
@@ -23,7 +24,12 @@ namespace SgqSystem.Helpers
                 var id = Guard.GetUsuarioLogado_Id(filterContext);
                 var user = db.UserSgq.FirstOrDefault(r => r.Id == id);
                 var level1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == hashKey);
-                var existeAlgum = db.Database.SqlQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is not null and ParLevel1_Id = " + level1.Id).ToList();
+
+                var existeAlgum = new List<ParLevel2ControlCompany>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is not null and ParLevel1_Id = " + level1.Id).ToList();
+                }
 
                 if (existeAlgum != null && existeAlgum.Count() > 0)
                 {
@@ -45,7 +51,12 @@ namespace SgqSystem.Helpers
                 var id = Guard.GetUsuarioLogado_Id(filterContext);
                 var user = db.UserSgq.FirstOrDefault(r => r.Id == id);
                 var level1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == hashKey);
-                var existeAlgum = db.Database.SqlQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and ParLevel1_Id = " + level1.Id).ToList();
+                
+                var existeAlgum = new List<ParLevel2ControlCompany>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and ParLevel1_Id = " + level1.Id).ToList();
+                }
 
                 if (existeAlgum != null && existeAlgum.Count() > 0)
                 {

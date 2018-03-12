@@ -3867,7 +3867,7 @@ namespace SgqSystem.Services
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
 
-                        decimal tipoAlerta = parlevel1.tipoAlerta;
+                        int tipoAlerta = parlevel1.tipoAlerta;
                         decimal valorAlerta = parlevel1.valorAlerta;
 
                         decimal alertaNivel1 = 0;

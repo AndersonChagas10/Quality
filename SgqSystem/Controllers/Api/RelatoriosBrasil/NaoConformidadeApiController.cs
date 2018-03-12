@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
@@ -269,9 +270,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 ORDER BY 3 DESC
                 DROP TABLE #AMOSTRATIPO4";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -541,9 +542,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ORDER BY 3 DESC
             DROP TABLE #AMOSTRATIPO4 ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -815,11 +816,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ORDER BY 5 DESC
             DROP TABLE #AMOSTRATIPO4 ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
-
             return _list;
 
         }
@@ -1047,9 +1047,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n  DROP TABLE #AMOSTRATIPO4 ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1317,9 +1317,9 @@ ORDER BY 5 DESC
 DROP TABLE #AMOSTRATIPO4 ";
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1581,9 +1581,10 @@ ORDER BY 5 DESC
 DROP TABLE #AMOSTRATIPO4 ";
 
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1740,9 +1741,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             "\n   HAVING sum(NC) <> 0 " +
             "\n  ORDER BY 4 DESC ";
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1862,9 +1864,10 @@ DROP TABLE #AMOSTRATIPO4 ";
                          "\n HAVING SUM(R3.WeiDefects) > 0" +
                          "\n ) TAB ORDER BY 4 DESC";
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1918,9 +1921,10 @@ DROP TABLE #AMOSTRATIPO4 ";
                         "\n HAVING (SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100) <> 0" +
                         "\n ORDER BY 4 DESC";
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
