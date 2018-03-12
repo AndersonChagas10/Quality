@@ -1730,8 +1730,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //query 1 retorna o valor da empresa    
             //"\n  																																																																						                                               " +
             "\n declare @valorEmpresa decimal(5,2) " +
-"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
-"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 " +
+//"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
+//"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 " +
 
 @"
      SELECT

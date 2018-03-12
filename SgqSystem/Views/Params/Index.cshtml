@@ -483,6 +483,8 @@
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
 
+                dados["paramsDto.parLevel1Dto.removerParHeaderField"] = []
+
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
@@ -1522,7 +1524,7 @@
 {
     <script>
         function ConverterData(idTabela, coluna) {
-            debugger
+            //debugger
             $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
                 if ($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
                     $(o).html(moment(new Date($(o).html())).add(1, 'days').format("DD/MM/YYYY"))
@@ -1536,7 +1538,7 @@
 {
     <script>
         function ConverterData(idTabela, coluna) {
-            debugger
+            //debugger
             $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
                 if ($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
                     $(o).html(moment(new Date($(o).html())).add(1, 'days').format("YYYY-MM-DD"))

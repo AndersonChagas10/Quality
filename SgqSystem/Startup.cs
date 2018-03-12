@@ -35,15 +35,16 @@ namespace SgqSystem
             }
             else if (GlobalConfig.Brasil)
             {
-                RecurringJob.RemoveIfExists("ReProcessJson");
-                RecurringJob.AddOrUpdate("ReProcessJson",
-                    () => SimpleAsynchronous.Reconsolidacao(),
-                    "*/15 * * * *");
 
-                RecurringJob.RemoveIfExists("MailServer");
-                RecurringJob.AddOrUpdate("MailServer",
-                    () => SimpleAsynchronous.Mail(),
-                    "*/10 * * * *");
+                //RecurringJob.RemoveIfExists("ReProcessJson");
+                //RecurringJob.AddOrUpdate("ReProcessJson",
+                //    () => SimpleAsynchronous.Reconsolidacao(),
+                //    "*/15 * * * *");
+
+                //RecurringJob.RemoveIfExists("MailServer");
+                //RecurringJob.AddOrUpdate("MailServer",
+                //    () => SimpleAsynchronous.Mail(),
+                //    "*/10 * * * *");
             }
 
             //BackgroundJob.Enqueue(

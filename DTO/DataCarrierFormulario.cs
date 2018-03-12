@@ -90,6 +90,7 @@ namespace DTO
         public int period { get; set; }
 
         public int statusIndicador { get; set; }
+        public int createActionPlane { get; set; }
         public int criticalLevelId { get; set; }
         public int[] criticalLevelIdArr { get; set; } = new int[] { };
 
