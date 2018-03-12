@@ -181,6 +181,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             SQLcentro = getQuery(form, nivel);
 
             #region Status do Indicador: Fora ou Dentro da Meta
+
             if (form.statusIndicador == 1) // Indicadores Fora Da Meta
             {
                 SQLcentro += @"";
@@ -198,9 +199,28 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 SQLcentro += @"";
             }
-
             #endregion
 
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1) 
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
+            #endregion
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -264,311 +284,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
-
-            #region comentado
-            /*
-
-            var whereUnidade = "";
-            var whereUnidade2 = "";
-            var whereCluster = "";
-            var whereStructure = "";
-            var whereCriticalLevel = "";
-            var userUnits = "";
-            var whereStatus = "";
-            var whereLevel1 = "";
-
-            if (form.unitIdArr.Length != 0)
-            {
-                whereUnidade = "WHERE ID IN (" + string.Join(",", form.unitIdArr) + ")";
-                whereUnidade2 = "AND UNI.Id IN (" + string.Join(",", form.unitIdArr) + ")";
-            }
-            else
-            {
-                userUnits = GetUserUnits(form.auditorId);
-                whereUnidade = "WHERE ID IN (" + userUnits + ")";
-                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
-            }
-
-            if (form.statusIndicador == 1)
-            {
-                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 0";
-            }
-            else if (form.statusIndicador == 2)
-            {
-                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
-            }
-
-            if (form.clusterIdArr.Length > 0)
-            {
-                whereCluster = "AND PCC.ParCluster_Id  IN (" + string.Join(",", form.clusterIdArr) + ")";
-            }
-            else
-            if (form.clusterSelected_Id != 0)
-            {
-                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
-            }
-
-            if (form.structureIdArr.Length > 0)
-            {
-                whereStructure = "AND CXS.ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")";
-            }
-            else
-            if (form.structureId != 0)
-            {
-                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
-            }
-
-            if (form.criticalLevelIdArr.Length > 0)
-            {
-                whereCriticalLevel = "AND L1XC.ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ")";
-            }
-            else
-            if (form.criticalLevelId != 0)
-            {
-                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
-            }
-            if (form.level1IdArr.Length != 0)
-            {
-                whereLevel1 = " AND IND.ID IN (" + string.Join(",", form.level1IdArr) + ")";
-            }
-
-
-
-            var query = @"
- DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
-
-
- DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + @"'
-                                                                                                                                                                                                                    
- DECLARE @VOLUMEPCC int
-                                                  
- DECLARE @ParCompany_id INT
-SELECT
-	@ParCompany_id = ID
-FROM PARCOMPANY
-" + whereUnidade + @"
- CREATE TABLE #AMOSTRATIPO4 ( 
- UNIDADE INT NULL, 
- INDICADOR INT NULL, 
- AM INT NULL, 
- DEF_AM INT NULL 
- )
-INSERT INTO #AMOSTRATIPO4
-	SELECT
-		UNIDADE
-	   ,INDICADOR
-	   ,COUNT(1) AM
-	   ,SUM(DEF_AM) DEF_AM
-	FROM (SELECT
-			CAST(C2.CollectionDate AS DATE) AS DATA
-		   ,C.Id AS UNIDADE
-		   ,C2.ParLevel1_Id AS INDICADOR
-		   ,C2.EvaluationNumber AS AV
-		   ,C2.Sample AS AM
-		   ,CASE
-				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-				ELSE 1
-			END DEF_AM
-		FROM CollectionLevel2 C2 (NOLOCK)
-		INNER JOIN ParLevel1 L1 (NOLOCK)
-			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
-            AND L1.Id <> 43
-		INNER JOIN ParCompany C (NOLOCK)
-			ON C.Id = C2.UnitId
-		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
-		AND C2.NotEvaluatedIs = 0
-		AND C2.Duplicated = 0
-		AND L1.ParConsolidationType_Id = 4
-		GROUP BY C.Id
-				,ParLevel1_Id
-				,EvaluationNumber
-				,Sample
-				,CAST(CollectionDate AS DATE)) TAB
-	GROUP BY UNIDADE
-			,INDICADOR
---------------------------------                                                                                                                     
-
-SELECT TOP 1
-	@VOLUMEPCC = SUM(Quartos)
-FROM VolumePcc1b(nolock)
-WHERE ParCompany_id = @ParCompany_id
-AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
-
-DECLARE @NAPCC INT
-
-SELECT
-	@NAPCC =
-	COUNT(1)
-FROM (SELECT
-		COUNT(1) AS NA
-	FROM CollectionLevel2 C2 (NOLOCK)
-	LEFT JOIN Result_Level3 C3 (NOLOCK)
-		ON C3.CollectionLevel2_Id = C2.Id
-	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
-	AND C2.ParLevel1_Id = (SELECT TOP 1
-			id
-		FROM Parlevel1
-		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
-	AND C2.UnitId = @ParCompany_Id
-	AND IsNotEvaluate = 1
-	GROUP BY C2.ID) NA
-WHERE NA = 2
---------------------------------                                                                                                                    
-SELECT
-	CONVERT(VARCHAR(153), Unidade) AS UnidadeName
-   ,Unidade_Id AS Unidade
-   ,level1_Id AS Indicador
-   ,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
-   ,Concat(CONVERT(VARCHAR(153), Level1Name), ' - ',CONVERT(VARCHAR(153), Unidade)) AS IndicadorUnidade
-   ,ProcentagemNc AS [Pc]
-   ,(CASE
-		WHEN IsRuleConformity = 1 THEN (100 - META)
-		ELSE Meta
-	END) AS Meta
-   ,NC
-   ,Av
-   
-   ,case when ProcentagemNc > S2.Meta then 0 else 1 end as Status
-   ,CAST(1 as bit) as IsIndicador
-,avComPeso
-   ,ncComPeso
-FROM (SELECT
-		Unidade
-	   ,IsRuleConformity
-	   ,Unidade_Id
-	   ,Level1Name
-	   ,level1_Id
-	   ,SUM(avSemPeso) AS av
-	   ,SUM(ncSemPeso) AS nc
-       ,SUM(av) AS avComPeso
-	   ,SUM(nc) AS ncComPeso
-	   ,CASE
-			WHEN SUM(AV) IS NULL OR
-				SUM(AV) = 0 THEN 0
-			ELSE SUM(NC) / SUM(AV) * 100
-		END AS ProcentagemNc
-	   ,MAX(Meta) AS Meta
-	FROM (SELECT
-			IND.Id AS level1_Id
-		   ,IND.IsRuleConformity
-		   ,IND.Name AS Level1Name
-		   ,UNI.Id AS Unidade_Id
-		   ,UNI.Name AS Unidade
-		   ,CASE
-				WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
-											GROUP BY ParCompany_id) Volume) - ISNULL(@NAPCC,0)
-				WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
-				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
-				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
-				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-				WHEN IND.ParConsolidationType_Id = 5 THEN WeiEvaluation
-				WHEN IND.ParConsolidationType_Id = 6 THEN WeiEvaluation
-				ELSE 0
-			END AS Av
-		   ,CASE
-				WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
-											GROUP BY ParCompany_id) Volume) - ISNULL(@NAPCC,0)
-				WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
-				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
-				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
-				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-				WHEN IND.ParConsolidationType_Id = 5 THEN EvaluateTotal
-				WHEN IND.ParConsolidationType_Id = 6 THEN EvaluateTotal
-				ELSE 0
-			END AS AvSemPeso
-		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects
-				WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
-				WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
-				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-				WHEN IND.ParConsolidationType_Id = 5 THEN WeiDefects
-				WHEN IND.ParConsolidationType_Id = 6 THEN TotalLevel3WithDefects
-				ELSE 0
-			END AS NC
-		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
-				WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
-				WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
-				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-				WHEN IND.ParConsolidationType_Id = 5 THEN DefectsTotal
-				WHEN IND.ParConsolidationType_Id = 6 THEN TotalLevel3WithDefects
-				ELSE 0
-			END AS NCSemPeso
-		   ,CASE
-
-				WHEN (SELECT
-							COUNT(1)
-						FROM ParGoal G
-						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-						AND (G.ParCompany_id = CL1.UnitId
-						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL)
-					> 0 THEN (SELECT TOP 1
-							ISNULL(G.PercentValue, 0)
-						FROM ParGoal G
-						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-						AND (G.ParCompany_id = CL1.UnitId
-						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL
-						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-
-				ELSE (SELECT TOP 1
-							ISNULL(G.PercentValue, 0)
-						FROM ParGoal G
-						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-						AND (G.ParCompany_id = CL1.UnitId
-						OR G.ParCompany_id IS NULL)
-						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-			END
-			AS Meta
-		FROM ConsolidationLevel1 CL1 (NOLOCK)
-		INNER JOIN ParLevel1 IND (NOLOCK)
-			ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
-            AND IND.Id <> 43
-            AND IND.IsActive = 1
-		INNER JOIN ParCompany UNI (NOLOCK)
-			ON UNI.Id = CL1.UnitId
-		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
-			ON A4.UNIDADE = UNI.Id
-			AND A4.INDICADOR = IND.ID
-		INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
-			ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
-            and L1XC.IsActive = 1
-		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
-			ON CL1.UnitId = CXS.ParCompany_Id
-		INNER JOIN ParCompanyCluster PCC
-			ON PCC.ParCompany_Id = UNI.Id  AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
-		WHERE 1 = 1
-        AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		" + whereUnidade2 + @"
-        " + whereCluster + @"
-        " + whereStructure + @"
-        " + whereCriticalLevel + @"
-        " + whereLevel1 + @"
-    -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
-	) S1
-	GROUP BY Unidade
-			,Unidade_Id
-			,Level1Name
-			,level1_Id
-			,IsRuleConformity) S2
-WHERE 1=1 -- nc > 0
-" + whereStatus + @"
-ORDER BY 6 DESC
-DROP TABLE #AMOSTRATIPO4 ";
-*/
-
-            #endregion
 
             using (var db = new SgqDbDevEntities())
             {
@@ -656,6 +371,28 @@ DROP TABLE #AMOSTRATIPO4 ";
                 SQLcentro += @"";
             }
 
+            #endregion
+
+
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
             #endregion
 
 
@@ -1016,6 +753,28 @@ ORDER BY 10 DESC ";
             #endregion
 
 
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
+            #endregion
+
+
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
                 #region ScriptLista
@@ -1080,235 +839,6 @@ ORDER BY 10 DESC ";
                 #endregion
             }
 
-
-            #region comentado
-
-            /*
-            var whereUnidade = "";
-            var whereUnidade2 = "";
-            var whereLevel3 = "";
-            var whereCluster = "";
-            var whereStructure = "";
-            var whereCriticalLevel = "";
-            var userUnits = "";
-
-            if (form.unitIdArr.Length != 0)
-            {
-                whereUnidade = "WHERE ID  IN (" + string.Join(",", form.unitIdArr) + ")";
-                whereUnidade2 = "AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ")";
-            }
-            else
-            {
-                userUnits = GetUserUnits(form.auditorId);
-                whereUnidade = "WHERE ID IN (" + userUnits + ")";
-                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
-            }
-
-            if (form.level3IdArr.Length > 0)
-            {
-                whereLevel3 = "AND R3.ParLevel3_Id  IN (" + string.Join(",", form.level3IdArr) + ")";
-            }
-            else
-            if (form.level3Id != 0)
-            {
-                whereLevel3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
-            }
-
-            if (form.clusterIdArr.Length > 0)
-            {
-                whereCluster = "AND PCC.ParCluster_Id  IN (" + string.Join(",", form.clusterIdArr) + ")";
-            }
-            else
-            if (form.clusterSelected_Id != 0)
-            {
-                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
-            }
-
-            if (form.structureIdArr.Length > 0)
-            {
-                whereStructure = "AND CXS.ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")";
-            }
-            else
-            if (form.structureId != 0)
-            {
-                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
-            }
-
-            if (form.criticalLevelIdArr.Length > 0)
-            {
-                whereCriticalLevel = "AND L1XC.ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ")";
-            }
-            else
-            if (form.criticalLevelId != 0)
-            {
-                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
-            }
-
-            var query = @"
- DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
-
- DECLARE @DATAFINAL DATETIME = '" + form._dataFimSQL + @"'
-       
- DECLARE @VOLUMEPCC int
-                                                  
- DECLARE @ParCompany_id INT
-SELECT
-	@ParCompany_id = ID
-FROM PARCOMPANY
-" + whereUnidade + @"
---------------------------------                                                                                                                     
-
-SELECT TOP 1
-	@VOLUMEPCC = SUM(Quartos)
-FROM VolumePcc1b(nolock)
-WHERE ParCompany_id = @ParCompany_id
-AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
-                                                                                                                                                    
-  DECLARE @NAPCC INT
-
-SELECT
-	@NAPCC =
-	COUNT(1)
-FROM (SELECT
-		COUNT(1) AS NA
-	FROM CollectionLevel2 C2 (NOLOCK)
-	LEFT JOIN Result_Level3 C3 (NOLOCK)
-		ON C3.CollectionLevel2_Id = C2.Id
-	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
-	AND C2.ParLevel1_Id = (SELECT TOP 1
-			id
-		FROM Parlevel1
-		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
-	AND C2.UnitId = @ParCompany_Id
-	AND IsNotEvaluate = 1
-	GROUP BY C2.ID) NA
-WHERE NA = 2
---------------------------------                                                                                                                    
-SELECT
-	TAB.Indicador
-   ,TAB.IndicadorName
-   ,TAB.Monitoramento
-   ,TAB.MonitoramentoName
-   ,TAB.TarefaName AS TarefaName
-   ,SUM(TAB.NcSemPeso) AS Nc
-   ,SUM(TAB.AvSemPeso) AS Av
-   ,ISNULL(NULLIF(SUM(TAB.Nc),0)/SUM(TAB.AV),0)*100 AS [PC]
-   ,TAB.TarefaId AS Tarefa
-   ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
-   ,Unidade AS Unidade
-   ,UnidadeName AS UnidadeName
-   ,0 AS Sentido
-   ,CAST(1 as bit) as IsTarefa
-FROM (SELECT  
-		Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName
-			,SUM(NC)NC
-			,SUM(NcSemPeso)NcSemPeso
-			,SUM(AV)AV
-			,SUM(AvSemPeso) AvSemPeso
-			,ISNULL(NULLIF(SUM(NC),0)/SUM(AV),0) [proc]
-	FROM (SELECT
-		UNI.Id AS Unidade
-	   ,UNI.Name AS UnidadeName
-	   ,IND.Name AS IndicadorName
-	   ,Ind.Id AS Indicador
-	   ,MON.Name AS MonitoramentoName
-	   ,Mon.Id AS Monitoramento
-	   ,R3.ParLevel3_Id AS TarefaId
-	   ,R3.ParLevel3_Name AS TarefaName
-	   ,SUM(R3.WeiDefects) AS Nc
-	   ,CASE
-			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiDefects)
-			ELSE SUM(R3.Defects)
-		END AS NcSemPeso
-	   ,CASE
-			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = UNI.Id
-											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
-			ELSE SUM(R3.WeiEvaluation)
-		END AS Av
-	   ,CASE
-			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = UNI.Id
-											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC
-			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
-			ELSE SUM(R3.Evaluation)
-		END AS AvSemPeso
-	   ,ISNULL(NULLIF(SUM(R3.WeiDefects),0) /
-		CASE
-			WHEN IND.HashKey = 1 THEN ((SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = UNI.Id
-											GROUP BY ParCompany_id) Volume) / 2 - @NAPCC)
-			ELSE SUM(R3.WeiEvaluation)
-		END * 100,0) AS [Proc]
-	FROM Result_Level3 R3 (NOLOCK)
-	INNER JOIN CollectionLevel2 C2 (NOLOCK)
-		ON C2.Id = R3.CollectionLevel2_Id
-	INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
-		ON CL2.Id = C2.ConsolidationLevel2_Id
-	INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
-		ON CL1.Id = CL2.ConsolidationLevel1_Id
-	INNER JOIN ParCompany UNI (NOLOCK)
-		ON UNI.Id = C2.UnitId
-	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = C2.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
-        AND IND.Id <> 43
-        AND IND.IsActive = 1
-	INNER JOIN ParLevel2 MON (NOLOCK)
-		ON MON.Id = C2.ParLevel2_Id
-        AND MON.IsActive = 1
-	INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
-		ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
-           and L1XC.IsActive = 1
-	INNER JOIN ParCompanyXStructure CXS (NOLOCK)
-		ON CL1.UnitId = CXS.ParCompany_Id
-	INNER JOIN ParCompanyCluster PCC (NOLOCK)
-		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1  
-	WHERE IND.Id IN (" + string.Join(",", form.level1IdArr) + @")
-	AND MON.Id IN (" + string.Join(",", form.level2IdArr) + @")
-	" + whereUnidade2 + @"
-    " + whereLevel3 + @"
-    " + whereCluster + @"
-    " + whereStructure + @"
-    " + whereCriticalLevel + @"
-	AND R3.IsNotEvaluate = 0
-	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-	GROUP BY IND.Id
-			,IND.Name
-			,Mon.Name
-			,MON.Id
-			,R3.ParLevel3_Id
-			,R3.ParLevel3_Name
-			,UNI.Name
-			,UNI.Id
-			,ind.hashKey
-			,ind.ParConsolidationType_Id
-            ,CL1.ConsolidationDate
-	) > 0)A GROUP BY Unidade,UnidadeName,IndicadorName,Indicador,MonitoramentoName,Monitoramento,TarefaId,TarefaName) TAB
-	GROUP BY 
-		TAB.Indicador
-	   ,TAB.IndicadorName
-	   ,TAB.Monitoramento
-	   ,TAB.MonitoramentoName
-	   ,TAB.TarefaName 
-	   ,TAB.TarefaId 
-	   ,Unidade 
-	   ,UnidadeName 
- ORDER BY 8 DESC ";
- */
-            #endregion
 
             using (var db = new SgqDbDevEntities())
             {
@@ -1417,6 +947,28 @@ FROM (SELECT
                 SQLcentro += @"";
             }
 
+            #endregion
+
+
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
             #endregion
 
 
@@ -1556,6 +1108,28 @@ FROM (SELECT
                 SQLcentro += @"";
             }
 
+            #endregion
+
+
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
             #endregion
 
 
@@ -1702,6 +1276,27 @@ FROM (SELECT
 
             #endregion
 
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
+            #endregion
+
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -1770,7 +1365,7 @@ FROM (SELECT
 
 
         }
-
+         
         [HttpPost]
         [Route("GetGraficoHistoricoModal")]
         public List<RetornoGenerico> GetGraficoHistoricoModal([FromBody] FormularioParaRelatorioViewModel form)
@@ -4488,6 +4083,27 @@ FROM (SELECT
 
             #endregion
 
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
+            #endregion
+
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -4641,6 +4257,27 @@ FROM (SELECT
 
             #endregion
 
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
+            #endregion
+
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -4788,6 +4425,27 @@ ORDER BY 3
 
             #endregion
 
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
+            #endregion
+
 
             if (tipoVisao==false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -4926,6 +4584,27 @@ ORDER BY 3
                 SQLcentro += @"";
             }
 
+            #endregion
+
+            #region Indicadores com Acao Concluída: Sim ou Não
+
+            if (form.createActionPlane == 1)
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            if (form.createActionPlane == 2) // Indicadores Dentro Da Meta
+            {
+                SQLcentro += @"";
+                SQLcentro += @"";
+                SQLcentro += getQueryPAConcluidos(form, form.createActionPlane);
+            }
+            else
+            {
+                SQLcentro += @"";
+            }
             #endregion
 
 
@@ -6592,6 +6271,38 @@ ORDER BY 3
 		        AND CUBO.Indicador = WHERESTATUS.Indicador
 	        WHERE 1=1
 	    	" + whereStatusQuery + @"
+           
+            ";
+
+            return Query;
+        }
+
+        private static string getQueryPAConcluidos(FormularioParaRelatorioViewModel form, int? wherePA)
+        {
+            var wherePAConcQuery = "";
+
+            if (wherePA == 1)
+            {
+                wherePAConcQuery = " AND Pa_Acao_View.Data IS NULL ";
+            }
+            if (wherePA == 2)
+            {
+                wherePAConcQuery = " AND Pa_Acao_View.Data IS NOT NULL ";
+            }
+
+            var Query = "";
+
+            Query = @"
+
+
+            DELETE CUBO 
+            FROM #CUBO CUBO
+	        LEFT JOIN (SELECT * FROM Pa_Acao_View WHERE DATA BETWEEN @DATEINI AND @DATEFIM  )Pa_Acao_View
+		        ON CUBO.Unidade = Pa_Acao_View.Unidade_Id
+		        AND CUBO.Indicador = Pa_Acao_View.Level1Id
+	        WHERE 1=1
+            
+	    	" + wherePAConcQuery + @"
            
             ";
 
