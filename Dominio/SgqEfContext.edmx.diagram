@@ -209,6 +209,10 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" />
+        <EntityTypeShape EntityType="SgqDbModel.ParClusterXModule" Width="1.5" PointX="11.25" PointY="66" />
+        <EntityTypeShape EntityType="SgqDbModel.ParModule" Width="1.5" PointX="9" PointY="73.25" />
+        <AssociationConnector Association="SgqDbModel.FK_ParClusterXModule_ParCluster" />
+        <AssociationConnector Association="SgqDbModel.FK_ParClusterXModule_ParModule" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

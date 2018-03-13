@@ -3085,6 +3085,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Module.
+        /// </summary>
+        internal static string module {
+            get {
+                return ResourceManager.GetString("module", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monitoring.
         /// </summary>
         internal static string monitoring {
@@ -5916,15 +5925,6 @@ namespace Resources {
         internal static string _language {
             get {
                 return ResourceManager.GetString("_language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New.
-        /// </summary>
-        internal static string _new {
-            get {
-                return ResourceManager.GetString("_new", resourceCulture);
             }
         }
     }

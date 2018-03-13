@@ -2052,4 +2052,10 @@
   <data name="weighted" xml:space="preserve">
     <value>Ponderado</value>
   </data>
+  <data name="module" xml:space="preserve">
+    <value>Modulos</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>Novo</value>
+  </data>
 </root>
