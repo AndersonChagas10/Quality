@@ -2694,9 +2694,9 @@ ORDER BY 10 DESC ";
 
    "\n           --  AND L1Ca.IsActive = 1 " +
 
-   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+   "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+   "\n         ORDER BY L1Ca.EffectiveDate  desc " +
     "\n	)" +
   "" +
   "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
@@ -2711,9 +2711,9 @@ ORDER BY 10 DESC ";
 
    "\n           --  AND L1Ca.IsActive = 1 " +
 
-   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+   "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-   "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+   "\n         ORDER BY L1Ca.EffectiveDate  desc " +
     "\n	)" +
   ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
   "\n , ISNULL(" +
@@ -2727,9 +2727,9 @@ ORDER BY 10 DESC ";
 
    "\n           --  AND L1Ca.IsActive = 1 " +
 
-   "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+   "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-   "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+   "\n         ORDER BY L1Ca.EffectiveDate desc  " +
     "\n	)" +
   ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
