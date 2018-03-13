@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Security;
 
 namespace ADOFactory
@@ -158,7 +159,7 @@ namespace ADOFactory
                             {
                                 if (!reader.IsDBNull(i))
                                 {
-                                    var info = instance.GetType().GetProperty(reader.GetName(i));
+                                    var info = instance.GetType().GetProperty(reader.GetName(i), BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                                     if (info != null)
                                     {
                                         Type type = Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType;

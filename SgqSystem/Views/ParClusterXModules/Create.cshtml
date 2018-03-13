@@ -1,7 +1,7 @@
 ﻿@model Dominio.ParClusterXModule
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Resources.Resource.create;
 }
 
 
@@ -42,11 +42,9 @@
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
-                                        <h4>ParClusterXModule</h4>
-                                        <hr />
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCluster_Id, "ParCluster_Id", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCluster_Id, Resources.Resource.cluster, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParCluster_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParCluster_Id, "", new { @class = "text-danger" })
@@ -54,7 +52,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParModule_Id, "ParModule_Id", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParModule_Id, Resources.Resource.module, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParModule_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
@@ -62,7 +60,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Points, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Points, Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
@@ -70,7 +68,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
@@ -80,7 +78,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.EffectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.EffectiveDate, Resources.Resource.effectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.EffectiveDate, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParClusterXModule>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resources.Resource.module +"X"+ Resources.Resource.clusters;
 }
 
 
@@ -50,19 +50,19 @@
                                 <table class="table">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Points)
+                                            @Resources.Resource.points
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.IsActive)
+                                            @Resources.Resource.is_active
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.EffectiveDate)
+                                            @Resources.Resource.effectiveDate
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ParCluster.Name)
+                                            @Resources.Resource.cluster
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ParModule.Name)
+                                            @Resources.Resource.module
                                         </th>
                                         <th></th>
                                     </tr>
