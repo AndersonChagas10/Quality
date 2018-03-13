@@ -50,6 +50,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                parModule.AddDate = DateTime.Now;
                 db.ParModule.Add(parModule);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,6 +83,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                parModule.AlterDate = DateTime.Now;
                 db.Entry(parModule).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
