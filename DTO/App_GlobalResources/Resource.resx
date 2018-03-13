@@ -2073,4 +2073,10 @@
   <data name="weighted" xml:space="preserve">
     <value>Weighted</value>
   </data>
+  <data name="module" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>
