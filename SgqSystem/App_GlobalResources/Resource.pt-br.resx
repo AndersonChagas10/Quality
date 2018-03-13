@@ -2430,4 +2430,10 @@
   <data name="per_unit_indicators" xml:space="preserve">
     <value>Indicadores por unidade</value>
   </data>
+  <data name="module" xml:space="preserve">
+    <value>Modulos</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>Novo</value>
+  </data>
 </root>
