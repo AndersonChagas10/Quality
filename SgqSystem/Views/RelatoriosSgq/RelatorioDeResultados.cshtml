@@ -429,7 +429,7 @@
                 //+ " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
             }
 
-            if ((enviar.unitId == '' || enviar.unitId == undefined))
+            if ((enviar.unitId == '' || enviar.unitId == undefined) || (enviar.unitId == undefined && enviar.unitIdArr.length > 1))
                 Titulo += " " + Resources("perUnit");
 
 
@@ -799,19 +799,19 @@
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name;
-        }
+        } else 
         if (data[0].ChartTitle == "Histórico do Monitoramento") {
-            TituloHistoricoModal += Resources("level1_history");
+            //TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
 
             TituloHistoricoModal += Resources("level2_history");
             subtitleAux += Resources('level2') + ": " + data[0].level2Name;
-        }
+        } else
         if (data[0].ChartTitle == "Histórico da Tarefa") {
-            TituloHistoricoModal += Resources("level1_history");
+            //TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
 
-            TituloHistoricoModal += Resources("level2_history");
+            //TituloHistoricoModal += Resources("level2_history");
             subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
 
             TituloHistoricoModal += Resources("level3_history");
