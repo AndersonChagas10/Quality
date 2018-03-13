@@ -148,8 +148,12 @@ namespace SGQDBContext
 
             string sql = @"SELECT * FROM (
                         SELECT P1.Id, P1.Name, P1.HasTakePhoto, 
-                        (select top 1 id from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
-                        (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
+                        -- (select top 1 id from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
+                        -- (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
+                        
+                        (select top 1 id from parCriticalLevel   where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = PC.ParCluster_Id ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
+                        (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"'  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = PC.ParCluster_Id ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
+
                         P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     
                         P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave
                         ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber 
@@ -159,7 +163,17 @@ namespace SGQDBContext
                         LEFT JOIN ParNotConformityRuleXLevel AL    (nolock)                                                                                 
                         ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               
                         INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + @"')) A GROUP BY ParLevel1_Id) G  
-                        ON P1.Id = G.ParLevel1_Id                                                                                        
+                        ON P1.Id = G.ParLevel1_Id   
+                        INNER JOIN ParCompanyCluster PC
+						ON PC.ParCompany_Id = '" + ParCompany_Id + @"' AND PC.Active = 1
+						INNER JOIN ParLevel1XCluster L1C
+						ON L1C.ParCluster_Id = PC.ParCluster_Id
+						AND L1C.ParLevel1_Id = P1.ID
+						AND L1C.IsActive = 1
+						INNER JOIN ParCluster C
+						on c.id = pc.parcluster_id
+						INNER JOIN   parCriticalLevel PCL
+						ON  PCL.ID = L1C.ParCriticalLevel_Id 
                         WHERE 1 =1                                                                          
                         AND IsChildren = 0 
                         " + whereIsChildren + @"
