@@ -167,6 +167,8 @@ namespace Dominio
         public virtual DbSet<VTVerificacaoTipificacaoValidacao> VTVerificacaoTipificacaoValidacao { get; set; }
         public virtual DbSet<ParGoal> ParGoal { get; set; }
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
+        public virtual DbSet<ParClusterXModule> ParClusterXModule { get; set; }
+        public virtual DbSet<ParModule> ParModule { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

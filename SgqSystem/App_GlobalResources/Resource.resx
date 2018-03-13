@@ -2433,4 +2433,10 @@
   <data name="per_unit_indicators" xml:space="preserve">
     <value>Per Unit Indicators</value>
   </data>
+  <data name="module" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>

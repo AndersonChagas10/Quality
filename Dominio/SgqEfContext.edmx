@@ -665,6 +665,19 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParClusterXModule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParCluster_Id" Type="int" Nullable="false" />
+          <Property Name="ParModule_Id" Type="int" Nullable="false" />
+          <Property Name="Points" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="EffectiveDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="ParCompany">
           <Key>
             <PropertyRef Name="Id" />
@@ -1164,6 +1177,17 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParMeasurementUnit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParModule">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -2571,6 +2595,30 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParClusterXModule_ParCluster">
+          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="1" />
+          <End Role="ParClusterXModule" Type="Self.ParClusterXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParClusterXModule">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParClusterXModule_ParModule">
+          <End Role="ParModule" Type="Self.ParModule" Multiplicity="1" />
+          <End Role="ParClusterXModule" Type="Self.ParClusterXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParModule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParClusterXModule">
+              <PropertyRef Name="ParModule_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParCompanyCluster_ParCluster">
           <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="1" />
           <End Role="ParCompanyCluster" Type="Self.ParCompanyCluster" Multiplicity="*" />
@@ -3573,6 +3621,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Operacoes" EntityType="Self.Operacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParClusterGroup" EntityType="Self.ParClusterGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParClusterXModule" EntityType="Self.ParClusterXModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompany" EntityType="Self.ParCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyCluster" EntityType="Self.ParCompanyCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyXStructure" EntityType="Self.ParCompanyXStructure" Schema="dbo" store:Type="Tables" />
@@ -3607,6 +3656,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevelDefiniton" EntityType="Self.ParLevelDefiniton" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLocal" EntityType="Self.ParLocal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMeasurementUnit" EntityType="Self.ParMeasurementUnit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParModule" EntityType="Self.ParModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMultipleValues" EntityType="Self.ParMultipleValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParNotConformityRule" EntityType="Self.ParNotConformityRule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParNotConformityRuleXLevel" EntityType="Self.ParNotConformityRuleXLevel" Schema="dbo" store:Type="Tables" />
@@ -3946,6 +3996,14 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParClusterXModule_ParCluster" Association="Self.FK_ParClusterXModule_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParClusterXModule" EntitySet="ParClusterXModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParClusterXModule_ParModule" Association="Self.FK_ParClusterXModule_ParModule">
+            <End Role="ParModule" EntitySet="ParModule" />
+            <End Role="ParClusterXModule" EntitySet="ParClusterXModule" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCompanyCluster_ParCluster" Association="Self.FK_ParCompanyCluster_ParCluster">
             <End Role="ParCluster" EntitySet="ParCluster" />
@@ -5000,6 +5058,16 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
+          <EntitySet Name="ParClusterXModule" EntityType="SgqDbModel.ParClusterXModule" />
+          <EntitySet Name="ParModule" EntityType="SgqDbModel.ParModule" />
+          <AssociationSet Name="FK_ParClusterXModule_ParCluster" Association="SgqDbModel.FK_ParClusterXModule_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParClusterXModule" EntitySet="ParClusterXModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParClusterXModule_ParModule" Association="SgqDbModel.FK_ParClusterXModule_ParModule">
+            <End Role="ParModule" EntitySet="ParModule" />
+            <End Role="ParClusterXModule" EntitySet="ParClusterXModule" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -5314,6 +5382,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParClusterGroup" Relationship="SgqDbModel.FK_ParCluster_ParClusterGroup" FromRole="ParCluster" ToRole="ParClusterGroup" />
           <NavigationProperty Name="ParCompanyCluster" Relationship="SgqDbModel.FK_ParCompanyCluster_ParCluster" FromRole="ParCluster" ToRole="ParCompanyCluster" />
           <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParCluster" ToRole="ParLevel1XCluster" />
+          <NavigationProperty Name="ParClusterXModule" Relationship="SgqDbModel.FK_ParClusterXModule_ParCluster" FromRole="ParCluster" ToRole="ParClusterXModule" />
         </EntityType>
         <EntityType Name="ParClusterGroup">
           <Key>
@@ -8891,6 +8960,57 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParClusterXModule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParModule_Id" Type="Int32" Nullable="false" />
+          <Property Name="Points" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParClusterXModule_ParCluster" FromRole="ParClusterXModule" ToRole="ParCluster" />
+          <NavigationProperty Name="ParModule" Relationship="SgqDbModel.FK_ParClusterXModule_ParModule" FromRole="ParClusterXModule" ToRole="ParModule" />
+        </EntityType>
+        <EntityType Name="ParModule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParClusterXModule" Relationship="SgqDbModel.FK_ParClusterXModule_ParModule" FromRole="ParModule" ToRole="ParClusterXModule" />
+        </EntityType>
+        <Association Name="FK_ParClusterXModule_ParCluster">
+          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
+          <End Type="SgqDbModel.ParClusterXModule" Role="ParClusterXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParClusterXModule">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParClusterXModule_ParModule">
+          <End Type="SgqDbModel.ParModule" Role="ParModule" Multiplicity="1" />
+          <End Type="SgqDbModel.ParClusterXModule" Role="ParClusterXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParModule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParClusterXModule">
+              <PropertyRef Name="ParModule_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10874,6 +10994,32 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Points" ColumnName="Points" />
                 <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParClusterXModule">
+            <EntityTypeMapping TypeName="SgqDbModel.ParClusterXModule">
+              <MappingFragment StoreEntitySet="ParClusterXModule">
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="ParModule_Id" ColumnName="ParModule_Id" />
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParModule">
+            <EntityTypeMapping TypeName="SgqDbModel.ParModule">
+              <MappingFragment StoreEntitySet="ParModule">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

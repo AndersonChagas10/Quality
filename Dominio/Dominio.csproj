@@ -177,6 +177,9 @@
     <Compile Include="ParClusterGroup.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParClusterXModule.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParCompany.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -286,6 +289,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParMeasurementUnit.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParModule.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParMultipleValues.cs">
