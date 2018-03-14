@@ -245,7 +245,7 @@ namespace SGQDBContext
                     "\n           ( " +
                     "\n           SELECT  RESULT.* " +
                     "\n                  , (SELECT ParConsolidationType_Id FROM ParLevel1  (nolock) WHERE Id = " + ParLevel1_Id + ") AS ParConsolidationType_Id " +
-                    "\n                  , (SELECT TOP 1 PercentValue FROM ParGoal (nolock)  WHERE ParLevel1_Id = " + ParLevel1_Id + " AND (ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) AND EffectiveDate <= CONVERT(DATE, '" + _DataCollect + "' AND IsActive = 1) ORDER BY ParCompany_id DESC,EffectiveDate DESC) AS _META " +
+                    "\n                  , (SELECT TOP 1 PercentValue FROM ParGoal (nolock)  WHERE ParLevel1_Id = " + ParLevel1_Id + " AND (ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) AND EffectiveDate <= CONVERT(DATE, '" + _DataCollect + "') AND IsActive = 1 ORDER BY ParCompany_id DESC,EffectiveDate DESC) AS _META " +
                     "\n                FROM " +
                     "\n         ( " +
                     "\n             /*****PCC1b**************************************************************************************************************************************************************************/ " +
