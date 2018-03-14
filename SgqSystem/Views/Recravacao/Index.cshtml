@@ -1445,6 +1445,7 @@
                                 vm.salvaLinha(undefined, undefined, novaLinha)
                                 setTimeout(function () {
                                     $('.select2[multiple]').val(0).trigger("change")
+                                    $('#HoraVerificacao').val(2).trigger('change');
                                 }, 100)
                             }
                         });
@@ -1829,7 +1830,7 @@
                     if (expressaoArr.length == 0)
                         return;
 
-                    if (vm.lataSelecionada.ResultValue[parlevel3Name] == "") {
+                    if (!!vm.lataSelecionada.ResultValue && vm.lataSelecionada.ResultValue[parlevel3Name] == "") {
                         vm.lataSelecionada.ResultValue[parlevel3Name] = {};
                     }
 
@@ -1839,7 +1840,8 @@
                             let id = `#${o.OuterLevel3_Text}${indexMaisUm}`.replace(/ /g, '').replace('.', '')
                             let valor = parseFloat($(id).val())
                             if (isNaN(parseFloat(valor))) {
-                                vm.lataSelecionada.ResultValue[parlevel3Name][(indexMaisUm)] = ""
+                                if (!!vm.lataSelecionada.ResultValue)
+                                    vm.lataSelecionada.ResultValue[parlevel3Name][(indexMaisUm)] = ""
                                 return ""
                             }
                             expressaoFinal += valor
