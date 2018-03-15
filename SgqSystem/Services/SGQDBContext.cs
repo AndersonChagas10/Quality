@@ -162,7 +162,7 @@ namespace SGQDBContext
                         ON P321.ParLevel1_Id = P1.Id                                                                                               
                         LEFT JOIN ParNotConformityRuleXLevel AL    (nolock)                                                                                 
                         ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               
-                        INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + @"')) A GROUP BY ParLevel1_Id) G  
+                        INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + @"') and EffectiveDate <= '" + dateCollection.ToString("yyyy-MM-dd") + @"') A GROUP BY ParLevel1_Id) G  
                         ON P1.Id = G.ParLevel1_Id   
                         INNER JOIN ParCompanyCluster PC
 						ON PC.ParCompany_Id = '" + ParCompany_Id + @"' AND PC.Active = 1
@@ -259,7 +259,7 @@ namespace SGQDBContext
                     "\n           ( " +
                     "\n           SELECT  RESULT.* " +
                     "\n                  , (SELECT ParConsolidationType_Id FROM ParLevel1  (nolock) WHERE Id = " + ParLevel1_Id + ") AS ParConsolidationType_Id " +
-                    "\n                  , (SELECT TOP 1 PercentValue FROM ParGoal (nolock)  WHERE ParLevel1_Id = " + ParLevel1_Id + " AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) ORDER BY ParCompany_id DESC) AS _META " +
+                    "\n                  , (SELECT TOP 1 PercentValue FROM ParGoal (nolock)  WHERE ParLevel1_Id = " + ParLevel1_Id + " AND (ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) AND EffectiveDate <= CONVERT(DATE, '" + _DataCollect + "') AND IsActive = 1 ORDER BY ParCompany_id DESC,EffectiveDate DESC) AS _META " +
                     "\n                FROM " +
                     "\n         ( " +
                     "\n             /*****PCC1b**************************************************************************************************************************************************************************/ " +

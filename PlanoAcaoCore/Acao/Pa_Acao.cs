@@ -298,7 +298,7 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return " \n SELECT TOP 200 ACAO.* ,                                                           " +
+                return " \n SELECT ACAO.* ,                                                           " +
                         " \n STA.Name as _StatusName,                                                           " +
                         " \n UN.Name as _Unidade,                                                               " +
                         " \n DPT.Name as _Departamento,                                                         " +
