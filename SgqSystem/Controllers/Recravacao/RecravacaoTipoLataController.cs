@@ -77,8 +77,10 @@ namespace SgqSystem.Controllers.Recravacao
                         if (file != null)
                             if (file.ContentLength > 0)
                             {
-                                var fileName = Path.GetFileName(file.FileName);
-                                var path = Path.Combine(Server.MapPath("~/Imagens"), fileName);
+                                var fileName = "_recravacao_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetFileName(file.FileName);
+                                var mapPath = Server.MapPath("~/Imagens/TempData");
+                                Directory.CreateDirectory(mapPath);
+                                var path = Path.Combine(mapPath, fileName);
                                 file.SaveAs(path);
                                 var imagem = Image.FromStream(file.InputStream, true, true);
 
