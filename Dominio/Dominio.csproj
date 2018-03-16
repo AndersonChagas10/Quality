@@ -35,19 +35,19 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="AreasParticipantes.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="BkpCollection.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CaracteristicaTipificacao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ClusterDepartamentos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Clusters.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CollectionHtml.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -86,10 +86,10 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DepartamentoOperacoes.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Departamentos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Department.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -101,28 +101,22 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Empresas.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Equipamentos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Example.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FamiliaProdutos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="fn_getsubtree_Result.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="GetOperacoes_Result.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GetScoreCardConsolidado_Result.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Horarios.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
@@ -166,16 +160,16 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Metas.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Monitoramentos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NQA.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Operacoes.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -325,23 +319,23 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="PenalidadeReincidencia.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Perfil.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Period.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Produtos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regionais.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Resultados.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ResultLevel2HeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -374,21 +368,6 @@
     <Compile Include="Services\RelatorioColetaDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\UserDomain.cs" />
-    <Compile Include="SgqBrasilEfContext.Context.cs">
-      <DependentUpon>SgqBrasilEfContext.Context.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="SgqBrasilEfContext.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="SgqBrasilEfContext.Designer.cs">
-      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="SgqEfContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -407,9 +386,6 @@
     <Compile Include="Shift.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="sp_ChartTarefasNC_Result.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -417,19 +393,19 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAmostras.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAvaliacoes.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaMonitoramentos.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Tarefas.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Unidades.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Unit.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -441,31 +417,31 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Usuario.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="UsuarioPerfilEmpresa.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="UsuarioUnidades.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacaoComparacao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacaoResultados.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacaoTarefaIntegracao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacaoV2.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacaoValidacao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VolumeCepDesossa.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -477,19 +453,19 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VolumeProducao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VolumeVacuoGRD.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VTVerificacaoTipificacao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VTVerificacaoTipificacaoResultados.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VTVerificacaoTipificacaoValidacao.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -548,17 +524,10 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="SgqBrasilEfContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SgqBrasilEfContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <EntityDeploy Include="SgqEfContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SgqEfContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="SgqBrasilEfContext.edmx.diagram">
-      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
-    </None>
     <None Include="SgqEfContext.edmx.diagram">
       <DependentUpon>SgqEfContext.edmx</DependentUpon>
     </None>
@@ -567,16 +536,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SgqBrasilEfContext.Context.tt">
-      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SgqBrasilEfContext.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="SgqBrasilEfContext.tt">
-      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SgqBrasilEfContext.cs</LastGenOutput>
-    </Content>
     <Content Include="SgqEfContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SgqEfContext.edmx</DependentUpon>

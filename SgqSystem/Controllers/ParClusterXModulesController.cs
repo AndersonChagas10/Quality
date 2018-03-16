@@ -54,6 +54,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                parClusterXModule.AddDate = DateTime.Now;
                 db.ParClusterXModule.Add(parClusterXModule);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -90,6 +91,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                parClusterXModule.AlterDate = DateTime.Now;
                 db.Entry(parClusterXModule).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

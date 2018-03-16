@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers
         public ActionResult Index(FirstConfigDTO cfg)
         {
 
-            using (var db = new ADOFactory.Factory("DbContextSgqEUA"))/*Caso nao configurado, procura config no DB*/
+            using (var db = new ADOFactory.Factory("DefaultConnection"))/*Caso nao configurado, procura config no DB*/
             {
                 var identityId = " \n SELECT CAST(scope_identity() AS int)";
 
@@ -2411,7 +2411,13 @@ GO
 INSERT[dbo].[ParNotConformityRule] ([Name], [Sufix], [AddDate], [AlterDate], [IsActive]) VALUES(N'% NC', NULL, CAST(N'2017-02-09 08:54:03.0100000' AS DateTime2), NULL, 1)
 GO
 INSERT[dbo].[ParNotConformityRule] ([Name], [Sufix], [AddDate], [AlterDate], [IsActive]) VALUES(N'JBS por Monitoramento', NULL, CAST(N'2017-02-09 08:54:03.0330000' AS DateTime2), NULL, 1)
-GO";
+GO
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (1, N'Binário', N'Binário', CAST(N'2017-03-03 07:48:52.8930000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (2, N'Número de defeitos', N'Número de defeitos', CAST(N'2017-03-03 07:48:52.8930000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (3, N'Intervalos', N'Intervalos', CAST(N'2017-03-03 07:48:52.8930000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (4, N'Calculado', N'Calculado', CAST(N'2017-03-03 07:48:52.9100000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (5, N'Texto', N'Texto', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+";
 
                 ServerConnection svrConnection = new ServerConnection(db.connection);
                 Server server = new Server(svrConnection);

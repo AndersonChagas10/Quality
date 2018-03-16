@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO;
 using DTO.Helpers;
 using System;
@@ -23,7 +24,12 @@ namespace SgqSystem.Helpers
                 var id = Guard.GetUsuarioLogado_Id(filterContext);
                 var user = db.UserSgq.FirstOrDefault(r => r.Id == id);
                 var level1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == hashKey);
-                var existeAlgum = db.Database.SqlQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is not null and ParLevel1_Id = " + level1.Id).ToList();
+
+                var existeAlgum = new List<ParLevel2ControlCompany>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is not null and ParLevel1_Id = " + level1.Id).ToList();
+                }
 
                 if (existeAlgum != null && existeAlgum.Count() > 0)
                 {
@@ -45,7 +51,12 @@ namespace SgqSystem.Helpers
                 var id = Guard.GetUsuarioLogado_Id(filterContext);
                 var user = db.UserSgq.FirstOrDefault(r => r.Id == id);
                 var level1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == hashKey);
-                var existeAlgum = db.Database.SqlQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and ParLevel1_Id = " + level1.Id).ToList();
+                
+                var existeAlgum = new List<ParLevel2ControlCompany>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and ParLevel1_Id = " + level1.Id).ToList();
+                }
 
                 if (existeAlgum != null && existeAlgum.Count() > 0)
                 {
@@ -77,7 +88,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetOperacoesPorUnidadeId(int unidadeId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var operacoes = (from u in db.Unidades.AsNoTracking()
                                  join c in db.Clusters.AsNoTracking() on u.Cluster equals c.Sigla
@@ -105,7 +116,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<int> GetUnidadesIdPorUsuarioId(int usuarioId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var retorno = (from uu in db.UsuarioUnidades.AsNoTracking()
                                where uu.Usuario == usuarioId
@@ -123,7 +134,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetRegionais()
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var regionais = db.Regionais.AsNoTracking().Select(r => new { RegionalId = r.Id, Regional = r.Nome }).ToList();
 
@@ -140,7 +151,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetUnidadesPorRegionalId(int regionaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var unidades = db.Unidades.AsNoTracking().Where(u => u.Regional.Value == regionaoId).Select(u => new { UnidadeId = u.Id, Unidade = u.Sigla }).ToList();
 
@@ -156,7 +167,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetUnidades()
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var unidades = db.Unidades.AsNoTracking()
                     .Where(u => u.Ativa.Value)
@@ -180,7 +191,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetTarefasPorOperacaoId(int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var tarefas = db.Tarefas.AsNoTracking()
                     .Where(t => t.Operacao == operacaoId)
@@ -206,7 +217,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         //public static IEnumerable<GetMonitoramentosParametrizacao_Result> GetMonitoramentoPorTarefaIdUnidadeIdParametrizacao(int tarefaId, int unidadeId)
         //{
-        //    using (var db = new SGQ_GlobalEntities())
+        //    using (var db = new SgqDbDevEntities())
         //    {
         //        var monitoramentos = db.GetMonitoramentosParametrizacao(unidadeId, tarefaId).ToList();
 
@@ -222,7 +233,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetMonitoramentoPorTarefaIdUnidadeId(int tarefaId, int unidadeId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var monitoramentos = (from tm in db.TarefaMonitoramentos.AsNoTracking()
                                       join m in db.Monitoramentos.AsNoTracking() on tm.Monitoramento equals m.Id
@@ -252,7 +263,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<string, int, string, int?, int>> GetAvaliacoesPorUnidadeIdOperacaoIdTarefaId(int unidadeId, int operacaoId, int tarefaId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var avaliacoes = (from a in db.TarefaAvaliacoes.AsNoTracking()
                                   where (a.Unidade == null || a.Unidade == unidadeId) && a.Operacao == operacaoId && a.Tarefa == tarefaId
@@ -281,7 +292,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<string, string, string, string, string, string, int>> GetAvaliacoesEspecificasPorRegional(int regional)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
 
                 var unidadesDaRegional = db.Unidades.AsNoTracking().Where(r => r.Regional == regional).Select(r => r.Id);
@@ -316,7 +327,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static List<Tuple<string, object, string, string, string, string, string>> GetFlagsTarefaRegional(int regional)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var unidades = db.Unidades.AsNoTracking().Where(r => r.Regional == regional);
                 //var temp1 = db.TarefaMonitoramentos.Where(r => r.Unidade != null && unidades.Any(c => c.Id == r.Unidade)).Distinct();
@@ -366,7 +377,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static List<Tuple<string, string, object, string, string, string, string>> GetFlagsOperacaoRegional(int regional)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var unidades = db.Unidades.AsNoTracking().Where(r => r.Regional == regional);
                 var tarMon = db.TarefaAvaliacoes.AsNoTracking().Where(r => r.Unidade == null || unidades.Any(c => c.Id == r.Unidade)).Distinct();
@@ -420,7 +431,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         //public static IEnumerable<Tuple<string, GetMonitoramentosParametrizacao_Result, string, string, string, string>> GetMonitoramentoPorRegional(int regional)
         //{
-        //    using (var db = new SGQ_GlobalEntities())
+        //    using (var db = new SgqDbDevEntities())
         //    {
 
         //        var unidades = db.Unidades.AsNoTracking().Where(r => r.Regional == regional);
@@ -457,7 +468,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<string, string, int, string, int?, int>> GetAvaliacoesPorUnidadeIdOperacaoId(int unidadeId, int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var avaliacoes = (from a in db.TarefaAvaliacoes.AsNoTracking()
                                   where (a.Unidade != null && a.Unidade == unidadeId) && a.Operacao == operacaoId
@@ -488,7 +499,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<string, string, string, int, string, int?, int>> GetAvaliacoes(int regional)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
 
                 var unidades = db.Unidades.Where(r => r.Regional == regional).ToList();
@@ -525,7 +536,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<string, int, string, int?, int>> GetAvaliacoesPorUnidadeEspecificasIdOperacaoIdTarefaId(int unidadeId, int operacaoId, int tarefaId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var avaliacoes = (from a in db.TarefaAvaliacoes
                                   where (a.Unidade != null || a.Unidade == unidadeId) && a.Operacao == operacaoId && a.Tarefa == tarefaId
@@ -555,7 +566,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<string, string, string, string, string, int, int>> GetAvaliacoesPorUnidadeEspecificasIdOperacaoId(int unidadeId, int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var avaliacoes = (from a in db.TarefaAvaliacoes.AsNoTracking()
                                   where (a.Unidade != null || a.Unidade == unidadeId) && a.Operacao == operacaoId
@@ -585,7 +596,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetOperacoesEspecificaPorUnidadeId(int unidadeId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var operacoes = (from u in db.Unidades.AsNoTracking()
                                  join c in db.Clusters.AsNoTracking() on u.Cluster equals c.Sigla
@@ -614,7 +625,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetUnidadesComTarefasEspecificasPorRegionalId(int regionaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var unidades = db.Unidades.AsNoTracking().Where(u => u.Regional.Value == regionaoId).Select(u => new { UnidadeId = u.Id, Unidade = u.Sigla }).ToList();
 
@@ -636,7 +647,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         //public static IEnumerable<GetMonitoramentosParametrizacao_Result> GetMonitoramentoPorEspecificosTarefaIdUnidadeIdParametrizacao(int tarefaId, int unidadeId)
         //{
-        //    using (var db = new SGQ_GlobalEntities())
+        //    using (var db = new SgqDbDevEntities())
         //    {
         //        var monitoramentos = db.GetMonitoramentosParametrizacao(unidadeId, tarefaId).ToList();
         //        var filtro = db.TarefaAvaliacoes.Where(r => r.Unidade != null).Select(c => c.Tarefa);
@@ -652,7 +663,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetTarefasEspecificasPorOperacaoId(int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var filtro = db.TarefaAvaliacoes.AsNoTracking().Where(r => r.Unidade != null).Select(c => c.Tarefa).Distinct();
                 var tarefas = db.Tarefas.AsNoTracking()
@@ -677,7 +688,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static List<Tuple<string, object, string>> GetFlagsOperacaoEspecificas(int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var filtro = db.TarefaAvaliacoes.Where(r => r.Unidade != null).Select(c => c.Operacao).Distinct();
                 var flags = (from o in db.Operacoes.AsNoTracking()
@@ -725,7 +736,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static List<Tuple<string, object, string>> GetFlagsTarefaEspecificas(int tarefaId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var filtro = db.TarefaAvaliacoes.Where(r => r.Unidade != null).Select(c => c.Tarefa).Distinct();
                 var flags = (from t in db.Tarefas.AsNoTracking()
@@ -785,7 +796,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetMaximoNumeroAmostra(int unidadeId, int departamentoId, int operacaoId, int tarefaId, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -898,7 +909,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetMaximoNumeroAvaliacao(int unidadeId, int departamentoId, int operacaoId, int tarefaId, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno;
 
@@ -1001,7 +1012,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetNumeroAmostraRealizada(int unidadeId, int departamentoId, int operacaoId, int tarefaId, int numeroAvaliacao, DateTime dataConsultar, bool decrescer = false)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 //int retorno = 0;
 
@@ -1074,7 +1085,7 @@ namespace SgqSystem.Helpers
 
         public static int GetNumeroAmostraRealizadaVerificacao(int unidadeId, int departamentoId, int operacaoId, int tarefaId, int numeroAvaliacao, DateTime dataConsultar, bool decrescer = false)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 //int retorno = 0;
 
@@ -1144,7 +1155,7 @@ namespace SgqSystem.Helpers
             }
         }
 
-        private static int GetAmostraRealizadaVerificacao(int unidadeId, DateTime dataConsultar, SGQ_GlobalEntities db)
+        private static int GetAmostraRealizadaVerificacao(int unidadeId, DateTime dataConsultar, SgqDbDevEntities db)
         {
             return (from v in db.VerificacaoTipificacao.AsNoTracking()
                     let d = DbFunctions.TruncateTime(v.DataHora)
@@ -1168,7 +1179,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetNumeroAmostraData(int unidadeId, int departamentoId, int operacaoId, int tarefaId, int numeroAvaliacao, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1243,7 +1254,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetNumeroAvaliacaoAtual(int unidadeId, int departamentoId, int operacaoId, int tarefaId, DateTime dataConsultar, bool decrescer = false)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 //int retorno = 0;
 
@@ -1296,7 +1307,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetNumeroAvaliacaoData(int unidadeId, int departamentoId, int operacaoId, int tarefaId, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1332,7 +1343,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetProximoNumeroAvaliacao(int unidadeId, int departamentoId, int operacaoId, int tarefaId, bool decrescer = false)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1368,7 +1379,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetProximoNumeroAvaliacao(int unidadeId, int departamentoId, int operacaoId, int tarefaId, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1404,7 +1415,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static bool GetProximoNumeroAvaliacaoData(int unidadeId, int departamentoId, int operacaoId, int tarefaId, DateTime dataConsultar, out int numeroAvaliacao)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 bool retorno = true;
 
@@ -1444,7 +1455,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetProximoNumeroAmostra(int unidadeId, int departamentoId, int operacaoId, int tarefaId, int numeroAvaliacao, bool decrescer = false)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1475,7 +1486,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetProximoNumeroAmostra(int unidadeId, int departamentoId, int operacaoId, int tarefaId, int numeroAvaliacao, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1506,7 +1517,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static int GetProximoNumeroAmostraData(int unidadeId, int departamentoId, int operacaoId, int tarefaId, int numeroAvaliacao, DateTime dataConsultar)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int retorno = 0;
 
@@ -1533,7 +1544,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static DateTime GetDataSegundoTurno(int unidadeId, int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 DateTime dataConsultar;
 
@@ -1567,7 +1578,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static List<Tuple<string, object, string>> GetFlagsOperacao(int operacaoId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var flags = (from o in db.Operacoes.AsNoTracking()
                              where o.Id == operacaoId
@@ -1614,7 +1625,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static List<Tuple<string, object, string>> GetFlagsTarefa(int tarefaId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var flags = (from t in db.Tarefas.AsNoTracking()
                              where t.Id == tarefaId
@@ -1652,7 +1663,7 @@ namespace SgqSystem.Helpers
         /// <returns></returns>
         public static IEnumerable<Tuple<int, string>> GetUnidadesPorUsuarioId(int usuarioId)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 var retorno = (from uu in db.UsuarioUnidades.AsNoTracking()
                                join u in db.Unidades.AsNoTracking() on uu.Unidade equals u.Id
@@ -1672,7 +1683,7 @@ namespace SgqSystem.Helpers
         {
             var dataMesAnterior = dataConsultar.AddMonths(-1);
 
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 int? ultimoIndice = (from i in db.PenalidadeReincidencia.AsNoTracking()
                                      where i.UnidadeId == unidadeId
@@ -1694,7 +1705,7 @@ namespace SgqSystem.Helpers
             try
             {
                 var result = 0;
-                using (var db = new SGQ_GlobalEntities())
+                using (var db = new SgqDbDevEntities())
                 {
                     var dataInicio = DateTime.ParseExact(dtInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     var varDatafim = DateTime.ParseExact(dtFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -1818,7 +1829,7 @@ namespace SgqSystem.Helpers
         //    var ProximaMetaTolerancia = 0;
         //    var UltimoNumeroNC = 0;
 
-        //    using (var db = new SGQ_GlobalEntities())
+        //    using (var db = new SgqDbDevEntities())
         //    {
 
 

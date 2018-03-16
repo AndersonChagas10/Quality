@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -284,10 +285,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
-
-            using (var db = new SgqDbDevEntities())
+            
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
         }
 
@@ -455,218 +456,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
+            
 
-            #region comentado
-            /*
-
-            var whereUnidade = "";
-            var whereUnidade2 = "";
-            var whereCluster = "";
-            var whereStructure = "";
-            var whereCriticalLevel = "";
-            var userUnits = ""; 
-            var whereLevel2 = ""; 
-
-            if (form.unitIdArr.Length != 0)
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                whereUnidade = "WHERE ID  IN (" + string.Join(",", form.unitIdArr) + ")";
-                whereUnidade2 = "AND UNI.Id  IN (" + string.Join(",", form.unitIdArr) + ")";
-            }
-            else
-            {
-                userUnits = GetUserUnits(form.auditorId);
-                whereUnidade = "WHERE ID IN (" + userUnits + ")";
-                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
-            }
-
-
-            if (form.clusterIdArr.Length > 0)
-            {
-                whereCluster = "AND PCC.ParCluster_Id  IN (" + string.Join(",", form.clusterIdArr) + ")";
-            }
-            else
-            if (form.clusterSelected_Id != 0)
-            {
-                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
-            }
-
-
-            if (form.structureIdArr.Length > 0)
-            {
-                whereStructure = "AND CXS.ParStructure_Id  IN (" + string.Join(",", form.structureIdArr) + ")";
-            }
-            else
-            if (form.structureId != 0)
-            {
-                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
-            }
-
-
-            if (form.criticalLevelIdArr.Length > 0)
-            {
-                whereCriticalLevel = "AND L1XC.ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ")";
-            }
-            else
-            if (form.criticalLevelId != 0)
-            {
-                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
-            }
-            if (form.level2IdArr.Length != 0)
-            {
-                whereLevel2 = " AND MON.ID IN (" + string.Join(",", form.level2IdArr) + ")";
-            }
-
-            var query = @"
- DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
-                                                                                                                                                                                                                    
- DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + @"'
-       
- DECLARE @VOLUMEPCC int
-                                                  
- DECLARE @ParCompany_id INT
-SELECT
-	@ParCompany_id = ID
-FROM PARCOMPANY
-" + whereUnidade + @"
---------------------------------                                                                                                                     
-
-SELECT TOP 1
-	@VOLUMEPCC = SUM(Quartos)
-FROM VolumePcc1b(nolock)
-WHERE ParCompany_id = @ParCompany_id
-AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
- 
-                                                                                                                                                      
-                                                                                                                                                      
-  DECLARE @NAPCC INT
-
-
-SELECT
-	@NAPCC =
-	COUNT(1)
-FROM (SELECT
-		COUNT(1) AS NA
-	FROM CollectionLevel2 C2 (NOLOCK)
-	LEFT JOIN Result_Level3 C3 (NOLOCK)
-		ON C3.CollectionLevel2_Id = C2.Id
-	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
-	AND C2.ParLevel1_Id = (SELECT TOP 1
-			id
-		FROM Parlevel1
-		WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)
-	AND C2.UnitId = @ParCompany_Id
-	AND IsNotEvaluate = 1
-	GROUP BY C2.ID) NA
-WHERE NA = 2
---------------------------------                                                                                                                    
-SELECT
-
-	level1_Id as Indicador
-	,Level1Name as IndicadorName
-	,level2_Id as Monitoramento
-	,Level2Name AS MonitoramentoName
-	,concat(S1.Level2Name, ' - ', S1.Unidade) as MonitoramentoUnidade
-	,Unidade_Id as Unidade
-	,Unidade as UnidadeName
-   ,SUM(avSemPeso) AS Av
-   ,SUM(ncSemPeso) AS Nc
-   ,CASE
-		WHEN SUM(AV) IS NULL OR
-			SUM(AV) = 0 THEN 0
-		ELSE SUM(NC) / SUM(AV) * 100
-	END AS Pc
-   ,CAST(1 as bit) as IsMonitoramento
-FROM (SELECT
-		MON.Id AS level2_Id
-	   ,MON.Name AS Level2Name
-	   ,IND.Id AS level1_Id
-	   ,IND.Name AS Level1Name
-	   ,UNI.Id AS Unidade_Id
-	   ,UNI.Name AS Unidade
-	   ,CASE
-			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
-											GROUP BY ParCompany_id) Volume) / 2 - ISNULL(@NAPCC,0)
-			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
-			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
-			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.EvaluatedResult
-			WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiEvaluation
-			WHEN IND.ParConsolidationType_Id = 6 THEN CL2.WeiEvaluation
-			ELSE 0
-		END AS Av
-	   ,CASE
-			WHEN IND.HashKey = 1 THEN (SELECT top 1 VOLUMEPCC From (
-											SELECT ParCompany_id, SUM(Quartos) AS VOLUMEPCC
-											FROM VolumePcc1b(nolock)
-											WHERE 1=1 
-											AND Data = cl1.ConsolidationDate
-											AND ParCompany_id = cl1.UnitId
-											GROUP BY ParCompany_id) Volume) / 2 - ISNULL(@NAPCC,0)
-			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
-			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
-			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.EvaluatedResult
-			WHEN IND.ParConsolidationType_Id = 5 THEN CL2.EvaluateTotal
-			WHEN IND.ParConsolidationType_Id = 6 THEN CL2.EvaluateTotal
-			ELSE 0
-		END AS AvSemPeso
-	   ,CASE
-			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects
-			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
-			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.DefectsResult
-			WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiDefects
-			WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
-			ELSE 0
-		END AS NC
-	   ,CASE
-			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
-			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
-			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.DefectsResult
-			WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal
-			WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
-			ELSE 0
-		END AS NCSemPeso
-	FROM ConsolidationLevel2 CL2 (NOLOCK)
-	INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
-		ON CL1.Id = CL2.ConsolidationLevel1_Id
-	INNER JOIN ParLevel1 IND (NOLOCK)
-		ON IND.Id = CL1.ParLevel1_Id AND ISNULL(IND.ShowScorecard, 1) = 1
-        AND IND.Id <> 43
-        AND IND.IsActive = 1
-	INNER JOIN ParLevel2 MON (NOLOCK)
-		ON MON.Id = CL2.ParLevel2_Id
-        AND MON.IsActive = 1
-	INNER JOIN ParCompany UNI (NOLOCK)
-		ON UNI.Id = CL1.UnitId
-	INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
-		ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
-           and L1XC.IsActive = 1
-	INNER JOIN ParCompanyXStructure CXS (NOLOCK)
-		ON CL1.UnitId = CXS.ParCompany_Id
-	INNER JOIN ParCompanyCluster PCC (NOLOCK)
-		ON PCC.ParCompany_Id = UNI.Id
-        AND PCC.ParCluster_Id = L1XC.ParCluster_Id AND PCC.Active = 1
-	WHERE 1 = 1
-    AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-	" + whereUnidade2 + @"
-    " + whereCluster + @"
-    " + whereStructure + @"
-    " + whereCriticalLevel + @"
-    " + whereLevel2 + @"
-	AND IND.Id = " + form.level1Id + @" )S1
-GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id, level1_Id, S1.Level1Name
--- HAVING SUM(NC) > 0
-ORDER BY 10 DESC ";
-*/
-
-            #endregion
-
-            using (var db = new SgqDbDevEntities())
-            {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
         }
@@ -840,9 +634,9 @@ ORDER BY 10 DESC ";
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
         }
@@ -1024,9 +818,9 @@ ORDER BY 10 DESC ";
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
         }
 
@@ -1189,9 +983,9 @@ ORDER BY 10 DESC ";
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
         }
@@ -1358,9 +1152,9 @@ ORDER BY 10 DESC ";
             }
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(script).ToList();
+                retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
             }
 
 
@@ -1387,10 +1181,9 @@ ORDER BY 10 DESC ";
                 query = getQueryHistorioIndicador(form, true,1); // 0: Listagem / 1: Evolutivo 
             }
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno2 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
@@ -2237,12 +2030,16 @@ ORDER BY 10 DESC ";
                     "\n group by mesData ORDER BY 10";
 
             #endregion
-            var db = new SgqDbDevEntities();
+
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query4;
 
-            var result = db.Database.SqlQuery<RetornoGenerico>(grandeQuery).ToList();
+            var result = new List<RetornoGenerico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
+            }
 
             //var result1 = result.Where(r => r.QUERY == 1).ToList();
             //var result2 = result.Where(r => r.QUERY == 2).ToList();
@@ -3125,12 +2922,16 @@ ORDER BY 10 DESC ";
                     "\n  ORDER BY 10";
 
             #endregion
-            var db = new SgqDbDevEntities();
+
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query4;
 
-            var result = db.Database.SqlQuery<RetornoGenerico>(grandeQuery).ToList();
+            var result = new List<RetornoGenerico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
+            }
 
             //var result1 = result.Where(r => r.QUERY == 1).ToList();
             //var result2 = result.Where(r => r.QUERY == 2).ToList();
@@ -3947,12 +3748,16 @@ ORDER BY 10 DESC ";
                     "\n group by mesData ORDER BY 10";
 
             #endregion
-            var db = new SgqDbDevEntities();
+
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query4;
 
-            var result = db.Database.SqlQuery<RetornoGenerico>(grandeQuery).ToList();
+            var result = new List<RetornoGenerico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
+            }
 
             //var result1 = result.Where(r => r.QUERY == 1).ToList();
             //var result2 = result.Where(r => r.QUERY == 2).ToList();
@@ -3976,10 +3781,9 @@ ORDER BY 10 DESC ";
 
             query = getQueryHistorioGeral(form,true,5);
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno2 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
@@ -3995,10 +3799,9 @@ ORDER BY 10 DESC ";
 
             query = getQueryHistorioGeral(form,true,4);
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno2 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
@@ -4690,9 +4493,9 @@ ORDER BY 3
                 query = getQueryHistorioIndicador(form,false,1);
             }
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno3 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno3 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             //if(retornaSomenteAv == true)
@@ -4723,11 +4526,10 @@ ORDER BY 3
             {
                 query = getQueryHistorioIndicador(form, false, 1);
             }
-
-
-            using (var db = new SgqDbDevEntities())
+            
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno4 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+                retorno4 = factory.SearchQuery<RetornoGenerico>(query).ToList();
             }
 
             return retorno4;
@@ -4912,9 +4714,9 @@ ORDER BY 3
                 DROP TABLE #ListaDatas_";
 
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<AcoesConcluidas>(query).ToList();
+                    retorno = factory.SearchQuery<AcoesConcluidas>(query).ToList();
                 }
 
                 return retorno;
@@ -5011,9 +4813,9 @@ ORDER BY 3
                             LEFT JOIN Pa_Status S
                             	ON S.Id = PA.Status";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<Pa_Acao>(query).ToList();
+                    retorno = factory.SearchQuery<Pa_Acao>(query).ToList();
                 }
 
                 return retorno;

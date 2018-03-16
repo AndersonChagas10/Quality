@@ -146,7 +146,7 @@ namespace SgqSystem.Controllers.Api
             //WebService para teste via browser sem a necessidade de carregar a página. Os parâmetros devem alterados para os dados dos dias
             //http://localhost:50267/VerificacaoTipificacao/GetDadosGet?token=testedotoken&idUnidade=1&data=20160502&sequencial=20&teste=sim&verificacaoTipificacaoChave=12730120160502&empresaId=1&departamentoId=2&tarefaId=183&operacaoId=27
 
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 //teste do token é a validação para entrar na verificação de tipificação
                 if (token.Equals("testedotoken"))//Token(token))
@@ -598,7 +598,7 @@ namespace SgqSystem.Controllers.Api
 
             try
             {
-                using (var db = new SGQ_GlobalEntities())
+                using (var db = new SgqDbDevEntities())
                 {
                     //data = Convert.ToDateTime(data).ToString("yyyy-MM-dd")
                     data = DateTime.ParseExact(data, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
@@ -823,7 +823,7 @@ namespace SgqSystem.Controllers.Api
                                                                 string idCaracteristicaTipificacaoVTR, string idCaracteristicaTipificacaoVTV)
         {
 
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 try
                 {

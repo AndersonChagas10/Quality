@@ -8,12 +8,13 @@ using System.Threading;
 using System.Collections;
 using SgqSystem.Services;
 using DTO;
+using ADOFactory;
 
 namespace SGQDBContext
 {
     public partial class ParLevel1
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int hashKey { get; set; }
@@ -30,7 +31,7 @@ namespace SGQDBContext
         public int RealTimeConsolitationUpdate { get; set; }
         public bool IsLimitedEvaluetionNumber { get; set; }
         public bool IsPartialSave { get; set; }
-        public decimal tipoAlerta { get; set; }
+        public int tipoAlerta { get; set; }
         public decimal valorAlerta { get; set; }
         public bool HasCompleteEvaluation { get; set; }
         public bool IsReaudit { get; set; }
@@ -60,7 +61,12 @@ namespace SGQDBContext
             {
                 //SqlConnection db = new SqlConnection(conexao);
                 string sql = "SELECT * FROM ParLevel1 (nolock)  WHERE Id='" + Id + "'";
-                var parLevel1List = db.Query<ParLevel1>(sql).FirstOrDefault();
+
+                ParLevel1 parLevel1List = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parLevel1List = factory.SearchQuery<ParLevel1>(sql).ToList().FirstOrDefault();
+                }
 
                 return parLevel1List;
             }
@@ -87,7 +93,12 @@ namespace SGQDBContext
                 }
                 sql += " GROUP BY ParLevel1_Id, InitDate                                                    " +
                         "HAVING MAX(InitDate) = InitDate)                                                   ";
-                var parLevel1List = db.Query<ParLevel1>(sql).ToList();
+
+                var parLevel1List = new List<ParLevel1>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parLevel1List = factory.SearchQuery<ParLevel1>(sql).ToList();
+                }
 
                 return parLevel1List;
             }
@@ -179,8 +190,11 @@ namespace SGQDBContext
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
-
-            var parLevel1List = db.Query<ParLevel1>(sql);
+            List<ParLevel1> parLevel1List = new List<ParLevel1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel1List = factory.SearchQuery<ParLevel1>(sql).ToList();
+            }
 
             return parLevel1List;
         }
@@ -198,7 +212,7 @@ namespace SGQDBContext
 
     public partial class ParLevel1Alertas
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
         public string Nivel3 { get; set; }
@@ -364,9 +378,12 @@ namespace SGQDBContext
                     "\n        WHERE RESULT.ID = " + ParLevel1_Id + " " +
                     "\n	) SELECAO " +
                     "\n) FIM  ";
-
-
-            var parLevel2List = db.Query<ParLevel1Alertas>(sql).FirstOrDefault();
+            
+            ParLevel1Alertas parLevel2List = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel2List = factory.SearchQuery<ParLevel1Alertas>(sql).FirstOrDefault();
+            }
 
             return parLevel2List;
         }
@@ -374,7 +391,7 @@ namespace SGQDBContext
 
     public partial class ParLevel2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -455,7 +472,12 @@ namespace SGQDBContext
             {
                 //SqlConnection db = new SqlConnection(conexao);
                 string sql = "SELECT * FROM ParLevel2 (nolock)  WHERE Id='" + Id + "'";
-                var parLevel1List = db.Query<ParLevel2>(sql).FirstOrDefault();
+
+                ParLevel2 parLevel1List = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parLevel1List = factory.SearchQuery<ParLevel2>(sql).FirstOrDefault();
+                }
                 return parLevel1List;
             }
             catch (Exception ex)
@@ -504,7 +526,11 @@ namespace SGQDBContext
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
                              "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto             ";
 
-                var parLevel2List = db.Query<ParLevel2>(sql);
+                List<ParLevel2> parLevel2List = new List<ParLevel2>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parLevel2List = factory.SearchQuery<ParLevel2>(sql);
+                }
 
                 return parLevel2List;
 
@@ -546,7 +572,11 @@ namespace SGQDBContext
                          "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
                          "\n ";
 
-                var parLevel2List = db.Query<ParLevel2>(sql);
+                List<ParLevel2> parLevel2List = new List<ParLevel2>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parLevel2List = factory.SearchQuery<ParLevel2>(sql);
+                }
 
                 return parLevel2List;
             }
@@ -555,7 +585,7 @@ namespace SGQDBContext
 
     public partial class ParLevel2Evaluate
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -593,8 +623,11 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
 
-                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
-
+                List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
+                }
 
                 return parEvaluate;
 
@@ -614,9 +647,12 @@ namespace SGQDBContext
 
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
-
-                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
-
+                
+                List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
+                }
 
                 return parEvaluate;
 
@@ -637,8 +673,11 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
 
-                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
-
+                List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
+                }
 
                 return parEvaluate;
 
@@ -658,9 +697,12 @@ namespace SGQDBContext
 
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
-
-                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
-
+                
+                List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
+                }
 
                 return parEvaluate;
 
@@ -694,8 +736,12 @@ namespace SGQDBContext
                              "ORDER BY PE.ParCompany_Id  DESC, PE.AlterDate, PE.AddDate                                           ";
 
                 // sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
-
-                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+                
+                List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
+                }
                 return parEvaluate;
 
             }
@@ -709,7 +755,7 @@ namespace SGQDBContext
     }
     public partial class ParLevel2Sample
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -746,8 +792,11 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
 
-                var parSample = db.Query<ParLevel2Sample>(sql);
-
+                List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parSample = factory.SearchQuery<ParLevel2Sample>(sql);
+                }
 
                 return parSample;
 
@@ -767,9 +816,12 @@ namespace SGQDBContext
 
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
-
-                var parSample = db.Query<ParLevel2Sample>(sql);
-
+                
+                List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parSample = factory.SearchQuery<ParLevel2Sample>(sql);
+                }
 
                 return parSample;
 
@@ -789,9 +841,12 @@ namespace SGQDBContext
 
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
-
-                var parSample = db.Query<ParLevel2Sample>(sql);
-
+                
+                List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parSample = factory.SearchQuery<ParLevel2Sample>(sql);
+                }
 
                 return parSample;
 
@@ -811,9 +866,12 @@ namespace SGQDBContext
 
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
-
-                var parSample = db.Query<ParLevel2Sample>(sql);
-
+                
+                List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parSample = factory.SearchQuery<ParLevel2Sample>(sql);
+                }
 
                 return parSample;
 
@@ -844,8 +902,12 @@ namespace SGQDBContext
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id, PS.AlterDate, PS.AddDate, PS.ParCompany_Id           " +
                              "ORDER BY PS.ParCompany_Id desc, PS.AlterDate DESC, PS.AddDate DESC                                ";
-
-                var parSample = db.Query<ParLevel2Sample>(sql);
+                
+                List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parSample = factory.SearchQuery<ParLevel2Sample>(sql);
+                }
 
                 return parSample;
             }
@@ -856,7 +918,7 @@ namespace SGQDBContext
     }
     public partial class ParLevel3
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -888,7 +950,12 @@ namespace SGQDBContext
         {
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "SELECT Id, Name FROM ParLevel3 (nolock) ";
-            var parLevel3List = db.Query<ParLevel3>(sql);
+
+            List<ParLevel3> parLevel3List = new List<ParLevel3>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel3List = factory.SearchQuery<ParLevel3>(sql);
+            }
 
             return parLevel3List;
 
@@ -898,7 +965,12 @@ namespace SGQDBContext
         {
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "SELECT P3.Id, P3.Name FROM ParLevel3Level2Level1 P321  (nolock) INNER JOIN ParLevel3Level2 P32 (nolock)  ON P32.Id = P321.ParLevel3Level2_Id INNER JOIN ParLevel3 P3 (nolock)  ON P3.Id = P32.ParLevel3_Id WHERE P321.ParLevel1_Id = " + ParLevel1_Id.ToString();
-            var parLevel3List = db.Query<ParLevel3>(sql);
+            
+            List<ParLevel3> parLevel3List = new List<ParLevel3>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel3List = factory.SearchQuery<ParLevel3>(sql);
+            }
 
             return parLevel3List;
 
@@ -1015,17 +1087,14 @@ namespace SGQDBContext
             string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
             string ParLevel1Origin_Id = "";
 
-            using (var db = new Dominio.SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                var list = db.Database.SqlQuery<ResultadoUmaColuna>(possuiIndicadorFilho).ToList();
-
+                var list = factory.SearchQuery<ResultadoUmaColuna>(possuiIndicadorFilho);
                 for (var i = 0; i < list.Count(); i++)
                 {
                     ParLevel1Origin_Id += list[i].retorno.ToString() + ", ";
                 }
             }
-
-
 
             ParLevel1Origin_Id += "null";
 
@@ -1038,9 +1107,9 @@ namespace SGQDBContext
             {
                 string IndicadorFilhoPeso = "SELECT cast(PointsDestiny as varchar(3)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
 
-                using (var db = new Dominio.SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    var list = db.Database.SqlQuery<ResultadoUmaColuna>(IndicadorFilhoPeso).ToList();
+                    var list = factory.SearchQuery<ResultadoUmaColuna>(IndicadorFilhoPeso).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {
@@ -1113,7 +1182,11 @@ namespace SGQDBContext
 
             sql += "\n   ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC , 16  DESC  ";
 
-            var parLevel3List = db.Query<ParLevel3>(sql);
+            List<ParLevel3> parLevel3List = new List<ParLevel3>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel3List = factory.SearchQuery<ParLevel3>(sql);
+            }
 
             return parLevel3List;
         }
@@ -1175,8 +1248,11 @@ namespace SGQDBContext
                 //              "AND C2.UnitId = '" + ParCompany_Id + "' " +
                 //              "AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
 
-
-                var parLevel3List = db.Query<ParLevel3>(sql);
+                List<ParLevel3> parLevel3List = new List<ParLevel3>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    parLevel3List = factory.SearchQuery<ParLevel3>(sql);
+                }
 
                 return parLevel3List;
 
@@ -1190,7 +1266,7 @@ namespace SGQDBContext
 
     public partial class Level2Result
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Key { get; set; }
@@ -1228,8 +1304,11 @@ namespace SGQDBContext
                          "GROUP BY CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, Shift, Period, CONVERT(date, CollectionDate), EvaluationNumber, ConsolidationLevel2_Id) AS ultimas_amostras " +
                          "GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId, Shift, Period, CollectionDate, ConsolidationLevel2_Id ";
 
-
-            var Level2ResultList = db.Query<Level2Result>(sql);
+            List<Level2Result> Level2ResultList = new List<Level2Result>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                Level2ResultList = factory.SearchQuery<Level2Result>(sql);
+            }
 
             return Level2ResultList;
 
@@ -1259,7 +1338,13 @@ namespace SGQDBContext
             string sql = "SELECT CL2.Id, CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CL2.Shift, CL2.Period, CL2.EvaluationNumber, CL2.Sample, CL2.ConsolidationLevel2_Id, CL2.[Key] " +
                          "FROM CollectionLevel2 CL2  (nolock) " +
                          "WHERE CL2.ParLevel1_Id = '" + ParLevel1_Id + "' AND CL2.UnitId = '" + ParCompany_Id + "' AND CL2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
-            var Level2ResultList = db.Query<Level2Result>(sql);
+            
+            List<Level2Result> Level2ResultList = new List<Level2Result>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                Level2ResultList = factory.SearchQuery<Level2Result>(sql);
+            }
+
             return Level2ResultList;
         }
 
@@ -1268,7 +1353,7 @@ namespace SGQDBContext
 
     public partial class ParLevel1ConsolidationXParFrequency
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int ParLevel1_Id { get; set; }
         public int ParFrequency_Id { get; set; }
@@ -1298,7 +1383,11 @@ namespace SGQDBContext
                              " AND PL1.IsActive = 1" +
                              " GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
-                var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
+                List<ParLevel1ConsolidationXParFrequency> consolidation = new List<ParLevel1ConsolidationXParFrequency>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    consolidation = factory.SearchQuery<ParLevel1ConsolidationXParFrequency>(sql);
+                }
 
                 return consolidation;
             }
@@ -1312,7 +1401,7 @@ namespace SGQDBContext
     }
     public partial class ConsolidationResultL1L2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int AlertLevelL1 { get; set; }
         public decimal WeiEvaluationL1 { get; set; }
@@ -1384,7 +1473,11 @@ namespace SGQDBContext
 
                          " GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.LastLevel2Alert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction, CL2.HaveReaudit, CL2.ReauditLevel, CL2.ReauditNumber, CL2.ReauditIs, CL2.Phase, CL2.StartPhaseDate, CL2.StartPhaseEvaluation";
 
-            var consolidation = db.Query<ConsolidationResultL1L2>(sql).FirstOrDefault();
+            ConsolidationResultL1L2 consolidation = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                consolidation = factory.SearchQuery<ConsolidationResultL1L2>(sql).FirstOrDefault();
+            }
 
             return consolidation;
         }
@@ -1392,7 +1485,7 @@ namespace SGQDBContext
 
     public partial class ParLevelHeader
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int ParHeaderField_Id { get; set; }
         public string ParHeaderField_Name { get; set; }
@@ -1422,10 +1515,12 @@ namespace SGQDBContext
                          "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
                          "GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired, PH.Description, PH.LinkNumberEvaluetion, ph.duplicate                                                                                                                             ";
-
-
-
-            var parLevel3List = db.Query<ParLevelHeader>(sql);
+            
+            List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel3List = factory.SearchQuery<ParLevelHeader>(sql).ToList();
+            }
 
             return parLevel3List;
         }
@@ -1443,8 +1538,12 @@ namespace SGQDBContext
                          "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
                          "GROUP BY PH.Id, PH.Name, PT.Id, PH.Description, PH.IsRequired, PH.LinkNumberEvaluetion, PH.duplicate;                                                                                                                             ";
-
-            var parLevel3List = db.Query<ParLevelHeader>(sql);
+            
+            List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel3List = factory.SearchQuery<ParLevelHeader>(sql).ToList();
+            }
 
             return parLevel3List;
         }
@@ -1460,8 +1559,12 @@ namespace SGQDBContext
                          "\n AND PHF.ParLevel2_Id = " + ParLevel2_Id + "                                               \n" +
                          "\n AND PHF.ParHeaderField_Id = " + HeaderField_Id + "                                         \n" +
                          "\n AND PHF.IsActive = 1;                                                                    \n";
-
-            var parLevel3List = db.Query<ParLevelHeader>(sql);
+            
+            List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parLevel3List = factory.SearchQuery<ParLevelHeader>(sql).ToList();
+            }
 
             if (parLevel3List.Count() > 0)
                 return true;
@@ -1471,7 +1574,7 @@ namespace SGQDBContext
     }
     public partial class ParFieldType
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1493,14 +1596,18 @@ namespace SGQDBContext
             string sql = "SELECT Id, Name, PunishmentValue, IsDefaultOption FROM ParMultipleValues (nolock)        " +
                          "WHERE ParHeaderField_Id = '" + ParHeaderField_Id + "' and IsActive = 1;        ";
 
-            var multipleValues = db.Query<ParFieldType>(sql);
+            List<ParFieldType> multipleValues = new List<ParFieldType>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                multipleValues = factory.SearchQuery<ParFieldType>(sql).ToList();
+            }
 
             return multipleValues;
         }
 
         public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
-            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
@@ -1566,7 +1673,11 @@ namespace SGQDBContext
                       "\n  ";
             }
 
-            var multipleValues = db.Query<ParFieldType>(sql);
+            List<ParFieldType> multipleValues = new List<ParFieldType>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                multipleValues = factory.SearchQuery<ParFieldType>(sql).ToList();
+            }
 
             return multipleValues;
         }
@@ -1588,12 +1699,16 @@ namespace SGQDBContext
 
         public List<Generico> getProdutos()
         {
-            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
-
-            var lista = db.Query<Generico>(sql).ToList();
+            
+            List<Generico> lista = new List<Generico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                lista = factory.SearchQuery<Generico>(sql).ToList();
+            }
 
             return lista;
         }
@@ -1623,7 +1738,11 @@ namespace SGQDBContext
                 "SELECT * FROM ParLevel3EvaluationSample WHERE(ParCompany_Id = {0} OR ParCompany_Id IS NULL) AND IsActive = 1;", 
                 ParCompanyId);
 
-            var lista = db.Query<ParLevel3Vinculado>(sql).ToList();
+            List<ParLevel3Vinculado> lista = new List<ParLevel3Vinculado>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                lista = factory.SearchQuery<ParLevel3Vinculado>(sql).ToList();
+            }
 
             return lista;
         }
@@ -1631,7 +1750,7 @@ namespace SGQDBContext
 
     public partial class ParRelapse
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int ParFrequency_Id { get; set; }
@@ -1653,14 +1772,18 @@ namespace SGQDBContext
             string sql = "SELECT Id, ParFrequency_Id, NcNumber, EffectiveLength FROM ParRelapse  (nolock)                 " +
                          "WHERE ParLevel1_Id = '" + ParLevel1_Id + "' and IsActive = 1;                         ";
 
-            var parRelapses = db.Query<ParRelapse>(sql);
+            List<ParRelapse> parRelapses = new List<ParRelapse>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parRelapses = factory.SearchQuery<ParRelapse>(sql).ToList();
+            }
 
             return parRelapses;
         }
     }
     public partial class Result_Level3
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         private SqlConnection db { get; set; }
@@ -1679,7 +1802,11 @@ namespace SGQDBContext
                          "WHERE ParLevel3_Id = '" + ParLevel3_Id + "' and " +
                          "CollectionLevel2_Id = " + CollectionLevel2_Id + ";";
 
-            var parResultLevel3 = db.Query<Result_Level3>(sql).FirstOrDefault();
+            Result_Level3 parResultLevel3 = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                parResultLevel3 = factory.SearchQuery<Result_Level3>(sql).FirstOrDefault();
+            }
 
             return parResultLevel3;
         }
@@ -1687,7 +1814,7 @@ namespace SGQDBContext
 
     public partial class ParLevel1VariableProduction
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1706,7 +1833,11 @@ namespace SGQDBContext
                          "ParLevel1VariableProduction P (nolock)  on P.Id = PL.ParLevel1VariableProduction_Id " +
                          " where PL.ParLevel1_Id = " + ParLevel1_Id + "; ";
 
-            var list = db.Query<ParLevel1VariableProduction>(sql);
+            List<ParLevel1VariableProduction> list = new List<ParLevel1VariableProduction>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<ParLevel1VariableProduction>(sql).ToList();
+            }
 
             return list;
         }
@@ -1714,7 +1845,7 @@ namespace SGQDBContext
 
     public partial class ParConfSGQContext
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public bool HaveUnitLogin { get; set; }
@@ -1732,7 +1863,11 @@ namespace SGQDBContext
 
             string sql = "SELECT Id, HaveUnitLogin, HaveShitLogin FROM ParConfSGQ (nolock) ";
 
-            var conf = db.Query<ParConfSGQContext>(sql).FirstOrDefault();
+            ParConfSGQContext conf = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                conf = factory.SearchQuery<ParConfSGQContext>(sql).FirstOrDefault();
+            }
 
             return conf;
 
@@ -1761,7 +1896,7 @@ namespace SGQDBContext
 
         public UserSGQ getUserByLoginOrId(string userLogin = null, int id = 0)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1783,7 +1918,11 @@ namespace SGQDBContext
                          "LEFT JOIN ParCompanyXUserSgq PxU  (nolock) ON U.ParCompany_Id = PxU.ParCompany_Id AND PxU.UserSgq_Id = U.Id " +
                         where;
 
-            var user = db.Query<UserSGQ>(sql).FirstOrDefault();
+            UserSGQ user = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                user = factory.SearchQuery<UserSGQ>(sql).FirstOrDefault();
+            }
 
             return user;
         }
@@ -1814,7 +1953,7 @@ namespace SGQDBContext
         }
         public IEnumerable<ParCompanyXUserSgq> getCompanyUsers(int ParCompany_Id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1824,7 +1963,11 @@ namespace SGQDBContext
                          "WHERE PxC.ParCompany_Id='" + ParCompany_Id + "'                                                                                                                                                              " +
                          "ORDER BY C.Name ASC                                                                                                                                                                                          ";
 
-            var users = db.Query<ParCompanyXUserSgq>(sql);
+            List<ParCompanyXUserSgq> users = new List<ParCompanyXUserSgq>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                users = factory.SearchQuery<ParCompanyXUserSgq>(sql).ToList();
+            }
 
             return users;
         }
@@ -1835,7 +1978,7 @@ namespace SGQDBContext
         /// <returns></returns>
         public IEnumerable<ParCompanyXUserSgq> getUserCompany(int UserSgq_Id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1844,9 +1987,12 @@ namespace SGQDBContext
                          "INNER JOIN UserSgq U  (nolock) ON PxC.UserSgq_Id = u.Id                                                                                                                                                                " +
                          "WHERE PxC.UserSgq_Id='" + UserSgq_Id + "'                                                                                                                                                              " +
                          "ORDER BY C.Name ASC                                                                                                                                                                                          ";
-
-
-            var companys = db.Query<ParCompanyXUserSgq>(sql);
+            
+            List<ParCompanyXUserSgq> companys = new List<ParCompanyXUserSgq>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                companys = factory.SearchQuery<ParCompanyXUserSgq>(sql).ToList();
+            }
 
             return companys;
         }
@@ -1872,7 +2018,7 @@ namespace SGQDBContext
         /// <returns></returns>
         public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id, int ParCompany_id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             //SqlConnection db = new SqlConnection(conexao);
 
@@ -1886,14 +2032,18 @@ namespace SGQDBContext
                          "CU.ParCompany_Id = " + ParCompany_id + " AND                                                                       " +
                          "U.id = " + UserSGQ_Id + ";                                                                                         ";
 
-            var users = db.Query<RoleXUserSgq>(sql);
+            List<RoleXUserSgq> users = new List<RoleXUserSgq>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                users = factory.SearchQuery<RoleXUserSgq>(sql).ToList();
+            }
 
             return users;
         }
     }
     public partial class VolumePcc1b
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int VolumeAnimais { get; set; }
@@ -1913,14 +2063,18 @@ namespace SGQDBContext
 
             string sql = "select VP.Id VP.VolumeAnimais, VP.Quartos, VP.Avaliacoes, VP.Amostras from VolumePcc1b (nolock)  VP where VP.Indicador = " + Indicador + " and VP.Unidade = " + Unidade + "; ";
 
-            var list = db.Query<VolumePcc1b>(sql);
+            List<VolumePcc1b> list = new List<VolumePcc1b>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<VolumePcc1b>(sql).ToList();
+            }
 
             return list;
         }
     }
     public partial class CaracteristicaTipificacao
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public String nCdCaracteristica { get; set; }
         public String cNmCaracteristica { get; set; }
@@ -1946,7 +2100,11 @@ namespace SGQDBContext
                       " from CaracteristicaTipificacao CP (nolock)  where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id + "';";
             }
 
-            var list = db.Query<CaracteristicaTipificacao>(sql);
+            List<CaracteristicaTipificacao> list = new List<CaracteristicaTipificacao>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<CaracteristicaTipificacao>(sql).ToList();
+            }
 
             return list;
         }
@@ -1958,7 +2116,11 @@ namespace SGQDBContext
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from AreasParticipantes CP  (nolock) where LEN(cNrCaracteristica) >= 5;";
 
-            var list = db.Query<CaracteristicaTipificacao>(sql);
+            List<CaracteristicaTipificacao> list = new List<CaracteristicaTipificacao>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<CaracteristicaTipificacao>(sql).ToList();
+            }
 
             return list;
         }
@@ -1970,7 +2132,11 @@ namespace SGQDBContext
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from CaracteristicaTipificacao CP (nolock)  where cNrCaracteristica = " + ncdcaracteristica;
 
-            var list = db.Query<CaracteristicaTipificacao>(sql);
+            List<CaracteristicaTipificacao> list = new List<CaracteristicaTipificacao>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<CaracteristicaTipificacao>(sql).ToList();
+            }
 
             return list;
         }
@@ -1982,7 +2148,11 @@ namespace SGQDBContext
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from AreasParticipantes CP  (nolock) where cNrCaracteristica = 0209;";
 
-            var list = db.Query<CaracteristicaTipificacao>(sql);
+            List<CaracteristicaTipificacao> list = new List<CaracteristicaTipificacao>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<CaracteristicaTipificacao>(sql).ToList();
+            }
 
             return list;
         }
@@ -1991,7 +2161,7 @@ namespace SGQDBContext
     }
     public partial class VerificacaoTipificacaoTarefaIntegracao
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int TarefaId { get; set; }
@@ -2010,7 +2180,11 @@ namespace SGQDBContext
 
             string sql = "select Id, TarefaId, CaracteristicaTipificacaoId from VerificacaoTipificacaoTarefaIntegracao (nolock)  where CaracteristicaTipificacaoId = " + caracteristicatipificacaoid;
 
-            var list = db.Query<VerificacaoTipificacaoTarefaIntegracao>(sql);
+            List<VerificacaoTipificacaoTarefaIntegracao> list = new List<VerificacaoTipificacaoTarefaIntegracao>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                list = factory.SearchQuery<VerificacaoTipificacaoTarefaIntegracao>(sql).ToList();
+            }
 
             return list;
         }
@@ -2033,7 +2207,7 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionLevel2Consolidation() { }
@@ -2052,7 +2226,11 @@ namespace SGQDBContext
                              "FROM CollectionLevel2 C2  (nolock) WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
                              "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
-                var consolidationLevel2 = db.Query<CollectionLevel2Consolidation>(sql).FirstOrDefault();
+                CollectionLevel2Consolidation consolidationLevel2 = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    consolidationLevel2 = factory.SearchQuery<CollectionLevel2Consolidation>(sql).FirstOrDefault();
+                }
 
                 return consolidationLevel2;
             }
@@ -2088,7 +2266,7 @@ namespace SGQDBContext
             db = _db;
         }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public ConsolidationLevel1XConsolidationLevel2 getConsolidation(int ConsolidationLevel1_Id)
         {
@@ -2098,7 +2276,11 @@ namespace SGQDBContext
 
                 string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 (nolock)  WHERE Id = max(c2.id)) AS LastLevel2Alert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 C2 (nolock)  where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
 
-                var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
+                ConsolidationLevel1XConsolidationLevel2 consolidationLevel1 = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    consolidationLevel1 = factory.SearchQuery<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
+                }
 
                 return consolidationLevel1;
             }
@@ -2133,7 +2315,7 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ConsolidationLevel1() { }
         public ConsolidationLevel1(SqlConnection _db)
@@ -2148,7 +2330,13 @@ namespace SGQDBContext
                 + Period + " AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
 
                 //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
+
+                ConsolidationLevel1 obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<ConsolidationLevel1>(sql).FirstOrDefault();
+                }
+
                 return obj;
             }
             catch (Exception ex)
@@ -2178,7 +2366,7 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public ConsolidationLevel2() { }
@@ -2200,7 +2388,12 @@ namespace SGQDBContext
                  * INSERIR ÍNDICE NO CONSOLIDATIONLEVEL1 DENTRO DO CONOLIDATIONLEVEL2
                  */
 
-                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+                ConsolidationLevel2 obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<ConsolidationLevel2>(sql).FirstOrDefault();
+                }
+                
                 return obj;
             }
             catch (Exception)
@@ -2215,7 +2408,13 @@ namespace SGQDBContext
             {
                 string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult FROM ConsolidationLevel2 (nolock)  WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "'";
                 //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+
+                ConsolidationLevel2 obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<ConsolidationLevel2>(sql).FirstOrDefault();
+                }
+
                 return obj;
 
             }
@@ -2231,7 +2430,13 @@ namespace SGQDBContext
                 string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult, ReauditIs, ReauditNumber FROM ConsolidationLevel2 (nolock)  WHERE ConsolidationLevel1_Id = '" +
                     ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND ReauditIs=" + reaudit + " and reauditnumber=" + reauditNumber + ";";
                 //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+
+                ConsolidationLevel2 obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<ConsolidationLevel2>(sql).FirstOrDefault();
+                }
+
                 return obj;
 
             }
@@ -2274,7 +2479,7 @@ namespace SGQDBContext
         public DateTime? AlterDate { get; }
         public string Key { get; set; }
         public string TTP { get; set; }
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionJson() { }
@@ -2288,7 +2493,13 @@ namespace SGQDBContext
             try
             {
                 //SqlConnection db = new SqlConnection(conexao);
-                var list = db.Query<CollectionJson>(sql);
+                
+                List<CollectionJson> list = new List<CollectionJson>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    list = factory.SearchQuery<CollectionJson>(sql).ToList();
+                }
+                
                 return list;
             }
             catch (Exception)
@@ -2305,7 +2516,7 @@ namespace SGQDBContext
         public string Level { get; set; }
         public string indicador { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public ParCounter() { }
@@ -2366,7 +2577,11 @@ namespace SGQDBContext
                     }
 
                     //SqlConnection db = new SqlConnection(conexao);
-                    var list = db.Query<ParCounter>(sql);
+                    List<ParCounter> list = new List<ParCounter>();
+                    using (Factory factory = new Factory("DefaultConnection"))
+                    {
+                        list = factory.SearchQuery<ParCounter>(sql).ToList();
+                    }
                     return list;
                 }
                 else
@@ -2388,7 +2603,7 @@ namespace SGQDBContext
         public int Id { get; set; }
         public decimal Value { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public NotConformityRule() { }
         public NotConformityRule(SqlConnection _db)
@@ -2405,7 +2620,11 @@ namespace SGQDBContext
                              "   WHERE NCR.Id = " + NCR_Id + " AND P2.Id = " + P2_Id + " AND NCL.IsActive = 1;                                     ";
 
                 //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<NotConformityRule>(sql).FirstOrDefault();
+                NotConformityRule obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<NotConformityRule>(sql).FirstOrDefault();
+                }
                 return obj;
             }
             catch (Exception)
@@ -2459,7 +2678,7 @@ namespace SGQDBContext
         public int DefectsResult { get; set; }
         public bool IsEmptyLevel3 { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionLevel2() { }
@@ -2474,7 +2693,11 @@ namespace SGQDBContext
                 string sql = "SELECT * FROM CollectionLevel2 (nolock)  WHERE [Key] = '" + key + "'";
 
                 //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<CollectionLevel2>(sql).FirstOrDefault();
+                CollectionLevel2 obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<CollectionLevel2>(sql).FirstOrDefault();
+                }
                 return obj;
             }
             catch (Exception)
@@ -2488,7 +2711,7 @@ namespace SGQDBContext
 
     public partial class UpdateCollectionLevel2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public UpdateCollectionLevel2() { }
         public UpdateCollectionLevel2(SqlConnection _db)
@@ -2576,7 +2799,7 @@ namespace SGQDBContext
         public int CountPeriod { get; set; }
         public int CountShift { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ResultPhase() { }
         public ResultPhase(SqlConnection _db)
@@ -2614,7 +2837,13 @@ namespace SGQDBContext
 
 
                 //SqlConnection db = new SqlConnection(conexao);
-                var list = db.Query<ResultPhase>(sql).ToList();
+
+                List<ResultPhase> list = new List<ResultPhase>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    list = factory.SearchQuery<ResultPhase>(sql).ToList();
+                }
+
                 return list;
             }
             catch (Exception)
@@ -2647,7 +2876,11 @@ namespace SGQDBContext
 
 
                 //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<ResultPhaseFrequency>(sql).FirstOrDefault();
+                ResultPhaseFrequency obj = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<ResultPhaseFrequency>(sql).FirstOrDefault();
+                }
                 return obj;
             }
             catch (Exception)
@@ -2677,7 +2910,12 @@ namespace SGQDBContext
                              "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'    " +
                              "GROUP BY CAST(CollectionDate as date), Period, Shift ORDER BY 1";
 
-                var obj = db.Query<ResultLevel2Period>(sql).ToList();
+                List<ResultLevel2Period> obj = new List<ResultLevel2Period>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    obj = factory.SearchQuery<ResultLevel2Period>(sql).ToList();
+                }
+
                 return obj;
             }
             catch (Exception)
@@ -2695,7 +2933,7 @@ namespace SGQDBContext
         public int Period { get; set; }
         public int Shift { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ResultEvaluationDefects() { }
         public ResultEvaluationDefects(SqlConnection _db)
@@ -2713,7 +2951,13 @@ namespace SGQDBContext
                                 "GROUP BY EvaluationNumber, Sample, Period, Shift; ";
 
                 //SqlConnection db = new SqlConnection(conexao);
-                var list = db.Query<ResultEvaluationDefects>(sql).ToList();
+
+                List<ResultEvaluationDefects> list = new List<ResultEvaluationDefects>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    list = factory.SearchQuery<ResultEvaluationDefects>(sql).ToList();
+                }
+
                 return list;
             }
             catch (Exception)
@@ -2730,7 +2974,7 @@ namespace SGQDBContext
          */
     public partial class ResultadoUmaColuna
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public string retorno { get; set; }
 

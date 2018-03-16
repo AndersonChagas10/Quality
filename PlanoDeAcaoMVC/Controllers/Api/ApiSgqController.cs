@@ -206,7 +206,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 DROP TABLE #ListaDatas_";
 
-                retorno = db.Database.SqlQuery<AcoesConcluidas>(query).ToList();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<AcoesConcluidas>(query).ToList();
+                }
 
                 return retorno;
             }
@@ -297,7 +300,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                             LEFT JOIN Pa_Status S
                             	ON S.Id = PA.Status";
 
-                retorno = db.Database.SqlQuery<Pa_Acao>(query).ToList();
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<Pa_Acao>(query).ToList();
+                }
 
                 return retorno;
             }

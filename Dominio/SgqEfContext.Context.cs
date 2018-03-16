@@ -29,7 +29,7 @@ namespace Dominio
         }
 
         public SgqDbDevEntities(bool NoLazyLoading)
-            : base("name=SgqDbDevEntities")
+    : base("name=SgqDbDevEntities")
         {
             this.Configuration.LazyLoadingEnabled = NoLazyLoading;
             this.Database.CommandTimeout = 9600;
@@ -70,7 +70,6 @@ namespace Dominio
         public virtual DbSet<ParEvaluation> ParEvaluation { get; set; }
         public virtual DbSet<ParFieldType> ParFieldType { get; set; }
         public virtual DbSet<ParFrequency> ParFrequency { get; set; }
-        public virtual DbSet<ParGoal> ParGoal { get; set; }
         public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
@@ -131,6 +130,42 @@ namespace Dominio
         public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
         public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
         public virtual DbSet<ParLevel3EvaluationSample> ParLevel3EvaluationSample { get; set; }
+        public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
+        public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
+        public virtual DbSet<ClusterDepartamentos> ClusterDepartamentos { get; set; }
+        public virtual DbSet<Clusters> Clusters { get; set; }
+        public virtual DbSet<DepartamentoOperacoes> DepartamentoOperacoes { get; set; }
+        public virtual DbSet<Departamentos> Departamentos { get; set; }
+        public virtual DbSet<Empresas> Empresas { get; set; }
+        public virtual DbSet<Equipamentos> Equipamentos { get; set; }
+        public virtual DbSet<FamiliaProdutos> FamiliaProdutos { get; set; }
+        public virtual DbSet<Horarios> Horarios { get; set; }
+        public virtual DbSet<Metas> Metas { get; set; }
+        public virtual DbSet<Monitoramentos> Monitoramentos { get; set; }
+        public virtual DbSet<Operacoes> Operacoes { get; set; }
+        public virtual DbSet<PenalidadeReincidencia> PenalidadeReincidencia { get; set; }
+        public virtual DbSet<Perfil> Perfil { get; set; }
+        public virtual DbSet<Produtos> Produtos { get; set; }
+        public virtual DbSet<Regionais> Regionais { get; set; }
+        public virtual DbSet<Resultados> Resultados { get; set; }
+        public virtual DbSet<TarefaAmostras> TarefaAmostras { get; set; }
+        public virtual DbSet<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
+        public virtual DbSet<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
+        public virtual DbSet<Tarefas> Tarefas { get; set; }
+        public virtual DbSet<Unidades> Unidades { get; set; }
+        public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<UsuarioPerfilEmpresa> UsuarioPerfilEmpresa { get; set; }
+        public virtual DbSet<UsuarioUnidades> UsuarioUnidades { get; set; }
+        public virtual DbSet<VerificacaoTipificacao> VerificacaoTipificacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoComparacao> VerificacaoTipificacaoComparacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoResultados> VerificacaoTipificacaoResultados { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoValidacao> VerificacaoTipificacaoValidacao { get; set; }
+        public virtual DbSet<VolumeProducao> VolumeProducao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacao> VTVerificacaoTipificacao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoResultados> VTVerificacaoTipificacaoResultados { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoValidacao> VTVerificacaoTipificacaoValidacao { get; set; }
+        public virtual DbSet<ParGoal> ParGoal { get; set; }
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParClusterXModule> ParClusterXModule { get; set; }
         public virtual DbSet<ParModule> ParModule { get; set; }

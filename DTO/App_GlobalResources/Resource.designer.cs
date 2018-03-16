@@ -5927,5 +5927,23 @@ namespace Resources {
                 return ResourceManager.GetString("_language", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string _new {
+            get {
+                return ResourceManager.GetString("new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string _novo {
+            get {
+                return ResourceManager.GetString("_novo", resourceCulture);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using Dominio.Interfaces.Services;
 using DTO;
@@ -1265,13 +1266,16 @@ namespace SgqSystem.Controllers
                     "\n GROUP BY PP1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
-
-            var db = new SgqDbDevEntities();
+            
             //db.Database.ExecuteSqlCommand(query);
 
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -1308,7 +1312,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -2471,13 +2479,14 @@ namespace SgqSystem.Controllers
                     "\n GROUP BY PP1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
-
-            var db = new SgqDbDevEntities();
-
-
+            
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -2514,7 +2523,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -3725,12 +3738,13 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
-
-
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -3766,7 +3780,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -4978,12 +4996,14 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
-
 
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -5019,7 +5039,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -6227,12 +6251,13 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
-
-
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -6268,7 +6293,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -7476,12 +7505,13 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
-
-
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -7517,7 +7547,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -8726,12 +8760,13 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
-
-
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
-
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -8768,7 +8803,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -9979,12 +10018,13 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
-
-
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -10020,7 +10060,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -11219,10 +11263,13 @@ namespace SgqSystem.Controllers
 
             var orderby = "\n ORDER BY 1, 2, 3";
 
-            var db = new SgqDbDevEntities();
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
-
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -11258,7 +11305,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -12469,11 +12520,14 @@ namespace SgqSystem.Controllers
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
-
-            var db = new SgqDbDevEntities();
+            
             string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
 
-            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
 
             //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
             //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
@@ -12509,7 +12563,11 @@ namespace SgqSystem.Controllers
                   coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
                */
             #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });

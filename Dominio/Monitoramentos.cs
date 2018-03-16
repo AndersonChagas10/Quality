@@ -17,8 +17,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Monitoramentos()
         {
-            this.VerificacaoTipificacaoTarefaIntegracao = new HashSet<VerificacaoTipificacaoTarefaIntegracao>();
             this.TarefaMonitoramentos = new HashSet<TarefaMonitoramentos>();
+            this.VerificacaoTipificacaoTarefaIntegracao = new HashSet<VerificacaoTipificacaoTarefaIntegracao>();
         }
     
         public int Id { get; set; }
@@ -33,8 +33,8 @@ namespace Dominio
         public string SiglaFalhaOperacional { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParModule>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resources.Resource.module;
 }
 
 <div class="page-content-wrapper">
@@ -16,7 +16,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.cluster</span>
+                    <span>@Resources.Resource.module</span>
                 </li>
             </ul>
         </div>
@@ -41,16 +41,16 @@
                                 <table class="table">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Name)
+                                            @Resources.Resource.name
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Description)
+                                            @Resources.Resource.description
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.AddDate)
+                                            @Resources.Resource.add_date
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.IsActive)
+                                            @Resources.Resource.is_active
                                         </th>
                                         <th></th>
                                     </tr>
