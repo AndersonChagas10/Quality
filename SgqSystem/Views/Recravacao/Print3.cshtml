@@ -845,7 +845,7 @@
                 //vm.dev = false
                 //vm.jbsBrasil = true
 
-                vm.limit = 6
+                vm.limit = 999
                 vm.begins = [0, 6, 12, 18, 24, 30, 36, 42]
                 $scope.getNumber = function(num) {
                     if(vm.seletedLinha)
@@ -959,7 +959,7 @@
                                        //vm.seletedLinha = { Id: 0 }
                                        //vm.getState()
 
-                                       if (c == (vm.linhas.length -1))
+                                       //if (c == (vm.linhas.length -1))
                                            if (loadLinha) {
                                                vm.activeInLine = linhaId
                                                vm.getLinha(null, linhaId, false)
