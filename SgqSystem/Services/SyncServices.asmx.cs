@@ -4624,6 +4624,7 @@ namespace SgqSystem.Services
 
                             form_control += @" <script>
                                              function buscarProduto(a,valor){
+
                                                 for (var j=0; j < listaProdutosJson.length; j++) {
                                                    if (listaProdutosJson[j].id == valor) {
 
@@ -4632,7 +4633,7 @@ namespace SgqSystem.Services
                                                       return;
                                                    }		                                               
                                                 }
-                                                $(a).val('');
+                                                //$(a).val('');
                                                 $(a).next().html('');
                                             }
 
@@ -4650,8 +4651,10 @@ namespace SgqSystem.Services
                                             }
                                             </script> ";
 
+                           
+
                             form_control += " <input class=\"form-control input-sm\" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \">";
-                            form_control += " <label></label>";
+                            form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
                         }
                         /* se for um combobox integrado*/
