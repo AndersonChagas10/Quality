@@ -305,8 +305,8 @@ namespace SGQDBContext
                     "\n               , MON.Name AS MONITORAMENTO " +
                     "\n                , TAR.Name AS TAREFA " +
                     "\n                , MONITORAMENTOS.Weight AS \"PESO_DA_TAREFA\" " +
-                    "\n                , (SELECT TOP 1 Number FROM ParEvaluation (nolock)  WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS AVALIACOES " +
-                    "\n                ,(SELECT TOP 1 Number FROM ParSample (nolock)      WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS AMOSTRAS " +
+                    "\n                , (SELECT TOP 1 Number FROM ParEvaluation (nolock)  WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) and (ParLevel1_id = " + ParLevel1_Id + " OR ParLevel1_id IS NULL) ORDER BY ParCompany_Id DESC) AS AVALIACOES " +
+                    "\n                ,(SELECT TOP 1 Number FROM ParSample (nolock)      WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) and (ParLevel1_id = " + ParLevel1_Id + " OR ParLevel1_id IS NULL) ORDER BY ParCompany_Id DESC) AS AMOSTRAS " +
                     "\n                FROM " +
                     "\n                ----INDICADOR-------------------------------------------------- " +
                     "\n                ( " +
@@ -423,7 +423,7 @@ namespace SGQDBContext
             db = _db;
         }
 
-        public int getExisteAvaliacao(int ParCompany_Id, int ParLevel2_Id)
+        public int getExisteAvaliacao(int ParCompany_Id, int ParLevel2_Id, int ParLevel1_Id)
         {
 
             //SqlConnection db = new SqlConnection(conexao);
@@ -434,6 +434,8 @@ namespace SGQDBContext
                 "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " AND IsActive = 1 " +
                 "\n union all " +
                 "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  AND IsActive = 1 " +
+                "\n union all " +
+                "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParLevel1_Id = " + ParLevel1_Id + "  AND IsActive = 1 " +
                 "\n ) temAv ";
 
             SqlCommand command = new SqlCommand(sql, db);
@@ -556,17 +558,19 @@ namespace SGQDBContext
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.Id + "" +
                          "\n union all " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.Id + "" +
+                        
                          "\n ) temAv) > 0 " +
 
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.Id + "" +
                          "\n union all " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.Id + "" +
+
                          "\n ) temAm) > 0 " +
 
                          "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
@@ -720,6 +724,8 @@ namespace SGQDBContext
                     queryCompany = " AND PE.ParCompany_Id IS NULL ";
                 }
 
+                string queryLevel1 = " AND PE.ParLevel1_Id = '" + ParLevel1.Id + "' OR PE.ParLevel1_Id IS NULL ";               
+
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate                " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32    (nolock)                                                       " +
@@ -732,8 +738,9 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              " AND PE.IsActive = 1 " +
                              queryCompany +
+                             queryLevel1 +
                              "GROUP BY PL2.Id, PL2.Name, PE.Number, PE.AlterDate, PE.AddDate, PE.ParCompany_Id              " +
-                             "ORDER BY PE.ParCompany_Id  DESC, PE.AlterDate, PE.AddDate                                           ";
+                             "ORDER BY PE.ParCompany_Id  DESC, PE.AlterDate, PE.AddDate                                      ";
 
                 // sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
                 
@@ -889,6 +896,8 @@ namespace SGQDBContext
                     queryCompany = " AND PS.ParCompany_Id  IS NULL ";
                 }
 
+                string queryLevel1 = " AND PS.ParLevel1_Id = '" + ParLevel1.Id + "' OR PS.ParLevel1_Id IS NULL ";
+
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PS.Number AS Sample FROM  " +
                              "ParLevel3Level2 P32  (nolock)                                              " +
                              "INNER JOIN ParLevel3Level2Level1 P321   (nolock)                           " +
@@ -900,6 +909,7 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                 " +
                              " AND PS.IsActive = 1 " +
                              queryCompany +
+                             queryLevel1 +
                              "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id, PS.AlterDate, PS.AddDate, PS.ParCompany_Id           " +
                              "ORDER BY PS.ParCompany_Id desc, PS.AlterDate DESC, PS.AddDate DESC                                ";
                 
