@@ -86,7 +86,41 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
         }
 
-        var query = $@" SELECT                                
+        var query = $@" 
+
+
+                    -- DROP TABLE #CollectionLevel2
+
+                    SELECT 
+	                     id
+	                    ,ParLevel1_Id
+	                    ,ParLevel2_Id
+	                    ,UnitId
+	                    ,CollectionDate
+	                    ,EvaluationNumber
+	                    ,Sample
+	                    ,Sequential
+	                    ,Side
+	                    ,Shift
+	                    ,Period
+	                    ,AuditorId
+	                    ,AddDate
+	                    ,AlterDate 
+                    INTO #CollectionLevel2
+                    FROM collectionlevel2 CL2
+                        WHERE CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
+ 
+                    CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
+                    CREATE INDEX IDX_CollectionLevel2_UnitId ON #CollectionLevel2(UnitId);
+                    CREATE INDEX IDX_CollectionLevel2_CollectionDate ON #CollectionLevel2(CollectionDate);
+                    CREATE INDEX IDX_CollectionLevel2_ParLevel1_Id ON #CollectionLevel2(ParLevel1_Id);
+                    CREATE INDEX IDX_CollectionLevel2_ParLevel2_Id ON #CollectionLevel2(ParLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2_12345 ON #CollectionLevel2(ID,UnitId,CollectionDate,ParLevel1_Id,ParLevel2_Id);
+
+
+                 -- Cubo
+
+                 SELECT                                
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
@@ -120,7 +154,7 @@ public class ApontamentosDiariosResultSet
 				   ELSE '0'
 				   END
 				 as Type
-                 FROM CollectionLevel2 C2 (nolock)     
+                 FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
                  INNER JOIN Result_Level3 R3  (nolock) 
@@ -143,7 +177,7 @@ public class ApontamentosDiariosResultSet
                         when CL2HF2.ParFieldType_Id = 6 then { formatDate }
                         else CL2HF2.Value end)
                         FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
-                        left join collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
+                        left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
                         left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
                         left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
                         left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
@@ -153,7 +187,7 @@ public class ApontamentosDiariosResultSet
                         FOR XML PATH('')
                         ), 1, 1, '')  AS HeaderFieldList
                     FROM CollectionLevel2XParHeaderField CL2HF (nolock) 
-                    left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
+                    left join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
                     left join ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
                     left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
                     GROUP BY CL2HF.CollectionLevel2_Id
@@ -163,8 +197,9 @@ public class ApontamentosDiariosResultSet
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN CollectionJson CJ
                  ON CJ.Id = CLCJ.CollectionJson_Id
-                 WHERE C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
-                {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
+                 WHERE 1=1 
+                  -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
+                  {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
 
         return query;
     }
