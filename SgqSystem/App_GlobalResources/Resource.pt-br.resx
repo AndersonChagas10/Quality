@@ -745,7 +745,7 @@
     <value>Voltar para a lista</value>
   </data>
   <data name="cluster_group" xml:space="preserve">
-    <value>Módulo</value>
+    <value>Grupos de Processos</value>
   </data>
   <data name="create" xml:space="preserve">
     <value>Criar</value>

@@ -320,12 +320,12 @@
 
                 @if (ViewBag.UnitArr == null)
             {
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
         }
         else
         {
-            @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
-    }
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
+        }
             </div>
         </li>
 
