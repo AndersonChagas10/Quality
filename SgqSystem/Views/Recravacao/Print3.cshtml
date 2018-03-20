@@ -708,17 +708,17 @@
                         <tr>
                             <td>
                                 <small>
-                                    <b>Espaço Livre: </b>0,05 - 0,23 mm <br>
-                                    <b>Escareação: </b>Mínimo igual Altura <br>
-                                    <b>Altura: </b>2,67 - 3,30 mm <br>
-                                    <b>Gancho Corpo: </b>1,78 - 2,23 mm <br>
+                                    <b>Espaço Livre: </b>{{ seletedLinha.ParLevel3Interval['Espaço Livre'] }}<br>
+                                    <b>Escareação: </b>{{ seletedLinha.ParLevel3Interval['Escareação'] }}<br>
+                                    <b>Altura: </b>{{ seletedLinha.ParLevel3Interval['Altura'] }}<br>
+                                    <b>Gancho Corpo: </b>{{ seletedLinha.ParLevel3Interval['Gancho Corpo'] }}<br>
                                 </small>
                             </td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td>
                                 <small>
-                                    <b>Gancho Tampa: </b>1,78 - 2,23 mm <br>
-                                    <b>Junção: </b>Mínimo 50% <br>
+                                    <b>Gancho Tampa: </b>{{ seletedLinha.ParLevel3Interval['Gancho Tampa'] }}<br>
+                                    <b>Junção: </b>{{ seletedLinha.ParLevel3Interval['Gancho Tampa'] }}<br>
                                     <b>Teste de ar: </b>Ausência (0% de Vazamento) <br>
                                     <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
                                 </small>
@@ -1004,6 +1004,7 @@
                                     toastr.success('Recuperada linha parametrizada \n da base de dados')
                                 vm.linhas[index] = r.data.model[0]
                                 vm.linhas[index]["latas"] = []
+                                debugger
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
                                 vm.saveState(undefined, undefined, novaLinha)
@@ -1024,13 +1025,6 @@
                     debugger
                     if (vm.seletedLinha['StartAuditTime'])
                         vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
-
-                    $.each( vm.seletedLinha, function( i,o ) {
-                        // Do something
-                    });
-
-                    vm.seletedLinha['minimoGanchoCorpo'] = "";
-                    vm.seletedLinha['maximoGanchoCorpo'] = "";
 
                     vm.activeInLine = vm.seletedLinha.Id
 
@@ -1059,6 +1053,7 @@
                     for (let i = 0; i < linha.NumberOfHeads; i++) {
                         if (linha["counterDeLatas"] == undefined)
                             linha["counterDeLatas"] = 1
+                        debugger
                         linha.latas.push({
                             Name: 'Lata - ' + (linha["counterDeLatas"]),
                             finalizado: false,
@@ -1234,6 +1229,7 @@
                                 else
                                     novaLinha.push(JSON.parse(JSON.stringify(o)))
 
+                                debugger
                                 vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
 
                                 vm.seletedLinha.latas = []
@@ -1260,8 +1256,33 @@
                                 let index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
                                 vm.linhas[index] = vm.seletedLinha
 
+                                debugger
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
+
+                                /*------Montagem Rodapé------*/
+                                //Criação de lista de par level3 com intervalos minimo e maximo
+                                var parLevel3 = [];
+                                $.each(vm.seletedLinha.ListParlevel3, function(i,o){
+                                    if(!!o.ParLevel3Value && o.ParLevel3Value.length > 0){
+                                        var objParlevel3 = o.ParLevel3Value[0];
+                                        var intervalMin = objParlevel3.IntervalMin.toFixed(2);
+                                        var intervalMax = objParlevel3.IntervalMax.toFixed(2);
+                                        var measurementUnit = ((objParlevel3.ParMeasurementUnit != null) ? objParlevel3.ParMeasurementUnit.Name : "");
+                                        var limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
+                                        var nameParLevel3 = o.Name;
+		
+                                        var exist = $.grep(parLevel3, function(ig,og){
+                                            return og['Name'] == nameParLevel3;
+                                        });
+		
+                                        if(!(!!exist && exist.length > 0)){
+                                            parLevel3[nameParLevel3] = limitesParLevel3;
+                                        }
+                                    }
+                                });
+
+                                vm.seletedLinha['ParLevel3Interval'] = parLevel3;
 
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
