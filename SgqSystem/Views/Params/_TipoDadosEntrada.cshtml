@@ -94,6 +94,17 @@
 </div>
 
 <script>
+
+    var eTipoDado_Binario = 1;
+    var eTipoDado_NumeroDefeitos = 2;
+    var eTipoDado_Intervalos = 3;
+    var eTipoDado_Calculado = 4;
+    var eTipoDado_Texto = 5;
+    var eTipoDado_BinarioComTexto = 6;
+    var eTipoDado_IntervaloDatas = 7;
+    var eTipoDado_EscalaLikert = 8;
+    var eTipoDado_Recravacao = 99;
+
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
 
     var level3Value = {
@@ -150,19 +161,19 @@
                 companyName = "@Resources.Resource.all";
             }
 
-            if (selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5) {
+            if (selectTipoInput == eTipoDado_NumeroDefeitos || selectTipoInput == eTipoDado_Intervalos || selectTipoInput == eTipoDado_Calculado || selectTipoInput == eTipoDado_Texto) {
                 selectConformeName = "";
                 selectNaoConformeName = "";
             }
 
-            if (selectTipoInput == 1) {
+            if (selectTipoInput == eTipoDado_Binario || selectTipoInput == eTipoDado_BinarioComTexto) {
                 selectUnidadeDeMedidasName = "";
                 parLevel3Value_IntervalMin = "";
                 parLevel3Value_IntervalMax = "";
                 parIntervalosTypeName = "";
             }
 
-            if (selectTipoInput == 5) {
+            if (selectTipoInput == eTipoDado_Texto) {
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
@@ -234,7 +245,7 @@
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
 
-            if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == 1) { // Binario
+            if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Binario || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_BinarioComTexto) { // Binario
                 if ($('#' + seletorTato + ' #selectConforme :selected').val() <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_positive_value_for_binary_field'));
                     return false;
@@ -243,9 +254,19 @@
                     return false;
                 }
             } // Intervalo ou Calculado.
-            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3 || $('#' + seletorTato + ' #selectTipoInput :selected').val() == 4) {
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Intervalos || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Calculado) {
                 if ($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
+                    return false;
+                }
+            } // Escala Likert.
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_EscalaLikert) {
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val() <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('min_interval'));
+                    return false;
+                }
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMax').val() <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('max_interval'));
                     return false;
                 }
             }
@@ -360,19 +381,19 @@
                     console.log(o["ParLevel2_Name"]);
                     console.log(o["ParLevel1_Name"]);
 
-                    if (o.ParLevel3InputType_Id == 1) {
+                    if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto) {
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
                         o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
                         o["ParMeasurementUnit_Name"] = "";
                         o["AcceptableValueBetween_Name"] = "";
                         o["IntervalMin"] = "";
                         o["IntervalMax"] = "";
-                    } else if (o.ParLevel3InputType_Id == 2) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_NumeroDefeitos) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    } else if (o.ParLevel3InputType_Id == 3) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Intervalos) {
                         o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
@@ -382,7 +403,7 @@
                             (o.IntervalMax == null ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
                             (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
 
-                    } else if (o.ParLevel3InputType_Id == 4) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Calculado) {
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -391,7 +412,7 @@
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;
-                    } else if (o.ParLevel3InputType_Id == 5) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -400,8 +421,14 @@
                         o["IntervalMinCalculado"] = "";
                         o["IntervalMax"] = "";
                         o["IntervalMaxCalculado"] = "";
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
+                        o["IntervalMin"] = o.IntervalMin == null ? 0 : o.IntervalMin;
+                        o["IntervalMax"] = o.IntervalMax == null ? 0 : o.IntervalMax;
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax;
                     }
-                    //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
 
                     if ((o.ParLevel1_Id == null
                         || o.ParLevel1_Id == "-1"
@@ -435,13 +462,13 @@
                 $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
                 $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
                 $("#avAmCompany").val($("#avAmCompany option:first").val());
-                
+
                 $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
                 $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());
                 $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
                 $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
                 $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
-                
+
             }
         },
     };
@@ -481,6 +508,9 @@
     }
 
     function parIntervalosTypeCreate() {
+
+        if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert)
+            return;
 
         var value = "";
         if($('#selectUnidadeDeMedidas :selected').val() > 0)
@@ -538,6 +568,9 @@
 
     function parIntervalosTypeCreateEdit() {
 
+        if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert)
+            return;
+
         var value = "";
         if($('#crudNxNEdit #selectUnidadeDeMedidas :selected').val() > 0)
             value = $('#crudNxNEdit #selectUnidadeDeMedidas :selected').text();
@@ -593,8 +626,9 @@
     }
 
     $('#selectTipoInput').change(function () {
+        var tipoSelecionado = $("#selectTipoInput option:selected").val();
 
-        if ($("#selectTipoInput option:selected").val() == "-1") {
+        if (tipoSelecionado == "-1") {
 
             $('#selectNaoConforme').val(-1)
             $('#selectConforme').val(-1)
@@ -609,7 +643,7 @@
         }
 
         //Binários
-        if ($("#selectTipoInput option:selected").val() == "1") {
+        if (tipoSelecionado == eTipoDado_Binario || tipoSelecionado == eTipoDado_BinarioComTexto) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -620,7 +654,7 @@
         }
 
         //Numero de defeitos
-        if ($("#selectTipoInput option:selected").val() == "2") {
+        if (tipoSelecionado == eTipoDado_NumeroDefeitos) {
             resetaParIntervalos();
             resetaParDefeitos();
             resetaParBinarios();
@@ -646,7 +680,7 @@
         }
 
         //Intervalos
-        if ($("#selectTipoInput option:selected").val() == "3") {
+        if (tipoSelecionado == eTipoDado_Intervalos) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -672,7 +706,8 @@
             $('.ParIntervalos').fadeIn();
         }
 
-        if ($("#selectTipoInput option:selected").val() == "4") {
+        //Calculado
+        if (tipoSelecionado == eTipoDado_Calculado) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -682,7 +717,8 @@
             $('.ParIntervalos').fadeIn();
         }
 
-        if ($("#selectTipoInput option:selected").val() == "5") {
+        //Texto
+        if (tipoSelecionado == eTipoDado_Texto) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -693,6 +729,23 @@
             $('#companyValueL3').show();
             $('.VinculoParLevel').show();
         }
+
+        //Escala Likert
+        if (tipoSelecionado == eTipoDado_EscalaLikert) {
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').fadeIn();
+            $('.ParIntervalos').find('td:nth-child(1)').addClass('hide');
+        }
+
 
         CorrigirLarguraColunas();
 
@@ -710,6 +763,7 @@
         $('#parLevel3Value_IntervalMin').val("");
         $('#parLevel3Value_IntervalMax').val("");
         $('#parIntervalosType').empty().parents('td').hide();
+        $('.ParIntervalos').find('td:nth-child(1)').removeClass('hide');
     }
 
     function resetaParBinarios(){
