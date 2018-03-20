@@ -412,7 +412,7 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
            "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -430,7 +430,7 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
            "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -448,7 +448,7 @@ public class ScorecardResultSet
 
                "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-               "\n             --AND L1Ca.IsActive = 1 " +
+               "\n             AND L1Ca.IsActive = 1 " +
 
                "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -728,7 +728,7 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
            "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -746,7 +746,7 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
            "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -768,7 +768,7 @@ public class ScorecardResultSet
 
                "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-               "\n             --AND L1Ca.IsActive = 1 " +
+               "\n             AND L1Ca.IsActive = 1 " +
 
                "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
