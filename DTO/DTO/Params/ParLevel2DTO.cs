@@ -135,14 +135,16 @@ namespace DTO.DTO.Params
                     {
                         Number = i.sampleNumber,
                         Id = i.sampleId ?? 0,
-                        IsActive = i.IsActive
+                        IsActive = i.IsActive,
+                        ParLevel1_Id = i.ParLevel1_Id
                     };
 
                     var evaluation = new ParEvaluationDTO()
                     {
                         Number = i.evaluationNumber,
                         Id = i.evaluationId ?? 0,
-                        IsActive = i.IsActive
+                        IsActive = i.IsActive,
+                        ParLevel1_Id = i.ParLevel1_Id
                     };
 
                     if (i.companyId > 0)
@@ -179,6 +181,7 @@ namespace DTO.DTO.Params
                     }
 
                     coiso.IsActive = i.IsActive;
+                    coiso.ParLevel1_Id = i.ParLevel1_Id;
                     coiso.Id = 1;
                     if (i.ParCompany_Id != null && i.ParCompany_Id > 0)
                         coiso.companyId = i.ParCompany_Id;

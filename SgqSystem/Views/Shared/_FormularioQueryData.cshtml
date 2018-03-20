@@ -320,7 +320,7 @@
 
                 @if (ViewBag.UnitArr == null)
             {
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
         }
         else
         {
@@ -1108,6 +1108,11 @@
             });
 
             $('#unitId').select2();
+            
+            //Se não for multiplo força um change para selecionar o valor (motivo: ele remove o primeiro item 'todos' e não aplicava o evento change)
+            if(!$('#unitId').attr('multiple')) 
+                setTimeout(function(){$('#unitId').trigger('change');},500);
+            
 
         });
 

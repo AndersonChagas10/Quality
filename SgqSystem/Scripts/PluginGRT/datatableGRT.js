@@ -91,6 +91,7 @@
                     }
                 }
             },
+            createdRow: this.createdRow,
             "drawCallback": function (settings) {
 
                 var tfoot = "<tfoot><tr class='search-input-tfoot-tr'>";
