@@ -217,9 +217,8 @@
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
-                        //$($(e).parents('tr').find('td')[1]).html(editado.parLevel1_Id)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.evaluationNumber)//
-                        $($(e).parents('tr').find('td')[3]).html(editado.sampleNumber)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.evaluationNumber)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.sampleNumber)//
                         $('#crudNxNEdit').modal('hide');
                     }
 
@@ -415,7 +414,6 @@
             if (obj.companyId > 0)
                 $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
 
-            $('#crudNxNEdit #parLevel1Select2AmostraLevel').remove();
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
         },
