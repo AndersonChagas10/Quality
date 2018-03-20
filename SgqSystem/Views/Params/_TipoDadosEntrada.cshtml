@@ -101,7 +101,7 @@
     var eTipoDado_Calculado = 4;
     var eTipoDado_Texto = 5;
     var eTipoDado_BinarioComTexto = 6;
-    var eTipoDado_IntervaloDatas = 7;
+    var eTipoDado_IntervaloMinutos = 7;
     var eTipoDado_EscalaLikert = 8;
     var eTipoDado_Recravacao = 99;
 
@@ -181,7 +181,6 @@
                 selectUnidadeDeMedidas = "";
             }
 
-
             if (selectTipoInput == eTipoDado_EscalaLikert) {
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
@@ -189,6 +188,17 @@
                 selectConformeName = "";
                 selectNaoConformeName = "";
                 selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "";
+            }
+
+            if (selectTipoInput == eTipoDado_IntervaloMinutos) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
             }
 
             if (isEdit != undefined) {
@@ -270,13 +280,13 @@
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
                     return false;
                 }
-            } // Escala Likert.
-            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_EscalaLikert) {
-                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val() <= 0) {
+            } // Escala Likert - Intervalo Minutos
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervaloMinutos) {
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val().length <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('min_interval'));
                     return false;
                 }
-                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMax').val() <= 0) {
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMax').val().length <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('max_interval'));
                     return false;
                 }
@@ -438,6 +448,13 @@
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = "";
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_IntervaloMinutos) {
+                        o["IntervalMin"] = o.IntervalMin == null ? 0 : o.IntervalMin;
+                        o["IntervalMax"] = o.IntervalMax == null ? 0 : o.IntervalMax;
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax;
                     }
 
@@ -520,7 +537,7 @@
 
     function parIntervalosTypeCreate() {
 
-        if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert)
+        if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#selectTipoInput :selected').val()  == eTipoDado_IntervaloMinutos)
             return;
 
         var value = "";
@@ -579,7 +596,7 @@
 
     function parIntervalosTypeCreateEdit() {
 
-        if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert)
+        if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#crudNxNEdit #selectTipoInput :selected').val()==eTipoDado_IntervaloMinutos)
             return;
 
         var value = "";
@@ -742,7 +759,7 @@
         }
 
         //Escala Likert
-        if (tipoSelecionado == eTipoDado_EscalaLikert) {
+        if (tipoSelecionado == eTipoDado_EscalaLikert || tipoSelecionado == eTipoDado_IntervaloMinutos) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
