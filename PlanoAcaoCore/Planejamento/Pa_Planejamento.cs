@@ -566,6 +566,13 @@ LEFT JOIN Pa_Dimensao DIME
                     if (i.ValorPara > 0)
                         i._ValorPara = i.ValorPara.ToString("0.##") + " %";
                 }
+                else
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = i.ValorDe.ToString("0.##");
+                    if (i.ValorPara > 0)
+                        i._ValorPara = i.ValorPara.ToString("0.##");
+                }
                 //if(i.Estrategico_Id.GetValueOrDefault() >0)
                 //{
                 //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
@@ -610,8 +617,21 @@ LEFT JOIN Pa_Dimensao DIME
                         else
                             k._QuandoFim = string.Empty;
 
-                        if (k.QuantoCusta > 0)
-                            k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+                        if (k.UnidadeDeMedida_Id == 1)
+                        {
+                            if (k.QuantoCusta > 0)
+                                k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+                        }
+                        else if (k.UnidadeDeMedida_Id == 2)
+                        {
+                            if (k.QuantoCusta > 0)
+                                k._QuantoCusta = k.QuantoCusta.ToString("0.##") + " %";
+                        }
+                        else
+                        {
+                            if (k.QuantoCusta > 0)
+                                k._QuantoCusta = k.QuantoCusta.ToString("0.##");
+                        }
 
                         switch (k.TipoIndicador)
                         {
