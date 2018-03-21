@@ -3189,8 +3189,7 @@
                     colunaDosDados:r.columns,
                     initComplete: function(){
                         $('#tablePessego').off().on('click','button[data-id]',function(){
-                            if(confirm("Deseja alterar o vinculo!?")){
-                                debugger
+                            if(confirm("Deseja alterar o vinculo!?")){                            
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
                                 //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
@@ -3201,6 +3200,13 @@
                                 });
                             }
                         });
+
+                        setTimeout(function (e) {
+                            var oTable = $('#tablePessego').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                            }
+                        }, 1400);
                     }
                 });
             });
