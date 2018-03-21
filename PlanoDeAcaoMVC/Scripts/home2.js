@@ -1537,7 +1537,7 @@ function pintaStatus(seriesFilter, serieArrFinal) {
 
 //GLOBAL
 var enviar = {};
-var start = moment().add('month', -1);
+var start = moment();
 var end = moment();
 
 //DatePicker Config / Instance
