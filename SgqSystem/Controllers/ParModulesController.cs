@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParModulesController : Controller
+    public class ParModulesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

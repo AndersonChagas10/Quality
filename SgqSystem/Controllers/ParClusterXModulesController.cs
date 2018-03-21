@@ -11,7 +11,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParClusterXModulesController : Controller
+    public class ParClusterXModulesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
