@@ -2717,11 +2717,19 @@
         formControl.showCreateActionPlane();
         formControl.showClustRegUnitCriticalLevel123();
 
+        //setTimeout(function () {
+        //    $("#clusterGroupId").find("option").eq(0).remove();
+        //    $("#clusterGroupId").val(8).change();
+        //    if ($("#clusterGroupId").val() == null) {
+        //        $("#clusterGroupId").val(2).change();
+        //    }
+        //}, 30);
+
         setTimeout(function () {
-            $("#clusterGroupId").find("option").eq(0).remove();
-            $("#clusterGroupId").val(8).change();
-            if ($("#clusterGroupId").val() == null) {
-                $("#clusterGroupId").val(2).change();
+            $("#moduleid").find("option").eq(0).remove();
+            $("#moduleid").val(1).change();
+            if ($("#moduleid").val() == null) {
+                $("#moduleid").val(2).change();
             }
         }, 30);
 
