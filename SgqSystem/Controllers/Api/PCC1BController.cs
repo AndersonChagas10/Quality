@@ -85,7 +85,7 @@ namespace SgqSystem.Controllers.Api
                     var resultQuery = new List<ResultadosSequencialBanda>();
                     using (Factory factory = new Factory("DefaultConnection"))
                     {
-                        var list = factory.SearchQuery<ResultadosSequencialBanda>(query).ToList();
+                        resultQuery = factory.SearchQuery<ResultadosSequencialBanda>(query).ToList();
                     }
 
                     if (resultQuery != null && resultQuery.Count() > 0)
