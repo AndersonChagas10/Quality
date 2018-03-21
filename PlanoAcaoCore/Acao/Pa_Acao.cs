@@ -290,8 +290,18 @@ namespace PlanoAcaoCore
 
             //throw new Exception("treste");
             if (_QuantoCusta != null)
-                QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta).GetValueOrDefault();
-
+            {
+                if (UnidadeDeMedida_Id == 1)
+                {
+                    QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta.Replace("R$ ","")).GetValueOrDefault();
+                }
+                else
+                {
+                    QuantoCusta = decimal.Parse(_QuantoCusta.Replace(".",","));
+                }
+                
+            }
+                
             if (!string.IsNullOrEmpty(_QuandoFim))
                 QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim, Guard.CultureCurrent.BR);
             else

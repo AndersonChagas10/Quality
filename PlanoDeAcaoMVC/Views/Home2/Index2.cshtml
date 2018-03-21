@@ -1521,6 +1521,7 @@
 
             sendObj = $(form).serializeObject();
 
+
             let isValid = ($(form).find('.error:visible').length == 0)
             if (!isValid) {
                 alert("Campos obrigatórios")
@@ -1846,8 +1847,22 @@
             } else {
 
                 $(inputQuantoCusta).maskMoney('destroy');
-                $(inputQuantoCusta).get(0).type = 'number';
+                //$(inputQuantoCusta).get(0).type = 'number';
                 $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+
+                $(inputQuantoCusta).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
             }
         });
 
@@ -1861,8 +1876,8 @@
 
             if (unidadeMedida == 1) {
 
-                $(inputValorDe).get(0).type = 'text';
-                $(inputValorPara).get(0).type = 'text';
+                //$(inputValorDe).get(0).type = 'text';
+                //$(inputValorPara).get(0).type = 'text';
 
                 let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
 
@@ -1874,12 +1889,41 @@
             } else {
 
                 $(inputValorDe).maskMoney('destroy');
-                $(inputValorDe).get(0).type = 'number';
-                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "")));
+                //$(inputValorDe).get(0).type = 'number';
+                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
 
                 $(inputValorPara).maskMoney('destroy');
-                $(inputValorPara).get(0).type = 'number';
-                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "")));
+                //$(inputValorPara).get(0).type = 'number';
+                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+
+
+                $(inputValorDe).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+
+                $(inputValorPara).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
             }
         });
 
