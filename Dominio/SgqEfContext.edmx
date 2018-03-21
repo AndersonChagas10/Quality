@@ -1015,16 +1015,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
-            
-            
-            
-            
-            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
@@ -3646,6 +3639,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="Self.ParLevel3BoolTrue" Schema="dbo" store:Type="Tables" />
@@ -3719,17 +3713,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
     [ParLevel1VariableProductionXLevel1].[AddDate] AS [AddDate], 
     [ParLevel1VariableProductionXLevel1].[AlterDate] AS [AlterDate]
     FROM [dbo].[ParLevel1VariableProductionXLevel1] AS [ParLevel1VariableProductionXLevel1]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParLevel2XHeaderField].[Id] AS [Id], 
-    [ParLevel2XHeaderField].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [ParLevel2XHeaderField].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [ParLevel2XHeaderField].[ParHeaderField_Id] AS [ParHeaderField_Id], 
-    [ParLevel2XHeaderField].[AddDate] AS [AddDate], 
-    [ParLevel2XHeaderField].[AlterDate] AS [AlterDate], 
-    [ParLevel2XHeaderField].[IsActive] AS [IsActive]
-    FROM [dbo].[ParLevel2XHeaderField] AS [ParLevel2XHeaderField]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ResultLevel2HeaderField" EntityType="Self.ResultLevel2HeaderField" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
