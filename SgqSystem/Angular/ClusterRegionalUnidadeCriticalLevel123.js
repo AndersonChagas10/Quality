@@ -7,6 +7,15 @@
 
             $http({
                 method: 'POST',
+                url: GetListModule,
+                data: GetUsuarioId()
+            }).
+                then(function (r) {
+                    $scope.module = r.data;
+                });
+
+            $http({
+                method: 'POST',
                 url: GetListClusterGroup,
                 data: GetUsuarioId()
             }).
@@ -14,13 +23,22 @@
                     $scope.clusterGroup = r.data;
                 });
 
+            //$http({
+            //    method: 'POST',
+            //    url: GetListCluster,
+            //    data: JSON.stringify({ "UserId": GetUsuarioId() })
+            //}).
+            //    then(function (r) {
+            //        $scope.cluster = r.data;
+            //    });
+
             $http({
                 method: 'POST',
-                url: GetListCluster,
+                url: GetListParClusterxModule,
                 data: JSON.stringify({ "UserId": GetUsuarioId() })
             }).
                 then(function (r) {
-                    $scope.cluster = r.data;
+                    $scope.clusterxModule = r.data;
                 });
 
             $http({
@@ -59,6 +77,21 @@
                         $scope.level3 = r.data;
                     });
 
+            }
+
+            $scope.GetListClusterVinculadoModule = function () {
+                //if ($scope.clusterGroupValue) {
+
+                $http({
+                    method: 'POST',
+                    url: GetListParClusterxModule,
+                    data: JSON.stringify({ "UserId": GetUsuarioId(), "Module": $scope.moduleValue })
+                }).
+                    then(function (r) {
+                        $scope.clusterxModule = r.data;
+                        AtribuiClusterxModule();
+
+                    });
             }
 
             $scope.GetListClusterVinculadoClusterGroup = function () {
@@ -334,6 +367,19 @@
 
         }]);
 })();
+
+function AtribuiClusterxModule() {
+    setTimeout(function () {
+        enviar['clusterSelected_Id'] = document.getElementById('clusterId').value;
+        var option = $('#moduleId option').filter(function () { return $(this).html() == clusterGroupInitialMock; }).val();
+        if (enviar["moduleId"] == undefined || enviar["moduleId"] <= 0) {
+            $('#moduleId').val(option).trigger("change");
+            enviar["moduleId"] = option;
+            // Inicia o Nivel Critico, desabilitado, por conta de ser dependente da seleção do Processo
+            $('#criticalLevelId').prop("disabled", true);
+        }
+    }, 1);
+}
 
 function AtribuiCluster() {
     setTimeout(function () {
