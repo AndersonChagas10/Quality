@@ -5218,34 +5218,34 @@ ORDER BY 3
 
             	-- DROP TABLE #DIM
             
-            	select DISTINCT 
-            		ParCluster_ID
-            		,ParCluster_Name
-            		,ParStructure_id
-            		,ParStructure_Name
-            		,Unidade
-            		,UnidadeName
-            		,ParConsolidationType_Id
-            		,Indicador
-            		,IndicadorName
-            		,ParCriticalLevel_Id
-            		,ParCriticalLevel_Name
-            		,IsRuleConformity 
-            	INTO #DIM
-            	from #CUBO
+            	--  select DISTINCT 
+            	--  	ParCluster_ID
+            	--  	,ParCluster_Name
+            	--  	,ParStructure_id
+            	--  	,ParStructure_Name
+            	--  	,Unidade
+            	--  	,UnidadeName
+            	--  	,ParConsolidationType_Id
+            	--  	,Indicador
+            	--  	,IndicadorName
+            	--  	,ParCriticalLevel_Id
+            	--  	,ParCriticalLevel_Name
+            	--  	,IsRuleConformity 
+            	--  INTO #DIM
+            	--  from #CUBO
             
             
-            	DELETE DATA 
-            		FROM #DATA DATA
-            	LEFT JOIN #CUBO CUBO
-            		ON DATA.DATA = CUBO.CONSOLIDATIONDATE
-            	WHERE CUBO.CONSOLIDATIONDATE IS NOT NULL
+            	--  DELETE DATA 
+            	--  	FROM #DATA DATA
+            	--  LEFT JOIN #CUBO CUBO
+            	--  	ON DATA.DATA = CUBO.CONSOLIDATIONDATE
+            	--  WHERE CUBO.CONSOLIDATIONDATE IS NOT NULL
             
             
-            	INSERT INTO #CUBO (ConsolidationDate,ParCluster_ID,ParCluster_Name,ParStructure_id,ParStructure_Name,Unidade,UnidadeName,ParConsolidationType_Id,Indicador,IndicadorName,ParCriticalLevel_Id,ParCriticalLevel_Name,IsRuleConformity,AVComPeso,NCComPeso,AV,NC,Meta)
-            	SELECT DATA.DATA, CUBO.*,0,0,0,0,0 
-            	FROM #DATA DATA
-            	Cross Join #DIM CUBO
+            	--  INSERT INTO #CUBO (ConsolidationDate,ParCluster_ID,ParCluster_Name,ParStructure_id,ParStructure_Name,Unidade,UnidadeName,ParConsolidationType_Id,Indicador,IndicadorName,ParCriticalLevel_Id,ParCriticalLevel_Name,IsRuleConformity,AVComPeso,NCComPeso,AV,NC,Meta)
+            	--  SELECT DATA.DATA, CUBO.*,0,0,0,0,0 
+            	--  FROM #DATA DATA
+            	--  Cross Join #DIM CUBO
 
                 ";
 
@@ -5530,7 +5530,7 @@ ORDER BY 3
              		AND ISNULL(L1.ShowScorecard,1) = 1
              		AND L1.IsActive = 1
             
-            	LEFT JOIN ParLevel2 L2 WITH (NOLOCK)
+            	INNER JOIN ParLevel2 L2 WITH (NOLOCK)
              		ON C1.ParLevel2_Id = L2.ID
              		AND L2.IsActive = 1
             
@@ -5592,37 +5592,37 @@ ORDER BY 3
 
             	-- DROP TABLE #DIM
             
-            	select DISTINCT 
-            		ParCluster_ID
-            		,ParCluster_Name
-            		,ParStructure_id
-            		,ParStructure_Name
-            		,Unidade
-            		,UnidadeName
-            		,ParConsolidationType_Id
-            		,Indicador
-            		,IndicadorName
-            		,Monitoramento
-            		,MonitoramentoName
-            		,MonitoramentoUnidade
-            		,ParCriticalLevel_Id
-            		,ParCriticalLevel_Name
-            		,IsRuleConformity 
-            	INTO #DIM
-            	from #CUBO
+            	--  select DISTINCT 
+            	--  	ParCluster_ID
+            	--  	,ParCluster_Name
+            	--  	,ParStructure_id
+            	--  	,ParStructure_Name
+            	--  	,Unidade
+            	--  	,UnidadeName
+            	--  	,ParConsolidationType_Id
+            	--  	,Indicador
+            	--  	,IndicadorName
+            	--  	,Monitoramento
+            	--  	,MonitoramentoName
+            	--  	,MonitoramentoUnidade
+            	--  	,ParCriticalLevel_Id
+            	--  	,ParCriticalLevel_Name
+            	--  	,IsRuleConformity 
+            	--  INTO #DIM
+            	--  from #CUBO
             
             
-            	DELETE DATA 
-            		FROM #DATA DATA
-            	LEFT JOIN #CUBO CUBO
-            		ON DATA.DATA = CUBO.CONSOLIDATIONDATE
-            	WHERE CUBO.CONSOLIDATIONDATE IS NOT NULL
+            	--  DELETE DATA 
+            	--  	FROM #DATA DATA
+            	--  LEFT JOIN #CUBO CUBO
+            	--  	ON DATA.DATA = CUBO.CONSOLIDATIONDATE
+            	--  WHERE CUBO.CONSOLIDATIONDATE IS NOT NULL
             
             
-            	INSERT INTO #CUBO (ConsolidationDate,ParCluster_ID,ParCluster_Name,ParStructure_id,ParStructure_Name,Unidade,UnidadeName,ParConsolidationType_Id,Indicador,IndicadorName,Monitoramento,MonitoramentoName,MonitoramentoUnidade,ParCriticalLevel_Id,ParCriticalLevel_Name,IsRuleConformity,AVComPeso,NCComPeso,AV,NC,Meta)
-            	SELECT DATA.DATA, CUBO.*,0,0,0,0,0 
-            	FROM #DATA DATA
-            	Cross Join #DIM CUBO
+            	--  INSERT INTO #CUBO (ConsolidationDate,ParCluster_ID,ParCluster_Name,ParStructure_id,ParStructure_Name,Unidade,UnidadeName,ParConsolidationType_Id,Indicador,IndicadorName,Monitoramento,MonitoramentoName,MonitoramentoUnidade,ParCriticalLevel_Id,ParCriticalLevel_Name,IsRuleConformity,AVComPeso,NCComPeso,AV,NC,Meta)
+            	--  SELECT DATA.DATA, CUBO.*,0,0,0,0,0 
+            	--  FROM #DATA DATA
+            	--  Cross Join #DIM CUBO
 
                 ";
 
@@ -5864,7 +5864,7 @@ ORDER BY 3
          		AND ISNULL(L1.ShowScorecard,1) = 1
          		AND L1.IsActive = 1
         
-        	LEFT JOIN ParLevel2 L2 WITH (NOLOCK)
+        	INNER JOIN ParLevel2 L2 WITH (NOLOCK)
          		ON C1.ParLevel2_Id = L2.ID
          		AND L2.IsActive = 1
         
@@ -5933,40 +5933,40 @@ ORDER BY 3
 
         	-- DROP TABLE  #DIM
         
-        	select DISTINCT 
-        		ParCluster_ID
-        		,ParCluster_Name
-        		,ParStructure_id
-        		,ParStructure_Name
-        		,Unidade
-        		,UnidadeName
-        		,ParConsolidationType_Id
-        		,Indicador
-        		,IndicadorName
-        		,Monitoramento
-        		,MonitoramentoName
-        		,MonitoramentoUnidade
-        		,Tarefa
-        		,TarefaName
-        		,ParCriticalLevel_Id
-        		,ParCriticalLevel_Name
-        		,IsRuleConformity 
-        	INTO #DIM
-        	from #CUBO
+        	--  select DISTINCT 
+        	--  	ParCluster_ID
+        	--  	,ParCluster_Name
+        	--  	,ParStructure_id
+        	--  	,ParStructure_Name
+        	--  	,Unidade
+        	--  	,UnidadeName
+        	--  	,ParConsolidationType_Id
+        	--  	,Indicador
+        	--  	,IndicadorName
+        	--  	,Monitoramento
+        	--  	,MonitoramentoName
+        	--  	,MonitoramentoUnidade
+        	--  	,Tarefa
+        	--  	,TarefaName
+        	--  	,ParCriticalLevel_Id
+        	--  	,ParCriticalLevel_Name
+        	--  	,IsRuleConformity 
+        	--  INTO #DIM
+        	--  from #CUBO
         
         	
         
-        	DELETE DATA 
-        		FROM #DATA DATA
-        	LEFT JOIN #CUBO CUBO
-        		ON DATA.DATA = CUBO.CONSOLIDATIONDATE
-        	WHERE CUBO.CONSOLIDATIONDATE IS NOT NULL
+        	--  DELETE DATA 
+        	--  	FROM #DATA DATA
+        	--  LEFT JOIN #CUBO CUBO
+        	--  	ON DATA.DATA = CUBO.CONSOLIDATIONDATE
+        	--  WHERE CUBO.CONSOLIDATIONDATE IS NOT NULL
         
         
-        	INSERT INTO #CUBO (ConsolidationDate,ParCluster_ID,ParCluster_Name,ParStructure_id,ParStructure_Name,Unidade,UnidadeName,ParConsolidationType_Id,Indicador,IndicadorName,Monitoramento,MonitoramentoName,MonitoramentoUnidade,Tarefa,TarefaName,ParCriticalLevel_Id,ParCriticalLevel_Name,IsRuleConformity,AVComPeso,NCComPeso,AV,NC,Meta)
-        	SELECT DATA.DATA, CUBO.*,0,0,0,0,0 
-        	FROM #DATA DATA
-        	Cross Join #DIM CUBO
+        	--  INSERT INTO #CUBO (ConsolidationDate,ParCluster_ID,ParCluster_Name,ParStructure_id,ParStructure_Name,Unidade,UnidadeName,ParConsolidationType_Id,Indicador,IndicadorName,Monitoramento,MonitoramentoName,MonitoramentoUnidade,Tarefa,TarefaName,ParCriticalLevel_Id,ParCriticalLevel_Name,IsRuleConformity,AVComPeso,NCComPeso,AV,NC,Meta)
+        	--  SELECT DATA.DATA, CUBO.*,0,0,0,0,0 
+        	--  FROM #DATA DATA
+        	--  Cross Join #DIM CUBO
         
             ";
 
