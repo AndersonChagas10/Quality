@@ -254,26 +254,20 @@
 
                 if( this.listObjSalvo != null){ /*Carrega regras de NC*/
                     this.listObjSalvo.forEach(function(o, c){
-                        if(o.companyId != null){
-                            if(o.companyId != "-1"){
+                        if(o.companyId != null && o.companyId != "-1"){
                                 o['companyName'] = $('#avAmCompany option[value=' + o.companyId + ']').text();
-                            }
                         }else{
                             o['companyName'] = "@Resources.Resource.all";
                         }
 
-                        if(o.ParCluster_Id != null){
-                            if(o.ParCluster_Id != "-1"){
-                                o['ParCluster_Name'] = $(' #parClusterSelect2AmostraLevel option[value=' + o.ParCluster_Id + ']').text();
-                            }
+                        if(o.ParCluster_Id != null && o.ParCluster_Id != "-1"){
+                                o['ParCluster_Name'] = $('#parClusterSelect2AmostraLevel option[value=' + o.ParCluster_Id + ']').text();
                         }else{
                             o['ParCluster_Name'] = "@Resources.Resource.all";
                         }
 
-                        if(o.ParLevel1_Id != null){
-                            if(o.ParLevel1_Id != "-1"){
-                                o['ParLevel1_Name'] = $(' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
-                            }
+                        if(o.ParLevel1_Id != null && o.ParLevel1_Id != "-1"){
+                                o['ParLevel1_Name'] = $('#parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
