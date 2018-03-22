@@ -90,6 +90,7 @@
     <Compile Include="Acao\Pa_Status.cs" />
     <Compile Include="Acao\Pa_Unidade.cs" />
     <Compile Include="Conn.cs" />
+    <Compile Include="Enum\Enums.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
     <Compile Include="Outros\Pa_Colvis.cs" />
     <Compile Include="Pa_BaseObject.cs" />

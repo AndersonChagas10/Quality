@@ -1433,7 +1433,9 @@
                         //$('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         //$('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                     }
+
                     DdlChangeTatico();
+
                 } else {
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
@@ -1453,6 +1455,7 @@
 
                     DdlChangeEstrategico();
                 }
+
                 InitDatePiker();
                 MoneyMask();
 
@@ -1486,7 +1489,7 @@
 
             let isValid = $('#Planejamento').find('.error').length == 0
             if (!isValid) {
-                alert("Campos obrigatórios")
+                alert("Campos obrigatórios");
                 return
             }
 
@@ -1517,6 +1520,7 @@
                 sendObj['IsTAtico'] = true;
 
             sendObj = $(form).serializeObject();
+
 
             let isValid = ($(form).find('.error:visible').length == 0)
             if (!isValid) {
@@ -1807,20 +1811,121 @@
                     header.find("select.select2-hidden-accessible").next('.select2').remove();
                     header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
                     header.find("select:visible").select2();
+                    $('.UnidadeMedida').change();
                 }, 1);
 
                 myfunction();
-                MoneyMask('R$ ');
 
-                $('.money').each(function () {
-                    $(this).maskMoney('mask', $(this).val());
-                });
+                //MoneyMask('R$ ');
+
+                //$('.money').each(function () {
+                //    $(this).maskMoney('mask', $(this).val());
+                //});
 
                 InitDatePiker();
             };
 
         })();
+
         $('#new').click(addButton);
+
+        $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valor = $(this).parent().parent().parent().find(".QuantoCusta").val();
+            let inputQuantoCusta = $(this).parent().parent().parent().find(".QuantoCusta");
+
+            if (unidadeMedida == 1) {
+
+                $(inputQuantoCusta).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputQuantoCusta).maskMoney(config);
+                $(inputQuantoCusta).maskMoney('mask');
+
+            } else {
+
+                $(inputQuantoCusta).maskMoney('destroy');
+                //$(inputQuantoCusta).get(0).type = 'number';
+                $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+
+                $(inputQuantoCusta).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valorDe = $(this).parent().parent().parent().find(".ValorDe").val();
+            let valorPara = $(this).parent().parent().parent().find(".ValorPara").val();
+            let inputValorDe = $(this).parent().parent().parent().find(".ValorDe");
+            let inputValorPara = $(this).parent().parent().parent().find(".ValorPara");
+
+            if (unidadeMedida == 1) {
+
+                //$(inputValorDe).get(0).type = 'text';
+                //$(inputValorPara).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputValorDe).maskMoney(config);
+                $(inputValorDe).maskMoney('mask');
+                $(inputValorPara).maskMoney(config);
+                $(inputValorPara).maskMoney('mask');
+
+            } else {
+
+                $(inputValorDe).maskMoney('destroy');
+                //$(inputValorDe).get(0).type = 'number';
+                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+
+                $(inputValorPara).maskMoney('destroy');
+                //$(inputValorPara).get(0).type = 'number';
+                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+
+
+                $(inputValorDe).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+
+                $(inputValorPara).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        });
 
         //Verificando
         function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
@@ -1833,7 +1938,6 @@
                     }
                 });
             }
-
 
             if (isFukingNewClicked) {
 
@@ -1872,7 +1976,6 @@
                 $('#Salvar').off('click').on('click', SalvarAcao);
                 /*Fim Botões*/
             }
-
         }
 
         //Verificando
@@ -1902,6 +2005,7 @@
             $('.money').each(function () {
                 $(this).maskMoney('mask', $(this).val());
             });
+
         }
 
         //Verificando
@@ -2306,9 +2410,6 @@
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
                         //console.log(before)
-
-
-
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
@@ -2339,6 +2440,7 @@
                 form.find('table > tbody > tr:nth-child(19)').hide();
                 form.find('table > tbody > tr:nth-child(20)').hide();
                 form.find('table > tbody > tr:nth-child(21)').hide();
+                form.find('table > tbody > tr:nth-child(22)').hide();
                 form.attr('id', 'formEditEstrategy');
 
                 form.find('button').each(function (o, c) {
@@ -2548,6 +2650,9 @@
                     });
                 });
                 //HideForOperacional();
+
+                $('.UnidadeDeMedidaTatico').change();
+
                 if (data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
@@ -2576,9 +2681,10 @@
                 setTimeout(function () {
                     $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
                     $('.content3 select').select2();
+                    $('.UnidadeMedida').change();
                 }, 1);
 
-                $(r).attr("id", "formEditAcao")
+                $(r).attr("id", "formEditAcao");
 
                 MoneyMask();
                 myfunction();
@@ -3095,7 +3201,7 @@
                 });
             });
         }
-        
+
     </script>
 
 }

@@ -260,3 +260,8 @@ IF COL_LENGTH('ParSample','ParCluster_Id') IS NULL
 		ADD ParCluster_Id Int null
     END
 
+------------------------------------------------------------------ 20/03/2018 - PA Renan
+
+ALTER table Pa_Acao add UnidadeDeMedida_Id int
+
+insert into Pa_UnidadeMedida (AddDate,Name) VALUES (GETDATE(), 'Absoluto');

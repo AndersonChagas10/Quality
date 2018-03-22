@@ -84,8 +84,10 @@ namespace SgqSystem.Controllers.Api
             var dados = new List<CorrectiveActionDTO>();
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                var list = factory.SearchQuery<CorrectiveActionDTO>(sql).ToList();
+                dados = factory.SearchQuery<CorrectiveActionDTO>(sql).ToList();
             }
+
+            
 
             //var list = new List<CorrectiveAction>();
 

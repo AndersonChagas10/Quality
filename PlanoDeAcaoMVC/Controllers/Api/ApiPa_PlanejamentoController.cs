@@ -73,9 +73,31 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
             {
                 if (!string.IsNullOrEmpty(planejamento._ValorDe))
-                    planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
+                {
+                    if (planejamento.UnidadeDeMedida_Id == 1)
+                    {
+                        planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe.Replace("R$ ", "")).GetValueOrDefault();
+                    }
+                    else
+                    {
+                        planejamento.ValorDe = decimal.Parse(planejamento._ValorDe.Replace(".", ","));
+                    }
+                    
+                }
+                    
                 if (!string.IsNullOrEmpty(planejamento._ValorPara))
-                    planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
+                {
+                    if (planejamento.UnidadeDeMedida_Id == 1)
+                    {
+                        planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara.Replace("R$ ", "")).GetValueOrDefault();
+                    }
+                    else
+                    {
+                        planejamento.ValorPara = decimal.Parse(planejamento._ValorPara.Replace(".", ","));
+                    }
+                    
+                }
+                    
                 planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
                 planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
             }
