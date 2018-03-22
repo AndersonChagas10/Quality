@@ -1737,6 +1737,7 @@
 
                         });
                     });
+
                     $('#IndicadoresDeProjeto_Id').change();
 
                 });
@@ -2631,28 +2632,10 @@
                 //DDLs ENCADEADAS da PARTIAL VIEW
                 changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
 
-                $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
-                    var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
-                    manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                changeIniciativa();
 
-                    $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+                changeIndicadoresProjetos();
 
-                            var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
-                            manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-
-                            $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-
-                                $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
-
-                                //$('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
-                                $('#formEditTatico #ObjetivoGerencial_Id').addClass(' tatico ');
-                            });
-                        });
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').change();
-                    });
-                });
                 //HideForOperacional();
 
                 $('.UnidadeDeMedidaTatico').change();
@@ -2660,8 +2643,46 @@
                 if (data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
-            }
-            );
+            });
+        }
+
+        function changeIniciativa() {
+
+            $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
+
+                var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+
+                manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+
+                    //changeIndicadoresProjetos();
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+                });
+            });
+        }
+
+        function changeIndicadoresProjetos() {
+
+            $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+
+                var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+
+                manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
+
+                    //$('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+                    $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').select2();
+                });
+            });
         }
 
         function getAcao(data, a, b) {
