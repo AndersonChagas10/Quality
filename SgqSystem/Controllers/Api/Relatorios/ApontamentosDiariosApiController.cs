@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using DTO;
 using DTO.DTO.Params;
@@ -52,8 +53,13 @@ namespace SgqSystem.Controllers.Api
             CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
 
             var query = new ApontamentosDiariosResultSet().Select(form);
-            _list = db.Database.SqlQuery<ApontamentosDiariosResultSet>(query).ToList();
-            return _list;
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
         }
 
         [HttpPost]

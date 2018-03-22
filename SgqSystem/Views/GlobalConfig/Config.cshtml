@@ -14,110 +14,119 @@
     var emailPort = GlobalConfig.emailPort;
     var emailSmtp = GlobalConfig.emailSmtp;
     var mockEmail = GlobalConfig.mockEmail;
-    var paramsDisponiveis = GlobalConfig.PaginaDoTablet; 
+    var paramsDisponiveis = GlobalConfig.PaginaDoTablet;
 
 }
 
-<h2>Config</h2>
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            Config
+        </h1>
 
 
-<table style="background-color:white">
-    @*<tr>
-        <td>Link Data Collect Atual:</td>
-        <td>@linkAtual</td>
-        <td>Selecione para alterar: @Html.DropDownList("linkDataCollect", new SelectList(ViewBag.linksDataCollect), Resources.Resource.select + "...")</td>
-    </tr>*@
-    @*<tr>
-        <td>
-            <label>Checar versão global</label>
-        </td>
-        <td>
-            <button id="check" onclick="check();"> Checar Versão Global</button>
-        </td>
-        <td id="resultsCheck">
+        <table class="table table-striped" style="background-color:white">
+            @*<tr>
+                    <td>Link Data Collect Atual:</td>
+                    <td>@linkAtual</td>
+                    <td>Selecione para alterar: @Html.DropDownList("linkDataCollect", new SelectList(ViewBag.linksDataCollect), Resources.Resource.select + "...")</td>
+                </tr>*@
+            @*<tr>
+                    <td>
+                        <label>Checar versão global</label>
+                    </td>
+                    <td>
+                        <button id="check" onclick="check();"> Checar Versão Global</button>
+                    </td>
+                    <td id="resultsCheck">
 
-        </td>
-    </tr>*@
-    @*<tr>
-        <td>
-            <label>Mudar Versão global</label>
-        </td>
-        <td>
-            <select id="seletor">
-                <option value="1">Brasil</option>
-                <option value="2">EUA</option>
-            </select>
-        </td>
-        <td>
-            <button id="alter" onclick="alter();"> Alterar Versão Global</button>
-        </td>
-    </tr>*@
-    <tr id="secret">
-        <td>recuperar senha</td>
-        <td><input id="senha" /></td>
-        <td> <button id="alter" onclick="senha();"> Recuperar</button> </td>
-    </tr>
-    @*<tr>
-        <td><button id="alter" onclick="ConverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN DECIMAL</button> </td>
-        <td><button id="alter" onclick="DesconverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN STRING</button> </td>
-        <td></td>
-    </tr>*@
-    <tr>
-        <td>@emailFrom, @emailSSL, @emailPort, @emailSmtp, @mockEmail</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Config</td>
-        <td>
-            <div>
-                @GlobalConfig.Verifica;
-            </div>
-        </td>
-    </tr>
-   
-    <tr id="email">
-        <td>Testar Email: </td>
-        <td> <input type="email" id="mailTo"/></td>
-        <td> <button id="email" onclick="testeEmail(true);"> Testar</button> </td>
-    </tr>
+                    </td>
+                </tr>*@
+            @*<tr>
+                    <td>
+                        <label>Mudar Versão global</label>
+                    </td>
+                    <td>
+                        <select id="seletor">
+                            <option value="1">Brasil</option>
+                            <option value="2">EUA</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button id="alter" onclick="alter();"> Alterar Versão Global</button>
+                    </td>
+                </tr>*@
+            <tr id="secret">
+                <td>recuperar senha</td>
+                <td><input id="senha" /><button id="alter" onclick="senha();"> Recuperar</button> </td>
+            </tr>
+            @*<tr>
+                    <td><button id="alter" onclick="ConverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN DECIMAL</button> </td>
+                    <td><button id="alter" onclick="DesconverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN STRING</button> </td>
+                    <td></td>
+                </tr>*@
+            <tr>
+                <td>@emailFrom, @emailSSL, @emailPort, @emailSmtp, @mockEmail</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Config</td>
+                <td>
+                    <div>
+                        @GlobalConfig.Verifica;
+                    </div>
+                </td>
+            </tr>
 
-    <tr id="email">
-        <td>Testar Email EUA: </td>
-        <td> <input type="email" id="mailToUSA" /></td>
-        <td> <button id="email" onclick="testeEmailEua(true);"> Testar</button> </td>
-    </tr>
+            <tr id="email">
+                <td>Testar Email: </td>
+                <td> <input type="email" id="mailTo" /> <button id="email" onclick="testeEmail(true);"> Testar</button> </td>
+            </tr>
 
-</table>
+            <tr id="email">
+                <td>Testar Email EUA: </td>
+                <td> <input type="email" id="mailToUSA" /><button id="email" onclick="testeEmailEua(true);"> Testar</button> </td>
+            </tr>
 
-<table>
+        </table>
 
-            @foreach (var i in ViewBag.unidades)
+        <h2>Unidades</h2>
+
+        @foreach (var i in ViewBag.unidades)
             {
                 if (paramsDisponiveis != null && paramsDisponiveis.ContainsKey(i.Id))
                 {
-                    <tr>
-                        <td>@i.Id </td>
-                        <td>Gerado em: </td>
-                    </tr>
+                <div>
+                    <strong>@i.Id </strong>
+                    Gerado em:
+                </div>
 
-                }
-                else
-                {
-
-                    <tr>
-                        <td>@i.Id </td>
-                        <td><button>Criar</button></td>
-                    </tr>
-
-                }
             }
+            else
+            {
 
-</table>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        <strong>@i.Id </strong>
+                    </div>
+                    <div class="col-sm-8">
+                        <button>Criar</button>
+                    </div>
+                </div>
+
+            }
+        }
+
+        <div class="clearfix"></div>
+    </div>
+</div>
 
 <script>
 
-    function testeEmail(executeCallback){
+    function testeEmail(executeCallback) {
         $.post('@Url.Action("TestaEmail", "GlobalConfigApi")', { "executeCallback": executeCallback, email: $('#mailTo').val() }, function (r) {
 
         });
@@ -146,7 +155,7 @@
             check();
         });
     }*/*@
-    
+
     function senha() {
 
         $.post('@Html.Raw(urlSenha)', { '': $('#senha').val() }, function (data) {

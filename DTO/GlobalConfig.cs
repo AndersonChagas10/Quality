@@ -19,7 +19,7 @@ namespace DTO
         public bool mockLoginEUA { get; set; }
 
 
-        /*Emial*/
+        /*Email*/
         public string MailFrom { get; set; }
         public string MailPass { get; set; }
         public bool MailSSL { get; set; }
@@ -157,9 +157,9 @@ namespace DTO
             if (ActiveIn > 0)/*Se ja configurado*/
                 return true;
 
-            using (var db = new ADOFactory.Factory(connectionString))/*Caso nao configurado, procura config no DB*/
+            using (var factory = new ADOFactory.Factory(connectionString))/*Caso nao configurado, procura config no DB*/
             {
-                var cfg = db.SearchQuery<SgqConfig>("SELECT * FROM SgqConfig").LastOrDefault();
+                var cfg = factory.SearchQuery<SgqConfig>("SELECT * FROM SgqConfig").LastOrDefault();
                 if (cfg != null)/*Se existe config, pega a ultima existente e configura*/
                 {
                     ConfigWebSystem(cfg);

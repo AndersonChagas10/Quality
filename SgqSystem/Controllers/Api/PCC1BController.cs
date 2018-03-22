@@ -81,7 +81,13 @@ namespace SgqSystem.Controllers.Api
                 using (var db = new Factory(company.IPServer, company.DBServer, pass, userName))
                 {
                     var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
-                    var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
+
+                    var resultQuery = new List<ResultadosSequencialBanda>();
+                    using (Factory factory = new Factory("DefaultConnection"))
+                    {
+                        resultQuery = factory.SearchQuery<ResultadosSequencialBanda>(query).ToList();
+                    }
+
                     if (resultQuery != null && resultQuery.Count() > 0)
                     {
                         retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
@@ -123,10 +129,9 @@ namespace SgqSystem.Controllers.Api
                 "and UnitId = "+receive.Unit+"                                                                     " +
                 "and CollectionDate Between('"+ receive.Data+ " 00:00:00.0000000') and('" + receive.Data +         " 23:59:59.0000000')   ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-
-                return db.Database.SqlQuery<CollectionLevel2PCC1B>(query).ToList();
+                return factory.SearchQuery<CollectionLevel2PCC1B>(query).ToList();
             }
 
         }

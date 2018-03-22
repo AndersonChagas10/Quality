@@ -117,6 +117,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.Smo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -363,6 +365,8 @@
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
+    <Compile Include="Controllers\ParClusterXModulesController.cs" />
+    <Compile Include="Controllers\ParModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
@@ -1475,6 +1479,16 @@
     <Content Include="Views\Print\Template3.cshtml" />
     <Content Include="Views\Params\_AvaliacaoAmostraLevel3.cshtml" />
     <Content Include="Views\Params\_TipoDadosEntrada.cshtml" />
+    <Content Include="Views\ParModules\Create.cshtml" />
+    <Content Include="Views\ParModules\Delete.cshtml" />
+    <Content Include="Views\ParModules\Details.cshtml" />
+    <Content Include="Views\ParModules\Edit.cshtml" />
+    <Content Include="Views\ParModules\Index.cshtml" />
+    <Content Include="Views\ParClusterXModules\Create.cshtml" />
+    <Content Include="Views\ParClusterXModules\Delete.cshtml" />
+    <Content Include="Views\ParClusterXModules\Details.cshtml" />
+    <Content Include="Views\ParClusterXModules\Edit.cshtml" />
+    <Content Include="Views\ParClusterXModules\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

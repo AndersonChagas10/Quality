@@ -16,6 +16,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
 using System.Net.Http;
+using ADOFactory;
 
 namespace SgqSystem.Mail
 {
@@ -386,8 +387,13 @@ namespace SgqSystem.Mail
                 {
                     using (var controller = new CorrectActApiController())
                     {
-                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveAction>("SELECT * FROM CorrectiveAction WHERE MailProcessed = 0");
-                        foreach (var ca in listaCorrectiveActionDb)
+                        var listaCorrectiveActionDb = new List<CorrectiveAction>();
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            listaCorrectiveActionDb = factory.SearchQuery<CorrectiveAction>("SELECT * FROM CorrectiveAction WHERE MailProcessed = 0");
+                        }
+
+                            foreach (var ca in listaCorrectiveActionDb)
                         {
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
                             var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel1_Id).Name;

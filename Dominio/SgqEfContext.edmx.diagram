@@ -34,7 +34,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParEvaluation" Width="1.5" PointX="17.25" PointY="43.375" />
         <EntityTypeShape EntityType="SgqDbModel.ParFieldType" Width="1.5" PointX="17.25" PointY="39.125" />
         <EntityTypeShape EntityType="SgqDbModel.ParFrequency" Width="1.5" PointX="0.75" PointY="48.375" />
-        <EntityTypeShape EntityType="SgqDbModel.ParGoal" Width="1.5" PointX="5.25" PointY="39.375" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1XHeaderField" Width="1.5" PointX="8.25" PointY="57.5" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2" Width="1.5" PointX="6" PointY="47" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2ControlCompany" Width="1.5" PointX="14.25" PointY="41.25" />
@@ -113,7 +112,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParEvaluation_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel2ControlCompany_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
@@ -178,7 +176,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParConsolidationType" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParFrequency" />
-        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK__VolumeCep__ParLe__674A37FD" />
         <AssociationConnector Association="SgqDbModel.FK__VolumeCep__ParLe__6932806F" />
         <AssociationConnector Association="SgqDbModel.FK__VolumePcc__ParLe__6B1AC8E1" />
@@ -205,10 +202,81 @@
         <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__4D755761" />
         <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__4E697B9A" />
         <AssociationConnector Association="SgqDbModel.FK__ParLevel3__ParLe__4F5D9FD3" />
+        <EntityTypeShape EntityType="SgqDbModel.AreasParticipantes" Width="1.5" PointX="0.75" PointY="16.875" />
+        <EntityTypeShape EntityType="SgqDbModel.CaracteristicaTipificacao" Width="1.5" PointX="17.75" PointY="0.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ClusterDepartamentos" Width="1.5" PointX="17.75" PointY="10.875" />
+        <EntityTypeShape EntityType="SgqDbModel.Clusters" Width="1.5" PointX="30.75" PointY="17.875" />
+        <EntityTypeShape EntityType="SgqDbModel.DepartamentoOperacoes" Width="1.5" PointX="39" PointY="11.375" />
+        <EntityTypeShape EntityType="SgqDbModel.Departamentos" Width="1.5" PointX="33.75" PointY="27.5" />
+        <EntityTypeShape EntityType="SgqDbModel.Empresas" Width="1.5" PointX="2.75" PointY="18.875" />
+        <EntityTypeShape EntityType="SgqDbModel.Equipamentos" Width="1.5" PointX="35.25" PointY="36.75" />
+        <EntityTypeShape EntityType="SgqDbModel.FamiliaProdutos" Width="1.5" PointX="35.25" PointY="14.25" />
+        <EntityTypeShape EntityType="SgqDbModel.Horarios" Width="1.5" PointX="38.25" PointY="24.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Metas" Width="1.5" PointX="35.25" PointY="6" />
+        <EntityTypeShape EntityType="SgqDbModel.Monitoramentos" Width="1.5" PointX="36" PointY="9.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Operacoes" Width="1.5" PointX="33" PointY="0.75" />
+        <EntityTypeShape EntityType="SgqDbModel.PenalidadeReincidencia" Width="1.5" PointX="4.75" PointY="18.875" />
+        <EntityTypeShape EntityType="SgqDbModel.Perfil" Width="1.5" PointX="19.75" PointY="0.875" />
+        <EntityTypeShape EntityType="SgqDbModel.Produtos" Width="1.5" PointX="33" PointY="10.5" />
+        <EntityTypeShape EntityType="SgqDbModel.Regionais" Width="1.5" PointX="30.75" PointY="21.375" />
+        <EntityTypeShape EntityType="SgqDbModel.Resultados" Width="1.5" PointX="20.75" PointY="3.875" />
+        <EntityTypeShape EntityType="SgqDbModel.TarefaAmostras" Width="1.5" PointX="38.25" PointY="20.75" />
+        <EntityTypeShape EntityType="SgqDbModel.TarefaAvaliacoes" Width="1.5" PointX="41.25" PointY="20.25" />
+        <EntityTypeShape EntityType="SgqDbModel.TarefaMonitoramentos" Width="1.5" PointX="38.25" PointY="15.25" />
+        <EntityTypeShape EntityType="SgqDbModel.Tarefas" Width="1.5" PointX="36" PointY="26.25" />
+        <EntityTypeShape EntityType="SgqDbModel.Unidades" Width="1.5" PointX="33" PointY="19" />
+        <EntityTypeShape EntityType="SgqDbModel.Usuario" Width="1.5" PointX="19.75" PointY="15.875" />
+        <EntityTypeShape EntityType="SgqDbModel.UsuarioPerfilEmpresa" Width="1.5" PointX="16.75" PointY="19.875" />
+        <EntityTypeShape EntityType="SgqDbModel.UsuarioUnidades" Width="1.5" PointX="35.25" PointY="53.25" />
+        <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacao" Width="1.5" PointX="35.25" PointY="50" />
+        <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacaoComparacao" Width="1.5" PointX="0.75" PointY="21.875" />
+        <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacaoResultados" Width="1.5" PointX="18.75" PointY="19.875" />
+        <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="38.25" PointY="8.5" />
+        <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacaoValidacao" Width="1.5" PointX="22.75" PointY="0.875" />
+        <EntityTypeShape EntityType="SgqDbModel.VolumeProducao" Width="1.5" PointX="35.25" PointY="18.75" />
+        <EntityTypeShape EntityType="SgqDbModel.VTVerificacaoTipificacao" Width="1.5" PointX="2.75" PointY="22.875" />
+        <EntityTypeShape EntityType="SgqDbModel.VTVerificacaoTipificacaoResultados" Width="1.5" PointX="6.75" PointY="20.875" />
+        <EntityTypeShape EntityType="SgqDbModel.VTVerificacaoTipificacaoValidacao" Width="1.5" PointX="22.75" PointY="4.875" />
+        <AssociationConnector Association="SgqDbModel.FK_Unidades_Clusters" />
+        <AssociationConnector Association="SgqDbModel.FK_DepartamentoOperacoes_Departamentos" />
+        <AssociationConnector Association="SgqDbModel.FK_DepartamentoOperacoes_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaAvaliacoes_Departamentos" />
+        <AssociationConnector Association="SgqDbModel.FK_Tarefas_Departamentos" />
+        <AssociationConnector Association="SgqDbModel.FK_VolumeProducao_Departamentos" />
+        <AssociationConnector Association="SgqDbModel.FK_Equipamentos_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_FamiliaProdutos_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_FamiliaProdutos_Produtos" />
+        <AssociationConnector Association="SgqDbModel.FK_FamiliaProdutos_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_Horarios_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_Horarios_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_Metas_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaMonitoramentos_Monitoramentos" />
+        <AssociationConnector Association="SgqDbModel.FK_VerificacaoTipificacaoTarefaIntegracao_Monitoramentos" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaAvaliacoes_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_Tarefas_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_VolumeProducao_Operacoes" />
+        <AssociationConnector Association="SgqDbModel.FK_Tarefas_Produtos" />
+        <AssociationConnector Association="SgqDbModel.FK_Unidades_Regionais" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaAmostras_Tarefas" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaAmostras_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaAvaliacoes_Tarefas" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaAvaliacoes_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaMonitoramentos_Tarefas" />
+        <AssociationConnector Association="SgqDbModel.FK_TarefaMonitoramentos_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_UsuarioUnidades_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_VerificacaoTipificacao_Unidades" />
+        <AssociationConnector Association="SgqDbModel.FK_VolumeProducao_Unidades" />
+        <EntityTypeShape EntityType="SgqDbModel.ParGoal" Width="1.5" PointX="27.875" PointY="41.5" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1XCluster" Width="1.5" PointX="25.875" PointY="56.625" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster" />
+        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" />
+        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" />
+        <EntityTypeShape EntityType="SgqDbModel.ParClusterXModule" Width="1.5" PointX="11.25" PointY="66" />
+        <EntityTypeShape EntityType="SgqDbModel.ParModule" Width="1.5" PointX="9" PointY="73.25" />
+        <AssociationConnector Association="SgqDbModel.FK_ParClusterXModule_ParCluster" />
+        <AssociationConnector Association="SgqDbModel.FK_ParClusterXModule_ParModule" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

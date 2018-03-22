@@ -16,6 +16,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
 using System.Net.Http;
+using ADOFactory;
 
 namespace SgqSystem.Mail
 {
@@ -203,7 +204,11 @@ namespace SgqSystem.Mail
 + " \n INNER JOIN correctiveaction CA ON CA.Id = vaiLaJesus.Id                                                                                                                  "
 + " \n order by 1 ASC";
 
-                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveActionEmail>(sql).ToList();
+                        var listaCorrectiveActionDb = new List<CorrectiveActionEmail>();
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            listaCorrectiveActionDb = factory.SearchQuery<CorrectiveActionEmail>(sql).ToList();
+                        }
 
                         foreach (var ca in listaCorrectiveActionDb)
                         {

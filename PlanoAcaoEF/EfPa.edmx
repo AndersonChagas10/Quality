@@ -58,6 +58,7 @@
           <Property Name="Level3Name" Type="varchar" MaxLength="500" />
           <Property Name="Regional" Type="varchar" MaxLength="500" />
           <Property Name="UnidadeName" Type="varchar" MaxLength="500" />
+          <Property Name="UnidadeDeMedida_Id" Type="int" />
         </EntityType>
         <EntityType Name="Pa_Acompanhamento">
           <Key>
@@ -239,6 +240,7 @@
           <Property Name="Level3Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Regional" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="UnidadeName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UnidadeDeMedida_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="Pa_Planejamento">
           <Key>
@@ -341,6 +343,7 @@
           <EntitySetMapping Name="Pa_Acao">
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acao">
               <MappingFragment StoreEntitySet="Pa_Acao">
+                <ScalarProperty Name="UnidadeDeMedida_Id" ColumnName="UnidadeDeMedida_Id" />
                 <ScalarProperty Name="UnidadeName" ColumnName="UnidadeName" />
                 <ScalarProperty Name="Regional" ColumnName="Regional" />
                 <ScalarProperty Name="Level3Name" ColumnName="Level3Name" />

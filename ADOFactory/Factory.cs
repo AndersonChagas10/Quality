@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Security;
 
 namespace ADOFactory
@@ -11,8 +12,8 @@ namespace ADOFactory
     public class Factory : IDisposable
     {
         public SqlConnection connection;
+        private static int connectionTimeout = 9600;
         private SqlConnectionStringBuilder connectionString;
-        private SqlConnectionStringBuilder connectionString1;
 
         /// <summary>
         /// 
@@ -145,6 +146,7 @@ namespace ADOFactory
                 var listReturn = new List<T>();
 
                 SqlCommand command = new SqlCommand(query, connection);
+                command.CommandTimeout = connectionTimeout; //3 minutos
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -157,8 +159,14 @@ namespace ADOFactory
                             try
                             {
                                 if (!reader.IsDBNull(i))
-                                    if (instance.GetType().GetProperty(reader.GetName(i)) != null)
-                                        instance.GetType().GetProperty(reader.GetName(i)).SetValue(instance, reader[i]);
+                                {
+                                    var info = instance.GetType().GetProperty(reader.GetName(i), BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                                    if (info != null)
+                                    {
+                                        Type type = Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType;
+                                        info.SetValue(instance, Convert.ChangeType(reader[i], type));
+                                    }
+                                }
                             }
                             catch (Exception e)
                             {
@@ -182,6 +190,7 @@ namespace ADOFactory
         {
             List<JObject> items = new List<JObject>();
             SqlCommand command = new SqlCommand(query, connection);
+            command.CommandTimeout = connectionTimeout; //3 minutos
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -198,6 +207,7 @@ namespace ADOFactory
 
         public int InsertUpdateData(SqlCommand cmd)
         {
+            cmd.CommandTimeout = connectionTimeout; //3 minutos
 
             cmd.CommandType = CommandType.Text;
             cmd.Connection = connection;
@@ -222,6 +232,7 @@ namespace ADOFactory
         public T InsertUpdateData<T>(T obj)
         {
             SqlCommand cmd = GetQuery(obj);
+            cmd.CommandTimeout = connectionTimeout; //3 minutos
 
 
             cmd.CommandType = CommandType.Text;
@@ -258,6 +269,7 @@ namespace ADOFactory
         private static SqlCommand GetQuery<T>(T obj)
         {
             SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = connectionTimeout; //3 minutos
 
             if (obj.GetType().GetProperty("Id") != null)
             {
@@ -326,6 +338,7 @@ namespace ADOFactory
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
+            cmd.CommandTimeout = connectionTimeout; //3 minutos
             var pqp = string.Empty;
             foreach (var item in obj.GetType().GetProperties())
             {
@@ -394,6 +407,7 @@ namespace ADOFactory
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
+            cmd.CommandTimeout = connectionTimeout; //3 minutos
 
             foreach (var item in obj.GetType().GetProperties())
             {
@@ -422,6 +436,8 @@ namespace ADOFactory
             try
             {
                 SqlCommand command = new SqlCommand(query, connection);
+
+                command.CommandTimeout = connectionTimeout; //3 minutos
                 return command.ExecuteNonQuery();
             }
             catch (Exception e)
@@ -438,6 +454,7 @@ namespace ADOFactory
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandTimeout = connectionTimeout; //3 minutos
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {

@@ -729,7 +729,7 @@
   <data name="resource_id" xml:space="preserve">
     <value>pt_br</value>
   </data>
-  <data name="_new" xml:space="preserve">
+  <data name="_novo" xml:space="preserve">
     <value>Novo</value>
   </data>
   <data name="details" xml:space="preserve">
@@ -2051,5 +2051,11 @@
   </data>
   <data name="weighted" xml:space="preserve">
     <value>Ponderado</value>
+  </data>
+  <data name="module" xml:space="preserve">
+    <value>Modulos</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>Novo</value>
   </data>
 </root>

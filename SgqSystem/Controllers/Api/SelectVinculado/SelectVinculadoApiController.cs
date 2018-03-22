@@ -11,6 +11,7 @@ using DTO.DTO.Params;
 using Dominio;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using ADOFactory;
 
 namespace SgqSystem.Controllers.Api.SelectVinculado
 {
@@ -43,9 +44,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON PCC.ParCompany_Id = UNIT.Id
                         WHERE UNIT.Id IN ({ unidadesUsuario })";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
                 }
 
             }
@@ -83,9 +84,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         WHERE UNIT.Id IN ({ unidadesUsuario })
                         { whereClusterGroup }";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
                 }
             }
 
@@ -132,9 +133,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         { whereCluster }
                         AND PS.Id IS NOT NULL";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParStructureDTO>(query).ToList();
                 }
 
             }
@@ -193,9 +194,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         { whereCluster }
                         { whereStructure } ";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParCompanyDTO>(query).ToList();
                 }
 
             }
@@ -231,9 +232,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                     WHERE 1 = 1
                     { whereCluster }";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
+                retorno = factory.SearchQuery<ParCriticalLevelDTO>(query).ToList();
             }
 
 
@@ -298,9 +299,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         --AND PC.Id IN (15,11)
                         ORDER BY L1.Name";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<ParLevel1DTO>(query).ToList();
+                retorno = factory.SearchQuery<ParLevel1DTO>(query).ToList();
             }
 
 
