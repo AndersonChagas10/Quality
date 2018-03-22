@@ -2648,17 +2648,25 @@
 
         function changeIniciativa() {
 
-            $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
+            $('#formEditTatico').on('change','#Iniciativa_Id', function () {
 
                 var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
 
-                manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');           
+
+                //if (Iniciativa_Id <= 0) {
+                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", true);
+                //} else {
+                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", false);
+                //}
 
                 $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
 
                     $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
 
                     //changeIndicadoresProjetos();
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').select2();
 
                     $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                 });
@@ -2667,12 +2675,18 @@
 
         function changeIndicadoresProjetos() {
 
-            $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+            $('#formEditTatico').on('change', '#IndicadoresDeProjeto_Id' , function () {
 
                 var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
 
-                manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+                manageButton(Objetivo_Id, 'formEditTatico #ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
 
+                //if (Objetivo_Id <= 0) {
+                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
+                //} else {
+                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
+                //}
+                
                 $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                     $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
@@ -3210,7 +3224,7 @@
                     colunaDosDados:r.columns,
                     initComplete: function(){
                         $('#tablePessego').off().on('click','button[data-id]',function(){
-                            if(confirm("Deseja alterar o vinculo!?")){                            
+                            if(confirm("Deseja alterar o vinculo!?")){
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
                                 //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
