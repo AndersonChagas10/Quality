@@ -3179,7 +3179,33 @@ namespace SgqSystem.Services
                               "<div class=\"Deviations hide\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
+                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>" +
+                              " <script>" +
+
+                              @"
+
+                                  var countHeaderFieldGroup = 0;
+
+                                function clonarHF(a){ 
+                                  var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
+                                  countHeaderFieldGroup++;
+                                  headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
+                                  $.each(headerFieldGroupVisiveis,function(i,o){
+                                    if(!$(o).parent().attr('data-vinculo')){
+                                      var elementoClonado = $(o).parent().clone(true, true);
+                                      elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
+		                              elementoClonado.insertAfter($(o).parent());
+                                    }
+                                  });
+                                }
+
+                                function removerHF(a){ 
+                                    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
+                                    $.each(headerFieldGroupVisiveis,function(i,o){
+	                                    $(o).remove();
+                                    });
+                                }
+                              </script> ";
 
             //string resource = GetResource();
 
@@ -4564,7 +4590,7 @@ namespace SgqSystem.Services
 
                 var duplicar = header.duplicate;
 
-                var duplicaHeader = duplicar ? "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <div style='display: inline-table' onclick='$(this).parent().clone(true,true).insertAfter($(this).parent());'><i class='fa fa-plus' aria-hidden='true'></i></div>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <div style='display: inline-table' onclick='$(this).parent().remove();'><i class='fa fa-minus' aria-hidden='true'></i></div>" : "";
+                var duplicaHeader = duplicar ? "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <div style='display: inline-table' hfg=\"" + header.HeaderFieldGroup + "\" onclick='clonarHF(this);'><i class='fa fa-plus' aria-hidden='true'></i></div>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <div style='display: inline-table' onclick='removerHF(this);'><i class='fa fa-minus' aria-hidden='true'></i></div>" : "";
 
 
 
@@ -4604,8 +4630,8 @@ namespace SgqSystem.Services
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsMultiple + "</select>";
-
+                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"   >" + optionsMultiple + "</select>";
+                        form_control += " <label class=\"\"></label>";
 
                         break;
                     //Integrações
@@ -4653,7 +4679,7 @@ namespace SgqSystem.Services
 
                            
 
-                            form_control += " <input class=\"form-control input-sm\" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \">";
+                            form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
                         }
@@ -4679,7 +4705,7 @@ namespace SgqSystem.Services
                             if (!hasDefaultIntegration)
                                 optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
 
-                            form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsIntegration + "</select>";
+                            form_control = "<select class=\"form-control input-sm \" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"  >" + optionsIntegration + "</select>";
                         }
                         break;
                     //Binário
@@ -4697,28 +4723,34 @@ namespace SgqSystem.Services
                                 optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\">" + optionsBinario + "</select>";
+                        form_control = "<select class=\"form-control input-sm \" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"  >" + optionsBinario + "</select>";
+                        form_control += " <label class=\"\"></label>";
                         break;
                     //Texto
                     case 4:
-                        form_control = "<input class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control += " <label class=\"\"></label>";
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class=\"form-control input-sm\" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control += " <label class=\"\"></label>";
                         break;
                     //Data
                     case 6:
-                        form_control = "<input class=\"form-control input-sm\" type=\"date\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm \" type=\"date\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control += " <label class=\"\"></label>";
                         break;
 
                     //Hora
                     case 7:
-                        form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm \" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control += " <label class=\"\"></label>";
                         break;
                     //Infomações
                     case 8:
                         form_control = "<br><div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"color: white; font-size: 16px; background: #5353c6;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0; padding: 10px 20px 20px 20px;\"><div style=\"float:right; cursor: pointer;\" class=\"btn btn-default\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\";'>X</div><br><br>" + header.ParHeaderField_Description + "</div></div><button style=\"padding-left: 5px;padding-right: 5px; padding-bottom: 0px; padding-top: 0px;\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;font-size: 28px;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
+                        form_control += " <label class=\"\"></label>";
                         break;
                 }
 
