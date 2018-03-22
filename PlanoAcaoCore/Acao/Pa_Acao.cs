@@ -55,6 +55,22 @@ namespace PlanoAcaoCore
         [Display(Name = "Pra que")]
         public string PraQue { get; set; }
 
+        [Display(Name = "Unidade de medida")]
+        public int UnidadeDeMedida_Id { get; set; }
+        public Pa_UnidadeMedida _UnidadeDeMedida_Id
+        {
+            get
+            {
+                if (UnidadeDeMedida_Id > 0)
+                {
+                    var unidade = Pa_UnidadeMedida.Get(UnidadeDeMedida_Id);
+                    return unidade;
+                }
+                else
+                    return new Pa_UnidadeMedida();
+            }
+        }
+
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
         public string _QuantoCusta { get; set; }
@@ -215,8 +231,6 @@ namespace PlanoAcaoCore
                 var old = Pa_Acao.Get(Id);
                 Panejamento_Id = old.Panejamento_Id;
 
-
-
             }
 
             //if (Pa_IndicadorSgqAcao_Id <= 0)
@@ -276,8 +290,18 @@ namespace PlanoAcaoCore
 
             //throw new Exception("treste");
             if (_QuantoCusta != null)
-                QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta).GetValueOrDefault();
-
+            {
+                if (UnidadeDeMedida_Id == 1)
+                {
+                    QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta.Replace("R$ ","")).GetValueOrDefault();
+                }
+                else
+                {
+                    QuantoCusta = decimal.Parse(_QuantoCusta.Replace(".",","));
+                }
+                
+            }
+                
             if (!string.IsNullOrEmpty(_QuandoFim))
                 QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim, Guard.CultureCurrent.BR);
             else
