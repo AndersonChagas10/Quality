@@ -31,10 +31,16 @@
                                 , @Html.Label(Resources.Resource.company)
                                 , Table.PosicaoLabel.top)
 
-                            <td class="td-erp col-sm-6">
+                            <td class="td-erp col-sm-4">
                                 <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                                 <div>
-                                    @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> {}, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2AmostraLevel", style = "width: 100%" })
+                                    @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2AmostraLevel", style = "width: 100%" })
+                                </div>
+                            </td>
+                            <td class="td-erp col-sm-4">
+                                <label for="paramsDto.parClusterSelected">@Resources.Resource.cluster</label>
+                                <div>
+                                    @Html.DropDownList("paramsDto.parClusterSelected", Model.paramsDdl.DdlparCluster, htmlAttributes: new { @class = "form-control select2", @id = "parClusterSelect2AmostraLevel", style = "width: 100%" })
                                 </div>
                             </td>
                         </tr>
@@ -60,6 +66,7 @@
                         <tr>
                             <th>@Resources.Resource.company</th>
                             <th>@Resources.Resource.level1</th>
+                            <th>@Resources.Resource.cluster</th>
                             <th>@Resources.Resource.evaluation</th>
                             <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
                             <th class="options"></th>
@@ -104,7 +111,7 @@
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tableAvAm',//
-            tdsNames: ['companyName', 'ParLevel1_Name','evaluationNumber', 'sampleNumber', 'btn'],
+            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'btn'],
             getObjAdd: function(isEdit, obj){
                 if(isEdit != undefined){
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
@@ -130,6 +137,12 @@
                         ParLevel1_Name = "@Resources.Resource.all"
                     }
 
+                    var ParCluster_Id = $(' #parClusterSelect2AmostraLevel :selected').val();
+                    var ParCluster_Name = $(' #parClusterSelect2AmostraLevel :selected').text();
+                    if(ParCluster_Id == "-1"){
+                        ParCluster_Name = "@Resources.Resource.all"
+                    }
+
                     return {/*Objeto*/
                         sampleNumber     :  $('#' + this.level + ' #amostra').val(),
                         evaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
@@ -137,6 +150,8 @@
                         companyName  : compName,
                         ParLevel1_Id : ParLevel1_Id,
                         ParLevel1_Name : ParLevel1_Name,
+                        ParCluster_Id : ParCluster_Id,
+                        ParCluster_Name : ParCluster_Name,
                         IsActive: true
                     }
                 }
@@ -153,7 +168,7 @@
                     openMessageModal('@Resources.Resource.invalid_evaluations_number');
                     return false;
                 }
-                
+
                 function verify(data){
                     return (data == 0 || data == -1 || data == null) ? 1 : 0;
                 }
@@ -161,8 +176,9 @@
                 var companySelected = $('#' + seletorTato + ' #avAmCompany :selected').val();//
                 var display = $('#' + seletorTato + ' #avAmCompany :selected').text();//
                 var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel :selected').val();
+                var parClusterSelected = $('#' + seletorTato + ' #parClusterSelect2AmostraLevel :selected').val();
                 var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function(o, c){//
-                    
+
                     var count = 0;
                     if(companySelected == -1){
                         count += verify($(o).parent().data().companyId);
@@ -176,7 +192,13 @@
                         count += $(o).parent().data().ParLevel1_Id == parLevel1Selected ? 1 : 0;
                     }
 
-                    if(count == 2)
+                    if(parClusterSelected == -1){
+                        count += verify($(o).parent().data().ParCluster_Id);
+                    }else{
+                        count += $(o).parent().data().ParCluster_Id == parClusterSelected ? 1 : 0;
+                    }
+
+                    if(count == 3)
                         return true;
                     return false;
                 });
@@ -215,8 +237,9 @@
                     if((o.evaluationId != null || o.evaluationId != undefined) && o.evaluationId > 0){
                         dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationId"] = o.evaluationId;
                     }
-                    
+
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParCluster_Id"] = o.ParCluster_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].sampleNumber"] = o.sampleNumber;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationNumber"] = o.evaluationNumber;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].companyId"] = o.companyId;
@@ -228,6 +251,7 @@
             carregaDadosDoDb: function(){
                 var id = this.level + ' #' + this.idTable;
                 var tdNamess = this.tdsNames;
+
                 if( this.listObjSalvo != null){ /*Carrega regras de NC*/
                     this.listObjSalvo.forEach(function(o, c){
                         if(o.companyId != null){
@@ -236,6 +260,14 @@
                             }
                         }else{
                             o['companyName'] = "@Resources.Resource.all";
+                        }
+
+                        if(o.ParCluster_Name != null){
+                            if(o.ParCluster_Name != "-1"){
+                                o['ParCluster_Name'] = $(' #parClusterSelect2AmostraLevel option[value=' + o.ParLevel1_Id + ']').text();
+                            }
+                        }else{
+                            o['ParCluster_Name'] = "@Resources.Resource.all";
                         }
 
                         if(o.ParLevel1_Id != null){
@@ -248,10 +280,12 @@
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
+                
                 $('#parLevel1Select2AmostraLevel').prepend($("<option></option>")
                         .attr("value",$('#parLevel1Select2 :selected').val())
                         .text($('#parLevel1Select2 :selected').text()));
                 $('#parLevel1Select2AmostraLevel').val($('#parLevel1Select2 :selected').val());
+
             },
             /*Fim Setup*/
             adiciona: function(e) {
@@ -259,6 +293,7 @@
                     var object = this.getObjAdd();
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
 
+                    $("#parClusterSelect2AmostraLevel").val($("#parClusterSelect2AmostraLevel option:first").val());
                     $("#parLevel1Select2AmostraLevel").val($("#parLevel1Select2AmostraLevel option:first").val());
 
                 }
