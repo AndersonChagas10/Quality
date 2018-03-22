@@ -262,9 +262,9 @@
                             o['companyName'] = "@Resources.Resource.all";
                         }
 
-                        if(o.ParCluster_Name != null){
-                            if(o.ParCluster_Name != "-1"){
-                                o['ParCluster_Name'] = $(' #parClusterSelect2AmostraLevel option[value=' + o.ParLevel1_Id + ']').text();
+                        if(o.ParCluster_Id != null){
+                            if(o.ParCluster_Id != "-1"){
+                                o['ParCluster_Name'] = $(' #parClusterSelect2AmostraLevel option[value=' + o.ParCluster_Id + ']').text();
                             }
                         }else{
                             o['ParCluster_Name'] = "@Resources.Resource.all";

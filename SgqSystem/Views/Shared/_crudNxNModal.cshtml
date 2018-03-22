@@ -211,7 +211,6 @@
             else if ($(e).parents('#level2_AvAmostra_accordion').length) {
                 crudNxN.modalAlterarAvAmL2(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-
                     if (AvAm2.veifyAdd('crudNxNEdit')) {//
                         var editado = AvAm2.getObjAdd('crudNxNEdit', obj);//
                         $(e).parents('tr').removeData();
@@ -416,8 +415,9 @@
             if (obj.companyId > 0)
                 $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
 
-            $('#crudNxNEdit #parLevel1Select2AmostraLevel').remove();
-            $('#crudNxNEdit #parClusterSelect2AmostraLevel').remove();
+            $('#crudNxNEdit #parLevel1Select2AmostraLevel').parents('td').html('');
+            $('#crudNxNEdit #parClusterSelect2AmostraLevel').parents('td').html('');
+
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
         },

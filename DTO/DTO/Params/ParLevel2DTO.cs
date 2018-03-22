@@ -170,7 +170,7 @@ namespace DTO.DTO.Params
                     coiso.evaluationId = i.Id;
                     coiso.evaluationNumber = i.Number;
 
-                    var sample = listSample.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                    var sample = listSample.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id && r.ParCluster_Id == i.ParCluster_Id && r.ParLevel1_Id == i.ParLevel1_Id);
                     if (sample != null)
                     {
                         coiso.sampleId = sample.Id;
