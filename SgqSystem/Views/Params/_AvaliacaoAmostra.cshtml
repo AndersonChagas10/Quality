@@ -280,11 +280,13 @@
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
-                
+
                 $('#parLevel1Select2AmostraLevel').prepend($("<option></option>")
                         .attr("value",$('#parLevel1Select2 :selected').val())
                         .text($('#parLevel1Select2 :selected').text()));
                 $('#parLevel1Select2AmostraLevel').val($('#parLevel1Select2 :selected').val());
+
+                $('#parClusterSelect2AmostraLevel option[value=-1]').text("@Resources.Resource.all");
 
             },
             /*Fim Setup*/
