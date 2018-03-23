@@ -2434,9 +2434,9 @@
                     }
                 });
 
-                $('#modalLindo').find('.modal-body .content2').append(form);
                 if (model.Acao && model.Acao.Id > 0)
-                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button><hr>");
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button>");
+                $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
                 myfunction();
 
@@ -2472,10 +2472,10 @@
                         $(c).attr('onclick', after)
                     }
                 })
-
-                $('#modalLindo').find('.modal-body .content1').append(form);
+                
                 if (model.Tatico_Id > 0)
-                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Estratégico</button><hr>");
+                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vinculo Estratégico</button>");
+                $('#modalLindo').find('.modal-body .content1').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
