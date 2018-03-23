@@ -805,6 +805,7 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="ParCluster_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -971,6 +972,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsRequired" Type="bit" />
           <Property Name="DefaultSelected" Type="bit" />
+          <Property Name="HeaderFieldGroup" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -1262,6 +1264,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="ParCluster_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParScoreType">
           <Key>
@@ -5476,6 +5479,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParEvaluation" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParEvaluation" ToRole="ParCompany" />
           <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParCluster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -5518,6 +5522,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="DefaultSelected" Type="Boolean" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1XHeaderField" ToRole="ParLevel1" />
           <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
+          <Property Name="HeaderFieldGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -5821,6 +5826,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParSample" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParSample" ToRole="ParCompany" />
           <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParCluster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ParStructure">
           <Key>
@@ -9373,6 +9379,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParEvaluation">
             <EntityTypeMapping TypeName="SgqDbModel.ParEvaluation">
               <MappingFragment StoreEntitySet="ParEvaluation">
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -9411,6 +9418,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParLevel1XHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XHeaderField">
               <MappingFragment StoreEntitySet="ParLevel1XHeaderField">
+                <ScalarProperty Name="HeaderFieldGroup" ColumnName="HeaderFieldGroup" />
                 <ScalarProperty Name="DefaultSelected" ColumnName="DefaultSelected" />
                 <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -9670,6 +9678,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParSample">
             <EntityTypeMapping TypeName="SgqDbModel.ParSample">
               <MappingFragment StoreEntitySet="ParSample">
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
