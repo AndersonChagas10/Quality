@@ -160,7 +160,7 @@ namespace SgqSystem.Controllers.Api
         private void SaveLatas(int? RecravacaoJson_Id, dynamic latas)
         {
 
-            Factory factory = new Factory("DbContextSgqEUA");
+            Factory factory = new Factory("DefaultConnection");
             factory.ExecuteSql(string.Format("DELETE FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0};", RecravacaoJson_Id));
             foreach (dynamic lata in latas)
             {
@@ -172,7 +172,7 @@ namespace SgqSystem.Controllers.Api
 
         private void UpdateRecravacaoLataJson(int RecravacaoJson_Id, string LataJson)
         {
-            Factory factory = new Factory("SgqDbDevEntities");
+            Factory factory = new Factory("DefaultConnection");
             factory.ExecuteSql(
                 string.Format("UPDATE RecravacaoLataJson SET AlterDate = GETDATE(), ObjectRecravacaoJson = '{1}' WHERE RecravacaoJson_Id = {0}", RecravacaoJson_Id, LataJson));
         }
