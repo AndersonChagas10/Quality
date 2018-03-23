@@ -558,7 +558,7 @@ LEFT JOIN Pa_Dimensao DIME
                     if (i.ValorPara > 0)
                         i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
                 }
-                //Percentual
+                else//Percentual
                 if (i.UnidadeDeMedida_Id == 2)
                 {
                     if (i.ValorDe > 0)

@@ -184,10 +184,10 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.ObjetivoGerencial_Id, htmlAttributes: new { @class = "control-label " })
-                    <i style="color:red">*</i>
+                    @*<i style="color:red">*</i>*@
                 </td>
                 <td>
-                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required tatico  " })
+                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm tatico" })
                 </td>
                 <td>
                     <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">Gerenciar</button>

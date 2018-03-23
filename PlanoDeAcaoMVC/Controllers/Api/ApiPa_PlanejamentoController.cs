@@ -251,24 +251,24 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             if (tipo == "tatico")
             {
                 query = @"SELECT
-                        P.Id
-                        , D.Name AS Diretoria
-                        , M.Name AS Missão
-                        , V.Name AS Visão
-                        , DR.Name AS Diretriz
-                        , IND.Name AS [Indicador da Diretriz]
-                        FROM PA_PLANEJAMENTO P
-                        LEFT JOIN Pa_Diretoria D
-                        ON D.Id = P.Diretoria_Id
-                        LEFT JOIN PA_Missao M
-                        ON M.Id = P.Missao_Id
-                        LEFT JOIN Pa_Visao V
-                        ON V.Id = P.Visao_Id
-                        LEFT JOIN Pa_TemaAssunto DR
-                        ON DR.Id = P.TemaAssunto_Id
-                        LEFT JOIN PA_IndicadoresDiretriz IND
-                        ON IND.Id = P.Indicadores_Id
-                        WHERE P.ESTRATEGICO_ID IS NULL";
+                    	P.Id
+                       ,D.Name AS Diretoria
+                       ,M.Name AS Missão
+                       ,V.Name AS Visão
+                       ,DR.Name AS Diretriz
+                       ,IND.Name AS [Indicador da Diretriz]
+                    FROM PA_PLANEJAMENTO P
+                    LEFT JOIN Pa_Diretoria D
+                    	ON D.Id = P.Diretoria_Id
+                    LEFT JOIN PA_Missao M
+                    	ON M.Id = P.Missao_Id
+                    LEFT JOIN Pa_Visao V
+                    	ON V.Id = P.Visao_Id
+                    LEFT JOIN Pa_Objetivo DR
+                    	ON DR.Id = P.Objetivo_ID
+                    LEFT JOIN PA_IndicadoresDiretriz IND
+                    	ON IND.Id = P.IndicadoresDiretriz_Id
+                    WHERE P.ESTRATEGICO_ID IS NULL";
 
             }else if(tipo == "acao")
             {
