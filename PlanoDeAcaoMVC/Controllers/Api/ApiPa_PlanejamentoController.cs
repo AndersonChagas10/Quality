@@ -2,6 +2,7 @@
 using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -125,6 +126,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             if (a.Id > 0)
             {
+                a.AlterDate = DateTime.Now;
                 db.Pa_Planejamento.Attach(a);
                 var entry = db.Entry(a);
                 entry.State = System.Data.Entity.EntityState.Modified;
@@ -134,6 +136,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
             else
             {
+                a.AddDate = DateTime.Now;
                 db.Pa_Planejamento.Add(a);
                 db.SaveChanges();
             }

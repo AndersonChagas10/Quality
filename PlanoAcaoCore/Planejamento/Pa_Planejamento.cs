@@ -340,7 +340,7 @@ FROM (SELECT
 	   ,Pl1.IndicadoresDiretriz_Id
 	   ,Pl2.IndicadoresDeProjeto_Id
 	   ,Pl2.Estrategico_Id
-	   ,Pl2.Responsavel_Diretriz
+	   ,Pl1.Responsavel_Diretriz
 	   ,Pl2.Responsavel_Projeto
 	   ,Pl2.UnidadeDeMedida_Id
 	   ,Pl2.IsTatico
