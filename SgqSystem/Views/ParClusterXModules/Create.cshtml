@@ -80,8 +80,8 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.EffectiveDate, Resources.Resource.effectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-2">
-                                                @{string effectiveDate = Model?.EffectiveDate?.ToShortDateString() ?? "";}
-                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control dataInput" })
+                                                @{string effectiveDate = Model?.EffectiveDate?.ToString("yyyy-MM-dd") ?? "";}
+                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type="date" })
                                                 @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -110,7 +110,6 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        SingleCallendar.IntiFullCallendarByClass('dataInput');
 
         setTimeout(function () {
             $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
