@@ -11,6 +11,7 @@ namespace DTO.DTO.Params
         public string Initials { get; set; }
         public string SIF { get; set; }
         public int CompanyNumber { get; set; }
+        public decimal IntegrationId { get; set; }
         public string IPServer { get; set; }
         public string DBServer { get; set; }
         public string RolePerCompany { get; set; }

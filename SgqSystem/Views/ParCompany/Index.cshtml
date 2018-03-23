@@ -88,6 +88,9 @@
                                         <tr class="row hide">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                         </tr>
+                                        <tr class="row hide">
+                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.IntegrationId", new { @id = "parCompanyDTO_IntegrationId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                                        </tr>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
                                         </tr>
@@ -278,7 +281,10 @@
             for (var i = 0; i < companyClusterList.length; i++) {
                 var ParCompanyClusterDTO = { 'ParCompany_Id': $('#parCompanyDTO_Id').val(), 'ParCluster_Id': $(companyClusterList[i]).attr('value') };
                 dados['parCompanyDTO.ListParCompanyCluster'].push(ParCompanyClusterDTO);
+
             }
+
+            dados['parCompanyDTO.IntegrationId'] = dados['parCompanyDTO.CompanyNumber'];
 
             $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                 console.log(objetoReturn);
@@ -465,5 +471,8 @@
 <script>
     $(document).ready(function () {
         closeLeftSidebar();
+        $('#parCompanyDTO_CompanyNumber').inputmask("integer", { allowMinus: false });
+        $('#parCompanyDTO_CompanyNumber').css("text-align", "left");
+        
     });
 </script>

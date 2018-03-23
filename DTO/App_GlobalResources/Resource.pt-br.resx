@@ -571,7 +571,7 @@
     <value>Voltar</value>
   </data>
   <data name="inform_the_weight_of_the_level3" xml:space="preserve">
-    <value>Infome o peso do nível 3</value>
+    <value>Informe o peso do nível 3</value>
   </data>
   <data name="weight" xml:space="preserve">
     <value>Peso</value>
@@ -712,7 +712,7 @@
     <value>CEP Desossa</value>
   </data>
   <data name="cep_recortes" xml:space="preserve">
-    <value>CEP Recortes</value>
+    <value>CEP  Matéria Prima</value>
   </data>
   <data name="nqa" xml:space="preserve">
     <value>NQA</value>
@@ -729,7 +729,7 @@
   <data name="resource_id" xml:space="preserve">
     <value>pt_br</value>
   </data>
-  <data name="_new" xml:space="preserve">
+  <data name="_novo" xml:space="preserve">
     <value>Novo</value>
   </data>
   <data name="details" xml:space="preserve">
@@ -2015,5 +2015,47 @@
   </data>
   <data name="waiting_upper" xml:space="preserve">
     <value>PENDENTE</value>
+  </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Data Vigente</value>
+  </data>
+  <data name="actives" xml:space="preserve">
+    <value>Ativos</value>
+  </data>
+  <data name="active_clusters" xml:space="preserve">
+    <value>Processos Ativos</value>
+  </data>
+  <data name="active_goals" xml:space="preserve">
+    <value>Metas Ativas</value>
+  </data>
+  <data name="to_manager" xml:space="preserve">
+    <value>Gerenciar</value>
+  </data>
+  <data name="without" xml:space="preserve">
+    <value>Sem</value>
+  </data>
+  <data name="edited" xml:space="preserve">
+    <value>Editado</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroativo</value>
+  </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>A Descrição deverá ter no mínimo 1 e máximo 300 caracteres</value>
+  </data>
+  <data name="data" xml:space="preserve">
+    <value>Dados</value>
+  </data>
+  <data name="weighted" xml:space="preserve">
+    <value>Ponderado</value>
+  </data>
+  <data name="module" xml:space="preserve">
+    <value>Modulos</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>Novo</value>
   </data>
 </root>

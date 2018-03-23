@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO;
 using DTO.Helpers;
 using SgqSystem.Services;
@@ -43,7 +44,11 @@ namespace SgqSystem.Controllers.Api.App
                         "\n where UnitId = " + ParCompany_Id + " and ParLevel1_Id = "+ level1Id + " and CollectionDate <= '"+dataInicio+ " 23:59:00' and CollectionDate >= '" + dataFim + " 00:00:00' and WeiDefects > 0" +
                         "\n group by EvaluationNumber, [Sample], [Period], [Shift]";
 
-            var results = db.Database.SqlQuery<DefeitosPorAmostra>(sql);
+            List<DefeitosPorAmostra> results = new List<DefeitosPorAmostra>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                results = factory.SearchQuery<DefeitosPorAmostra>(sql).ToList();
+            }
 
             newReturn.AddRange(results);
             

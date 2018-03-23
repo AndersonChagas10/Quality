@@ -344,6 +344,91 @@ alter table Pa_Planejamento add TemaProjeto_Id int null
 
 alter table Pa_Planejamento add TipoProjeto_Id int null
 
+----------------------------------------------------------------------- 16-01-2018 - Renan Adicionar tabela Pa_Colvis (Colunas visíveis do Usuário)
+
+create table Pa_Colvis(
+	[Id] [int] IDENTITY(1,1) NOT NULL primary key,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	ColVisShow varchar(255) null,
+	ColVisHide varchar(255) null,
+	Pa_Quem_Id int not null,
+);
+
+----------------------------------------------------------------------- 22-01-2018 - Leo Adicionado duas colunas ParLevel3Value
+
+ALTER TABLE ParLevel3Value ADD ParLevel1_Id INT NULL  References ParLevel1(Id) DEFAULT NULL
+
+ALTER TABLE ParLevel3Value ADD ParLevel2_Id INT NULL  References ParLevel2(Id) DEFAULT NULL
+
+----------------------------------------------------------------------- 24-01-2018 - Leo Criação tabela para permitir configuração de avaliação/amostra por tarefa
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3EvaluationSample' AND xtype='U')
+    CREATE TABLE ParLevel3EvaluationSample (
+		Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+		ParCompany_Id int null
+		FOREIGN KEY REFERENCES ParCompany(Id),
+		ParLevel1_Id int null
+		FOREIGN KEY REFERENCES ParLevel1(Id),
+		ParLevel2_Id int null
+		FOREIGN KEY REFERENCES ParLevel2(Id),
+		ParLevel3_Id int not null
+		FOREIGN KEY REFERENCES ParLevel3(Id),
+		SampleNumber Decimal null,
+		EvaluationNumber Decimal null,
+		EvaluationInterval varchar(30) null,
+		AddDate Datetime not null,
+		AlterDate Datetime null,
+		IsActive bit null,
+	)
+GO
+
+ALTER TABLE [dbo].[ParHeaderField]
+
+add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
+
+----------------------------------------------------------------------- 10-02-2018 - Leo Criação coluna 'EffectiveDate' para registrar historico parametrização
+
+IF COL_LENGTH('ParLevel1XCluster','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1XCluster add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParLevel1XCluster set EffectiveDate = 2000-01-01')
+    END
+
+IF COL_LENGTH('ParGoal','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParGoal add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParGoal set EffectiveDate = 2000-01-01')
+    END
+
+-------------------------------------------------------------------- 19 02 2017 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
+
+IF COL_LENGTH('Deviation','EmailContent_Id') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table Deviation add EmailContent_Id int default (null)
+    Alter table Deviation ADD FOREIGN KEY (EmailContent_Id) REFERENCES EmailContent(Id);
+    EXEC ('update Deviation set EmailContent_Id = null')
+    END
+
+IF COL_LENGTH('CorrectiveAction','EmailContent_Id') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CorrectiveAction add EmailContent_Id int default (null)
+    Alter table CorrectiveAction ADD FOREIGN KEY (EmailContent_Id) REFERENCES EmailContent(Id);
+    EXEC ('update CorrectiveAction set EmailContent_Id = null')
+    END
+ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+
+------------------------------------------------------------------ 20/03/2018 - PA Renan
+
+ALTER table Pa_Acao add UnidadeDeMedida_Id int
+
+insert into Pa_UnidadeMedida (AddDate,Name) VALUES (GETDATE(), 'Absoluto');
+alter table Pa_Planejamento add TipoProjeto_Id int null
+
 ----------------------------------------------------------- 18-01-2018 - RecravacaoSugestao ---------------------------
 
 CREATE TABLE RecravacaoSugestao (

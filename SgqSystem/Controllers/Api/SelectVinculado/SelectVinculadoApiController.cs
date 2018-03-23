@@ -11,6 +11,7 @@ using DTO.DTO.Params;
 using Dominio;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using ADOFactory;
 
 namespace SgqSystem.Controllers.Api.SelectVinculado
 {
@@ -43,9 +44,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON PCC.ParCompany_Id = UNIT.Id
                         WHERE UNIT.Id IN ({ unidadesUsuario })";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
                 }
 
             }
@@ -83,9 +84,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         WHERE UNIT.Id IN ({ unidadesUsuario })
                         { whereClusterGroup }";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
                 }
             }
 
@@ -108,6 +109,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 {
                     whereCluster = "AND PC.Id = " + model.Cluster;
                 }
+                else
+                if (model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
+                }
 
                 var query = $@"SELECT
                         DISTINCT
@@ -127,9 +133,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         { whereCluster }
                         AND PS.Id IS NOT NULL";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParStructureDTO>(query).ToList();
                 }
 
             }
@@ -154,10 +160,20 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 {
                     whereStructure = "and PS.Id = " + model.Structure;
                 }
+                else
+                if (model.StructureArr.Length > 0)
+                {
+                    whereStructure = $"AND PS.Id IN ({ string.Join(",", model.StructureArr) })";
+                }
 
                 if (model.Cluster > 0)
                 {
                     whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+                else
+                if (model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
                 }
 
                 var query = $@"SELECT
@@ -178,9 +194,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         { whereCluster }
                         { whereStructure } ";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
+                    retorno = factory.SearchQuery<ParCompanyDTO>(query).ToList();
                 }
 
             }
@@ -202,6 +218,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             {
                 whereCluster = "AND cc.ParCluster_Id = " + model.Cluster;
             }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND cc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
+            }
 
             var query = $@"SELECT
                     	distinct cl.Id, cl.Name
@@ -211,9 +232,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                     WHERE 1 = 1
                     { whereCluster }";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
+                retorno = factory.SearchQuery<ParCriticalLevelDTO>(query).ToList();
             }
 
 
@@ -234,10 +255,20 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             {
                 whereCriticalLevel = "AND pcl.Id = " + model.CriticalLevel;
             }
+            else
+                if (model.CriticalLevelArr.Length > 0)
+            {
+                whereCluster = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
+            }
 
             if (model.Cluster > 0)
             {
                 whereCluster = "AND plc.ParCluster_Id = " + model.Cluster;
+            }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND plc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
             }
 
             var query = $@"SELECT
@@ -268,9 +299,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         --AND PC.Id IN (15,11)
                         ORDER BY L1.Name";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                retorno = db.Database.SqlQuery<ParLevel1DTO>(query).ToList();
+                retorno = factory.SearchQuery<ParLevel1DTO>(query).ToList();
             }
 
 
@@ -294,5 +325,13 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public int Cluster { get; set; }
         public int ClusterGroup { get; set; }
         public int Structure { get; set; }
+        public int[] StructureArr { get; set; } = new int[] { };
+        public int[] ClusterArr { get; set; } = new int[] { };
+        public int[] CriticalLevelArr { get; set; } = new int[] { };
+
+        public int[] Level1IdArr { get; set; } = new int[] { };
+        public int[] Level2IdArr { get; set; } = new int[] { };
+        public int[] Level3IdArr { get; set; } = new int[] { };
+
     }
 }

@@ -30,15 +30,18 @@ namespace SgqSystem.Controllers.Api
         // GET: api/RecravacaoApi
         public HttpResponseMessage Get(int companyId, int level1Id, int linhaId)
         {
-            var requestResults = Request.Content.ReadAsStringAsync().Result;
-            var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
-            var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", companyId, level1Id, linhaId);
-            var results = QueryNinja(db, query);            
-            var latasId = results.Count() > 0 ? QueryNinja(db, string.Format("SELECT Id from RecravacaoLataJson where RecravacaoJson_Id = {0}", results[0].GetValue("Id").ToString())) : null;
-            var produtos = db.Database.SqlQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
-            var sugestoes = db.Database.SqlQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList(); 
-            return Request.CreateResponse(HttpStatusCode.OK, 
-                new { resposta = "Dados Recuperados", model = results, produtos = produtos, sugestoes = sugestoes, latasId = latasId });
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var requestResults = Request.Content.ReadAsStringAsync().Result;
+                var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
+                var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", companyId, level1Id, linhaId);
+                var results = QueryNinja(db, query);
+                var latasId = results.Count() > 0 ? QueryNinja(db, string.Format("SELECT Id from RecravacaoLataJson where RecravacaoJson_Id = {0}", results[0].GetValue("Id").ToString())) : null;
+                var produtos = factory.SearchQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
+                var sugestoes = factory.SearchQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList();
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new { resposta = "Dados Recuperados", model = results, produtos = produtos, sugestoes = sugestoes, latasId = latasId });
+            }
         }
 
         public HttpResponseMessage Get(int recravacaoLataJsonId)

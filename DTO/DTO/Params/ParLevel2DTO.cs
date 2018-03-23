@@ -32,9 +32,10 @@ namespace DTO.DTO.Params
         [MaxLength(300, ErrorMessageResourceName = "maximum_name_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Name { get; set; }
 
-        //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 3 e máximo 10 caracteres.")]
+        //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 1 e máximo 10 caracteres.")]
         //[MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
         //[MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
+        [Required(ErrorMessageResourceName = "description_has_between_1_and_300", ErrorMessageResourceType = typeof(Resource))]
         [MinLength(1, ErrorMessageResourceName = "minimum_description_1_characteres", ErrorMessageResourceType = typeof(Resource))]
         [MaxLength(300, ErrorMessageResourceName = "maximum_description_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Description { get; set; }
@@ -134,14 +135,16 @@ namespace DTO.DTO.Params
                     {
                         Number = i.sampleNumber,
                         Id = i.sampleId ?? 0,
-                        IsActive = i.IsActive
+                        IsActive = i.IsActive,
+                        ParLevel1_Id = i.ParLevel1_Id
                     };
 
                     var evaluation = new ParEvaluationDTO()
                     {
                         Number = i.evaluationNumber,
                         Id = i.evaluationId ?? 0,
-                        IsActive = i.IsActive
+                        IsActive = i.IsActive,
+                        ParLevel1_Id = i.ParLevel1_Id
                     };
 
                     if (i.companyId > 0)
@@ -178,6 +181,7 @@ namespace DTO.DTO.Params
                     }
 
                     coiso.IsActive = i.IsActive;
+                    coiso.ParLevel1_Id = i.ParLevel1_Id;
                     coiso.Id = 1;
                     if (i.ParCompany_Id != null && i.ParCompany_Id > 0)
                         coiso.companyId = i.ParCompany_Id;

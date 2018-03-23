@@ -27,6 +27,7 @@ namespace DTO.DTO.Params
         //[Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
         [Range(0, 9999999999, ErrorMessageResourceName = "select_the_frequency", ErrorMessageResourceType = typeof(Resource))]
         public int ParFrequency_Id { get; set; }
+  
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]

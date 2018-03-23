@@ -25,15 +25,15 @@
                     </tr>
                     <tr class="row">
 
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm"})
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_name)
                          , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm"})
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_description)
                          , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
 
                     </tr>
@@ -56,15 +56,6 @@
                     </tr>
                 </table>
 
-                <div class="panel-group accordion" id="level3_data_type_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_data_type_accordion" href="#level3_data_type_collapse" aria-expanded="false"> @Resources.Resource.data_type_entry</a>
-                            </h4>
-                        </div>
-                        <div id="level3_data_type_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
 
                                 <table class="table-erp">
                                     <tr class="row">
@@ -246,12 +237,18 @@
                         @Html.Partial("_ReincidenciaXLevel", Model)
                     </div>*@
                 @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
+
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {
+                    <div id="level3_required_level1_level2" class="hide">
+                        @Html.Partial("_TipoDadosEntrada", Model)
+                        @Html.Partial("_AvaliacaoAmostraLevel3", Model)
+                    </div>
+
                     @Html.Partial("_Peso", Model)
                 }
 
-                <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-info margin-button">@Resources.Resource.save_level3</button>
+                <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-danger margin-button">@Resources.Resource.save_level3</button>
             </div>
         </div>
         <!-- Modal -->
@@ -694,261 +691,11 @@
 
     }
 
-    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
-
-    var level3Value =  {
-        /*Setup*/
-        levelControl: 3,
-        level: "newLevel3Modal",
-        listObjSalvo: levelParamsDTO.parLevel3Dto.listLevel3Value,
-        idTable: 'tableLevel3Value',//
-        tdsNames: ['ParLevel3InputType_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
-        getObjAdd: function(isEdit, obj){
-
-            var preseletor = "";
-            if(isEdit != undefined){
-                preseletor = isEdit;
-            } else {
-                preseletor = level3Value.level;
-            }
-
-            var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
-            var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
-
-            var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
-            var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
-            var selectNaoConformeName = $('#' + preseletor + ' #selectNaoConforme :selected').text();
-            var selectNaoConforme = $('#' + preseletor + ' #selectNaoConforme :selected').val();
-            var selectConformeName = $('#' + preseletor + ' #selectConforme :selected').text();
-            var selectConforme = $('#' + preseletor + ' #selectConforme :selected').val();
-
-            var selectUnidadeDeMedidasName = $('#' + preseletor + ' #selectUnidadeDeMedidas :selected').text(); //Unidade de Medida
-            var selectUnidadeDeMedidas = $('#' + preseletor + ' #selectUnidadeDeMedidas :selected').val();
-            var parIntervalosTypeName = $('#' + preseletor + ' #parIntervalosType :selected').text(); //Valores entre
-            var parIntervalosType = $('#' + preseletor + ' #parIntervalosType :selected').val();
-            var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
-            var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
-
-            if(companyValue == -1){
-                companyValue = null;
-                companyName = "@Resources.Resource.all";
-            }
-
-            if(selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5){
-                selectConformeName = "";
-                selectNaoConformeName = "";
-            }
-
-            if(selectTipoInput == 1){
-                selectUnidadeDeMedidasName = "";
-                parLevel3Value_IntervalMin = "";
-                parLevel3Value_IntervalMax = "";
-                parIntervalosTypeName  = "";
-            }
-
-            if(selectTipoInput == 5){
-                selectUnidadeDeMedidasName = "";
-                selectNaoConforme = "";
-                selectConforme = "";
-                selectUnidadeDeMedidas = "";
-            }
-
-            if(isEdit != undefined){
-
-                obj.ParCompany_Name =                companyName;
-                obj.ParCompany_Id =                  companyValue;
-                obj.IsActive =                       true;
-
-                //Bin
-                //obj.ParLevel3InputType_Name = selectTipoInputName;
-                //obj.ParLevel3InputType_Id =   selectTipoInput;
-                obj.ParLevel3BoolFalse_Name = selectNaoConformeName;
-                obj.ParLevel3BoolFalse_Id =   selectNaoConforme;
-                obj.ParLevel3BoolTrue_Name =  selectConformeName;
-                obj.ParLevel3BoolTrue_Id =    selectConforme;
-
-                //Intervalos
-                obj.ParMeasurementUnit_Name =        selectUnidadeDeMedidasName;
-                obj.ParMeasurementUnit_Id =          selectUnidadeDeMedidas;
-                obj.AcceptableValueBetween_Name =    parIntervalosTypeName;
-                obj.AcceptableValueBetween =         parseInt(parIntervalosType) ? true : false;
-                obj.IntervalMin =                    parLevel3Value_IntervalMin;
-                obj.IntervalMax =                    parLevel3Value_IntervalMax;
-
-                return obj;
-
-            }else{
-
-                return {
-
-                    ParCompany_Name:             companyName,
-                    ParCompany_Id:               companyValue,
-                    IsActive:                    true,
-
-                    //Bin
-                    ParLevel3InputType_Name:     selectTipoInputName,
-                    ParLevel3InputType_Id:       selectTipoInput,
-                    ParLevel3BoolFalse_Name:     selectNaoConformeName,
-                    ParLevel3BoolFalse_Id:       selectNaoConforme,
-                    ParLevel3BoolTrue_Name:      selectConformeName,
-                    ParLevel3BoolTrue_Id:        selectConforme,
-
-                    //Intervalos
-                    ParMeasurementUnit_Name:     selectUnidadeDeMedidasName,
-                    ParMeasurementUnit_Id:       selectUnidadeDeMedidas,
-                    AcceptableValueBetween_Name: parIntervalosTypeName,
-                    AcceptableValueBetween:      parseInt(parIntervalosType) ? true : false,
-                    IntervalMin:                 parLevel3Value_IntervalMin,
-                    IntervalMax:                 parLevel3Value_IntervalMax,
-                    IsActive:                    true,
-                };
-            }
-        },
-        veifyAdd: function(isEdit) {
-            var seletorTato = !!isEdit ? isEdit : level3Value.level;
-            /*Valida se pode criar o objeto*/
-
-            if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 1){ // Binario
-                if($('#' + seletorTato + ' #selectConforme :selected').val() <= 0){
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_positive_value_for_binary_field'));
-                    return false;
-                }else if($('#' + seletorTato + ' #selectNaoConforme :selected').val() <= 0){
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_negative_value_for_binary_field'));
-                    return false;
-                }
-            } // Intervalo ou Calculado.
-            else if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3 || $('#' + seletorTato + ' #selectTipoInput :selected').val() == 4){
-                if($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0){
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
-                    return false;
-                }
-            }
-
-            /*Verifica Unidade*/
-            var companySelected = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').val();//
-            var display = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').text();//
-            var exist = $.grep($('#tableLevel3Value  tbody  tr  td:nth-child(1)'), function(o, c){//
-                if(companySelected == -1){
-                    return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
-                }
-                return $(o).parent().data().ParCompany_Id == companySelected;
-            });
-
-            if(!!isEdit){/*Edição*/
-
-            } else {/*Inclusão*/
-                if(exist.length){
-
-                    if(companySelected == -1)
-                        display= "@Resources.Resource.all";
-
-                    openMessageModal(Resources('data_already_register_on_company')+" " + display + ".", "")
-                    return false;
-
-                }
-            }
 
 
-            return true;
-        },
-        incluiNoObjetoParaSubmit: function(dados){
-
-            var level = level3Value.levelControl;
-            $('#' + level3Value.level + ' #' + level3Value.idTable + ' > tbody > tr ').each(function(c, obj){
-
-                var o = $(obj).data();
-                //#edit
-                if((o.Id != null || o.Id != undefined) && o.Id > 0){
-                    dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].Id"] = o.Id;
-                }
-
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel3InputType_Id"] = o.ParLevel3InputType_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel3BoolFalse_Id"] = o.ParLevel3BoolFalse_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel3BoolTrue_Id"] = o.ParLevel3BoolTrue_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParMeasurementUnit_Id"] = o.ParMeasurementUnit_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].AcceptableValueBetween"] = o.AcceptableValueBetween;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMin"] = o.IntervalMin;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMinCalculado"] = o.IntervalMin;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
-                //
-            });
-
-        },
-        carregaDadosDoDb: function () {
-            //console.log(o["IntervalMin"] );
-            var id = level3Value.level + ' #' + level3Value.idTable;
-            var tdNamess = level3Value.tdsNames;
-            if( level3Value.listObjSalvo != null){ /*Carrega regras de NC*/
-                level3Value.listObjSalvo.forEach(function (o, c) {
-                    console.log('aquii');
-                    o["ParLevel3InputType_Name"] = o.ParLevel3InputType.Name;
-
-                    if(o.ParCompany_Id > 0)
-                        o["ParCompany_Name"] = o.ParCompany.Name;
-                    else
-                        o["ParCompany_Name"] = "@Resources.Resource.all";
-
-                    if(o.ParLevel3InputType_Id == 1){
-                        o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
-                        o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
-                        o["ParMeasurementUnit_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = "";
-                        o["IntervalMin"] = "";
-                        o["IntervalMax"] = "";
-                    }else if (o.ParLevel3InputType_Id == 2){
-                        o["ParMeasurementUnit_Name"] = "";
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    } else if (o.ParLevel3InputType_Id == 3) {                      
-                        o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
-                        o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
-                        o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.IntervalMin == null ? "@Resources.Resource.acceptable_value_less_than " + o.IntervalMax :
-                            (o.IntervalMax == null ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
-                            (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
-                        
-                    } else if (o.ParLevel3InputType_Id == 4) {                        
-                        o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMinCalculado + " @Resources.Resource.and " + o.IntervalMaxCalculado : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMinCalculado + " @Resources.Resource.or_greater_than " + o.IntervalMaxCalculado;
-                        o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
-                        o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
-                        o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
-                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;                     
-                    }else if(o.ParLevel3InputType_Id == 5){
-                        o["ParMeasurementUnit_Name"] = "";
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = "";
-                        o["IntervalMin"] = "";
-                        o["IntervalMinCalculado"] = "";
-                        o["IntervalMax"] = "";
-                        o["IntervalMaxCalculado"] = "";
-                    }
-                    //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
-                    crudNxN.adiciona(o,  id, tdNamess);
-                });
-            }
-        },
-        /*Fim Setup*/
-        adiciona: function(e) {
-            if(level3Value.veifyAdd()){
-                var object = level3Value.getObjAdd();
-                crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
-            }
-        },
-    };
-
-    var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
     var grouLevel2Selected = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.groupLevel2Selected));
     //var
+    var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
     $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
 
     $('#pesoDefinido').html(hasPeso).show();

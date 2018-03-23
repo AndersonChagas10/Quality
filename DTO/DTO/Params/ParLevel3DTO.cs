@@ -38,6 +38,8 @@ namespace DTO.DTO.Params
         public List<int> removeReincidencia { get; set; }
         public List<ParLevel3ValueDTO> listLevel3Value { get; set; }
         public List<ParLevel3Level2DTO> listLevel3Level2 { get; set; }
+        public List<ParLevel3EvaluationSampleDTO> listParLevel3EvaluationSample { get; set; }
+
         public List<ParLevel3Value_OuterListDTO> ParLevel3Value_OuterList { get; set; }
         public IEnumerable<IGrouping<int, ParLevel3Value_OuterListDTO>> ParLevel3Value_OuterListGrouped { get; set; }
         public bool AllowNA { get; set; }

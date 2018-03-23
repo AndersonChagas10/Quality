@@ -105,7 +105,7 @@ namespace SgqSystem.Controllers.Api
 
             var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
 
-            Factory factorySgq = new Factory("DbContextSgqEUA");
+            Factory factorySgq = new Factory("DefaultConnection");
 
             var userSQL = "UserGQualidade";
             var passSQL = "grJsoluco3s";
@@ -186,13 +186,13 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         public IEnumerable<dynamic> GetCollectionLevel2Reprocesso(int ParCompany_Id, string dtIni, string dtFim, int headerEntrada, int headerSaida)
         {
-            Factory factory = new Factory("DbContextSgqEUA");
+            Factory factory = new Factory("DefaultConnection");
             //SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             //sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
             //    public IEnumerable<CollectionLevel2> GetCollectionLevel2Reprocesso(int ParCompany_Id, DateTime dtIni, DateTime dtFim)
             //{
-            //    Factory factory = new Factory("DbContextSgqEUA");
+            //    Factory factory = new Factory("DefaultConnection");
             //    SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             //    sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
@@ -242,10 +242,7 @@ namespace SgqSystem.Controllers.Api
         public string GetUnidadeMedida(int level3_id)
         {
 
-            Factory factory = new Factory("DbContextSgqEUA");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
-
-            sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
+            Factory factory = new Factory("DefaultConnection");
 
             var query = @"select max(p3u.name) unidade from parlevel3 p3
                             left join parlevel3value p3v
@@ -256,7 +253,7 @@ namespace SgqSystem.Controllers.Api
 
             string valor = "";
 
-            valor = sgqDbDevEntities.Database.SqlQuery<string>(query).FirstOrDefault();
+            valor = factory.SearchQuery<string>(query).FirstOrDefault();
 
             return valor;
         }
@@ -265,8 +262,8 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         public IEnumerable<dynamic> GetReportReprocesso(int cl2_Id, int ParCompany_Id, string dtIni, string dtFim, int cabecalho_idEntrada, int level2_idEntrada, int cabecalho_idSaida, int level2_idSaida)
         {
-            Factory factory = new Factory("DbContextSgqEUA");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
+            Factory factory = new Factory("DefaultConnection");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
@@ -402,8 +399,8 @@ namespace SgqSystem.Controllers.Api
 
             var ParCompany_Id = unitId;
 
-            Factory factory = new Factory("DbContextSgqEUA");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
+            Factory factory = new Factory("DefaultConnection");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
@@ -454,8 +451,8 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         public IEnumerable<dynamic> GetMonitor(int user)
         {
-            Factory factory = new Factory("DbContextSgqEUA");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
+            Factory factory = new Factory("DefaultConnection");
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 

@@ -16,6 +16,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
 using System.Net.Http;
+using ADOFactory;
 
 namespace SgqSystem.Mail
 {
@@ -203,10 +204,11 @@ namespace SgqSystem.Mail
                             EmailContent newMail = GetMailByDeviation(db, m, m.AlertNumber);
                             newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
                             db.EmailContent.Add(newMail);
-                            db.Database.ExecuteSqlCommand("UPDATE Deviation SET sendMail = 1 WHERE ID = " + m.Id);
-                        }
+                            db.SaveChanges();
 
-                        db.SaveChanges();
+                            db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
+                            db.SaveChanges();
+                        }
 
                     }
                 }
@@ -245,11 +247,50 @@ namespace SgqSystem.Mail
 
             var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
 
+            #region Captura ultimo body do email content enviado
+            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta1 =
+                $@"select top 1 ec.Body from deviation d
+                                INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
+                                WHERE
+                                CAST(GETDATE() AS Date) = CAST(d.DeviationDate AS Date)    
+                                and ParLevel1_Id = { m.ParLevel1_Id }                                           
+                                AND d.ParCompany_Id = { m.ParCompany_Id }  
+                                and d.alertnumber > 0
+                                order by d.alertnumber desc";
+
+            
+            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
+                $@"
+                SELECT  top 1 ca.id   FROM  CollectionLevel2 cl2                                                 
+                INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
+                INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND d.ParCompany_Id = cl2.UnitId AND d.ParLevel2_Id = cl2.ParLevel2_Id AND d.Evaluation = cl2.EvaluationNumber AND d.Sample = cl2.Sample AND d.DeviationDate = cl2.CollectionDate
+                INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
+                WHERE                                         
+                CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)          
+                AND cl2.ParLevel1_Id = { m.ParLevel1_Id }                                           
+                AND cl2.UnitId = { m.ParCompany_Id }
+                AND ca.Id <= { m.Id }
+                order by ec.id desc";
+
+            var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
+            var valor2 = db.Database.SqlQuery<int>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
+
+            //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
+            #endregion
+
+            var ultimoBodyEmailContent = "";
+            if (valor2 > 0)
+            {
+                var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
+                ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
+            }
+            ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
+            #endregion
 
             var newMail = new EmailContent()
             {
                 AddDate = DateTime.Now,
-                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body),
+                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
                 IsBodyHtml = true,
                 Subject = subject,
                 Project = "SGQApp"
@@ -346,8 +387,13 @@ namespace SgqSystem.Mail
                 {
                     using (var controller = new CorrectActApiController())
                     {
-                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveAction>("SELECT * FROM CorrectiveAction WHERE MailProcessed = 0");
-                        foreach (var ca in listaCorrectiveActionDb)
+                        var listaCorrectiveActionDb = new List<CorrectiveAction>();
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            listaCorrectiveActionDb = factory.SearchQuery<CorrectiveAction>("SELECT * FROM CorrectiveAction WHERE MailProcessed = 0");
+                        }
+
+                            foreach (var ca in listaCorrectiveActionDb)
                         {
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
                             var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel1_Id).Name;
@@ -416,7 +462,7 @@ namespace SgqSystem.Mail
                 }
         }
 
-        #endregion
+      
 
         #region ResendProcessJson
 

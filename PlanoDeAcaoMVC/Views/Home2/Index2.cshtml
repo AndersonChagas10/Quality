@@ -381,14 +381,98 @@
                 border-color: #428bca !important;
                 color: #fff !important;
             }
+
+        #percentualConclusao {
+            font-size: 40px;
+        }
     </style>
+
+    <script>
+        /**/
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
+        /**/
+        /**/
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
+        /**/
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+
+    </script>
 
 }
 
 @*<h2>Plano de Ação</h2>*@
 
-<div>
-    <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
+<div class="container-fluid">
+    <div class="row" style="width:100% !important">
+        <div class="col-md-12" style="margin-left:10px;">
+            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">Visão Geral dos Projetos Diretriz</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modalVisaoGeralProjetos" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Visão Geral dos Projetos</h4>
+            </div>
+            <div class="modal-body container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="col-sm-12 panel panel-inf" style="background-color:dimgray; color:whitesmoke; text-align:center">
+                                <h4 class="panel-heading">% Concluída</h4>
+                                <div id="percentualConclusao" class="panel-body">0 %</div>
+                            </div>
+                            <div>
+                                <div id="graficoPorGerencia"></div>
+                                <div id="graficoPorDiretriz"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div id="graficoPorProjetos"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <h4>Tarefas em Andamento</h4>
+                            <table id="tableAndamento" class="table table-striped"></table>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>Tarefas Atrasadas</h4>
+                            <table id="tableAtrasadas" class="table table-striped"></table>
+                        </div>
+                    </div>
+                    <div style="clear:both; height: 40px;"></div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <h4>Próximas Tarefas</h4>
+                            <table id="tableProximas" class="table table-striped"></table>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>Tarefas Concluídas</h4>
+                            <table id="tableConcluidas" class="table table-striped"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <hr class="showAsEstrategy" />
@@ -676,7 +760,6 @@
                     <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
                         <thead>
                             <tr>
-
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -718,8 +801,6 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-
-
                             </tr>
                         </thead>
                         <tbody>
@@ -765,8 +846,6 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-
-
                             </tr>
                         </tbody>
                     </table>
@@ -779,8 +858,6 @@
 
 </div>
 
-
-
 <div class="container">
     <div class="modal fade" id="modalLindo" role="dialog" aria-labelledby="" data-backdrop="static">
         <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
@@ -788,7 +865,6 @@
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
-                    @*<button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>*@
 
                     <h4 class="modal-title" id="Header">ID: Header</h4>
                 </div>
@@ -803,10 +879,26 @@
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">Novo Planejamento Tático Vinculado a um Planejamento Estratégico</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>
-
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
-
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="modalChangeEstrategico" class="modal fade" role="dialog" style="z-index:15000">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Alterar planejamento</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tablePessego"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
@@ -818,7 +910,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
-                @*<button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>*@
                 <h4 class="modal-title" id="novoHeader"></h4>
             </div>
             <div class="modal-body" id="novoBody">
@@ -832,26 +923,25 @@
                                     <div style="display:none" id="encadeado">
                                         <label id="labelPredecessora">Predecessor: </label>
                                     </div>
-                                    <div class="col-sm-12" id="divPredecessora">
+                                    <div class="col-sm-12 borderedNinja" id="divPredecessora">
                                         <label>Predecessor:</label>
                                         <label id="labelPredecessoraValue"></label>
                                         <br />
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 borderedNinja">
                                         <label>Nome do Item:</label>
                                         <textarea style="min-width: 95%; height:150px;" type="text" class="form-control" id="newItem"></textarea>
                                         <input type="hidden" id="newIdItem" />
                                         <br />
                                     </div>
-                                    <div class="col-sm-12" id="divIsActive">
+                                    <div class="col-sm-12 borderedNinja" id="divIsActive">
                                         <label for="newIsActiveItem">Ativo:</label>
                                         <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
                                         <br />
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 borderedNinja">
                                         <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">Salvar</button>
                                         <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">Salvar Edição</button>
-                                        @*<button type="button" class="btn btn-danger hide" id="btnDeletarNovo" onclick="DeletarNovo();">Deletar</button>*@
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
                                     </div>
                             </form>
@@ -878,12 +968,11 @@
     </div>
 </div>
 
+
+
 <div class="minmaxCon"></div>
 
-@*
-    <script src="~/Scripts/angular.min.js"></script>*@
-@*
-    <script src="~/Scripts/DataTableRowsGroup.js"></script>*@
+<script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
 @section Scripts {
 
@@ -892,49 +981,27 @@
             $(o).removeClass('container').addClass('container-fluid');
         });
 
-        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")'
-
     </script>
 
     <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
     <script src="~/Scripts/lodash.min.js"></script>
-    @*<script src="~/Scripts/PANovo/js/popper.min.js"></script>
-        <script src="~/Scripts/PANovo/js/bootstrap-select.min.js"></script>
-        <script src="~/Scripts/PANovo/js/defaults-pt_BR.min.js"></script>
-        <script src="~/Scripts/PANovo/js/moment.min.js"></script>
-        <script src="~/Scripts/PANovo/js/daterangepicker.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.flash.min.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.colVis.min.js"></script>
-        <script src="~/Scripts/PANovo/js/jszip.min.js"></script>
-        <script src="~/Scripts/PANovo/js/pdfmake.min.js"></script>
-        <script src="~/Scripts/PANovo/js/vfs_fonts.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>
-        <script src="~/Scripts/PANovo/js/pt-br.js"></script>
-        <script src="~/Scripts/select2.min.js"></script>
-        <script src="~/Scripts/i18n/pt-BR.js"></script>*@
-
-    @*<script src="~/Scripts/PANovo/js/buttons.html5.min.js"></script>
-        <script src="~/Scripts/PANovo/js/buttons.print.min.js"></script>*@
     <script src="~/Scripts/PANovo/js/pt-br.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/i18n/pt-BR.js"></script>
     <script src="~/Scripts/home2.js"></script>
 
     <script>
-
         //Graficos Instancia
 
         //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
         function graficoEstoque() {
 
-
             dadosEstoque = [];
 
             jQuery.each(dados, function (i, val) {
-                //if (dados[i].Acao._Acompanhamento.length != 0)
                 dadosEstoque.push(dados[i]);
             });
+
             //MOCK Acompanhamento
             dadosEstoque.forEach(function (o, c) {
                 var tamanho = o.Acao._Acompanhamento.length
@@ -943,9 +1010,6 @@
                 } else {
                     o.Acao['Acompanhamento'] = { AddDate: o.Acao._Acompanhamento[tamanho - 1].AddDate };
                 }
-
-                //console.log(o.Acao['Acompanhamento']);
-
             })
 
             let categoriesArr = [];
@@ -1057,9 +1121,6 @@
 
             }
 
-            //arrayAndamento = [1, 2, 3, 4, 5, 6];
-            //arrayFechadas = [6, 2, 4, 1, 0, 1];
-
             arrayEstoque[0] = 0;
 
             for (var i = 0; i < categoriesArr.length; i++) {
@@ -1155,15 +1216,8 @@
                 width: '250px'
             })
 
-            //$('.container').each(function (i, o) {
-            //    $(o).removeClass('container').addClass('container-fluid');
-            //});
-
         }
 
-    </script>
-
-    <script>
         $(document).ready(function () {
             var zero = 0;
 
@@ -1172,14 +1226,23 @@
 
             $('#campo1Filtro').css('width', '200px');
             $('#valor1Filtro').css('width', '200px');
+
         });
 
         var selectPredecessor;
         var tableModalNovo;
+        /**/
         var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
+        /**/
+        /**/
         var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
+        /**/
+        /**/
         var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
+        /**/
+        /**/
         var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
+        /**/
 
         var counter = 0;
         var planejamentoCorrentId = 0;
@@ -1192,36 +1255,90 @@
         var tempName;
         var IdBotaoClicado;
 
-        @*var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');*@
+        /**/
+        //var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
+        /**/
+        /**/
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        /**/
+        /**/
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+        /**/
+        /**/
         var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
+        /**/
+        /**/
         var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
+        /**/
+        /**/
         var urlEditPlanEstrat = '@Url.Action("Editar", "Pa_Planejamento")';
+        /**/
+        /**/
         var urlEditPlanOp = '@Url.Action("Editar", "Pa_Planejamento")';
+        /**/
+        /**/
         var PlanejamentoDetalhes = '@Url.Action("Details", "Pa_Planejamento")';
+        /**/
+        /**/
         var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
+        /**/
+        /**/
         var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
+        /**/
+        /**/
         var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
+        /**/
+        /**/
         var GETObjetivo = '@Url.Action("GETObjetivo", "Pa_Planejamento")';
+        /**/
+        /**/
         var GETIndicadoresDiretriz = '@Url.Action("GETIndicadoresDiretriz", "Pa_Planejamento")';
+        /**/
+        /**/
         var GETIndicadoresProjetoIniciativa = '@Url.Action("GETIndicadoresProjetoIniciativa", "Pa_Planejamento")';
+        /**/
+        /**/
         var GETCoordenacaoByGerencia = '@Url.Action("GETCoordenacaoByGerencia", "Pa_Planejamento")';
+        /**/
+        /**/
         var GETObjetivosGerenciais = '@Url.Action("GETObjetivosGerenciais", "Pa_Planejamento")';
+        /**/
+        /**/
         var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
+        /**/
+        /**/
         var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+        /**/
+        /**/
         var urlGetPlanejamento = '@Url.Action("GET", "api/Pa_Planejamento")';
+        /**/
+        /**/
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
+        /**/
+        /**/
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+        /**/
+        /**/
         var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
+        /**/
+        /**/
         //var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
+        /**/
+        /**/
         var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
+        /**/
+        /**/
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+        /**/
+        /**/
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
-        var AcaoDetalhes = '@Url.Action("Details","Pa_Acao")'
+        /**/
+        /**/
+        var AcaoDetalhes = '@Url.Action("Details", "Pa_Acao")'
+        /**/
 
-        function DisabilitaBotaoGerenciar(){
-            $('#modalLindo').find('select[disabled]').each(function(i,o){
+        function DisabilitaBotaoGerenciar() {
+            $('#modalLindo').find('select[disabled]').each(function (i, o) {
                 $(o).parents('tr').find('.novoItem').attr('disabled', true);
             });
         }
@@ -1316,7 +1433,9 @@
                         //$('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         //$('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                     }
+
                     DdlChangeTatico();
+
                 } else {
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
@@ -1336,6 +1455,7 @@
 
                     DdlChangeEstrategico();
                 }
+
                 InitDatePiker();
                 MoneyMask();
 
@@ -1360,38 +1480,31 @@
 
         //Verificando
         function SalvarPlanejamento(form) {
-            //console.log(SalvarPlanejamento);
 
-            if (!isClickedTaticoVinculado){
+            if (!isClickedTaticoVinculado) {
                 isClickedEstrategico = true;
             }
 
             var sendObj = $('#Planejamento').serializeObject();
 
             let isValid = $('#Planejamento').find('.error').length == 0
-            if(!isValid)  {
-                alert("Campos obrigatórios")
+            if (!isValid) {
+                alert("Campos obrigatórios");
                 return
             }
 
             if (isClickedTaticoVinculado)
                 sendObj['IsTAtico'] = true;
 
-            if(sendObj != undefined){
+            if (sendObj != undefined) {
                 $.post(urlSalvarPlanejamento, sendObj, function (r) {
-                    //ModalOpcoesEstrategico('');
+
                     planejamentoCorrentId = parseInt(r.Id);
                     openMessageModal('Registro salvo com sucesso!', '');
                     $('#modalLindo').modal('hide');
                     $('#btnTop').click();
-                    //$.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
                 }).fail(function (e, h, x) {
-
-                    //console.log(e);
-                    //console.log(h);
-                    //console.log(x);
-
                     openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
                 });
             }
@@ -1400,7 +1513,7 @@
 
         //Verificando
         function SalvarPlanejamentoEditado(form) {
-            //console.log(SalvarPlanejamentoEditado);
+
             var sendObj = {};
 
             if (isClickedTaticoVinculado)
@@ -1408,30 +1521,27 @@
 
             sendObj = $(form).serializeObject();
 
+
             let isValid = ($(form).find('.error:visible').length == 0)
-            if(!isValid)  {
+            if (!isValid) {
                 alert("Campos obrigatórios")
                 return
             }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
-                //ModalOpcoesEstrategico('');
+
                 planejamentoCorrentId = parseInt(r.Id);
                 openMessageModal('Registro salvo com sucesso!', '');
                 $('#modalLindo').modal('hide');
                 $('#btnTop').click();
-                //$.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+
 
             }).fail(function (e, h, x) {
-
-                //console.log(e);
-                //console.log(h);
-                //console.log(x);
 
                 openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
             });
 
-        }/*planejamentoCorrentId*/
+        }
 
         //Verificando
         function EditarPlanejamento(model) {
@@ -1532,10 +1642,10 @@
             /*Fim Botões*/
         }
 
-        function DdlChangeEstrategico(v1, v2, v3, edit ) {
+        function DdlChangeEstrategico(v1, v2, v3, edit) {
 
-            var change1 = v1 != undefined ? v1 : "";
-            var change2 = v2 != undefined ? v2 : "";
+            var change1 = v1 != undefined ? v1 : null;
+            var change2 = v2 != undefined ? v2 : null;
 
             let Dimensao_Id = $('#Dimensao_Id')
             let Objetivo_Id = $('#Objetivo_Id')
@@ -1548,12 +1658,15 @@
                 if (valor) {
                     $.get(GETObjetivo, { id: valor }, function (r) {
                         $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
                         rdy = true;
                     })
                 }
                 else {
-                    $('#Objetivo_Id').val("").attr('disabled', true);
-                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                    $('#Objetivo_Id').val(null).attr('disabled', true);
+                    $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
 
@@ -1564,10 +1677,12 @@
                 if (valor) {
                     $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
                         $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                        $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', false);
                     });
                 }
                 else {
-                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
 
@@ -1582,48 +1697,38 @@
             }
 
             if (v3 != undefined) {
-                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },4000)
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
             }
             //}
         }
 
         function DdlChangeTatico(model) {
-            changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function() {
+            changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () {
 
             })
-            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function() {
+            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function () {
             })
-
-            //console.log('DdlChangeTatico',model)
-
-            //changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
-            //    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'ObjetivoGerencial_Id', function (r) {
-            //        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
-            //    })
-            //})
 
             $('#Iniciativa_Id').off('change').on('change', function () {
                 var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
-                manageButton(Iniciativa_Id,'IndicadoresDeProjeto_Id','Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
 
                 $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
                     $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
-                    //$('#IndicadoresDeProjeto_Id').remove();
                     $('#IndicadoresDeProjeto_Id').off('change').on('change', function () {
 
                         var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
-                        manageButton(Objetivo_Id,'ObjetivoGerencial_Id','Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+                        manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
 
                         $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
-                            //$('#ObjetivoGerencial_Id').remove();
 
                             $('#ObjetivoGerencial_Id').addClass(' required tatico ');
 
                             try {
                                 $('#modalLindo span.select2').prev('select').select2('destroy');
-                            } catch(e){
+                            } catch (e) {
                             }
                             finally {
                                 $('#modalLindo select').select2();
@@ -1640,58 +1745,46 @@
 
         }
 
-        /*
-            Exemplos:
-                 changeChainJsWithHTMLResponseGET('Iniciativa_Id', GETIndicadoresProjetoIniciativa, 'ObjetivoGerencial_Id', function() {
-                    changeChainJsWithHTMLResponseGET('IndicadoresDeProjeto_Id', GETObjetivosGerenciais, 'IndicadoresDeProjeto_Id', function (r) {
-                        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
-                    })
-                })
-        */
-        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected){
+        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
             let masterEl = $(idMaster)
             let masterElVal = $(idMaster).val()
-            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, 'Selecione um predecessor acima','');
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, 'Selecione um predecessor acima', '');
             masterEl.off('change').on('change', function () {
                 let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
-                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, 'Selecione um predecessor acima','');
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, 'Selecione um predecessor acima', '');
                 $.get(urlGETChildren, { id: seletedId }, function (response) {
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
                     childrenEl.remove();
-
                     $(idChildren).select2();
 
-                    //if($(childrenEl).data('select2'))
-                    //    childrenEl.select2('destroy')
-                    //childrenEl.select2()
-                    if(masterCB)
+                    if (masterCB)
                         masterCB()
                 })
             })
         }
 
-        function manageButtonDisabledWhenHaveParentSelect(parentSelectedValue, elementChild, messageForDisabled, messageForEnabled){
+        function manageButtonDisabledWhenHaveParentSelect(parentSelectedValue, elementChild, messageForDisabled, messageForEnabled) {
             let elem = $(elementChild)
-            if(elem.length > 0)
-                if(parentSelectedValue == 0){
+            if (elem.length > 0)
+                if (parentSelectedValue == 0) {
                     elem.parents('tr').find('.novoItem').attr('disabled', true)
                     elem.parents('tr').find('.novoItem').attr('title', messageForDisabled)
                 }
-                else{
+                else {
                     elem.parents('tr').find('.novoItem').attr('disabled', false)
                     elem.parents('tr').find('.novoItem').attr('title', messageForEnabled)
                 }
         }
 
-        function manageButton(id, idChildren, messageDisabled, messageEnabled){
-            if(id == 0){
-                $('#'+idChildren).parents('tr').find('.novoItem').attr('disabled', true)
-                $('#'+idChildren).parents('tr').find('.novoItem').attr('title', messageDisabled)
+        function manageButton(id, idChildren, messageDisabled, messageEnabled) {
+            if (id == 0) {
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', true)
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageDisabled)
             }
-            else{
-                $('#'+idChildren).parents('tr').find('.novoItem').attr('disabled', false)
-                $('#'+idChildren).parents('tr').find('.novoItem').attr('title', messageEnabled)
+            else {
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', false)
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageEnabled)
             }
         }
 
@@ -1713,38 +1806,129 @@
 
                 header.appendTo('#final');
                 header.show();
-                
-                setTimeout(function () { 
+
+                setTimeout(function () {
                     header.find("select.select2-hidden-accessible").next('.select2').remove();
                     header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
-                    header.find("select:visible").select2();       
+                    header.find("select:visible").select2();
+                    $('.UnidadeMedida').change();
                 }, 1);
 
                 myfunction();
-                MoneyMask('R$ ');
 
-                $('.money').each(function () {
-                    $(this).maskMoney('mask', $(this).val());
-                });
+                //MoneyMask('R$ ');
 
-                InitDatePiker();
-
-                //$('div[id = ' + collapseId + '] select').select2({
-                //    width: "280px"
+                //$('.money').each(function () {
+                //    $(this).maskMoney('mask', $(this).val());
                 //});
 
+                InitDatePiker();
             };
 
         })();
+
         $('#new').click(addButton);
+
+        $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valor = $(this).parent().parent().parent().find(".QuantoCusta").val();
+            let inputQuantoCusta = $(this).parent().parent().parent().find(".QuantoCusta");
+
+            if (unidadeMedida == 1) {
+
+                $(inputQuantoCusta).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputQuantoCusta).maskMoney(config);
+                $(inputQuantoCusta).maskMoney('mask');
+
+            } else {
+
+                $(inputQuantoCusta).maskMoney('destroy');
+                //$(inputQuantoCusta).get(0).type = 'number';
+                $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+
+                $(inputQuantoCusta).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valorDe = $(this).parent().parent().parent().find(".ValorDe").val();
+            let valorPara = $(this).parent().parent().parent().find(".ValorPara").val();
+            let inputValorDe = $(this).parent().parent().parent().find(".ValorDe");
+            let inputValorPara = $(this).parent().parent().parent().find(".ValorPara");
+
+            if (unidadeMedida == 1) {
+
+                //$(inputValorDe).get(0).type = 'text';
+                //$(inputValorPara).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputValorDe).maskMoney(config);
+                $(inputValorDe).maskMoney('mask');
+                $(inputValorPara).maskMoney(config);
+                $(inputValorPara).maskMoney('mask');
+
+            } else {
+
+                $(inputValorDe).maskMoney('destroy');
+                //$(inputValorDe).get(0).type = 'number';
+                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+
+                $(inputValorPara).maskMoney('destroy');
+                //$(inputValorPara).get(0).type = 'number';
+                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+
+
+                $(inputValorDe).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+
+                $(inputValorPara).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        });
 
         //Verificando
         function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
-            //console.log(ModalAcao);
-            //if (!(planejamentoCorrentId > 0)) {
-            //    BuscarPlanejamentos();
-            //    return;
-            //} else {
             if (!$('#body > table').length) {
                 ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId, function () {
                     if (isTableClick) {
@@ -1754,7 +1938,6 @@
                     }
                 });
             }
-            //}
 
             if (isFukingNewClicked) {
 
@@ -1762,7 +1945,6 @@
                     $('#modalLindo').modal();
 
                 $('#Header').html("Nova Ação");
-                //$('#modalLindo').find('.modal-body').empty();
 
                 $.get(urlNovaAcao, function (r) {
 
@@ -1794,7 +1976,6 @@
                 $('#Salvar').off('click').on('click', SalvarAcao);
                 /*Fim Botões*/
             }
-
         }
 
         //Verificando
@@ -1817,14 +1998,6 @@
             $('#_QuantoCusta').trigger('mask.maskMoney');
             $('#_QuantoCusta').trigger('blur');
 
-            //acao.AcaoXQuem.forEach(function (o, c) {
-            //    $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
-            //    $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
-            //    if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
-            //        $($('[id=adicionar]')[c]).click();
-            //});
-
-            //$('#Edit').show();
             InitDatePiker();
 
             MoneyMask('R$ ');
@@ -1832,6 +2005,7 @@
             $('.money').each(function () {
                 $(this).maskMoney('mask', $(this).val());
             });
+
         }
 
         //Verificando
@@ -1879,7 +2053,6 @@
 
         //Verificando
         function SalvarAcao() {
-            //console.log(SalvarAcao);
             var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
                 listaAcoes.push(SalvarAcaoAvulsa(o));
@@ -1908,12 +2081,12 @@
 
                     });
                 })
-                .fail(function (e, h, x) {
+                    .fail(function (e, h, x) {
 
-                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+                        openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
-                });
-            }else
+                    });
+            } else
                 alert("Campos obrigatórios");
 
         }
@@ -1947,8 +2120,10 @@
         }
 
         function SalvarAcaoEditada() {
-            //console.log("SalvarAcaoEditada")
             var listaAcoes = [];
+
+            $('#Status').prop("disabled", false);
+
             $('.Acao').each(function (c, o) {
 
                 listaAcoes.push(SalvarAcaoAvulsa(o, true));
@@ -1956,26 +2131,25 @@
             });
 
             let isValid = $('.Acao').find('.error').length == 0
-            if(!isValid)  {
+            if (!isValid) {
                 alert("Campos obrigatórios")
                 return;
             }
 
-            if (ValidaAcao(listaAcoes)) {
+            if (!ValidaAcao(listaAcoes)) {
                 return;
             }
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
                 $.post(urlGetPlanejamentoAcao, {}, function (r) {
-                    //if (counter == 1 && !jaLiberouCallback) {
+
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
                     $('.modal-backdrop').remove();
                     openMessageModal('Registro salvo com sucesso!', '');
-                    //}
-                    //GerarTabela(r);
+
                     $('#btnTop').click();
-                    //getAcompanhamento(selecionado.Acao.Id);
+
                 }).fail(function (e, h, x) {
 
                     openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
@@ -1984,32 +2158,23 @@
 
                 });
             })
-            .fail(function (e, h, x) {
+                .fail(function (e, h, x) {
 
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
-            });
+                });
 
         }
 
         var jaLiberouCallback = false;
         //Verificando
         function SalvarAcaoAvulsa(o, isEdit) {
-            //console.log(SalvarAcaoAvulsa);
+
             var sendObj = $(o).serializeObject();
 
             if (isEdit == undefined && sendObj != undefined) {
                 sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
-            //sendObj['AcaoXQuem'] = [];
-
-            //$('.quemClone').each(function (c, o) {
-            //    if ($('#AcaoXQuemDdlId').length)
-            //        sendObj['AcaoXQuem'].push({ Id: $(o).find('#AcaoXQuemDdlId').val(), Quem_Id: $(o).find('select').val() });
-            //    else if ($(o).find('select').val())
-            //        sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
-
-            //});
 
             return sendObj;
 
@@ -2017,14 +2182,12 @@
 
         //Verificando
         function RemoveAcao(btn) {
-            //console.log(RemoveAcao);
             $(btn).parents('#obj').remove();
         }
         /*Fim Acao*/
 
         //Verificando
         function Adicionar(btn) {
-            //console.log(Adicionar);
             var $tr = $(btn).closest('.tr_clone');
             var $clone;
 
@@ -2038,25 +2201,18 @@
 
         //Verificando
         function Remover(btn) {
-            //console.log(Remover);
             $(btn).parents('tr').remove();
         }
 
         /*Novo item*/
         function Novo(btn, encadeado) {
-            //console.log("Novo")
 
             selectPredecessor = encadeado;
-
-            //$('#body').find('select').select2()
-            //$('#body').find('select').select2('destroy')
 
             //Remove select caso exista
             $('#encadeado').find('select').remove();
 
-            //Mantem invisivel o campo de Predecessor
-            //$('#encadeado').show()
-            if(encadeado == undefined)
+            if (encadeado == undefined)
                 $('#encadeado').hide()
 
             tempInput = $(btn).parents('tr').find('input , select');
@@ -2068,7 +2224,6 @@
             SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
 
             var label = $(btn).parents('tr').find('label').html();
-            //$('#newItem').val("");
             $('#modalNovo').modal();
             $('#novoHeader').html("Gerenciar: " + label);
             $('#nomeItemNovo').html(label)
@@ -2076,12 +2231,9 @@
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-                //$('#modalNovo select').select2();
-                //$('#modalNovo select').select2('destroy');
-                //$('#modalNovo select').select2();
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
-            //$('#body').find('select').select2();
+
         }
 
         function SalvarNovo() {
@@ -2095,40 +2247,35 @@
             }
 
             $.post(urlSalvarNovoItem, params, function (r) {
-                if(r.Resposta != null) {
+                if (r.Resposta != null) {
                     alert(r.Resposta);
                     return;
                 }
 
                 var jaExisteoptionNoDropDown = $(tempInput).find('option[value="' + r.Id + '"]').length > 0
-                if(jaExisteoptionNoDropDown)
-                    if(r.IsActive){
-                        $(tempInput).find("option[value= "+ r.Id + "]").html(r.NomeDoItem);
-                        $(tempInput).find("option[value= "+ r.Id + "]").prop('selected',true);
+                if (jaExisteoptionNoDropDown)
+                    if (r.IsActive) {
+                        $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
+                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
                         $(tempInput).val(r.Id).trigger('change');
-                    }else{
-                        $(tempInput).find('option:first').prop('selected',true);
-                        $(tempInput).find("option[value= "+ r.Id + "]").remove();
+                    } else {
+                        $(tempInput).find('option:first').prop('selected', true);
+                        $(tempInput).find("option[value= " + r.Id + "]").remove();
                         $(tempInput).trigger('change');
                     }
-                else{
-                    $(tempInput).find('option:selected').prop('selected',false);
+                else {
+                    $(tempInput).find('option:selected').prop('selected', false);
                     $(tempInput).append('<option value=' + r.Id + ' selected> ' + r.NomeDoItem + '</option>');
-                    $(tempInput).find("option[value= "+ r.Id + "]").prop('selected',true);
-                    //$(tempInput).val(r.Id).change();
+                    $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
                     $(tempInput).trigger('change')
                 }
-                //$(tempInput).val(r.Id).change();
                 refreshDataTable();
-
-                //tempInput = undefined;
-                //tempName = undefined;
                 $('#btnCancelarNovo').click();
             });
 
         }
 
-        var refreshDataTable = function(){
+        var refreshDataTable = function () {
             /*Dados*/
             var param1 = $('#newItem').val();
             var param2 = tempName.split('_Id')[0];
@@ -2138,29 +2285,29 @@
             }
             $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
 
-            if(param3 != 0){
+            if (param3 != 0) {
                 $('#divPredecessora').removeClass('hide');
-            }else{
+            } else {
                 $('#divPredecessora').addClass('hide');
             }
 
             /*Ajax*/
-            $.post(urlGetAutoComplete, {NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3}, function (response) {
-                //console.log(response);
+            $.post(urlGetAutoComplete, { NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3 }, function (response) {
+
                 $("#tableNovo").html('');
 
                 //Gera a lista
                 var list = [];
-                $.each(response, function( index, value ) {
-                    list.push([value.Id,value.Name,value.IsActive])
+                $.each(response, function (index, value) {
+                    list.push([value.Id, value.Name, value.IsActive])
                 });
 
-                tableModalNovo = $('#tableNovo').DataTable( {
+                tableModalNovo = $('#tableNovo').DataTable({
                     data: list,
-                    destroy:true,
+                    destroy: true,
                     lengthChange: false,
                     pageLength: 3,
-                    "bInfo" : false,
+                    "bInfo": false,
                     language: {
                         "sEmptyTable": "Nenhum registro encontrado",
                         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -2185,28 +2332,28 @@
                         }
                     },
                     columns: [
-                        { title: "ID"},
-                        { title: "Nome"},
+                        { title: "ID" },
+                        { title: "Nome" },
                         {
                             title: "Ativo",
-                            "data":           null,
-                            "render": function(data, type, full, meta){
-                                if(data[2] == true){
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                if (data[2] == true) {
                                     return "ATIVO";
                                 }
                                 return "INATIVO";
                             }
                         },
                         {
-                            "className":      'options',
-                            "data":           null,
-                            "render": function(data, type, full, meta){
-                                return '<span class="btn btn-mini btn-info pull-right" data-id='+data.Id+' data-name='+data.Name+'>Editar</span>';
+                            "className": 'options',
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>Editar</span>';
                             }
                         }
                     ],
-                    initComplete: function () {}
-                } );
+                    initComplete: function () { }
+                });
 
                 $('#tableNovo tbody').on('click', 'span', function () {
 
@@ -2219,633 +2366,33 @@
         };
 
 
-        function SetaValoresModal(id, item, isActive){
+        function SetaValoresModal(id, item, isActive) {
 
             $('#btnCancelarNovo').click();
-            if(!!parseInt(id)){
+            if (!!parseInt(id)) {
                 $("#newIdItem").val(id);
                 $("#newItem").val(item);
-                $("#newIsActiveItem").prop('checked',isActive);
+                $("#newIsActiveItem").prop('checked', isActive);
                 $('#btnSalvarNovo').addClass('hide');
                 $('#btnEditarNovo').removeClass('hide');
-                //$('#btnDeletarNovo').removeClass('hide');
                 $('#btnCancelarNovo').removeClass('hide');
                 $('#divIsActive').removeClass('hide');
             }
 
         }
-
-        //DEPRECIADO
-        //function DeletarNovo() {
-        //    /*validação*/
-        //    if (confirm("Deseja apagar este item?") == false)
-        //        return;
-        //    /*Dados*/
-        //    var param1 = $('#newItem').val();
-        //    var param2 = tempName.split('_Id')[0];
-        //    var param3 = 0;
-        //    if ($('#encadeado').find('select').length) {
-        //        param3 = $('#encadeado').find('select').val();
-        //    }
-        //    var param4 = $('#newIdItem').val();
-        //    /*Ajax*/
-        //    $.post(urlDeletarNovoItem, {val: param1, param: param2, predecessor: param3, id: param4}, function (r) {
-        //    });
-        //}
-
-        /*Fim Novo item*/
-        //var btnEditar = '<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
-
         function isPositiveInteger(n) {
             return n == "0" || ((n | 0) > 0 && n % 1 == 0);
         }
 
         var selecionado;
-        //function GerarTabela(retornoArray) {
-
-        //    //console.log(retornoArray);
-
-        //    var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
-        //    var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
-        //    var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
-        //    var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
-        //    var arrEstragy = [0, 1, 2, 3, 4, 5, 6, 7];
-        //    var arrEstragyH = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]; // SEM TEMA ASUNTO[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
-
-        //    var table1 = $('#paTable').empty().DataTable({
-        //        data: retornoArray,
-        //        columns: [
-        //            /*0*/{ title: "Diretoria", mData: "Diretoria" },
-        //            /*1*/{ title: "Missão", mData: "Missao" },
-        //            /*2*/{ title: "Visão", mData: "Visao" },
-        //            /*NOVO 3*/{ title: "Tema / Assunto", mData: "TemaAssunto" },
-        //            /*3*/{ title: "Dimensão", mData: "Dimensao" },
-        //            /*4*/{ title: "Diretrizes", mData: "Objetivo" },//Objetivo
-        //            /*5*/{ title: "Indicadores Diretriz", mData: "IndicadoresDiretriz" },
-        //            /*6*/{ title: "Responsável pela Diretriz", mData: "Responsavel_Diretriz_Quem.Name" },
-        //            /*Fim Planejamento Estratégico*/
-
-        //            /*7*/{ title: "Gerência", mData: "Gerencia" },
-        //            /*8*/{ title: "Coordenação", mData: "Coordenacao" },
-        //            /*9*/{ title: "Projeto/Iniciativa", mData: "Iniciativa" },//Iniciativa
-        //            /*10*/{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
-        //            /*11*/{ title: "Objetivo Gerencial", mData: "ObjetivoGerencial" },
-        //            /*12*/{ title: "Valor de", mData: "_ValorDe" },
-        //            /*13*/{ title: "Valor para", mData: "_ValorPara" },
-        //            /*14*/{ title: "Data (Início)", mData: "_DataInicio" },
-        //            /*15*/{ title: "Data (Fim)", mData: "_DataFim" },
-        //            /*16*/{ title: "Responsável pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
-        //            /*Fim Tático*/
-
-        //            /*17*/{ title: "Regional", mData: "Acao.Regional"}, //Novo
-        //            ///*18*/{ title: "Unidade", mData: "Acao._Unidade" },
-        //            /*18*/{ title: "Unidade", mData: "Acao.UnidadeName" },
-        //            /*19*/{ title: "Indicador", mData: "Acao.Level1Name" }, //Novo
-        //            /*20*/{ title: "Monitoramento", mData: "Acao.Level2Name" }, //Novo
-        //            /*21*/{ title: "Tarefa", mData: "Acao.Level3Name" }, //Novo
-        //            ///*22*/{ title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
-        //             /*22*/{ title: " ", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
-        //            /*23*/{ title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
-        //            /*24*/{ title: "Causa Genérica", mData: "Acao._CausaGenerica" },
-        //            /*25*/{ title: "Grupo Causa", mData: "Acao._GrupoCausa" },
-        //            /*26*/{ title: "Ação Genérica", mData: "Acao._ContramedidaGenerica" },
-        //            /*27*/{ title: nameCausaEspecifica, mData: "Acao.CausaEspecifica" },
-        //            /*28*/{ title: nameContramedidaEspecifica, mData: "Acao.ContramedidaEspecifica" },
-        //            /*29*/{ title: "Quem", mData: "Acao._Quem" },
-        //            ///*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicio" },
-        //            ///*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFim" },
-        //            /*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicioData" },
-        //            /*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFimData" },
-        //            /*32*/{ title: nameComoPontosImportantes, mData: "Acao.ComoPontosimportantes" },
-        //            /*33*/{ title: "Pra que", mData: "Acao.PraQue" },
-        //            /*34*/{ title: "Quanto custa", mData: "Acao.QuantoCusta" },
-        //            /*35*/{ title: "Status", mData: "Acao._StatusName" },
-        //            /*36*/{ title: "Prazo", mData: "Acao._Prazo" },//29 + 2
-        //            /*Fim Operacional*/
-
-        //            //{ title: "Data (Início)", mData: "_DataInicio" },
-        //            //{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
-
-        //            /*JBS hoje*/
-
-        //            //{ title: "Tema / Assunto", mData: "TemaAssunto" },
-        //            //{ title: "Indicador SGQ", mData: null },
-        //            //{ title: "Monitoramento SGQ", mData: null },
-        //            //{ title: "Tarefa SGQ", mData: null },
-        //            //{ title: "Unidade", mData: "Acao.Unidade" },
-        //            //{ title: "Departamento", mData: "Acao.Departamento" },
-        //            //{ title: "Duração", mData: "Acao.DuracaoDias" },
-        //            //{ title: "Predecessora", mData: null },
-
-        //            { title: "Ação", mData: null, defaultContent: /*btnEditar + "<br>" + btnDetalhes + "<br>" + */btnNovoTatico + "<br class='showAsEstrategy'>" + btnNovoOperacional + "<br>" + btnAcompanhamento },
-        //        ],
-        //        fixedColumns: {
-        //            leftColumns: 0,
-        //            rightColumns: 1,
-        //        },
-        //        "sScrollX": "100%",
-        //        "scrollX": true,
-        //        "scrollY": '550px',
-        //        bScrollAutoCss: true,
-        //        //sScrollX: '100%',
-        //        bScrollCollapse: true,
-        //        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-        //        pageLength: 10,
-        //        responsive: true,
-        //        loadingRecords: true,
-        //        destroy: true,
-        //        info: true,
-        //        responsive: true,
-        //        //columnDefs: visibilidadeDefault,
-        //        initComplete: function () {
-
-        //            $('table > tbody').on('click', '.edit', function (data, a, b) {
-        //                var data = table.row($(this).parents('tr')).data();
-
-        //                //console.log(data);
-
-        //                $('#modalLindo').find('.modal-body').empty();
-        //                $('#modalLindo').find('.modal-body').append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
-
-        //                if (data.Id > 0) {
-        //                    $.get(urlEditPlanOp, { id: data.Id },
-        //                         function (r) {
-        //                             TesteRenan(r, 'Estrategico', data);
-        //                             //HideForOperacional();
-        //                             DisabilitaBotaoGerenciar();
-
-        //                             if (data.Estrategico_Id > 0) {
-        //                                 $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
-        //                                     function (r) {
-        //                                         TesteRenan(r, 'Tatico', data);
-        //                                         //HideForOperacional();
-        //                                         DisabilitaBotaoGerenciar();
-        //                                     }
-        //                                 );
-        //                             }
-
-        //                         }
-        //                    );
-        //                }
-
-
-
-        //                if (data.Acao.Id > 0) {
-
-        //                    $.get(urlEditAcao, { id: data.Acao.Id },
-        //                          function (r) {
-        //                              var acao = data.Acao;
-
-
-        //                              $('#Header').html("Editar Ação");
-        //                              //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
-        //                              $('#modalLindo').find('.modal-footer button').hide();
-        //                              $('#modalLindo').find('.modal-body .content3').append(r);
-
-        //                              $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
-        //                              $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-        //                              $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-        //                              $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
-        //                              $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
-        //                              $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
-        //                              $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
-        //                              $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
-
-        //                              //acao.AcaoXQuem.forEach(function (o, c) {
-        //                              //    $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
-        //                              //    $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
-        //                              //    if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
-        //                              //        $($('[id=adicionar]')[c]).click();
-        //                              //});
-        //                              $(r).attr("id", "formEditAcao")
-
-        //                              MoneyMask();
-        //                              myfunction();
-
-        //                              $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
-
-        //                              //$('#Edit').show();
-        //                              $('#obj').show(); //Apagar depois
-        //                              InitDatePiker();
-        //                              //HideForOperacional();
-
-        //                              DisabilitaBotaoGerenciar();
-        //                          }
-        //                    );
-
-        //                }
-        //                $('#modalLindo').find('.modal-footer button').hide();
-        //                $('#Header').html("Editar");
-        //                $('#modalLindo').modal();
-        //            });
-
-        //            $('table > tbody').on('click', '.details', function (data, a, b) {
-        //                var data = table.row($(this).parents('tr')).data();
-        //                console.log(data);
-
-        //                planejamentoCorrentId = data.Tatico_Id;
-        //                acaoCorrentId = data.Acao.Id;
-
-        //                if (!(acaoCorrentId > 0)) { planejamentoCorrentId = data.Id }
-
-        //                $('#modalLindo').modal();
-        //                $('#modalLindo').find('.modal-body').empty();
-        //                $('#Header').html("Detalhes Gerais do Planejamento");
-        //                $('#modalLindo').find('.modal-footer button').hide();
-
-        //                $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-        //                    $('#modalLindo').find('.modal-body').append(r);
-        //                });
-
-        //                if (acaoCorrentId > 0) {
-        //                    $.get(AcaoDetalhes, { id: acaoCorrentId }, function (r) {
-        //                        $('#modalLindo').find('.modal-body').append(r);
-        //                    });
-        //                }
-
-        //            });
-
-        //            $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
-        //                var data = table.row($(this).parents('tr')).data();
-        //                console.log(data);
-
-        //                Clicked(true, false, true);
-        //                $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
-        //                    //EditarPlanejamento(r)
-        //                    ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
-        //                });
-
-
-
-        //            });
-
-        //            $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
-        //                var data = table.row($(this).parents('tr')).data();
-        //                console.log(data);
-        //                planejamentoCorrentId = data.Tatico_Id;
-        //                Clicked(isTaticoClicked, isNovaAcao);
-
-        //                $('#modalLindo').modal();
-        //                $('#modalLindo').find('.modal-body').empty();
-        //                $('#Header').html("Planejamento Operacional");
-
-        //                $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-        //                    $('#modalLindo').find('.modal-body').empty().append(r);
-        //                    $('#NovaAcao').show();
-        //                    $('#NovaAcao').click();
-        //                });
-
-        //            });
-
-
-        //        },
-        //        language: {
-        //            "sEmptyTable": "Nenhum registro encontrado",
-        //            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-        //            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-        //            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-        //            "sInfoPostFix": "",
-        //            "sInfoThousands": ".",
-        //            "sLengthMenu": "_MENU_ resultados por página",
-        //            "sLoadingRecords": "Carregando...",
-        //            "sProcessing": "Processando...",
-        //            "sZeroRecords": "Nenhum registro encontrado",
-        //            "sSearch": "Pesquisar",
-        //            "oPaginate": {
-        //                "sNext": "Próximo",
-        //                "sPrevious": "Anterior",
-        //                "sFirst": "Primeiro",
-        //                "sLast": "Último"
-        //            },
-        //            "oAria": {
-        //                "sSortAscending": ": Ordenar colunas de forma ascendente",
-        //                "sSortDescending": ": Ordenar colunas de forma descendente"
-        //            }
-        //        },
-        //        /*fixedHeader: {
-        //            headerOffset: 50
-        //        },*/
-        //        createdRow: function (row, data, index) {
-
-        //            try {
-        //                var bgColorStatus = ""
-        //                var bgColorPrazo = ""
-        //                /*Status*/
-        //                //console.log(data.Acao.Status);
-        //                if (data.Acao.Status == 2) {
-        //                    bgColorStatus = "grey";
-        //                    bgColorPrazo = "rgb(126, 194, 253)";
-        //                } else if (data.Acao.Status == 5) {
-        //                    bgColorStatus = "#ADD8E6";
-        //                } else if (data.Acao.Status == 5 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
-        //                    bgColorStatus = "#458fa8"
-        //                } else if (data.Acao.Status == 3/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
-        //                    bgColorPrazo = "rgb(126, 194, 253)";
-        //                    bgColorStatus = "cyan"
-        //                } else if (data.Acao.Status == 4) {
-        //                    bgColorPrazo = "rgb(126, 194, 253)";
-        //                    bgColorStatus = "steelblue"
-        //                }
-
-        //                //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
-        //                //    bgColorStatus = "yellow"
-        //                //}
-
-        //                $(row.cells[36]).css("background", bgColorStatus);
-
-        //                /*Prazo*/
-        //                if (data.Acao.Status == 2) {
-
-        //                } else if (data.Acao.Status == 3) {
-
-        //                    //} else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
-        //                } else if (data.Acao._Prazo.match(/\d+/g)) {
-        //                    let numero = data.Acao._Prazo.split(" ")[0]
-        //                    console.log(numero)
-        //                    if(numero == 0){
-        //                        bgColorPrazo = "rgba(253, 245, 154, 0.67)"
-        //                    } else if(isPositiveInteger(numero)){
-        //                        bgColorPrazo = "#90EE90"
-        //                    } else {
-        //                        bgColorPrazo = "rgb(250, 128, 114)"
-        //                    }
-        //                }
-        //                //else if (data.Acao._Prazo.indexOf('-') > -1 && data.Acao._Prazo.indexOf(' Dias') > -1) {
-        //                //    bgColorPrazo = "rgb(250, 128, 114)"
-        //                //}
-
-        //                $(row.cells[37]).css("background", bgColorPrazo);
-
-        //                if (data.Tatico_Id > 0) { // possui plan tatico
-        //                    $(row.cells[38]).find('.btnNovoOperacional').show();
-        //                } else {
-        //                    $(row.cells[38]).find('.btnNovoOperacional').hide();
-        //                }
-
-        //                if (data.Id > 0) { // Possui plan Estrat
-        //                    $(row.cells[38]).find('.btnNovoTatico').show();
-        //                } else {
-        //                    $(row.cells[38]).find('.btnNovoTatico').hide();
-        //                }
-
-        //                if (data.Acao.Id > 0) { // Possui plan Operac
-        //                    $(row.cells[38]).find('.btnAcompanhamento').show();
-        //                } else {
-        //                    $(row.cells[38]).find('.btnAcompanhamento').hide();
-        //                }
-
-        //            } catch (e) { }
-
-        //            if (data.Tatico_Id > 0) { // possui plan tatico
-        //                $(row.cells[38]).find('.btnNovoOperacional').show();
-        //            } else {
-        //                $(row.cells[38]).find('.btnNovoOperacional').hide();
-        //            }
-
-        //            if (data.Id > 0) { // Possui plan Estrat
-        //                $(row.cells[38]).find('.btnNovoTatico').show();
-        //            } else {
-        //                $(row.cells[38]).find('.btnNovoTatico').hide();
-        //            }
-
-        //            if (data.Acao.Id > 0) { // Possui plan Operac
-        //                $(row.cells[38]).find('.btnAcompanhamento').show();
-        //            } else {
-        //                $(row.cells[38]).find('.btnAcompanhamento').hide();
-        //            }
-
-        //        },
-        //        fnDrawCallback: function (data, d, o) {
-
-        //        },
-
-        //        //rowsGroup: [// Always the array (!) of the column-selectors in specified order to which rows groupping is applied
-        //        //// (column-selector could be any of specified in https://datatables.net/reference/type/column-selector)
-        //        //    'second:name',
-        //        //    0,
-        //        //    2
-        //        //],
-
-        //    });
-
-        //    //Filtros por coluna
-
-        //    $('.dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
-        //        var title = $('.dataTable:not(.DTFC_Cloned) thead th').eq($(this).index()).text();
-        //        $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
-        //    });
-
-        //    //$('.dataTable thead th').css('text-align', 'center');
-
-        //    //$('.dataTables_filter').hide();
-
-        //    // DataTable
-        //    //var table = $('.dataTable').DataTable();
-
-        //    // Filter event handler
-        //    //$(table.table().container()).on('keyup', 'thead input', function () {
-        //    //    table
-        //    //        .column($(this).data('index'))
-        //    //        .search(this.value)
-        //    //        .draw();
-        //    //});
-
-        //    //table.draw();
-
-        //    //let arrTodosIndices = []
-        //    //for (var i = 0; i < 35; i++) {
-        //    //    arrTodosIndices.push(i)
-        //    //}
-        //    ////console.log(arrTodosIndices)
-        //    //let arrVisaoInicialHide2 = arrTodosIndices
-        //    //let arrVisaoInicialShow2 = [0, 3, 5, 7, 8, 10, 12, 13, 14, 18, 19, 29, 30, 31, 32, 33, 36, 37, 38]//[0,4,6,7,9,11,12,13,17,18,28,29,30,31,32,35,36,37]
-
-        //    //for (var i = 0; i < arrVisaoInicialShow2.length; i++) {
-        //    //    var index = arrVisaoInicialHide2.indexOf(arrVisaoInicialShow2[i]);
-        //    //    if (index > -1) {
-        //    //        arrVisaoInicialHide2.splice(index, 1);
-        //    //    }
-        //    //}
-
-        //    //console.log(arrVisaoInicialHide2)
-        //    //console.log(arrVisaoInicialShow2)
-
-
-        //    //var arrShowOperacional = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]//[17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36];
-        //    //var arrHideOperacional = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        //    //if (visaoOperacional) {
-        //    //    arrShowOperacional = [18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 36]//[17, 18, 19, 20, 21, /*22, 23, 24, 25, 26,*/ 27, 28, 29, 30, 31, 32,/* 33, 34,*/ 35];
-        //    //    arrHideOperacional = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 34, 35]//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 33, 34];
-        //    //}
-
-        //    //var show = {
-        //    //    visaoInicial: {
-        //    //        extend: 'colvisGroup',
-        //    //        text: 'Visão Inicial',
-        //    //        show: arrVisaoInicialShow2,
-        //    //        hide: arrVisaoInicialHide2
-        //    //    },
-        //    //    PlanejamentoEstrategicos: {
-        //    //        extend: 'colvisGroup',
-        //    //        text: 'Planejamento Estratégico',
-        //    //        show: arrEstragy,
-        //    //        hide: arrEstragyH
-        //    //    },
-        //    //    PlanejamentoTatico: {
-        //    //        extend: 'colvisGroup',
-        //    //        text: 'Planejamento Tático',
-        //    //        show: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],//[7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-        //    //        hide: [0, 1, 2, 3, 5, 6, 7, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]//[0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
-        //    //    },
-        //    //    PlanejamentoOperacional: {
-        //    //        extend: 'colvisGroup',
-        //    //        text: 'Planejamento Operacional',
-        //    //        show: arrShowOperacional,
-        //    //        hide: arrHideOperacional
-        //    //    },
-        //    //    colvisGroupTodos: {
-        //    //        extend: 'colvisGroup',
-        //    //        text: 'Mostrar Todos',
-        //    //        show: ':hidden'
-        //    //    },
-        //    //    print: {
-        //    //        extend: 'print',
-        //    //        text: 'Imprimir',
-        //    //        customize: function (win) {
-        //    //            $(win.document.body).find('table')
-        //    //                .addClass('compact')
-        //    //                .css('font-size', 'inherit');
-        //    //        },
-        //    //        exportOptions: {
-        //    //            columns: ':visible'
-        //    //        }
-        //    //    },
-        //    //    excelHtml5: {
-        //    //        extend: 'excelHtml5',
-        //    //        text: 'Excel',
-        //    //        exportOptions: {
-        //    //            columns: ':visible'
-        //    //        }
-        //    //    },
-        //    //    colvis: {
-        //    //        extend: 'colvis',
-        //    //        text: 'Colunas Visíveis',
-        //    //        collectionLayout: 'fixed two-column',
-        //    //        exportOptions: {
-        //    //            columns: ':visible',
-        //    //        }
-        //    //    },
-        //    //    //pdf :{
-        //    //    //    extend: 'pdf',
-        //    //    //    text: 'PDF',
-        //    //    //    exportOptions: {
-        //    //    //        columns: ':visible'
-        //    //    //    }
-        //    //    //},
-        //    //    atualizar: {
-        //    //        text: 'Atualizar',
-        //    //        action: function (e, dt, node, config) {
-        //    //            //if (config.counterAjaxTable > 1) {
-        //    //            GetDataTable();
-        //    //            //}
-        //    //            config.counterAjaxTable++;
-        //    //            config.counterAjaxTable++;
-        //    //            //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
-        //    //        },
-        //    //        counterAjaxTable: 1
-        //    //    },
-        //    //    novaAcao: {
-        //    //        text: 'Nova Ação',
-        //    //        action: function (e, dt, node, config) {
-        //    //            Clicked(isTaticoClicked, isNovaAcao);
-
-        //    //            $('#modalLindo').modal();
-        //    //            $('#modalLindo').find('.modal-body').empty();
-        //    //            $('#Header').html("Planejamento Operacional");
-
-        //    //            $.get(PlanejamentoDetalhes, { id: 1040 }, function (r) {
-        //    //                $('#modalLindo').find('.modal-body').empty().append(r);
-        //    //                $('#NovaAcao').show();
-        //    //                $('#NovaAcao').click();
-        //    //            });
-        //    //        },
-        //    //    }
-        //    //};
-
-        //    //var arrToShow = [
-        //    //      show.atualizar,
-        //    //      show.novaAcao,
-        //    //      show.visaoInicial,
-        //    //      show.PlanejamentoEstrategicos,
-        //    //      show.PlanejamentoTatico,
-        //    //      show.PlanejamentoOperacional,
-        //    //      show.colvisGroupTodos,
-        //    //      show.print,
-        //    //      show.excelHtml5,
-        //    //      show.colvis,
-        //    //];
-
-        //    //if (visaoOperacional) {
-        //    //    show.colvisGroupTodos.show = arrShowOperacional;
-        //    //    show.colvisGroupTodos.hide = arrHideOperacional;
-        //    //    show.colvis['columns'] = arrShowOperacional;
-        //    //    arrToShow = [
-        //    //       show.atualizar,
-        //    //       show.novaAcao,
-        //    //       show.colvisGroupTodos,
-        //    //       show.print,
-        //    //       show.excelHtml5,
-        //    //       show.colvis,
-        //    //    ]
-        //    //}
-
-        //    //console.log(arrToShow)
-
-        //    //new $.fn.dataTable.Buttons(table, {
-        //    //    buttons: arrToShow
-        //    //});
-
-        //    //table.buttons(0, null).container().prependTo(
-        //    //    table.table().container()
-        //    //);
-
-        //    //$('#paTable_wrapper > div.dt-buttons > a:nth-child(3)').click();
-
-        //    //HideForOperacional();
-        //    //if(!visaoOperacional){
-        //    //    $('#paTable_wrapper > div.dt-buttons > a:nth-child(2)').hide()
-        //    //}
-        //}
-        /*Fim Table*/
-
-
-        //METODO NAO UTILIZADO, foi substituido por STYLE CSS -CELSO GEA-
-        function HideForOperacional() {
-            //if (visaoOperacional) {
-            //    $('.dataTable .showAsEstrategy:visible').next().remove();
-            //    $('.showAsEstrategy:visible').hide();
-            //    $('.modal .showAsEstrategy').hide()
-            //}
-        }
 
         function Relatorios() {
-            //function openInNewTab(url) {
             win.focus();
-            //}
         }
 
-        //function GetDataTable() {
-        //    $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
-        //}
-
         function TesteRenan(r, tipo, model) {
-            //console.log("TesteRenan")
-            //console.log(TesteRenan);
-            //$('#modalLindo').find('.modal-body').empty().append(r);
 
             var form = $(r); //$('#Planejamento')
-
-            //form.find('.novoItem ').hide();
 
             if (tipo == 'Tatico') { //Novo tatico
 
@@ -2863,15 +2410,13 @@
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
                         //console.log(before)
-
-
-
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
                 });
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button><hr>");
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
                 myfunction();
 
@@ -2894,12 +2439,14 @@
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.find('table > tbody > tr:nth-child(19)').hide();
                 form.find('table > tbody > tr:nth-child(20)').hide();
+                form.find('table > tbody > tr:nth-child(21)').hide();
+                form.find('table > tbody > tr:nth-child(22)').hide();
                 form.attr('id', 'formEditEstrategy');
 
-                form.find('button').each(function (o,c){
-                    if($(c).attr('onclick').split(',')[1]){
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
-                        before = before.slice(2,before.length)
+                        before = before.slice(2, before.length)
                         //console.log(before)
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
@@ -2907,6 +2454,7 @@
                 })
 
                 $('#modalLindo').find('.modal-body .content1').append(form);
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Estratégico</button><hr>");
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
@@ -2922,7 +2470,6 @@
                 //}
             }
 
-            //$('#modalLindo').find('.modal-body .content3').append(form);
             InitDatePiker();
             MoneyMask();
 
@@ -2936,7 +2483,6 @@
         }
 
         function SalvarAcompanhamento(obj) {
-            //console.log(SalvarAcompanhamento);
 
             $('#modalLindo').modal('hide');
             $.post(urlSalvarAcompanhamento, obj, function (r) {
@@ -2948,37 +2494,31 @@
                 openMessageModal('Registro salvo com sucesso!', '');
 
             })
-            .fail(function (e, h, x) {
+                .fail(function (e, h, x) {
 
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
-            });
-
+                });
         }
 
         function formReset() {
-            //console.log(formReset);
             $('#acompanhamento #Name').val("");
             $('#acompanhamento #MailTo').val(0);
             $('#acompanhamento #Status_Id').val(0);
         }
 
         function getAcompanhamento(acaoCorrentId) {
-            //console.log("getAcompanhamento");
 
             $('#modalLindo').modal('hide');
 
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
-                HideForOperacional();
                 $('#modalLindo').modal();
                 $('#Header').html('Acompanhamento do Planejamento Operacional');
-                //$(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
-                $('#MailTo').select2();
+
                 $("#SaveAcompanhamento").on("click", function (event) {
-                    //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
                     if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
                         alert("Os campos devem ser preenchidos")
@@ -3009,36 +2549,23 @@
                     $('#modalLindo').modal();
                 });
 
+                setTimeout(function () {
+                    $('#MailTo').select2();
+                    $('#Status_Id').select2();
+                }, 1000);
             })
         }
-
-        //$(document).ajaxStart(function () {
-        //    $.LoadingOverlay("show");
-        //    counter++;
-        //});
 
         $(document).ajaxSend(function () {
             $.LoadingOverlay("show");
             counter++;
         });
 
-        //$(document).ajaxStop(function () {
-        //    $.LoadingOverlay("hide");
-        //    counter--;
-        //    HideForOperacional();
-        //});
-
         $(document).ajaxStop(function () {
             $.LoadingOverlay("hide", true);
             counter--;
 
-            //setTimeout(function () {
-            //    $('select:visible').select2()
-            //    $('select:visible').select2('destroy')
-            //    $('select:visible').select2()
-            //}, 500)
-
-            HideForOperacional();
+            //HideForOperacional();
         });
 
         $(document).ajaxError(function (e, h, x) {
@@ -3046,20 +2573,17 @@
             console.log(h);
             console.log(x);
             $.LoadingOverlay("hide");
-            //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
             counter--;
         });
 
 
-        $(function() {
-            //console.log( "ready!" );
+        $(function () {
             GetDataTable();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
-                if(selectPredecessor != undefined){
-                    //$("#"+selectPredecessor).change();
-                }else{
-                    $('#'+IdBotaoClicado).click();
+                if (selectPredecessor != undefined) {
+                } else {
+                    $('#' + IdBotaoClicado).click();
                 }
 
             })
@@ -3089,103 +2613,593 @@
             $.get(urlEditPlanOp, { id: data.Id }, function (r) {
                 TesteRenan(r, 'Estrategico', data);
                 $('#modalNovo > div > div > div.modal-footer > button').show();
-                getPlanEstrat(data, a, b);
+                if (data.Estrategico_Id > 0) {
+                    getPlanEstrat(data, a, b);
+                }
             });
 
         }
 
         function getPlanEstrat(data, a, b) {
-            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true },
-                function (r) {
-                    TesteRenan(r, 'Tatico', data);
-                    $('#modalNovo > div > div > div.modal-footer > button').show();
+            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true }, function (r) {
+                TesteRenan(r, 'Tatico', data);
+                $('#modalNovo > div > div > div.modal-footer > button').show();
 
-                    //DDLs ENCADEADAS da PARTIAL VIEW
-                    changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
+                //DDLs ENCADEADAS da PARTIAL VIEW
+                changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
 
-                    $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
-                        var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
-                        manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
+                    var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+                    manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
 
-                        $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-                            //$('#IndicadoresDeProjeto_Id').remove();
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+                    $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+                        $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+                        $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
 
-                                var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
-                                manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+                            var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+                            manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
 
-                                $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+                            $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
-                                    $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
-                                    //$('#ObjetivoGerencial_Id').remove();
+                                $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
 
-                                    $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
-
-                                    //try {
-                                    //    $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');
-                                    //} catch (e) {
-                                    //}
-                                    //finally {
-                                    //    $('#formEditTatico #modalLindo select').select2();
-                                    //}
-
-                                });
+                                $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
                             });
-                            $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                         });
+                        $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                     });
-                    //HideForOperacional();
+                });
+                //HideForOperacional();
 
+                $('.UnidadeDeMedidaTatico').change();
+
+                if (data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
+            }
             );
         }
 
         function getAcao(data, a, b) {
 
-            $.get(urlEditAcao, { id: data.Acao.Id },
-                function (r) {
-                    var acao = data.Acao;
+            $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
+                var acao = data.Acao;
 
-                    $('#Header').html("Editar Ação");
-                    //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
-                    $('#modalLindo').find('.modal-footer button').hide();
-                    $('#modalLindo').find('.modal-body .content3').append(r);
+                $('#Header').html("Editar Ação");
+                //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
+                $('#modalLindo').find('.modal-footer button').hide();
+                $('#modalLindo').find('.modal-body .content3').append(r);
 
-                    $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
-                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                    $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
-                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
-                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
-                    $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
-                    setTimeout(function () {
-                        $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
-                        $('.content3 select').select2();
-                    }, 1);
+                $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status).prop('disabled', true);;
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
 
-                    $(r).attr("id", "formEditAcao")
+                setTimeout(function () {
+                    $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                    $('.content3 select').select2();
+                    $('.UnidadeMedida').change();
+                }, 1);
 
-                    MoneyMask();
-                    myfunction();
+                $(r).attr("id", "formEditAcao");
 
-                    $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
-                    $('#obj').show(); //Apagar depois
-                    InitDatePiker();
-                    $('#CausaGenerica_Id').change();
-                    $('#modalNovo > div > div > div.modal-footer > button').show();
+                MoneyMask();
+                myfunction();
 
-                    MoneyMask('R$ ');
+                $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
+                $('#obj').show(); //Apagar depois
+                InitDatePiker();
+                $('#CausaGenerica_Id').change();
+                $('#modalNovo > div > div > div.modal-footer > button').show();
 
-                    $('.money').each(function () {
-                        $(this).maskMoney('mask', $(this).val());
-                    })
+                MoneyMask('R$ ');
 
-                    $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
-                    $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                })
+
+                $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
+                $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
+
+            });
+        }
+
+        //Visao Geral dos Projetos
+        $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
+            debugger
+
+            $('#graficoPorDiretriz').empty();
+            $('#graficoPorGerencia').empty();
+
+            let Categories = [];
+            let Data = [];
+
+            dadosfilter = dados;
+
+            if (TipoGrafico == "Gerencia") {
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+
+                Data = [];
+
+                Categories.forEach(function (c, o) {
+
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
+                    }).length;
+
+                    let qtdDeGerencia = $.grep(dados, function (r) {
+                        return r.Gerencia == c;
+                    }).length;
+
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+                    Data.push(porcConcluidos);
+                });
+
+                Highcharts.chart('graficoPorGerencia', {
+
+                    title: {
+                        text: '% CONCLUÍDA - ÁREA'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '% de Conclusão'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("Gerencia", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Gerencia", this.category, true);
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
 
                 });
+
+            } else {
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "IndicadoresDiretriz").filter(onlyUnique));
+
+                Data = [];
+
+                Categories.forEach(function (c, o) {
+
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
+                    }).length;
+
+                    let qtdDeDiretriz = $.grep(dados, function (r) {
+                        return r.IndicadoresDiretriz == c;
+                    }).length;
+
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
+
+                    Data.push(porcConcluidos);
+                });
+
+                Highcharts.chart('graficoPorDiretriz', {
+
+                    title: {
+                        text: '% CONCLUÍDA - ÁREA'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '% de Conclusão'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("IndicadoresDiretriz", this.category, getTablesModal);
+                                        getGraficoPorProjetos("IndicadoresDiretriz", this.category, true);
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
+
+                });
+
+            }
+
+            getGraficoPorProjetos(null, null, false);
+
+            getTablesModal();
+        });
+
+        var TipoGrafico = null;
+
+        function vgp(tipoGrafico){
+            TipoGrafico = tipoGrafico;
+        }
+
+        function getAcoesEspecificas(arrayRetorno) {
+
+            let AcoesEspecificas = [];
+
+            arrayRetorno.forEach(function (i) {
+                AcoesEspecificas.push(Object.values(i));
+            });
+
+            return AcoesEspecificas;
+        }
+
+        function getTableModal(id, dataSet, columnsSet) {
+
+            let table = $('#' + id).DataTable({
+
+                data: dataSet,
+                columns: columnsSet,
+                destroy: true,
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
+                language: {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+
+            });
+
+            return table;
+        }
+
+        function filterDados(prop, value, calback) {
+
+            dadosfilter = $.grep(dados, function (item) {
+
+                if (item[prop] == value) {
+
+                    return item;
+
+                }
+
+            });
+
+            calback();
+
+        }
+
+        function getTablesModal() {
+
+            // Acão Em Andamento
+            let AcoesEspecificas = [];
+
+            var arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+            var valor = o['Acao'].ContramedidaEspecifica;
+
+            if (o['Acao'].Status == 5) {
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return "Não possui Ação Específica";
+                }
+            }
+
+        });
+
+            Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
+            AcoesEspecificas.push([i]);
+        });
+
+            let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
+
+            var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
+
+            //Acoes Atrasadas
+            AcoesEspecificas = [];
+
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+            if (o['Acao'].Status == 1) {
+
+                dataFim = new Date(o['Acao'].QuandoFim);
+                dataHoje = new Date();
+
+                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
+                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    valor = { 0: "Não possui Ação Específica", 1: "" };
+                }
+            }
+
+        });
+
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Dias de Atraso" }]
+
+            var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
+
+
+            //Proximas
+            AcoesEspecificas = [];
+
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+            dataInicio = new Date(o['Acao'].QuandoInicio);
+            dataHoje = new Date();
+
+            if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
+
+                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return { 0: "Não possui Ação Específica", 1: "" };
+                }
+            }
+        });
+
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Inicio" }]
+
+            var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
+
+
+            //Concluidas
+            AcoesEspecificas = [];
+
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+            if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+
+                let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+
+                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return { 0: "Não possui Ação Específica", 1: "" };
+                }
+            }
+
+        });
+
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+            TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Conclusão" }]
+
+            var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
+        }
+
+        function getGraficoPorProjetos(prop, value, isFilter) {
+
+            let Categories = [];
+
+            let dadosInternos = dados;
+
+            if (isFilter) {
+
+            dadosInternos = $.grep(dados, function (r) {
+
+                return r[prop] == value ;
+
+            });
+        }
+
+            Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
+
+            Data = [];
+
+            let dados2 = dados;
+
+            if (isFilter) {
+                dados2 = $.grep(dados, function (item) {
+
+                    if (item[prop] == value) {
+
+                        return item;
+
+                    }
+                });
+            }
+
+            Categories.forEach(function (c, o) {
+
+            let qtdConcluido = $.grep(dados2, function (r) {
+                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+            }).length;
+
+            let qtdDeGerencia = $.grep(dados2, function (r) {
+                return r.Iniciativa == c;
+            }).length;
+
+            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+            Data.push(porcConcluidos);
+        });
+
+            Highcharts.chart('graficoPorProjetos', {
+
+            title: {
+                text: '% CONCLUÍDA - DEMANDAS'
+            },
+            credits: {
+                enabled: false
+            },
+            subtitle: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: '% de Conclusão'
+                }
+            },
+            xAxis: {
+                categories: Categories,
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f} %',
+                        //distance: -10,
+                        style: {
+                            color: 'black',
+                            fontSize: '10px',
+                        },
+                        //connectorColor: 'silver'
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                console.log(this.category)
+
+                                filterDados("Iniciativa", this.category, getTablesModal)
+                            }
+                        }
+                    },
+                },
+            },
+            tooltip: {
+                pointFormat: '{point.y:.0f} %'
+            },
+            series: [{
+                type: 'column',
+                colorByPoint: true,
+                data: Data,
+                showInLegend: false
+            }]
+        });
+
+            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            $('#percentualConclusao').html(PercentualTotal + " %");
+
+        }
+
+        function changePlanejamento(tipo,form){
+            $.post(urlGetListPlanejamento +'/'+tipo,function(r){
+
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">Selecionar</button>';
+                }});
+                datatableGRT.Inicializar({
+                    idTabela: "tablePessego",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    initComplete: function(){
+                        $('#tablePessego').off().on('click','button[data-id]',function(){
+                            if(confirm("Deseja alterar o vinculo!?")){
+                                debugger
+                                var idParaMudar = $(this).attr("data-id");
+                                var id = $(form).find('#Id').val();
+                                //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
+                                $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
+                                    //alert("Atualizou o rolê!");
+                                    openMessageModal("Vinculo atualizado!");
+                                    location.reload();
+                                });
+                            }
+                        });
+                    }
+                });
+            });
         }
 
     </script>

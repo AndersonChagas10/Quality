@@ -24,13 +24,13 @@ namespace SgqSystem.Controllers.Api
     {
         public string mensagemErro { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         //SGQ_GlobalEntities dbGlobal;
         SgqDbDevEntities dbSgq;
         public VTVerificacaoTipificacaoApiController()
         {
 
-            //dbGlobal = new SGQ_GlobalEntities();
+            //dbGlobal = new SgqDbDevEntities();
             //dbGlobal.Configuration.LazyLoadingEnabled = false;
             //dbGlobal.Configuration.ValidateOnSaveEnabled = false;
 
@@ -56,7 +56,7 @@ namespace SgqSystem.Controllers.Api
             //GlobalConfig.MockOn = true;
 
             //if (GlobalConfig.MockOn)
-            //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
 
@@ -396,7 +396,7 @@ namespace SgqSystem.Controllers.Api
                             #endregion
 
                             #region Salvando Consolidação
-                            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                             using (SqlConnection connection = new SqlConnection(conexao))
                             {
                                 connection.Open();
@@ -447,15 +447,13 @@ namespace SgqSystem.Controllers.Api
             try
             {
 
-                using (var db = new Dominio.SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
                     var sql = "select distinct '<div class=\"Key\" date=\"" + Date + "\" unidadeid=\"" + UnidadeId + "\" key=\"'+ [Key] +'\"></div>' as retorno from VerificacaoTipificacaoV2 (nolock)  " +
                           " where FORMAT(CollectionDate, 'MMddyyyy') = '" + Date + "' and        " +
                           " ParCompany_Id = " + UnidadeId + ";                              ";
 
-                    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-
-                    var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+                    var list = factory.SearchQuery<ResultadoUmaColuna>(sql).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {
@@ -713,7 +711,7 @@ namespace SgqSystem.Controllers.Api
         //        if (GlobalConfig.MockOn)
         //        {
         //            //queryString = "select * from verificacaoteste where nCdEmpresa=" + company.CompanyNumber + " and iSequencial=" + verificacaoTipificacao.Sequencial;
-        //            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         //        }
 
 
@@ -847,7 +845,7 @@ namespace SgqSystem.Controllers.Api
 
         //                            }
 
-        //                            SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
+        //                            SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
         //                            DateTime dataC = verificacaoTipificacao.DataHora;
 
@@ -1113,7 +1111,7 @@ namespace SgqSystem.Controllers.Api
         //                    "AND iSequencial = '" + sequencial + "' AND iBanda = '" + banda + "' AND cIdentificadorTipificacao = '" + caracteristica + "'                " +
         //                    "ORDER BY V.nCdCaracteristicaTipificacao;";
 
-        //    using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString))
+        //    using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
         //    {
         //        SqlCommand command = new SqlCommand(queryVFResultado, connection);
 
@@ -1187,7 +1185,7 @@ namespace SgqSystem.Controllers.Api
         //    //                    "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";
 
         //    //utiliza transacao para excluir e incluir os itens
-        //    //using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString))
+        //    //using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
         //    //{
         //    //    SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -1303,7 +1301,7 @@ namespace SgqSystem.Controllers.Api
         //                                                string idCaracteristicaTipificacaoVTR, string idCaracteristicaTipificacaoVTV)
         //{
 
-        //    //using (var db = new SGQ_GlobalEntities())
+        //    //using (var db = new SgqDbDevEntities())
         //    //{
         //    try
         //    {
@@ -1337,7 +1335,7 @@ namespace SgqSystem.Controllers.Api
         //[HttpPost]
         //public void Reconsolidation(DateTime date)
         //{
-        //    //using (var db = new SGQ_GlobalEntities())
+        //    //using (var db = new SgqDbDevEntities())
         //    //{
         //    var seguinte = date;
         //    seguinte = seguinte.AddDays(1);

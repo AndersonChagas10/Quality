@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dominio;
+using ADOFactory;
 
 namespace Data.Repositories
 {
@@ -29,7 +30,10 @@ namespace Data.Repositories
         {
             var query = string.Format("select * from ParLevel3Level2 p32 INNER JOIN ParLevel3Level2Level1 p321 ON p321.ParLevel3Level2_Id = p32.Id LEFT JOIN ParLevel3Group pg ON pg.Id = p32.ParLevel3Group_Id     WHERE p321.ParLevel1_Id = {0}", idLevel1);
 
-            return db.Database.SqlQuery<ParLevel3Level2>(query).ToList();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                return factory.SearchQuery<ParLevel3Level2>(query).ToList();
+            }
 
         }
     }

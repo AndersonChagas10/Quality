@@ -54,10 +54,10 @@ namespace SgqSystem.Controllers.Api
 
                 sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0, clusterSelected_Id);
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
 
-                    _list = db.Database.SqlQuery<ScorecardResultSet>(sql).ToList();
+                    _list = factory.SearchQuery<ScorecardResultSet>(sql).ToList();
 
                     foreach (var r in _list.ToList())
                     {
@@ -85,9 +85,9 @@ namespace SgqSystem.Controllers.Api
 
             try
             {
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    lista = db.Database.SqlQuery<ResultadoUmaColuna>(query).ToList();
+                    lista = factory.SearchQuery<ResultadoUmaColuna>(query).ToList();
                 }
 
                 retorno = lista[0].retorno;
@@ -112,10 +112,11 @@ namespace SgqSystem.Controllers.Api
             decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0, form.clusterSelected_Id);
 
             var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1, form.clusterSelected_Id);
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
 
-                _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
+                _list = factory.SearchQuery<ScorecardResultSet>(query).ToList();
                 var total = new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = 784, Scorecard = 0, PontosAtingidos = 0 };
 
                 var totalPontosDisputados = 0.0M;
@@ -258,7 +259,7 @@ namespace SgqSystem.Controllers.Api
         [Route("Migracao/{unidade}/{ip}/{banco}/{ipProd}/{bancoProd}")]
         public void MigracaoParte1(string unidade, string ip, string banco, string ipProd, string bancoProd)
         {
-            
+
             #region parte01
 
             List<ResultadoUmaColuna> collectionlevel2List = new List<ResultadoUmaColuna>();

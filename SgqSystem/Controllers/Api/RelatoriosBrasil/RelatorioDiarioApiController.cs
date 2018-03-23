@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO.Helpers;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
@@ -251,8 +252,11 @@ namespace SgqSystem.Controllers.Api
                 var queryIndicadores = PanelResulPanel.QueryIndicadores(form);
                 var queryTendencia = PanelResulPanel.QueryGraficoTendencia(form);
 
-                _todosOsGraficos.listResultSetLevel1 = db.Database.SqlQuery<RelDiarioResultSet>(queryIndicadores).ToList();
-                _todosOsGraficos.listResultSetTendencia = db.Database.SqlQuery<RelDiarioResultSet>(queryTendencia).ToList();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    _todosOsGraficos.listResultSetLevel1 = factory.SearchQuery<RelDiarioResultSet>(queryIndicadores).ToList();
+                    _todosOsGraficos.listResultSetTendencia = factory.SearchQuery<RelDiarioResultSet>(queryTendencia).ToList();
+                }
                 if (_todosOsGraficos.listResultSetLevel1.Count() == 0)
                     return _todosOsGraficos;
 
@@ -262,9 +266,12 @@ namespace SgqSystem.Controllers.Api
                 var queryGraficoTarefasAcumuladas = PanelResulPanel.QueryGraficoTarefasAcumuladas(form, indicadores);
                 var queryGrafico4 = PanelResulPanel.QueryGrafico4(form, indicadores);
 
-                _todosOsGraficos.listResultSetLevel2 = db.Database.SqlQuery<RelDiarioResultSet>(queryGrafico3).ToList();
-                _todosOsGraficos.listResultSetTarefaPorIndicador = db.Database.SqlQuery<RelDiarioResultSet>(queryGraficoTarefasAcumuladas).ToList();
-                _todosOsGraficos.listResultSetLevel3 = db.Database.SqlQuery<RelDiarioResultSet>(queryGrafico4).ToList();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    _todosOsGraficos.listResultSetLevel2 = factory.SearchQuery<RelDiarioResultSet>(queryGrafico3).ToList();
+                    _todosOsGraficos.listResultSetTarefaPorIndicador = factory.SearchQuery<RelDiarioResultSet>(queryGraficoTarefasAcumuladas).ToList();
+                    _todosOsGraficos.listResultSetLevel3 = factory.SearchQuery<RelDiarioResultSet>(queryGrafico4).ToList();
+                }
             }
 
             return _todosOsGraficos;

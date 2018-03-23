@@ -520,7 +520,7 @@ namespace Dominio.Services
         /// <param name="userDto"></param>
         private void AtualizaRolesSgqBrPelosDadosDoErp(UserDTO userDto)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 Usuario usuarioSgqBr;
                 //db.Configuration.LazyLoadingEnabled = false;
@@ -614,7 +614,7 @@ namespace Dominio.Services
         /// <param name="userDto"></param>
         private void CriaUSerSgqPeloUserSgqBR(UserDTO userDto)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 try
                 {

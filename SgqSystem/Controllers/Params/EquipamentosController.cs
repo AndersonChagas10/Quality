@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers.Params
     public class EquipamentosController : BaseController
     {
 
-        private SGQ_GlobalEntities db = new SGQ_GlobalEntities();
+        private SgqDbDevEntities db = new SgqDbDevEntities();
         private SgqDbDevEntities db2 = new SgqDbDevEntities();
 
         // GET: Equipamentos

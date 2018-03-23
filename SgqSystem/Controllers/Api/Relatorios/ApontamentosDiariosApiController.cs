@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using DTO;
 using DTO.DTO.Params;
@@ -52,8 +53,13 @@ namespace SgqSystem.Controllers.Api
             CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
 
             var query = new ApontamentosDiariosResultSet().Select(form);
-            _list = db.Database.SqlQuery<ApontamentosDiariosResultSet>(query).ToList();
-            return _list;
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
         }
 
         [HttpPost]
@@ -61,6 +67,8 @@ namespace SgqSystem.Controllers.Api
         public Result_Level3DTO EditResultLevel3(int id)
         {
             var retorno = Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(id));
+            retorno.IntervalMin = retorno.IntervalMin == "-9999999999999.9000000000" ? "Sem limite mínimo" : retorno.IntervalMin;
+            retorno.IntervalMax = retorno.IntervalMax == "9999999999999.9000000000" ? "Sem limite Máximo" : retorno.IntervalMax;
             return retorno;
         }
 
@@ -788,7 +796,7 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("conform").Value.ToString() + ": </label>" +
+                           "<label for='Conforme: '> " + GetResources.getResource("conform2").Value.ToString() + ": </label> &nbsp " +
                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
                             "<br>" +
                              "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +

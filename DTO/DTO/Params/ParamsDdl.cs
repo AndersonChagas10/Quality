@@ -13,6 +13,7 @@ namespace DTO.DTO.Params
 
         public IEnumerable<SelectListItem> DdlParConsolidation { get; set; }
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
+        public IEnumerable<SelectListItem> DdlparScoreType { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel1 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel2 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel3 { get; set; }
@@ -178,17 +179,15 @@ namespace DTO.DTO.Params
         private IEnumerable<SelectListItem> CreateSelectListEquipamentos(string tipo)
         {
             IEnumerable<SelectListItem> retorno;
-
-            var context = "SGQ_GlobalADO";
             
-            using (var db = new Factory(context))
+            using (Factory factory = new Factory("DefaultConnection"))
             {
                 string query = "SELECT                                                      "+
                                 "Tipo + '|' + ISNULL(Subtipo, '') as Value,          "+
                                 "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Text            "+
                                 "FROM Equipamentos WHERE Tipo = '"+ tipo + "' GROUP BY Tipo, Subtipo ";
 
-                retorno = db.SearchQuery<SelectListItem>(query);
+                retorno = factory.SearchQuery<SelectListItem>(query);
             }
             
             return retorno;

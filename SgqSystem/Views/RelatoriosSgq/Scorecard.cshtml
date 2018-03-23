@@ -58,7 +58,6 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                $('#unitId').change();
                 Send(true);
             });
         });
@@ -106,8 +105,8 @@
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: [{ title: "Cluster", mData: "ClusterName" },
-                    { title: "Regional", mData: "RegionalName" },
-                    { title: "Empresa", mData: "ParCompanyName" },
+                    { title: "@Resources.Resource.structure", mData: "RegionalName" },
+                    { title: "@Resources.Resource.company", mData: "ParCompanyName" },
                     { title: "@Resources.Resource.scorecard_type", mData: "TipoScore" },
                     { title: "@Resources.Resource.audit_type", mData: "TipoIndicadorName" },
                     { title: "@Resources.Resource.audit", mData: "Level1Name" },
@@ -117,9 +116,9 @@
                     { title: "@Resources.Resource.points2", mData: "Pontos" },
                     { title: "@Resources.Resource.points_possible", mData: "PontosIndicador" },
                     { title: "@Resources.Resource.goal %", mData: "Meta" },
-                    { title: "Real %", mData: "Real" },
+                    { title: "@Resources.Resource.real %", mData: "Real" },
                     { title: "@Resources.Resource.points_achieved", mData: "PontosAtingidos" },
-                    { title: "Scorecard", mData: "Scorecard" },
+                    { title: "@Resources.Resource.scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
                 /*
@@ -190,17 +189,17 @@
                         text: '@Resources.Resource.analytical',
                         show: ':hidden'
                     },
-                    {
-                        extend: 'print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
+                    //{
+                    //    extend: 'print',
+                    //    customize: function (win) {
+                    //        $(win.document.body).find('table')
+                    //            .addClass('compact')
+                    //            .css('font-size', 'inherit');
+                    //    },
+                    //    exportOptions: {
+                    //        columns: ':visible'
+                    //    }
+                    //},
                     {
                         extend: 'excelHtml5',
 
@@ -208,7 +207,7 @@
                             columns: ':visible'
                         }
                     },
-                    'pdf',
+                    //'pdf',
                 ]
             });
 
@@ -260,6 +259,8 @@
             formControl.showUnit();
             //formControl.showProcesso();
             closeLeftSidebar();
+            $("#unitId").find("option").eq(0).remove();
+
             $(".sidebar-toggler").removeClass("hide");
             $(".page-sidebar-wrapper").removeClass("hide");
             $('button.refresh-btn-right-top').removeClass("hide");

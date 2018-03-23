@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Data;
 using System.Data.SqlClient;
+using ADOFactory;
 
 namespace SgqSystem.Controllers.Recravacao
 {
@@ -26,8 +27,11 @@ namespace SgqSystem.Controllers.Recravacao
         // GET: RecravacaoTipoLata
         public ActionResult Index()
         {
-            var model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata").OrderByDescending(r => r.IsActive).ToList();
-            return View(model);
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var model = factory.SearchQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata").OrderByDescending(r => r.IsActive).ToList();
+                return View(model);
+            }
         }
 
         // GET: RecravacaoTipoLata/Create
@@ -160,13 +164,16 @@ namespace SgqSystem.Controllers.Recravacao
 
         private ParRecravacao_TipoLataDTO GetTipoLata(int id)
         {
-            var model = new ParRecravacao_TipoLataDTO();
-            if (id > 0)
-                model = db.Database.SqlQuery<ParRecravacao_TipoLataDTO>("SELECT * FROM ParRecravacao_TipoLata WHERE Id = " + id).FirstOrDefault();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var model = new ParRecravacao_TipoLataDTO();
+                if (id > 0)
+                    model = factory.SearchQuery<ParRecravacao_TipoLataDTO>("SELECT * FROM ParRecravacao_TipoLata WHERE Id = " + id).FirstOrDefault();
 
-            model.ParLataImagensList = new List<ParLataImagens>();
-            model.ParLataImagensList = db.ParLataImagens.Where(r => r.ParRecravacao_TipoLata_Id == model.Id).OrderBy(r => r.PontoIndex).ToList();
-            return model;
+                model.ParLataImagensList = new List<ParLataImagens>();
+                model.ParLataImagensList = db.ParLataImagens.Where(r => r.ParRecravacao_TipoLata_Id == model.Id).OrderBy(r => r.PontoIndex).ToList();
+                return model;
+            }
         }
 
         private byte[] ImageToByteArray(System.Drawing.Image imageIn)

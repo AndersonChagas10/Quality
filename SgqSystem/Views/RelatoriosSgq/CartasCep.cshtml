@@ -33,14 +33,17 @@
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
+        $('#level3Id').parent().hide();
+
         $('#tipoCEP').change(function (a) {
-            /*if (($('#tipoCEP').val()) == "2") {
+            if (($('#tipoCEP').val()) == "2") {
                 $('#level3Id').parent().show();
             } else if (($('#tipoCEP').val()) == "1") {
                 $('#level3Id').val("").trigger('change.select2');
                 $('#level3Id').parent().hide();
-            }*/
+            }
         })
+        $('#tipoCEP').change();
 
         $(document).ready(function () {
 
@@ -98,12 +101,18 @@
                 return false;
             }
 
-            if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
-                GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
-                return false;
-            }
+            //if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+            //    GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
+            //    return false;
+            //}
 
             if ($('#tipoCEP :selected').val() == 2) {
+
+                if (!(parseInt($('#level2Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
+                    GuardJs.exibirMensagemAlerta(Resources('select_the_level2'));
+                    return false;
+                }
+            
 
                 if (!(parseInt($('#level3Id :selected').val().replace(/\D/g, ''), 10)) > 0) {
                     GuardJs.exibirMensagemAlerta(Resources('select_the_level3'));
@@ -140,7 +149,7 @@
                         zoomType: 'x,y'
                     },
                     title: {
-                        text: "Carta CEP " + tipoCarta,
+                        text: Resources("letters_cep") + " " + tipoCarta,
                         //x: -20 //center
                     },
 
@@ -255,7 +264,7 @@
                     },
                     //Limites de Especificação
                     {
-                        name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0],//.toFixed(2),
+                        name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0].toFixed(2),
                         data: valorAbsoluto.lcsData,
                         visible: (valorAbsoluto.lcs != 0) ? true : false,
                         color: "black",
@@ -272,7 +281,7 @@
                         }
                     },
                     {
-                        name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0],//.toFixed(2),
+                        name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0].toFixed(2),
                         data: valorAbsoluto.lciData,
                         visible: (valorAbsoluto.lci != 0) ? true : false,
                         color: "black",

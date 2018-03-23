@@ -1,0 +1,94 @@
+﻿@using DTO.DTO.Params
+@using Resources
+
+@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+
+<!DOCTYPE html>
+<html ng-app="sgqSystem">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/General")
+
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <!-- BEGIN CONTENT BODY -->
+    <div class="container-fluid">
+        <h2>Teste de impressão</h2>
+
+        <button class="btn btn-primary" id="btnPrint">@Resource.print</button>
+        <hr />
+    </div>
+
+    <div style="display:none">
+        <div id="contentHeader">
+            <table border="1" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                <tbody>
+                    <tr>
+                        <td rowspan="3" width="120px" align="center"><img id="printImagemCabecalhoLeft" src="../Imagens/logo-jbs.png" width="80px"></td>
+                        <td id="printTitulo" align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"></td>
+                        <td rowspan="3" width="120px" align="center"><img id="printImagemCabecalhoRight" src="../Imagens/logo-gq.png" width="80px"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Elaborador:</b> <span id="printElaborador"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Aprovador:</b> <span id="printAprovador"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="contentFooter">
+            <div>
+                <strong id="printCodigoRodape"></strong>
+            </div>
+        </div>
+
+        <div id="contentBody">
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- INICIO SCRIPT DE PRINT -->
+    <script src="~/Scripts/Print/printGRT.js"></script>
+
+    @RenderSection("Scripts")
+
+    <script>
+
+        function PrepararImpressao(titulo,elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
+            $('#printTitulo').html(titulo);
+            $("#printElaborador").html(elaborador);
+            $("#printAprovador").html(aprovador);
+            $("#printCodigoRodape").html(codigoRodape);
+            $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
+            $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
+            printGRT.Inicializar(
+                {
+                    headerHtml: document.getElementById('contentHeader').innerHTML,
+                    bodyHtml: document.getElementById(idBody).innerHTML,
+                    footerHtml: document.getElementById('contentFooter').innerHTML,
+                    numberMarginRight: 25,
+                    numberMarginBottom: 25,
+                    renderTableMargin: 0,
+                    pageMarginHeader: "25px 25px 10px 25px",
+                    pageMarginFooter: "10px 25px 25px 25px",
+                    pageMarginBody: "0 25px 0 25px"
+                }
+            );
+
+            printGRT.Imprimir();
+        }
+    </script>
+</body>
+</html>

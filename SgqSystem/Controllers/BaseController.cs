@@ -35,6 +35,10 @@ namespace SgqSystem.Controllers
                 ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive == true));
             }
 
+            var listaURLPA = GetWebConfigList("URL_PA");
+
+            ViewBag.urlRootPa = listaURLPA[0];
+            ViewBag.urlRootPaFTA = listaURLPA[1];
         }
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
@@ -88,7 +92,7 @@ namespace SgqSystem.Controllers
             HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
             if (cookie != null)
             {
-                cookie.Expires = DateTime.Now.AddMinutes(60);
+                cookie.Expires = DateTime.Now.AddHours(48);
                 HttpContext.Response.Cookies.Set(cookie);
                 Response.Cookies.Add(cookie);
             }
@@ -125,7 +129,7 @@ namespace SgqSystem.Controllers
                         myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
                 //set cookie expiry date-time. Made it to last for next 12 hours.
-                myCookie.Expires = DateTime.Now.AddMinutes(1800);
+                myCookie.Expires = DateTime.Now.AddHours(48);
 
                 //Most important, write the cookie to client.
                 Response.Cookies.Add(myCookie);
@@ -145,6 +149,21 @@ namespace SgqSystem.Controllers
                 Response.SetCookie(currentUserCookie);
             }
 
+        }
+
+        public static string[] GetWebConfigList(string key)
+        {
+            var list = GetWebConfigSettings(key).Split(';');
+            //Dictionary<string, string> dict = new Dictionary<string, string>();
+            //foreach (var o in list)
+            //{
+            //    if (o.Length >= 3)
+            //    {
+            //        var obj = o.Split('>');
+            //        dict.Add(obj[0], obj[1]);
+            //    }
+            //}
+            return list;
         }
 
         public static string GetWebConfigSettings(string key)

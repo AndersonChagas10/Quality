@@ -22,7 +22,10 @@ namespace Helper
         {
 
             //return;
+            try
+            {
 
+            
             SmtpClient client = new SmtpClient(emailSmtp, emailPort);
             client.EnableSsl = emailSSL; //true Hotmail
             client.Credentials = new NetworkCredential(emailFrom, emailPass);
@@ -64,6 +67,12 @@ namespace Helper
             mailEntry.SendStatus = "Sending";
             string userState = mailEntry.Id.ToString();
             client.SendAsync(message, userState);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
 
         }
 

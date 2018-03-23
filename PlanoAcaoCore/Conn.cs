@@ -1,7 +1,18 @@
-﻿namespace PlanoAcaoCore
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+
+namespace PlanoAcaoCore
 {
     public static class Conn
     {
+       
+        static Conn()
+        {
+            PA_Config = GetWebConfigList("PA_Config");
+        }
+
+
         ////CONFIG COMMUN PARA TODOS
         public static int sessionTimer = 1800;
         public static bool isSgqIntegrado = true;
@@ -13,39 +24,56 @@
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
-        ////Config para dev GRT
-        //Local Db
-        public static string catalog { get { return "PlanoDeAcao"; } }
-        public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        public static string user { get { return "sa"; } }
-        public static string pass { get { return "1qazmko0"; } }
 
-        //Remoto SGQ
-        public static string catalog2 { get { return "dbGQualidade"; } }
-        public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        public static string user2 { get { return "sa"; } }
-        public static string pass2 { get { return "1qazmko0"; } }
+        public static string catalog { get { return PA_Config["catalog"]; } }
+        public static string dataSource { get { return PA_Config["dataSource"]; } }
+        public static string user { get { return PA_Config["user"]; } }
+        public static string pass { get { return PA_Config["pass"]; } }
 
-        public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
-        public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+        public static string catalog2 { get { return PA_Config["catalog2"]; } }
+        public static string dataSource2 { get { return PA_Config["dataSource2"]; } }
+        public static string user2 { get { return PA_Config["user2"]; } }
+        public static string pass2 { get { return PA_Config["pass2"]; } }
 
-        //________________________________________________________________________
-        //Configurações de Email de envio
+        public static string selfRoot { get { return PA_Config["selfRoot"]; } }
+        public static string SgqHost { get { return PA_Config["SgqHost"]; } }
 
-        public static string emailFrom = "testedealertagrt@hotmail.com";
-        public static string emailPass = "L7e9HaN6UAsTeTxI3vtsoA==";
-        public static string emailSmtp = "smtp.live.com";
-        public static int emailPort = 587;
-        public static bool emailSSL = true;
+        public static string emailFrom { get { return PA_Config["emailFrom"]; } }
+        public static string emailPass { get { return PA_Config["emailPass"]; } }
+        public static string emailSmtp { get { return PA_Config["emailSmtp"]; } }
+        public static int emailPort { get { return Convert.ToInt32(PA_Config["emailPort"]); } }
+        public static bool emailSSL { get { return Convert.ToBoolean(PA_Config["emailSSL"]); } }
 
-        //________________________________________________________________________
+        public static Dictionary<string, string> PA_Config { get; set; }
 
-        //Config para GABRIEL NUNES 1
-        //Local Db
+        public static Dictionary<string, string> GetWebConfigList(string key)
+        {
+            var list = GetWebConfigSettings(key).Split(';');
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            foreach (var o in list)
+            {
+                if (o.Length >= 3)
+                {
+                    var obj = o.Split('=');
+                    dict.Add(obj[0], obj[1]);
+                }
+            }
+
+            return dict;
+        }
+
+        public static string GetWebConfigSettings(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
+
+        //////Config para dev GRT
+        ////Local Db
         //public static string catalog { get { return "PlanoDeAcao"; } }
-        //public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
+        //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         //public static string user { get { return "sa"; } }
-        //public static string pass { get { return "betsy1"; } }
+        //public static string pass { get { return "1qazmko0"; } }
 
         ////Remoto SGQ
         //public static string catalog2 { get { return "dbGQualidade"; } }
@@ -55,6 +83,74 @@
 
         //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
         //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+
+        ////////WQS Db
+        //public static string catalog { get { return "EmptySGQ"; } }
+        //public static string dataSource { get { return @"LOCALHOST\MSSQL_GRT"; } }
+        //public static string user { get { return "sa"; } }
+        //public static string pass { get { return "grt.2468"; } }
+
+        ////Remoto SGQ
+        //public static string catalog2 { get { return "EmptySGQ"; } }
+        //public static string dataSource2 { get { return @"LOCALHOST\MSSQL_GRT"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "grt.2468"; } }
+
+        //public static string selfRoot { get { return "http://ytoara.no-ip.info:8081/WQS_PA/"; } }
+        //public static string SgqHost { get { return "http://ytoara.no-ip.info:8081/WQS/api/User/AuthenticationLogin"; } }
+
+        //////WQS Db
+        //public static string catalog { get { return "EmptySGQ"; } }
+        //public static string dataSource { get { return @"DESKTOP-6M17EOF"; } }
+        //public static string user { get { return "sa"; } }
+        //public static string pass { get { return "betsy1"; } }
+        //public static string catalog { get { return "PlanoDeAcao"; } }
+        //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string user { get { return "sa"; } }
+        //public static string pass { get { return "1qazmko0"; } }
+
+        //Remoto SGQ
+        //public static string catalog2 { get { return "EmptySGQ"; } }
+        //public static string dataSource2 { get { return @"DESKTOP-6M17EOF"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "betsy1"; } }
+
+        //public static string selfRoot { get { return "http://ytoara.no-ip.info:8081/WQS_PA/"; } }
+        //public static string SgqHost { get { return "http://ytoara.no-ip.info:8081/WQS/api/User/AuthenticationLogin"; } }
+        //public static string catalog2 { get { return "dbGQualidade"; } }
+        //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "1qazmko0"; } }
+
+        //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
+        //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+
+        ////________________________________________________________________________
+        ////Configurações de Email de envio
+
+        //public static string emailFrom = "testedealertagrt@hotmail.com";
+        //public static string emailPass = "L7e9HaN6UAsTeTxI3vtsoA==";
+        //public static string emailSmtp = "smtp.live.com";
+        //public static int emailPort = 587;
+        //public static bool emailSSL = true;
+
+        //________________________________________________________________________
+
+        //Config para GABRIEL NUNES 1
+        //Local Db
+        //public static string catalog { get { return "PlanoDeAcao"; } }
+        //public static string dataSource { get { return @"PCRICARDOGRT"; } }
+        //public static string user { get { return "sa"; } }
+        //public static string pass { get { return "1qazmko0"; } }
+
+        //////Remoto SGQ
+        //public static string catalog2 { get { return "dbGQualidade"; } }
+        //public static string dataSource2 { get { return @"PCRICARDOGRT"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "1qazmko0"; } }
+
+        //public static string selfRoot { get { return "http://localhost/PlanoAcao/"; } }
+        //public static string SgqHost { get { return "http://localhost/SgqSystem/api/User/AuthenticationLogin"; } }
 
         //________________________________________________________________________
 
@@ -99,21 +195,21 @@
 
         //________________________________________________________________________
 
-        ////Azure
-        ////Local DB
+        //RENAN SANTINI
+        //Local DB
         //public static string catalog { get { return "PlanoDeAcao"; } }
-        //public static string dataSource { get { return @"servergrtpa.database.windows.net"; } }
-        //public static string user { get { return "grt"; } }
-        //public static string pass { get { return "1qazmko0#"; } }
+        //public static string dataSource { get { return "DESKTOP-0KN2R6G"; } }
+        //public static string user { get { return null; } }
+        //public static string pass { get { return null; } }
 
         ////Remoto SGQ
-        //public static string catalog2 { get { return "SGQ_YTOARA"; } }
-        //public static string dataSource2 { get { return @"servergrt.database.windows.net"; } }
-        //public static string user2 { get { return "grt"; } }
-        //public static string pass2 { get { return "1qazmko0#"; } }
+        //public static string catalog2 { get { return "dbGQualidade"; } }
+        //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "1qazmko0"; } }
 
-        //public static string selfRoot { get { return "http://server20129141.cloudapp.net/PlanoDeAcao"; } }
-        //public static string SgqHost { get { return "http://server20129141.cloudapp.net/SGQYtoara/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
+        //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
 
         //________________________________________________________________________
 
@@ -143,7 +239,7 @@
         //public static string pass2 { get { return "grJsoluco3s"; } }
 
         //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcao/"; } }
-        //public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcaoNovo/"; } }
+        ////public static string selfRoot { get { return "http://mtzsvmqsc/PlanoDeAcaoNovo/"; } }
         //public static string SgqHost { get { return "http://mtzsvmqsc/sgq/api/User/AuthenticationLogin"; } }
 
         //public static string emailFrom = "sgq@jbs.com.br";

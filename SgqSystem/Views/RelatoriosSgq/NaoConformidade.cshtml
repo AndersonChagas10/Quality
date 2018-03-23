@@ -8,8 +8,8 @@
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
     var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidade");
     var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
-    var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
     var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidade");
+    var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
     var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidade");
     var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidade");
@@ -59,6 +59,7 @@
         <div>
             <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
             <button class="btn btn-sm btn-default" id="btnMonitoramento">Level 2</button>
+            <button class="btn btn-sm btn-default" id="btnTarefasAcumuladas">Level 2 do Level 1</button>
             <button class="btn btn-sm btn-default" id="btnShift">Shift</button>
             <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
         </div>
@@ -80,6 +81,7 @@
             <div class="panel-body" id="g0">
                 <div id="RGMonitoramentosGrafico"></div>
                 <div id="RGMonitoramentosShiftGrafico"></div>
+                <div id="RGTarefasAcumuladasGrafico"></div>
                 <div id="RGTarefasGrafico"></div>
             </div>
         </div>
@@ -97,18 +99,18 @@
 
         //var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
         var Department = '@Resources.Resource.department'
-        var GraficoDepto = 'NC por departamento: ';
+        var GraficoDepto = '@Resources.Resource.defects_per_deparment'; //'NC por departamento';
         var GraficoIndic = '@Resources.Resource.defects_per_audit'; //'NC por Indicador: ';
         var GraficoMon = '@Resources.Resource.defects_per_monitoring'; //'NC por Monitoramento: ';
         var GraficoTarefa = '@Resources.Resource.defects_per_tasks'; //'NC por Tarefa: ';
-        var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
-        var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
+        var GraficoTarefasAcumuladasTit ='@Resources.Resource.derivations_per_defects'; // 'NC por Tarefas acumuladas: ';
+        var GraficoMoncomTarefa = '@Resources.Resource.defects_per_monitoring_at_tasks'; //'NC por Monitoramento na Tarefa: ';
         var $btn = $('#btnSend');
         var urlGraficoUnidades = @Html.Raw(Json.Encode(urlGraficoUnidades));
         var urlGraficoIndicador = @Html.Raw(Json.Encode(urlGraficoNcPorUnidadeIndicador));
         var urlGraficoMonitoramento = @Html.Raw(Json.Encode(urlGraficoMonitoramento));
-        var urlGraficoTarefa = @Html.Raw(Json.Encode(urlGraficoTarefa));
         var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
+        var urlGraficoTarefa = @Html.Raw(Json.Encode(urlGraficoTarefa));
         var UnidadeUsuario = (@Html.Raw(Json.Encode(ViewBag.UnidadeUsuario)));
         var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
         var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
@@ -142,6 +144,14 @@
             formControl.showFullCallendar();
             formControl.showShift();
             formControl.showClustRegUnitCriticalLevel123();
+
+            //setTimeout(function () {
+                $("#clusterGroupId").find("option").eq(0).remove();
+                $("#clusterGroupId").val(8).change();
+                if ($("#clusterGroupId").val() == null) {
+                    $("#clusterGroupId").val(2).change();
+                }
+            //}, 3);
 
             popoverMain = $('#CustomPopover').addClass('hide');
 
@@ -250,6 +260,7 @@
 
                     enviar["shift"] = shift;
                     GetMonitoramento(Aux);
+                    GetTarefasAcumuladas(Aux);
                     return;
 
                 case "Departamento":
@@ -268,6 +279,7 @@
 
                     if (IsDepartmentShift || ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
                         GetMonitoramento(Aux);
+                        GetTarefasAcumuladas(Aux);
                         return;
                     }
 
@@ -292,6 +304,14 @@
             enviar["level1Name"] = removeFtaDaLabel(indicador);
             console.log(enviar);
             EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "RGMonitoramentosGrafico");
+        };
+
+        function GetTarefasAcumuladas(indicador) {
+            //$("#PanelFull0").hide();
+            $("#RGTarefasAcumuladasGrafico").empty();
+            enviar["level1Name"] = removeFtaDaLabel(indicador);
+            console.log(enviar);
+            EasyAjax(urlGraficoTarefasAcumuladas, enviar, GraficoTarefasAcumuladas, "RGTarefasAcumuladasGrafico");
         };
 
         function GetTarefa(monitoramento){
@@ -616,6 +636,60 @@
                     Chart.ProcNc(porc, GetTarefa, null, "", nome),
                     Chart.NC(nc, GetTarefa, null, null, null, "", nome),
                     Chart.Av(qtdAv, GetTarefa, null, null, null, "", nome),
+                    Chart.curvaPareto(data, nc, 1, inverse)
+                ]
+            })
+
+
+        }
+
+        function GraficoTarefasAcumuladas(data) {
+
+            var nc = MapeiaValorParaHC(data, "Nc")
+            var nome = MapeiaValorParaHC(data, "TarefaName")
+            //var qtdAv = MapeiaValorParaHC(data, "Av")
+            //var porc = MapeiaValorParaHC(data, "Proc")
+            var selector = "RGTarefasAcumuladasGrafico";
+            var sentido = 'desc';
+            var inverse = sentido == 'desc' ? undefined : 1;
+            //enviar["level2names"] = nome
+            enviar.isLevel = 2;
+
+            subtitle = Resources('unit') + ": " + enviar["unitName"];
+
+            if (pathDirect == 1)
+                subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
+
+            subtitle += " | " + Resources('level1') + ": " + enviar["level1Name"];
+
+            if (enviar["shift"] != "" && enviar["shift"] != undefined)
+                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(GraficoTarefasAcumuladasTit),
+                subtitle: {
+                    text: subtitle
+                },
+                xAxis: Chart.Xaxis(nome),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(porc, GetTarefa, null, "", nome),
+                    Chart.NC(nc, null, null, null, null, "", nome),
+                    //Chart.Av(qtdAv, GetTarefa, null, null, null, "", nome),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             })
@@ -1161,6 +1235,12 @@
             GetMonitoramento(Aux);
         });
 
+        $('#btnTarefasAcumuladas').on('click', function () {
+            popoverMain.addClass('hide');
+            $('#RGOperacoesShiftGrafico').empty();
+            GetTarefasAcumuladas(Aux);
+        });
+
         $('#btnShift').on('click', function () {
             $("#PanelFull0").hide();
             if (desdobramento == "Indicador") {
@@ -1175,6 +1255,7 @@
         function hidePopoverItems() {
             $('#btnIndicador').hide();
             $('#btnMonitoramento').hide();
+            $('#btnTarefasAcumuladas').hide();
             $('#btnShift').hide();
             $('#btnDepartamento').hide();
         }
@@ -1191,6 +1272,7 @@
 
         function showPopover3() {
             $('#btnMonitoramento').show();
+            $('#btnTarefasAcumuladas').show();
             $('#btnShift').show();
         }
 

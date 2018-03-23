@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,6 +17,47 @@ namespace SgqSystem.Controllers.Api
 {
     public class BaseApiController : ApiController
     {
+        /// <summary>
+        /// Retorna Objeto Dinamico com dados da query no formato da Datatable.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected dynamic QueryNinjaDataTable(DbContext db, string query)
+        {
+            db.Database.Connection.Open();
+            var cmd = db.Database.Connection.CreateCommand();
+            cmd.CommandText = query;
+            cmd.CommandTimeout = 9600;
+            var reader = cmd.ExecuteReader();
+            List<JObject> datas = new List<JObject>();
+            List<JObject> columns = new List<JObject>();
+            dynamic retorno = new ExpandoObject();
+
+            while (reader.Read())
+            {
+                var row = new JObject();
+                for (int i = 0; i < reader.FieldCount; i++)
+                    row[reader.GetName(i)] = reader[i].ToString();
+
+                datas.Add(row);
+            }
+
+
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                var col = new JObject();
+                col["title"] = col["data"] = reader.GetName(i);
+                columns.Add(col);
+            }
+
+            retorno.datas = datas;
+            retorno.columns = columns;
+
+            return retorno;
+        }
+
+
         /// <summary>
         /// Retorna Objeto Dinamico com dados da query.
         /// </summary>

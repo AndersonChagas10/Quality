@@ -146,9 +146,12 @@ namespace SgqSystem.Controllers.Api.App
                 if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
                 {
                         
-                    retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value.Html;
+                    //retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value.Html;
 
-                    if(retorno.ParteDaTela != null )
+                    var htmlAux = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId);
+                    retorno.ParteDaTela = htmlAux.Value?.Html;
+
+                    if (retorno.ParteDaTela != null )
                     return retorno;
                 }
             }

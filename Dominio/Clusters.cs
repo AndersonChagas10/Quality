@@ -14,6 +14,12 @@ namespace Dominio
     
     public partial class Clusters
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Clusters()
+        {
+            this.Unidades = new HashSet<Unidades>();
+        }
+    
         public int Id { get; set; }
         public int Sigla { get; set; }
         public string Legenda { get; set; }
@@ -21,5 +27,8 @@ namespace Dominio
         public System.DateTime DataInsercao { get; set; }
         public Nullable<int> UsuarioAlteracao { get; set; }
         public Nullable<System.DateTime> DataAlteracao { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Unidades> Unidades { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
@@ -80,7 +81,13 @@ namespace SgqSystem.Controllers.Api
                 sql += " \n and CorrectiveAction.AuditorId = " + model.auditorId + "";
             }
 
-            var dados = db.Database.SqlQuery<CorrectiveActionDTO>(sql).ToList();
+            var dados = new List<CorrectiveActionDTO>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                dados = factory.SearchQuery<CorrectiveActionDTO>(sql).ToList();
+            }
+
+            
 
             //var list = new List<CorrectiveAction>();
 

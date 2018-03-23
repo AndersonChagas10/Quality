@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
@@ -59,7 +60,7 @@ namespace SgqSystem.Controllers.Api
                     int id = linha.GetValue("Id").Value<int>();
                     int horaVerificacao = 2;
 
-                    var queryRecravacaoJson = string.Format("SELECT * FROM RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1} AND ParLevel1_Id = {2} AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC",id, companyId, level1Id);
+                    var queryRecravacaoJson = string.Format("SELECT * FROM RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1} AND ParLevel1_Id = {2} AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC", id, companyId, level1Id);
                     var recravacoes = QueryNinja(db, queryRecravacaoJson);
 
                     int? recravacaoId = recravacoes.FirstOrDefault()?.GetValue("Id").Value<int>();
@@ -84,7 +85,7 @@ namespace SgqSystem.Controllers.Api
                                 DateTime _dataRetirada;
                                 DateTime.TryParse(dataRetirada, out _dataRetirada);
 
-                                if(ValidDate(_dataRetirada))
+                                if (ValidDate(_dataRetirada))
                                     ultimaLataRetirada = ultimaLataRetirada == null
                                         ? _dataRetirada : (_dataRetirada > ultimaLataRetirada ? _dataRetirada : ultimaLataRetirada);
                             }
@@ -126,7 +127,14 @@ namespace SgqSystem.Controllers.Api
             var id = linha["Id"].ToString();
             var parlevel2_Id = linha["ParLevel2_Id"].ToString();
             var parcompany = linha["ParCompany_Id"].ToString();
-            var level1Ids = string.Join(",", db.Database.SqlQuery<ParLevel1DTO>("SELECT Id, Name From Parlevel1 WHERE IsRecravacao = 1").ToList().Select(r => r.Id).ToList());
+
+            List<int> listParLevel1DTO = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                listParLevel1DTO = factory.SearchQuery<ParLevel1DTO>("SELECT Id, Name From Parlevel1 WHERE IsRecravacao = 1").ToList().Select(r => r.Id).ToList();
+            }
+
+            var level1Ids = string.Join(",", listParLevel1DTO);
             var queryLinhaPorCompanyELevel2 = string.Format(" SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0} AND ParLevel2_Id is not null AND Id  = {1}", parcompany, id);
             var queryTipoLataPorparRecravacao_TypeLata_Id = "SELECT * FROM ParRecravacao_TipoLata WHERE Id = {0} AND IsActive = 1";
             var results = QueryNinja(db, queryLinhaPorCompanyELevel2).ToList();
@@ -150,12 +158,12 @@ namespace SgqSystem.Controllers.Api
                 InsereParLevel3OuterValueNaLata(parcompany, listaLevel3, hasVinculoLevel21TodasUnidade, hasVinculoLevel32TodasUnidade, hasVinculoLevel321TodasUnidade);
 
                 DateTime? ultimaLataRetirada = null;
-                
+
                 int horaVerificacao = 2;
 
                 int? recravacaoId = recravacoes.FirstOrDefault()?.GetValue("Id").Value<int>();
-                
-                if(recravacaoId != null)
+
+                if (recravacaoId != null)
                 {
                     horaVerificacao = JObject.Parse(recravacoes.FirstOrDefault().GetValue("ObjectRecravacaoJson").ToString()).GetValue("HoraVerificacao") == null ? 2 :
                             JObject.Parse(recravacoes.FirstOrDefault().GetValue("ObjectRecravacaoJson").ToString()).GetValue("HoraVerificacao").Value<int>();
@@ -163,7 +171,7 @@ namespace SgqSystem.Controllers.Api
                     var queryRecravacaoLataJson = string.Format("SELECT ObjectRecravacaoJson FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0}", recravacaoId);
                     var recravacaoLatas = QueryNinja(db, queryRecravacaoLataJson);
 
-                    foreach(var lata in recravacaoLatas)
+                    foreach (var lata in recravacaoLatas)
                     {
                         dynamic objectRecravacaoJson = String.IsNullOrEmpty((lata)?.GetValue("ObjectRecravacaoJson")?.ToString()) ? null :
                                 (lata).GetValue("ObjectRecravacaoJson").Value<dynamic>();
@@ -212,7 +220,7 @@ namespace SgqSystem.Controllers.Api
 
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de linhas concluída", model = results });
         }
-        
+
         #region Aux Private
 
         private void GetParLevel3VinculadosLata(string parcompany, List<ParLevel3DTO> listaLevel3, JObject vinculoLevel32)
@@ -230,7 +238,12 @@ namespace SgqSystem.Controllers.Api
             level3Dto.AllowNA = AllowNA;
 
             level3Dto.IsPointLess = pointLess;
-            var valueCampoCalcOutro = db.Database.SqlQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
+
+            List<ParLevel3Value_OuterListDTO> valueCampoCalcOutro = null;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
+            }
 
             level3Dto.ParLevel3Value_OuterList = valueCampoCalcOutro;
             level3Dto.ParLevel3Value_OuterListGrouped = valueCampoCalcOutro.GroupBy(r => r.ParCompany_Id);
@@ -243,7 +256,7 @@ namespace SgqSystem.Controllers.Api
                     level3Dto.ParLevel3Value.FirstOrDefault(r => r.Id == bin.Id).ParLevel3BoolFalse = Mapper.Map<ParLevel3BoolFalseDTO>(bin.ParLevel3BoolFalse);
             }
             listaLevel3.Add(level3Dto);
-        } 
+        }
 
         private void InsereParLevel3ValueNaLata(string parcompany, List<ParLevel3DTO> listaLevel3, List<JObject> hasVinculoLevel21, List<JObject> hasVinculoLevel32, List<JObject> hasVinculoLevel321)
         {
