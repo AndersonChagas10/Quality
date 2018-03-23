@@ -621,6 +621,50 @@
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+
+        $(document).ready(function () {
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+
+            //Função para paleativo de numerico e decimal permitindo apenas . ao inves de ,
+            $('.number_decimal').keypress(function(event) {
+                var $this = $(this);
+                // this next line...
+                if ((event.which != 44 || $this.val().indexOf(',') != -1) &&
+                   ((event.which < 48 || event.which > 57) &&
+                   (event.which != 0 && event.which != 8))) {
+                    event.preventDefault();
+                }
+
+                var text = $(this).val().replace('.',',');
+                // this next line...
+                if ((event.which == 44) && (text.indexOf(',') == -1)) {
+                    setTimeout(function() {
+                        if ($this.val().substring($this.val().indexOf(',')).length > 3) {
+                            $this.val($this.val().substring(0, $this.val().indexOf(',') + 3));
+                        }
+                    }, 1);
+                }
+
+                if ((text.indexOf(',') != -1) &&
+                    (text.substring(text.indexOf(',')).length > 2) &&
+                    (event.which != 0 && event.which != 8) &&
+                    ($(this)[0].selectionStart >= text.length - 2)) {
+                    event.preventDefault();
+                }
+
+                $(this).val(text.replace(',','.'));
+            });
+
+            $('.number_decimal').keypress();
+        });
     </script>
 
 
