@@ -542,17 +542,10 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="SgqBrasilEfContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SgqBrasilEfContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <Compile Include="Period.cs">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Period.Designer.cs</LastGenOutput>
     </Compile>
-    <None Include="SgqBrasilEfContext.edmx.diagram">
-      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
-    </None>
     <EntityDeploy Include="SgqEfContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SgqEfContext.Designer.cs</LastGenOutput>
