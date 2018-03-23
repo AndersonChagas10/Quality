@@ -408,7 +408,7 @@
 <div class="container-fluid">
     <div class="row" style="width:100% !important">
         <div class="col-md-12" style="margin-left:10px;">
-            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
+            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal" disabled> Novo Planejamento Estratégico</button>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
 
@@ -1227,6 +1227,10 @@
             $('#campo1Filtro').css('width', '200px');
             $('#valor1Filtro').css('width', '200px');
 
+            if (IsAdmin) {
+                $('#NovoPlanejamento').prop("disabled", false);
+            }
+
         });
 
         var selectPredecessor;
@@ -1243,6 +1247,8 @@
         /**/
         var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
         /**/
+
+        var IsAdmin = getRole("Admin").length > 0;
 
         var counter = 0;
         var planejamentoCorrentId = 0;
@@ -2434,10 +2440,11 @@
                     }
                 });
 
-                if (model.Acao && model.Acao.Id > 0)
-                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button>");
                 $('#modalLindo').find('.modal-body .content2').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+                if (model.Acao && model.Acao.Id > 0)
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vínculo Tático</button>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+
                 myfunction();
 
             } else {
@@ -2472,11 +2479,19 @@
                         $(c).attr('onclick', after)
                     }
                 })
-                
+
+
+                if (IsAdmin) {
+                    $('#modalLindo').find('.modal-body .content1').append(form);
+                }
+
                 if (model.Tatico_Id > 0)
-                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vinculo Estratégico</button>");
-                $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vínculo Estratégico</button>");
+
+                if (IsAdmin) {
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                }
+
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
                 //}
@@ -2632,8 +2647,10 @@
         function getPlanOp(data, a, b) {
 
             $.get(urlEditPlanOp, { id: data.Id }, function (r) {
+
                 TesteRenan(r, 'Estrategico', data);
                 $('#modalNovo > div > div > div.modal-footer > button').show();
+
                 if (data.Estrategico_Id > 0) {
                     getPlanEstrat(data, a, b);
                 }
@@ -3247,7 +3264,7 @@
                                 //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
                                 $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
                                     //alert("Atualizou o rolê!");
-                                    openMessageModal("Vinculo atualizado!");
+                                    openMessageModal("Vínculo atualizado!");
                                     location.reload();
                                 });
                             }
