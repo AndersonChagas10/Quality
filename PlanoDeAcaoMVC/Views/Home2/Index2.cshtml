@@ -1892,12 +1892,19 @@
 
                 $(inputValorDe).maskMoney('destroy');
                 //$(inputValorDe).get(0).type = 'number';
-                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+
+                if (valorDe != "" && valorDe != NaN)
+                    $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorDe).val(valorDe);
+
 
                 $(inputValorPara).maskMoney('destroy');
                 //$(inputValorPara).get(0).type = 'number';
-                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
-
+                if (valorPara != "" && valorPara != NaN)
+                    $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorPara).val(valorPara);
 
                 $(inputValorDe).on("keypress", function (event) {
 
@@ -1905,10 +1912,14 @@
 
                         var $this = $(this);
 
-                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
-                            ((event.which < 48 || event.which > 57) &&
-                                (event.which != 0 && event.which != 8))) {
-                            event.preventDefault();
+                        if (event.which == 46 || event.which == 44) {//Caso for ponto ou virgula
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {//se já existir um ponto ou uma virgula
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {//se não for numero
+                                    event.preventDefault();
+                            }
                         }
                     }
                 });
@@ -1919,10 +1930,14 @@
 
                         var $this = $(this);
 
-                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
-                            ((event.which < 48 || event.which > 57) &&
-                                (event.which != 0 && event.which != 8))) {
-                            event.preventDefault();
+                        if (event.which == 46 || event.which == 44) {
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {
+                                event.preventDefault();
+                            }
                         }
                     }
                 });
@@ -2652,7 +2667,7 @@
 
                 var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
 
-                manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');           
+                manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
 
                 //if (Iniciativa_Id <= 0) {
                 //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", true);
@@ -2686,7 +2701,7 @@
                 //} else {
                 //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
                 //}
-                
+
                 $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                     $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
