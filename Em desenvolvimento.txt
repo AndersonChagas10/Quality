@@ -218,7 +218,7 @@ IF COL_LENGTH('ParGoal','EffectiveDate') IS NULL
     EXEC ('update ParGoal set EffectiveDate = 2000-01-01')
     END
 
--------------------------------------------------------------------- 19 02 2017 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
+-------------------------------------------------------------------- 19 02 2018 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
 
 IF COL_LENGTH('Deviation','EmailContent_Id') IS NULL
     BEGIN
@@ -236,9 +236,64 @@ IF COL_LENGTH('CorrectiveAction','EmailContent_Id') IS NULL
     EXEC ('update CorrectiveAction set EmailContent_Id = null')
     END
 ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+    END
 
 ------------------------------------------------------------------ 20/03/2018 - PA Renan
 
 ALTER table Pa_Acao add UnidadeDeMedida_Id int
 
 insert into Pa_UnidadeMedida (AddDate,Name) VALUES (GETDATE(), 'Absoluto');
+
+-------------------------------------------------------------------- 18 03 2018 - LEO (Modulo X Processos)
+
+/****** Object:  Table [dbo].[ParCluster]    Script Date: 12/03/2018 10:34:32 ******/
+SET ANSI_NULLS ON
+
+SET QUOTED_IDENTIFIER ON
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParModule' AND xtype='U')
+	CREATE TABLE [dbo].[ParModule](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[Name] [nvarchar](155) NOT NULL,
+		[Description] [nvarchar](max) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NOT NULL,
+	 CONSTRAINT [PK__ParModule] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+	
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParClusterXModule' AND xtype='U')
+	CREATE TABLE [dbo].[ParClusterXModule](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[ParCluster_Id] [int] NOT NULL,
+		[ParModule_Id] [int] NOT NULL,
+		[Points] [decimal](10, 5) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NOT NULL,
+		[EffectiveDate] [datetime] NULL,
+	 CONSTRAINT [PK_ParClusterModule] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+ALTER TABLE [dbo].[ParClusterXModule] ADD  CONSTRAINT [DF__ParCluste__EffectiveDate]  DEFAULT ('2015-01-01 00:00:00:0000') FOR [EffectiveDate]
+
+ALTER TABLE [dbo].[ParClusterXModule]  WITH CHECK ADD  CONSTRAINT [FK_ParClusterXModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+REFERENCES [dbo].[ParCluster] ([Id])
+
+ALTER TABLE [dbo].[ParClusterXModule] CHECK CONSTRAINT [FK_ParClusterXModule_ParCluster]
+
+ALTER TABLE [dbo].[ParClusterXModule]  WITH CHECK ADD  CONSTRAINT [FK_ParClusterXModule_ParModule] FOREIGN KEY([ParModule_Id])
+REFERENCES [dbo].[ParModule] ([Id])
+
+ALTER TABLE [dbo].[ParClusterXModule] CHECK CONSTRAINT [FK_ParClusterXModule_ParModule]
+
+-------------------------------------------------------------------- 21 03 2018 - LEO (Adicionado Primary Key na ParLevel2XHeaderField)
+
+ALTER TABLE ParLevel2XHeaderField
+ADD CONSTRAINT PK_ParLevel2XHeaderField PRIMARY KEY (Id);
