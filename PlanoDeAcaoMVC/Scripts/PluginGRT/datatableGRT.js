@@ -8,6 +8,9 @@
         "search": 'Buscar',
         "lengthMenu": "_MENU_",
         "zeroRecords": 'Sem dados',
+        "info": "Página _PAGE_ de _PAGES_",
+        "infoEmpty": "Sem registros",
+        "infoFiltered": "(Filtrado de _MAX_ registros)",
         "paginate": {
             "previous": 'Anterior',
             "next": 'Proximo',
@@ -50,7 +53,7 @@
         }
 
         $('#' + config.idTabela).empty()
-        return $('#' + config.idTabela).DataTable({
+        var table = $('#' + config.idTabela).DataTable({
             data: this.listaDeDados,
             "columnDefs": this.definicaoColuna,
             columns: this.colunaDosDados,
@@ -91,6 +94,7 @@
                     }
                 }
             },
+            createdRow: this.createdRow,
             "drawCallback": function (settings) {
 
                 var tfoot = "<tfoot><tr class='search-input-tfoot-tr'>";
@@ -139,5 +143,6 @@
         });
 
         table.draw();
+        return table;
     }
 };
