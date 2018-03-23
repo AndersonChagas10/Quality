@@ -12,6 +12,7 @@ var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy 
 var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
 var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
 var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
+var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
 var dados = [];
 var dadosfilter = [];
 var dadosPie2 = [];
@@ -181,7 +182,11 @@ function MountDataTable(json) {
                     var html = "";
 
                     if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
-                        html += "<br>" + btnEditarPlanejamento
+                        if (!IsAdmin && !parseInt(data.Tatico_Id) && !parseInt(data.Tatico_Id) > 0) {
+                            html += "<br>" + btnEditarPlanejamentoDisabled;
+                        } else {
+                            html += "<br>" + btnEditarPlanejamento;
+                        }                      
                     }
 
                     if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
@@ -196,8 +201,6 @@ function MountDataTable(json) {
                     return html;
                 }
             }
-
-
         ],
         'aoColumnDefs': [
             { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
