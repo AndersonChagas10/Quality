@@ -1099,14 +1099,14 @@
 
                         $scope.counter = vm.duration._milliseconds //Math.floor((new Date - vm.startTime) / 1000);
                         $scope.countdown = $scope.myTotal - $scope.counter;
-                        $scope.tempoEntreColetaDeLatasExpirado = $scope.countdown < 0
+                        $scope.tempoEntreColetaDeLatasExpirado = $scope.countdown < 0;
                         if (vm.linhaSelecionada.isValidated == undefined || vm.linhaSelecionada.isValidated == false) {
                             if ($scope.tempoEntreColetaDeLatasExpirado) {
                                 if (!$scope.modalObsAberto) {
                                     $('#modalParadaDeLinha').modal()
                                     $scope.modalObsAberto = true
 
-                                    if (vm.linhaSelecionada.ObservacoesList == undefined || vm.linhaSelecionada.ObservacoesList == [])
+                                    if (vm.linhaSelecionada.ObservacoesList == undefined || vm.linhaSelecionada.ObservacoesList == [] || vm.linhaSelecionada.ObservacoesList.length <= 0)
                                         vm.linhaSelecionada.ObservacoesList = [{
                                             adDate: vm.Date,
                                             LataComAtraso : true,
@@ -1447,6 +1447,8 @@
                                     $('.select2[multiple]').val(0).trigger("change")
                                     $('#HoraVerificacao').val(2).trigger('change');
                                 }, 100)
+                                $scope.modalObsAberto = false;
+                                $scope.tempoEntreColetaDeLatasExpirado = false;
                             }
                         });
 
