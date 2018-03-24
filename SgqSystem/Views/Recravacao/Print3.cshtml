@@ -424,15 +424,15 @@
                     </colgroup>
                     <tr>
                         <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /> </th>
-                        <th class="tg-s6z2" rowspan="1">Titulo</th>
+                        <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}}</strong> - {{seletedLinha.Name}} ({{seletedLinha.Description}})</th>
                         <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
                     </tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
                     </tr>
                 </table>
             </div>
@@ -1284,6 +1284,8 @@
 
                                 vm.seletedLinha['ParLevel3Interval'] = parLevel3;
 
+                                debugger
+
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
                                 setTimeout(function () {
@@ -1300,7 +1302,7 @@
                                             pageMarginBody: "0 25 0 25"
                                         }
                                     );
-                                    jsPOH.Imprimir();
+                                    //jsPOH.Imprimir();
                                 }, 1000)
                             }
                         });
