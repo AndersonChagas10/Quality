@@ -1842,7 +1842,7 @@
                             let id = `#${o.OuterLevel3_Text}${indexMaisUm}`.replace(/ /g, '').replace('.', '')
                             let valor = parseFloat($(id).val())
                             if (isNaN(parseFloat(valor))) {
-                                if (!!vm.lataSelecionada.ResultValue)
+                                if (!!vm.lataSelecionada.ResultValue && !!vm.lataSelecionada.ResultValue[parlevel3Name])
                                     vm.lataSelecionada.ResultValue[parlevel3Name][(indexMaisUm)] = ""
                                 return ""
                             }
