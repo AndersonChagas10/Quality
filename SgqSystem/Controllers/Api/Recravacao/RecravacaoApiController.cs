@@ -78,25 +78,30 @@ namespace SgqSystem.Controllers.Api
                 var existente = db.RecravacaoJson.FirstOrDefault(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)?.Id;
 
                 int RecravacaoJsonId = 0;
-                
-                if(IsPropertyExist(linha, "isValidated"))
+
+                int? userFinished_Id = Convert.ToInt32(linha["UserFinished_Id"]?.ToString());
+                if (userFinished_Id == 0) userFinished_Id = null;
+                int? userValidated_Id = Convert.ToInt32(linha["UserValidated_Id"]?.ToString());
+                if (userValidated_Id == 0) userValidated_Id = null;
+
+                if (IsPropertyExist(linha, "isValidated"))
                     isValidated = linha["isValidated"];
 
                 if (IsPropertyExist(linha, "SalvoParaInserirColeta"))
                     salvoParaInserirNovaColeta = linha["SalvoParaInserirColeta"];
 
                 if (existente.GetValueOrDefault() > 0 && salvoParaInserirNovaColeta == false)
-                    RecravacaoJsonId = Update(linhaStringFormatada, existente);
+                    RecravacaoJsonId = Update(linhaStringFormatada, existente, userFinished_Id, userValidated_Id);
                 else
                 {
                     if (existente.GetValueOrDefault() > 0  && salvoParaInserirNovaColeta == true)
                         RecravacaoJsonId = UpdateRecravacaoJsonParaNovaColeta(linhaStringFormatada, existente.GetValueOrDefault());
                     else
-                        RecravacaoJsonId = Save(linhaStringFormatada, idLinha, idCompany, parLevel1_Id);
+                        RecravacaoJsonId = Save(linhaStringFormatada, idLinha, idCompany, parLevel1_Id, userFinished_Id, userValidated_Id);
                 }
 
                 if (isValidated)
-                    RecravacaoJsonId = UpdateRecravacaoJsonFinalizaColetaValidada(linhaStringFormatada, existente.GetValueOrDefault());
+                    RecravacaoJsonId = UpdateRecravacaoJsonFinalizaColetaValidada(linhaStringFormatada, existente.GetValueOrDefault(), userFinished_Id, userValidated_Id);
                 //Post Save
                 mensagemSucesso = "Registro atualizado";
 
@@ -116,11 +121,13 @@ namespace SgqSystem.Controllers.Api
 
         }
         
-        private int UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente)
+        private int UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente, int? userFinished_Id, int? userValidated_Id)
         {
             var updateRecravacaoJsonFinalizaColetaValidada = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
             updateRecravacaoJsonFinalizaColetaValidada.ObjectRecravacaoJson = linhaStringFormatada;
             updateRecravacaoJsonFinalizaColetaValidada.AlterDate = DateTime.Now;
+            //updateRecravacaoJsonFinalizaColetaValidada.UserFinished_Id = userFinished_Id;
+            //updateRecravacaoJsonFinalizaColetaValidada.UserValidated_Id = userValidated_Id;
             updateRecravacaoJsonFinalizaColetaValidada.isValidated = true;
             return repo.Save(updateRecravacaoJsonFinalizaColetaValidada).Id;
         }
@@ -129,18 +136,22 @@ namespace SgqSystem.Controllers.Api
         {
             var updateRecravacaoJsonNovaColeta = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
             updateRecravacaoJsonNovaColeta.ObjectRecravacaoJson = linhaStringFormatada;
+            //updateRecravacaoJsonNovaColeta.UserFinished_Id = null;
+            //updateRecravacaoJsonNovaColeta.UserValidated_Id = null;
             updateRecravacaoJsonNovaColeta.AlterDate = DateTime.Now;
             updateRecravacaoJsonNovaColeta.SalvoParaInserirNovaColeta = existente;
             return repo.Save(updateRecravacaoJsonNovaColeta).Id;
         }
 
-        private int Save(string linhaStringFormatada, int idLinha, int idCompany, int parLevel1_Id)
+        private int Save(string linhaStringFormatada, int idLinha, int idCompany, int parLevel1_Id, int? userFinished_Id, int? userValidated_Id)
         {
             var newRecravacaoColeta = new RecravacaoJson()
             {
                 AddDate = DateTime.Now,
                 IsActive = true,
                 UserSgqId = 1,
+                //UserFinished_Id = userFinished_Id,
+                //UserValidated_Id = userValidated_Id,
                 ParCompany_Id = idCompany,
                 Linha_Id = idLinha,
                 ParLevel1_Id = parLevel1_Id,
@@ -149,10 +160,12 @@ namespace SgqSystem.Controllers.Api
             return repo.Save(newRecravacaoColeta).Id;
         }
 
-        private int Update(string linhaStringFormatada, int? existente)
+        private int Update(string linhaStringFormatada, int? existente, int? userFinished_Id, int? userValidated_Id)
         {
             var updateRecravacaoJson = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
             updateRecravacaoJson.ObjectRecravacaoJson = linhaStringFormatada;
+            //updateRecravacaoJson.UserFinished_Id = userFinished_Id;
+           // updateRecravacaoJson.UserValidated_Id = userValidated_Id;
             updateRecravacaoJson.AlterDate = DateTime.Now;
             return repo.Save(updateRecravacaoJson).Id;
         }
