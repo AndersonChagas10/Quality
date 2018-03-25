@@ -30,6 +30,7 @@ namespace Dominio
         public Nullable<int> ParLevel1_Id { get; set; }
         public Nullable<int> ParLevel2_Id { get; set; }
     
+        public virtual ParLevel3 ParLevel3 { get; set; }
         public virtual ParLevel3BoolFalse ParLevel3BoolFalse { get; set; }
         public virtual ParLevel3BoolTrue ParLevel3BoolTrue { get; set; }
         public virtual ParLevel3InputType ParLevel3InputType { get; set; }
@@ -37,6 +38,5 @@ namespace Dominio
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }
-        public virtual ParLevel3 ParLevel3 { get; set; }
     }
 }

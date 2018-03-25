@@ -26,5 +26,7 @@ namespace Dominio
         public Nullable<System.DateTime> ValidateLockDate { get; set; }
         public Nullable<int> ParLevel1_Id { get; set; }
         public Nullable<int> SalvoParaInserirNovaColeta { get; set; }
+        public Nullable<int> UserFinished_Id { get; set; }
+        public Nullable<int> UserValidated_Id { get; set; }
     }
 }

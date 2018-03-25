@@ -330,6 +330,9 @@
     <Compile Include="Perfil.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Period.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Produtos.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -384,15 +387,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Period.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Period.cs</DependentUpon>
-    </Compile>
     <Compile Include="SgqEfContext.Designer.cs">
-      <DependentUpon>SgqEfContext.edmx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>SgqEfContext.edmx</DependentUpon>
     </Compile>
     <Compile Include="Shift.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -518,16 +516,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
-      <Project>{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}</Project>
+      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
       <Name>ADOFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
@@ -542,16 +537,12 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <Compile Include="Period.cs">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Period.Designer.cs</LastGenOutput>
-    </Compile>
     <EntityDeploy Include="SgqEfContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SgqEfContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="SgqEfContext.edmx.diagram">
-      <DependentUpon>Period.cs</DependentUpon>
+      <DependentUpon>SgqEfContext.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -560,12 +551,12 @@
   <ItemGroup>
     <Content Include="SgqEfContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Period.cs</DependentUpon>
+      <DependentUpon>SgqEfContext.edmx</DependentUpon>
       <LastGenOutput>SgqEfContext.Context.cs</LastGenOutput>
     </Content>
     <Content Include="SgqEfContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Period.cs</DependentUpon>
+      <DependentUpon>SgqEfContext.edmx</DependentUpon>
       <LastGenOutput>SgqEfContext.cs</LastGenOutput>
     </Content>
   </ItemGroup>

@@ -126,8 +126,8 @@ namespace SgqSystem.Controllers.Api
             var updateRecravacaoJsonFinalizaColetaValidada = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
             updateRecravacaoJsonFinalizaColetaValidada.ObjectRecravacaoJson = linhaStringFormatada;
             updateRecravacaoJsonFinalizaColetaValidada.AlterDate = DateTime.Now;
-            //updateRecravacaoJsonFinalizaColetaValidada.UserFinished_Id = userFinished_Id;
-            //updateRecravacaoJsonFinalizaColetaValidada.UserValidated_Id = userValidated_Id;
+            updateRecravacaoJsonFinalizaColetaValidada.UserFinished_Id = userFinished_Id;
+            updateRecravacaoJsonFinalizaColetaValidada.UserValidated_Id = userValidated_Id;
             updateRecravacaoJsonFinalizaColetaValidada.isValidated = true;
             return repo.Save(updateRecravacaoJsonFinalizaColetaValidada).Id;
         }
@@ -136,8 +136,8 @@ namespace SgqSystem.Controllers.Api
         {
             var updateRecravacaoJsonNovaColeta = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
             updateRecravacaoJsonNovaColeta.ObjectRecravacaoJson = linhaStringFormatada;
-            //updateRecravacaoJsonNovaColeta.UserFinished_Id = null;
-            //updateRecravacaoJsonNovaColeta.UserValidated_Id = null;
+            updateRecravacaoJsonNovaColeta.UserFinished_Id = null;
+            updateRecravacaoJsonNovaColeta.UserValidated_Id = null;
             updateRecravacaoJsonNovaColeta.AlterDate = DateTime.Now;
             updateRecravacaoJsonNovaColeta.SalvoParaInserirNovaColeta = existente;
             return repo.Save(updateRecravacaoJsonNovaColeta).Id;
@@ -150,8 +150,8 @@ namespace SgqSystem.Controllers.Api
                 AddDate = DateTime.Now,
                 IsActive = true,
                 UserSgqId = 1,
-                //UserFinished_Id = userFinished_Id,
-                //UserValidated_Id = userValidated_Id,
+                UserFinished_Id = userFinished_Id,
+                UserValidated_Id = userValidated_Id,
                 ParCompany_Id = idCompany,
                 Linha_Id = idLinha,
                 ParLevel1_Id = parLevel1_Id,
@@ -164,8 +164,8 @@ namespace SgqSystem.Controllers.Api
         {
             var updateRecravacaoJson = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
             updateRecravacaoJson.ObjectRecravacaoJson = linhaStringFormatada;
-            //updateRecravacaoJson.UserFinished_Id = userFinished_Id;
-           // updateRecravacaoJson.UserValidated_Id = userValidated_Id;
+            updateRecravacaoJson.UserFinished_Id = userFinished_Id;
+            updateRecravacaoJson.UserValidated_Id = userValidated_Id;
             updateRecravacaoJson.AlterDate = DateTime.Now;
             return repo.Save(updateRecravacaoJson).Id;
         }

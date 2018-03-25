@@ -34,9 +34,9 @@ namespace Dominio
             this.Configuration.LazyLoadingEnabled = NoLazyLoading;
             this.Database.CommandTimeout = 9600;
             this.Database.Log = s => System.Diagnostics.Debug.Write(s);
-    
+
         }
-    
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -76,6 +76,7 @@ namespace Dominio
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
+        public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLevel3BoolFalse> ParLevel3BoolFalse { get; set; }
         public virtual DbSet<ParLevel3BoolTrue> ParLevel3BoolTrue { get; set; }
         public virtual DbSet<ParLevel3Group> ParLevel3Group { get; set; }
@@ -130,11 +131,6 @@ namespace Dominio
         public virtual DbSet<Result_Level3_Photos> Result_Level3_Photos { get; set; }
         public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
         public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
-        public virtual DbSet<ParLevel3Value_Outer> ParLevel3Value_Outer { get; set; }
-        public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
-        public virtual DbSet<ParLataImagens> ParLataImagens { get; set; }
-        public virtual DbSet<RecravacaoJson> RecravacaoJson { get; set; }
-
         public virtual DbSet<ParLevel3EvaluationSample> ParLevel3EvaluationSample { get; set; }
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
@@ -175,6 +171,9 @@ namespace Dominio
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParClusterXModule> ParClusterXModule { get; set; }
         public virtual DbSet<ParModule> ParModule { get; set; }
+        public virtual DbSet<RecravacaoJson> RecravacaoJson { get; set; }
+        public virtual DbSet<ParLataImagens> ParLataImagens { get; set; }
+        public virtual DbSet<ParLevel3Value_Outer> ParLevel3Value_Outer { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
