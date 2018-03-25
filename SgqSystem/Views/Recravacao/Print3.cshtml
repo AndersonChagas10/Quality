@@ -708,18 +708,18 @@
                         <tr>
                             <td>
                                 <small>
-                                    <b>Espaço Livre: </b>{{ seletedLinha.ParLevel3Interval['Espaço Livre'] }}<br>
-                                    <b>Escareação: </b>{{ seletedLinha.ParLevel3Interval['Escareação'] }}<br>
-                                    <b>Altura: </b>{{ seletedLinha.ParLevel3Interval['Altura'] }}<br>
-                                    <b>Gancho Corpo: </b>{{ seletedLinha.ParLevel3Interval['Gancho Corpo'] }}<br>
+                                    <b>Espaço Livre: </b>{{ seletedLinha.ParLevel3Interval['limite_Espaço Livre'] }}<br>
+                                    <b>Escareação: </b>{{ seletedLinha.ParLevel3Interval['limite_Escareação'] }}<br>
+                                    <b>Altura: </b>{{ seletedLinha.ParLevel3Interval['limite_Altura'] }}<br>
+                                    <b>Gancho Corpo: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Corpo'] }}<br>
                                 </small>
                             </td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td>
                                 <small>
-                                    <b>Gancho Tampa: </b>{{ seletedLinha.ParLevel3Interval['Gancho Tampa'] }}<br>
-                                    <b>Junção: </b>{{ seletedLinha.ParLevel3Interval['Gancho Tampa'] }}<br>
-                                    <b>Teste de ar: </b>Ausência (0% de Vazamento) <br>
+                                    <b>Gancho Tampa: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Tampa'] }}<br>
+                                    <b>Junção: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Tampa'] }}<br>
+                                    <b><i>Teste de ar: </b>Ausência (0% de Vazamento) </i><br>
                                     <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
                                 </small>
                             </td>
@@ -731,7 +731,7 @@
                                     x 100=% <br>
                                     <u>&nbsp;&nbsp; GC - 1.1 EC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>
                                     ALT - (2,2 ET + 1,1 EC)<br>
-                                    Valor Mínimo = 70%
+                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_% GC Butting'] }}{{ seletedLinha.ParLevel3Interval['unidade_% GC Butting'] }}
                                 </small>
                             </td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -742,7 +742,7 @@
                                     x 100 = % <br>
                                     <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp; </u><br>
                                     ALT - (2,2 ET + 1,1 EC) <br>
-                                    Valor Mínimo = 45%
+                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_% Overlap'] }}{{ seletedLinha.ParLevel3Interval['unidade_% Overlap'] }}
                                 </small>
                             </td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -750,7 +750,7 @@
                                 <small>
                                     <b>Overlap Calculado </b> </br>
                                     <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp;</u> <br>
-                                    Valor Mínimo = 1,02
+                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_Overlap'] }}{{ seletedLinha.ParLevel3Interval['unidade_Overlap'] }}
                                 </small>
                             </td>
                         </tr>
@@ -1004,7 +1004,7 @@
                                     toastr.success('Recuperada linha parametrizada \n da base de dados')
                                 vm.linhas[index] = r.data.model[0]
                                 vm.linhas[index]["latas"] = []
-                                debugger
+
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
                                 vm.saveState(undefined, undefined, novaLinha)
@@ -1022,7 +1022,7 @@
                     if (needFindIndex)
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
                     vm.seletedLinha = vm.linhas[index]
-                    debugger
+
                     if (vm.seletedLinha['StartAuditTime'])
                         vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
 
@@ -1053,7 +1053,6 @@
                     for (let i = 0; i < linha.NumberOfHeads; i++) {
                         if (linha["counterDeLatas"] == undefined)
                             linha["counterDeLatas"] = 1
-                        debugger
                         linha.latas.push({
                             Name: 'Lata - ' + (linha["counterDeLatas"]),
                             finalizado: false,
@@ -1229,7 +1228,6 @@
                                 else
                                     novaLinha.push(JSON.parse(JSON.stringify(o)))
 
-                                debugger
                                 vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
 
                                 vm.seletedLinha.latas = []
@@ -1256,7 +1254,6 @@
                                 let index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
                                 vm.linhas[index] = vm.seletedLinha
 
-                                debugger
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
 
@@ -1264,20 +1261,38 @@
                                 //Criação de lista de par level3 com intervalos minimo e maximo
                                 var parLevel3 = [];
                                 $.each(vm.seletedLinha.ListParlevel3, function(i,o){
+                                    var nameParLevel3 = o.Name;
+    
+                                    var item = {};
+                                    var intervalMin = 0;
+                                    var intervalMax = 0;
+                                    var measurementUnit = "";
+                                    var limitesParLevel3 = "";
+
                                     if(!!o.ParLevel3Value && o.ParLevel3Value.length > 0){
-                                        var objParlevel3 = o.ParLevel3Value[0];
-                                        var intervalMin = objParlevel3.IntervalMin.toFixed(2);
-                                        var intervalMax = objParlevel3.IntervalMax.toFixed(2);
-                                        var measurementUnit = ((objParlevel3.ParMeasurementUnit != null) ? objParlevel3.ParMeasurementUnit.Name : "");
-                                        var limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
-                                        var nameParLevel3 = o.Name;
-		
+                                        item = o.ParLevel3Value[0];
+                                        intervalMin = item.IntervalMin.toFixed(2);
+                                        intervalMax = item.IntervalMax.toFixed(2);
+                                        measurementUnit = ((item.ParMeasurementUnit != null) ? item.ParMeasurementUnit.Name : "");
+                                        limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
+                                    }else if(!!o.ParLevel3Value_OuterList && o.ParLevel3Value_OuterList.length > 0){
+                                        item = o.ParLevel3Value_OuterList[0];
+                                        intervalMin = item.LimInferior.toFixed(2);
+                                        intervalMax = item.LimSuperior.toFixed(2);
+                                        measurementUnit = ((item.UnidadeMedidaText != null) ? item.UnidadeMedidaText : "");
+                                        limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
+                                    }
+
+                                    if(item != {}){
                                         var exist = $.grep(parLevel3, function(ig,og){
                                             return og['Name'] == nameParLevel3;
                                         });
 		
                                         if(!(!!exist && exist.length > 0)){
-                                            parLevel3[nameParLevel3] = limitesParLevel3;
+                                            parLevel3['min_'+nameParLevel3] = intervalMin;
+                                            parLevel3['max_'+nameParLevel3] = intervalMax;
+                                            parLevel3['unidade_'+nameParLevel3] = measurementUnit;
+                                            parLevel3['limite_'+nameParLevel3] = limitesParLevel3;
                                         }
                                     }
                                 });
@@ -1302,7 +1317,7 @@
                                             pageMarginBody: "0 25 0 25"
                                         }
                                     );
-                                    //jsPOH.Imprimir();
+                                    jsPOH.Imprimir();
                                 }, 1000)
                             }
                         });
