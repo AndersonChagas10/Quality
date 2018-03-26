@@ -343,6 +343,7 @@ namespace SgqSystem.Services
 
             return binario;
         }
+
         public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
 
         {
@@ -366,8 +367,6 @@ namespace SgqSystem.Services
                                  "     </span>                                                                                                                                                                " +
                                  "</div>   ";
 
-
-
             //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
             //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
             //                     "</div> ";
@@ -388,6 +387,43 @@ namespace SgqSystem.Services
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "    <span class=\"input-group-btn btn-minus\"> </span>             " +
                                  "         <input type=\"text\" class=\"form-control text-center levelValue texto naoValidarInput\" style=\"width:100%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoTextoBinario(string id, string classe = null)
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "    <span class=\"input-group-btn btn-minus\"> </span>             " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoTextoMinutos(string id, string classe = null)
+        {
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "         <input type=\"time\" class=\"form-control text-center levelValue antes naoValidarInput\" style=\"width:50%;\">     " +
+                                 "         <input type=\"time\" class=\"form-control text-center levelValue depois naoValidarInput\" style=\"width:50%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null)
+        {
+            var idRandomico = "valor_range_"+new Random().Next(999999);
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "         <input type=\"range\" oninput=\"document.getElementById('" + idRandomico + "').innerHTML = this.value;\" min=\"" + Convert.ToInt32(min) + "\" max=\"" + Convert.ToInt32(max) + "\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:80%;\">     " +
+                                 "         <span id=\""+ idRandomico + "\" style=\"display: block; float:right; width: 20%; text-align:center;\"></span>     " +
                                  "</div>                                                    ";
             return texto;
         }
@@ -436,6 +472,18 @@ namespace SgqSystem.Services
                                  " <span class=\"valueDecimal \" style=\"text-weight: bold;\"></span>" +
                                  " </span> " +
                                  "</div>                                                                                                                                                                      ";
+            return calculado;
+        }
+
+        public string campoIntervaloMinuto(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+        {
+
+            string calculado = "<div class=\"input-group input-group-sm width180 pull-right " + classe + "\" style=\"width: 100% !important;\">   " +
+                                 "    <input type=\"text\" style=\"width:25px; padding: 0px;\" value=\"\" class=\"form-control text-center input01 \">     " +
+                                 " <span style=\"padding-left:2px;padding-right:2px; font-size:10px\"><b>x10^</b></span>" +
+                                 "    <input type=\"text\" style=\"width:25px; padding: 0px;\" value=\"\" class=\"form-control text-center input02 \">     " +
+                                 " </span> " +
+                                 "</div> ";
             return calculado;
         }
         //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,

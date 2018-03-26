@@ -2156,7 +2156,7 @@ namespace SgqSystem.Services
                         parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") : "";
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3_Name + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3_Name + "'," + weight + "," + intervalMin + "," + intervalMax + ", '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -5629,6 +5629,20 @@ namespace SgqSystem.Services
                                        );
 
                 input = html.campoTexto(id: parLevel3.Id.ToString());
+            }//Binário com texto
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                classInput = " boolean";
+                labels = html.campoTextoBinario(id: parLevel3.Id.ToString());
+                input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+            }//Intervalo em minutos
+            else if (parLevel3.ParLevel3InputType_Id == 7)
+            {
+                input = html.campoTextoMinutos(id: parLevel3.Id.ToString());
+            }//Escala Likert
+            else if (parLevel3.ParLevel3InputType_Id == 8)
+            {
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax);
             }
             else
             {
