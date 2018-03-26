@@ -763,6 +763,8 @@
 
     $('#selectTipoInput').change(function () {
         var tipoSelecionado = $("#selectTipoInput option:selected").val();
+        
+        $('.reencravacaoL3').hide();
 
         if (tipoSelecionado == "-1") {
 
@@ -882,6 +884,52 @@
             $('.ParIntervalos').find('td:nth-child(1)').addClass('hide');
         }
 
+        //Recravacao
+        if (tipoSelecionado == eTipoDado_Recravacao) {
+
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').hide();
+            $('#companyValueL3').hide();
+            $('.reencravacaoL3').fadeIn();
+
+            let vinculados = $('#parLevel3Select2 option:selected').closest('optgroup')[0].children
+            let companyesVinculadas = $('#tablePeso > tbody > tr > td:nth-child(1)')
+
+            $('#parlevel3Recravacao option').hide()
+            $(vinculados).each(function (c, o) {
+                let value = $(o).val()
+                $('#parlevel3Recravacao option[value="'+value+'"]').show()
+            })
+            $('#parlevel3Recravacao option[value="-1"]').show()
+
+            $('#empresaRecravacao option').hide()
+            companyesVinculadas.each(function(c,o){
+                if($(o).text() == 'Todas'){
+                }
+                else{
+                    $('#empresaRecravacao option').filter(function () { return $(this).html() == $(o).text() }).show()
+                }
+            })
+            $('#empresaRecravacao option[value="-1"]').show()
+            $('#empresaRecravacao').parents('td').hide()
+
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            //$('.reencravacaoL3').hide();
+            $('.ParIntervalos').fadeIn();
+            $('#companyValueL3 > td').hide()
+        }
 
         CorrigirLarguraColunas();
 
