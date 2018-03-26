@@ -68,6 +68,114 @@
                                             , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                     </tr>
                 </table>
+                <table class="table-erp">
+
+                    <tr class="row reencravacaoL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacao", @onchange = "getLevel3ReencravacaoInputCalcOutro($('#empresaRecravacao option:selected').val())" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(1)' class='btnCalc btn btn-sm'>
+                                1
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(2)' class='btnCalc btn btn-sm'>
+                                2
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(3)' class='btnCalc btn btn-sm'>
+                                3
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("+")' class='btnCalc btn btn-sm'>
+                                +
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("/")' class='btnCalc btn btn-sm'>
+                                /
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("undo")' class='btnCalc btn btn-sm'>
+                                <i class="fa fa-undo" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(4)' class='btnCalc btn btn-sm'>
+                                4
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(5)' class='btnCalc btn btn-sm'>
+                                5
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(6)' class='btnCalc btn btn-sm'>
+                                6
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("-")' class='btnCalc btn btn-sm'>
+                                -
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("(")' class='btnCalc btn btn-sm'>
+                                (
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(7)' class='btnCalc btn btn-sm'>
+                                7
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(8)' class='btnCalc btn btn-sm'>
+                                8
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(9)' class='btnCalc btn btn-sm'>
+                                9
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("*")' class='btnCalc btn btn-sm'>
+                                *
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(")")' class='btnCalc btn btn-sm'>
+                                )
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(".")' class='btnCalc btn btn-sm'>
+                                .
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(0)' class='btnCalc btn btn-sm'>
+                                0
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("=")' class='btnCalc btn btn-sm'>
+                                =
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
+                                Dados Selecionados
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp"><label>Expressão final</label></td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp"></td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp"><label id="expFinal"></label></td>
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type="button" id="btnSaveCounter" onclick="saveLogExpression(); " class="btn btn-primary btn-sm">
+                                <i class="fa fa-plus" aria-hidden="true">Incluir</i>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
 
                 <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="@Resources.Resource.edit_input_data_type">
                     <thead>

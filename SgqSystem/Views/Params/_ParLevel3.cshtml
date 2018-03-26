@@ -56,173 +56,6 @@
                     </tr>
                 </table>
 
-
-                <table class="table-erp">
-                    <tr class="row">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
-                                         , @Html.Label(Resources.Resource.data_type_entry)
-                                         , Table.PosicaoLabel.top
-                                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
-                    </tr>
-
-                    <tr class="row ParBinarios" style="display: none;">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                        @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
-                    </tr>
-                    <tr class="row" id="companyValueL3">
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
-                                            , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-                    </tr>
-
-                    <tr class="row reencravacaoL3">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacao", @onchange = "getLevel3ReencravacaoInputCalcOutro($('#empresaRecravacao option:selected').val())" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
-                    </tr>
-                    <tr class="row reencravacaoL3">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
-                    </tr>
-                    <tr class="row reencravacaoL3">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
-                    </tr>
-
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp" id="sinais">
-                            <button type='button' id='' onclick='clickSinal(1)' class='btnCalc btn btn-sm'>
-                                1
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(2)' class='btnCalc btn btn-sm'>
-                                2
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(3)' class='btnCalc btn btn-sm'>
-                                3
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("+")' class='btnCalc btn btn-sm'>
-                                +
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("/")' class='btnCalc btn btn-sm'>
-                                /
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("undo")' class='btnCalc btn btn-sm'>
-                                <i class="fa fa-undo" aria-hidden="true"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp" id="sinais">
-                            <button type='button' id='' onclick='clickSinal(4)' class='btnCalc btn btn-sm'>
-                                4
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(5)' class='btnCalc btn btn-sm'>
-                                5
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(6)' class='btnCalc btn btn-sm'>
-                                6
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("-")' class='btnCalc btn btn-sm'>
-                                -
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("(")' class='btnCalc btn btn-sm'>
-                                (
-                            </button>
-
-
-                        </td>
-                    </tr>
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp" id="sinais">
-                            <button type='button' id='' onclick='clickSinal(7)' class='btnCalc btn btn-sm'>
-                                7
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(8)' class='btnCalc btn btn-sm'>
-                                8
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(9)' class='btnCalc btn btn-sm'>
-                                9
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("*")' class='btnCalc btn btn-sm'>
-                                *
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(")")' class='btnCalc btn btn-sm'>
-                                )
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp" id="sinais">
-                            <button type='button' id='' onclick='clickSinal(".")' class='btnCalc btn btn-sm'>
-                                .
-                            </button>
-                            <button type='button' id='' onclick='clickSinal(0)' class='btnCalc btn btn-sm'>
-                                0
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("=")' class='btnCalc btn btn-sm'>
-                                =
-                            </button>
-                            <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
-                                Dados Selecionados
-                            </button>
-                        </td>
-                    </tr>
-
-
-
-
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp"><label>Expressão final</label></td>
-                    </tr>
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp"></td>
-                    </tr>
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp"><label id="expFinal"></label></td>
-                    </tr>
-
-                    <tr class="row ParIntervalos" style="display: none;">
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
-                        <td style="display: none;">
-                            <label>@Resources.Resource.values_between</label>
-                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
-                        </td>
-                    </tr>
-                    <tr class="row" style="display:none;padding:10px;">
-                        <td colspan="3">
-                            *
-                            <span id="ParIntervalosLabel"></span>
-                        </td>
-                    </tr>
-
-                    <tr class="row reencravacaoL3">
-                        <td class="td-erp" id="sinais">
-                            <button type="button" id="btnSaveCounter" onclick="saveLogExpression(); " class="btn btn-primary btn-sm">
-                                <i class="fa fa-plus" aria-hidden="true">Incluir</i>
-                            </button>
-                        </td>
-                    </tr>
-
-                </table>
-
-                <hr />
-                <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="@Resources.Resource.edit_input_data_type">
-                    <thead>
-                        <tr>
-                            <th>@Resources.Resource.data_type_entry</th>
-                            <th>@Resources.Resource.company</th>
-                            <th>@Resources.Resource.measurement_unit</th>
-                            <th>@Resources.Resource.minimum_range</th>
-                            <th>@Resources.Resource.maximum_range</th>
-                            <th>@Resources.Resource.values_between</th>
-                            <th>@Resources.Resource.negative_value</th>
-                            <th>@Resources.Resource.positive_value</th>
-                            <th style="min-width: 80px;max-width: 80px;">@Resources.Resource.action</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size:xx-small;"></tbody>
-                </table>
-
-
                 @{
                     Model.levelControl = 3;
                 }
@@ -467,6 +300,8 @@
 
         let tr = `<tr pos="undefined">` +
                     `<td>${tipo}</td>` +
+                    `<td></td>` +
+                    `<td></td>` +
                     `<td>${unidade}</td>` +
                     `<td></td>` +
                     `<td>${$('#parLevel3Value_IntervalMin').val()}</td>` +
@@ -478,13 +313,13 @@
                         `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover Item Inserido" data-trigger="hover" data-placement="right" name="" onclick="removeExpression($(this));" data-toggle="popover" data-original-title="" title="">` +
                             `<i class="fa fa-times" aria-hidden="true"></i>` +
                         `</button>` +
-                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
-                            `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
-                        `</button>` +
+                        //`<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                        //    `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                        //`</button>` +
                     `</td>` +
                 `</tr>`;
 
-        $('#tableLevel3Value tbody').append(tr)
+        $('#tableLevel3Value tbody').prepend(tr)
         $('#tableLevel3Value tbody tr:last').data('ParLevel3Value_OuterList', expressaoArr)
 
         if($('#tableLevel3Value tbody tr').length)
@@ -588,11 +423,13 @@
 
                 let tr = `<tr pos="undefined">` +
                             `<td>${tipo}</td>` +
+                            `<td></td>` +
+                            `<td></td>` +
                             `<td>${unidade}</td>` +
                             `<td>${UnidadeMedidaText}</td>` +
                             `<td>${LimInferior}</td>` +
                             `<td>${LimSuperior}</td>` +
-                            `<td>${expressao}${AceitavelEntreText}</td>` +
+                            `<td>${expressao} (${AceitavelEntreText})</td>` +
                             `<td></td>` +
                             `<td></td>` +
                             `<td>` +
@@ -608,7 +445,7 @@
                             `</td>` +
                         `</tr>`;
 
-                $('#tableLevel3Value tbody').append(tr)
+                $('#tableLevel3Value tbody').prepend(tr)
                 $('#tableLevel3Value tbody tr:last').data('ParLevel3Value_OuterList', expressaoArr)
 
                 if($('#tableLevel3Value tbody tr').length)

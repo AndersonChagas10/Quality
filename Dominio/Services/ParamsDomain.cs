@@ -581,10 +581,10 @@ namespace Dominio.Services
             foreach (var Level3Value in level3.listLevel3Value)/*ParLevel 3 Value*/
                 Level3Value.PreparaGet();
 
-            var pointLess = db.Database.SqlQuery<bool>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault();
+            var pointLess = db.Database.SqlQuery<bool?>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault() ?? false;
             level3.IsPointLess = pointLess;
 
-            var AllowNA = db.Database.SqlQuery<bool>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault();
+            var AllowNA = db.Database.SqlQuery<bool?>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault() ?? false;
             level3.AllowNA = AllowNA;
             foreach (var parLevel3EvaluationSample in level3.listParLevel3EvaluationSample)/*ParLevel 3 Value*/
                 parLevel3EvaluationSample.PreparaGet();
