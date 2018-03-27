@@ -166,18 +166,10 @@ namespace SGQDBContext
                         ON P1.Id = G.ParLevel1_Id   
                         INNER JOIN ParCompanyCluster PC
 						ON PC.ParCompany_Id = '" + ParCompany_Id + @"' AND PC.Active = 1
-                        /*
-						INNER JOIN ParLevel1XCluster L1C
-						ON L1C.ParCluster_Id = PC.ParCluster_Id
-						AND L1C.ParLevel1_Id = P1.ID
-						AND L1C.IsActive = 1
-                        */
+                       
 						INNER JOIN ParCluster C
 						on c.id = pc.parcluster_id
-                        /*
-						INNER JOIN   parCriticalLevel PCL
-						ON  PCL.ID = L1C.ParCriticalLevel_Id 
-                        */
+                       
                         WHERE 1 =1                                                                          
                         AND IsChildren = 0 
                         " + whereIsChildren + @"
