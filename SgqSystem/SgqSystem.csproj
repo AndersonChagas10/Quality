@@ -367,6 +367,7 @@
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
     <Compile Include="Controllers\ParClusterXModulesController.cs" />
     <Compile Include="Controllers\ParModulesController.cs" />
+    <Compile Include="Controllers\ParModuleXModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
@@ -1487,6 +1488,11 @@
     <Content Include="Views\ParClusterXModules\Details.cshtml" />
     <Content Include="Views\ParClusterXModules\Edit.cshtml" />
     <Content Include="Views\ParClusterXModules\Index.cshtml" />
+    <Content Include="Views\ParModuleXModules\Create.cshtml" />
+    <Content Include="Views\ParModuleXModules\Delete.cshtml" />
+    <Content Include="Views\ParModuleXModules\Details.cshtml" />
+    <Content Include="Views\ParModuleXModules\Edit.cshtml" />
+    <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

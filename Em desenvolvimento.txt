@@ -320,3 +320,19 @@ ALTER TABLE [dbo].[ParClusterXModule] CHECK CONSTRAINT [FK_ParClusterXModule_Par
 
 ALTER TABLE ParLevel2XHeaderField
 ADD CONSTRAINT PK_ParLevel2XHeaderField PRIMARY KEY (Id);
+
+-------------------------------------------------------------------- 27 03 2017 - LEO (criação da ParModuleXModule)
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParModuleXModule' AND xtype='U')
+	CREATE TABLE [dbo].[ParModuleXModule](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[ParModuleParent_Id] [int] NOT NULL,
+		CONSTRAINT [FK_ParModuleXModule_ParModuleParent] FOREIGN KEY([ParModuleParent_Id])
+		REFERENCES [dbo].[ParModule] ([Id]),
+		[ParModuleChild_Id] [int] NOT NULL,
+		CONSTRAINT [FK_ParModuleXModule_ParModuleChild] FOREIGN KEY([ParModuleChild_Id])
+		REFERENCES [dbo].[ParModule] ([Id])
+	) 
+
+ALTER TABLE ParModuleXModule
+ADD CONSTRAINT PK_ParModuleXModule PRIMARY KEY (Id);
