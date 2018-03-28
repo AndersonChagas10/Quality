@@ -41,9 +41,9 @@ namespace SgqSystem.Controllers
         public ActionResult Create(int moduleId)
         {
             ViewBag.ModuleId = moduleId;
-            ViewBag.ParModuleChild_Id = new SelectList(db.ParModule, "Id", "Name");
-            ViewBag.ParModuleParent_Id = new SelectList(db.ParModule, "Id", "Name", moduleId);
-            return View();
+            var listlinkedModules = db.ParModuleXModule.Where(m=> m.ParModuleParent_Id == moduleId).Select(m=>m.ParModuleChild_Id).ToList();
+            ViewBag.ParModuleChild_Id = new SelectList(db.ParModule.Where(m=> !listlinkedModules.Contains(m.Id) && m.Id != moduleId).Select(m=>m).ToList(), "Id", "Name");
+            return View(new ParModuleXModule() { ParModuleParent_Id = moduleId });
         }
 
         // POST: ParModuleXModules/Create
@@ -60,8 +60,8 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Details","ParModules",new { id = parModuleXModule.ParModuleParent_Id });
             }
 
-            ViewBag.ParModuleChild_Id = new SelectList(db.ParModule, "Id", "Name", parModuleXModule.ParModuleChild_Id);
-            ViewBag.ParModuleParent_Id = new SelectList(db.ParModule, "Id", "Name", parModuleXModule.ParModuleParent_Id);
+            var listlinkedModules = db.ParModuleXModule.Where(m => m.ParModuleParent_Id == parModuleXModule.ParModuleParent_Id).ToList();
+            ViewBag.ParModuleChild_Id = new SelectList(db.ParModule.Where(m => !listlinkedModules.Any(u => u.ParModuleChild_Id == m.Id)), "Id", "Name", parModuleXModule.ParModuleChild_Id);
             return View(parModuleXModule);
         }
 

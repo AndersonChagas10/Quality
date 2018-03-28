@@ -10,10 +10,12 @@
     <div class="portlet-body">
         <div class="tab-content">
             <div class="tab-pane active" id="setup_tab">
-
-                <p>
-                    @Html.ActionLink(Resources.Resource.create, "Create", "ParModuleXModules", new { moduleId = ViewBag.ModuleId }, new { @class = "btn btn-primary" })
-                </p>
+                @if (ViewBag.EnableCreate)
+                {
+                    <p>
+                        @Html.ActionLink(Resources.Resource.create, "Create", "ParModuleXModules", new { moduleId = ViewBag.ModuleId }, new { @class = "btn btn-primary" })
+                    </p>
+                }
                 <table class="table">
                     <tr>
                         <th>
