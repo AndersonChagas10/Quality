@@ -1,0 +1,27 @@
+-- 28 03 2018 - GABRIEL NUNES (Adicionado tableas para coleta de cluster)
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180328_0000_AdicionadoTabelasParaConsolidacaoCluster',GetDate())
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCluster' AND xtype='U')
+	CREATE TABLE CollectionLevel2XCluster(
+		Id int not null primary key identity(1,1),
+		CollectionLevel2_Id int null,
+		ParCluster_Id int null
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XCluster' AND xtype='U')
+	CREATE TABLE ConsolidationLevel2XCluster(
+		Id int not null primary key identity(1,1),
+		ConsolidationLevel2_Id int null,
+		ParCluster_Id int null
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XCluster' AND xtype='U')
+	CREATE TABLE ConsolidationLevel1XCluster(
+		Id int not null primary key identity(1,1),
+		ConsolidationLevel1_Id int null,
+		ParCluster_Id int null
+	)
+GO 
