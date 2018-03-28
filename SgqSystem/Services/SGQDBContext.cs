@@ -16,7 +16,7 @@ namespace SGQDBContext
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int hashKey { get; set; }
         public string Name { get; set; }
         public int ParCriticalLevel_Id { get; set; }
@@ -44,6 +44,7 @@ namespace SGQDBContext
         public bool ShowScorecard { get; set; }
 
         public int ParCluster_Id { get; set; }
+        public int ParLevel1_Id { get; set; }
 
         public ParLevel1()
         {
@@ -149,7 +150,7 @@ namespace SGQDBContext
             //             "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
 
             string sql = @"SELECT * FROM (
-                        SELECT P1.Id, P1.Name, P1.HasTakePhoto, 
+                        SELECT CAST(C.Id AS VARCHAR) + '98789' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name + ' - ' + C.Name as Name, P1.HasTakePhoto, 
                         -- (select top 1 id from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= CAST('" + dateCollection.ToString("yyyy-MM-dd") + @"' AS DATE)  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
                         -- (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= CAST('" + dateCollection.ToString("yyyy-MM-dd") + @"' AS DATE)  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
                         
@@ -517,12 +518,12 @@ namespace SGQDBContext
                              "\n  ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                     " +
                              "\n INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL (nolock)  INNER JOIN                                                                                       " +
                              "\n (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany   (nolock)                                                                    " +
-                             "\n where ParLevel1_Id = '" + parLevel1.Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and (ParCompany_Id =  " + ParCompany_Id + " or ParCompany_Id is null)   and IsActive = 1 " +
+                             "\n where ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and (ParCompany_Id =  " + ParCompany_Id + " or ParCompany_Id is null)   and IsActive = 1 " +
 
                              "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
                              "\n or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "\n ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
-                             "\n WHERE P321.ParLevel1_Id = " + parLevel1.Id + "                                                                                                      " +
+                             "\n WHERE P321.ParLevel1_Id = " + parLevel1.ParLevel1_Id + "                                                                                                      " +
                              "\n AND PL2.IsActive = 1     " +
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
                              "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto             ";
@@ -551,15 +552,15 @@ namespace SGQDBContext
                          "\n ON PL2.Id = P32.ParLevel2_Id                                  " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
-                        "\n WHERE P321.ParLevel1_Id = '" + parLevel1.Id + "'              " +
+                        "\n WHERE P321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "'              " +
                          "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
 
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n union all " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
 
 
                          "\n ) temAv) > 0 " +
@@ -567,9 +568,9 @@ namespace SGQDBContext
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n union all " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
 
                          "\n ) temAm) > 0 " +
 
@@ -624,7 +625,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2    (nolock)                                                  " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
 
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
@@ -649,7 +650,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2     (nolock)                                                 " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
                 
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
@@ -674,7 +675,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2      (nolock)                                                " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
 
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
@@ -699,7 +700,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2     (nolock)                                                 " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
                 
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
@@ -724,7 +725,7 @@ namespace SGQDBContext
                     queryCompany = " AND PE.ParCompany_Id IS NULL ";
                 }
 
-                string queryLevel1 = " AND (PE.ParLevel1_Id = '" + ParLevel1.Id + "' OR PE.ParLevel1_Id IS NULL) ";               
+                string queryLevel1 = " AND (PE.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PE.ParLevel1_Id IS NULL) ";               
 
                 string sql = @"SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate             
                                 FROM                                                                      
@@ -735,7 +736,7 @@ namespace SGQDBContext
                                 ON PL2.Id = P32.ParLevel2_Id                                              
                                 INNER JOIN ParEvaluation PE   (nolock)                                    
                                 ON PE.ParLevel2_Id = PL2.Id                                               
-                                WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "' " +
+                                WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' " +
                              @" AND PE.IsActive = 1 
                                 AND PE.ParCluster_Id = " + ParLevel1.ParCluster_Id + " " +
                                  queryCompany +
@@ -804,7 +805,7 @@ namespace SGQDBContext
                              INNER JOIN ParLevel2 PL2     (nolock)                                    
                              ON PL2.Id = P32.ParLevel2_Id                                             
 
-                             WHERE P321.ParLevel1_Id = '" + ParLevel1.Id +
+                             WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id +
                              @"'                         
                              GROUP BY PL2.Id, PL2.Name ";                                               
 
@@ -830,7 +831,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2     (nolock)                                                 " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
                 
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
@@ -855,7 +856,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2  (nolock)                                                    " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
                 
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
@@ -880,7 +881,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2        (nolock)                                              " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
                              "GROUP BY PL2.Id, PL2.Name                                                   ";
                 
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
@@ -905,7 +906,7 @@ namespace SGQDBContext
                     queryCompany = " AND PS.ParCompany_Id  IS NULL ";
                 }
 
-                string queryLevel1 = " AND (PS.ParLevel1_Id = '" + ParLevel1.Id + "' OR PS.ParLevel1_Id IS NULL) ";
+                string queryLevel1 = " AND (PS.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PS.ParLevel1_Id IS NULL) ";
 
                 string sql = @"SELECT PL2.Id AS Id, PL2.Name AS Name, PS.Number AS Sample FROM  
                              ParLevel3Level2 P32  (nolock)                                    
@@ -915,7 +916,7 @@ namespace SGQDBContext
                              ON PL2.Id = P32.ParLevel2_Id                                     
                              INNER JOIN ParSample PS     (nolock)                             
                              ON PS.ParLevel2_Id = PL2.Id                                      
-                             WHERE P321.ParLevel1_Id = '" + ParLevel1.Id +
+                             WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id +
                              @"' AND PS.ParCluster_Id = " + ParLevel1.ParCluster_Id + 
                   
                              @" AND PS.IsActive = 1  " +
@@ -1034,7 +1035,7 @@ namespace SGQDBContext
             //                  "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
             //                  "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
             //                  "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
-            //                  "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + ParLevel1.Id + "' " +
+            //                  "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' " +
             //                  "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
             //                  "                   L32.ParCompany_Id " +
             //                  ") TAREFAS " +
@@ -1051,9 +1052,9 @@ namespace SGQDBContext
                          "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3      (nolock)                                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3Value L3V      (nolock)                                                                                                                                                                                                                                                                                                                           " +
-                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc) " +
+                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc) " +
                         // "           ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)" +
-                        // "\n and (ParLevel1_id = " + ParLevel1.Id + " or ParLevel1_id is null) and (ParLevel2_id = " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel2_Id desc, ParLevel1_Id desc)                                                                                                       " +
+                        // "\n and (ParLevel1_id = " + parLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id = " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel2_Id desc, ParLevel1_Id desc)                                                                                                       " +
                          "\n INNER JOIN ParLevel3InputType L3IT    (nolock)                                                                                                                                                                                                                                                                                                                        " +
                          "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                          "\n LEFT JOIN ParLevel3BoolFalse L3BF      (nolock)                                                                                                                                                                                                                                                                                                                       " +
@@ -1073,7 +1074,7 @@ namespace SGQDBContext
                          "\n  AND L2.Id = '" + ParLevel2.Id + "' " +
                          "\n  AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR L32.ParCompany_Id IS NULL) " +
                          "\n  AND(L3V.ParCompany_Id = '" + ParCompany_Id + "' OR L3V.ParCompany_Id IS NULL) " +
-                         "\n  AND L321.ParLevel1_Id='" + ParLevel1.Id + "'                                                                                                        " +
+                         "\n  AND L321.ParLevel1_Id='" + ParLevel1.ParLevel1_Id + "'                                                                                                        " +
 
 
                          //queryResult + 
@@ -1105,7 +1106,7 @@ namespace SGQDBContext
              * 30/03/2017
              */
 
-            string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
+            string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.ParLevel1_Id.ToString();
             string ParLevel1Origin_Id = "";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1126,7 +1127,7 @@ namespace SGQDBContext
 
             if (ParLevel1Origin_Id != "null")
             {
-                string IndicadorFilhoPeso = "SELECT cast(PointsDestiny as varchar(3)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
+                string IndicadorFilhoPeso = "SELECT cast(PointsDestiny as varchar(3)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.ParLevel1_Id.ToString();
 
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -1243,7 +1244,7 @@ namespace SGQDBContext
                              "ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1 " +
                              "INNER JOIN Result_Level3 R3  (nolock) " +
                              "ON R3.CollectionLevel2_Id = C2.Id " +
-                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.ParLevel2_Id='" + ParLevel2.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
+                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.ParLevel1_Id + "' AND C2.ParLevel2_Id='" + ParLevel2.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
 
                 //string sql = "SELECT R3.ParLevel3_Id AS Id FROM RESULT_LEVEL3 R3 " +
                 //              "INNER JOIN CollectionLevel2 C2 " +
@@ -1261,7 +1262,7 @@ namespace SGQDBContext
                 //              "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
                 //              "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
                 //              "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
-                //              "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + ParLevel1.Id + "' " +
+                //              "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' " +
                 //              "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
                 //              "                   L32.ParCompany_Id " +
                 //              ") TAREFAS " +

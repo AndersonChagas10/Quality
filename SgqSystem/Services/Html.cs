@@ -492,13 +492,13 @@ namespace SgqSystem.Services
         public string level2(string id, string label,
                              string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
-                             bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0,
+                             bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
                              bool HasTakePhoto = false)
         {
 
             string tagLevel1Group = null;
-            if (level1Group_Id > 0)
+            if (level1Group_Id.Length > 0)
             {
                 tagLevel1Group = " parlevel1_id_group=\"" + level1Group_Id + "\"";
             }
