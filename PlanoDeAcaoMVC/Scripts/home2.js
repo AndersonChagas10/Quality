@@ -550,9 +550,29 @@ function MountDataTable(json) {
 
 
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(2)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(3)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(4)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(4)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(5)', function () {
+        tableDraw();
+    });
 }
 
-$('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
     var data = table.row($(this).parents('tr')).data();
     //console.log(data);
 
@@ -568,7 +588,7 @@ $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
 
 });
 
-$('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
     var data = table.row($(this).parents('tr')).data();
     //console.log(data);
     planejamentoCorrentId = data.Tatico_Id;
@@ -588,7 +608,7 @@ $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
 
 });
 
-$('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
     selecionado = data;
@@ -600,8 +620,7 @@ $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
 });
 
-
-$('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
     //var data = selecionado
 
@@ -634,6 +653,12 @@ $('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
     $('#modalLindo').modal();
 
 });
+
+function tableDraw() {
+    setTimeout(function () {
+        table.draw();
+    }, 50);
+}
 
 /**
  *
@@ -2457,6 +2482,8 @@ $('#btnTop').click(function () {
     getDateRange($("input[name='daterange']").val());
 
     GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+
+    GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 })
 
 $('#btnFiltroPie2').click(function () {
@@ -2574,8 +2601,7 @@ function SaveUserColVis() {
         } else {
             openMessageModal("Erro ao salvar!");
         }
-    })
-
+    });
 }
 
 

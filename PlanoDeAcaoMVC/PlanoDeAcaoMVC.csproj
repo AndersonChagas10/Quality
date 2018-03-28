@@ -226,6 +226,7 @@
     <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="Controllers\Home2Controller.cs" />
+    <Compile Include="Jobs\Jobs.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
@@ -549,6 +550,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Scripts\DatePikerReady.js" />
     <Content Include="Scripts\daterangepicker.js" />
+    <Content Include="Scripts\DataTablePlanejamento.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />

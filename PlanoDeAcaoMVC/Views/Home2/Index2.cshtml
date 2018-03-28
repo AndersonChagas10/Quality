@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-
 @section Styles {
 
     <style>
@@ -387,23 +386,7 @@
         }
     </style>
 
-    <script>
-        /**/
-        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
-        /**/
-        /**/
-        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
-        /**/
-        /**/
-        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
-        /**/
-        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
-
-    </script>
-
 }
-
-@*<h2>Plano de Ação</h2>*@
 
 <div class="container-fluid">
     <div class="row" style="width:100% !important">
@@ -743,9 +726,20 @@
     </div>
 
     <div class="clearfix"></div>
+
     <!--FIM LINHA 2-->
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" onclick="tableAcaoRedrown()" data-toggle="collapse" data-target="#divPlanejamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">Tabela de Ações</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+
     <!--LINHA 3-->
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcao">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
             <div class="defaultGroupTitle">
                 <span class="defaultTitle">Gerenciador de Tarefas</span>
@@ -855,7 +849,90 @@
     </div>
     <div class="clearfix"></div>
     <!--FIM LINHA 3-->
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" onclick="tablePlanejamentoRedrown()" data-toggle="collapse" data-target="#divPlanejamento" aria-expanded="false" style="display:block;cursor:pointer">Tabela de Projetos</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <!--LINHA 4-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamento">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Gerenciador de Tarefas</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">Todas os Planejamentos para filtrar</span>
+            </div>
 
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="TablePlanejamento" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--FIM LINHA 4-->
 </div>
 
 <div class="container">
@@ -944,22 +1021,23 @@
                                         <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">Salvar Edição</button>
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
                                     </div>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-7">
-                <table id="tableNovo" class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                <div class="col-sm-7">
+                    <table id="tableNovo" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>        
             <div class="clearfix"></div>
         </div>
         <div class="modal-footer">
@@ -968,8 +1046,6 @@
     </div>
 </div>
 
-
-
 <div class="minmaxCon"></div>
 
 <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
@@ -977,6 +1053,7 @@
 @section Scripts {
 
     <script type="text/javascript">
+
         $('.container').each(function (i, o) {
             $(o).removeClass('container').addClass('container-fluid');
         });
@@ -989,6 +1066,7 @@
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/i18n/pt-BR.js"></script>
     <script src="~/Scripts/home2.js"></script>
+    <script src="~/Scripts/DataTablePlanejamento.js"></script>
 
     <script>
         //Graficos Instancia
@@ -1247,6 +1325,17 @@
         /**/
         var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
         /**/
+        /**/
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
+        var urlGetPlanejamentoRange = '@Url.Action("GetPlanejamentoRange", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
+        /**/
+        /**/
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
+        /**/
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
 
         var IsAdmin = getRole("Admin").length > 0;
 
@@ -1559,7 +1648,7 @@
             } else {
                 $('#Header').html(title + title2);
             }
-
+            
             $.get(urlNovoPlanejamento, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
@@ -1651,8 +1740,13 @@
 
         function DdlChangeEstrategico(v1, v2, v3, edit) {
 
-            var change1 = v1 != undefined ? v1 : null;
-            var change2 = v2 != undefined ? v2 : null;
+            var change1 = v1 != undefined ? v1 : "";
+            var change2 = v2 != undefined ? v2 : "";
+
+            change1 = change1 == 0 ? "" : change1;
+            change2 = change2 == 0 ? "" : change2;
+
+            v3 = v3 == 0 ? "" : v3;
 
             let Dimensao_Id = $('#Dimensao_Id')
             let Objetivo_Id = $('#Objetivo_Id')
@@ -1670,9 +1764,9 @@
                     })
                 }
                 else {
-                    $('#Objetivo_Id').val(null).attr('disabled', true);
+                    $('#Objetivo_Id').val("").change().attr('disabled', true);
                     $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
-                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
                     $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
@@ -1688,7 +1782,7 @@
                     });
                 }
                 else {
-                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
                     $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
@@ -1821,6 +1915,11 @@
                     header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
                     header.find("select:visible").select2();
                     $('.UnidadeMedida').change();
+
+                    $('[name="TipoIndicador"]').each(function () {
+                        $(this).select2();
+                    });
+
                 }, 1);
 
                 myfunction();
@@ -1857,7 +1956,11 @@
 
                 $(inputQuantoCusta).maskMoney('destroy');
                 //$(inputQuantoCusta).get(0).type = 'number';
-                $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+
+                if (valor != "" && valor != NaN)
+                    $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+                else
+                    $(inputQuantoCusta).val(valor);
 
                 $(inputQuantoCusta).on("keypress", function (event) {
 
@@ -1895,7 +1998,20 @@
                 $(inputValorPara).maskMoney(config);
                 $(inputValorPara).maskMoney('mask');
 
-            } else {
+                $(inputValorDe).prop("disabled", false);
+                $(inputValorPara).prop("disabled", false);
+
+            } else if (unidadeMedida == "" || unidadeMedida == null || unidadeMedida == undefined || unidadeMedida == NaN) {
+
+                $(inputValorDe).maskMoney('destroy');
+                $(inputValorPara).maskMoney('destroy');
+
+
+                $(inputValorDe).val("").prop("disabled", true);
+                $(inputValorPara).val("").prop("disabled", true);
+            }
+            else
+            {
 
                 $(inputValorDe).maskMoney('destroy');
                 //$(inputValorDe).get(0).type = 'number';
@@ -1912,6 +2028,9 @@
                     $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
                 else
                     $(inputValorPara).val(valorPara);
+
+                $(inputValorDe).prop("disabled", false);
+                $(inputValorPara).prop("disabled", false);
 
                 $(inputValorDe).on("keypress", function (event) {
 
@@ -2221,6 +2340,7 @@
             $tr.find('#remove').show();
             $tr.find('#adicionar').hide();
             $tr.after($clone);
+
         }
 
         //Verificando
@@ -2280,8 +2400,11 @@
                 if (jaExisteoptionNoDropDown)
                     if (r.IsActive) {
                         $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
-                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
+                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);                    
+                        $(tempInput).select2('destroy');
                         $(tempInput).val(r.Id).trigger('change');
+                        $(tempInput).select2();
+
                     } else {
                         $(tempInput).find('option:first').prop('selected', true);
                         $(tempInput).find("option[value= " + r.Id + "]").remove();
@@ -2475,7 +2598,7 @@
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
                         //console.log(before)
-                        let after = `Novo(this, 'formEditTatico #${before}`
+                        let after = `Novo(this, 'formEditEstrategy #${before}`
                         $(c).attr('onclick', after)
                     }
                 })
@@ -2525,7 +2648,7 @@
 
                 //Colocar o retorno no modal
                 formReset();
-                getAcompanhamento(obj.Acao_Id);
+                //getAcompanhamento(obj.Acao_Id);
                 $('#btnTop').click();
                 openMessageModal('Registro salvo com sucesso!', '');
 
@@ -2575,7 +2698,7 @@
 
                         getPlanEstrat(data, a, b);
 
-                    } else if (data.Acao.Id > 0) {
+                    } else if (data.Acao && data.Acao.Id > 0) {
 
                         getAcao(data, a, b);
                     }
@@ -2615,6 +2738,8 @@
 
         $(function () {
             GetDataTable();
+
+            GetDataTablePlanejamento();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
                 if (selectPredecessor != undefined) {
@@ -2674,7 +2799,7 @@
 
                 $('.UnidadeDeMedidaTatico').change();
 
-                if (data.Acao.Id > 0) {
+                if (data.Acao && data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
             });
@@ -3279,6 +3404,18 @@
                     }
                 });
             });
+        }
+
+        function tableAcaoRedrown() {
+            setTimeout(function () {
+                table.draw();
+            },500);
+        }
+
+        function tablePlanejamentoRedrown() {
+            setTimeout(function () {
+                tablePlanejamento.draw();
+            },500);
         }
 
     </script>

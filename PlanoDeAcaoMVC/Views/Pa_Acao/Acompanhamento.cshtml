@@ -220,7 +220,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding:0px">
                 <div class="short-div">
                     <label class="redLabel" for="inputlg">Destinatário:</label><br />
-                    @foreach (var quem in i._Quem)
+                    @foreach (var quem in i._Quem.Where(r => r != null))
                     {
                         @Html.DisplayFor(r => quem.Name) <br />
                     }
