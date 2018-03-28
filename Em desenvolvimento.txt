@@ -245,14 +245,14 @@ IF COL_LENGTH('ParEvaluation','ParLevel1_Id') IS NULL
 		ALTER TABLE ParEvaluation
 		ADD ParLevel1_Id Int null
     END
-IF COL_LENGTH('ParEvaluation','ParLevel1_Id') IS NULL
-    BEGIN
-		ALTER TABLE ParEvaluation
-		ADD ParLevel1_Id Int null
-    END
-IF COL_LENGTH('ParSample','ParCluster_Id') IS NULL
+IF COL_LENGTH('ParSample','ParLevel1_Id') IS NULL
     BEGIN
 		ALTER TABLE ParSample
+		ADD ParLevel1_Id Int null
+    END
+IF COL_LENGTH('ParEvaluation','ParCluster_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParEvaluation
 		ADD ParCluster_Id Int null
     END
 IF COL_LENGTH('ParSample','ParCluster_Id') IS NULL
@@ -336,3 +336,32 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParModuleXModule' AND xtype=
 
 ALTER TABLE ParModuleXModule
 ADD CONSTRAINT PK_ParModuleXModule PRIMARY KEY (Id);
+
+-------------------------------------------------------------------- 28 03 2018 - GABRIEL NUNES (Adicionado tableas para coleta de cluster)
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCluster' AND xtype='U')
+	CREATE TABLE CollectionLevel2XCluster(
+		Id int not null primary key identity(1,1),
+		CollectionLevel2_Id int null,
+		ParCluster_Id int null
+	)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XCluster' AND xtype='U')
+	CREATE TABLE ConsolidationLevel2XCluster(
+		Id int not null primary key identity(1,1),
+		ConsolidationLevel2_Id int null,
+		ParCluster_Id int null
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XCluster' AND xtype='U')
+	CREATE TABLE ConsolidationLevel1XCluster(
+		Id int not null primary key identity(1,1),
+		ConsolidationLevel1_Id int null,
+		ParCluster_Id int null
+	)
+GO 
+
