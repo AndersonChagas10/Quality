@@ -349,4 +349,8 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XCluster'
 	)
 GO 
 
-
+	IF COL_LENGTH('ParLevel1XHeaderField','HeaderFieldGroup') IS NULL
+    BEGIN
+		ALTER TABLE [dbo].[ParLevel1XHeaderField]
+		ADD [HeaderFieldGroup] [varchar](100) NULL
+    END
