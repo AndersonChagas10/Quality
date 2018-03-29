@@ -39,10 +39,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqSystem.Tests", "SgqSyste
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", "{62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}"
 	ProjectSection(SolutionItems) = preProject
-		Em desenvolvimento.txt = Em desenvolvimento.txt
+		00000000_0000_EstruturaMigration.txt = 00000000_0000_EstruturaMigration.txt
+		20180318_0000_CriacaoModuloEModuloXCluster.txt = 20180318_0000_CriacaoModuloEModuloXCluster.txt
+		20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField.txt = 20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField.txt
+		20180322_0000_ParLevel1EClusterAvAmLevel2.txt = 20180322_0000_ParLevel1EClusterAvAmLevel2.txt
+		20180327_0000_CriacaoParModuleXModules.txt = 20180327_0000_CriacaoParModuleXModules.txt
+		20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt = 20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt
+		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ja implementado aporvado", "Ja implementado aporvado", "{808314E8-18AF-481B-A15F-AC2A36EFCA75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +119,5 @@ Global
 		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A} = {716C9494-D29A-4CB7-AC2A-D6303127A795}
 		{02CFB056-37CE-40F2-8790-0D47BC6D2B59} = {C1002FDC-28A0-4D38-B2AD-1F3E1D580629}
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D} = {EA53B2C1-DA5F-46EC-B4AC-4B4D63AE84E5}
-		{808314E8-18AF-481B-A15F-AC2A36EFCA75} = {62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}
 	EndGlobalSection
 EndGlobal
