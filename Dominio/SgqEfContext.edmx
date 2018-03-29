@@ -105,54 +105,6 @@
           <Property Name="TTP" Type="nvarchar(max)" />
           <Property Name="ReauditLevel" Type="int" />
         </EntityType>
-        <EntityType Name="CollectionLevel02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ConsolidationLevel02Id" Type="int" Nullable="false" />
-          <Property Name="Level01Id" Type="int" Nullable="false" />
-          <Property Name="Level02Id" Type="int" Nullable="false" />
-          <Property Name="UnitId" Type="int" Nullable="false" />
-          <Property Name="AuditorId" Type="int" Nullable="false" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Phase" Type="int" Nullable="false" />
-          <Property Name="ReauditIs" Type="bit" Nullable="false" />
-          <Property Name="ReauditNumber" Type="int" Nullable="false" />
-          <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="StartPhaseDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="EvaluationNumber" Type="int" />
-          <Property Name="Sample" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="CattleTypeId" Type="int" Nullable="false" />
-          <Property Name="Chainspeed" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="ConsecutiveFailureIs" Type="bit" Nullable="false" />
-          <Property Name="ConsecutiveFailureTotal" Type="int" Nullable="false" />
-          <Property Name="LotNumber" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Mudscore" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="NotEvaluatedIs" Type="bit" Nullable="false" />
-          <Property Name="Duplicated" Type="bit" Nullable="false" />
-          <Property Name="HaveCorrectiveAction" Type="bit" />
-          <Property Name="HaveReaudit" Type="bit" />
-          <Property Name="HavePhase" Type="bit" />
-          <Property Name="Completed" Type="bit" />
-        </EntityType>
-        <EntityType Name="CollectionLevel03">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CollectionLevel02Id" Type="int" Nullable="false" />
-          <Property Name="Level03Id" Type="int" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="ConformedIs" Type="bit" Nullable="false" />
-          <Property Name="Value" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="ValueText" Type="varchar(max)" Nullable="false" />
-          <Property Name="Duplicated" Type="bit" />
-        </EntityType>
         <EntityType Name="CollectionLevel2">
           <Key>
             <PropertyRef Name="Id" />
@@ -214,30 +166,6 @@
           <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Evaluation" Type="int" />
           <Property Name="Sample" Type="int" />
-        </EntityType>
-        <EntityType Name="ConsolidationLevel01">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UnitId" Type="int" Nullable="false" />
-          <Property Name="DepartmentId" Type="int" Nullable="false" />
-          <Property Name="Level01Id" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="ConsolidationDate" Type="datetime2" Precision="7" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ConsolidationLevel02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Level01ConsolidationId" Type="int" Nullable="false" />
-          <Property Name="Level02Id" Type="int" Nullable="false" />
-          <Property Name="UnitId" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="ConsolidationLevel1">
           <Key>
@@ -354,15 +282,6 @@
           <Property Name="DataInsercao" Type="datetime" Nullable="false" />
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
-        </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Deviation">
           <Key>
@@ -805,6 +724,7 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="ParCluster_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -971,6 +891,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsRequired" Type="bit" />
           <Property Name="DefaultSelected" Type="bit" />
+          <Property Name="HeaderFieldGroup" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -1015,16 +936,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
-            
-            
-            
-            
-            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
@@ -1269,6 +1183,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="ParCluster_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParScoreType">
           <Key>
@@ -1386,61 +1301,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="Photo" Type="text" />
           <Property Name="Latitude" Type="float" />
           <Property Name="Longitude" Type="float" />
-        </EntityType>
-        <EntityType Name="Resultados">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Chave" Type="nvarchar(max)" />
-          <Property Name="EmpresaId" Type="int" Nullable="false" />
-          <Property Name="Empresa" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="UnidadeId" Type="int" Nullable="false" />
-          <Property Name="Unidade" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="DepartamentoId" Type="int" Nullable="false" />
-          <Property Name="Departamento" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="OperacaoId" Type="int" Nullable="false" />
-          <Property Name="Operacao" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="TarefaId" Type="int" Nullable="false" />
-          <Property Name="Tarefa" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="NumeroAvaliacao" Type="int" Nullable="false" />
-          <Property Name="NumeroAmostra" Type="int" Nullable="false" />
-          <Property Name="MonitoramentoId" Type="int" Nullable="false" />
-          <Property Name="Monitoramento" Type="nvarchar" MaxLength="300" />
-          <Property Name="ProdutoId" Type="int" Nullable="false" />
-          <Property Name="Produto" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="DataHora" Type="datetime" Nullable="false" />
-          <Property Name="Monitor" Type="int" Nullable="false" />
-          <Property Name="Peso" Type="int" />
-          <Property Name="Lote" Type="nvarchar" MaxLength="50" />
-          <Property Name="PecasAvaliadas" Type="int" />
-          <Property Name="Minimo" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Maximo" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Acesso" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Avaliacao_1" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Avaliacao_2" Type="int" Nullable="false" />
-          <Property Name="Meta" Type="decimal" Precision="5" Scale="2" />
-          <Property Name="Sequencial" Type="int" />
-          <Property Name="Banda" Type="int" />
-          <Property Name="DataHoraMonitor" Type="datetime" />
-          <Property Name="ToleranciaDia" Type="int" />
-          <Property Name="Nivel1" Type="int" />
-          <Property Name="Nivel2" Type="int" />
-          <Property Name="Nivel3" Type="int" />
-          <Property Name="Status" Type="nvarchar" MaxLength="100" />
-          <Property Name="AvaliacaoAvulsa" Type="bit" />
-          <Property Name="Amostragem" Type="nvarchar" MaxLength="20" />
-          <Property Name="FormaAmostragem" Type="nvarchar" MaxLength="100" />
-          <Property Name="Sexo" Type="nvarchar" MaxLength="50" />
-          <Property Name="Idade" Type="int" />
-          <Property Name="SiglaContusao" Type="nvarchar" MaxLength="5" />
-          <Property Name="SiglaFalhaOperacional" Type="nvarchar" MaxLength="5" />
-          <Property Name="DataTipificacao" Type="datetime" />
-          <Property Name="Mobile" Type="bit" />
-          <Property Name="Data" Type="date" />
-          <Property Name="Identificador" Type="nvarchar" MaxLength="450" Nullable="false" />
-          <Property Name="VersaoAPP" Type="nvarchar" MaxLength="100" />
-          <Property Name="Reincidente" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'dbGQualidade.dbo.ResultLevel2HeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2117,78 +1977,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
-          <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="1" />
-          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="ConsolidationLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel02_Level01">
-          <End Role="Level01" Type="Self.Level01" Multiplicity="1" />
-          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="Level01Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel02_Level02">
-          <End Role="Level02" Type="Self.Level02" Multiplicity="1" />
-          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel02_UserSgq">
-          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="1" />
-          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="AuditorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel03_CollectionLevel02">
-          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="1" />
-          <End Role="CollectionLevel03" Type="Self.CollectionLevel03" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionLevel02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel03">
-              <PropertyRef Name="CollectionLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel03_Level03">
-          <End Role="Level03" Type="Self.Level03" Multiplicity="0..1" />
-          <End Role="CollectionLevel03" Type="Self.CollectionLevel03" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel03">
-              <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionLevel2_CollectionLevel2">
           <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="1" />
           <End Role="CollectionLevel21" Type="Self.CollectionLevel2" Multiplicity="0..1" />
@@ -2282,78 +2070,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="CollectionLevel2XParHeaderField">
               <PropertyRef Name="ParHeaderField_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel01_Department">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
-          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel01">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel01_Level01">
-          <End Role="Level01" Type="Self.Level01" Multiplicity="1" />
-          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel01">
-              <PropertyRef Name="Level01Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel01_Unit">
-          <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
-          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel01">
-              <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel02_ConsolidationLevel01">
-          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="1" />
-          <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel02">
-              <PropertyRef Name="Level01ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel02_Level02">
-          <End Role="Level02" Type="Self.Level02" Multiplicity="1" />
-          <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel02">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel1_Department">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
-          <End Role="ConsolidationLevel1" Type="Self.ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="DepartmentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3589,19 +3305,14 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Clusters" EntityType="Self.Clusters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionHtml" EntityType="Self.CollectionHtml" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionJson" EntityType="Self.CollectionJson" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CollectionLevel03" EntityType="Self.CollectionLevel03" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel2" EntityType="Self.CollectionLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel2XParHeaderField" EntityType="Self.CollectionLevel2XParHeaderField" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ConsolidationLevel01" EntityType="Self.ConsolidationLevel01" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ConsolidationLevel02" EntityType="Self.ConsolidationLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel1" EntityType="Self.ConsolidationLevel1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel2" EntityType="Self.ConsolidationLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Defect" EntityType="Self.Defect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DepartamentoOperacoes" EntityType="Self.DepartamentoOperacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departamentos" EntityType="Self.Departamentos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Deviation" EntityType="Self.Deviation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailContent" EntityType="Self.EmailContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empresas" EntityType="Self.Empresas" Schema="dbo" store:Type="Tables" />
@@ -3646,6 +3357,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="Self.ParLevel3BoolTrue" Schema="dbo" store:Type="Tables" />
@@ -3674,7 +3386,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Regionais" EntityType="Self.Regionais" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3" EntityType="Self.Result_Level3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3_Photos" EntityType="Self.Result_Level3_Photos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Resultados" EntityType="Self.Resultados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleSGQ" EntityType="Self.RoleSGQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaAmostras" EntityType="Self.TarefaAmostras" Schema="dbo" store:Type="Tables" />
@@ -3719,17 +3430,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
     [ParLevel1VariableProductionXLevel1].[AddDate] AS [AddDate], 
     [ParLevel1VariableProductionXLevel1].[AlterDate] AS [AlterDate]
     FROM [dbo].[ParLevel1VariableProductionXLevel1] AS [ParLevel1VariableProductionXLevel1]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParLevel2XHeaderField].[Id] AS [Id], 
-    [ParLevel2XHeaderField].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [ParLevel2XHeaderField].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [ParLevel2XHeaderField].[ParHeaderField_Id] AS [ParHeaderField_Id], 
-    [ParLevel2XHeaderField].[AddDate] AS [AddDate], 
-    [ParLevel2XHeaderField].[AlterDate] AS [AlterDate], 
-    [ParLevel2XHeaderField].[IsActive] AS [IsActive]
-    FROM [dbo].[ParLevel2XHeaderField] AS [ParLevel2XHeaderField]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ResultLevel2HeaderField" EntityType="Self.ResultLevel2HeaderField" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3839,30 +3539,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
           </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="Self.FK_CollectionLevel02_ConsolidationLevel02">
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_Level01" Association="Self.FK_CollectionLevel02_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_Level02" Association="Self.FK_CollectionLevel02_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="Self.FK_CollectionLevel02_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="Self.FK_CollectionLevel03_CollectionLevel02">
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel03_Level03" Association="Self.FK_CollectionLevel03_Level03">
-            <End Role="Level03" EntitySet="Level03" />
-            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel2_CollectionLevel2" Association="Self.FK_CollectionLevel2_CollectionLevel2">
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="CollectionLevel21" EntitySet="CollectionLevel2" />
@@ -3894,30 +3570,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParHeaderField" Association="Self.FK_CollectionLevel2XParHeaderField_ParHeaderField">
             <End Role="ParHeaderField" EntitySet="ParHeaderField" />
             <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="Self.FK_ConsolidationLevel01_Department">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel01_Level01" Association="Self.FK_ConsolidationLevel01_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel01_Unit" Association="Self.FK_ConsolidationLevel01_Unit">
-            <End Role="Unit" EntitySet="Unit" />
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel02_ConsolidationLevel01" Association="Self.FK_ConsolidationLevel02_ConsolidationLevel01">
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="Self.FK_ConsolidationLevel02_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="Self.FK_ConsolidationLevel1_Department">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
           </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="Self.FK_ConsolidationLevel1_Level1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -4369,11 +4021,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
           <EntitySet Name="CollectionHtml" EntityType="SgqDbModel.CollectionHtml" />
           <EntitySet Name="CollectionJson" EntityType="SgqDbModel.CollectionJson" />
-          <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
           <EntitySet Name="CollectionLevel2XParHeaderField" EntityType="SgqDbModel.CollectionLevel2XParHeaderField" />
-          <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
-          <EntitySet Name="Department" EntityType="SgqDbModel.Department" />
           <EntitySet Name="Example" EntityType="SgqDbModel.Example" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
@@ -4427,25 +4076,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevel1VariableProduction" EntityType="SgqDbModel.ParLevel1VariableProduction" />
           <EntitySet Name="ParLevel1VariableProductionXLevel1" EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" />
           <EntitySet Name="ResultLevel2HeaderField" EntityType="SgqDbModel.ResultLevel2HeaderField" />
-          <AssociationSet Name="FK_CollectionLevel03_Level03" Association="SgqDbModel.FK_CollectionLevel03_Level03">
-            <End Role="Level03" EntitySet="Level03" />
-            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParFieldType" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType">
             <End Role="ParFieldType" EntitySet="ParFieldType" />
             <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="SgqDbModel.FK_ConsolidationLevel01_Department">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel01_Level01" Association="SgqDbModel.FK_ConsolidationLevel01_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel01_Unit" Association="SgqDbModel.FK_ConsolidationLevel01_Unit">
-            <End Role="Unit" EntitySet="Unit" />
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="SgqDbModel.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
@@ -4556,15 +4189,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
           <EntitySet Name="Defect" EntityType="SgqDbModel.Defect" />
-          <EntitySet Name="ConsolidationLevel02" EntityType="SgqDbModel.ConsolidationLevel02" />
-          <AssociationSet Name="FK_ConsolidationLevel02_ConsolidationLevel01" Association="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01">
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="SgqDbModel.FK_ConsolidationLevel02_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-          </AssociationSet>
           <EntitySet Name="ParCompany" EntityType="SgqDbModel.ParCompany" />
           <AssociationSet Name="FK_Defect_ParCompany" Association="SgqDbModel.FK_Defect_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
@@ -4727,10 +4351,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
           <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
-          <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="SgqDbModel.FK_ConsolidationLevel1_Department">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
-          </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel1_ParCompany" Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
@@ -4738,27 +4358,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK_ConsolidationLevel2_ConsolidationLevel1" Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1">
             <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
             <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
-          </AssociationSet>
-          <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
-          <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_Level01" Association="SgqDbModel.FK_CollectionLevel02_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_Level02" Association="SgqDbModel.FK_CollectionLevel02_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="SgqDbModel.FK_CollectionLevel02_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02">
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
           <EntitySet Name="VerificacaoTipificacaoV2" EntityType="SgqDbModel.VerificacaoTipificacaoV2" />
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
@@ -4904,7 +4503,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Perfil" EntityType="SgqDbModel.Perfil" />
           <EntitySet Name="Produtos" EntityType="SgqDbModel.Produtos" />
           <EntitySet Name="Regionais" EntityType="SgqDbModel.Regionais" />
-          <EntitySet Name="Resultados" EntityType="SgqDbModel.Resultados" />
           <EntitySet Name="TarefaAmostras" EntityType="SgqDbModel.TarefaAmostras" />
           <EntitySet Name="TarefaAvaliacoes" EntityType="SgqDbModel.TarefaAvaliacoes" />
           <EntitySet Name="TarefaMonitoramentos" EntityType="SgqDbModel.TarefaMonitoramentos" />
@@ -5164,22 +4762,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="TTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ReauditLevel" Type="Int32" />
         </EntityType>
-        <EntityType Name="CollectionLevel03">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CollectionLevel02Id" Type="Int32" Nullable="false" />
-          <Property Name="Level03Id" Type="Int32" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConformedIs" Type="Boolean" Nullable="false" />
-          <Property Name="Value" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="ValueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Duplicated" Type="Boolean" />
-          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="CollectionLevel03" ToRole="Level03" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel03" ToRole="CollectionLevel02" />
-        </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -5195,22 +4777,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Evaluation" Type="Int32" />
           <Property Name="Sample" Type="Int32" />
           <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="CollectionLevel2XParHeaderField" ToRole="ParHeaderField" />
-        </EntityType>
-        <EntityType Name="ConsolidationLevel01">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
-          <Property Name="Level01Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel01_Department" FromRole="ConsolidationLevel01" ToRole="Department" />
-          <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Level01" FromRole="ConsolidationLevel01" ToRole="Level01" />
-          <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="ConsolidationLevel01" ToRole="Unit" />
-          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel01" ToRole="ConsolidationLevel02" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -5240,17 +4806,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="EmailContent_Id" Type="Int32" />
           <NavigationProperty Name="EmailContent" Relationship="SgqDbModel.FK__Correctiv__Email__554B8353" FromRole="CorrectiveAction" ToRole="EmailContent" />
         </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Department" FromRole="Department" ToRole="ConsolidationLevel01" />
-          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="Department" ToRole="ConsolidationLevel1" />
-        </EntityType>
         <EntityType Name="Example">
           <Key>
             <PropertyRef Name="Id" />
@@ -5272,8 +4827,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Level01" FromRole="Level01" ToRole="ConsolidationLevel01" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="Level01" ToRole="CollectionLevel02" />
         </EntityType>
         <EntityType Name="Level02">
           <Key>
@@ -5285,8 +4838,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="Level02" ToRole="ConsolidationLevel02" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="Level02" ToRole="CollectionLevel02" />
         </EntityType>
         <EntityType Name="Level03">
           <Key>
@@ -5298,7 +4849,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="Level03" ToRole="CollectionLevel03" />
         </EntityType>
         <EntityType Name="LogAlteracoes">
           <Key>
@@ -5493,6 +5043,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParEvaluation" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParEvaluation" ToRole="ParCompany" />
           <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParCluster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -5535,6 +5086,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="DefaultSelected" Type="Boolean" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1XHeaderField" ToRole="ParLevel1" />
           <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
+          <Property Name="HeaderFieldGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -5838,6 +5390,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParSample" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParSample" ToRole="ParCompany" />
           <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParCluster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ParStructure">
           <Key>
@@ -5896,7 +5449,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Number" Type="Int32" />
           <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Ip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="Unit" ToRole="ConsolidationLevel01" />
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_Unit" FromRole="Unit" ToRole="UnitUser" />
         </EntityType>
         <EntityType Name="UnitUser">
@@ -6047,18 +5599,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
-        <Association Name="FK_CollectionLevel03_Level03">
-          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel03">
-              <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionLevel2XParHeaderField_ParFieldType">
           <End Type="SgqDbModel.ParFieldType" Role="ParFieldType" Multiplicity="1" />
           <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
@@ -6068,42 +5608,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="CollectionLevel2XParHeaderField">
               <PropertyRef Name="ParFieldType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel01_Department">
-          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel01">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel01_Level01">
-          <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel01">
-              <PropertyRef Name="Level01Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel01_Unit">
-          <End Type="SgqDbModel.Unit" Role="Unit" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel01">
-              <PropertyRef Name="UnitId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6448,45 +5952,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_Defect_ParCompany" FromRole="Defect" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_Defect_ParLevel1" FromRole="Defect" ToRole="ParLevel1" />
         </EntityType>
-        <EntityType Name="ConsolidationLevel02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Level01ConsolidationId" Type="Int32" Nullable="false" />
-          <Property Name="Level02Id" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel02" ToRole="ConsolidationLevel01" />
-          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="ConsolidationLevel02" ToRole="Level02" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="ConsolidationLevel02" ToRole="CollectionLevel02" />
-        </EntityType>
-        <Association Name="FK_ConsolidationLevel02_ConsolidationLevel01">
-          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel02">
-              <PropertyRef Name="Level01ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel02_Level02">
-          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel02">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ParCompany">
           <Key>
             <PropertyRef Name="Id" />
@@ -6808,7 +6273,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="UserSgq" ToRole="ParCompanyXUserSgq" />
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel2" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
           <Property Name="UseActiveDirectory" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_CorrectiveAction_UserSgq">
@@ -7266,24 +6730,11 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ReauditNumber" Type="Int32" />
           <Property Name="Shift" Type="Int32" />
           <Property Name="Period" Type="Int32" />
-          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ConsolidationLevel1" ToRole="ParCompany" />
           <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
           <Property Name="ReauditLevel" Type="Int32" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
         </EntityType>
-        <Association Name="FK_ConsolidationLevel1_Department">
-          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ConsolidationLevel1_ParCompany">
           <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
           <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
@@ -7305,105 +6756,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ConsolidationLevel2">
               <PropertyRef Name="ConsolidationLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="CollectionLevel02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ConsolidationLevel02Id" Type="Int32" Nullable="false" />
-          <Property Name="Level01Id" Type="Int32" Nullable="false" />
-          <Property Name="Level02Id" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="AuditorId" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Phase" Type="Int32" Nullable="false" />
-          <Property Name="ReauditIs" Type="Boolean" Nullable="false" />
-          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
-          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="StartPhaseDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="EvaluationNumber" Type="Int32" />
-          <Property Name="Sample" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="CattleTypeId" Type="Int32" Nullable="false" />
-          <Property Name="Chainspeed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
-          <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
-          <Property Name="LotNumber" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Mudscore" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
-          <Property Name="Duplicated" Type="Boolean" Nullable="false" />
-          <Property Name="HaveCorrectiveAction" Type="Boolean" />
-          <Property Name="HaveReaudit" Type="Boolean" />
-          <Property Name="HavePhase" Type="Boolean" />
-          <Property Name="Completed" Type="Boolean" />
-          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
-          <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
-          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
-          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
-          <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
-        </EntityType>
-        <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
-          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="ConsolidationLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel02_Level01">
-          <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="Level01Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel02_Level02">
-          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel02_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="AuditorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel03_CollectionLevel02">
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionLevel02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel03">
-              <PropertyRef Name="CollectionLevel02Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8185,61 +7537,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nome" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Unidades" Relationship="SgqDbModel.FK_Unidades_Regionais" FromRole="Regionais" ToRole="Unidades" />
-        </EntityType>
-        <EntityType Name="Resultados">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Chave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EmpresaId" Type="Int32" Nullable="false" />
-          <Property Name="Empresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UnidadeId" Type="Int32" Nullable="false" />
-          <Property Name="Unidade" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DepartamentoId" Type="Int32" Nullable="false" />
-          <Property Name="Departamento" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="OperacaoId" Type="Int32" Nullable="false" />
-          <Property Name="Operacao" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="TarefaId" Type="Int32" Nullable="false" />
-          <Property Name="Tarefa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="NumeroAvaliacao" Type="Int32" Nullable="false" />
-          <Property Name="NumeroAmostra" Type="Int32" Nullable="false" />
-          <Property Name="MonitoramentoId" Type="Int32" Nullable="false" />
-          <Property Name="Monitoramento" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ProdutoId" Type="Int32" Nullable="false" />
-          <Property Name="Produto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Monitor" Type="Int32" Nullable="false" />
-          <Property Name="Peso" Type="Int32" />
-          <Property Name="Lote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PecasAvaliadas" Type="Int32" />
-          <Property Name="Minimo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Maximo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Acesso" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Avaliacao_1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Avaliacao_2" Type="Int32" Nullable="false" />
-          <Property Name="Meta" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="Sequencial" Type="Int32" />
-          <Property Name="Banda" Type="Int32" />
-          <Property Name="DataHoraMonitor" Type="DateTime" Precision="3" />
-          <Property Name="ToleranciaDia" Type="Int32" />
-          <Property Name="Nivel1" Type="Int32" />
-          <Property Name="Nivel2" Type="Int32" />
-          <Property Name="Nivel3" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AvaliacaoAvulsa" Type="Boolean" />
-          <Property Name="Amostragem" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="FormaAmostragem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Idade" Type="Int32" />
-          <Property Name="SiglaContusao" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="SiglaFalhaOperacional" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="DataTipificacao" Type="DateTime" Precision="3" />
-          <Property Name="Mobile" Type="Boolean" />
-          <Property Name="Data" Type="DateTime" Precision="0" />
-          <Property Name="Identificador" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
-          <Property Name="VersaoAPP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Reincidente" Type="Boolean" />
         </EntityType>
         <EntityType Name="TarefaAmostras">
           <Key>
@@ -9084,21 +8381,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CollectionLevel03">
-            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel03">
-              <MappingFragment StoreEntitySet="CollectionLevel03">
-                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
-                <ScalarProperty Name="ValueText" ColumnName="ValueText" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="ConformedIs" ColumnName="ConformedIs" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
-                <ScalarProperty Name="CollectionLevel02Id" ColumnName="CollectionLevel02Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CollectionLevel2XParHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2XParHeaderField">
               <MappingFragment StoreEntitySet="CollectionLevel2XParHeaderField">
@@ -9109,19 +8391,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="ParHeaderField_Name" ColumnName="ParHeaderField_Name" />
                 <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
                 <ScalarProperty Name="CollectionLevel2_Id" ColumnName="CollectionLevel2_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ConsolidationLevel01">
-            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel01">
-              <MappingFragment StoreEntitySet="ConsolidationLevel01">
-                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
-                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -9146,16 +8415,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="CollectionLevel02Id" ColumnName="CollectionLevel02Id" />
                 <ScalarProperty Name="CollectionLevel2_Id" ColumnName="CollectionLevel2_Id" />
                 <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Department">
-            <EntityTypeMapping TypeName="SgqDbModel.Department">
-              <MappingFragment StoreEntitySet="Department">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -9390,6 +8649,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParEvaluation">
             <EntityTypeMapping TypeName="SgqDbModel.ParEvaluation">
               <MappingFragment StoreEntitySet="ParEvaluation">
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -9428,6 +8688,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParLevel1XHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XHeaderField">
               <MappingFragment StoreEntitySet="ParLevel1XHeaderField">
+                <ScalarProperty Name="HeaderFieldGroup" ColumnName="HeaderFieldGroup" />
                 <ScalarProperty Name="DefaultSelected" ColumnName="DefaultSelected" />
                 <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -9687,6 +8948,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParSample">
             <EntityTypeMapping TypeName="SgqDbModel.ParSample">
               <MappingFragment StoreEntitySet="ParSample">
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -9907,19 +9169,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Defects" ColumnName="Defects" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ConsolidationLevel02">
-            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
-              <MappingFragment StoreEntitySet="ConsolidationLevel02">
-                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
-                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10228,41 +9477,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CollectionLevel02">
-            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
-              <MappingFragment StoreEntitySet="CollectionLevel02">
-                <ScalarProperty Name="Completed" ColumnName="Completed" />
-                <ScalarProperty Name="HavePhase" ColumnName="HavePhase" />
-                <ScalarProperty Name="HaveReaudit" ColumnName="HaveReaudit" />
-                <ScalarProperty Name="HaveCorrectiveAction" ColumnName="HaveCorrectiveAction" />
-                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
-                <ScalarProperty Name="NotEvaluatedIs" ColumnName="NotEvaluatedIs" />
-                <ScalarProperty Name="Mudscore" ColumnName="Mudscore" />
-                <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
-                <ScalarProperty Name="ConsecutiveFailureTotal" ColumnName="ConsecutiveFailureTotal" />
-                <ScalarProperty Name="ConsecutiveFailureIs" ColumnName="ConsecutiveFailureIs" />
-                <ScalarProperty Name="Chainspeed" ColumnName="Chainspeed" />
-                <ScalarProperty Name="CattleTypeId" ColumnName="CattleTypeId" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Sample" ColumnName="Sample" />
-                <ScalarProperty Name="EvaluationNumber" ColumnName="EvaluationNumber" />
-                <ScalarProperty Name="StartPhaseDate" ColumnName="StartPhaseDate" />
-                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
-                <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
-                <ScalarProperty Name="ReauditIs" ColumnName="ReauditIs" />
-                <ScalarProperty Name="Phase" ColumnName="Phase" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
-                <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
-                <ScalarProperty Name="ConsolidationLevel02Id" ColumnName="ConsolidationLevel02Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10649,62 +9863,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <EntityTypeMapping TypeName="SgqDbModel.Regionais">
               <MappingFragment StoreEntitySet="Regionais">
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Resultados">
-            <EntityTypeMapping TypeName="SgqDbModel.Resultados">
-              <MappingFragment StoreEntitySet="Resultados">
-                <ScalarProperty Name="Reincidente" ColumnName="Reincidente" />
-                <ScalarProperty Name="VersaoAPP" ColumnName="VersaoAPP" />
-                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="DataTipificacao" ColumnName="DataTipificacao" />
-                <ScalarProperty Name="SiglaFalhaOperacional" ColumnName="SiglaFalhaOperacional" />
-                <ScalarProperty Name="SiglaContusao" ColumnName="SiglaContusao" />
-                <ScalarProperty Name="Idade" ColumnName="Idade" />
-                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
-                <ScalarProperty Name="FormaAmostragem" ColumnName="FormaAmostragem" />
-                <ScalarProperty Name="Amostragem" ColumnName="Amostragem" />
-                <ScalarProperty Name="AvaliacaoAvulsa" ColumnName="AvaliacaoAvulsa" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Nivel3" ColumnName="Nivel3" />
-                <ScalarProperty Name="Nivel2" ColumnName="Nivel2" />
-                <ScalarProperty Name="Nivel1" ColumnName="Nivel1" />
-                <ScalarProperty Name="ToleranciaDia" ColumnName="ToleranciaDia" />
-                <ScalarProperty Name="DataHoraMonitor" ColumnName="DataHoraMonitor" />
-                <ScalarProperty Name="Banda" ColumnName="Banda" />
-                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
-                <ScalarProperty Name="Meta" ColumnName="Meta" />
-                <ScalarProperty Name="Avaliacao_2" ColumnName="Avaliacao_2" />
-                <ScalarProperty Name="Avaliacao_1" ColumnName="Avaliacao_1" />
-                <ScalarProperty Name="Acesso" ColumnName="Acesso" />
-                <ScalarProperty Name="Maximo" ColumnName="Maximo" />
-                <ScalarProperty Name="Minimo" ColumnName="Minimo" />
-                <ScalarProperty Name="PecasAvaliadas" ColumnName="PecasAvaliadas" />
-                <ScalarProperty Name="Lote" ColumnName="Lote" />
-                <ScalarProperty Name="Peso" ColumnName="Peso" />
-                <ScalarProperty Name="Monitor" ColumnName="Monitor" />
-                <ScalarProperty Name="DataHora" ColumnName="DataHora" />
-                <ScalarProperty Name="Produto" ColumnName="Produto" />
-                <ScalarProperty Name="ProdutoId" ColumnName="ProdutoId" />
-                <ScalarProperty Name="Monitoramento" ColumnName="Monitoramento" />
-                <ScalarProperty Name="MonitoramentoId" ColumnName="MonitoramentoId" />
-                <ScalarProperty Name="NumeroAmostra" ColumnName="NumeroAmostra" />
-                <ScalarProperty Name="NumeroAvaliacao" ColumnName="NumeroAvaliacao" />
-                <ScalarProperty Name="Tarefa" ColumnName="Tarefa" />
-                <ScalarProperty Name="TarefaId" ColumnName="TarefaId" />
-                <ScalarProperty Name="Operacao" ColumnName="Operacao" />
-                <ScalarProperty Name="OperacaoId" ColumnName="OperacaoId" />
-                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
-                <ScalarProperty Name="DepartamentoId" ColumnName="DepartamentoId" />
-                <ScalarProperty Name="Unidade" ColumnName="Unidade" />
-                <ScalarProperty Name="UnidadeId" ColumnName="UnidadeId" />
-                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
-                <ScalarProperty Name="EmpresaId" ColumnName="EmpresaId" />
-                <ScalarProperty Name="Chave" ColumnName="Chave" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

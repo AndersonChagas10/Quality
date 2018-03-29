@@ -462,12 +462,6 @@
     <Compile Include="Mappers\Params\ParLevel1MapperProfile.cs" />
     <Compile Include="Mappers\ExampleMapperProfile.cs" />
     <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
-    <Compile Include="Mappers\Audit\CollectionLevel02MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\CollectionLevel03MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\ConsolidationLevel01MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\ConsolidationLevel02MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\Level01MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\Level02MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
@@ -479,8 +473,6 @@
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
     <Compile Include="Mappers\UnitMapperProfile.cs" />
-    <Compile Include="Mappers\DepartmenMapperProfile.cs" />
-    <Compile Include="Mappers\Audit\Level03MapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Mappers\UserSgqMapperProfile.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
@@ -517,7 +509,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Views\ResultsDivViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\css\AdminLTE.css" />

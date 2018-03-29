@@ -38,7 +38,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 else
                     valores.Resposta = "Valor informado já existe. Não pode ser duplicado.";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 valores.Resposta = "Ocorreu um erro durante a tentativa de processar o dado.";
             }

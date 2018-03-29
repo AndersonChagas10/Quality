@@ -38,7 +38,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 return form;
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 throw;
             }

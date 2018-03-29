@@ -143,9 +143,8 @@ namespace SgqSystem.Controllers.Api.App
 
     public class RetornoLucas
     {
-        internal int sample;
-        internal int? evaluation;
-        public int IdLevel1 { get; set; }
+           
+        //public int IdLevel1 { get; set; }
         public decimal SidesWithDefects { get; set; }
         public decimal Defects { get; set; }
     }

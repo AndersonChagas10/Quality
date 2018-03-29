@@ -55,22 +55,10 @@
     <Compile Include="CollectionJson.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CollectionLevel02.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CollectionLevel03.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="CollectionLevel2.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CollectionLevel2XParHeaderField.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConsolidationLevel01.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConsolidationLevel02.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ConsolidationLevel1.cs">
@@ -89,9 +77,6 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Departamentos.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Department.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Deviation.cs">
@@ -120,18 +105,14 @@
     </Compile>
     <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />
     <Compile Include="Interfaces\Repositories\IParamsRepository.cs" />
     <Compile Include="Interfaces\Repositories\IParLevel3Repository.cs" />
-    <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISaveCollectionRepo.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
     <Compile Include="Interfaces\Services\IDefectDomain.cs" />
     <Compile Include="Interfaces\Services\ICompanyDomain.cs" />
     <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
-    <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="LeftControlRole.cs">
@@ -334,9 +315,6 @@
     <Compile Include="Regionais.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Resultados.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="ResultLevel2HeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -365,7 +343,6 @@
     <Compile Include="Services\CompanyDomain.cs" />
     <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\ParamsDomain.cs" />
-    <Compile Include="Services\RelatorioColetaDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqEfContext.Context.cs">

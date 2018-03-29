@@ -320,15 +320,13 @@ namespace SgqSystem.Controllers.Api
                                             string comparacaoToString = ArrayComparacao[i];
 
                                             var resultIdTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao
-                                                                  //join y in db.CaracteristicaTipificacao
-                                                                  //on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
-                                                                  //where y.cIdentificador.Equals(comparacaoToString)
+                                                                      //join y in db.CaracteristicaTipificacao
+                                                                      //on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
+                                                                      //where y.cIdentificador.Equals(comparacaoToString)
                                                                   select x).FirstOrDefault().TarefaId;
 
                                             bool conforme = verificacaoTipificaoComparacao(unidades.Codigo.ToString(), data, sequencial, iBanda.ToString(), unidades, empresaId, departamentoId, tarefaId, conexao, varComparacao);
-
-                                            //instancia um resultado
-                                            Resultados resultadoObj = new Resultados();
+                                          
                                             //busca o id da operacao
                                             //estamos buscando o id da operação pelo id pois é a unica alternativa no momento para não gerar requisição no bando de dados simplimente para buscar um id
                                             //mas essa informacao deve vir na class
@@ -369,141 +367,9 @@ namespace SgqSystem.Controllers.Api
 
                                             //OPERAÇÃO E PRODUTO PEGA DA TAREFA
                                             //intancia a meta
-                                            Metas meta = db.Metas.Where(m => m.Operacao == operacao.Id).FirstOrDefault();
-
-                                            //pesquisa na tabela resultados um resultado com a chave
-                                            Resultados res = db.Resultados.Where(r => r.EmpresaId == 1
-                                                && r.UnidadeId == id
-                                                && r.OperacaoId == tarefa.Operacao
-                                                && r.TarefaId == _tarefaId
-                                                && r.MonitoramentoId == _monitoramentoId
-                                                && DbFunctions.TruncateTime(r.DataHora) == DbFunctions.TruncateTime(dataHoraMonitor)
-                                                && r.Sequencial.Value == iSequencial
-                                                && r.Banda.Value == iBanda).FirstOrDefault();
-                                            if (res != null)
-                                            {
-                                                //se exiistir um resultado;
-                                                //joga o resultado da tabela no objetivo resultado criado acima
-                                                versaoApp = res.VersaoAPP;
-                                                resultadoObj = res;
-                                            }
-                                            else
-                                            {
-                                                //comeca salvando as metas no resultado objeto
-                                                resultadoObj.Meta = meta.Meta;
-                                                resultadoObj.Status = "Avaliado";
-                                                resultadoObj.AvaliacaoAvulsa = false;
-                                                resultadoObj.Amostragem = tarefa.Amostragem;
-                                                resultadoObj.FormaAmostragem = tarefa.FormaAmostragem;
-
-                                                resultadoObj.Sequencial = iSequencial;
-                                                resultadoObj.Banda = iBanda;
-
-                                                string chave = unidades.Id + "-" + operacao.Id + "-" + tarefa.Id + "-" + resultadoObj.Sequencial + "-" + resultadoObj.Banda + "-" + dataHoraMonitor.ToString("yyyMMdd");
-
-                                                resultadoObj.Chave = chave;
-
-
-                                                int numeroAvaliacao = CommonData.GetNumeroAvaliacaoAtual(unidades.Id, departamento.Id, operacao.Id, tarefa.Id, true);
-
-                                                //cria um numeoro de amostra
-                                                //diminuo em 1 o valor retornado, pois neste ponto a tabela VerificacaoTipificacao ja recebeu os dados da amostra corrente
-                                                int numeroAmostra = CommonData.GetProximoNumeroAmostra(unidades.Id, departamento.Id, operacao.Id, tarefa.Id, numeroAvaliacao, true);
-
-                                                //se numeroAmostra for = menor a 1
-                                                if (numeroAmostra <= 1)
-                                                {
-                                                    numeroAvaliacao = CommonData.GetProximoNumeroAvaliacao(unidades.Id, departamento.Id, operacao.Id, tarefa.Id, true);
-                                                    numeroAmostra = 1;
-                                                }
-
-                                                //cria um numero de avaliacao
-
-                                                //preenche o numero da amostra
-                                                resultadoObj.NumeroAvaliacao = numeroAvaliacao;
-                                                resultadoObj.NumeroAmostra = numeroAmostra;
-                                                string identificador = unidades.Id + "-" + operacao.Id + "-" + tarefa.Id + "-" + monitoramento.Id + "-" + resultadoObj.Sequencial + "-" + resultadoObj.Banda + "-" + dataHoraMonitor.ToString("yyyMMdd");
-                                                resultadoObj.Identificador = identificador;
-
-                                                resultadoObj.EmpresaId = empresa.Id;
-                                                resultadoObj.Empresa = empresa.Nome;
-                                                resultadoObj.UnidadeId = unidades.Id;
-                                                resultadoObj.Unidade = unidades.Nome;
-                                                resultadoObj.DepartamentoId = departamento.Id;
-                                                resultadoObj.Departamento = departamento.Nome;
-                                                resultadoObj.OperacaoId = operacao.Id;
-                                                resultadoObj.Operacao = operacao.Nome;
-                                                resultadoObj.TarefaId = tarefa.Id;
-                                                resultadoObj.Tarefa = tarefa.Nome;
-                                                //resultadoObj.PecasAvaliadas = !string.IsNullOrWhiteSpace(resultado.TotalAvaliadoStr) ? int.Parse(resultado.TotalAvaliadoStr) : pecasAvaliadas;
-                                                resultadoObj.MonitoramentoId = monitoramento.Id;
-                                                resultadoObj.Monitoramento = monitoramento.Nome;
-                                                resultadoObj.ProdutoId = produto.Id;
-                                                resultadoObj.Produto = produto.Nome;
-                                                //resultadoObj.Monitor = 63;
-                                                resultadoObj.Monitor = Convert.ToInt32(usuarioId);
-                                                resultadoObj.Minimo = "Conforme";
-                                                resultadoObj.Maximo = "Conforme";
-                                                resultadoObj.Acesso = "IN LOCO";
-
-                                                if (!string.IsNullOrEmpty(versaoApp))
-                                                {
-                                                    resultadoObj.VersaoAPP = versaoApp;
-                                                    resultadoObj.Mobile = true;
-                                                }
-                                                else
-                                                {
-                                                    resultadoObj.Mobile = false;
-                                                }
-
-                                                resultadoObj.Peso = 1;
-                                                resultadoObj.Data = verificacaoTipificacao.DataHora;
-                                                resultadoObj.DataHora = verificacaoTipificacao.DataHora;
-                                                resultadoObj.DataTipificacao = verificacaoTipificacao.DataHora;
-                                                resultadoObj.DataHoraMonitor = verificacaoTipificacao.DataHora;
-                                            }
-
-                                            if (conforme == true)
-                                            {
-                                                resultadoObj.Avaliacao_2 = 0;
-                                            }
-                                            else
-                                            {
-                                                resultadoObj.Avaliacao_2 = 1;
-                                            }
-                                            //resultadoObj.Avaliacao_2 = Convert.ToInt32(!ValidaConformidade(verificacaoTipificacaoValidacaoList, reader));
-                                            resultadoObj.Avaliacao_1 = (resultadoObj.Avaliacao_2 == 0) ? "Conforme" : "Não Conforme";
-
-                                            //se não existe um resultado para essa Verificação de Tipificação
-                                            //adicionamos o resultado na tabela
-                                            //se existir apenas atualizamos
-
-                                            if (res == null)
-                                            {
-
-                                                db.Resultados.Add(resultadoObj);
-                                            }
-                                            db.SaveChanges();
-
-
-                                            //comparacao da tabelas
-                                            //se tiver divergente grana na comparacao
-                                            //gr
-
-                                            //  DbDataReader verificacaoReader = VerificacaoTipificacaoResultadosLista(Convert.ToInt32(unidades.Codigo), data, Convert.ToInt32(sequencial));
-
-                                            //if (verificacaoReader != null)
-                                            //{
-
-                                            //}
-                                            //else
-                                            //{
-                                            //    return Json("{mensagem:'Não foi feita a validação para os dados informados!'}", JsonRequestBehavior.AllowGet);
-                                            //}
+                                            Metas meta = db.Metas.Where(m => m.Operacao == operacao.Id).FirstOrDefault();                                                                                       
                                         }
-
                                         return Json(mensagem("Tipificação registrada com sucesso!", alertaTipo.info), JsonRequestBehavior.AllowGet);
-
                                     }
                                     catch (Exception ex)
                                     {

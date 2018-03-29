@@ -13,8 +13,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/ApiGerenciar")]
     public class ApiGerenciarController : BaseApiController
     {
-        string dtInit;
-        string dtFim;
            
         private PlanoDeAcaoEntities db;
         public ApiGerenciarController()

@@ -47,7 +47,7 @@ namespace SgqSystem.Mail
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 
             }
@@ -67,7 +67,7 @@ namespace SgqSystem.Mail
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -440,13 +440,7 @@ namespace SgqSystem.Mail
         /// <param name="deviation"></param>
         public static void SendMailFromDeviationSgqAppTesteBR(string mailTo, bool deviation)
         {
-            var emailFrom = "celsogea@hotmail.com";
-            var emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-            var emailSmtp = "smtp.live.com";
-            var emailPort = 587;
-            var emailSSL = true;
-
-
+         
             CreateMailSgqAppDeviation();
             CreateMailSgqAppCorrectiveAction();
 
@@ -482,7 +476,7 @@ namespace SgqSystem.Mail
                         {
                             service.ProcessJson("", i, false);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             //new CreateLog(e);
                         }
