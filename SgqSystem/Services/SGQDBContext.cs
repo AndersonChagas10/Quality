@@ -2345,12 +2345,20 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period)
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string cluster)
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel1 (nolock) WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND SHIFT = " + Shift + " and period = "
-                + Period + " AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = @"
+                            SELECT CL1.* FROM ConsolidationLevel1 cl1 with (nolock) 
+                            LEFT JOIN ConsolidationLevel1XCluster C1C
+                            ON C1C.ConsolidationLevel1_Id = Cl1.Id
+                            WHERE UnitId = '" + ParCompany_Id + "' " +
+                            "AND ParLevel1_Id= '" + ParLevel1_Id + "' " +
+                            "AND SHIFT = " + Shift + " " +
+                            "and period = " + Period + " " +
+                            "AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + @"'
+                             AND (C1C.ParCluster_Id = " + cluster + " OR C1C.ParCluster_Id IS NULL)";
 
                 //SqlConnection db = new SqlConnection(conexao);
 
@@ -2425,12 +2433,33 @@ namespace SGQDBContext
             }
         }
 
-        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id)
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, string cluster)
         {
             try
             {
-                string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult FROM ConsolidationLevel2 (nolock)  WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "'";
-                //SqlConnection db = new SqlConnection(conexao);
+                string sql = @"
+
+                            SELECT c2.Id, 
+                            ConsolidationLevel1_Id, 
+                            UnitId, 
+                            ParLevel2_Id, 
+                            ConsolidationDate, 
+                            WeiEvaluation, 
+                            EvaluateTotal, 
+                            DefectsTotal, 
+                            WeiDefects, 
+                            TotalLevel3Evaluation, 
+                            TotalLevel3WithDefects, 
+                            EvaluatedResult 
+                            FROM ConsolidationLevel2 c2 with (nolock)
+                            LEFT JOIN ConsolidationLevel2XCluster C2C
+                            ON C2C.ConsolidationLevel2_id = c2.Id
+                            WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
+                            " AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
+                            " AND UnitId='" + ParCompany_Id + "'" + 
+                            " AND (C2C.ParCluster_Id = '" + cluster +"' OR C2C.ParCluster_Id IS NULL)" ;
+
+                
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -2446,13 +2475,37 @@ namespace SGQDBContext
                 throw;
             }
         }
-        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit, string reauditNumber)
+
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit, string reauditNumber, string cluster)
         {
             try
             {
-                string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult, ReauditIs, ReauditNumber FROM ConsolidationLevel2 (nolock)  WHERE ConsolidationLevel1_Id = '" +
-                    ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND ReauditIs=" + reaudit + " and reauditnumber=" + reauditNumber + ";";
-                //SqlConnection db = new SqlConnection(conexao);
+                string sql = @"
+                            SELECT 
+                            Id, 
+                            ConsolidationLevel1_Id, 
+                            UnitId, 
+                            ParLevel2_Id, 
+                            ConsolidationDate, 
+                            WeiEvaluation, 
+                            EvaluateTotal, 
+                            DefectsTotal, 
+                            WeiDefects, 
+                            TotalLevel3Evaluation, 
+                            TotalLevel3WithDefects, 
+                            EvaluatedResult, 
+                            ReauditIs, 
+                            ReauditNumber 
+                            FROM ConsolidationLevel2 c2 with (nolock) 
+                            LEFT JOIN ConsolidationLevel2XCluster C2C
+                            ON C2C.ConsolidationLevel2_id = c2.Id
+                            WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
+                            "AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
+                            "AND UnitId='" + ParCompany_Id + "' " +
+                            "AND ReauditIs=" + reaudit + " " +
+                            "and reauditnumber=" + reauditNumber + " " +
+                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
+
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))

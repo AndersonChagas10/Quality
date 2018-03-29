@@ -243,7 +243,7 @@ namespace SgqSystem.Services
 
             SqlConnection.ClearAllPools();
 
-            //ObjResultJSon = "<level02>4987891190;03/27/2018 22:06:018:747;1468;03/27/2018 22:06:018:791;14;1;1;5;0;false;03272018;2;1;;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>3,03/27/2018 22:06:018:793,,false,5,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,1,1,1</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;1;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
+            ObjResultJSon = "<level02>4987891190;03/29/2018 22:06:018:747;1468;03/29/2018 22:06:018:791;14;1;1;5;0;false;03292018;2;1;;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>3,03/29/2018 22:06:018:793,,false,5,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,1,1,1</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;1;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
 
             ObjResultJSon = ObjResultJSon.Replace("%2C", "");
 
@@ -280,13 +280,22 @@ namespace SgqSystem.Services
                         //Estrai o resultado
                         string[] result = arrayObj[i].Split(';');
 
+                        
+
                         //4 98789 1190 //98789 é a chave que separa processo de produto
                         string parCluster_Id_parLevel1_id = result[0].Replace("98789", "|");
                         string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : null;
                         string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
 
                         result[0] = parLevel1_Id;
-       
+
+                        List<string> r1 = result.ToList<string>();
+
+                        r1.Add(parCluster_Id);
+
+                        result = r1.ToArray();
+
+
                         string[] resultCopy = result;
                         while (!resultCopy[22].Contains("<level03>") && resultCopy.Count() > 23)
                         {
@@ -494,6 +503,7 @@ namespace SgqSystem.Services
                         string startphaseevaluation = "0";
                         string endphaseevaluation = "0";
                         string reprocesso = null;
+                        string cluster = null;
                         if (result.Length > 47)
                         {
                             startphaseevaluation = result[47];
@@ -503,11 +513,16 @@ namespace SgqSystem.Services
                             endphaseevaluation = result[48];
                         }
 
+
                         if (result.Length > 49)
                         {
-                            reprocesso = result[49];
+                            cluster = result[49];
                         }
 
+                        if (result.Length > 50)
+                        {
+                            reprocesso = result[50];
+                        }
                         //Gera o Cabeçalho do Level02
                         string level02HeaderJSon = result[13];
                         level02HeaderJSon += ";" + phase;
@@ -540,6 +555,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + startphaseevaluation;
                         level02HeaderJSon += ";" + endphaseevaluation;
                         level02HeaderJSon += ";" + reprocesso;
+                        level02HeaderJSon += ";" + cluster;
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -715,7 +731,7 @@ namespace SgqSystem.Services
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
         public string ProcessJson(string device, int id, bool filho)
-        {
+       {
 
             try
             {
@@ -867,7 +883,7 @@ namespace SgqSystem.Services
                     isemptylevel3 = DefaultValueReturn(isemptylevel3, "0");
                     isemptylevel3 = BoolConverter(isemptylevel3);
 
-
+                    string cluster = DefaultValueReturn(arrayHeader[31], null);
 
                     string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
@@ -877,27 +893,27 @@ namespace SgqSystem.Services
 
                     string reauditNumber = DefaultValueReturn(c.ReauditNumber.ToString(), "0");
 
-                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period);
+                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period, cluster);
 
                     if (c.Reaudit)
-                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period);
+                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period, cluster);
                     if (consolidationLevel1 == null)
                     {
-                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period);
+                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period, "1", cluster);
                         if (consolidationLevel1 == null)
                         {
                             throw new Exception();
                         }
                     }
 
-                    var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
+                    var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, cluster);
 
                     if (c.Reaudit)
-                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1, reauditNumber);
+                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1, reauditNumber, cluster);
 
                     if (consolidationLevel2 == null)
                     {
-                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate, c.Reaudit, c.ReauditNumber);
+                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate, c.Reaudit, c.ReauditNumber, cluster);
                         if (consolidationLevel2 == null)
                         {
                             throw new Exception();
@@ -935,9 +951,16 @@ namespace SgqSystem.Services
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey);
 
-                    if (arrayHeader.Length > 30)
+                  
+                        
+
+                        if (cluster != null)
+                            InsertCollectionLevel2XCluster(CollectionLevel2Id, cluster);
+                    
+
+                    if (arrayHeader.Length > 32)
                     {
-                        string reprocesso = DefaultValueReturn(arrayHeader[30], null);
+                        string reprocesso = DefaultValueReturn(arrayHeader[32], null);
 
                         if (reprocesso != null)
                             InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
@@ -1371,7 +1394,7 @@ namespace SgqSystem.Services
         /// <param name="Shift">Turno</param>
         /// <param name="Period">Periodo</param>
         /// <returns></returns>
-        public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string departmentId = "1")
+        public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string departmentId = "1", string cluster = null)
         {
             var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
@@ -1400,7 +1423,10 @@ namespace SgqSystem.Services
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
                         {
-                            return ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, collectionDate, Shift, Period);
+
+                            InsertConsolidationLevel1XCluster(i, cluster);
+
+                            return ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, collectionDate, Shift, Period, "4");
                         }
                         else
                         {
@@ -1420,6 +1446,51 @@ namespace SgqSystem.Services
             catch (Exception ex)
             {
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel1");
+                throw ex;
+            }
+        }
+
+        public int InsertConsolidationLevel1XCluster(int consolidationLevel1_Id, string cluster)
+        {
+            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
+
+            string sql = "INSERT ConsolidationLevel1XCluster ([consolidationLevel1_Id],[ParCluster_Id]) " +
+                         "VALUES " +
+                         "('" + consolidationLevel1_Id + "','" + cluster + "')" +
+                         "SELECT @@IDENTITY AS 'Identity'";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        //Se o registro for inserido retorno o Id da Consolidação
+                        if (i > 0)
+                        {
+                            return i;
+                        }
+                        else
+                        {
+                            //Caso ocorra algum erro, retorno zero
+                            return 0;
+                        }
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+            //Caso ocorra alguma Exception, grava o log e retorna zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel1XCluster");
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel1XCluster");
                 throw ex;
             }
         }
@@ -1482,7 +1553,7 @@ namespace SgqSystem.Services
         /// <param name="unitId">Id da Unidade</param>
         /// <param name="collectionDate">Data da Consolidação</param>
         /// <returns></returns>
-        public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate, bool reaudit, int reauditNumber)
+        public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate, bool reaudit, int reauditNumber, string cluster)
         {
             //Verifica se já existe uma consolidação para o level02
             var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
@@ -1527,10 +1598,13 @@ namespace SgqSystem.Services
                         //Se inserir corretamente, retorno o Id da Consolidação
                         if (i > 0)
                         {
+
+                            InsertConsolidationLevel2XCluster(i, cluster);
+
                             if (reaudit)
-                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1, reauditNumber.ToString());
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1, reauditNumber.ToString(), cluster);
                             else
-                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id);
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, cluster);
                         }
                         else
                         {
@@ -1553,6 +1627,52 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
+
+        public int InsertConsolidationLevel2XCluster(int consolidationLevel2_Id, string cluster)
+        {
+            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
+
+            string sql = "INSERT ConsolidationLevel2XCluster ([consolidationLevel2_Id],[ParCluster_Id]) " +
+                         "VALUES " +
+                         "('" + consolidationLevel2_Id + "','" + cluster + "')" +
+                         "SELECT @@IDENTITY AS 'Identity'";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        //Se o registro for inserido retorno o Id da Consolidação
+                        if (i > 0)
+                        {
+                            return i;
+                        }
+                        else
+                        {
+                            //Caso ocorra algum erro, retorno zero
+                            return 0;
+                        }
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+            //Caso ocorra alguma Exception, grava o log e retorna zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel1XCluster");
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel1XCluster");
+                throw ex;
+            }
+        }
+
 
         //public int GetLevel2Consolidation2(string Level01ConsolidationId, string Level02Id)
         //{
@@ -1939,6 +2059,32 @@ namespace SgqSystem.Services
             else //Tratamento de erros Gabriel 2017-05-27
             {
                 return 1;
+            }
+        }
+
+        public int InsertCollectionLevel2XCluster(int CollectionLevel2Id, string cluster)
+        {
+            string sql = "INSERT INTO CollectionLevel2XCluster ([CollectionLevel2_Id], [ParCluster_Id]) " +
+             "VALUES ('" + CollectionLevel2Id + "', '" + cluster + "')";
+
+            sql += " SELECT @@IDENTITY AS 'Identity' ";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        return i;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
@@ -6870,21 +7016,21 @@ namespace SgqSystem.Services
                                 int shift = Convert.ToInt32(r[4]);
                                 int period = Convert.ToInt32(r[5]);
 
-                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period);
+                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period, "4");
                                 if (consolidationLevel1 == null)
                                 {
-                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period);
+                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period, null, "4");
                                     if (consolidationLevel1 == null)
                                     {
                                         throw new Exception();
                                     }
                                 }
 
-                                var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, consolidationLevel1.Id, ParLevel2_Id);
+                                var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, consolidationLevel1.Id, ParLevel2_Id, "4");
 
                                 if (consolidationLevel2 == null)
                                 {
-                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate, false, 0);
+                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate, false, 0, "4");
                                     if (consolidationLevel2 == null)
                                     {
                                         throw new Exception();
