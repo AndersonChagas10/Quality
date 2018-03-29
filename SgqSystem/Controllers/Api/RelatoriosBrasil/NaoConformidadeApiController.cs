@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/NaoConformidade")]
-    public class NaoConformidadeApiController : ApiController
+    public class NaoConformidadeApiController : BaseApiController
     {
         private List<NaoConformidadeResultsSet> _mock { get; set; }
         private List<NaoConformidadeResultsSet> _list { get; set; }
@@ -1951,6 +1951,16 @@ DROP TABLE #AMOSTRATIPO4 ";
             }
 
             return _list;
+        }
+
+        [HttpPost]
+        [Route("PivotTable")]
+        public dynamic PivotTable()
+        {
+            using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
+            {
+                return QueryNinja(dbSgq, "select top 1000 parlevel3_id, weight, parlevel3_name from Result_Level3");
+            }
         }
 
         [HttpPost]
