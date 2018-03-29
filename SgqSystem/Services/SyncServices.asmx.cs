@@ -243,7 +243,7 @@ namespace SgqSystem.Services
 
             SqlConnection.ClearAllPools();
 
-            ObjResultJSon = "<level02>4987891190;03/29/2018 22:06:018:747;1468;03/29/2018 22:06:018:791;14;1;1;5;0;false;03292018;2;1;;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>3,03/29/2018 22:06:018:793,,false,5,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,1,1,1</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;1;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
+            //ObjResultJSon = "<level02>4987891190;03/29/2018 22:06:018:747;1468;03/29/2018 22:06:018:791;14;1;1;5;0;false;03292018;2;1;;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>3,03/29/2018 22:06:018:793,,false,5,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,1,1,1</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;1;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
 
             ObjResultJSon = ObjResultJSon.Replace("%2C", "");
 
