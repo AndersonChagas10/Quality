@@ -651,7 +651,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', fu
     $('#modalLindo').find('.modal-footer button').hide();
     $('#Header').html("Editar");
     $('#modalLindo').modal();
-
+    $('#Fechar').show();
 });
 
 function tableDraw() {

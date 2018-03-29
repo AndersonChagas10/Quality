@@ -2368,9 +2368,10 @@
             SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
 
             var label = $(btn).parents('tr').find('label').html();
+            $('#modalNovo > div > div.modal-footer').hide();
             $('#modalNovo').modal();
             $('#novoHeader').html("Gerenciar: " + label);
-            $('#nomeItemNovo').html(label)
+            $('#nomeItemNovo').html(label);
 
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
@@ -2706,6 +2707,7 @@
                     $('#modalLindo').find('.modal-footer button').hide();
                     $('#Header').html("Editar");
                     $('#modalLindo').modal();
+                    $('#Fechar').show();
                 });
 
                 setTimeout(function () {
@@ -2802,6 +2804,7 @@
                 if (data.Acao && data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
+
             });
         }
 
@@ -2902,6 +2905,7 @@
                 $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
                 $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
 
+                $('#Fechar').show();
             });
         }
 

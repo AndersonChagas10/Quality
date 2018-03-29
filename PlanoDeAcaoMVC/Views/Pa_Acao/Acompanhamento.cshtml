@@ -64,7 +64,9 @@
                 </td>
                 <td></td>
             </tr>
-        } else {
+        }
+        else
+        {
             <tr class="showAsEstrategy">
                 <td>
                     @Html.DisplayNameFor(model => model.Level1Id)
@@ -252,7 +254,8 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Notificar:</label>
-                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), @*"@Resources.Resource.select",*@ new { @class = "form-control select2Init", @style = "width:100%;", @multiple = "multiple" })
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"),@*"@Resources.Resource.select",*@                                                                                                                            /**/
+                                                                                                                                                new { @class = "form-control select2Init", @style = "width:100%;", @multiple = "multiple" })
                 </div>
 
                 <div class="form-group">

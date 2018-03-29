@@ -383,6 +383,7 @@ $('#divPlanejamento table > tbody').on('click', '.btnEditarPlanejamento', functi
     $('#modalLindo').find('.modal-footer button').hide();
     $('#Header').html("Editar");
     $('#modalLindo').modal();
+    $('#Fechar').show();
 
 });
 
