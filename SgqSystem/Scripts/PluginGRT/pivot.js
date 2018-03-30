@@ -398,69 +398,70 @@
     };
     aggregators = (function(tpl) {
       return {
-        "Count": tpl.count(usFmtInt),
-        "Count Unique Values": tpl.countUnique(usFmtInt),
-        "List Unique Values": tpl.listUnique(", "),
-        "Sum": tpl.sum(usFmt),
-        "Integer Sum": tpl.sum(usFmtInt),
-        "Average": tpl.average(usFmt),
-        "Median": tpl.median(usFmt),
-        "Sample Variance": tpl["var"](1, usFmt),
-        "Sample Standard Deviation": tpl.stdev(1, usFmt),
-        "Minimum": tpl.min(usFmt),
-        "Maximum": tpl.max(usFmt),
-        "First": tpl.first(usFmt),
-        "Last": tpl.last(usFmt),
-        "Sum over Sum": tpl.sumOverSum(usFmt),
-        "80% Upper Bound": tpl.sumOverSumBound80(true, usFmt),
-        "80% Lower Bound": tpl.sumOverSumBound80(false, usFmt),
-        "Sum as Fraction of Total": tpl.fractionOf(tpl.sum(), "total", usFmtPct),
-        "Sum as Fraction of Rows": tpl.fractionOf(tpl.sum(), "row", usFmtPct),
-        "Sum as Fraction of Columns": tpl.fractionOf(tpl.sum(), "col", usFmtPct),
-        "Count as Fraction of Total": tpl.fractionOf(tpl.count(), "total", usFmtPct),
-        "Count as Fraction of Rows": tpl.fractionOf(tpl.count(), "row", usFmtPct),
-        "Count as Fraction of Columns": tpl.fractionOf(tpl.count(), "col", usFmtPct)
+        "Contagem": tpl.count(usFmtInt),
+        "Contagem de valores unicos": tpl.countUnique(usFmtInt),
+        "Listagem de valores unicos": tpl.listUnique(", "),
+        "Soma": tpl.sum(usFmt),
+        "Some de valores inteiros": tpl.sum(usFmtInt),
+        "Media": tpl.average(usFmt),
+        "Mediana": tpl.median(usFmt),
+        "Varia&ccedil;&atilde;o de amostra": tpl["var"](1, usFmt),
+        "Desvio padr&atilde;o da amostra": tpl.stdev(1, usFmt),
+        "Minimo": tpl.min(usFmt),
+        "Maximo": tpl.max(usFmt),
+        "Primeiro": tpl.first(usFmt),
+        "Ultimo": tpl.last(usFmt),
+        "Some sobre soma": tpl.sumOverSum(usFmt),
+        "80% Limite Superior": tpl.sumOverSumBound80(true, usFmt),
+        "80% Limite inferior": tpl.sumOverSumBound80(false, usFmt),
+        "Soma como fra&ccedil;&atilde;o do total": tpl.fractionOf(tpl.sum(), "total", usFmtPct),
+        "Soma como fra&ccedil;&atilde;o das linhas": tpl.fractionOf(tpl.sum(), "row", usFmtPct),
+        "Soma como fra&ccedil;&atilde;o das colunas": tpl.fractionOf(tpl.sum(), "col", usFmtPct),
+        "Contagem como fra&ccedil;&atilde;o do total": tpl.fractionOf(tpl.count(), "total", usFmtPct),
+        "Contagem como fra&ccedil;&atilde;o das linhas": tpl.fractionOf(tpl.count(), "row", usFmtPct),
+        "Contagem como fra&ccedil;&atilde;o das colunas": tpl.fractionOf(tpl.count(), "col", usFmtPct)
       };
     })(aggregatorTemplates);
     renderers = {
-      "Table": function(data, opts) {
+      "Tabela": function(data, opts) {
         return pivotTableRenderer(data, opts);
       },
-      "Table Barchart": function(data, opts) {
+      "Gafico de barra na tabela": function(data, opts) {
         return $(pivotTableRenderer(data, opts)).barchart();
       },
-      "Heatmap": function(data, opts) {
+      "Mapa de calor (total)": function(data, opts) {
         return $(pivotTableRenderer(data, opts)).heatmap("heatmap", opts);
       },
-      "Row Heatmap": function(data, opts) {
+      "Mapa de calor (linha)": function(data, opts) {
         return $(pivotTableRenderer(data, opts)).heatmap("rowheatmap", opts);
       },
-      "Col Heatmap": function(data, opts) {
+      "Mapa de calor (coluna)": function(data, opts) {
         return $(pivotTableRenderer(data, opts)).heatmap("colheatmap", opts);
       }
     };
+      //http://www.lsi.usp.br/~help/html/iso.html
     locales = {
       en: {
         aggregators: aggregators,
         renderers: renderers,
         localeStrings: {
-          renderError: "An error occurred rendering the PivotTable results.",
-          computeError: "An error occurred computing the PivotTable results.",
-          uiRenderError: "An error occurred rendering the PivotTable UI.",
-          selectAll: "Select All",
-          selectNone: "Select None",
-          tooMany: "(too many to list)",
-          filterResults: "Filter values",
-          apply: "Apply",
-          cancel: "Cancel",
-          totals: "Totals",
+            renderError: "Ocorreu um erro durante a cria&ccedil;&atilde;o dos resultados do Analytics.",
+          computeError: "Ocorreu um erro durante o calculo dos resultados do Analytics.",
+          uiRenderError: "Ocorreu um erro durante a montagem da interface do Analytics.",
+          selectAll: "Todos",
+          selectNone: "Nenhum",
+          tooMany: "(Muitos elementos na lista)",
+          filterResults: "Filtre valores",
+          apply: "Aplicar",
+          cancel: "Cancelar",
+          totals: "Total",
           vs: "vs",
-          by: "by"
+          by: "por"
         }
       }
     };
-    mthNamesEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    dayNamesEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    mthNamesEn = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    dayNamesEn = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
     zeroPad = function(number) {
       return ("0" + number).substr(-2, 2);
     };
@@ -1264,7 +1265,7 @@
           "class": "pvtUi"
         }).attr("cellpadding", 5);
         rendererControl = $("<td>");
-        renderer = $("<select>").addClass('pvtRenderer').appendTo(rendererControl).bind("change", function() {
+        renderer = $("<select>").addClass('pvtRenderer').addClass('input-sm').css('display','block').css('width','100%').appendTo(rendererControl).bind("change", function () {
           return refresh();
         });
         ref = opts.renderers;
@@ -1320,9 +1321,9 @@
           unusedAttrsVerticalAutoOverride = attrLength > unusedAttrsVerticalAutoCutoff;
         }
         if (opts.unusedAttrsVertical === true || unusedAttrsVerticalAutoOverride) {
-          unused.addClass('pvtVertList');
+            unused.addClass('pvtVertList').css('overflow-y', 'auto').css('display', 'block').css('max-height', '400px');
         } else {
-          unused.addClass('pvtHorizList');
+            unused.addClass('pvtHorizList').css('overflow-x', 'auto').css('display', 'block').css('max-width', '700px').css('height', '32px');
         }
         fn1 = function(attr) {
           var attrElem, checkContainer, closeFilterBox, controls, filterItem, filterItemExcluded, finalButtons, hasExcludedItem, len2, n, placeholder, ref1, sorter, triangleLink, v, value, valueCount, valueList, values;
@@ -1345,10 +1346,12 @@
               sorter = getSort(opts.sorters, attr);
               placeholder = opts.localeStrings.filterResults;
               $("<input>", {
-                type: "text"
+                type: "text",
+                "class": "input-sm"
               }).appendTo(controls).attr({
                 placeholder: placeholder,
-                "class": "pvtSearch"
+                "class": "pvtSearch form-control",
+                "style": "width:100%"
               }).bind("keyup", function() {
                 var accept, accept_gen, filter;
                 filter = $(this).val().toLowerCase().trim();
@@ -1378,15 +1381,16 @@
                   }
                 });
               });
-              controls.append($("<br>"));
               $("<button>", {
-                type: "button"
+                  type: "button",
+                  "class": "btn btn-info col-xs-6"
               }).appendTo(controls).html(opts.localeStrings.selectAll).bind("click", function() {
                 valueList.find("input:visible:not(:checked)").prop("checked", true).toggleClass("changed");
                 return false;
               });
               $("<button>", {
-                type: "button"
+                  type: "button",
+                  "class": "btn btn-info col-xs-6"
               }).appendTo(controls).html(opts.localeStrings.selectNone).bind("click", function() {
                 valueList.find("input:visible:checked").prop("checked", false).toggleClass("changed");
                 return false;
@@ -1423,10 +1427,11 @@
             valueList.find('.pvtCheckContainer p').show();
             return valueList.hide();
           };
-          finalButtons = $("<p>").appendTo(valueList);
+          finalButtons = $("<div>").appendTo(valueList);
           if (values.length <= opts.menuLimit) {
             $("<button>", {
-              type: "button"
+              type: "button",
+              "class": "btn btn-primary col-xs-6"
             }).text(opts.localeStrings.apply).appendTo(finalButtons).bind("click", function() {
               if (valueList.find(".changed").removeClass("changed").length) {
                 refresh();
@@ -1435,7 +1440,8 @@
             });
           }
           $("<button>", {
-            type: "button"
+            type: "button",
+            "class": "btn btn-default col-xs-6"
           }).text(opts.localeStrings.cancel).appendTo(finalButtons).bind("click", function() {
             valueList.find(".changed:checked").removeClass("changed").prop("checked", false);
             valueList.find(".changed:not(:checked)").removeClass("changed").prop("checked", true);
@@ -1461,7 +1467,7 @@
           fn1(attr);
         }
         tr1 = $("<tr>").appendTo(uiTable);
-        aggregator = $("<select>").addClass('pvtAggregator').bind("change", function() {
+        aggregator = $("<select>").addClass('pvtAggregator input-sm').bind("change", function() {
           return refresh();
         });
         ref1 = opts.aggregators;
@@ -1501,10 +1507,10 @@
           return refresh();
         });
         $("<td>").addClass('pvtVals').addClass('col-lg-2 col-xs-4').appendTo(tr1).append(aggregator).append(rowOrderArrow).append(colOrderArrow).append($("<br>"));
-        $("<td>").addClass('pvtAxisContainer pvtHorizList pvtCols').appendTo(tr1);
+        $("<td>").addClass('pvtAxisContainer pvtHorizList pvtCols').css('overflow-x', 'auto').css('display', 'block').css('max-width', '700px').css('height','45.6px').appendTo(tr1);
         tr2 = $("<tr>").appendTo(uiTable);
         tr2.append($("<td>").addClass('pvtAxisContainer pvtRows').attr("valign", "top"));
-        pivotTable = $("<td>").attr("valign", "top").addClass('pvtRendererArea').appendTo(tr2);
+        pivotTable = $("<td>").attr("valign", "top").addClass('pvtRendererArea').css('overflow', 'auto').css('display', 'block').css('max-width', '700px').css('max-height', '400px').appendTo(tr2);
         if (opts.unusedAttrsVertical === true || unusedAttrsVerticalAutoOverride) {
           uiTable.find('tr:nth-child(1)').prepend(rendererControl);
           uiTable.find('tr:nth-child(2)').prepend(unused);
@@ -1562,7 +1568,7 @@
             if (numInputsToProcess !== 0) {
               pvtVals = _this.find(".pvtVals");
               for (x = t = 0, ref5 = numInputsToProcess; 0 <= ref5 ? t < ref5 : t > ref5; x = 0 <= ref5 ? ++t : --t) {
-                newDropdown = $("<select>").addClass('pvtAttrDropdown').append($("<option>")).bind("change", function() {
+                newDropdown = $("<select>").addClass('pvtAttrDropdown input-sm').append($("<option>")).bind("change", function() {
                   return refresh();
                 });
                 for (u = 0, len4 = shownInAggregators.length; u < len4; u++) {

@@ -1232,7 +1232,10 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Content\PluginGRT\c3.min.css" />
+    <Content Include="Scripts\PluginGRT\c3.min.js" />
     <Content Include="Scripts\PluginGRT\c3_renderers.js" />
+    <Content Include="Scripts\PluginGRT\d3.min.js" />
     <Content Include="Scripts\PluginGRT\datatableGRT.js" />
     <Content Include="Scripts\PluginGRT\pivot.js" />
     <Content Include="Scripts\Print\printGRT.js" />

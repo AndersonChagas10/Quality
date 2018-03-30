@@ -22,7 +22,7 @@
         defaults = {
           localeStrings: {
             vs: "vs",
-            by: "by"
+            by: "por"
           },
           c3: {}
         };
@@ -296,28 +296,28 @@
       };
     };
     return $.pivotUtilities.c3_renderers = {
-      "Horizontal Bar Chart": makeC3Chart({
+        "Gr&aacute;fico de barras horizontal": makeC3Chart({
         type: "bar",
         horizontal: true
       }),
-      "Horizontal Stacked Bar Chart": makeC3Chart({
+        "Gr&aacute;fico de barras empilhadas horizontal": makeC3Chart({
         type: "bar",
         stacked: true,
         horizontal: true
       }),
-      "Bar Chart": makeC3Chart({
+        "Gr&aacute;fico de barras": makeC3Chart({
         type: "bar"
       }),
-      "Stacked Bar Chart": makeC3Chart({
+        "Gr&aacute;fico de barras empilhadas": makeC3Chart({
         type: "bar",
         stacked: true
       }),
-      "Line Chart": makeC3Chart(),
-      "Area Chart": makeC3Chart({
+        "Gr&aacute;fico de Linha": makeC3Chart(),
+        "Gr&aacute;fico de Area": makeC3Chart({
         type: "area",
         stacked: true
       }),
-      "Scatter Chart": makeC3Chart({
+        "Gr&aacute;fico de Dispers&atilde;o": makeC3Chart({
         type: "scatter"
       })
     };
