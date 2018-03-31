@@ -49,8 +49,12 @@ namespace SgqSystem.Controllers.Api
             }
             else
             {
-                var query = string.Format(@"SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0} 
-                        and ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1)", companyId, level1Id);
+                var query = string.Format(@"SELECT RL.* FROM ParRecravacao_Linhas RL
+                        left join ParRecravacao_TipoLata TL
+                        on TL.Id = RL.ParRecravacao_TypeLata_Id
+                        WHERE RL.ParCompany_Id = {0} 
+                        and TL.isActive = 1
+                        and RL.ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1)", companyId, level1Id);
                 var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
 
                 foreach (var linha in listLinhasDoLevel1)
