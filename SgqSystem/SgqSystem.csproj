@@ -1097,6 +1097,7 @@
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ USA.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBr.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqGlobal.pubxml" />
