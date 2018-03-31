@@ -1,0 +1,103 @@
+﻿@model Dominio.ParModuleXModule
+
+
+@{
+    ViewBag.Title = Resources.Resource.delete;
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Details", "ParModules", new { id = ViewBag.ModuleId })">@Resources.Resource.module</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.module X @Resources.Resource.module</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module X @Resources.Resource.module</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <h3>@Resources.Resource.confirm_delete?</h3>
+                                <hr />
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        @Resources.Resource.linked
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.ParModule.Name)
+                                    </dd>
+
+                                    <dt>
+                                        @Resources.Resource.main
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.ParModule1.Name)
+                                    </dd>
+
+                                </dl>
+
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-actions no-color">
+                                        <input type="submit" value="@Resources.Resource.delete" class="btn btn-danger" />
+                                        @Html.ActionLink(Resources.Resource.back_to_list, "Details", "ParModules", new { id = ViewBag.ModuleId }, new { @class = "btn btn-default" })
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+</div>
+
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar3");
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+</script>

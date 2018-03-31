@@ -18,6 +18,8 @@ namespace Dominio
         public ParModule()
         {
             this.ParClusterXModule = new HashSet<ParClusterXModule>();
+            this.ParModuleXModule = new HashSet<ParModuleXModule>();
+            this.ParModuleXModule1 = new HashSet<ParModuleXModule>();
         }
     
         public int Id { get; set; }
@@ -29,5 +31,9 @@ namespace Dominio
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParClusterXModule> ParClusterXModule { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParModuleXModule> ParModuleXModule { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParModuleXModule> ParModuleXModule1 { get; set; }
     }
 }

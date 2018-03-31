@@ -280,7 +280,8 @@
                         .text($('#parLevel1Select2 :selected').text()));
                 $('#parLevel1Select2AmostraLevel').val($('#parLevel1Select2 :selected').val());
 
-                $('#parClusterSelect2AmostraLevel option[value=-1]').text("@Resources.Resource.all");
+                //$('#parClusterSelect2AmostraLevel option[value=-1]').text("@Resources.Resource.all");
+                $('#parClusterSelect2AmostraLevel option[value=-1]').remove();
 
             },
             /*Fim Setup*/

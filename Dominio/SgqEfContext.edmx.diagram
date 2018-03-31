@@ -280,6 +280,9 @@
         <EntityTypeShape EntityType="SgqDbModel.RecravacaoJson" Width="1.5" PointX="23.375" PointY="8.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLataImagens" Width="1.5" PointX="13.375" PointY="22.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3Value_Outer" Width="1.5" PointX="24.375" PointY="13.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParModuleXModule" Width="1.5" PointX="11.25" PointY="73.625" />
+        <AssociationConnector Association="SgqDbModel.FK_ParModuleXModule_ParModuleChild" />
+        <AssociationConnector Association="SgqDbModel.FK_ParModuleXModule_ParModuleParent" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -370,6 +370,7 @@
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
     <Compile Include="Controllers\ParClusterXModulesController.cs" />
     <Compile Include="Controllers\ParModulesController.cs" />
+    <Compile Include="Controllers\ParModuleXModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
@@ -1247,6 +1248,7 @@
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ USA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ.pubxml" />
+    <None Include="Properties\PublishProfiles\SgqBr.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
@@ -1663,6 +1665,11 @@
     <Content Include="Views\ParClusterXModules\Details.cshtml" />
     <Content Include="Views\ParClusterXModules\Edit.cshtml" />
     <Content Include="Views\ParClusterXModules\Index.cshtml" />
+    <Content Include="Views\ParModuleXModules\Create.cshtml" />
+    <Content Include="Views\ParModuleXModules\Delete.cshtml" />
+    <Content Include="Views\ParModuleXModules\Details.cshtml" />
+    <Content Include="Views\ParModuleXModules\Edit.cshtml" />
+    <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

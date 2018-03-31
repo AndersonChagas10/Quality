@@ -243,7 +243,7 @@ namespace SgqSystem.Services
 
             SqlConnection.ClearAllPools();
 
-            //ObjResultJSon = "<level02>1;12/18/2017 17:45:057:484;9;12/18/2017 17:45:056:657;2;1;1;1;0;false;12182017;1;1;<header>17,1,3</header>;false;false;;undefined;undefined;false; 2.0.40;JBS ;<level03>2,12/18/2017 17:45:056:671,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>15,12/18/2017 17:45:056:673,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>17,12/18/2017 17:45:056:675,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>26,12/18/2017 17:45:056:677,,true,1,null,null,undefined,1.0000000000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;havecorrectiveaction;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;0;0;4;0;1;0;0;0;0;undefined;0;0</level02><level02>1;12/18/2017 17:45:057:484;9;12/18/2017 17:45:057:087;2;1;1;1;0;false;12182017;1;2;<header>17,1,3</header>;false;false;;undefined;undefined;false; 2.0.40;JBS ;<level03>2,12/18/2017 17:45:057:093,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>15,12/18/2017 17:45:057:094,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>17,12/18/2017 17:45:057:094,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>26,12/18/2017 17:45:057:095,,true,1,null,null,undefined,1.0000000000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;havecorrectiveaction;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;0;0;4;0;1;0;0;0;0;undefined;0;0</level02><level02>1;12/18/2017 17:45:057:484;9;12/18/2017 17:45:057:550;2;1;1;1;0;false;12182017;1;3;<header>17,1,3</header>;false;false;;undefined;undefined;false; 2.0.40;JBS ;<level03>2,12/18/2017 17:45:057:563,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>15,12/18/2017 17:45:057:564,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>17,12/18/2017 17:45:057:566,,true,1,null,null,undefined,3.0000000000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>26,12/18/2017 17:45:057:568,,true,1,null,null,undefined,1.0000000000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;havecorrectiveaction;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;0;0;4;0;1;0;0;0;0;undefined;0;0</level02>";
+            //ObjResultJSon = "<level02>4987891190;03/27/2018 22:06:018:747;1468;03/27/2018 22:06:018:791;14;1;1;5;0;false;03272018;2;1;;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>3,03/27/2018 22:06:018:793,,false,5,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,1,1,1</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;1;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
 
             ObjResultJSon = ObjResultJSon.Replace("%2C", "");
 
@@ -280,6 +280,13 @@ namespace SgqSystem.Services
                         //Estrai o resultado
                         string[] result = arrayObj[i].Split(';');
 
+                        //4 98789 1190 //98789 é a chave que separa processo de produto
+                        string parCluster_Id_parLevel1_id = result[0].Replace("98789", "|");
+                        string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : null;
+                        string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+
+                        result[0] = parLevel1_Id;
+       
                         string[] resultCopy = result;
                         while (!resultCopy[22].Contains("<level03>") && resultCopy.Count() > 23)
                         {
@@ -957,7 +964,7 @@ namespace SgqSystem.Services
                         }
 
 
-                        //if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42)
+                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42)
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -2156,7 +2163,7 @@ namespace SgqSystem.Services
                         parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") : "";
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3_Name + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3_Name + "'," + weight + "," + intervalMin + "," + intervalMax + ", '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -3308,7 +3315,8 @@ namespace SgqSystem.Services
 
             string sql = "" +
                 "\n DECLARE @ParCompany_id int = 16 " +
-                "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
+                "\n DECLARE @ParLevel1_id int =  " + parlevel1.ParLevel1_Id +
+                "\n DECLARE @ParCluster_id int = " + parlevel1.ParCluster_Id +
 
                 "\n SELECT max(Number) as av FROM ParEvaluation EV (nolock)  " +
                 "\n WHERE ParLevel2_id in ( " +
@@ -3319,7 +3327,7 @@ namespace SgqSystem.Services
                     "\n on p32.id = p321.ParLevel3Level2_Id " +
 
                     "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
-
+                    "\n and Ev.ParCluster_Id = @ParCluster_Id " +
                     "\n group by p32.ParLevel2_Id " +
                 "\n ) " +
                 "\n and ev.IsActive = 1 " +
@@ -3385,6 +3393,7 @@ namespace SgqSystem.Services
             string sql = "" +
                "\n DECLARE @ParCompany_id int = 16 " +
                "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
+               "\n DECLARE @ParCluster_id int = " + parlevel1.ParCluster_Id +
 
                "\n SELECT max(Number) as av FROM ParSample EV (nolock)  " +
                "\n WHERE ParLevel2_id in ( " +
@@ -3395,7 +3404,7 @@ namespace SgqSystem.Services
                    "\n on p32.id = p321.ParLevel3Level2_Id " +
 
                    "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
-
+                   "\n and Ev.ParCluster_Id = @ParCluster_Id " +
                    "\n group by p32.ParLevel2_Id " +
                "\n ) " +
                "\n and ev.IsActive = 1 " +
@@ -3873,7 +3882,7 @@ namespace SgqSystem.Services
 
                     string tipoTela = "";
 
-                    var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
+                    var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.ParLevel1_Id).ToList();
 
                     if (variableList.Count > 0)
                     {
@@ -3882,7 +3891,7 @@ namespace SgqSystem.Services
 
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
-                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
+                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.ParLevel1_Id, ParCompany_Id, dateCollect);
 
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
@@ -3959,7 +3968,7 @@ namespace SgqSystem.Services
                             }
                         }
 
-                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.Id, 0, 1);
+                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.ParLevel1_Id, 0, 1);
 
                         string painelCounters = "";
 
@@ -3974,7 +3983,7 @@ namespace SgqSystem.Services
                             tipoTela = "CFF";
                         }
 
-                        var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
+                        var listParRelapse = ParRelapseDB.getRelapses(parlevel1.ParLevel1_Id);
 
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
@@ -4475,7 +4484,7 @@ namespace SgqSystem.Services
                 }
 
                 //headerList = null;
-                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
+                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.ParLevel1_Id, 0, 1);
 
                 string lineCounters = "";
 
@@ -4509,7 +4518,7 @@ namespace SgqSystem.Services
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
+            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html);
 
 
             //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
@@ -4520,7 +4529,7 @@ namespace SgqSystem.Services
             //                                                    );
             //}
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.ParLevel1_Id, 0, 1);
 
             string painelCounters = "";
 
@@ -4818,10 +4827,10 @@ namespace SgqSystem.Services
 
             string tipoTela = "";
 
-            var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
+            var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.ParLevel1_Id).ToList();
 
             var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2).ToList();
-            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1).ToList());
+            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.ParLevel1_Id, 0, 1).ToList());
 
             if (variableList.Count > 0)
             {
@@ -4893,7 +4902,7 @@ namespace SgqSystem.Services
 
                 var tituloLabel = "Animais Avaliados";
 
-                if (ParLevel1.Id == 42)
+                if (ParLevel1.ParLevel1_Id == 42)
                 {
                     tituloLabel = "Total Bloqueado (Kg)";
                 }
@@ -5427,7 +5436,7 @@ namespace SgqSystem.Services
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
                 var painelLevel3HeaderListHtml = new StringBuilder(GetHeaderHtml(
-                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.Id, ParLevel2.Id, ParLevelHeaderDB, ParCompany_Id));
+                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.Id, ParLevelHeaderDB, ParCompany_Id));
 
                 //string HeaderLevel02 = null;
 
@@ -5439,10 +5448,10 @@ namespace SgqSystem.Services
                 }
 
                 // incluir coluna e obter o total de amostras com defeito agrupado.
-                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter.Name == "defects" && r.IsActive);
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.ParLevel1_Id && r.ParCounter.Name == "defects" && r.IsActive);
                 if (level2 != null)
                 {
-                    var teste = new ContadoresXX().GetContadoresXX(dbEf,ParLevel1.Id, ParCompany_Id);
+                    var teste = new ContadoresXX().GetContadoresXX(dbEf,ParLevel1.ParLevel1_Id, ParCompany_Id);
 
                     //MOCK
                     var listaShift = new List<int>();
@@ -5456,7 +5465,7 @@ namespace SgqSystem.Services
 
                     if (teste.IsNotNull() && teste.Count > 0)
                     {
-                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.ParLevel1_Id == 55)
                         {
 
                             foreach (var s in listaShift)
@@ -5467,7 +5476,7 @@ namespace SgqSystem.Services
                                     //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
                                     painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>");
 
-                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.ParLevel1_Id == 55)
                                         painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>");
 
                                 }
@@ -5477,7 +5486,7 @@ namespace SgqSystem.Services
                     }
                     else
                     {
-                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.ParLevel1_Id == 55)
                         {
                             foreach (var s in listaShift)
                             {
@@ -5486,7 +5495,7 @@ namespace SgqSystem.Services
                                     painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>");
                                     painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>");
 
-                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.ParLevel1_Id == 55)
                                         painelLevel3HeaderListHtml.Append("<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>");
                                 }
 
@@ -5629,6 +5638,20 @@ namespace SgqSystem.Services
                                        );
 
                 input = html.campoTexto(id: parLevel3.Id.ToString());
+            }//Binário com texto
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                classInput = " boolean";
+                labels = html.campoTextoBinario(id: parLevel3.Id.ToString());
+                input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+            }//Intervalo em minutos
+            else if (parLevel3.ParLevel3InputType_Id == 7)
+            {
+                input = html.campoTextoMinutos(id: parLevel3.Id.ToString());
+            }//Escala Likert
+            else if (parLevel3.ParLevel3InputType_Id == 8)
+            {
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax);
             }
             else
             {
