@@ -8,7 +8,6 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCluster' AN
 		CollectionLevel2_Id int null,
 		ParCluster_Id int null
 	)
-GO
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XCluster' AND xtype='U')
 	CREATE TABLE ConsolidationLevel2XCluster(
@@ -16,7 +15,6 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XCluster'
 		ConsolidationLevel2_Id int null,
 		ParCluster_Id int null
 	)
-GO
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XCluster' AND xtype='U')
 	CREATE TABLE ConsolidationLevel1XCluster(
@@ -24,4 +22,9 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XCluster'
 		ConsolidationLevel1_Id int null,
 		ParCluster_Id int null
 	)
-GO 
+
+IF COL_LENGTH('ParLevel1XHeaderField','HeaderFieldGroup') IS NULL
+    BEGIN
+		ALTER TABLE ParLevel1XHeaderField
+		ADD [HeaderFieldGroup] [varchar](100) NULL
+    END
