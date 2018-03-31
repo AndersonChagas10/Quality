@@ -482,7 +482,7 @@
                         <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
                         <div class="clearfix"></div>
                     </div>
-                    <div style="height: 200px;" id="div{{($index +1)}}" class="divided" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+                    <div style="height: 200px;" id="div{{($index +1)}}" class="divided avoid-break-page" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
                         <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                             <tr>
                                 <td style="border:1px solid #cccccc; text-align: left; width:65%; border-right:0px; border-bottom: 0px; font-size: 8px;">
