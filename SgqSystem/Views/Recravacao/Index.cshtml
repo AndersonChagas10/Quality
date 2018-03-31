@@ -216,6 +216,8 @@
         background-color: #ec4040 !important;
         color: azure !important;
     }
+
+    .tooltip > .tooltip-inner {background-color: #fff;padding:10px;border:1px solid #000;z-index:15000}
 </style>
 
 <script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
@@ -543,7 +545,16 @@
 
                                         <tr>
                                             <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:20%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                            <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                                            <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">
+                                                <a ng-if="RetornaImagemDoPonto($index + 1).length > 2" class="left col-xs-12" title="<div style='background:#fff;display:block'><img class='img-responsive' src='{{RetornaImagemDoPonto($index + 1)}}' width='150'/></div>" 
+                                                   data-html="true" data-placement="bottom" data-toggle="tooltip" href="#"
+                                                   data-ponto-image="{{RetornaImagemDoPonto($index + 1)}}">
+                                                    {{$index + 1}}
+                                                </a>
+                                                <span ng-if="RetornaImagemDoPonto($index + 1).length <= 2">
+                                                    {{$index + 1}}
+                                                </span>
+                                            </td>
                                         </tr>
                                         <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy : sorterFunc track by $index" ng-class="{level3NameDestacado: (ParLevel3.Id ==  idOVERLAP)}">
                                             <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold; text-align: left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight: 100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
@@ -1489,6 +1500,7 @@
                         vm.lataSelecionada.haveErrors = haveErr
                     else
                         vm.lataSelecionada.haveErrors = false
+                    $('body').tooltip({ html: true, selector: "a[data-ponto-image]" });
                 }
 
                 vm.selecionaAcao = function (index) {
@@ -1536,6 +1548,8 @@
 
                     vm.lataSelecionada = vm.linhaSelecionada.latas[vm.linhaSelecionada.latas.length - quantidadeLatas]
                     $('#editModal').modal()
+
+                    $('body').tooltip({ html: true, selector: "a[data-ponto-image]" });
                 }
                 vm.cloneLataALot = function (linha, index, repeat) {
 
@@ -1796,7 +1810,8 @@
                                 let index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
                                 vm.linhas[index] = vm.linhaSelecionada
 
-                                vm.linhaSelecionada = vm.linhas[index]
+                                vm.linhaSelecionada = vm.linhas[index];
+                                vm.linhaSelecionada.TipoDeLataImagens = objetoSalvo[0].TipoDeLataImagens;
 
                                 if (vm.linhaSelecionada.ObservacoesList == undefined)
                                     vm.linhaSelecionada.ObservacoesList = [];
@@ -2046,6 +2061,34 @@
                         $.LoadingOverlay('show')
                         vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader, function () { $.LoadingOverlay('hide', true) })
                     }, 325)
+                }
+
+                vm.RetornaImagemDoPonto = function (ponto) {
+                    if (!!vm.linhaSelecionada.TipoDeLataImagens) {
+                        var image = $.grep(vm.linhaSelecionada.TipoDeLataImagens, function (o, c) {
+                            return o.PontoIndex == ponto
+                        });
+                        if (!!image && image.length > 0) {
+
+                            var urlImage = "@Url.Action("", "")/Imagens/" + image[0].FileName;
+
+                            if (image[0].existe == undefined) {
+                                image[0].existe = false;
+                                $.ajax({
+                                    type: "GET",
+                                    url: urlImage,
+                                    async: false,
+                                    success: function (html) {
+                                        image[0].existe = true;
+                                    }
+                                });
+                            }
+
+                            if (image[0].existe == true)
+                                return urlImage;
+                        }
+                    }
+                    return '';
                 }
 
                 vm.updateInputTime = function () {
@@ -2329,138 +2372,138 @@
                 }
 
                 vm.urlPrint = '@Url.Action("print3", "Recravacao")'
-                vm.print = function () {
-                    if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
-                        let preUrl = vm.urlPrint;
-                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
-                        openInNewTab(urlPrint)
-                    }
-                }
-
-                function init() {
-                    $(document).on('keydown', function (e) {
-                        if (e.ctrlKey && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80)) {
-                            console.log("Please use the Print PDF button below for a better rendering on the document");
-                            e.cancelBubble = true;
-                            e.preventDefault();
-                            e.stopImmediatePropagation();
-                            vm.print()
-                        }
-                    });
-                    $(document).on('show.bs.modal', '.modal', function (event) {
-                        var zIndex = 1040 + (10 * $('.modal:visible').length);
-                        $(this).css('z-index', zIndex);
-                        setTimeout(function () {
-                            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-                        }, 0);
-                    });
-
-                    if (vm.dev) {
-                        vm.idEC = 1263
-                        vm.idET = 1264
-                        vm.idEspessura = 1254
-                        vm.idOVERLAP = 1262
-                    } if (vm.jbsBrasil) {
-                        vm.idEC = 3320
-                        vm.idET = 3319
-                        vm.idEspessura = 3314
-                        vm.idOVERLAP = 3327
-                    }
-                }
-
-                init();
-
-                //DREPRECIADO VERIFICAR
-                vm.diffTime
-
-                vm.duration
-
-                vm.TimerOn = function (isLoadData, cb) {
-                    //if (vm.linhaSelecionada.latas)
-                    //    vm.startTime = new Date(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
-                    //else
-                    //    vm.startTime = new Date()
-                    //vm.ExcedidoTempoLimite = false
-                    //vm.StartColetaDeLata = moment();
-                    //vm.TimeoutProximaLata = $timeout($scope.onTimeout, 1000);
-
-                    //if (cb)
-                    //    cb()
-                }
-
-                vm.TimerOff = function () {
-                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
-                    vm.duration = moment.duration(vm.diffTime);
-                    let //years = duration.years(),
-                        days = vm.duration.days(),
-                        hrs = vm.duration.hours(),
-                      mins = vm.duration.minutes(),
-                      secs = vm.duration.seconds();
-                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
-                    $timeout.cancel(vm.mytimeout);
-                }
-
-                vm.onTimeout = function () {
-                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
-                    vm.duration = moment.duration(vm.diffTime);
-                    let //years = duration.years(),
-                        days = vm.duration.days(),
-                        hrs = vm.duration.hours(),
-                      mins = vm.duration.minutes(),
-                      secs = vm.duration.seconds();
-
-                    //if (hrs > 1)
-                    //    vm.linhaSelecionada.ExcedidoTempoLimite = true
-
-                    //SEM MOCK
-                    if (hrs > 1 || days > 1)
-                        vm.ExcedidoTempoLimite = true
-                    else
-                        vm.ExcedidoTempoLimite = false
-
-                    //MOCK PARA Testes
-                    if (secs > 20 || mins > 1 || hrs > 1 || days > 1)
-                        vm.ExcedidoTempoLimite = true
-                    else
-                        vm.ExcedidoTempoLimite = false
-
-                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
-                    vm.mytimeout = $timeout($scope.onTimeout, 1000);
-                }
-
-                vm.saveAndClose = function (item, remove) {
-                    //console.log(item)
-                    //item["liberaAssinaturaLata"] = false
-                    let vmItem = item
-                    let index = vm.linhaSelecionada.latas.indexOf(item)
-                    let numeroDePontos = vm.linhaSelecionada.TipoDeLata.NumberOfPoints
-
-                    vm.salvaLinha()
-                    return true
-
-                    item = vmItem
-                    vm.salvaLinha()
-                    return true
-                }
-
-                vm.getFormula = function (expressaoArr) {
-                    let expressaoFinal = ''
-                    //expressaoArr.forEach(function(o, c){
-                    for (var i = 0; i < expressaoArr.length; i++) {
-                        let o = expressaoArr[i]
-                        if (o.Operator == "dados") {
-                            expressaoFinal += `(${o.OuterLevel3_Text}) `
-                        } else {
-                            expressaoFinal += `${o.Operator} `
+                    vm.print = function () {
+                        if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
+                            let preUrl = vm.urlPrint;
+                            let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                            openInNewTab(urlPrint)
                         }
                     }
-                    //})
-                    return expressaoFinal
-                }
 
-                //FIM DREPRECIADO VERIFICAR
+                    function init() {
+                        $(document).on('keydown', function (e) {
+                            if (e.ctrlKey && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80)) {
+                                console.log("Please use the Print PDF button below for a better rendering on the document");
+                                e.cancelBubble = true;
+                                e.preventDefault();
+                                e.stopImmediatePropagation();
+                                vm.print()
+                            }
+                        });
+                        $(document).on('show.bs.modal', '.modal', function (event) {
+                            var zIndex = 1040 + (10 * $('.modal:visible').length);
+                            $(this).css('z-index', zIndex);
+                            setTimeout(function () {
+                                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+                            }, 0);
+                        });
 
-            }])
+                        if (vm.dev) {
+                            vm.idEC = 1263
+                            vm.idET = 1264
+                            vm.idEspessura = 1254
+                            vm.idOVERLAP = 1262
+                        } if (vm.jbsBrasil) {
+                            vm.idEC = 3320
+                            vm.idET = 3319
+                            vm.idEspessura = 3314
+                            vm.idOVERLAP = 3327
+                        }
+                    }
+
+                    init();
+
+                    //DREPRECIADO VERIFICAR
+                    vm.diffTime
+
+                    vm.duration
+
+                    vm.TimerOn = function (isLoadData, cb) {
+                        //if (vm.linhaSelecionada.latas)
+                        //    vm.startTime = new Date(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                        //else
+                        //    vm.startTime = new Date()
+                        //vm.ExcedidoTempoLimite = false
+                        //vm.StartColetaDeLata = moment();
+                        //vm.TimeoutProximaLata = $timeout($scope.onTimeout, 1000);
+
+                        //if (cb)
+                        //    cb()
+                    }
+
+                    vm.TimerOff = function () {
+                        vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                        vm.duration = moment.duration(vm.diffTime);
+                        let //years = duration.years(),
+                            days = vm.duration.days(),
+                            hrs = vm.duration.hours(),
+                          mins = vm.duration.minutes(),
+                          secs = vm.duration.seconds();
+                        vm.timerDaProximaLata = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                        $timeout.cancel(vm.mytimeout);
+                    }
+
+                    vm.onTimeout = function () {
+                        vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                        vm.duration = moment.duration(vm.diffTime);
+                        let //years = duration.years(),
+                            days = vm.duration.days(),
+                            hrs = vm.duration.hours(),
+                          mins = vm.duration.minutes(),
+                          secs = vm.duration.seconds();
+
+                        //if (hrs > 1)
+                        //    vm.linhaSelecionada.ExcedidoTempoLimite = true
+
+                        //SEM MOCK
+                        if (hrs > 1 || days > 1)
+                            vm.ExcedidoTempoLimite = true
+                        else
+                            vm.ExcedidoTempoLimite = false
+
+                        //MOCK PARA Testes
+                        if (secs > 20 || mins > 1 || hrs > 1 || days > 1)
+                            vm.ExcedidoTempoLimite = true
+                        else
+                            vm.ExcedidoTempoLimite = false
+
+                        vm.timerDaProximaLata = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                        vm.mytimeout = $timeout($scope.onTimeout, 1000);
+                    }
+
+                    vm.saveAndClose = function (item, remove) {
+                        //console.log(item)
+                        //item["liberaAssinaturaLata"] = false
+                        let vmItem = item
+                        let index = vm.linhaSelecionada.latas.indexOf(item)
+                        let numeroDePontos = vm.linhaSelecionada.TipoDeLata.NumberOfPoints
+
+                        vm.salvaLinha()
+                        return true
+
+                        item = vmItem
+                        vm.salvaLinha()
+                        return true
+                    }
+
+                    vm.getFormula = function (expressaoArr) {
+                        let expressaoFinal = ''
+                        //expressaoArr.forEach(function(o, c){
+                        for (var i = 0; i < expressaoArr.length; i++) {
+                            let o = expressaoArr[i]
+                            if (o.Operator == "dados") {
+                                expressaoFinal += `(${o.OuterLevel3_Text}) `
+                            } else {
+                                expressaoFinal += `${o.Operator} `
+                            }
+                        }
+                        //})
+                        return expressaoFinal
+                    }
+
+                    //FIM DREPRECIADO VERIFICAR
+
+                }])
             .filter('mathPow', function () {
                 return function (base, exponent) {
                     return Math.pow(10, exponent);
@@ -2659,6 +2702,6 @@
                 }
             })
 
-    })();
+            })();
 
 </script>

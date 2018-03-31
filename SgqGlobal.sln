@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180322_0000_ParLevel1EClusterAvAmLevel2.txt = 20180322_0000_ParLevel1EClusterAvAmLevel2.txt
 		20180327_0000_CriacaoParModuleXModules.txt = 20180327_0000_CriacaoParModuleXModules.txt
 		20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt = 20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt
+		20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt = 20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
 EndProject

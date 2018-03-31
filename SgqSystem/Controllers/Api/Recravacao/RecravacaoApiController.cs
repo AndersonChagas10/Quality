@@ -39,6 +39,11 @@ namespace SgqSystem.Controllers.Api
                 var latasId = results.Count() > 0 ? QueryNinja(db, string.Format("SELECT Id from RecravacaoLataJson where RecravacaoJson_Id = {0}", results[0].GetValue("Id").ToString())) : null;
                 var produtos = factory.SearchQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
                 var sugestoes = factory.SearchQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList();
+
+                var queryImagensTipoLataPorparRecravacao_TypeLata_Id = "select * from ParLataImagens where ParRecravacao_TipoLata_Id = (select top 1 ParRecravacao_TypeLata_Id from ParRecravacao_Linhas where id = (select top 1 Linha_Id from RecravacaoJson where id = {0}))";
+                var listImages = QueryNinja(db, string.Format(queryImagensTipoLataPorparRecravacao_TypeLata_Id, results[0].GetValue("Id").ToString())).ToList();
+                results[0]["TipoDeLataImagens"] = JToken.FromObject(listImages, new Newtonsoft.Json.JsonSerializer { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+
                 return Request.CreateResponse(HttpStatusCode.OK,
                     new { resposta = "Dados Recuperados", model = results, produtos = produtos, sugestoes = sugestoes, latasId = latasId });
             }
