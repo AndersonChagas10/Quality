@@ -1,0 +1,14 @@
+-- 31 03 2018 - LEO (Adicionado Id dos usuarios que validaram e finalizaram uma coleta de recravação)
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180328_0000_AdicionadoTabelasParaConsolidacaoCluster',GetDate())
+
+IF COL_LENGTH('RecravacaoJson','UserFinished_Id') IS NULL
+    BEGIN
+		ALTER TABLE RecravacaoJson
+		ADD UserFinished_Id Int null
+    END
+IF COL_LENGTH('RecravacaoJson','UserValidated_Id') IS NULL
+    BEGIN
+		ALTER TABLE RecravacaoJson
+		ADD UserValidated_Id Int null
+    END
