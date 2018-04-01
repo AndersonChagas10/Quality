@@ -320,7 +320,7 @@
                 `</tr>`;
 
         $('#tableLevel3Value tbody').prepend(tr)
-        $('#tableLevel3Value tbody tr:last').data('ParLevel3Value_OuterList', expressaoArr)
+        $('#tableLevel3Value tbody tr:first').data('ParLevel3Value_OuterList', expressaoArr)
 
         if($('#tableLevel3Value tbody tr').length)
             $('#tableLevel3Value').show()
@@ -446,7 +446,7 @@
                         `</tr>`;
 
                 $('#tableLevel3Value tbody').prepend(tr)
-                $('#tableLevel3Value tbody tr:last').data('ParLevel3Value_OuterList', expressaoArr)
+                $('#tableLevel3Value tbody tr:first').data('ParLevel3Value_OuterList', expressaoArr)
 
                 if($('#tableLevel3Value tbody tr').length)
                     $('#tableLevel3Value').show()

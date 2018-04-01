@@ -503,12 +503,23 @@ namespace Dominio.Services
                         }
                         else
                         {
-                            var queryUpdateParLevel3Value_OuterList = string.Format(@"
+                            if (i.IsActive)
+                            {
+                                var queryUpdateParLevel3Value_OuterList = string.Format(@"
                                 UPDATE ParLevel3Value_Outer 
                                 SET AlterDate = {0}, IsActive = {1}
                                 WHERE Id = {2}", "GETDATE()", i.IsActive ? "1" : "0", i.Id);
 
-                            db.Database.ExecuteSqlCommand(queryUpdateParLevel3Value_OuterList);
+                                db.Database.ExecuteSqlCommand(queryUpdateParLevel3Value_OuterList);
+                            }
+                            else
+                            {
+                                var queryUpdateParLevel3Value_OuterList = string.Format(@"
+                                delete from ParLevel3Value_Outer 
+                                WHERE Id = {0}", i.Id);
+
+                                db.Database.ExecuteSqlCommand(queryUpdateParLevel3Value_OuterList);
+                            }
                         }
 
                     }
