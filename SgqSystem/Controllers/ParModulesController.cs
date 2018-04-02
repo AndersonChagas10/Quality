@@ -49,6 +49,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,IsActive")] ParModule parModule)
         {
+            ValidModelState(parModule);
             if (ModelState.IsValid)
             {
                 parModule.AddDate = DateTime.Now;
@@ -82,6 +83,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,IsActive")] ParModule parModule)
         {
+            ValidModelState(parModule);
             if (ModelState.IsValid)
             {
                 parModule.AlterDate = DateTime.Now;
@@ -125,6 +127,14 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidModelState(ParModule parModule)
+        {
+            ModelState.Clear();
+
+            if (string.IsNullOrEmpty(parModule.Name))
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
         }
     }
 }
