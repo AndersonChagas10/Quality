@@ -12,6 +12,7 @@
     var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
     var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidade");
+    var UrlPivotTable = Url.Action("PivotTable", "api/NaoConformidade");
     var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidade");
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
 }
@@ -54,46 +55,48 @@
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
 
-    <div id="CustomPopover" class="hide">
-        <h5>@Resources.Resource.next_unfolding</h5>
-        <div>
-            <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
-            <button class="btn btn-sm btn-default" id="btnMonitoramento">Level 2</button>
-            <button class="btn btn-sm btn-default" id="btnTarefasAcumuladas">Level 2 do Level 1</button>
-            <button class="btn btn-sm btn-default" id="btnShift">Shift</button>
-            <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
+        <div id="CustomPopover" class="hide">
+            <h5>@Resources.Resource.next_unfolding</h5>
+            <div>
+                <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
+                <button class="btn btn-sm btn-default" id="btnMonitoramento">Level 2</button>
+                <button class="btn btn-sm btn-default" id="btnTarefasAcumuladas">Level 2 do Level 1</button>
+                <button class="btn btn-sm btn-default" id="btnShift">Shift</button>
+                <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
+            </div>
         </div>
-    </div>
 
-    <div id="formBodyContent">
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="formBodyContent">
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="RGUnidadesGrafico"></div>
-        <div id="RGDepartamentosGrafico"></div>
-        <div id="RGDepartamentosShiftGrafico"></div>
-        <div id="RGOperacoesGrafico"></div>
-        <div id="RGOperacoesShiftGrafico"></div>
+            @Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
 
-        <div id="loading"></div>
+            <div id="RGUnidadesGrafico"></div>
+            <div id="RGDepartamentosGrafico"></div>
+            <div id="RGDepartamentosShiftGrafico"></div>
+            <div id="RGOperacoesGrafico"></div>
+            <div id="RGOperacoesShiftGrafico"></div>
 
-        <div class="panel panel-info" id="PanelFull0" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g0">
-                <div id="RGMonitoramentosGrafico"></div>
-                <div id="RGMonitoramentosShiftGrafico"></div>
-                <div id="RGTarefasAcumuladasGrafico"></div>
-                <div id="RGTarefasGrafico"></div>
+            <div id="loading"></div>
+
+            <div class="panel panel-info" id="PanelFull0" style="display:none">
+                <div class="panel-heading"></div>
+                <div class="panel-body" id="g0">
+                    <div id="RGMonitoramentosGrafico"></div>
+                    <div id="RGMonitoramentosShiftGrafico"></div>
+                    <div id="RGTarefasAcumuladasGrafico"></div>
+                    <div id="RGTarefasGrafico"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
 </div>
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -115,6 +118,7 @@
         var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
         var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
         var UrlGraficoDepartamentosPorShift = @Html.Raw(Json.Encode(UrlGraficoDepartamentosPorShift));
+        var UrlPivotTable = @Html.Raw(Json.Encode(UrlPivotTable));
         var urlGraficoIndicadorPorShift = @Html.Raw(Json.Encode(UrlGraficoIndicadorPorShift));
         var urlGetUnitId = '@Url.Action("GetUnitId","api/Fta")'
         var popoverMain;
@@ -130,6 +134,8 @@
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $(document).ready(function () {
+            
+            EasyAjax(UrlPivotTable, null, CarregaPivotTable, "output");
 
             closeLeftSidebar();
             $(".sidebar-toggler").removeClass("hide");
@@ -146,11 +152,11 @@
             formControl.showClustRegUnitCriticalLevel123();
 
             //setTimeout(function () {
-                $("#clusterGroupId").find("option").eq(0).remove();
-                $("#clusterGroupId").val(8).change();
-                if ($("#clusterGroupId").val() == null) {
-                    $("#clusterGroupId").val(2).change();
-                }
+            $("#clusterGroupId").find("option").eq(0).remove();
+            $("#clusterGroupId").val(8).change();
+            if ($("#clusterGroupId").val() == null) {
+                $("#clusterGroupId").val(2).change();
+            }
             //}, 3);
 
             popoverMain = $('#CustomPopover').addClass('hide');
@@ -269,32 +275,32 @@
 
                     if (ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
                         GetGraficoIndicadorDepartamento(Aux);
-                        return;
-                    } else {
+                    return;
+            } else {
                         showPopover2();
-                        break;
-                    }
+            break;
+        }
 
                 case "Indicador":
 
-                    if (IsDepartmentShift || ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
-                        GetMonitoramento(Aux);
-                        GetTarefasAcumuladas(Aux);
-                        return;
-                    }
+        if (IsDepartmentShift || ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
+            GetMonitoramento(Aux);
+        GetTarefasAcumuladas(Aux);
+        return;
+        }
 
-                    enviar["shift"] = shift;
-                    IsIndicador = true;
-                    showPopover3();
-                    break;
+        enviar["shift"] = shift;
+        IsIndicador = true;
+        showPopover3();
+        break;
 
                 default:
-                    IsDepartmentShift = false;
-                    showPopover1();
-                    break;
-            }
+        IsDepartmentShift = false;
+        showPopover1();
+        break;
+        }
 
-            popoverMain.removeClass('hide');
+        popoverMain.removeClass('hide');
 
         }
 
@@ -1276,6 +1282,6 @@
             $('#btnShift').show();
         }
 
-</script>
+    </script>
 
 }

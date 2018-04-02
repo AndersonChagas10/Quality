@@ -248,13 +248,13 @@ function getRole(role) {
     return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
 }
 
-Array.prototype.max = function () {
-    return Math.max.apply(null, this);
-};
+//Array.prototype.max = function () {
+//    return Math.max.apply(null, this);
+//};
 
-Array.prototype.min = function () {
-    return Math.min.apply(null, this);
-};
+//Array.prototype.min = function () {
+//    return Math.min.apply(null, this);
+//};
 
 function heatMapSingleCol(container, tableId, index, order, isBenchemark) {
 

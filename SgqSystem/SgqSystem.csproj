@@ -50,24 +50,20 @@
       <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Hangfire.Core, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.6.12\lib\net45\Hangfire.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Hangfire.Dashboard.Authorization, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Dashboard.Authorization.2.1.0\lib\net45\Hangfire.Dashboard.Authorization.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Hangfire.SqlServer, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.SqlServer.1.6.12\lib\net45\Hangfire.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
@@ -164,6 +160,10 @@
     </Reference>
     <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.5.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.5.0\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -422,6 +422,8 @@
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
+    <Compile Include="Jobs\ReProcessJsonJob.cs" />
+    <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />
     <Compile Include="Mail\SimpleAsynchronous.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
@@ -758,6 +760,7 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
+    <Content Include="Content\PluginGRT\pivot.css" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.min.css" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.min.css" />
     <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
@@ -1001,6 +1004,9 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Content\lobi\.gitignore" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.css.map" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.css.map" />
@@ -1392,7 +1398,12 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\Print\print.js" />
+    <Content Include="Content\PluginGRT\c3.min.css" />
+    <Content Include="Scripts\PluginGRT\c3.min.js" />
+    <Content Include="Scripts\PluginGRT\c3_renderers.js" />
+    <Content Include="Scripts\PluginGRT\d3.min.js" />
     <Content Include="Scripts\PluginGRT\datatableGRT.js" />
+    <Content Include="Scripts\PluginGRT\pivot.js" />
     <Content Include="Scripts\Print\printGRT.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -1670,6 +1681,7 @@
     <Content Include="Views\ParModuleXModules\Details.cshtml" />
     <Content Include="Views\ParModuleXModules\Edit.cshtml" />
     <Content Include="Views\ParModuleXModules\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1694,7 +1706,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

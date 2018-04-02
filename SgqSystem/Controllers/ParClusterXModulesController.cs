@@ -52,6 +52,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,ParCluster_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDate")] ParClusterXModule parClusterXModule)
         {
+            ValidModelState(parClusterXModule);
             if (ModelState.IsValid)
             {
                 parClusterXModule.AddDate = DateTime.Now;
@@ -89,6 +90,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,ParCluster_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDate")] ParClusterXModule parClusterXModule)
         {
+            ValidModelState(parClusterXModule);
             if (ModelState.IsValid)
             {
                 parClusterXModule.AlterDate = DateTime.Now;
@@ -134,6 +136,23 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidModelState(ParClusterXModule parClusterXModule)
+        {
+            ModelState.Clear();
+
+            if (parClusterXModule.EffectiveDate == null || parClusterXModule.EffectiveDate == DateTime.MinValue)
+                ModelState.AddModelError("EffectiveDate", Resources.Resource.required_field + " " + Resources.Resource.effectiveDate);
+
+            if (parClusterXModule.Points > 0)
+                ModelState.AddModelError("Points", Resources.Resource.required_field + " " + Resources.Resource.points);
+
+            if (parClusterXModule.ParCluster_Id <= 0)
+                ModelState.AddModelError("ParCluster_Id", Resources.Resource.required_field + " " + Resources.Resource.cluster);
+
+            if (parClusterXModule.ParModule_Id <= 0)
+                ModelState.AddModelError("ParModule_Id", Resources.Resource.required_field + " " + Resources.Resource.module);
         }
     }
 }
