@@ -43,7 +43,7 @@ namespace SgqSystem
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
 
 #if DEBUG
-            TelemetryConfiguration.Active.DisableTelemetry = true;
+            //TelemetryConfiguration.Active.DisableTelemetry = true;
 #endif
 
             if (GlobalConfig.LanguageBrasil)
