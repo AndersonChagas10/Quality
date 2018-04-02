@@ -4721,7 +4721,7 @@ ORDER BY 3
 
                 return retorno;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new List<AcoesConcluidas>();
             }
@@ -4820,7 +4820,7 @@ ORDER BY 3
 
                 return retorno;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new List<Pa_Acao>();
             }

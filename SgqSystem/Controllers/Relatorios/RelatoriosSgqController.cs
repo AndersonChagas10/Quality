@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers
         private FormularioParaRelatorioViewModel form;
 
 
-        public RelatoriosSgqController(IRelatorioColetaDomain relatorioColetaDomain)
+        public RelatoriosSgqController()
         {
 
             form = new FormularioParaRelatorioViewModel();

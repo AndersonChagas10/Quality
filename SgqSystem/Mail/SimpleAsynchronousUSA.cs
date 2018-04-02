@@ -97,7 +97,7 @@ namespace SgqSystem.Mail
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

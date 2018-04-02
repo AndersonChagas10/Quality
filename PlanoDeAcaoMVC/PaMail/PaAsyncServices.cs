@@ -138,7 +138,7 @@ namespace PlanoDeAcaoMVC.PaMail
                 //new CreateLog(new Exception(aMerdaQueDeu, ex1));
                 //throw ex1;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //throw ex;
                 //new CreateLog(new Exception("Erro ao enviar e mail", ex));

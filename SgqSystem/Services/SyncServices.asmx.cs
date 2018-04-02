@@ -89,8 +89,6 @@ namespace SgqSystem.Services
         /// <returns></returns>
         /// 
 
-        bool naoAvaliado = true; //variavel que verifica se o monitoramento (level2) é não avaliado inteiro
-
         /**
          * TODOS QUE CHAMEREM ESTE MÉTODO DEVEM ENVIAR A DATA MM/dd/yyyy
          * OU YYYY-MM-DD (2017-05-03)
@@ -207,14 +205,13 @@ namespace SgqSystem.Services
 
 
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -806,7 +803,7 @@ namespace SgqSystem.Services
                             DateTime dataPhase = DateCollectConvert(StartPhase);
                             StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             StartPhase = "CAST(N'" + DateTime.Now.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
                         }
@@ -1118,7 +1115,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1154,7 +1150,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1219,7 +1214,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1272,7 +1266,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1308,8 +1301,7 @@ namespace SgqSystem.Services
                         {
                             return 0;
                         }
-                    }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                    }                   
                 }
             }
             catch (SqlException ex)
@@ -1345,7 +1337,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1408,7 +1399,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
@@ -1538,7 +1528,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra qualquer Exception, insere no log e retorna zero
@@ -1762,7 +1751,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma exception, grava no log e retorna zero
@@ -1805,11 +1793,11 @@ namespace SgqSystem.Services
                 throw ex;
             }
 
-            //updates reaudit
-            if (Reaudit)
-            {
+            ////updates reaudit
+            //if (Reaudit)
+            //{
 
-            }
+            //}
 
 
 
@@ -1838,14 +1826,13 @@ namespace SgqSystem.Services
                         }
 
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -1917,7 +1904,6 @@ namespace SgqSystem.Services
                             }
 
                         }
-                        if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                     }
                 }
                 //Caso ocorra alguma exception, grava no log e retorna zero
@@ -1962,7 +1948,7 @@ namespace SgqSystem.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -1983,8 +1969,6 @@ namespace SgqSystem.Services
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
             //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
-
-            IEnumerable<ParLevel3> parLevel3List_IndicadorFilho = null;
 
             //if (ParLevel1_Id != null)
             //{
@@ -2152,8 +2136,6 @@ namespace SgqSystem.Services
                     }
                 }
 
-                naoAvaliado = true;
-
                 //Verifica se é BEA e faz a conta do WeiEvaluation
                 var _WeiEvaluation = GetWeiEvaluation(WeiEvaluation, CollectionLevel02Id);
 
@@ -2184,11 +2166,6 @@ namespace SgqSystem.Services
 
                 }
 
-                if (isnotEvaluate == "0")
-                {
-                    naoAvaliado = false;
-                }
-
             }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -2212,7 +2189,6 @@ namespace SgqSystem.Services
                         }
 
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra Exception, insere no banco e retorna zero
@@ -2331,7 +2307,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, gera um log no banco e retorna zero
@@ -2374,7 +2349,6 @@ namespace SgqSystem.Services
                             return UltimaDataColeta.ToString("yyyyMMdd");
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de erro, gera um exception retorna null
@@ -2929,7 +2903,6 @@ namespace SgqSystem.Services
                             return maxEvaluate;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -3132,7 +3105,6 @@ namespace SgqSystem.Services
                             return Level03Results;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -4424,7 +4396,7 @@ namespace SgqSystem.Services
                                     );
 
 
-                string classXSLevel2 = " col-xs-5";
+               // string classXSLevel2 = " col-xs-5";
 
                 int totalSampleXEvaluate = evaluate * sample;
 
@@ -5851,8 +5823,6 @@ namespace SgqSystem.Services
                 selectShit = html.select(selectShit, id: "shift");
             }
             #endregion
-
-            string selectUrlPreffix = "";
             //                          html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
             //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
             //                          html.option("http://localhost:8090/SgqSystem", "GCN");
@@ -6144,7 +6114,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
@@ -6210,7 +6179,7 @@ namespace SgqSystem.Services
                 smtpClient.Send(mailMessage);
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 /**
                  * GABRIEL NUNES TIROU A GRAVAÇÃO DO LOG DE SENDEMAIL PARA MELHORAR PERFORMANCE DO SISTEMA
@@ -6276,7 +6245,7 @@ namespace SgqSystem.Services
                 smtpClient.Send(mailMessage);
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //int insertLog = insertLogJson(email, ex.Message, null, null, "sendEmail");
             }
@@ -6327,7 +6296,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6367,7 +6335,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
@@ -6407,14 +6374,13 @@ namespace SgqSystem.Services
 
 
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -6473,11 +6439,10 @@ namespace SgqSystem.Services
                             return "Não foi possivel alterar a unidade";
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "Não foi possivel alterar a unidade";
             }
@@ -6591,7 +6556,6 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6896,7 +6860,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6947,7 +6910,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -7004,7 +6966,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -7064,7 +7025,6 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
