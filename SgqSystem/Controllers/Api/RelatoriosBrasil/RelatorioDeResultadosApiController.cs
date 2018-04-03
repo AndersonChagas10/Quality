@@ -6111,6 +6111,93 @@ ORDER BY 3
             return Query;
         }
 
+        [HttpPost]
+        [Route("GraficoTarefasAcumuladas")]
+        public List<NaoConformidadeResultsSet> GraficoTarefasAcumuladas([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            var _list = new List<NaoConformidadeResultsSet>();
+
+            var whereDepartment = "";
+            var whereShift = "";
+            var whereCriticalLevel = "";
+            var whereLevel1 = "";
+
+            if (form.departmentId != 0)
+            {
+                whereDepartment = "\n AND MON.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.level1IdArr.Length > 0)
+            {
+                whereLevel1 = $@"AND IND.Id IN({ string.Join("," , form.level1IdArr)})";
+            }
+
+            var queryGraficoTarefasAcumuladas = $@"
+            SELECT
+            
+            	IND.Id AS Indicador_id
+               ,IND.Name AS IndicadorName
+               ,IND.Id AS Monitoramento_Id
+               ,IND.Name AS MonitoramentoName
+               ,R3.ParLevel3_Id AS Tarefa_Id
+               ,R3.ParLevel3_Name AS TarefaName
+               ,UNI.Name AS UnidadeName
+               ,UNI.Id AS Unidade_Id
+               ,SUM(R3.Defects) AS NC
+            FROM Result_Level3 R3 (NOLOCK)
+            INNER JOIN CollectionLevel2 C2 (NOLOCK)
+            	ON C2.Id = R3.CollectionLevel2_Id
+            INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
+            	ON CL2.Id = C2.ConsolidationLevel2_Id
+            INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
+            	ON CL1.Id = CL2.ConsolidationLevel1_Id
+            INNER JOIN ParCompany UNI (NOLOCK)
+            	ON UNI.Id = CL1.UnitId
+            INNER JOIN ParLevel1 IND (NOLOCK)
+            	ON IND.Id = CL1.ParLevel1_Id
+            INNER JOIN ParLevel2 MON (NOLOCK)
+            	ON MON.Id = CL2.ParLevel2_Id
+            WHERE 1 = 1 
+            { whereLevel1 }
+            /* and MON.Id = 1 */
+            AND CL2.UNITID = { form.unitId }
+            AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
+            { whereDepartment }
+            { whereShift }            
+            { whereCriticalLevel }
+            GROUP BY IND.Id
+            		,IND.Name
+            		,R3.ParLevel3_Id
+            		,R3.ParLevel3_Name
+            		,UNI.Name
+            		,UNI.Id
+            HAVING SUM(R3.WeiDefects) > 0
+            AND SUM(R3.Defects) > 0
+            ORDER BY 9 DESC";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(queryGraficoTarefasAcumuladas).ToList();
+            }
+
+            return _list;
+        }
+
     }
 
     public class RelatorioResultadosPeriodo
