@@ -55,50 +55,6 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         }
 
         [HttpPost]
-        [Route("GetParModule")]
-        public List<ParClusterDTO> GetParModule([FromBody] int UserId)
-        {
-            var retorno = new List<ParClusterDTO>();
-
-            if (UserId > 0)
-            {
-
-                string unidadesUsuario = GetUserUnits(UserId);
-
-                var query = $@"
-                            SELECT  DISTINCT
-                        	PM.Id
-                           ,PM.Name
-							FROM ParCluster PC
-							LEFT JOIN ParClusterXModule PCM
-								ON PC.Id = PCM.ParCluster_Id
-							LEFT JOIN ParCompanyCluster PCC
-                        		ON PC.Id = PCC.ParCluster_Id
-							LEFT JOIN ParCompany UNIT
-                        		ON PCC.ParCompany_Id = UNIT.Id
-							LEFT JOIN ParModule PM
-								ON PCM.ParModule_Id = PM.ID
-							WHERE 1=1
-							AND PC.IsActive=1
-							AND PCM.IsActive=1
-							AND PCC.Active=1
-							AND UNIT.IsActive=1
-							AND PM.IsActive=1
-
-                            AND UNIT.Id IN ({ unidadesUsuario })";
-
-                using (Factory factory = new Factory("DefaultConnection"))
-                {
-                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
-                }
-
-            }
-
-            return retorno;
-        }
-
-
-        [HttpPost]
         [Route("GetParCluster")]
         public List<ParClusterDTO> GetParCluster([FromBody] ModelForm model)
         {
@@ -127,54 +83,6 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON PC.ParClusterGroup_Id = PCG.Id
                         WHERE UNIT.Id IN ({ unidadesUsuario })
                         { whereClusterGroup }";
-
-                using (Factory factory = new Factory("DefaultConnection"))
-                {
-                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
-                }
-            }
-
-            return retorno;
-        }
-
-        [HttpPost]
-        [Route("GetParClusterxModule")]
-        public List<ParClusterDTO> GetParClusterxModule([FromBody] ModelForm model)
-        {
-            var retorno = new List<ParClusterDTO>();
-
-            if (model.UserId > 0)
-            {
-                string unidadesUsuario = GetUserUnits(model.UserId);
-                string whereModule = "";
-
-                if (model.Module > 0)
-                {
-                    whereModule = $@"AND PM.Id = { model.Module }";
-                }
-
-                var query = $@"
-                            SELECT  DISTINCT
-                        	PC.Id
-                           ,pc.Name
-							FROM ParCluster PC
-							LEFT JOIN ParClusterXModule PCM
-								ON PC.Id = PCM.ParCluster_Id
-							LEFT JOIN ParCompanyCluster PCC
-                        		ON PC.Id = PCC.ParCluster_Id
-							LEFT JOIN ParCompany UNIT
-                        		ON PCC.ParCompany_Id = UNIT.Id
-							LEFT JOIN ParModule PM
-								ON PCM.ParModule_Id = PM.ID
-							WHERE 1=1
-							AND PC.IsActive=1
-							AND PCM.IsActive=1
-							AND PCC.Active=1
-							AND UNIT.IsActive=1
-							AND PM.IsActive=1
-
-                            AND UNIT.Id IN ({ unidadesUsuario })
-                            { whereModule }";
 
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -415,7 +323,6 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public int UserId { get; set; }
         public int CriticalLevel { get; set; }
         public int Cluster { get; set; }
-        public int Module { get; set; }
         public int ClusterGroup { get; set; }
         public int Structure { get; set; }
         public int[] StructureArr { get; set; } = new int[] { };
