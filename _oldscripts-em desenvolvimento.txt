@@ -218,7 +218,7 @@ IF COL_LENGTH('ParGoal','EffectiveDate') IS NULL
     EXEC ('update ParGoal set EffectiveDate = 2000-01-01')
     END
 
--------------------------------------------------------------------- 19 02 2017 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
+-------------------------------------------------------------------- 19 02 2018 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
 
 IF COL_LENGTH('Deviation','EmailContent_Id') IS NULL
     BEGIN
@@ -236,6 +236,7 @@ IF COL_LENGTH('CorrectiveAction','EmailContent_Id') IS NULL
     EXEC ('update CorrectiveAction set EmailContent_Id = null')
     END
 ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+    END
 
 ------------------------------------------------------------------ 20/03/2018 - PA Renan
 

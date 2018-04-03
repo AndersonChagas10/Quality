@@ -340,7 +340,7 @@ FROM (SELECT
 	   ,Pl1.IndicadoresDiretriz_Id
 	   ,Pl2.IndicadoresDeProjeto_Id
 	   ,Pl2.Estrategico_Id
-	   ,Pl2.Responsavel_Diretriz
+	   ,Pl1.Responsavel_Diretriz
 	   ,Pl2.Responsavel_Projeto
 	   ,Pl2.UnidadeDeMedida_Id
 	   ,Pl2.IsTatico
@@ -558,7 +558,7 @@ LEFT JOIN Pa_Dimensao DIME
                     if (i.ValorPara > 0)
                         i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
                 }
-                //Percentual
+                else//Percentual
                 if (i.UnidadeDeMedida_Id == 2)
                 {
                     if (i.ValorDe > 0)

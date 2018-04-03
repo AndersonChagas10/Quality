@@ -22,6 +22,7 @@ namespace Dominio
         public bool IsActive { get; set; }
         public Nullable<bool> IsRequired { get; set; }
         public Nullable<bool> DefaultSelected { get; set; }
+        public string HeaderFieldGroup { get; set; }
     
         public virtual ParLevel1 ParLevel1 { get; set; }
         public virtual ParHeaderField ParHeaderField { get; set; }

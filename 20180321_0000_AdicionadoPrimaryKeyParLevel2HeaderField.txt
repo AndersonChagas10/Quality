@@ -1,0 +1,6 @@
+-- 21 03 2018 - LEO (Adicionado Primary Key na ParLevel2XHeaderField)
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField',GetDate())
+
+ALTER TABLE ParLevel2XHeaderField
+ADD CONSTRAINT PK_ParLevel2XHeaderField PRIMARY KEY (Id);

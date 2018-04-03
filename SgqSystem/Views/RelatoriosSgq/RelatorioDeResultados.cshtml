@@ -89,6 +89,10 @@
             <br />
             <div id="GraficoPeriodoLoader"></div>
             <div id="GraficoPeriodo"></div>
+
+            <div id="GraficoTarefasAcumuladasLoader"></div>
+            <div id="GraficoTarefasAcumuladas"></div>
+
             <br />
             <h3 id="TituloTabela"></h3>
             <br />
@@ -184,7 +188,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     var Subtitle = "";
 
@@ -197,6 +201,8 @@
     var UrlListaResultadosPeriodoGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodoSemUnidadeGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoSemUnidadeTabela", "api/RelatorioDeResultados"))';
     var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';
+
+    var UrlGraficosTarefasAcumuladas = '@Html.Raw(Url.Action("GraficoTarefasAcumuladas", "api/RelatorioDeResultados"))';
 
     @*var UrlIndicadorXAcaoModalPA = '@Html.Raw(Url.Action("GetAcoesByDate", "api/RelatorioDeResultados"))';
         var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';*@
@@ -219,7 +225,6 @@
         limpaDadosTela();
 
         // Verificar se é mostrar tudo e aplicar vazio
-
         if ($('#clusterId').prev().find('a.actived').length > 0) {
             enviar['clusterIdArr'] = [];
             enviar['clusterSelected_Id'] = [];
@@ -245,67 +250,85 @@
             enviar['criticalLevelIdArr'] = [];
         }
 
-            enviar['auditorId'] = GetUsuarioId();
+        enviar['auditorId'] = GetUsuarioId();
 
-            if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
+        if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
 
-                EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
-            }
-            EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+            EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);          
+        }
 
-            /*Colocando o grafico de histórunitIdArrico geral*/
-            var enviarGeral = Object.create(enviar);
-            enviarGeral["unitId"] = undefined;
-            enviarGeral["unitIdArr"] = undefined;
-            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-            //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
-            if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
+        if ((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) {
+
+            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        }
+
+        EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+
+        /*Colocando o grafico de histórunitIdArrico geral*/
+        var enviarGeral = Object.create(enviar);
+        enviarGeral["unitId"] = undefined;
+        enviarGeral["unitIdArr"] = undefined;
+
+        EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+
+        
+
+        //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+        if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
+
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
+
+        }
+
+        //if (enviar['unitId'] > 0) {
+        if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 0) {
+
+            //Evolutivo Das Unidades Selecionadas
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+
+            if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 1) {
+
                 EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
             }
 
-            //if (enviar['unitId'] > 0) {
-            if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 0) {
+            if (enviar['level2Id'] > 0) {
 
-                //Evolutivo Das Unidades Selecionadas
-                EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+                var enviar4 = Object.create(enviar);
 
-                if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 1) {
+                enviar4['level2Id'] = 0;
 
-                    EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
-
-                }
-
-                if (enviar['level2Id'] > 0) {
-
-                    var enviar4 = Object.create(enviar);
-
-                    enviar4['level2Id'] = 0;
-
-                    EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-
-                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
-
-                } else if (enviar['level1Id'] > 0) {
-
-                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-                }
-
-            } else {
-
-                if (enviar['level1Id'] > 0 || (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length > 0)) {
-                    var enviarComIndicador = Object.create(enviar);
-                    enviarComIndicador['level2Id'] = undefined;
-                    enviarComIndicador['level2IdArr'] = undefined;
-                    EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-                    if (enviar['level2Id'] > 0 || (enviar['level2IdArr'] != undefined && enviar['level2IdArr'].length > 0)) {
-                        EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
-
-                    }
-                }
+                EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
 
 
+            } else if (enviar['level1Id'] > 0) {
 
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
             }
+
+
+        } else {
+
+            if (enviar['level1Id'] > 0 || (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length > 0)) {
+
+                var enviarComIndicador = Object.create(enviar);
+
+                enviarComIndicador['level2Id'] = undefined;
+
+                enviarComIndicador['level2IdArr'] = undefined;
+
+                EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+
+                if (enviar['level2Id'] > 0 || (enviar['level2IdArr'] != undefined && enviar['level2IdArr'].length > 0)) {
+
+                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+
+                }
+            }
+
+        }
+
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
     }
@@ -799,7 +822,7 @@
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name;
-        } else 
+        } else
         if (data[0].ChartTitle == "Histórico do Monitoramento") {
             //TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
@@ -2399,7 +2422,7 @@
         }
 
     }
-    
+
     function SetTitulo(Level) {
 
         let unidade = enviar.unitId;
@@ -2653,6 +2676,7 @@
         $('#TituloTabela').html("");
         $('#DataTable_wrapper').hide();
         $('#GraficoHistoricoGeral').empty();
+        $('#GraficoTarefasAcumuladas').empty();
 
         subtitle = "";
         subtitleAux = "";
@@ -2672,8 +2696,6 @@
             // Botão desabilita até retorno
 
             $('#btnSend').prop("disabled", true);
-
-
 
             Subtitle = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
@@ -2760,6 +2782,361 @@
             chartHistorico.reflow();
         }
     });
-</script>
+
+    var GraficoTarefasAcumuladasTit ='@Resources.Resource.derivations_per_defects';
+
+    function GerarGraficoTarefasAcumuladas(data) {
+
+        var nc = MapeiaValorParaHC(data, "Nc");
+        var nome = MapeiaValorParaHC(data, "TarefaName");
+        var selector = "GraficoTarefasAcumuladas";
+        var sentido = 'desc';
+
+        var inverse = sentido == 'desc' ? undefined : 1;
+
+        //enviar.isLevel = 2;
+        
+        subtitle = Resources('unit') + ": " + $('#unitIdV :selected').text();
+
+        //if (pathDirect == 1)
+        //    subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
+
+        //subtitle += " | " + Resources('level1') + ": " + enviar["level1Name"];
+
+        //if (enviar["shift"] != "" && enviar["shift"] != undefined)
+        //    subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
+
+        $('#' + selector).empty().highcharts({
+            credits: Chart.Credits(),
+            chart: Chart.Chart('column', 'xy'),
+            title: Chart.Titulo(GraficoTarefasAcumuladasTit),
+            subtitle: {
+                text: subtitle
+            },
+            xAxis: Chart.Xaxis(nome),
+            yAxis: Chart.yAxisPadraoRelNc(),
+            legend: {
+                shadow: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: [
+                Chart.NC(nc, null, null, null, null, "", nome),
+                Chart.curvaPareto(data, nc, 1, inverse)
+            ]
+        })
+
+        }
+
+    var Chart = {
+         criaTitulo: function (prefix, sufix) {
+                return prefix + sufix;
+            },
+         curvaPareto: function (dados, dadosNC, axis, inverse) {
+
+                var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC = 0;
+                var data = []
+                dadosNC.forEach(function (a) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    data.push(Math.round(porcentagemAcumuladaNC, 2));
+                });
+
+                return {
+                    type: 'line',
+                    yAxis: 1,
+                    name: Resources('pareto_chart'),
+                    color: "Red",
+                    data: data,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    zones: [{
+                        value: 80,
+                        color: inverse == undefined ? 'Red' : 'Black'
+                    }, {
+                        color: inverse == undefined ? 'Black' : 'Red'
+                    }],
+                }
+            },
+         serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
+
+                var serieType = tipo == undefined ? 'line' : tipo;
+                var sufix = suffix == undefined ? '' : suffix
+                var padding1 = 0.3;
+                var padding2 = -0.2;
+
+
+                return {
+                    type: serieType,
+                    yAxis: 1,
+                    name: nomeDaSerie,
+                    color: corDaSerie,
+                    data: dados,
+                    pointPadding: paddin1,
+                    pointPlacement: padding2,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                if (typeof (pointFunc) == 'function') {
+                                    pointFunc(nome[this.x], id[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: sufix
+                    }
+                }
+
+
+            },
+         CorTotalNc: function () { return '#F7BCB0' },
+         CorTotalAv: function () { return '#ccc' },
+         CorTotalPareto: function () { return '#900000' },
+         CorMeta: function () { return '#67D184' },
+         CorTotalProcNc: function () { return '#FF6347' },
+         Legend: function () {
+                return {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                };
+            },
+         ToolTip: function (isShared, isCrosshairs) {
+                return {
+                    valueDecimals: 2,
+                    shared: isShared,
+                    crosshairs: isCrosshairs
+                }
+            },
+         Titulo: function (data, sufix) {
+
+                if (!!sufix)
+                    data = data + " | " + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+         Subtitulo: function (data, sufix) {
+
+                if (!!sufix)
+                    data = data + ": " + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+         Credits: function () {
+                return {
+                    enabled: false
+                }
+            },
+         Zones: function () {
+                return {
+                    enabled: false
+                }
+            },
+         Chart: function (tipo, zoon) {
+                return {
+                    type: tipo,
+                    zoomType: (!!zoon) ? zoon : ''
+                }
+            },
+         yAxisPadraoRelNc: function () {
+
+                return [{
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: Resources('number_samplers')
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    allowDecimals: false,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% ' + Resources('nonconformity'),
+                    },
+                    opposite: true
+                }];
+
+            },
+         Xaxis: function (dados) {
+                return [{
+                    categories: dados
+                }];
+            },
+         NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
+                return {
+                    name: Resources('nonconformity'),
+                    color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
+                    data: data,
+                    yAxis: 0,
+                    //pointPadding: 0.3,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+                }
+
+            },
+         ProcNc: function (data, func, funcParaAcumuladas, grafico, arr, arr2) {
+                $.each(data, function (a, b) {
+                    data[a] = parseFloat(b) > 100 ? 100 : b;
+                });
+                return {
+                    name: '% ' + Resources('nonconformity'),
+                    color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (' + Resources('nonconformity') + ' * ' + Resources('weight')
+                    }
+                };
+
+            },
+         Meta: function (data, func, nome, id, funcParaAcumuladas) {
+
+                return {
+                    visible: false,
+                    name: '% ' + Resources('goal'),
+                    data: data,
+                    color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.4,
+                    yAxis: 1,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    }
+                };
+
+            },
+         Av: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
+
+                return {
+                    visible: false,
+                    name: Resources('evaluation'),
+                    data: data,
+                    color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.2,
+                    yAxis: 0,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!func)
+                                    if (!!arr2) {
+                                        func(arr[this.x], grafico, arr2[this.x]);
+                                    } else {
+                                        func(arr[this.x], grafico);
+                                    }
+
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+
+                };
+
+            },
+         DataLabelPadrao: function (affix) {
+
+                return {
+                    format: !!affix ? '{y:.2f} ' + affix : '{y:.2f}',
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'Arial'
+                    }
+                };
+            },
+        }
+
+    </script>
 
 }

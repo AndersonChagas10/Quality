@@ -63,7 +63,7 @@ namespace SgqSystem.Mail
                 using (var client = new HttpClient())
                 {
                     var url = GlobalConfig.urlPreffixAppColleta + "/api/hf/SendMail";
-                    client.Timeout = TimeSpan.FromMinutes(2);
+                    client.Timeout = TimeSpan.FromMinutes(10);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }

@@ -39,7 +39,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqSystem.Tests", "SgqSyste
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", "{62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}"
 	ProjectSection(SolutionItems) = preProject
-		Em desenvolvimento.txt = Em desenvolvimento.txt
+		00000000_0000_EstruturaMigration.txt = 00000000_0000_EstruturaMigration.txt
+		20180318_0000_CriacaoModuloEModuloXCluster.txt = 20180318_0000_CriacaoModuloEModuloXCluster.txt
+		20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField.txt = 20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField.txt
+		20180322_0000_ParLevel1EClusterAvAmLevel2.txt = 20180322_0000_ParLevel1EClusterAvAmLevel2.txt
+		20180327_0000_CriacaoParModuleXModules.txt = 20180327_0000_CriacaoParModuleXModules.txt
+		20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt = 20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt
+		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ja implementado aporvado", "Ja implementado aporvado", "{808314E8-18AF-481B-A15F-AC2A36EFCA75}"

@@ -804,6 +804,8 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="ParCluster_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -970,6 +972,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsRequired" Type="bit" />
           <Property Name="DefaultSelected" Type="bit" />
+          <Property Name="HeaderFieldGroup" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -1014,16 +1017,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
-            
-            
-            
-            
-            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
@@ -1198,6 +1194,14 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParModuleXModule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParModuleParent_Id" Type="int" Nullable="false" />
+          <Property Name="ParModuleChild_Id" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ParMultipleValues">
           <Key>
             <PropertyRef Name="Id" />
@@ -1267,6 +1271,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="ParCluster_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParScoreType">
           <Key>
@@ -3135,6 +3141,30 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParModuleXModule_ParModuleChild">
+          <End Role="ParModule" Type="Self.ParModule" Multiplicity="1" />
+          <End Role="ParModuleXModule" Type="Self.ParModuleXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParModule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParModuleXModule">
+              <PropertyRef Name="ParModuleChild_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParModuleXModule_ParModuleParent">
+          <End Role="ParModule" Type="Self.ParModule" Multiplicity="1" />
+          <End Role="ParModuleXModule" Type="Self.ParModuleXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParModule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParModuleXModule">
+              <PropertyRef Name="ParModuleParent_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParMultipleValues_ParHeaderField">
           <End Role="ParHeaderField" Type="Self.ParHeaderField" Multiplicity="1" />
           <End Role="ParMultipleValues" Type="Self.ParMultipleValues" Multiplicity="*" />
@@ -3644,6 +3674,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="Self.ParLevel3BoolTrue" Schema="dbo" store:Type="Tables" />
@@ -3657,6 +3688,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLocal" EntityType="Self.ParLocal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMeasurementUnit" EntityType="Self.ParMeasurementUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParModule" EntityType="Self.ParModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParModuleXModule" EntityType="Self.ParModuleXModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMultipleValues" EntityType="Self.ParMultipleValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParNotConformityRule" EntityType="Self.ParNotConformityRule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParNotConformityRuleXLevel" EntityType="Self.ParNotConformityRuleXLevel" Schema="dbo" store:Type="Tables" />
@@ -3717,17 +3749,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
     [ParLevel1VariableProductionXLevel1].[AddDate] AS [AddDate], 
     [ParLevel1VariableProductionXLevel1].[AlterDate] AS [AlterDate]
     FROM [dbo].[ParLevel1VariableProductionXLevel1] AS [ParLevel1VariableProductionXLevel1]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParLevel2XHeaderField].[Id] AS [Id], 
-    [ParLevel2XHeaderField].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [ParLevel2XHeaderField].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [ParLevel2XHeaderField].[ParHeaderField_Id] AS [ParHeaderField_Id], 
-    [ParLevel2XHeaderField].[AddDate] AS [AddDate], 
-    [ParLevel2XHeaderField].[AlterDate] AS [AlterDate], 
-    [ParLevel2XHeaderField].[IsActive] AS [IsActive]
-    FROM [dbo].[ParLevel2XHeaderField] AS [ParLevel2XHeaderField]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ResultLevel2HeaderField" EntityType="Self.ResultLevel2HeaderField" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -4176,6 +4197,14 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK_ParLevel3Value_ParMeasurementUnit" Association="Self.FK_ParLevel3Value_ParMeasurementUnit">
             <End Role="ParMeasurementUnit" EntitySet="ParMeasurementUnit" />
             <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParModuleXModule_ParModuleChild" Association="Self.FK_ParModuleXModule_ParModuleChild">
+            <End Role="ParModule" EntitySet="ParModule" />
+            <End Role="ParModuleXModule" EntitySet="ParModuleXModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParModuleXModule_ParModuleParent" Association="Self.FK_ParModuleXModule_ParModuleParent">
+            <End Role="ParModule" EntitySet="ParModule" />
+            <End Role="ParModuleXModule" EntitySet="ParModuleXModule" />
           </AssociationSet>
           <AssociationSet Name="FK_ParMultipleValues_ParHeaderField" Association="Self.FK_ParMultipleValues_ParHeaderField">
             <End Role="ParHeaderField" EntitySet="ParHeaderField" />
@@ -5068,6 +5097,15 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParModule" EntitySet="ParModule" />
             <End Role="ParClusterXModule" EntitySet="ParClusterXModule" />
           </AssociationSet>
+          <EntitySet Name="ParModuleXModule" EntityType="SgqDbModel.ParModuleXModule" />
+          <AssociationSet Name="FK_ParModuleXModule_ParModuleChild" Association="SgqDbModel.FK_ParModuleXModule_ParModuleChild">
+            <End Role="ParModule" EntitySet="ParModule" />
+            <End Role="ParModuleXModule" EntitySet="ParModuleXModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParModuleXModule_ParModuleParent" Association="SgqDbModel.FK_ParModuleXModule_ParModuleParent">
+            <End Role="ParModule" EntitySet="ParModule" />
+            <End Role="ParModuleXModule" EntitySet="ParModuleXModule" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -5490,6 +5528,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParEvaluation" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParEvaluation" ToRole="ParCompany" />
+          <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParCluster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -5532,6 +5572,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="DefaultSelected" Type="Boolean" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1XHeaderField" ToRole="ParLevel1" />
           <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
+          <Property Name="HeaderFieldGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -5834,6 +5875,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParSample" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParSample" ToRole="ParCompany" />
+          <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParCluster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ParStructure">
           <Key>
@@ -8986,6 +9029,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParClusterXModule" Relationship="SgqDbModel.FK_ParClusterXModule_ParModule" FromRole="ParModule" ToRole="ParClusterXModule" />
+          <NavigationProperty Name="ParModuleXModule" Relationship="SgqDbModel.FK_ParModuleXModule_ParModuleChild" FromRole="ParModule" ToRole="ParModuleXModule" />
+          <NavigationProperty Name="ParModuleXModule1" Relationship="SgqDbModel.FK_ParModuleXModule_ParModuleParent" FromRole="ParModule" ToRole="ParModuleXModule" />
         </EntityType>
         <Association Name="FK_ParClusterXModule_ParCluster">
           <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
@@ -9008,6 +9053,40 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParClusterXModule">
               <PropertyRef Name="ParModule_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ParModuleXModule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParModuleParent_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParModuleChild_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ParModule" Relationship="SgqDbModel.FK_ParModuleXModule_ParModuleChild" FromRole="ParModuleXModule" ToRole="ParModule" />
+          <NavigationProperty Name="ParModule1" Relationship="SgqDbModel.FK_ParModuleXModule_ParModuleParent" FromRole="ParModuleXModule" ToRole="ParModule" />
+        </EntityType>
+        <Association Name="FK_ParModuleXModule_ParModuleChild">
+          <End Type="SgqDbModel.ParModule" Role="ParModule" Multiplicity="1" />
+          <End Type="SgqDbModel.ParModuleXModule" Role="ParModuleXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParModule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParModuleXModule">
+              <PropertyRef Name="ParModuleChild_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParModuleXModule_ParModuleParent">
+          <End Type="SgqDbModel.ParModule" Role="ParModule" Multiplicity="1" />
+          <End Type="SgqDbModel.ParModuleXModule" Role="ParModuleXModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParModule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParModuleXModule">
+              <PropertyRef Name="ParModuleParent_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9386,6 +9465,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParEvaluation">
             <EntityTypeMapping TypeName="SgqDbModel.ParEvaluation">
               <MappingFragment StoreEntitySet="ParEvaluation">
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -9423,6 +9504,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParLevel1XHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XHeaderField">
               <MappingFragment StoreEntitySet="ParLevel1XHeaderField">
+                <ScalarProperty Name="HeaderFieldGroup" ColumnName="HeaderFieldGroup" />
                 <ScalarProperty Name="DefaultSelected" ColumnName="DefaultSelected" />
                 <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -9682,6 +9764,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParSample">
             <EntityTypeMapping TypeName="SgqDbModel.ParSample">
               <MappingFragment StoreEntitySet="ParSample">
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -11020,6 +11104,15 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParModuleXModule">
+            <EntityTypeMapping TypeName="SgqDbModel.ParModuleXModule">
+              <MappingFragment StoreEntitySet="ParModuleXModule">
+                <ScalarProperty Name="ParModuleChild_Id" ColumnName="ParModuleChild_Id" />
+                <ScalarProperty Name="ParModuleParent_Id" ColumnName="ParModuleParent_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

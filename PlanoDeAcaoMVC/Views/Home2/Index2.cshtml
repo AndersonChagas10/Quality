@@ -1440,7 +1440,7 @@
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                    //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
@@ -1569,7 +1569,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
                         if (model != undefined) {
 
                             //$('#Id').val(model.Id);
@@ -1602,7 +1602,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
-                        $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                         DdlChangeEstrategico();
                     }
@@ -1611,6 +1611,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                    //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
@@ -1724,7 +1725,8 @@
 
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
 
-                            $('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                            //$('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                            $('#ObjetivoGerencial_Id').addClass('tatico');
 
                             try {
                                 $('#modalLindo span.select2').prev('select').select2('destroy');
@@ -1736,6 +1738,7 @@
 
                         });
                     });
+
                     $('#IndicadoresDeProjeto_Id').change();
 
                 });
@@ -1890,12 +1893,19 @@
 
                 $(inputValorDe).maskMoney('destroy');
                 //$(inputValorDe).get(0).type = 'number';
-                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+
+                if (valorDe != "" && valorDe != NaN)
+                    $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorDe).val(valorDe);
+
 
                 $(inputValorPara).maskMoney('destroy');
                 //$(inputValorPara).get(0).type = 'number';
-                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
-
+                if (valorPara != "" && valorPara != NaN)
+                    $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorPara).val(valorPara);
 
                 $(inputValorDe).on("keypress", function (event) {
 
@@ -1903,10 +1913,14 @@
 
                         var $this = $(this);
 
-                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
-                            ((event.which < 48 || event.which > 57) &&
-                                (event.which != 0 && event.which != 8))) {
-                            event.preventDefault();
+                        if (event.which == 46 || event.which == 44) {//Caso for ponto ou virgula
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {//se já existir um ponto ou uma virgula
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {//se não for numero
+                                    event.preventDefault();
+                            }
                         }
                     }
                 });
@@ -1917,10 +1931,14 @@
 
                         var $this = $(this);
 
-                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
-                            ((event.which < 48 || event.which > 57) &&
-                                (event.which != 0 && event.which != 8))) {
-                            event.preventDefault();
+                        if (event.which == 46 || event.which == 44) {
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {
+                                event.preventDefault();
+                            }
                         }
                     }
                 });
@@ -2403,6 +2421,7 @@
                 form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
                 form.attr('id', 'formEditTatico');
 
                 form.find('button').each(function (o, c) {
@@ -2415,8 +2434,9 @@
                     }
                 });
 
+                if (model.Acao && model.Acao.Id > 0)
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button>");
                 $('#modalLindo').find('.modal-body .content2').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button><hr>");
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
                 myfunction();
 
@@ -2428,7 +2448,7 @@
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
                 form.find('table > tbody > tr:nth-child(3)').hide();
-                form.find('table > tbody > tr:nth-child(10)').hide();
+                //form.find('table > tbody > tr:nth-child(10)').hide();
                 form.find('table > tbody > tr:nth-child(11)').hide();
                 form.find('table > tbody > tr:nth-child(12)').hide();
                 form.find('table > tbody > tr:nth-child(13)').hide();
@@ -2452,9 +2472,10 @@
                         $(c).attr('onclick', after)
                     }
                 })
-
+                
+                if (model.Tatico_Id > 0)
+                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vinculo Estratégico</button>");
                 $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Estratégico</button><hr>");
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
@@ -2628,27 +2649,10 @@
                 //DDLs ENCADEADAS da PARTIAL VIEW
                 changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
 
-                $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
-                    var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
-                    manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                changeIniciativa();
 
-                    $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+                changeIndicadoresProjetos();
 
-                            var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
-                            manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-
-                            $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-
-                                $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
-
-                                $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
-                            });
-                        });
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').change();
-                    });
-                });
                 //HideForOperacional();
 
                 $('.UnidadeDeMedidaTatico').change();
@@ -2656,8 +2660,60 @@
                 if (data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
-            }
-            );
+            });
+        }
+
+        function changeIniciativa() {
+
+            $('#formEditTatico').on('change','#Iniciativa_Id', function () {
+
+                var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+
+                manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                //if (Iniciativa_Id <= 0) {
+                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", true);
+                //} else {
+                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", false);
+                //}
+
+                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+
+                    //changeIndicadoresProjetos();
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').select2();
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+                });
+            });
+        }
+
+        function changeIndicadoresProjetos() {
+
+            $('#formEditTatico').on('change', '#IndicadoresDeProjeto_Id' , function () {
+
+                var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+
+                manageButton(Objetivo_Id, 'formEditTatico #ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                //if (Objetivo_Id <= 0) {
+                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
+                //} else {
+                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
+                //}
+
+                $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
+
+                    //$('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+                    $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').select2();
+                });
+            });
         }
 
         function getAcao(data, a, b) {
@@ -3186,7 +3242,6 @@
                     initComplete: function(){
                         $('#tablePessego').off().on('click','button[data-id]',function(){
                             if(confirm("Deseja alterar o vinculo!?")){
-                                debugger
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
                                 //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
@@ -3197,6 +3252,13 @@
                                 });
                             }
                         });
+
+                        setTimeout(function (e) {
+                            var oTable = $('#tablePessego').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                            }
+                        }, 1400);
                     }
                 });
             });

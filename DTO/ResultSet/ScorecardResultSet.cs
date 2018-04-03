@@ -108,11 +108,11 @@ public class ScorecardResultSet
 
         string where = "";
 
-        if(clusterSelected_Id > 0)
+        if (clusterSelected_Id > 0)
         {
             where = " WHERE cluster = " + clusterSelected_Id;
         }
-       
+
 
         if (tipo == 0)
         {
@@ -166,10 +166,10 @@ public class ScorecardResultSet
                 "\n     and C2.Duplicated = 0 " +
                 "\n     and L1.ParConsolidationType_Id = 4 " +
                 "\n     group by C.Id, ParLevel1_Id" +
-                /*
-                "\n ) TAB " +
-                "\n GROUP BY UNIDADE, INDICADOR " +
-                */
+           /*
+           "\n ) TAB " +
+           "\n GROUP BY UNIDADE, INDICADOR " +
+           */
 
 
 
@@ -193,17 +193,66 @@ public class ScorecardResultSet
            "\n DECLARE @CRITERIONAME VARCHAR(153)                                                                                                                                                                                                                                  " +
            "\n DECLARE @PONTOS VARCHAR(153)                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n  @CLUSTER = CL.Id                                                                                                                                                                                                                                                   " +
-           "\n , @CLUSTERNAME = CL.Name                                                                                                                                                                                                                                            " +
-           "\n , @REGIONAL = S.Id                                                                                                                                                                                                                                                  " +
-           "\n , @REGIONALNAME = S.Name                                                                                                                                                                                                                                            " +
-           "\n , @PARCOMPANY = C.Id                                                                                                                                                                                                                                                " +
-           "\n , @PARCOMPANYNAME = C.Name                                                                                                                                                                                                                                          " +
-           "\n , @CRITERIO = L1C.ParCriticalLevel_Id                                                                                                                                                                                                                               " +
-           "\n , @CRITERIONAME = CRL.Name                                                                                                                                                                                                                                          " +
-           "\n , @PONTOS = L1C.Points                                                                                                                                                                                                                                              " +
-           "\n FROM ParCompany C  (nolock)                                                                                                                                                                                                                                                   " +
+
+           @"SELECT                                                                                                                                                                                                                                                              
+              @CLUSTER = CL.Id                                                                                                                                                                                                                                                   
+             , @CLUSTERNAME = 
+             (
+             SELECT TOP 1 (select name from parcluster where id = L1Ca.ParCluster_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                                           
+             , @REGIONAL = S.Id                                                                                                                                                                                                                                                  
+             , @REGIONALNAME = S.Name                                                                                                                                                                                                                                            
+             , @PARCOMPANY = C.Id                                                                                                                                                                                                                                                
+             , @PARCOMPANYNAME = C.Name                                                                                                                                                                                                                                          
+             , @CRITERIO = 
+             (
+             SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                               
+             , @CRITERIONAME = 
+             (
+             SELECT top 1 (select name from parcriticallevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                                        
+             , @PONTOS = 
+             (
+             SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                                              
+             FROM ParCompany C  (nolock) " +
+
+
+
+
+
+           //"\n SELECT                                                                                                                                                                                                                                                              " +
+           //"\n  @CLUSTER = CL.Id                                                                                                                                                                                                                                                   " +
+           //"\n , @CLUSTERNAME = CL.Name                                                                                                                                                                                                                                            " +
+           //"\n , @REGIONAL = S.Id                                                                                                                                                                                                                                                  " +
+           //"\n , @REGIONALNAME = S.Name                                                                                                                                                                                                                                            " +
+           //"\n , @PARCOMPANY = C.Id                                                                                                                                                                                                                                                " +
+           //"\n , @PARCOMPANYNAME = C.Name                                                                                                                                                                                                                                          " +
+           //"\n , @CRITERIO = L1C.ParCriticalLevel_Id                                                                                                                                                                                                                               " +
+           //"\n , @CRITERIONAME = CRL.Name                                                                                                                                                                                                                                          " +
+           //"\n , @PONTOS = L1C.Points                                                                                                                                                                                                                                              " +
+           //"\n FROM ParCompany C  (nolock)                                                                                                                                                                                                                                                   " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n LEFT JOIN ParCompanyXStructure CS  (nolock)                                                                                                                                                                                                                                   " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -632,11 +681,11 @@ public class ScorecardResultSet
            "\n  ,                                                                                                                                                                                                                                                                  " +
            "\n  CASE                                                                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -754,7 +803,7 @@ public class ScorecardResultSet
             "\n	)" +
 
            "\n , @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
-           
+
            "\n ,0 as av " +
            "\n ,0 as nc " +
 
@@ -779,11 +828,11 @@ public class ScorecardResultSet
            "\n , 0 AS PontosIndicador                                                                                                                                                                                                                                              " +
            "\n , ROUND(CASE                                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END,2)                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n , 0 AS Real                                                                                                                                                                                                                                                         " +

@@ -294,6 +294,9 @@
     <Compile Include="ParModule.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParModuleXModule.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParMultipleValues.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Dominio.ParModuleXModule>
+
+<div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+        <div class="caption">
+            <i class="icon-share font-dark"></i>
+            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module X @Resources.Resource.module</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="setup_tab">
+                @if (ViewBag.EnableCreate)
+                {
+                    <p>
+                        @Html.ActionLink(Resources.Resource.create, "Create", "ParModuleXModules", new { moduleId = ViewBag.ModuleId }, new { @class = "btn btn-primary" })
+                    </p>
+                }
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Resources.Resource.linked
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ParModule.Name)
+                            </td>
+                            <td>
+                                @*@Html.ActionLink(Resources.Resource.edit, "Edit", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-success" })*@
+                                @*@Html.ActionLink(Resources.Resource.details, "Details", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-info" })*@
+                                @Html.ActionLink(Resources.Resource.delete, "Delete", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
