@@ -6,10 +6,9 @@
 @{
 
     var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
-
+    var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
+    
 }
-
-
 
 <div id="newLevel1Modal">
     @using (Html.BeginForm())
@@ -29,7 +28,7 @@
                         </tr>
 
                         @*@if (!GlobalConfig.Eua)
-        {*@
+                            {*@
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" })
         , @Html.Label(Resources.Resource.consolidation_type)
@@ -72,8 +71,8 @@
 
 
                         @*<tr class="row">
-            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
-        </tr>*@
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                            </tr>*@
 
                     </tbody>
                 </table>
@@ -316,71 +315,71 @@
                                                         </td>
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })
-                                                    </td>
+                                                        </td>
 
-                                                </tr>
+                                                    </tr>
 
-                                                <tr class="row">
+                                                    <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
-                                                    <td style="padding:5px;">
-                                                        Câmara
-                                                    </td>
-                                                    <td style="padding:5px;">
-                                                        @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
-                                                </td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
+                                                        <td style="padding:5px;">
+                                                            Câmara
+                                                        </td>
+                                                        <td style="padding:5px;">
+                                                            @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
+                                                        </td>
 
-                                            </tr>
+                                                    </tr>
 
-                                            <tr class="row">
+                                                    <tr class="row">
 
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
-                                                <td style="padding:5px;"> Ponto de Coleta</td>
-                                                <td style="padding:5px;">
-                                                    @Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })
-                                                </td>
-
-
-                                            </tr>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
+                                                        <td style="padding:5px;"> Ponto de Coleta</td>
+                                                        <td style="padding:5px;">
+                                                            @Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })
+                                                        </td>
 
 
-                                            <tr class="row">
-
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
-                                                <td style="padding:5px;"> Detector de Metais</td>
-                                                <td style="padding:5px;">
-                                                    @Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })
-                                                </td>
+                                                    </tr>
 
 
-                                            </tr>
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
+                                                        <td style="padding:5px;"> Detector de Metais</td>
+                                                        <td style="padding:5px;">
+                                                            @Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })
+                                                        </td>
 
 
-                                            <tr class="row">
-
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
-                                                <td style="padding:5px;"> Família de Produtos</td>
-                                                <td style="padding:5px;"></td>
+                                                    </tr>
 
 
-                                            </tr>
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
+                                                        <td style="padding:5px;"> Família de Produtos</td>
+                                                        <td style="padding:5px;"></td>
 
 
-                                            <tr class="row">
+                                                    </tr>
 
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
-                                                <td style="padding:5px;"> Reprocesso Entrada</td>
-                                                <td style="padding:5px;"></td>
 
-                                            </tr>
+                                                    <tr class="row">
 
-                                            <tr class="row">
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
+                                                        <td style="padding:5px;"> Reprocesso Entrada</td>
+                                                        <td style="padding:5px;"></td>
 
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
-                                                <td style="padding:5px;"> Reprocesso Saída</td>
-                                                <td style="padding:5px;"></td>
+                                                    </tr>
 
-                                            </tr>
+                                                    <tr class="row">
+
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
+                                                        <td style="padding:5px;"> Reprocesso Saída</td>
+                                                        <td style="padding:5px;"></td>
+
+                                                    </tr>
                                                 }
 
                                                 <tr class="row">
@@ -513,7 +512,9 @@
                                                 {
                                                     foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                     {
-                                                        <tr class="alteracao">
+                                                        <tr class="alteracao" 
+                                                            data-headerfield-id="@parLevel1XHeaderField.ParHeaderField.Id" 
+                                                            data-headerfieldgroup="@parLevel1XHeaderField.HeaderFieldGroup">
                                                             <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                             <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                             <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
@@ -682,18 +683,22 @@
                                                             <td>
                                                                 @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
-    {
-                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
-                                                                <span class="glyphicon glyphicon-duplicate"></span>
-                                                            </button>
+                                                                {
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                                        <span class="glyphicon glyphicon-duplicate"></span>
+                                                                    </button>
 
-}
-else
-{
-                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
-                                                                <span class="fa fa-copy"></span>
-                                                            </button>
-}
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                                        <span class="fa fa-copy"></span>
+                                                                    </button>
+                                                                }
+
+                                                                <button type="button" class="btn btn-info btn-xs" id="AgruparCabecalho" onclick="changeColor(this); HeaderLevel1.SetGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" data-toggle="modal" title="Agrupar cabeçalho">
+                                                                    <span class="fa fa-copy"></span>
+                                                                </button>
 
                                                                 <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
                                                                     <span class="fa fa-pencil-square-o"></span>
@@ -776,13 +781,13 @@ else
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
 
-            
+
 
         </div>
                                                                         }
 </div>
 
-        <script>
+<script>
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
     var semID =  @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
@@ -1998,10 +2003,13 @@ else
     });
 
     var urlHeaderLevel1 = '@Html.Raw(@urlHeaderLevel1)';
+    var urlHeaderLevel1HeaderFieldGroup = '@Html.Raw(@urlHeaderLevel1HeaderFieldGroup)';
 
     var HeaderLevel1 = {
         object: {
-            Id: 0
+            Id: 0,
+            Group_Id: '',
+            ParLevel1_Id: 0
         },
         Add: function(idHeader, button){
             HeaderLevel1.object.Id = idHeader;
@@ -2009,8 +2017,52 @@ else
             $.post(urlHeaderLevel1, HeaderLevel1.object, function(r){
 
             });
+        },
+        Group_Id: 0,
+        _Id: 0,
+        ParLevel1_Id: 0,
+        SetGroup: function(idHeader, parLevel1, button){
+            HeaderLevel1.ParLevel1_Id = parLevel1;
+
+            if(HeaderLevel1.Group_Id == idHeader)
+                HeaderLevel1.Group_Id = 0;
+            else
+                HeaderLevel1.object.Group_Id = HeaderLevel1.Group_Id;
+            HeaderLevel1.object.Id = idHeader;
+            HeaderLevel1.object.ParLevel1_Id = HeaderLevel1.ParLevel1_Id;
+
+            if(HeaderLevel1.Group_Id <= 0){
+                HeaderLevel1.Group_Id = HeaderLevel1.object.Id;
+                return;
+            }
+
+            $.post(urlHeaderLevel1HeaderFieldGroup, HeaderLevel1.object, function(r){
+                if(r != null){
+                    var group = $('tr[data-headerfield-id='+r.Id+']').attr("data-headerfieldgroup");
+                    if(group == undefined || group.length <= 0){
+                        group = $('tr[data-headerfield-id='+r.Group_Id+']').attr("data-headerfieldgroup");
+                    }
+
+                    if(group == undefined || group.length <= 0){
+                        $('tr[data-headerfield-id='+r.Group_Id+']').attr("data-headerfieldgroup",r.HeaderFieldGroup);
+                        $('tr[data-headerfield-id='+r.Id+']').attr("data-headerfieldgroup",r.HeaderFieldGroup);
+                    }else{
+                        $.each($('tr[data-headerfieldgroup='+group+']'),function(i,o){
+                            $(o).attr("data-headerfieldgroup",null)
+                            $(o).css("background-color",'transparent')
+                        });
+                        $.each(r.HeaderFieldGroup.split("-"),function(i,o){
+                            $.each($('tr[data-headerfield-id='+o+']'),function(i,o){
+                                $(o).attr("data-headerfieldgroup",r.HeaderFieldGroup)
+                                $(o).css("background-color",'green')
+                            });
+                        });
+                    }
+                }
+            });
+            HeaderLevel1.Group_Id = HeaderLevel1.object.Id;
         }
     }
 
 
-        </script>
+</script>
