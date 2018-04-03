@@ -142,7 +142,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -234,9 +234,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
                 #region ScriptLista
-                script += $@"
+                script += @"
 
-            " + SQLcentro + $@"
+            " + SQLcentro + @"
 
             SELECT 
             	Indicador 
@@ -244,7 +244,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Unidade
                ,UnidadeName 
                ,concat(IndicadorName, ' - ', UnidadeName) AS IndicadorUnidade
-               --,'" + titulo + $@"' AS ChartTitle
+               --,'" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -261,11 +261,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsIndicador
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName
@@ -283,7 +278,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -291,11 +286,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
-            WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
 	        FROM #CUBO Cubo WITH (NOLOCK)
             GROUP BY 
                 ConsolidationDate
@@ -333,7 +323,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -439,7 +429,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Monitoramento 
                ,MonitoramentoName 
                ,concat(MonitoramentoName, ' - ', UnidadeName) AS MonitoramentoUnidade
-               --,'" + titulo + $@"' AS ChartTitle
+               --,'" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -449,11 +439,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsMonitoramento
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName
@@ -473,7 +458,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -482,11 +467,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -524,7 +504,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -632,7 +612,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Tarefa
                ,TarefaName 
                ,concat(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
-               --,'" + titulo + $@"' AS ChartTitle
+               --,'" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -642,11 +622,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsTarefa
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName
@@ -668,7 +643,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -677,11 +652,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -740,7 +710,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -834,14 +804,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
                 #region ScriptLista
-                script += $@"
+                script += @"
 
-            " + SQLcentro + $@"
+            " + SQLcentro + @"
 
             SELECT 
             	Indicador 
                ,IndicadorName 
-               --,'" + titulo + $@"' AS ChartTitle
+               --,'" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -851,11 +821,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsIndicador
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -871,7 +836,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -880,11 +845,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -920,7 +880,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -1023,7 +983,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IndicadorName 
                ,Monitoramento
                ,MonitoramentoName
-               --,'" + titulo + $@"' AS ChartTitle
+               --,'" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -1033,11 +993,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsMonitoramento
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -1055,7 +1010,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -1064,11 +1019,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -1105,7 +1055,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -1209,7 +1159,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,MonitoramentoName
                ,Tarefa
                ,TarefaName
-               --,'" + titulo + $@"' AS ChartTitle
+               --,'" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -1219,11 +1169,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsTarefa
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
-               WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -1243,7 +1188,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -1252,11 +1197,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-               WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -3940,7 +3880,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -4044,7 +3984,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,MonitoramentoName AS Level2Name
                ,Tarefa AS level3Id
                ,TarefaName AS level3Name
-               ,'" + titulo + $@"' AS ChartTitle
+               ,'" + titulo + @"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4055,11 +3995,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -4082,7 +4017,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -4095,11 +4030,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
-                WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
                 GROUP BY 
                     ConsolidationDate
             ORDER BY 3 
@@ -4133,7 +4063,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -4235,7 +4165,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IndicadorName AS Level1Name
                ,Monitoramento AS level2Id
                ,MonitoramentoName AS Level2Name
-               ,'" + titulo + $@"' AS ChartTitle
+               ,'" + titulo + @"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4246,11 +4176,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -4271,7 +4196,7 @@ ORDER BY 7
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -4283,11 +4208,6 @@ ORDER BY 7
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
 ORDER BY 3 
@@ -4320,7 +4240,7 @@ ORDER BY 3
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -4420,7 +4340,7 @@ ORDER BY 3
             SELECT 
             	Indicador AS level1Id
                ,IndicadorName AS Level1Name
-               ,'" + titulo + $@"' AS ChartTitle
+               ,'" + titulo + @"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4431,11 +4351,6 @@ ORDER BY 3
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -4454,7 +4369,7 @@ ORDER BY 3
             " + SQLcentro + @"
 
             SELECT 
-               '"+ titulo + $@"' AS ChartTitle
+               '"+ titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -4465,11 +4380,6 @@ ORDER BY 3
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
 ORDER BY 3 
@@ -4501,7 +4411,7 @@ ORDER BY 3
 
             if (form.moduleId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
             }
 
             // Grupo de Processos
@@ -4600,7 +4510,7 @@ ORDER BY 3
             SELECT 
             	Indicador AS level1Id
                ,IndicadorName AS Level1Name
-               ,'" + titulo + $@"' AS ChartTitle
+               ,'" + titulo + @"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4611,11 +4521,6 @@ ORDER BY 3
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
-                WHERE 1 = 1
-                { Wmodulo }
-                { Wprocesso }
-                { Wregional } 
-                { Wnivelcritico } 
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -4634,7 +4539,7 @@ ORDER BY 7
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + $@"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName) UnidadeName
@@ -4644,11 +4549,6 @@ ORDER BY 7
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
-            WHERE 1 = 1
-            { Wmodulo }
-            { Wprocesso }
-            { Wregional } 
-            { Wnivelcritico } 
             GROUP BY 
                 ConsolidationDate
 ORDER BY 3 

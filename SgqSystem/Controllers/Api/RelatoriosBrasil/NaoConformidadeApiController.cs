@@ -32,13 +32,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereUnit = "";
             var whereCriticalLevel = "";
             var whereClusterGroup = "";
-            var whereModule = "";
 
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
-                if (form.departmentId != 0)
+            if (form.departmentId != 0)
             {
                 whereDepartment = $@" AND IND.ID IN (
                                 select distinct
@@ -267,8 +262,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 		{ whereCluster }
                         { whereStructure } 
                         { whereCriticalLevel }
-                        { whereModule }
-                        -- { whereClusterGroup }
+                        { whereClusterGroup }
                 		) S1
                 	GROUP BY Unidade
                 			,Unidade_Id) S2
@@ -292,12 +286,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
             if (form.departmentId != 0)
             {
@@ -571,12 +559,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
             if (form.departmentId != 0)
             {
@@ -1096,12 +1078,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
 
             if (form.departmentId != 0)
@@ -1357,12 +1333,6 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
 
             if (form.departmentId != 0)
@@ -1631,12 +1601,6 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             var whereDepartment = "";
             var whereShift = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
             if (form.departmentId != 0)
             {
@@ -1794,12 +1758,6 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
             if (form.departmentId != 0)
             {
@@ -1886,12 +1844,6 @@ DROP TABLE #AMOSTRATIPO4 ";
             //TarefaName = tarefaName + i.ToString()
 
             var whereShift = "";
-            var whereModule = "";
-
-            if (form.moduleId != 0)
-            {
-                whereModule = $@"AND PC.Id in (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.moduleId + ") ";
-            }
 
             if (form.shift != 0)
             {
