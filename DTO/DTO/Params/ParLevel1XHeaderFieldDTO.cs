@@ -7,6 +7,7 @@ namespace DTO.DTO.Params
         public int ParLevel1_Id { get; set; }
         public int ParHeaderField_Id { get; set; }
         public bool Active { get; set; } = true;
+        public string HeaderFieldGroup { get; set; }
 
         /*Para inclusão*/
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
