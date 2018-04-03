@@ -364,7 +364,7 @@ namespace SgqSystem.Controllers.Api.Params
         {
             using (var db = new SgqDbDevEntities())
             {
-                var parentHeaderFieldGroup = db.ParLevel1XHeaderField.OrderByDescending(r=>r.HeaderFieldGroup.Length).FirstOrDefault(r => (r.ParHeaderField_Id == objHeaderField.Group_Id || r.ParHeaderField_Id == objHeaderField.Id) && r.ParLevel1_Id == objHeaderField.ParLevel1_Id);
+                var parentHeaderFieldGroup = db.ParLevel1XHeaderField.OrderByDescending(r => r.HeaderFieldGroup.Length).FirstOrDefault(r => (r.ParHeaderField_Id == objHeaderField.Group_Id || r.ParHeaderField_Id == objHeaderField.Id) && r.ParLevel1_Id == objHeaderField.ParLevel1_Id);
                 if (!string.IsNullOrEmpty(parentHeaderFieldGroup.HeaderFieldGroup))
                 {
                     var arrayId = parentHeaderFieldGroup.HeaderFieldGroup.Split('-').Select(m => Convert.ToInt32(m)).Distinct().ToList();
@@ -373,6 +373,7 @@ namespace SgqSystem.Controllers.Api.Params
                     if (listParHeaderField.Count > 0)
                     {
                         arrayId.Add(objHeaderField.Id);
+                        arrayId.Add(objHeaderField.Group_Id);
                         arrayId = arrayId.Distinct().ToList();
                         objHeaderField.HeaderFieldGroup = String.Join("-", arrayId);
                         db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = '{objHeaderField.HeaderFieldGroup}' where id in ({String.Join(",", arrayId)}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
@@ -381,9 +382,35 @@ namespace SgqSystem.Controllers.Api.Params
                 }
                 else if (objHeaderField.Id > 0 && objHeaderField.Group_Id > 0)
                 {
-                    objHeaderField.HeaderFieldGroup = objHeaderField.Group_Id+"-"+ objHeaderField.Id;
+                    objHeaderField.HeaderFieldGroup = objHeaderField.Group_Id + "-" + objHeaderField.Id;
                     db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = '{objHeaderField.HeaderFieldGroup}' where id in ({objHeaderField.Group_Id},{objHeaderField.Id}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
                     return objHeaderField;
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Route("UnlinkGroupParHeaderField")]
+        public ObjHeaderField UnlinkGroupParHeaderField(ObjHeaderField objHeaderField)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var parentHeaderFieldGroup = db.ParLevel1XHeaderField.OrderByDescending(r => r.HeaderFieldGroup.Length).FirstOrDefault(r => r.ParHeaderField_Id == objHeaderField.Id && r.ParLevel1_Id == objHeaderField.ParLevel1_Id);
+                if (!string.IsNullOrEmpty(parentHeaderFieldGroup.HeaderFieldGroup))
+                {
+                    var arrayId = parentHeaderFieldGroup.HeaderFieldGroup.Split('-').Select(m => Convert.ToInt32(m)).Distinct().ToList();
+                    var listParHeaderField = db.ParLevel1XHeaderField.Where(r => arrayId.Contains(r.ParHeaderField_Id) && r.ParLevel1_Id == objHeaderField.ParLevel1_Id).ToList();
+
+                    if (listParHeaderField.Count > 0)
+                    {
+                        arrayId.Remove(objHeaderField.Id);
+                        arrayId = arrayId.Distinct().ToList();
+                        objHeaderField.HeaderFieldGroup = arrayId.Count > 1 ? String.Join("-", arrayId) : "";
+                        db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = '{objHeaderField.HeaderFieldGroup}' where id in ({String.Join(",", arrayId)}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
+                        db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = null where id in ({objHeaderField.Id}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
+                        return objHeaderField;
+                    }
                 }
             }
             return null;

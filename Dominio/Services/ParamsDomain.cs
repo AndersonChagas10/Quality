@@ -283,7 +283,7 @@ namespace Dominio.Services
 
                 //Recravação
                 queryExcute = string.Format(query, "IsRecravacao", parlevel1Dto.Id);
-                parlevel1Dto.IsRecravacao = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
+                parlevel1Dto.IsRecravacao = db.Database.SqlQuery<bool?>(queryExcute).FirstOrDefault() ?? false;
             }
 
             #endregion
