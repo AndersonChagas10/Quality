@@ -530,6 +530,39 @@ ALTER TABLE [dbo].[ParClusterXModule] CHECK CONSTRAINT [FK_ParClusterXModule_Par
 ALTER TABLE ParLevel2XHeaderField
 ADD CONSTRAINT PK_ParLevel2XHeaderField PRIMARY KEY (Id);
 
+-------------------------------------------------------------------- 28 03 2018 - GABRIEL NUNES (Adicionado tableas para coleta de cluster)
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCluster' AND xtype='U')
+	CREATE TABLE CollectionLevel2XCluster(
+		Id int not null primary key identity(1,1),
+		CollectionLevel2_Id int null,
+		ParCluster_Id int null
+	)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XCluster' AND xtype='U')
+	CREATE TABLE ConsolidationLevel2XCluster(
+		Id int not null primary key identity(1,1),
+		ConsolidationLevel2_Id int null,
+		ParCluster_Id int null
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XCluster' AND xtype='U')
+	CREATE TABLE ConsolidationLevel1XCluster(
+		Id int not null primary key identity(1,1),
+		ConsolidationLevel1_Id int null,
+		ParCluster_Id int null
+	)
+GO 
+
+	IF COL_LENGTH('ParLevel1XHeaderField','HeaderFieldGroup') IS NULL
+    BEGIN
+		ALTER TABLE [dbo].[ParLevel1XHeaderField]
+		ADD [HeaderFieldGroup] [varchar](100) NULL
+    END
 -------------------------------------------------------------------- 25 03 2018 - LEO (Adicionado Id dos usuarios que validaram e finalizaram uma coleta de recravação)
 
 IF COL_LENGTH('RecravacaoJson','UserFinished_Id') IS NULL

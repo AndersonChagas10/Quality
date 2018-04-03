@@ -267,7 +267,7 @@ namespace SgqSystem.Services
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
         }
 
-        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0, string othersTags = null)
+        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, string accordeonId = "", string othersTags = null)
         {
             string collapseIn = " in";
             if (aberto == false)
@@ -287,7 +287,7 @@ namespace SgqSystem.Services
             }
 
             string accordeonIdTag = null;
-            if (accordeonId > 0)
+            if (accordeonId.Length > 0)
             {
                 accordeonIdTag = " id=\"" + accordeonId + "\"";
             }
