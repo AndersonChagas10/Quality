@@ -131,11 +131,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Indicador";
 
+            var Wmodulo = "";
             //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-            var Wmodulo = "";
 
 
             // Grupo de Processos
@@ -1730,7 +1730,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
   "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
   "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.IsActive = 1 AND aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -1972,7 +1972,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
            "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1 AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                  " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.IsActive = 1 AND aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
+           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
 "\n  --------------------------                                                                                                                                                                                                                                                    " +
 "\n  --------------------------                                                                                                                                                                                                                                                    " +
 "\n                                                                                                                                                                                                                                                                                " +
@@ -2069,13 +2069,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereStructure = "";
             var whereCriticalLevel = "";
             var whereUnit = "";
-            var whereModule = "";
-
-
-            if (form.moduleId > 0)
-            {
-                whereModule += "  AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + ")) ";
-            }
 
             if (form.clusterGroupId > 0)
             {
@@ -2099,7 +2092,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"  AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.IsActive = 1 AND P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"  AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
 
@@ -2142,8 +2135,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                     "\n  WHERE 1 = 1 " +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
-                    " -- "+ whereClusterGroup +
-                    whereModule +
+                    whereClusterGroup +
                     whereCluster +
                     whereStructure +
                     whereCriticalLevel +
@@ -2610,7 +2602,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
    "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-   "\n             AND L1Ca.IsActive = 1 " +
+   "\n           --  AND L1Ca.IsActive = 1 " +
 
    "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -2627,7 +2619,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
    "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-   "\n             AND L1Ca.IsActive = 1 " +
+   "\n           --  AND L1Ca.IsActive = 1 " +
 
    "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -2643,7 +2635,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
    "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-   "\n             AND L1Ca.IsActive = 1 " +
+   "\n           --  AND L1Ca.IsActive = 1 " +
 
    "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
@@ -2876,7 +2868,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
            "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.IsActive = 1 AND aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
+           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
 "\n  --------------------------                                                                                                                                                                                                                                                    " +
 "\n  --------------------------                                                                                                                                                                                                                                                    " +
 "\n                                                                                                                                                                                                                                                                                " +
@@ -2973,13 +2965,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereStructure = "";
             var whereCriticalLevel = "";
             var whereUnit = "";
-            var whereModule = "";
-
-
-            if (form.moduleId > 0)
-            {
-                whereModule += "  AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + ")) ";
-            }
 
             if (form.clusterGroupId > 0)
             {
@@ -3003,7 +2988,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"  AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.IsActive = 1 AND P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"  AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var where = string.Empty;
@@ -3042,8 +3027,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   WHERE 1 = 1 
   -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
-                    "-- "+whereClusterGroup +
-                    whereModule +
+                    whereClusterGroup +
                     whereCluster +
                     whereStructure +
                     whereCriticalLevel +
@@ -3502,7 +3486,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
   "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
   "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.IsActive = 1 AND aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
+  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
 
 
@@ -3744,7 +3728,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
            "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                 " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.IsActive = 1 AND aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
+           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
 "\n  --------------------------                                                                                                                                                                                                                                                    " +
 "\n  --------------------------                                                                                                                                                                                                                                                    " +
 "\n                                                                                                                                                                                                                                                                                " +
@@ -3835,13 +3819,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             #endregion
 
             #region Queryes Trs Meio
-            var whereModule = "";
 
-
-            if (form.moduleId > 0)
-            {
-                whereModule += "  AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + ")) ";
-            }
             var where = string.Empty;
             where += "";
 
@@ -3880,7 +3858,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                     "\n  WHERE 1 = 1 " +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
-                     whereModule+
                     "\n group by mesData ORDER BY 10";
 
             #endregion

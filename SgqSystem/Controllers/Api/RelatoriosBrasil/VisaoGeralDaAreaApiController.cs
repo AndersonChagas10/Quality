@@ -1678,15 +1678,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereStructure = "";
             var whereCriticalLevel = "";
             var whereUnit = "";
-            var whereModule = "";
-
-
-            if (form.moduleId > 0)
-            {
-                whereModule += " AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + "))";
-            }
-
-            // AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + "))
 
             if (form.clusterGroupId > 0)
             {
@@ -1796,8 +1787,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id
   WHERE 1 = 1
   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
- { whereModule }
- -- { whereClusterGroup }
+ { whereClusterGroup }
  { whereCluster }
  { whereStructure }
  { whereCriticalLevel }
@@ -1836,13 +1826,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereStructure = "";
             var whereCriticalLevel = "";
             var whereUnit = "";
-            var whereModule = "";
-
-
-            if (form.moduleId > 0)
-            {
-                whereModule += " AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + "))";
-            }
 
             if (form.clusterGroupId > 0)
             {
@@ -1994,14 +1977,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereCluster = "";
             var whereCriticalLevel = "";
             var whereUnit = "";
-            var whereModule = "";
-
-
-            if (form.moduleId > 0)
-            {
-                whereModule += " AND S.Cluster IN (SELECT PC.ID ParCluster_id FROM ParCluster PC INNER JOIN ParClusterXModule PCM ON PC.ID = PCM.ParCluster_Id WHERE 1=1 AND PC.IsActive = 1 AND PCM.IsActive = 1 AND PCM.ParModule_Id IN (" + form.moduleId + "))";
-            }
-
 
             if (form.clusterGroupId > 0)
             {
