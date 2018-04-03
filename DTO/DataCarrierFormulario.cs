@@ -112,7 +112,6 @@ namespace DTO
         public int[] clusterIdArr { get; set; } = new int[] { };
         public int structureId { get; set; }
         public int clusterGroupId { get; set; }
-        public int moduleId { get; set; }
         public int departmentId { get; set; }
         public string departmentName { get; set; }
 

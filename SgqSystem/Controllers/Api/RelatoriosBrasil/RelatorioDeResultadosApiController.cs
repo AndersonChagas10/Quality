@@ -132,25 +132,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var titulo = "Histórico do Indicador";
 
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -311,27 +303,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Monitoramento";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -492,27 +475,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Monitoramento";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -698,27 +672,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Indicador";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -868,27 +833,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Indicador";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -1043,27 +999,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Indicador";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -3868,27 +3815,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             
             var titulo = "Histórico da Tarefa";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -4051,27 +3989,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var titulo = "Histórico do Monitoramento";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -4228,27 +4157,18 @@ ORDER BY 3
 
             var titulo = "Histórico do Indicador";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
@@ -4399,27 +4319,18 @@ ORDER BY 3
 
             var titulo = "Histórico Consolidado";
 
-
             var Wmodulo = "";
-            //var Wgrupodeprocessos = "";
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
 
 
-            // Grupo de Processos
+            // Módulo
 
-            if (form.moduleId > 0)
+            if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (SELECT ParCluster_Id FROM ParClusterXModule WHERE isActive = 1 AND ParModule_Id = " + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
             }
-
-            // Grupo de Processos
-
-            //if (form.clusterGroupId > 0)
-            //{
-            //    Wgrupodeprocessos += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
-            //}
 
             // Processo
 
