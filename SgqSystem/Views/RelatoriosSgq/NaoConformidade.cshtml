@@ -69,8 +69,6 @@
         <div id="formBodyContent">
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-            @Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
-
             <div id="RGUnidadesGrafico"></div>
             <div id="RGDepartamentosGrafico"></div>
             <div id="RGDepartamentosShiftGrafico"></div>
@@ -86,10 +84,16 @@
                     <div id="RGMonitoramentosShiftGrafico"></div>
                     <div id="RGTarefasAcumuladasGrafico"></div>
                     <div id="RGTarefasGrafico"></div>
+
+                    <div id="RGTarefasPivotTable"></div>
+                    
                 </div>
             </div>
         </div>
     </div>
+    
+    @* ADICIONA PIVOTTABLE *@
+    @Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
 
     @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
 </div>
@@ -134,8 +138,6 @@
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $(document).ready(function () {
-            
-            EasyAjax(UrlPivotTable, null, CarregaPivotTable, "output");
 
             closeLeftSidebar();
             $(".sidebar-toggler").removeClass("hide");
@@ -324,6 +326,8 @@
             enviar["level2Name"] = removeFtaDaLabel(monitoramento);
             console.log(enviar);
             EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGTarefasGrafico");
+            pivotTableId = "RGTarefasPivotTable";
+            EasyAjax(UrlPivotTable, null, CarregaPivotTable, "RGTarefasPivotTable");
         };
 
         function GetGraficoGenerico() {
