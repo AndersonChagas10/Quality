@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
 using Dominio.Interfaces.Services;
 using DTO;
@@ -312,7 +313,7 @@ namespace SgqSystem.Controllers.Api.Params
          */
         public partial class ResultadoUmaColuna
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             public string retorno { get; set; }
 
@@ -330,8 +331,12 @@ namespace SgqSystem.Controllers.Api.Params
                 parHeaderField = db.ParHeaderField.FirstOrDefault(r => r.Id == parHeaderField_id.Id);
 
                 string sql = "SELECT CAST(duplicate AS VARCHAR) as retorno FROM ParHeaderField WHERE Id = " + parHeaderField_id.Id.ToString();
-            
-                List<ResultadoUmaColuna> Lista1 = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+
+                List<ResultadoUmaColuna> Lista1 = new List<ResultadoUmaColuna>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    Lista1 = factory.SearchQuery<ResultadoUmaColuna>(sql).ToList();
+                }
 
                 if (Lista1.Count > 0)
                 {

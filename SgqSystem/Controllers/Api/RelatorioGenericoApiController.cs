@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using Newtonsoft.Json.Linq;
 using SgqSystem.ViewModels;
 using System;
@@ -20,19 +21,22 @@ namespace SgqSystem.Controllers.Api
         public dynamic getTabela(FormularioParaRelatorioViewModel model)
         {
 
-            //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
 
-            var db = new SgqDbDevEntities();
-            dynamic retorno = new ExpandoObject();
-            //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
-            //var querybody = "select STR(*) from UserSgq";
+                var db = new SgqDbDevEntities();
+                dynamic retorno = new ExpandoObject();
+                //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
+                var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+                //var querybody = "select STR(*) from UserSgq";
 
-            //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
-            retorno.header = new List<string> { "Id", "Nome", "Senha" };
-            retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
+                //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
+                retorno.header = new List<string> { "Id", "Nome", "Senha" };
+                retorno.body = factory.SearchQuery<PropriedadesGenericas>(querybody).ToList();
 
-            return retorno;
+                return retorno;
+            }
         }
 
         //Tabela Javascript
@@ -40,32 +44,35 @@ namespace SgqSystem.Controllers.Api
         [Route("getTabela2")]
         public dynamic getTabela2(FormularioParaRelatorioViewModel model)
         {
-
-            //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
-
-            var db = new SgqDbDevEntities();
-            dynamic retorno = new ExpandoObject();
-
-            //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
-            //var querybody = "select STR(*) from UserSgq";
-
-            //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
-            //retorno.header = new List<string> { "Id", "Nome", "Senha" };
-
-            var header = new List<string> { "Id", "Nome", "Senha" };
-            var header2 = new List<Header>();
-
-
-            foreach (var item in header)
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                header2.Add(new Header() { title = item });
+
+                //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
+
+                var db = new SgqDbDevEntities();
+                dynamic retorno = new ExpandoObject();
+
+                //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
+                var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+                //var querybody = "select STR(*) from UserSgq";
+
+                //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
+                //retorno.header = new List<string> { "Id", "Nome", "Senha" };
+
+                var header = new List<string> { "Id", "Nome", "Senha" };
+                var header2 = new List<Header>();
+
+
+                foreach (var item in header)
+                {
+                    header2.Add(new Header() { title = item });
+                }
+
+                retorno.header = header2;
+                retorno.body = factory.SearchQuery<PropriedadesGenericas>(querybody).ToList();
+
+                return retorno;
             }
-
-            retorno.header = header2;
-            retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
-
-            return retorno;
         }
 
 

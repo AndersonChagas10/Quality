@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
@@ -269,9 +270,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 ORDER BY 3 DESC
                 DROP TABLE #AMOSTRATIPO4";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -541,9 +542,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ORDER BY 3 DESC
             DROP TABLE #AMOSTRATIPO4 ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -815,11 +816,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ORDER BY 5 DESC
             DROP TABLE #AMOSTRATIPO4 ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
-
             return _list;
 
         }
@@ -1047,9 +1047,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n  DROP TABLE #AMOSTRATIPO4 ";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1317,9 +1317,9 @@ ORDER BY 5 DESC
 DROP TABLE #AMOSTRATIPO4 ";
 
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1581,9 +1581,10 @@ ORDER BY 5 DESC
 DROP TABLE #AMOSTRATIPO4 ";
 
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1740,9 +1741,90 @@ DROP TABLE #AMOSTRATIPO4 ";
             "\n   HAVING sum(NC) <> 0 " +
             "\n  ORDER BY 4 DESC ";
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
+            }
+
+            return _list;
+        }
+
+        [HttpPost]
+        [Route("GraficoTarefasAcumuladas")]
+        public List<NaoConformidadeResultsSet> GraficoTarefasAcumuladas([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            var whereDepartment = "";
+            var whereShift = "";
+            var whereCriticalLevel = "";
+
+            if (form.departmentId != 0)
+            {
+                whereDepartment = "\n AND MON.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+            
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            var queryGraficoTarefasAcumuladas = $@"
+            SELECT
+            
+            	IND.Id AS Indicador_id
+               ,IND.Name AS IndicadorName
+               ,IND.Id AS Monitoramento_Id
+               ,IND.Name AS MonitoramentoName
+               ,R3.ParLevel3_Id AS Tarefa_Id
+               ,R3.ParLevel3_Name AS TarefaName
+               ,UNI.Name AS UnidadeName
+               ,UNI.Id AS Unidade_Id
+               ,SUM(R3.Defects) AS NC
+            FROM Result_Level3 R3 (NOLOCK)
+            INNER JOIN CollectionLevel2 C2 (NOLOCK)
+            	ON C2.Id = R3.CollectionLevel2_Id
+            INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
+            	ON CL2.Id = C2.ConsolidationLevel2_Id
+            INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
+            	ON CL1.Id = CL2.ConsolidationLevel1_Id
+            INNER JOIN ParCompany UNI (NOLOCK)
+            	ON UNI.Id = CL1.UnitId
+            INNER JOIN ParLevel1 IND (NOLOCK)
+            	ON IND.Id = CL1.ParLevel1_Id
+            INNER JOIN ParLevel2 MON (NOLOCK)
+            	ON MON.Id = CL2.ParLevel2_Id
+            WHERE 1 = 1 
+             AND IND.Name IN ('{ form.level1Name }') 
+            /* and MON.Id = 1 */
+            AND UNI.Name = '{ form.unitName }'
+            AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
+                { whereDepartment }
+                { whereShift }            
+                { whereCriticalLevel }
+            GROUP BY IND.Id
+            		,IND.Name
+            		,R3.ParLevel3_Id
+            		,R3.ParLevel3_Name
+            		,UNI.Name
+            		,UNI.Id
+            HAVING SUM(R3.WeiDefects) > 0
+            AND SUM(R3.Defects) > 0
+            ORDER BY 9 DESC";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(queryGraficoTarefasAcumuladas).ToList();
             }
 
             return _list;
@@ -1862,9 +1944,10 @@ DROP TABLE #AMOSTRATIPO4 ";
                          "\n HAVING SUM(R3.WeiDefects) > 0" +
                          "\n ) TAB ORDER BY 4 DESC";
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;
@@ -1918,9 +2001,10 @@ DROP TABLE #AMOSTRATIPO4 ";
                         "\n HAVING (SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100) <> 0" +
                         "\n ORDER BY 4 DESC";
 
-            using (var db = new SgqDbDevEntities())
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
             }
 
             return _list;

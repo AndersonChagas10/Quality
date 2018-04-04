@@ -245,67 +245,67 @@
             enviar['criticalLevelIdArr'] = [];
         }
 
-        enviar['auditorId'] = GetUsuarioId();
+            enviar['auditorId'] = GetUsuarioId();
 
-        if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
+            if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
 
-            EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
-        }
-        EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+                EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+            }
+            EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
-        /*Colocando o grafico de histórunitIdArrico geral*/
-        var enviarGeral = Object.create(enviar);
-        enviarGeral["unitId"] = undefined;
-        enviarGeral["unitIdArr"] = undefined;
-        EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-        //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
-        if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
-            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
-        }
-
-        //if (enviar['unitId'] > 0) {
-        if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 0) {
-
-            //Evolutivo Das Unidades Selecionadas
-            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
-
-            if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 1) {
-
+            /*Colocando o grafico de histórunitIdArrico geral*/
+            var enviarGeral = Object.create(enviar);
+            enviarGeral["unitId"] = undefined;
+            enviarGeral["unitIdArr"] = undefined;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+            //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
+            if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
                 EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
-
             }
 
-            if (enviar['level2Id'] > 0) {
+            //if (enviar['unitId'] > 0) {
+            if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 0) {
 
-                var enviar4 = Object.create(enviar);
+                //Evolutivo Das Unidades Selecionadas
+                EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
 
-                enviar4['level2Id'] = 0;
+                if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 1) {
 
-                EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-
-                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
-
-            } else if (enviar['level1Id'] > 0) {
-
-                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-            }
-
-        } else {
-
-            if (enviar['level1Id'] > 0 || (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length > 0)) {
-                var enviarComIndicador = Object.create(enviar);
-                enviarComIndicador['level2Id'] = undefined;
-                enviarComIndicador['level2IdArr'] = undefined;
-                EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-                if (enviar['level2Id'] > 0 || (enviar['level2IdArr'] != undefined && enviar['level2IdArr'].length > 0)) {
-                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+                    EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
 
                 }
+
+                if (enviar['level2Id'] > 0) {
+
+                    var enviar4 = Object.create(enviar);
+
+                    enviar4['level2Id'] = 0;
+
+                    EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+
+                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
+
+                } else if (enviar['level1Id'] > 0) {
+
+                    EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+                }
+
+            } else {
+
+                if (enviar['level1Id'] > 0 || (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length > 0)) {
+                    var enviarComIndicador = Object.create(enviar);
+                    enviarComIndicador['level2Id'] = undefined;
+                    enviarComIndicador['level2IdArr'] = undefined;
+                    EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+                    if (enviar['level2Id'] > 0 || (enviar['level2IdArr'] != undefined && enviar['level2IdArr'].length > 0)) {
+                        EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+
+                    }
+                }
+
+
+
             }
-
-
-
-        }
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
     }
@@ -429,7 +429,7 @@
                 //+ " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
             }
 
-            if ((enviar.unitId == '' || enviar.unitId == undefined))
+            if ((enviar.unitId == '' || enviar.unitId == undefined) || (enviar.unitId == undefined && enviar.unitIdArr.length > 1))
                 Titulo += " " + Resources("perUnit");
 
 
@@ -799,19 +799,19 @@
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name;
-        }
+        } else 
         if (data[0].ChartTitle == "Histórico do Monitoramento") {
-            TituloHistoricoModal += Resources("level1_history");
+            //TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
 
             TituloHistoricoModal += Resources("level2_history");
             subtitleAux += Resources('level2') + ": " + data[0].level2Name;
-        }
+        } else
         if (data[0].ChartTitle == "Histórico da Tarefa") {
-            TituloHistoricoModal += Resources("level1_history");
+            //TituloHistoricoModal += Resources("level1_history");
             subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
 
-            TituloHistoricoModal += Resources("level2_history");
+            //TituloHistoricoModal += Resources("level2_history");
             subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
 
             TituloHistoricoModal += Resources("level3_history");
@@ -1343,7 +1343,7 @@
                 if (enviar.unitId != null || enviar.unitId != "") {
                     SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  "
                 };
-                
+
                 SubtitleConsolidado = "";
                 if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
                     SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
@@ -1832,7 +1832,7 @@
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
                 SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
             }
-            
+
             SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 0));
 
             chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
@@ -2044,10 +2044,10 @@
 
     function CBGAcoesXIndicador(data) {
         var subtitleAux = "";
-        //var dia = MapeiaValorParaHC(data, "_date");
-        //var porc = MapeiaValorParaHC(data, "procentagemNc");
-        //fazGambipraMenosCem(porc)
-        //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
+         @*var dia = MapeiaValorParaHC(data, "_date");
+         var porc = MapeiaValorParaHC(data, "procentagemNc");
+         fazGambipraMenosCem(porc)
+         var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");*@
         @*let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));*@
         let preServer = GetUrlFTA();
         var preffixFta = preServer.slice(0, preServer.indexOf("Pa_Acao/NewFTA?"))
@@ -2399,7 +2399,7 @@
         }
 
     }
-
+    
     function SetTitulo(Level) {
 
         let unidade = enviar.unitId;
@@ -2714,6 +2714,7 @@
         //$("#showModulo2").hide();
         formControl.showFullCallendar();
         formControl.showStatusIndicador();
+        formControl.showCreateActionPlane();
         formControl.showClustRegUnitCriticalLevel123();
 
         setTimeout(function () {

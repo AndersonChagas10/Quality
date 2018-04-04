@@ -58,7 +58,6 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                $('#unitId').change();
                 Send(true);
             });
         });
@@ -260,6 +259,8 @@
             formControl.showUnit();
             //formControl.showProcesso();
             closeLeftSidebar();
+            $("#unitId").find("option").eq(0).remove();
+
             $(".sidebar-toggler").removeClass("hide");
             $(".page-sidebar-wrapper").removeClass("hide");
             $('button.refresh-btn-right-top').removeClass("hide");

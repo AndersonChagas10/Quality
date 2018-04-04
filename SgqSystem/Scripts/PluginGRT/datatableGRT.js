@@ -50,7 +50,7 @@
         }
 
         $('#' + config.idTabela).empty()
-        return $('#' + config.idTabela).DataTable({
+        var table = $('#' + config.idTabela).DataTable({
             data: this.listaDeDados,
             "columnDefs": this.definicaoColuna,
             columns: this.colunaDosDados,
@@ -91,6 +91,7 @@
                     }
                 }
             },
+            createdRow: this.createdRow,
             "drawCallback": function (settings) {
 
                 var tfoot = "<tfoot><tr class='search-input-tfoot-tr'>";
@@ -124,12 +125,21 @@
         });
 
         $(table.table().container()).on('keyup', 'tfoot input', function () {
+            var index = $(this).data('index');
+            var correctIndex = $.each(table.columns().visible(), function (i, o) {
+                if (i > index)
+                    return;
+                if (o == false) {
+                    index++;
+                }
+            });
             table
-                .column($(this).data('index'))
-                .search(this.value)
-                .draw();
+				.column(index)
+				.search(this.value)
+				.draw();
         });
 
         table.draw();
+        return table;
     }
 };

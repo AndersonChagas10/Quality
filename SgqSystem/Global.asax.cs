@@ -34,7 +34,7 @@ namespace SgqSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
-            GlobalConfig.VerifyConfig("DbContextSgqEUA");
+            GlobalConfig.VerifyConfig("DefaultConnection");
 
             SetGlobalConfigAmbient();
 
@@ -52,7 +52,7 @@ namespace SgqSystem
             {
                 PrepareSchemaIfNecessary = false,
             };
-            Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA", options);
+            Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection", options);
             _backgroundJobServer = new BackgroundJobServer();
 
             if (GlobalConfig.LanguageBrasil)

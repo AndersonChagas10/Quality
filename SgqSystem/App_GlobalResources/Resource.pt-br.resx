@@ -729,7 +729,7 @@
   <data name="resource_id" xml:space="preserve">
     <value>pt_br</value>
   </data>
-  <data name="_new" xml:space="preserve">
+  <data name="_novo" xml:space="preserve">
     <value>Novo</value>
   </data>
   <data name="details" xml:space="preserve">
@@ -745,7 +745,7 @@
     <value>Voltar para a lista</value>
   </data>
   <data name="cluster_group" xml:space="preserve">
-    <value>Módulo</value>
+    <value>Grupos de Processos</value>
   </data>
   <data name="create" xml:space="preserve">
     <value>Criar</value>
@@ -1858,7 +1858,7 @@
     <value>Data de Revisão</value>
   </data>
   <data name="safe_program_audit_form" xml:space="preserve">
-    <value>Formulário de Ação Corretiva de Segurança Alimentar</value>
+    <value>Formulário de Ação Corretiva</value>
   </data>
   <data name="supersedes_date" xml:space="preserve">
     <value>Data de Substituição</value>
@@ -2429,5 +2429,11 @@
   </data>
   <data name="per_unit_indicators" xml:space="preserve">
     <value>Indicadores por unidade</value>
+  </data>
+  <data name="module" xml:space="preserve">
+    <value>Modulos</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>Novo</value>
   </data>
 </root>

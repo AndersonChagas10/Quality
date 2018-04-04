@@ -6,6 +6,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
+using PlanoAcaoCore.Enum;
 using PlanoDeAcaoMVC.Controllers.Api;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Status = Pa_Status.Listar();
             ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
             ViewBag.Pa_Problema_Desvio = Pa_Problema_Desvio.Listar();
+
+            ViewBag.UnidadeMedida = Pa_UnidadeMedida.Listar();
         }
 
         #region Ações
@@ -360,7 +363,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta._Level1 = level1.Name;
                 fta._Departamento = parDepartment.Name;
                 fta.Departamento_Id = parDepartment.Id;
-         
+
                 var PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
 
                 if (fta.Level2Id.IsNotNull())

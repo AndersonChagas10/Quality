@@ -196,32 +196,41 @@
 
 
             @*<tr>
-            <td>
-                @Html.LabelFor(model => model.Dimensao, htmlAttributes: new { @class = "control-label " })
-            </td>
-            <td>
-                @Html.EditorFor(model => model.Dimensao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Dimensao, "", new { @class = "text-danger" })
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.Objetivo, htmlAttributes: new { @class = "control-label " })
-            </td>
-            <td>
-                @Html.EditorFor(model => model.Objetivo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Objetivo, "", new { @class = "text-danger" })
-            </td>
-            <td></td>
-        </tr>*@
+                    <td>
+                        @Html.LabelFor(model => model.Dimensao, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Dimensao, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Dimensao, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Objetivo, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Objetivo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Objetivo, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>*@
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.UnidadeDeMedida_Id, htmlAttributes: new { @class = "control-label " })
 
+                </td>
+                <td>
+                    @Html.DropDownList("UnidadeDeMedida_Id", new SelectList(ViewBag.UnidadeMedida, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm UnidadeDeMedidaTatico" })
+                </td>
+                <td></td>
+            </tr>
             <tr>
                 <td>
                     @Html.LabelFor(model => model.ValorDe, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.EditorFor(model => model._ValorDe, new { htmlAttributes = new { @class = "form-control money" } })
+                    @Html.EditorFor(model => model._ValorDe, new { htmlAttributes = new { @class = "form-control ValorDe" } })
                 </td>
                 <td></td>
             </tr>
@@ -231,28 +240,18 @@
                     @Html.LabelFor(model => model.ValorPara, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.EditorFor(model => model._ValorPara, new { htmlAttributes = new { @class = "form-control money" } })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.UnidadeDeMedida_Id, htmlAttributes: new { @class = "control-label " })
-
-                </td>
-                <td>
-                    @Html.DropDownList("UnidadeDeMedida_Id", new SelectList(ViewBag.UnidadeMedida, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm    " })
+                    @Html.EditorFor(model => model._ValorPara, new { htmlAttributes = new { @class = "form-control ValorPara" } })
                 </td>
                 <td></td>
             </tr>
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.DataInicio, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.DataInicio, htmlAttributes: new { @class = "control-label" })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.Editor("_DataInicio", new { htmlAttributes = new { @class = "form-control datepicker  required tatico " } })
+                    @Html.Editor("_DataInicio", new { htmlAttributes = new { @class = "form-control datepicker required tatico" } })
                     @Html.ValidationMessageFor(model => model.DataInicio, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -295,7 +294,7 @@
 <script>
     /*Table*/
     $(document).ready(function () {
-       
+
         $('select').select2({
             //minimumResultsForSearch: -1
         });

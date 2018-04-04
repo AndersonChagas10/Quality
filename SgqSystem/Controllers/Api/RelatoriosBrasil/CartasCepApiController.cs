@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
@@ -388,9 +389,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
             }
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                _ceps = db.Database.SqlQuery<Cep>(query1).ToList();
+                _ceps = factory.SearchQuery<Cep>(query1).ToList();
             }
 
             var dados1 = new List<decimal>();

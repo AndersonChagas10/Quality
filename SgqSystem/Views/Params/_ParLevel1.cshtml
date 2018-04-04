@@ -522,7 +522,7 @@
                                                             {
                                                                 <td>
                                                                     @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
                                                                 </td>
                                                             }
 
@@ -560,7 +560,7 @@
 
                                                                     @tipo;
 
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
 
                                                                 </td>
 
@@ -574,7 +574,7 @@
                                                                         <label>@radioOpt.Name</label>
                                                                         @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
                                                                     }
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
                                                                 </td>
                                                             }
@@ -591,7 +591,7 @@
                                                                 <td>
                                                                     <input type="number" class="fixed-width form-control input-sm" />
 
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
                                                                 </td>
                                                             }
@@ -601,7 +601,7 @@
 
                                                                 <td>
                                                                     <input type="text" class="dataInput active form-control input-sm">
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
                                                                 </td>
                                                             }
@@ -611,7 +611,7 @@
 
                                                                 <td>
                                                                     <input type="time" class="active form-control input-sm">
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
                                                                 </td>
                                                             }
@@ -622,7 +622,7 @@
                                                                 <td>
                                                                     @parLevel1XHeaderField.ParHeaderField.Description
 
-                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
                                                                 </td>
                                                             }
@@ -680,19 +680,20 @@
                                                             </td>
 
                                                             <td>
+                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
-                                                                {
-                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
-                                                                        <span class="glyphicon glyphicon-duplicate"></span>
-                                                                    </button>
+    {
+                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                                <span class="glyphicon glyphicon-duplicate"></span>
+                                                            </button>
 
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
-                                                                        <span class="fa fa-copy"></span>
-                                                                    </button>
-                                                                }
+}
+else
+{
+                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                                <span class="fa fa-copy"></span>
+                                                            </button>
+}
 
                                                                 <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
                                                                     <span class="fa fa-pencil-square-o"></span>

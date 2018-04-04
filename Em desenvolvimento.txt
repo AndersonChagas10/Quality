@@ -202,7 +202,7 @@ ALTER TABLE [dbo].[ParHeaderField]
 
 add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
 
------------------------------------------------------------------------ 10-02-2018 - Leo Criação coluna 'ValidoApartirDe' para registrar historico parametrização
+----------------------------------------------------------------------- 10-02-2018 - Leo Criação coluna 'EffectiveDate' para registrar historico parametrização
 
 IF COL_LENGTH('ParLevel1XCluster','EffectiveDate') IS NULL
     BEGIN
@@ -236,3 +236,9 @@ IF COL_LENGTH('CorrectiveAction','EmailContent_Id') IS NULL
     EXEC ('update CorrectiveAction set EmailContent_Id = null')
     END
 ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+
+------------------------------------------------------------------ 20/03/2018 - PA Renan
+
+ALTER table Pa_Acao add UnidadeDeMedida_Id int
+
+insert into Pa_UnidadeMedida (AddDate,Name) VALUES (GETDATE(), 'Absoluto');

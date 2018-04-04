@@ -412,11 +412,11 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
-           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+           "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+           "\n         ORDER BY L1Ca.EffectiveDate  desc " +
             "\n	)" +
 
            "\n , @CRITERIO) AS Criterio                                                                                                                                                                                                                            " +
@@ -430,11 +430,11 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
-           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+           "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+           "\n         ORDER BY L1Ca.EffectiveDate  desc " +
             "\n	)" +
 
            "\n , @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
@@ -448,11 +448,11 @@ public class ScorecardResultSet
 
                "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-               "\n             --AND L1Ca.IsActive = 1 " +
+               "\n             AND L1Ca.IsActive = 1 " +
 
-               "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+               "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-               "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+               "\n         ORDER BY L1Ca.EffectiveDate desc  " +
                 "\n	)" +
 
            "\n, @PONTOS) AS Pontos                                                                                                                                                                                                                            " +
@@ -728,11 +728,11 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
-           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+           "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+           "\n         ORDER BY L1Ca.EffectiveDate  desc " +
             "\n	)" +
 
            "\n , @CRITERIO) AS Criterio                                                                                                                                                                                                                            " +
@@ -746,11 +746,11 @@ public class ScorecardResultSet
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-           "\n             --AND L1Ca.IsActive = 1 " +
+           "\n             AND L1Ca.IsActive = 1 " +
 
-           "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+           "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-           "\n         ORDER BY L1Ca.ValidoApartirDe  desc " +
+           "\n         ORDER BY L1Ca.EffectiveDate  desc " +
             "\n	)" +
 
            "\n , @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
@@ -768,11 +768,11 @@ public class ScorecardResultSet
 
                "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-               "\n             --AND L1Ca.IsActive = 1 " +
+               "\n             AND L1Ca.IsActive = 1 " +
 
-               "\n             AND L1Ca.ValidoApartirDe <= @DATAFINAL " +
+               "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
-               "\n         ORDER BY L1Ca.ValidoApartirDe desc  " +
+               "\n         ORDER BY L1Ca.EffectiveDate desc  " +
                 "\n	)" +
 
            "\n, @PONTOS) AS Pontos " +

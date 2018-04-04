@@ -385,9 +385,21 @@
         #percentualConclusao {
             font-size: 40px;
         }
-
-        
     </style>
+
+    <script>
+        /**/
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
+        /**/
+        /**/
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
+        /**/
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+
+    </script>
 
 }
 
@@ -395,11 +407,12 @@
 
 <div class="container-fluid">
     <div class="row" style="width:100% !important">
-        <div class="col-sm-2">
+        <div class="col-md-12" style="margin-left:10px;">
             <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
-        </div>
-        <div class="col-sm-10">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos">Visão Geral dos Projetos</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">Visão Geral dos Projetos Diretriz</button>
         </div>
     </div>
 </div>
@@ -424,6 +437,7 @@
                             </div>
                             <div>
                                 <div id="graficoPorGerencia"></div>
+                                <div id="graficoPorDiretriz"></div>
                             </div>
                         </div>
                         <div class="col-sm-8">
@@ -844,8 +858,6 @@
 
 </div>
 
-
-
 <div class="container">
     <div class="modal fade" id="modalLindo" role="dialog" aria-labelledby="" data-backdrop="static">
         <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
@@ -869,6 +881,24 @@
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="modalChangeEstrategico" class="modal fade" role="dialog" style="z-index:15000">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Alterar planejamento</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tablePessego"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
@@ -938,25 +968,18 @@
     </div>
 </div>
 
+
+
 <div class="minmaxCon"></div>
 
+<script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
 @section Scripts {
 
     <script type="text/javascript">
-    $('.container').each(function (i, o) {
-        $(o).removeClass('container').addClass('container-fluid');
-    });
-
-    /**/
-    var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")'
-    /**/
-    /**/
-    var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")'
-    /**/
-    /**/
-    var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")'
-    /**/
+        $('.container').each(function (i, o) {
+            $(o).removeClass('container').addClass('container-fluid');
+        });
 
     </script>
 
@@ -1195,650 +1218,252 @@
 
         }
 
-    $(document).ready(function () {
-        var zero = 0;
+        $(document).ready(function () {
+            var zero = 0;
 
-        $("input[name='daterange']").css('width', '140px');
-        $("input[name='daterange']").css('height', '25px');
+            $("input[name='daterange']").css('width', '140px');
+            $("input[name='daterange']").css('height', '25px');
 
-        $('#campo1Filtro').css('width', '200px');
-        $('#valor1Filtro').css('width', '200px');
+            $('#campo1Filtro').css('width', '200px');
+            $('#valor1Filtro').css('width', '200px');
 
-    });
-
-    var selectPredecessor;
-    var tableModalNovo;
-    /**/
-    var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
-    /**/
-    /**/
-    var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
-    /**/
-    /**/
-    var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
-    /**/
-    /**/
-    var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
-    /**/
-
-    var counter = 0;
-    var planejamentoCorrentId = 0;
-    var isTaticoClicked = false;
-    var isNovaAcao = false;
-    var isClickedTaticoVinculado = false;
-    var isClickedEstrategico = false;
-    var NovaAcaoBuscaFeita = false;
-    var tempInput;
-    var tempName;
-    var IdBotaoClicado;
-
-    /**/
-    //var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
-    /**/
-    /**/
-    var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
-    /**/
-    /**/
-    var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
-    /**/
-    /**/
-    var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
-    /**/
-    /**/
-    var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
-    /**/
-    /**/
-    var urlEditPlanEstrat = '@Url.Action("Editar", "Pa_Planejamento")';
-    /**/
-    /**/
-    var urlEditPlanOp = '@Url.Action("Editar", "Pa_Planejamento")';
-    /**/
-    /**/
-    var PlanejamentoDetalhes = '@Url.Action("Details", "Pa_Planejamento")';
-    /**/
-    /**/
-    var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
-    /**/
-    /**/
-    var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
-    /**/
-    /**/
-    var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
-    /**/
-    /**/
-    var GETObjetivo = '@Url.Action("GETObjetivo", "Pa_Planejamento")';
-    /**/
-    /**/
-    var GETIndicadoresDiretriz = '@Url.Action("GETIndicadoresDiretriz", "Pa_Planejamento")';
-    /**/
-    /**/
-    var GETIndicadoresProjetoIniciativa = '@Url.Action("GETIndicadoresProjetoIniciativa", "Pa_Planejamento")';
-    /**/
-    /**/
-    var GETCoordenacaoByGerencia = '@Url.Action("GETCoordenacaoByGerencia", "Pa_Planejamento")';
-    /**/
-    /**/
-    var GETObjetivosGerenciais = '@Url.Action("GETObjetivosGerenciais", "Pa_Planejamento")';
-    /**/
-    /**/
-    var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
-    /**/
-    /**/
-    var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
-    /**/
-    /**/
-    var urlGetPlanejamento = '@Url.Action("GET", "api/Pa_Planejamento")';
-    /**/
-    /**/
-    var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
-    /**/
-    /**/
-    var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
-    /**/
-    /**/
-    var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
-    /**/
-    /**/
-    //var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
-    /**/
-    /**/
-    var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
-    /**/
-    /**/
-    var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
-    /**/
-    /**/
-    var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
-    /**/
-    /**/
-    var AcaoDetalhes = '@Url.Action("Details", "Pa_Acao")'
-    /**/
-
-    function DisabilitaBotaoGerenciar() {
-        $('#modalLindo').find('select[disabled]').each(function (i, o) {
-            $(o).parents('tr').find('.novoItem').attr('disabled', true);
         });
-    }
 
-    function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
-        isTaticoClicked = isClickedTatico;
-        isNovaAcao = isClickedAcao;
-        isClickedTaticoVinculado = isTaticoVinculado;
-    }
+        var selectPredecessor;
+        var tableModalNovo;
+        /**/
+        var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
+        /**/
+        /**/
+        var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
+        /**/
+        /**/
+        var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
+        /**/
+        /**/
+        var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
+        /**/
 
-    /*Planejamento*/
-    function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
-        //console.log(ModalOpcoesEstrategico);
+        var counter = 0;
+        var planejamentoCorrentId = 0;
+        var isTaticoClicked = false;
+        var isNovaAcao = false;
+        var isClickedTaticoVinculado = false;
+        var isClickedEstrategico = false;
+        var NovaAcaoBuscaFeita = false;
+        var tempInput;
+        var tempName;
+        var IdBotaoClicado;
 
-        IdBotaoClicado = IdParaNovaAcao;
+        /**/
+        //var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
+        /**/
+        /**/
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        /**/
+        /**/
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+        /**/
+        /**/
+        var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
+        /**/
+        /**/
+        var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
+        /**/
+        /**/
+        var urlEditPlanEstrat = '@Url.Action("Editar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlEditPlanOp = '@Url.Action("Editar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var PlanejamentoDetalhes = '@Url.Action("Details", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETObjetivo = '@Url.Action("GETObjetivo", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETIndicadoresDiretriz = '@Url.Action("GETIndicadoresDiretriz", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETIndicadoresProjetoIniciativa = '@Url.Action("GETIndicadoresProjetoIniciativa", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETCoordenacaoByGerencia = '@Url.Action("GETCoordenacaoByGerencia", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETObjetivosGerenciais = '@Url.Action("GETObjetivosGerenciais", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetPlanejamento = '@Url.Action("GET", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
+        /**/
+        /**/
+        var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+        /**/
+        /**/
+        var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
+        /**/
+        /**/
+        //var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
+        /**/
+        /**/
+        var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
+        /**/
+        /**/
+        var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+        /**/
+        /**/
+        var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
+        /**/
+        /**/
+        var AcaoDetalhes = '@Url.Action("Details", "Pa_Acao")'
+        /**/
 
-        $('#modalLindo').modal();
-        $('#modalLindo').find('.modal-body').empty();
-
-        if (title != undefined) {
-            $('#Header').html(title);
-        } else {
-            $('#Header').html("Planejamento");
+        function DisabilitaBotaoGerenciar() {
+            $('#modalLindo').find('select[disabled]').each(function (i, o) {
+                $(o).parents('tr').find('.novoItem').attr('disabled', true);
+            });
         }
 
-        if (callback != undefined) {
-            callback();
-            return false;
+        function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
+            isTaticoClicked = isClickedTatico;
+            isNovaAcao = isClickedAcao;
+            isClickedTaticoVinculado = isTaticoVinculado;
         }
 
-        /*Botões*/
-        $('#modalLindo').find('.modal-footer button').hide();
-        $('#Fechar').show();
+        /*Planejamento*/
+        function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
+            //console.log(ModalOpcoesEstrategico);
 
-        if (isTaticoClicked) {
-            $('#TaticoVinculado').show();
-        }
-        else if (isNovaAcao) {
-            $('#NovaAcao').show();
-            if (planejamentoCorrentId > 0) {
-                $('#BuscarPlanejamentos').show();
-            }
+            IdBotaoClicado = IdParaNovaAcao;
 
-            if (IdParaNovaAcao != undefined || planejamentoCorrentId > 0) { // Mostra Detalhes + BTN nova acao
-                $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty();
 
-                    var modal = $('#modalLindo').find('.modal-body').html();
-
-                    $('#modalLindo').find('.modal-body').empty();
-                    $('#modalLindo').append(r);
-                    $('#NovaAcao').show();
-                });
+            if (title != undefined) {
+                $('#Header').html(title);
             } else {
-                $('#modalLindo').find('.modal-body').empty();
+                $('#Header').html("Planejamento");
             }
-        }
-        else {
-            $('#NovoPlanejamento').show();
 
-        }
+            if (callback != undefined) {
+                callback();
+                return false;
+            }
 
-        $('#Fechar').show();
-        $('#Salvar').show();
-        /*Fim Botões*/
+            /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide();
+            $('#Fechar').show();
 
-    }
-
-    function NovoPlanejamento() {//Pos Modal2
-        //console.log(NovoPlanejamento);
-        var title = $('#Header').html();
-        var title2 = " > Novo"
-
-        $('#Header').html(title + title2);
-
-        $.get(urlNovoPlanejamento, function (r) {
-            $('#modalLindo').find('.modal-body').empty().append(r);
             if (isTaticoClicked) {
-                $('.novoItem ').hide();
-
-                if (isClickedTaticoVinculado) {
-                    //$('#Planejamento > table > tbody > tr:nth-child(1)').attr('disabled', true);
-                    //$('#Planejamento > table > tbody > tr:nth-child(4)').attr('disabled', true);
-                    //$('#Planejamento > table > tbody > tr:nth-child(5)').attr('disabled', true);
-                    //$('#Planejamento > table > tbody > tr:nth-child(6)').attr('disabled', true);
-                    //$('#Planejamento > table > tbody > tr:nth-child(7)').attr('disabled', true);
-                    //$('#Planejamento > table > tbody > tr:nth-child(8)').attr('disabled', true);
-                } else {
-                    //$('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                    //$('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-                    //$('#Planejamento > table > tbody > tr:nth-child(5)').hide();
-                    //$('#Planejamento > table > tbody > tr:nth-child(6)').hide();
-                    //$('#Planejamento > table > tbody > tr:nth-child(7)').hide();
-                    //$('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                $('#TaticoVinculado').show();
+            }
+            else if (isNovaAcao) {
+                $('#NovaAcao').show();
+                if (planejamentoCorrentId > 0) {
+                    $('#BuscarPlanejamentos').show();
                 }
-                DdlChangeTatico();
-            } else {
-                $('.novoItem ').show();
-                $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
 
-                DdlChangeEstrategico();
+                if (IdParaNovaAcao != undefined || planejamentoCorrentId > 0) { // Mostra Detalhes + BTN nova acao
+                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+
+                        var modal = $('#modalLindo').find('.modal-body').html();
+
+                        $('#modalLindo').find('.modal-body').empty();
+                        $('#modalLindo').append(r);
+                        $('#NovaAcao').show();
+                    });
+                } else {
+                    $('#modalLindo').find('.modal-body').empty();
+                }
             }
-            InitDatePiker();
-            MoneyMask();
+            else {
+                $('#NovoPlanejamento').show();
 
-            MoneyMask('R$ ');
+            }
 
-            $('.money').each(function () {
-                $(this).maskMoney('mask', $(this).val());
-            });
+            $('#Fechar').show();
+            $('#Salvar').show();
+            /*Fim Botões*/
 
-        });
-
-        /*Botões*/
-        $('#modalLindo').find('.modal-footer button').hide()
-        $('#Fechar').show();
-        $('#Salvar').show();
-
-        $('#Salvar').off('click').on('click', SalvarPlanejamento);
-
-        //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
-        /*Fim Botões*/
-    }
-
-    //Verificando
-    function SalvarPlanejamento(form) {
-
-        if (!isClickedTaticoVinculado) {
-            isClickedEstrategico = true;
         }
 
-        var sendObj = $('#Planejamento').serializeObject();
+        function NovoPlanejamento() {//Pos Modal2
+            //console.log(NovoPlanejamento);
+            var title = $('#Header').html();
+            var title2 = " > Novo"
 
-        let isValid = $('#Planejamento').find('.error').length == 0
-        if (!isValid) {
-            alert("Campos obrigatórios")
-            return
-        }
-
-        if (isClickedTaticoVinculado)
-            sendObj['IsTAtico'] = true;
-
-        if (sendObj != undefined) {
-            $.post(urlSalvarPlanejamento, sendObj, function (r) {
-
-                planejamentoCorrentId = parseInt(r.Id);
-                openMessageModal('Registro salvo com sucesso!', '');
-                $('#modalLindo').modal('hide');
-                $('#btnTop').click();
-
-            }).fail(function (e, h, x) {
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
-            });
-        }
-
-    }/*planejamentoCorrentId*/
-
-    //Verificando
-    function SalvarPlanejamentoEditado(form) {
-
-        var sendObj = {};
-
-        if (isClickedTaticoVinculado)
-            sendObj['IsTAtico'] = true;
-
-        sendObj = $(form).serializeObject();
-
-        let isValid = ($(form).find('.error:visible').length == 0)
-        if (!isValid) {
-            alert("Campos obrigatórios")
-            return
-        }
-
-        $.post(urlSalvarPlanejamento, sendObj, function (r) {
-
-            planejamentoCorrentId = parseInt(r.Id);
-            openMessageModal('Registro salvo com sucesso!', '');
-            $('#modalLindo').modal('hide');
-            $('#btnTop').click();
-
-
-        }).fail(function (e, h, x) {
-
-            openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
-        });
-
-    }
-
-    //Verificando
-    function EditarPlanejamento(model) {
-        //console.log(EditarPlanejamento);
-        var title = $('#Header').html();
-        var title2 = " > Novo"
-        if (isTaticoClicked) {
-            $('#Header').html("Planejamento Tático");
-        } else {
             $('#Header').html(title + title2);
-        }
 
-        $.get(urlNovoPlanejamento, function (r) {
-            $('#modalLindo').find('.modal-body').empty().append(r);
-            if (isTaticoClicked) {
-                $('.novoItem ').hide();
-                if (isClickedTaticoVinculado) {
+            $.get(urlNovoPlanejamento, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                if (isTaticoClicked) {
+                    $('.novoItem ').hide();
 
-                    //Novo tatico
-                    $('#Planejamento > #IsTatico').val(true);
-                    $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
-                    $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
-                    $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
-                    $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
-                    $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
-                    $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
-                    $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                    //$('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
-                    if (model != undefined) {
-
-                        //$('#Id').val(model.Id);
-                        $('#Estrategico_Id').val(model.Id);
-                        if (model.Diretoria_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
-                        if (model.Missao_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
-                        if (model.Visao_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
-                        if (model.TemaAssunto_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.TemaAssunto_Id);
-                        if (model.Dimensao_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Dimensao_Id);
-                        if (model.Objetivo_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.Objetivo_Id);
-                        if (model.IndicadoresDiretriz_Id > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.IndicadoresDiretriz_Id);
-                        if (model.Responsavel_Diretriz > 0)
-                            $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').val(model.Responsavel_Diretriz);
-
+                    if (isClickedTaticoVinculado) {
+                        //$('#Planejamento > table > tbody > tr:nth-child(1)').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(4)').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(5)').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(6)').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(7)').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(8)').attr('disabled', true);
+                    } else {
+                        //$('#Planejamento > table > tbody > tr:nth-child(1)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(5)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(6)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(7)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                     }
 
-                    $('.novoTatico').show();
-                    DdlChangeTatico(model);
-                } else {
+                    DdlChangeTatico();
 
-                    $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
+                } else {
+                    $('.novoItem ').show();
+                    $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
+
                     DdlChangeEstrategico();
                 }
-            } else {
-                $('.novoItem ').show();
-                $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
-            }
 
-            InitDatePiker();
-            MoneyMask();
+                InitDatePiker();
+                MoneyMask();
 
-            MoneyMask('R$ ');
-
-            $('.money').each(function () {
-                $(this).maskMoney('mask', $(this).val());
-            });
-
-        });
-        /*Botões*/
-
-        $('#modalLindo').find('.modal-footer button').hide()
-        $('#Fechar').show();
-        $('#Salvar').show();
-        $('#Salvar').off('click').on('click', SalvarPlanejamento);
-        //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
-        /*Fim Botões*/
-    }
-
-    function DdlChangeEstrategico(v1, v2, v3, edit) {
-
-        var change1 = v1 != undefined ? v1 : null;
-        var change2 = v2 != undefined ? v2 : null;
-
-        let Dimensao_Id = $('#Dimensao_Id')
-        let Objetivo_Id = $('#Objetivo_Id')
-
-        var rdy = true;
-        Dimensao_Id.off('change').on('change', function () {
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-            rdy = false;
-            if (valor) {
-                $.get(GETObjetivo, { id: valor }, function (r) {
-                    $('#Objetivo_Id').empty().html(r).attr('disabled', false);
-                    $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
-                    rdy = true;
-                })
-            }
-            else {
-                $('#Objetivo_Id').val(null).attr('disabled', true);
-                $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
-                $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
-                $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
-            }
-        });
-
-        Objetivo_Id.off('change').on('change', function () {
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-
-            if (valor) {
-                $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
-                    $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
-                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', false);
-                });
-            }
-            else {
-                $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
-                $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
-            }
-        });
-
-        //if(edit == undefined){
-        $('#Dimensao_Id').val(change1).change();
-        //$.LoadingOverlay('show')
-        if (v2 != undefined) {
-            setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
-        } else {
-            //$('#Objetivo_Id').val(change2).change();
-            setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
-        }
-
-        if (v3 != undefined) {
-            setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
-        }
-        //}
-    }
-
-    function DdlChangeTatico(model) {
-        changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () {
-
-        })
-        changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function () {
-        })
-
-        $('#Iniciativa_Id').off('change').on('change', function () {
-            var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
-            manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
-
-            $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
-                $('#IndicadoresDeProjeto_Id').off('change').on('change', function () {
-
-                    var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
-                    manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-
-                    $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-
-                        $('#ObjetivoGerencial_Id').parent().html('').append(r);
-
-                        $('#ObjetivoGerencial_Id').addClass(' required tatico ');
-
-                        try {
-                            $('#modalLindo span.select2').prev('select').select2('destroy');
-                        } catch (e) {
-                        }
-                        finally {
-                            $('#modalLindo select').select2();
-                        }
-
-                    });
-                });
-                $('#IndicadoresDeProjeto_Id').change();
-
-            });
-        });
-        $('#Iniciativa_Id').change();
-
-
-    }
-
-    function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
-        let masterEl = $(idMaster)
-        let masterElVal = $(idMaster).val()
-        manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, 'Selecione um predecessor acima', '');
-        masterEl.off('change').on('change', function () {
-            let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
-            manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, 'Selecione um predecessor acima', '');
-            $.get(urlGETChildren, { id: seletedId }, function (response) {
-                let childrenEl = $(idChildren)
-                childrenEl.parent().html('').append(response);
-                childrenEl.remove();
-                $(idChildren).select2();
-
-                if (masterCB)
-                    masterCB()
-            })
-        })
-    }
-
-    function manageButtonDisabledWhenHaveParentSelect(parentSelectedValue, elementChild, messageForDisabled, messageForEnabled) {
-        let elem = $(elementChild)
-        if (elem.length > 0)
-            if (parentSelectedValue == 0) {
-                elem.parents('tr').find('.novoItem').attr('disabled', true)
-                elem.parents('tr').find('.novoItem').attr('title', messageForDisabled)
-            }
-            else {
-                elem.parents('tr').find('.novoItem').attr('disabled', false)
-                elem.parents('tr').find('.novoItem').attr('title', messageForEnabled)
-            }
-    }
-
-    function manageButton(id, idChildren, messageDisabled, messageEnabled) {
-        if (id == 0) {
-            $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', true)
-            $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageDisabled)
-        }
-        else {
-            $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', false)
-            $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageEnabled)
-        }
-    }
-
-    /*Fim Planejamento*/
-
-    /*Acao*/
-    var addButton = (function () {
-        var counter = 0;
-
-        return function () {
-            var objectContainer = $('#obj:hidden');
-            var header = objectContainer.clone();
-            counter += 1;
-            var collapseId = "collapsible_obj_" + counter;
-
-            header.find(".collapse").attr("id", collapseId);
-            header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
-            header.find("button[data-toggle='collapse']").html("Nova Ação")
-
-            header.appendTo('#final');
-            header.show();
-
-            setTimeout(function () {
-                header.find("select.select2-hidden-accessible").next('.select2').remove();
-                header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
-                header.find("select:visible").select2();
-            }, 1);
-
-            myfunction();
-            MoneyMask('R$ ');
-
-            $('.money').each(function () {
-                $(this).maskMoney('mask', $(this).val());
-            });
-
-            InitDatePiker();
-        };
-
-    })();
-    $('#new').click(addButton);
-
-    //Verificando
-    function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
-        if (!$('#body > table').length) {
-            ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId, function () {
-                if (isTableClick) {
-                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-                        $('#modalLindo').find('.modal-body').empty().append(r);
-                    });
-                }
-            });
-        }
-        
-
-        if (isFukingNewClicked) {
-
-            if (isOpenModal)
-                $('#modalLindo').modal();
-
-            $('#Header').html("Nova Ação");
-
-            $.get(urlNovaAcao, function (r) {
-
-                $('#modalLindo').find('.modal-body').append('<hr>');
-                $('#modalLindo').find('.modal-body').append(r);
-                $('#GrupoCausa_Id').empty().attr('disabled', true);
-                $('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-
-                myfunction();
                 MoneyMask('R$ ');
 
                 $('.money').each(function () {
                     $(this).maskMoney('mask', $(this).val());
                 });
-
-                $('#new').click();
-                if (isFukingNewClicked) {
-                    $('#new').show();
-                } else {
-                    $('#new').hide();
-                }
 
             });
 
@@ -1846,104 +1471,683 @@
             $('#modalLindo').find('.modal-footer button').hide()
             $('#Fechar').show();
             $('#Salvar').show();
-            $('#Salvar').off('click').on('click', SalvarAcao);
+
+            $('#Salvar').off('click').on('click', SalvarPlanejamento);
+
+            //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
         }
 
-    }
+        //Verificando
+        function SalvarPlanejamento(form) {
 
-    //Verificando
-    function EditarAcao(html, data) {
-        //console.log(EditarAcao);
-        var acao = data.Acao;
-
-        $('#modalLindo').modal();
-        $('#Header').html("Editar Ação");
-        $('#modalLindo').find('.modal-body').empty().append(html);
-        $('#modalLindo').find('.modal-footer button').hide();
-        myfunction();
-
-        $('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
-        $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-        $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-        $('#Status').val(acao.Status);
-        MoneyMask();
-        $('#_QuantoCusta').val(acao.QuantoCusta);
-        $('#_QuantoCusta').trigger('mask.maskMoney');
-        $('#_QuantoCusta').trigger('blur');
-
-        InitDatePiker();
-
-        MoneyMask('R$ ');
-
-        $('.money').each(function () {
-            $(this).maskMoney('mask', $(this).val());
-        });
-    }
-
-    //Verificando
-    function myfunction() {
-        $('[id=tipoIndicador]').off('change').on('change', function () {
-
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-
-            form.find('.IndicadorOutros').hide();
-            form.find('.IndicadorSgq').hide();
-
-            if (valor == 1) {
-                form.find('.IndicadorOutros').show();
-                form.find('.ProbDesv').hide();
-                form.find('.ProbDesv').val("");
-                form.find('.IndicadorOutros select').select2();
-            } else if (valor == 2) {
-                form.find('.IndicadorSgq').show();
-                form.find('.ProbDesv').show();
-                form.find('.IndicadorSgq select').select2();
+            if (!isClickedTaticoVinculado) {
+                isClickedEstrategico = true;
             }
-        });
 
-        $('[id=CausaGenerica_Id]').off('change').on('change', function () {
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-            if (valor) {
-                $.get(GETGrupoCausa, { id: valor }, function (r) {
-                    form.find('#GrupoCausa').empty().html(r);
-                    $('.showAsEstrategy select').select2();
+            var sendObj = $('#Planejamento').serializeObject();
+
+            let isValid = $('#Planejamento').find('.error').length == 0
+            if (!isValid) {
+                alert("Campos obrigatórios");
+                return
+            }
+
+            if (isClickedTaticoVinculado)
+                sendObj['IsTAtico'] = true;
+
+            if (sendObj != undefined) {
+                $.post(urlSalvarPlanejamento, sendObj, function (r) {
+
+                    planejamentoCorrentId = parseInt(r.Id);
+                    openMessageModal('Registro salvo com sucesso!', '');
+                    $('#modalLindo').modal('hide');
+                    $('#btnTop').click();
+
+                }).fail(function (e, h, x) {
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
                 });
-                $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                    form.find('#ContramedidaGenerica').empty().html(rr);
-                    $('.showAsEstrategy select').select2();
+            }
+
+        }/*planejamentoCorrentId*/
+
+        //Verificando
+        function SalvarPlanejamentoEditado(form) {
+
+            var sendObj = {};
+
+            if (isClickedTaticoVinculado)
+                sendObj['IsTAtico'] = true;
+
+            sendObj = $(form).serializeObject();
+
+
+            let isValid = ($(form).find('.error:visible').length == 0)
+            if (!isValid) {
+                alert("Campos obrigatórios")
+                return
+            }
+
+            $.post(urlSalvarPlanejamento, sendObj, function (r) {
+
+                planejamentoCorrentId = parseInt(r.Id);
+                openMessageModal('Registro salvo com sucesso!', '');
+                $('#modalLindo').modal('hide');
+                $('#btnTop').click();
+
+
+            }).fail(function (e, h, x) {
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+            });
+
+        }
+
+        //Verificando
+        function EditarPlanejamento(model) {
+            //console.log(EditarPlanejamento);
+            var title = $('#Header').html();
+            var title2 = " > Novo"
+            if (isTaticoClicked) {
+                $('#Header').html("Planejamento Tático");
+            } else {
+                $('#Header').html(title + title2);
+            }
+
+            $.get(urlNovoPlanejamento, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                if (isTaticoClicked) {
+                    $('.novoItem ').hide();
+                    if (isClickedTaticoVinculado) {
+
+                        //Novo tatico
+                        $('#Planejamento > #IsTatico').val(true);
+                        $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                        //$('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+                        if (model != undefined) {
+
+                            //$('#Id').val(model.Id);
+                            $('#Estrategico_Id').val(model.Id);
+                            if (model.Diretoria_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
+                            if (model.Missao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
+                            if (model.Visao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                            if (model.TemaAssunto_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.TemaAssunto_Id);
+                            if (model.Dimensao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Dimensao_Id);
+                            if (model.Objetivo_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.Objetivo_Id);
+                            if (model.IndicadoresDiretriz_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                            if (model.Responsavel_Diretriz > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').val(model.Responsavel_Diretriz);
+
+                        }
+
+                        $('.novoTatico').show();
+                        DdlChangeTatico(model);
+                    } else {
+
+                        $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                        DdlChangeEstrategico();
+                    }
+                } else {
+                    $('.novoItem ').show();
+                    $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+                }
+
+                InitDatePiker();
+                MoneyMask();
+
+                MoneyMask('R$ ');
+
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
                 });
+
+            });
+            /*Botões*/
+
+            $('#modalLindo').find('.modal-footer button').hide()
+            $('#Fechar').show();
+            $('#Salvar').show();
+            $('#Salvar').off('click').on('click', SalvarPlanejamento);
+            //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
+            /*Fim Botões*/
+        }
+
+        function DdlChangeEstrategico(v1, v2, v3, edit) {
+
+            var change1 = v1 != undefined ? v1 : null;
+            var change2 = v2 != undefined ? v2 : null;
+
+            let Dimensao_Id = $('#Dimensao_Id')
+            let Objetivo_Id = $('#Objetivo_Id')
+
+            var rdy = true;
+            Dimensao_Id.off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                rdy = false;
+                if (valor) {
+                    $.get(GETObjetivo, { id: valor }, function (r) {
+                        $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
+                        rdy = true;
+                    })
+                }
+                else {
+                    $('#Objetivo_Id').val(null).attr('disabled', true);
+                    $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                }
+            });
+
+            Objetivo_Id.off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                if (valor) {
+                    $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
+                        $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                        $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', false);
+                    });
+                }
+                else {
+                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                }
+            });
+
+            //if(edit == undefined){
+            $('#Dimensao_Id').val(change1).change();
+            //$.LoadingOverlay('show')
+            if (v2 != undefined) {
+                setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
+            } else {
+                //$('#Objetivo_Id').val(change2).change();
+                setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
+            }
+
+            if (v3 != undefined) {
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
+            }
+            //}
+        }
+
+        function DdlChangeTatico(model) {
+            changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () {
+
+            })
+            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function () {
+            })
+
+            $('#Iniciativa_Id').off('change').on('change', function () {
+                var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
+                manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+                    $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
+                    $('#IndicadoresDeProjeto_Id').off('change').on('change', function () {
+
+                        var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
+                        manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                        $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                            $('#ObjetivoGerencial_Id').parent().html('').append(r);
+
+                            $('#ObjetivoGerencial_Id').addClass(' required tatico ');
+
+                            try {
+                                $('#modalLindo span.select2').prev('select').select2('destroy');
+                            } catch (e) {
+                            }
+                            finally {
+                                $('#modalLindo select').select2();
+                            }
+
+                        });
+                    });
+                    $('#IndicadoresDeProjeto_Id').change();
+
+                });
+            });
+            $('#Iniciativa_Id').change();
+
+
+        }
+
+        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
+            let masterEl = $(idMaster)
+            let masterElVal = $(idMaster).val()
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, 'Selecione um predecessor acima', '');
+            masterEl.off('change').on('change', function () {
+                let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, 'Selecione um predecessor acima', '');
+                $.get(urlGETChildren, { id: seletedId }, function (response) {
+                    let childrenEl = $(idChildren)
+                    childrenEl.parent().html('').append(response);
+                    childrenEl.remove();
+                    $(idChildren).select2();
+
+                    if (masterCB)
+                        masterCB()
+                })
+            })
+        }
+
+        function manageButtonDisabledWhenHaveParentSelect(parentSelectedValue, elementChild, messageForDisabled, messageForEnabled) {
+            let elem = $(elementChild)
+            if (elem.length > 0)
+                if (parentSelectedValue == 0) {
+                    elem.parents('tr').find('.novoItem').attr('disabled', true)
+                    elem.parents('tr').find('.novoItem').attr('title', messageForDisabled)
+                }
+                else {
+                    elem.parents('tr').find('.novoItem').attr('disabled', false)
+                    elem.parents('tr').find('.novoItem').attr('title', messageForEnabled)
+                }
+        }
+
+        function manageButton(id, idChildren, messageDisabled, messageEnabled) {
+            if (id == 0) {
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', true)
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageDisabled)
             }
             else {
-                form.find('#GrupoCausa_Id').empty().attr('disabled', true);
-                form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-                $('.showAsEstrategy select').select2();
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', false)
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageEnabled)
+            }
+        }
+
+        /*Fim Planejamento*/
+
+        /*Acao*/
+        var addButton = (function () {
+            var counter = 0;
+
+            return function () {
+                var objectContainer = $('#obj:hidden');
+                var header = objectContainer.clone();
+                counter += 1;
+                var collapseId = "collapsible_obj_" + counter;
+
+                header.find(".collapse").attr("id", collapseId);
+                header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
+                header.find("button[data-toggle='collapse']").html("Nova Ação")
+
+                header.appendTo('#final');
+                header.show();
+
+                setTimeout(function () {
+                    header.find("select.select2-hidden-accessible").next('.select2').remove();
+                    header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
+                    header.find("select:visible").select2();
+                    $('.UnidadeMedida').change();
+                }, 1);
+
+                myfunction();
+
+                //MoneyMask('R$ ');
+
+                //$('.money').each(function () {
+                //    $(this).maskMoney('mask', $(this).val());
+                //});
+
+                InitDatePiker();
+            };
+
+        })();
+
+        $('#new').click(addButton);
+
+        $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valor = $(this).parent().parent().parent().find(".QuantoCusta").val();
+            let inputQuantoCusta = $(this).parent().parent().parent().find(".QuantoCusta");
+
+            if (unidadeMedida == 1) {
+
+                $(inputQuantoCusta).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputQuantoCusta).maskMoney(config);
+                $(inputQuantoCusta).maskMoney('mask');
+
+            } else {
+
+                $(inputQuantoCusta).maskMoney('destroy');
+                //$(inputQuantoCusta).get(0).type = 'number';
+                $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+
+                $(inputQuantoCusta).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
             }
         });
-    } /*Causa Medida Etc...*/
 
-    //Verificando
-    function SalvarAcao() {
-        var listaAcoes = [];
-        $('.Acao').not(':first').each(function (c, o) {
-            listaAcoes.push(SalvarAcaoAvulsa(o));
+        $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valorDe = $(this).parent().parent().parent().find(".ValorDe").val();
+            let valorPara = $(this).parent().parent().parent().find(".ValorPara").val();
+            let inputValorDe = $(this).parent().parent().parent().find(".ValorDe");
+            let inputValorPara = $(this).parent().parent().parent().find(".ValorPara");
+
+            if (unidadeMedida == 1) {
+
+                //$(inputValorDe).get(0).type = 'text';
+                //$(inputValorPara).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputValorDe).maskMoney(config);
+                $(inputValorDe).maskMoney('mask');
+                $(inputValorPara).maskMoney(config);
+                $(inputValorPara).maskMoney('mask');
+
+            } else {
+
+                $(inputValorDe).maskMoney('destroy');
+                //$(inputValorDe).get(0).type = 'number';
+                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+
+                $(inputValorPara).maskMoney('destroy');
+                //$(inputValorPara).get(0).type = 'number';
+                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+
+
+                $(inputValorDe).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+
+                $(inputValorPara).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
         });
 
-        let isValid = $('.Acao').not(':first').find('.error').length == 0
+        //Verificando
+        function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
+            if (!$('#body > table').length) {
+                ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId, function () {
+                    if (isTableClick) {
+                        $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').empty().append(r);
+                        });
+                    }
+                });
+            }
 
-        if (ValidaAcao(listaAcoes) && isValid) {
+            if (isFukingNewClicked) {
+
+                if (isOpenModal)
+                    $('#modalLindo').modal();
+
+                $('#Header').html("Nova Ação");
+
+                $.get(urlNovaAcao, function (r) {
+
+                    $('#modalLindo').find('.modal-body').append('<hr>');
+                    $('#modalLindo').find('.modal-body').append(r);
+                    $('#GrupoCausa_Id').empty().attr('disabled', true);
+                    $('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+
+                    myfunction();
+                    MoneyMask('R$ ');
+
+                    $('.money').each(function () {
+                        $(this).maskMoney('mask', $(this).val());
+                    });
+
+                    $('#new').click();
+                    if (isFukingNewClicked) {
+                        $('#new').show();
+                    } else {
+                        $('#new').hide();
+                    }
+
+                });
+
+                /*Botões*/
+                $('#modalLindo').find('.modal-footer button').hide()
+                $('#Fechar').show();
+                $('#Salvar').show();
+                $('#Salvar').off('click').on('click', SalvarAcao);
+                /*Fim Botões*/
+            }
+        }
+
+        //Verificando
+        function EditarAcao(html, data) {
+            //console.log(EditarAcao);
+            var acao = data.Acao;
+
+            $('#modalLindo').modal();
+            $('#Header').html("Editar Ação");
+            $('#modalLindo').find('.modal-body').empty().append(html);
+            $('#modalLindo').find('.modal-footer button').hide();
+            myfunction();
+
+            $('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+            $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+            $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+            $('#Status').val(acao.Status);
+            MoneyMask();
+            $('#_QuantoCusta').val(acao.QuantoCusta);
+            $('#_QuantoCusta').trigger('mask.maskMoney');
+            $('#_QuantoCusta').trigger('blur');
+
+            InitDatePiker();
+
+            MoneyMask('R$ ');
+
+            $('.money').each(function () {
+                $(this).maskMoney('mask', $(this).val());
+            });
+
+        }
+
+        //Verificando
+        function myfunction() {
+            $('[id=tipoIndicador]').off('change').on('change', function () {
+
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                form.find('.IndicadorOutros').hide();
+                form.find('.IndicadorSgq').hide();
+
+                if (valor == 1) {
+                    form.find('.IndicadorOutros').show();
+                    form.find('.ProbDesv').hide();
+                    form.find('.ProbDesv').val("");
+                    form.find('.IndicadorOutros select').select2();
+                } else if (valor == 2) {
+                    form.find('.IndicadorSgq').show();
+                    form.find('.ProbDesv').show();
+                    form.find('.IndicadorSgq select').select2();
+                }
+            });
+
+            $('[id=CausaGenerica_Id]').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                if (valor) {
+                    $.get(GETGrupoCausa, { id: valor }, function (r) {
+                        form.find('#GrupoCausa').empty().html(r);
+                        $('.showAsEstrategy select').select2();
+                    });
+                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                        form.find('#ContramedidaGenerica').empty().html(rr);
+                        $('.showAsEstrategy select').select2();
+                    });
+                }
+                else {
+                    form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                    form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    $('.showAsEstrategy select').select2();
+                }
+            });
+        } /*Causa Medida Etc...*/
+
+        //Verificando
+        function SalvarAcao() {
+            var listaAcoes = [];
+            $('.Acao').not(':first').each(function (c, o) {
+                listaAcoes.push(SalvarAcaoAvulsa(o));
+            });
+
+            let isValid = $('.Acao').not(':first').find('.error').length == 0
+
+            if (ValidaAcao(listaAcoes) && isValid) {
+
+                $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+
+                    if (listaAcoes[0].isValid == '0') { return }
+
+                    $.post(urlGetPlanejamentoAcao, {}, function (r) {
+
+                        jaLiberouCallback = true;
+                        $('#modalLindo').modal('hide');
+                        openMessageModal('Registro salvo com sucesso!', '');
+                        $('#btnTop').click();
+
+                    }).fail(function (e, h, x) {
+
+                        openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+                    }).always(function () {
+
+                    });
+                })
+                    .fail(function (e, h, x) {
+
+                        openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+                    });
+            } else
+                alert("Campos obrigatórios");
+
+        }
+
+        function ValidaAcao(listaAcoes) {
+
+            let dataIsValid = true;
+
+            $.each(listaAcoes, function (i, o) {
+
+                let parts = o._QuandoFim.split('/');
+
+                let DataInicio = new Date(parts[2], parts[1], parts[0]);
+
+                parts = o._QuandoInicio.split('/');
+
+                let DataFim = new Date(parts[2], parts[1], parts[0]);
+
+                if (DataInicio < DataFim) {
+                    alert("A Data de Início deve ser menor que a Data Fim!");
+                    dataIsValid = false;
+                    return;
+                }
+            });
+
+            if (listaAcoes[0] != undefined && dataIsValid) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function SalvarAcaoEditada() {
+            var listaAcoes = [];
+
+            $('#Status').prop("disabled", false);
+
+            $('.Acao').each(function (c, o) {
+
+                listaAcoes.push(SalvarAcaoAvulsa(o, true));
+
+            });
+
+            let isValid = $('.Acao').find('.error').length == 0
+            if (!isValid) {
+                alert("Campos obrigatórios")
+                return;
+            }
+
+            if (!ValidaAcao(listaAcoes)) {
+                return;
+            }
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
-
-                if (listaAcoes[0].isValid == '0') { return }
-
                 $.post(urlGetPlanejamentoAcao, {}, function (r) {
 
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
+                    $('.modal-backdrop').remove();
                     openMessageModal('Registro salvo com sucesso!', '');
+
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
@@ -1959,581 +2163,506 @@
                     openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
                 });
-        } else
-            alert("Campos obrigatórios");
 
-    }
-
-    function ValidaAcao(listaAcoes) {
-
-        let dataIsValid = true;
-
-        $.each(listaAcoes, function (i, o) {
-
-            let parts = o._QuandoFim.split('/');
-
-            let DataInicio = new Date(parts[2], parts[1], parts[0]);
-
-            parts = o._QuandoInicio.split('/');
-
-            let DataFim = new Date(parts[2], parts[1], parts[0]);
-
-            if (DataInicio < DataFim) {
-                alert("A Data de Início deve ser menor que a Data Fim!");
-                dataIsValid = false;
-                return;
-            }
-        });
-
-        if (listaAcoes[0] != undefined && dataIsValid) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function SalvarAcaoEditada() {
-        var listaAcoes = [];
-
-        $('#Status').prop("disabled", false);
-
-        $('.Acao').each(function (c, o) {
-
-            listaAcoes.push(SalvarAcaoAvulsa(o, true));
-
-        });
-
-        let isValid = $('.Acao').find('.error').length == 0
-        if (!isValid) {
-            alert("Campos obrigatórios")
-            return;
         }
 
-        if (!ValidaAcao(listaAcoes)) {
-            return;
-        }
-
-        $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
-            $.post(urlGetPlanejamentoAcao, {}, function (r) {
-
-                jaLiberouCallback = true;
-                $('#modalLindo').modal('hide');
-                $('.modal-backdrop').remove();
-                openMessageModal('Registro salvo com sucesso!', '');
-
-                $('#btnTop').click();
-
-            }).fail(function (e, h, x) {
-
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
-
-            }).always(function () {
-
-            });
-        })
-            .fail(function (e, h, x) {
-
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
-
-            });
-
-    }
-
-    var jaLiberouCallback = false;
-    //Verificando
+        var jaLiberouCallback = false;
+        //Verificando
         function SalvarAcaoAvulsa(o, isEdit) {
 
             var sendObj = $(o).serializeObject();
 
-        if (isEdit == undefined && sendObj != undefined) {
-            sendObj['Panejamento_Id'] = planejamentoCorrentId;
-        }
-
-        return sendObj;
-
-    }
-
-    //Verificando
-    function RemoveAcao(btn) {        
-        $(btn).parents('#obj').remove();
-    }
-    /*Fim Acao*/
-
-    //Verificando
-    function Adicionar(btn) {
-        var $tr = $(btn).closest('.tr_clone');
-        var $clone;
-
-        $clone = $tr.clone();
-        $clone.find(':text').val('');
-
-        $tr.find('#remove').show();
-        $tr.find('#adicionar').hide();
-        $tr.after($clone);
-    }
-
-    //Verificando
-    function Remover(btn) {
-        $(btn).parents('tr').remove();
-    }
-
-    /*Novo item*/
-    function Novo(btn, encadeado) {
-
-        selectPredecessor = encadeado;
-
-        //Remove select caso exista
-        $('#encadeado').find('select').remove();
-
-        if (encadeado == undefined)
-            $('#encadeado').hide()
-
-        tempInput = $(btn).parents('tr').find('input , select');
-        tempName = $(btn).parents('tr').find('input , select').attr('name');
-
-        var valorSelectSelecionado = $(btn).parents('tr').find('input , select option:selected').html();
-        var tempIdNovo = $(btn).parents('tr').find('input , select option:selected').val();
-
-        SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
-
-        var label = $(btn).parents('tr').find('label').html();
-        $('#modalNovo').modal();
-        $('#novoHeader').html("Gerenciar: " + label);
-        $('#nomeItemNovo').html(label)
-
-        if (encadeado != undefined) {
-            $('#labelPredecessora').children().remove()
-            $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-            $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
-        }
-
-    }
-
-    function SalvarNovo() {
-
-        var params = {
-            NomeDoItem: $('#newItem').val(),
-            ParametroDeBusca: tempName.split('_Id')[0],
-            PredecessorId: $('#encadeado').find('select').val(),
-            Id: $('#newIdItem').val(),
-            IsActive: $('#newIsActiveItem:checked').length == 1,
-        }
-
-        $.post(urlSalvarNovoItem, params, function (r) {
-            if (r.Resposta != null) {
-                alert(r.Resposta);
-                return;
+            if (isEdit == undefined && sendObj != undefined) {
+                sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
 
-            var jaExisteoptionNoDropDown = $(tempInput).find('option[value="' + r.Id + '"]').length > 0
-            if (jaExisteoptionNoDropDown)
-                if (r.IsActive) {
-                    $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
-                    $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
-                    $(tempInput).val(r.Id).trigger('change');
-                } else {
-                    $(tempInput).find('option:first').prop('selected', true);
-                    $(tempInput).find("option[value= " + r.Id + "]").remove();
-                    $(tempInput).trigger('change');
+            return sendObj;
+
+        }
+
+        //Verificando
+        function RemoveAcao(btn) {
+            $(btn).parents('#obj').remove();
+        }
+        /*Fim Acao*/
+
+        //Verificando
+        function Adicionar(btn) {
+            var $tr = $(btn).closest('.tr_clone');
+            var $clone;
+
+            $clone = $tr.clone();
+            $clone.find(':text').val('');
+
+            $tr.find('#remove').show();
+            $tr.find('#adicionar').hide();
+            $tr.after($clone);
+        }
+
+        //Verificando
+        function Remover(btn) {
+            $(btn).parents('tr').remove();
+        }
+
+        /*Novo item*/
+        function Novo(btn, encadeado) {
+
+            selectPredecessor = encadeado;
+
+            //Remove select caso exista
+            $('#encadeado').find('select').remove();
+
+            if (encadeado == undefined)
+                $('#encadeado').hide()
+
+            tempInput = $(btn).parents('tr').find('input , select');
+            tempName = $(btn).parents('tr').find('input , select').attr('name');
+
+            var valorSelectSelecionado = $(btn).parents('tr').find('input , select option:selected').html();
+            var tempIdNovo = $(btn).parents('tr').find('input , select option:selected').val();
+
+            SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
+
+            var label = $(btn).parents('tr').find('label').html();
+            $('#modalNovo').modal();
+            $('#novoHeader').html("Gerenciar: " + label);
+            $('#nomeItemNovo').html(label)
+
+            if (encadeado != undefined) {
+                $('#labelPredecessora').children().remove()
+                $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
+                $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
+            }
+
+        }
+
+        function SalvarNovo() {
+
+            var params = {
+                NomeDoItem: $('#newItem').val(),
+                ParametroDeBusca: tempName.split('_Id')[0],
+                PredecessorId: $('#encadeado').find('select').val(),
+                Id: $('#newIdItem').val(),
+                IsActive: $('#newIsActiveItem:checked').length == 1,
+            }
+
+            $.post(urlSalvarNovoItem, params, function (r) {
+                if (r.Resposta != null) {
+                    alert(r.Resposta);
+                    return;
                 }
-            else {
-                $(tempInput).find('option:selected').prop('selected', false);
-                $(tempInput).append('<option value=' + r.Id + ' selected> ' + r.NomeDoItem + '</option>');
-                $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
-                $(tempInput).trigger('change')
+
+                var jaExisteoptionNoDropDown = $(tempInput).find('option[value="' + r.Id + '"]').length > 0
+                if (jaExisteoptionNoDropDown)
+                    if (r.IsActive) {
+                        $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
+                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
+                        $(tempInput).val(r.Id).trigger('change');
+                    } else {
+                        $(tempInput).find('option:first').prop('selected', true);
+                        $(tempInput).find("option[value= " + r.Id + "]").remove();
+                        $(tempInput).trigger('change');
+                    }
+                else {
+                    $(tempInput).find('option:selected').prop('selected', false);
+                    $(tempInput).append('<option value=' + r.Id + ' selected> ' + r.NomeDoItem + '</option>');
+                    $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
+                    $(tempInput).trigger('change')
+                }
+                refreshDataTable();
+                $('#btnCancelarNovo').click();
+            });
+
+        }
+
+        var refreshDataTable = function () {
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
             }
-            refreshDataTable();
+            $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+
+            if (param3 != 0) {
+                $('#divPredecessora').removeClass('hide');
+            } else {
+                $('#divPredecessora').addClass('hide');
+            }
+
+            /*Ajax*/
+            $.post(urlGetAutoComplete, { NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3 }, function (response) {
+
+                $("#tableNovo").html('');
+
+                //Gera a lista
+                var list = [];
+                $.each(response, function (index, value) {
+                    list.push([value.Id, value.Name, value.IsActive])
+                });
+
+                tableModalNovo = $('#tableNovo').DataTable({
+                    data: list,
+                    destroy: true,
+                    lengthChange: false,
+                    pageLength: 3,
+                    "bInfo": false,
+                    language: {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "_MENU_ resultados por página",
+                        "sLoadingRecords": "Carregando...",
+                        "sProcessing": "Processando...",
+                        "sZeroRecords": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Ordenar colunas de forma ascendente",
+                            "sSortDescending": ": Ordenar colunas de forma descendente"
+                        }
+                    },
+                    columns: [
+                        { title: "ID" },
+                        { title: "Nome" },
+                        {
+                            title: "Ativo",
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                if (data[2] == true) {
+                                    return "ATIVO";
+                                }
+                                return "INATIVO";
+                            }
+                        },
+                        {
+                            "className": 'options',
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>Editar</span>';
+                            }
+                        }
+                    ],
+                    initComplete: function () { }
+                });
+
+                $('#tableNovo tbody').on('click', 'span', function () {
+
+                    SetaValoresModal(
+                        tableModalNovo.row($(this).parents('tr')).data()[0],
+                        tableModalNovo.row($(this).parents('tr')).data()[1],
+                        tableModalNovo.row($(this).parents('tr')).data()[2])
+                });
+            })
+        };
+
+
+        function SetaValoresModal(id, item, isActive) {
+
             $('#btnCancelarNovo').click();
+            if (!!parseInt(id)) {
+                $("#newIdItem").val(id);
+                $("#newItem").val(item);
+                $("#newIsActiveItem").prop('checked', isActive);
+                $('#btnSalvarNovo').addClass('hide');
+                $('#btnEditarNovo').removeClass('hide');
+                $('#btnCancelarNovo').removeClass('hide');
+                $('#divIsActive').removeClass('hide');
+            }
+
+        }
+        function isPositiveInteger(n) {
+            return n == "0" || ((n | 0) > 0 && n % 1 == 0);
+        }
+
+        var selecionado;
+
+        function Relatorios() {
+            win.focus();
+        }
+
+        function TesteRenan(r, tipo, model) {
+
+            var form = $(r); //$('#Planejamento')
+
+            if (tipo == 'Tatico') { //Novo tatico
+
+                form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                form.attr('id', 'formEditTatico');
+
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
+                        let before = $(c).attr('onclick').split(',')[1]
+                        before = before.slice(2, before.length)
+                        //console.log(before)
+                        let after = `Novo(this, 'formEditTatico #${before}`
+                        $(c).attr('onclick', after)
+                    }
+                });
+
+                $('#modalLindo').find('.modal-body .content2').append(form);
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button><hr>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+                myfunction();
+
+            } else {
+                //if (tipo == 'Estrategico') {
+                //$('#Id').val(model.Id);
+                form.find('#Estrategico_Id').remove();
+                form.find('#IsTatico').val(false).change();
+
+                form.find('table > tbody > tr:nth-child(2)').hide();
+                form.find('table > tbody > tr:nth-child(3)').hide();
+                form.find('table > tbody > tr:nth-child(10)').hide();
+                form.find('table > tbody > tr:nth-child(11)').hide();
+                form.find('table > tbody > tr:nth-child(12)').hide();
+                form.find('table > tbody > tr:nth-child(13)').hide();
+                form.find('table > tbody > tr:nth-child(14)').hide();
+                form.find('table > tbody > tr:nth-child(15)').hide();
+                form.find('table > tbody > tr:nth-child(16)').hide();
+                form.find('table > tbody > tr:nth-child(17)').hide();
+                form.find('table > tbody > tr:nth-child(18)').hide();
+                form.find('table > tbody > tr:nth-child(19)').hide();
+                form.find('table > tbody > tr:nth-child(20)').hide();
+                form.find('table > tbody > tr:nth-child(21)').hide();
+                form.find('table > tbody > tr:nth-child(22)').hide();
+                form.attr('id', 'formEditEstrategy');
+
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
+                        let before = $(c).attr('onclick').split(',')[1]
+                        before = before.slice(2, before.length)
+                        //console.log(before)
+                        let after = `Novo(this, 'formEditTatico #${before}`
+                        $(c).attr('onclick', after)
+                    }
+                })
+
+                $('#modalLindo').find('.modal-body .content1').append(form);
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Estratégico</button><hr>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
+
+                //}
+
+                //else {
+                //    $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                //}
+            }
+
+            InitDatePiker();
+            MoneyMask();
+
+            MoneyMask('R$ ');
+
+            $('.money').each(function () {
+                $(this).maskMoney('mask', $(this).val());
+            });
+
+            DisabilitaBotaoGerenciar();
+        }
+
+        function SalvarAcompanhamento(obj) {
+
+            $('#modalLindo').modal('hide');
+            $.post(urlSalvarAcompanhamento, obj, function (r) {
+
+                //Colocar o retorno no modal
+                formReset();
+                getAcompanhamento(obj.Acao_Id);
+                $('#btnTop').click();
+                openMessageModal('Registro salvo com sucesso!', '');
+
+            })
+                .fail(function (e, h, x) {
+
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+                });
+        }
+
+        function formReset() {
+            $('#acompanhamento #Name').val("");
+            $('#acompanhamento #MailTo').val(0);
+            $('#acompanhamento #Status_Id').val(0);
+        }
+
+        function getAcompanhamento(acaoCorrentId) {
+
+            $('#modalLindo').modal('hide');
+
+            $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#modalLindo').modal();
+                $('#Header').html('Acompanhamento do Planejamento Operacional');
+                $('.modal .modal-footer button').hide();
+                $('#showAcompnhamentoForm').show();
+
+                $("#SaveAcompanhamento").on("click", function (event) {
+                    var obj = $("#acompanhamento").serializeObject();
+                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
+                        alert("Os campos devem ser preenchidos")
+                    else
+                        SalvarAcompanhamento(obj);
+                });
+
+                $('.edit').off('click').on('click', function (data, a, b) {
+                    var data = selecionado
+
+                    $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
+
+                    if (data.Id > 0) {
+
+                        getPlanOp(data, a, b);
+
+                    } else if (data.Estrategico_Id > 0) {
+
+                        getPlanEstrat(data, a, b);
+
+                    } else if (data.Acao.Id > 0) {
+
+                        getAcao(data, a, b);
+                    }
+
+                    $('#modalLindo').find('.modal-footer button').hide();
+                    $('#Header').html("Editar");
+                    $('#modalLindo').modal();
+                });
+
+                setTimeout(function () {
+                    $('#MailTo').select2();
+                    $('#Status_Id').select2();
+                }, 1000);
+            })
+        }
+
+        $(document).ajaxSend(function () {
+            $.LoadingOverlay("show");
+            counter++;
         });
 
-    }
+        $(document).ajaxStop(function () {
+            $.LoadingOverlay("hide", true);
+            counter--;
 
-    var refreshDataTable = function () {
-        /*Dados*/
-        var param1 = $('#newItem').val();
-        var param2 = tempName.split('_Id')[0];
-        var param3 = 0;
-        if ($('#encadeado').find('select').length) {
-            param3 = $('#encadeado').find('select').val();
-        }
-        $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+            //HideForOperacional();
+        });
 
-        if (param3 != 0) {
-            $('#divPredecessora').removeClass('hide');
-        } else {
-            $('#divPredecessora').addClass('hide');
-        }
-
-        /*Ajax*/
-        $.post(urlGetAutoComplete, { NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3 }, function (response) {
-
-            $("#tableNovo").html('');
-
-            //Gera a lista
-            var list = [];
-            $.each(response, function (index, value) {
-                list.push([value.Id, value.Name, value.IsActive])
-            });
-
-            tableModalNovo = $('#tableNovo').DataTable({
-                data: list,
-                destroy: true,
-                lengthChange: false,
-                pageLength: 3,
-                "bInfo": false,
-                language: {
-                    "sEmptyTable": "Nenhum registro encontrado",
-                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_ resultados por página",
-                    "sLoadingRecords": "Carregando...",
-                    "sProcessing": "Processando...",
-                    "sZeroRecords": "Nenhum registro encontrado",
-                    "sSearch": "Pesquisar",
-                    "oPaginate": {
-                        "sNext": "Próximo",
-                        "sPrevious": "Anterior",
-                        "sFirst": "Primeiro",
-                        "sLast": "Último"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Ordenar colunas de forma ascendente",
-                        "sSortDescending": ": Ordenar colunas de forma descendente"
-                    }
-                },
-                columns: [
-                    { title: "ID" },
-                    { title: "Nome" },
-                    {
-                        title: "Ativo",
-                        "data": null,
-                        "render": function (data, type, full, meta) {
-                            if (data[2] == true) {
-                                return "ATIVO";
-                            }
-                            return "INATIVO";
-                        }
-                    },
-                    {
-                        "className": 'options',
-                        "data": null,
-                        "render": function (data, type, full, meta) {
-                            return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>Editar</span>';
-                        }
-                    }
-                ],
-                initComplete: function () { }
-            });
-
-            $('#tableNovo tbody').on('click', 'span', function () {
-
-                SetaValoresModal(
-                    tableModalNovo.row($(this).parents('tr')).data()[0],
-                    tableModalNovo.row($(this).parents('tr')).data()[1],
-                    tableModalNovo.row($(this).parents('tr')).data()[2])
-            });
-        })
-    };
+        $(document).ajaxError(function (e, h, x) {
+            console.log(e);
+            console.log(h);
+            console.log(x);
+            $.LoadingOverlay("hide");
+            counter--;
+        });
 
 
-    function SetaValoresModal(id, item, isActive) {
+        $(function () {
+            GetDataTable();
 
-        $('#btnCancelarNovo').click();
-        if (!!parseInt(id)) {
-            $("#newIdItem").val(id);
-            $("#newItem").val(item);
-            $("#newIsActiveItem").prop('checked', isActive);
-            $('#btnSalvarNovo').addClass('hide');
-            $('#btnEditarNovo').removeClass('hide');
-            $('#btnCancelarNovo').removeClass('hide');
-            $('#divIsActive').removeClass('hide');
-        }
-
-    }
-    function isPositiveInteger(n) {
-        return n == "0" || ((n | 0) > 0 && n % 1 == 0);
-    }
-
-    var selecionado;
-
-    function Relatorios() {
-        win.focus();
-    }
-
-    function TesteRenan(r, tipo, model) {
-
-        var form = $(r); //$('#Planejamento')
-
-        if (tipo == 'Tatico') { //Novo tatico
-
-            form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
-            form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
-            form.find('table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
-            form.find('table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
-            form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
-            form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
-            form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-            form.attr('id', 'formEditTatico');
-
-            form.find('button').each(function (o, c) {
-                if ($(c).attr('onclick').split(',')[1]) {
-                    let before = $(c).attr('onclick').split(',')[1]
-                    before = before.slice(2, before.length)
-                    //console.log(before)
-
-
-
-                    let after = `Novo(this, 'formEditTatico #${before}`
-                    $(c).attr('onclick', after)
+            $('#modalNovo').on('hidden.bs.modal', function () {
+                if (selectPredecessor != undefined) {
+                } else {
+                    $('#' + IdBotaoClicado).click();
                 }
-            });
 
-            $('#modalLindo').find('.modal-body .content2').append(form);
-            $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
-            myfunction();
-
-        } else {
-            //if (tipo == 'Estrategico') {
-            //$('#Id').val(model.Id);
-            form.find('#Estrategico_Id').remove();
-            form.find('#IsTatico').val(false).change();
-
-            form.find('table > tbody > tr:nth-child(2)').hide();
-            form.find('table > tbody > tr:nth-child(3)').hide();
-            form.find('table > tbody > tr:nth-child(10)').hide();
-            form.find('table > tbody > tr:nth-child(11)').hide();
-            form.find('table > tbody > tr:nth-child(12)').hide();
-            form.find('table > tbody > tr:nth-child(13)').hide();
-            form.find('table > tbody > tr:nth-child(14)').hide();
-            form.find('table > tbody > tr:nth-child(15)').hide();
-            form.find('table > tbody > tr:nth-child(16)').hide();
-            form.find('table > tbody > tr:nth-child(17)').hide();
-            form.find('table > tbody > tr:nth-child(18)').hide();
-            form.find('table > tbody > tr:nth-child(19)').hide();
-            form.find('table > tbody > tr:nth-child(20)').hide();
-            form.find('table > tbody > tr:nth-child(21)').hide();
-            form.attr('id', 'formEditEstrategy');
-
-            form.find('button').each(function (o, c) {
-                if ($(c).attr('onclick').split(',')[1]) {
-                    let before = $(c).attr('onclick').split(',')[1]
-                    before = before.slice(2, before.length)
-                    //console.log(before)
-                    let after = `Novo(this, 'formEditTatico #${before}`
-                    $(c).attr('onclick', after)
-                }
             })
 
-            $('#modalLindo').find('.modal-body .content1').append(form);
-            $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
-            DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
-            //}
+            $('#modalNovo').on('shown.bs.modal', function (e) {
 
-            //else {
-            //    $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-            //    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-            //    $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
-            //    $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
-            //    $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
-            //    $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
-            //}
+                $('#btnCancelarNovo').on('click', function () {
+                    $("#newIdItem").val('');
+                    $("#newItem").val('');
+                    $('#btnSalvarNovo').removeClass('hide');
+                    $('#btnEditarNovo').addClass('hide');
+                    //$('#btnDeletarNovo').addClass('hide');
+                    $('#btnCancelarNovo').addClass('hide');
+                    $('#divIsActive').addClass('hide');
+
+                });
+
+                refreshDataTable();
+
+            });
+        });
+        /*Table*/
+
+        function getPlanOp(data, a, b) {
+
+            $.get(urlEditPlanOp, { id: data.Id }, function (r) {
+                TesteRenan(r, 'Estrategico', data);
+                $('#modalNovo > div > div > div.modal-footer > button').show();
+                if (data.Estrategico_Id > 0) {
+                    getPlanEstrat(data, a, b);
+                }
+            });
+
         }
 
-        InitDatePiker();
-        MoneyMask();
+        function getPlanEstrat(data, a, b) {
+            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true }, function (r) {
+                TesteRenan(r, 'Tatico', data);
+                $('#modalNovo > div > div > div.modal-footer > button').show();
 
-        MoneyMask('R$ ');
+                //DDLs ENCADEADAS da PARTIAL VIEW
+                changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
 
-        $('.money').each(function () {
-            $(this).maskMoney('mask', $(this).val());
-        });
+                $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
+                    var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+                    manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
 
-        DisabilitaBotaoGerenciar();
-    }
+                    $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+                        $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+                        $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
 
-    function SalvarAcompanhamento(obj) {
+                            var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+                            manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
 
-        $('#modalLindo').modal('hide');
-        $.post(urlSalvarAcompanhamento, obj, function (r) {
+                            $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
-            //Colocar o retorno no modal
-            formReset();
-            getAcompanhamento(obj.Acao_Id);
-            $('#btnTop').click();
-            openMessageModal('Registro salvo com sucesso!', '');
+                                $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
 
-        })
-            .fail(function (e, h, x) {
+                                $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+                            });
+                        });
+                        $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+                    });
+                });
+                //HideForOperacional();
 
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+                $('.UnidadeDeMedidaTatico').change();
 
-            });
-
-    }
-
-    function formReset() {
-        $('#acompanhamento #Name').val("");
-        $('#acompanhamento #MailTo').val(0);
-        $('#acompanhamento #Status_Id').val(0);
-    }
-
-    function getAcompanhamento(acaoCorrentId) {
-
-        $('#modalLindo').modal('hide');
-
-        $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
-            $('#modalLindo').find('.modal-body').empty().append(r);
-            $('#modalLindo').modal();
-            $('#Header').html('Acompanhamento do Planejamento Operacional');
-            $('.modal .modal-footer button').hide();
-            $('#showAcompnhamentoForm').show();
-
-            $("#SaveAcompanhamento").on("click", function (event) {
-                var obj = $("#acompanhamento").serializeObject();
-                if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
-                    alert("Os campos devem ser preenchidos")
-                else
-                    SalvarAcompanhamento(obj);
-            });
-
-            $('.edit').off('click').on('click', function (data, a, b) {
-                var data = selecionado
-
-                $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
-
-                if (data.Id > 0) {
-
-                    getPlanOp(data, a, b);
-
-                } else if (data.Estrategico_Id > 0) {
-
-                    getPlanEstrat(data, a, b);
-
-                } else if (data.Acao.Id > 0) {
-
+                if (data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
-
-                $('#modalLindo').find('.modal-footer button').hide();
-                $('#Header').html("Editar");
-                $('#modalLindo').modal();
-            });
-
-            setTimeout(function () {
-                $('#MailTo').select2();
-                $('#Status_Id').select2();
-            }, 1000);
-        })
-    }
-
-    $(document).ajaxSend(function () {
-        $.LoadingOverlay("show");
-        counter++;
-    });
-
-    $(document).ajaxStop(function () {
-        $.LoadingOverlay("hide", true);
-        counter--;
-
-        //HideForOperacional();
-    });
-
-    $(document).ajaxError(function (e, h, x) {
-        console.log(e);
-        console.log(h);
-        console.log(x);
-        $.LoadingOverlay("hide");
-        counter--;
-    });
-
-
-    $(function () {
-        GetDataTable();
-
-        $('#modalNovo').on('hidden.bs.modal', function () {
-            if (selectPredecessor != undefined) {
-            } else {
-                $('#' + IdBotaoClicado).click();
             }
-
-        })
-
-
-        $('#modalNovo').on('shown.bs.modal', function (e) {
-
-            $('#btnCancelarNovo').on('click', function () {
-                $("#newIdItem").val('');
-                $("#newItem").val('');
-                $('#btnSalvarNovo').removeClass('hide');
-                $('#btnEditarNovo').addClass('hide');
-                //$('#btnDeletarNovo').addClass('hide');
-                $('#btnCancelarNovo').addClass('hide');
-                $('#divIsActive').addClass('hide');
-
-            });
-
-            refreshDataTable();
-
-        });
-    });
-    /*Table*/
-
-    function getPlanOp(data, a, b) {
-
-        $.get(urlEditPlanOp, { id: data.Id }, function (r) {
-            TesteRenan(r, 'Estrategico', data);
-            $('#modalNovo > div > div > div.modal-footer > button').show();
-            if (data.Estrategico_Id > 0) {
-                getPlanEstrat(data, a, b);
-            }
-        });
-
-    }
-
-    function getPlanEstrat(data, a, b) {
-        $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true }, function (r) {
-            TesteRenan(r, 'Tatico', data);
-            $('#modalNovo > div > div > div.modal-footer > button').show();
-
-            //DDLs ENCADEADAS da PARTIAL VIEW
-            changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
-
-            $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
-                var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
-                manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
-
-                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                    $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-                    $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
-
-                        var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
-                        manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-
-                        $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-
-                            $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
-
-                            $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
-                        });
-                    });
-                    $('#formEditTatico #IndicadoresDeProjeto_Id').change();
-                });
-            });
-            //HideForOperacional();
-            if (data.Acao.Id > 0) {
-                getAcao(data, a, b);
-            }
+            );
         }
-        );
-    }
 
-    function getAcao(data, a, b) {
+        function getAcao(data, a, b) {
 
-        $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
+            $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
                 var acao = data.Acao;
 
                 $('#Header').html("Editar Ação");
@@ -2552,9 +2681,10 @@
                 setTimeout(function () {
                     $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
                     $('.content3 select').select2();
+                    $('.UnidadeMedida').change();
                 }, 1);
 
-                $(r).attr("id", "formEditAcao")
+                $(r).attr("id", "formEditAcao");
 
                 MoneyMask();
                 myfunction();
@@ -2575,169 +2705,188 @@
                 $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
 
             });
-    }
+        }
 
-    //Visao Geral dos Projetos
-    $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
+        //Visao Geral dos Projetos
+        $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
+            debugger
+
+            $('#graficoPorDiretriz').empty();
+            $('#graficoPorGerencia').empty();
 
             let Categories = [];
             let Data = [];
 
             dadosfilter = dados;
 
-            Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+            if (TipoGrafico == "Gerencia") {
 
-            Data = [];
+                Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
 
-            Categories.forEach(function (c, o) {
+                Data = [];
 
-                let qtdConcluido = $.grep(dados, function (r) {
-                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
-                }).length;
+                Categories.forEach(function (c, o) {
 
-                let qtdDeGerencia = $.grep(dados, function (r) {
-                    return r.Gerencia == c;
-                }).length;
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
+                    }).length;
 
-                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+                    let qtdDeGerencia = $.grep(dados, function (r) {
+                        return r.Gerencia == c;
+                    }).length;
 
-                Data.push(porcConcluidos);
-            });
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-            Highcharts.chart('graficoPorGerencia', {
+                    Data.push(porcConcluidos);
+                });
 
-                title: {
-                    text: '% CONCLUÍDA - ÁREA'
-                },
-                chart: {
-                    height: 230
-                },
-                credits: {
-                    enabled: false
-                },
-                subtitle: {
-                    text: ''
-                },
-                yAxis: {
+                Highcharts.chart('graficoPorGerencia', {
+
                     title: {
-                        text: '% de Conclusão'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.0f} %',
-                            //distance: -10,
-                            style: {
-                                color: 'black',
-                                fontSize: '10px',
+                        text: '% CONCLUÍDA - ÁREA'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '% de Conclusão'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
                             },
-                            //connectorColor: 'silver'
-                        },
-                        point: {
-                            events: {
-                                click: function () {
-                                    filterDados("Gerencia", this.category, getTablesModal);
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("Gerencia", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Gerencia", this.category, true);
+                                    }
                                 }
-                            }
+                            },
                         },
                     },
-                },
-                xAxis: {
-                    categories: Categories
-                },
-                tooltip: {
-                    pointFormat: '{point.y:.0f} %'
-                },
-                series: [{
-                    type: 'column',
-                    colorByPoint: true,
-                    data: Data,
-                    showInLegend: false
-                }]
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
 
-            });
+                });
 
-            Categories = Object.values(MapeiaValorParaHC(dados, "Iniciativa").filter(onlyUnique));
+            } else {
 
-            Data = [];
+                Categories = Object.values(MapeiaValorParaHC(dados, "IndicadoresDiretriz").filter(onlyUnique));
 
-            Categories.forEach(function (c, o) {
+                Data = [];
 
-                let qtdConcluido = $.grep(dados, function (r) {
-                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
-                }).length;
+                Categories.forEach(function (c, o) {
 
-                let qtdDeGerencia = $.grep(dados, function (r) {
-                    return r.Iniciativa == c;
-                }).length;
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
+                    }).length;
 
-                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+                    let qtdDeDiretriz = $.grep(dados, function (r) {
+                        return r.IndicadoresDiretriz == c;
+                    }).length;
 
-                Data.push(porcConcluidos);
-            });
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
 
-            Highcharts.chart('graficoPorProjetos', {
+                    Data.push(porcConcluidos);
+                });
 
-                title: {
-                    text: '% CONCLUÍDA - DEMANDAS'
-                },
-                credits: {
-                    enabled: false
-                },
-                subtitle: {
-                    text: ''
-                },
-                yAxis: {
+                Highcharts.chart('graficoPorDiretriz', {
+
                     title: {
-                        text: '% de Conclusão'
-                    }
-                },
-                xAxis: {
-                    categories: Categories,
-                },
-                plotOptions: {
-                    column: {
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.0f} %',
-                            //distance: -10,
-                            style: {
-                                color: 'black',
-                                fontSize: '10px',
+                        text: '% CONCLUÍDA - ÁREA'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '% de Conclusão'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
                             },
-                            //connectorColor: 'silver'
-                        },
-                        point: {
-                            events: {
-                                click: function () {
-                                    console.log(this.category)
-
-                                    filterDados("Iniciativa", this.category, getTablesModal)
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("IndicadoresDiretriz", this.category, getTablesModal);
+                                        getGraficoPorProjetos("IndicadoresDiretriz", this.category, true);
+                                    }
                                 }
-                            }
+                            },
                         },
                     },
-                },
-                tooltip: {
-                    pointFormat: '{point.y:.0f} %'
-                },
-                series: [{
-                    type: 'column',
-                    colorByPoint: true,
-                    data: Data,
-                    showInLegend: false
-                }]
-            });
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
 
-            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
-            $('#percentualConclusao').html(PercentualTotal + " %");
+                });
+
+            }
+
+            getGraficoPorProjetos(null, null, false);
 
             getTablesModal();
         });
 
-    function getAcoesEspecificas(arrayRetorno) {
+        var TipoGrafico = null;
+
+        function vgp(tipoGrafico){
+            TipoGrafico = tipoGrafico;
+        }
+
+        function getAcoesEspecificas(arrayRetorno) {
 
             let AcoesEspecificas = [];
 
@@ -2748,7 +2897,7 @@
             return AcoesEspecificas;
         }
 
-    function getTableModal(id, dataSet, columnsSet) {
+        function getTableModal(id, dataSet, columnsSet) {
 
             let table = $('#' + id).DataTable({
 
@@ -2786,74 +2935,73 @@
             return table;
         }
 
-    function filterDados(prop, value, calback) {
+        function filterDados(prop, value, calback) {
 
-        dadosfilter = $.grep(dados, function (item) {
+            dadosfilter = $.grep(dados, function (item) {
 
-            if (item[prop] == value) {
+                if (item[prop] == value) {
 
-                return item;
+                    return item;
 
-            }
+                }
 
-        });
+            });
 
-        calback();
+            calback();
 
-     }
+        }
 
-    function getTablesModal() {
+        function getTablesModal() {
 
             // Acão Em Andamento
             let AcoesEspecificas = [];
 
             var arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-                var valor = o['Acao'].ContramedidaEspecifica;
+            var valor = o['Acao'].ContramedidaEspecifica;
 
-                if (o['Acao'].Status == 5) {
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        return "Não possui Ação Específica";
-                    }
+            if (o['Acao'].Status == 5) {
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return "Não possui Ação Específica";
                 }
+            }
 
-            });
+        });
 
             Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
-                AcoesEspecificas.push([i]);
-            });
+            AcoesEspecificas.push([i]);
+        });
 
             let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
 
             var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
-
 
             //Acoes Atrasadas
             AcoesEspecificas = [];
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-                if (o['Acao'].Status == 1) {
+            if (o['Acao'].Status == 1) {
 
-                    dataFim = new Date(o['Acao'].QuandoFim);
-                    dataHoje = new Date();
+                dataFim = new Date(o['Acao'].QuandoFim);
+                dataHoje = new Date();
 
-                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
 
-                    return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
 
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        valor = { 0: "Não possui Ação Específica", 1: "" };
-                    }
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    valor = { 0: "Não possui Ação Específica", 1: "" };
                 }
+            }
 
-            });
+        });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -2867,23 +3015,23 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-                dataInicio = new Date(o['Acao'].QuandoInicio);
-                dataHoje = new Date();
+            dataInicio = new Date(o['Acao'].QuandoInicio);
+            dataHoje = new Date();
 
-                if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
+            if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
 
-                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
 
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        return { 0: "Não possui Ação Específica", 1: "" };
-                    }
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return { 0: "Não possui Ação Específica", 1: "" };
                 }
-            });
+            }
+        });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -2897,26 +3045,161 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-                if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+            if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
 
-                    let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+                let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
 
-                    return valor;
-                } else {
-                    if (o['Acao'].Id == 0) {
-                        return { 0: "Não possui Ação Específica", 1: "" };
-                    }
+                return valor;
+            } else {
+                if (o['Acao'].Id == 0) {
+                    return { 0: "Não possui Ação Específica", 1: "" };
                 }
+            }
 
-            });
+        });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
             TituloAcoesEspecificas = [{ title: "Ação Específica" }, { title: "Data de Conclusão" }]
 
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
+        }
+
+        function getGraficoPorProjetos(prop, value, isFilter) {
+
+            let Categories = [];
+
+            let dadosInternos = dados;
+
+            if (isFilter) {
+
+            dadosInternos = $.grep(dados, function (r) {
+
+                return r[prop] == value ;
+
+            });
+        }
+
+            Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
+
+            Data = [];
+
+            let dados2 = dados;
+
+            if (isFilter) {
+                dados2 = $.grep(dados, function (item) {
+
+                    if (item[prop] == value) {
+
+                        return item;
+
+                    }
+                });
+            }
+
+            Categories.forEach(function (c, o) {
+
+            let qtdConcluido = $.grep(dados2, function (r) {
+                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+            }).length;
+
+            let qtdDeGerencia = $.grep(dados2, function (r) {
+                return r.Iniciativa == c;
+            }).length;
+
+            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+            Data.push(porcConcluidos);
+        });
+
+            Highcharts.chart('graficoPorProjetos', {
+
+            title: {
+                text: '% CONCLUÍDA - DEMANDAS'
+            },
+            credits: {
+                enabled: false
+            },
+            subtitle: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: '% de Conclusão'
+                }
+            },
+            xAxis: {
+                categories: Categories,
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f} %',
+                        //distance: -10,
+                        style: {
+                            color: 'black',
+                            fontSize: '10px',
+                        },
+                        //connectorColor: 'silver'
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                console.log(this.category)
+
+                                filterDados("Iniciativa", this.category, getTablesModal)
+                            }
+                        }
+                    },
+                },
+            },
+            tooltip: {
+                pointFormat: '{point.y:.0f} %'
+            },
+            series: [{
+                type: 'column',
+                colorByPoint: true,
+                data: Data,
+                showInLegend: false
+            }]
+        });
+
+            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            $('#percentualConclusao').html(PercentualTotal + " %");
+
+        }
+
+        function changePlanejamento(tipo,form){
+            $.post(urlGetListPlanejamento +'/'+tipo,function(r){
+
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">Selecionar</button>';
+                }});
+                datatableGRT.Inicializar({
+                    idTabela: "tablePessego",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    initComplete: function(){
+                        $('#tablePessego').off().on('click','button[data-id]',function(){
+                            if(confirm("Deseja alterar o vinculo!?")){
+                                debugger
+                                var idParaMudar = $(this).attr("data-id");
+                                var id = $(form).find('#Id').val();
+                                //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
+                                $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
+                                    //alert("Atualizou o rolê!");
+                                    openMessageModal("Vinculo atualizado!");
+                                    location.reload();
+                                });
+                            }
+                        });
+                    }
+                });
+            });
         }
 
     </script>
