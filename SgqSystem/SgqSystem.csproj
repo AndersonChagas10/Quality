@@ -324,6 +324,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\MandalaApiController.cs" />
     <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
