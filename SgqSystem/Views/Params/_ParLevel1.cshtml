@@ -693,14 +693,14 @@
                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                     @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
                                                                 {
-                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
                                                         <span class="glyphicon glyphicon-duplicate"></span>
                                                     </button>
 
                                                                 }
                                                                 else
                                                                 {
-                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="changeColor(this); HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
                                                         <span class="fa fa-copy"></span>
                                                     </button>
                                                                 }
@@ -2032,7 +2032,15 @@
             HeaderLevel1.object.Id = idHeader;
 
             $.post(urlHeaderLevel1, HeaderLevel1.object, function(r){
-
+                var classeSpan = $('tr[data-headerfield-id=' + HeaderLevel1.object.Id + '] td button[id=DuplicarCabecalho] span').hasClass('fa fa-copy')
+                var span = $('tr[data-headerfield-id=' + HeaderLevel1.object.Id + '] td button[id=DuplicarCabecalho] span');
+                if (classeSpan) {
+                    span.removeClass('fa fa-copy');
+                    span.addClass('glyphicon glyphicon-duplicate')
+                } else {
+                    span.removeClass('glyphicon glyphicon-duplicate');
+                    span.addClass('fa fa-copy')
+                }
             });
         },
         Group_Id: 0,
