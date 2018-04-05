@@ -2779,7 +2779,8 @@
 
     function GerarGraficoTarefasAcumuladas(data) {
 
-        var nc = MapeiaValorParaHC(data, "Nc");
+        var Proc = MapeiaValorParaHC(data, "Proc");
+        //var nc = MapeiaValorParaHC(data, "Nc");
         var nome = MapeiaValorParaHC(data, "TarefaName");
         var selector = "GraficoTarefasAcumuladas";
         var sentido = 'desc';
@@ -2828,8 +2829,8 @@
                 //}
             },
             series: [
-                Chart.NC(nc, FTATarefasAcumuladas, null, null, null, "", data),
-                Chart.curvaPareto(data, nc, 1, inverse)
+                Chart.ProcNc(Proc, FTATarefasAcumuladas, null, null, null, "", data),
+                Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
 

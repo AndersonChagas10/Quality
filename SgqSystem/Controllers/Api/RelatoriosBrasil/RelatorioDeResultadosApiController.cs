@@ -6171,7 +6171,7 @@ ORDER BY 3
                ,R3.ParLevel3_Name AS TarefaName
                ,UNI.Name AS UnidadeName
                ,UNI.Id AS Unidade_Id
-               ,SUM(R3.Defects) AS NC
+               ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc]
             FROM Result_Level3 R3 (NOLOCK)
             INNER JOIN CollectionLevel2 C2 (NOLOCK)
             	ON C2.Id = R3.CollectionLevel2_Id
