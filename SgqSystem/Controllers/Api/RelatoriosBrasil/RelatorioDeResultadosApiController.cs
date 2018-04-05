@@ -6154,7 +6154,6 @@ ORDER BY 3
                 whereLevel1 = $@"AND IND.Id IN({ string.Join(",", form.level1IdArr) })";
             }
 
-
             if (form.unitIdArr.Length > 0 && form.unitId > 0)
             {
                 whereUnit = $@"AND CL2.UNITID IN({ string.Join(",", form.unitIdArr) })";
@@ -6171,7 +6170,7 @@ ORDER BY 3
                ,R3.ParLevel3_Name AS TarefaName
                ,UNI.Name AS UnidadeName
                ,UNI.Id AS Unidade_Id
-               ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc]
+               ,SUM(NULLIF(R3.WeiDefects,0)) / SUM(R3.WeiEvaluation) * 100 AS [Proc]
             FROM Result_Level3 R3 (NOLOCK)
             INNER JOIN CollectionLevel2 C2 (NOLOCK)
             	ON C2.Id = R3.CollectionLevel2_Id
