@@ -257,7 +257,7 @@
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         }
 
-        if ((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) {
+        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) || ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
 
             EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 

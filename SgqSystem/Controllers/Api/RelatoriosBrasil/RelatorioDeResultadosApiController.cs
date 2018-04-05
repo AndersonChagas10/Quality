@@ -6127,6 +6127,7 @@ ORDER BY 3
             var whereShift = "";
             var whereCriticalLevel = "";
             var whereLevel1 = "";
+            var whereUnit = "";
 
             if (form.departmentId != 0)
             {
@@ -6150,7 +6151,13 @@ ORDER BY 3
 
             if (form.level1IdArr.Length > 0)
             {
-                whereLevel1 = $@"AND IND.Id IN({ string.Join(",", form.level1IdArr)})";
+                whereLevel1 = $@"AND IND.Id IN({ string.Join(",", form.level1IdArr) })";
+            }
+
+
+            if (form.unitIdArr.Length > 0 && form.unitId > 0)
+            {
+                whereUnit = $@"AND CL2.UNITID IN({ string.Join(",", form.unitIdArr) })";
             }
 
             var queryGraficoTarefasAcumuladas = $@"
@@ -6180,10 +6187,10 @@ ORDER BY 3
             	ON MON.Id = CL2.ParLevel2_Id
             WHERE 1 = 1 
             { whereLevel1 }
+            { whereUnit }
             /* and MON.Id = 1 */
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
-            AND CL2.UNITID = { form.unitId }
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
             { whereDepartment }
             { whereShift }            
