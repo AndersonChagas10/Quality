@@ -3030,7 +3030,7 @@
                 }
 
             },
-         ProcNc: function (data, func, funcParaAcumuladas, grafico, arr, arr2) {
+         ProcNc: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
                 $.each(data, function (a, b) {
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
@@ -3048,11 +3048,12 @@
                     point: {
                         events: {
                             click: function () {
-                                if (!!arr2) {
-                                    func(arr[this.x], grafico, arr2[this.x]);
-                                } else {
-                                    func(arr[this.x], grafico);
-                                }
+                                //if (!!arr2) {
+                                //    func(arr[this.x], grafico, arr2[this.x]);
+                                //} else {
+                                //    func(arr[this.x], grafico);
+                                //}
+                                func(this, arr);
                             }
                         }
                     },
