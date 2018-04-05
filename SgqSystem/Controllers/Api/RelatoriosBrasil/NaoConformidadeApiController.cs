@@ -1206,44 +1206,44 @@ FROM (SELECT
 				WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)
 															FROM VolumePcc1b(nolock)
 															WHERE ParCompany_id = @ParCompany_id
-															AND Data  = CL2.ConsolidationDate) - isnull(@NAPCC,0)
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.WeiEvaluation)
-				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiEvaluation)
-				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.EvaluatedResult)
+															AND Data  = CL1.ConsolidationDate) - isnull(@NAPCC,0)
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.EvaluatedResult)
 				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.AM)
-				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.WeiEvaluation)
-				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL1.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL1.WeiEvaluation)
 				ELSE 0
 			END AS Av
 		   ,CASE
 				WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)
 															FROM VolumePcc1b(nolock)
 															WHERE ParCompany_id = @ParCompany_id
-															AND Data  = CL2.ConsolidationDate) - isnull(@NAPCC,0)
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.EvaluateTotal)
-				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiEvaluation)
-				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.EvaluatedResult)
+															AND Data  = CL1.ConsolidationDate) - isnull(@NAPCC,0)
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.EvaluateTotal)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.WeiEvaluation)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.EvaluatedResult)
 				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.AM)
-				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.EvaluateTotal)
-				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.EvaluateTotal)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL1.EvaluateTotal)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL1.EvaluateTotal)
 				ELSE 0
 			END AS AvSemPeso
 		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.WeiDefects)
-				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiDefects)
-				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult)
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiDefects)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.WeiDefects)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.DefectsResult)
 				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)
-				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.WeiDefects)
-				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.TotalLevel3WithDefects)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL1.WeiDefects)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL1.TotalLevel3WithDefects)
 				ELSE 0
 			END AS NC
 		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.DefectsTotal)
-				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.DefectsTotal)
-				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult)
+				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.DefectsResult)
 				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)
-				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.DefectsTotal)
-				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL2.TotalLevel3WithDefects)
+				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL1.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 6 THEN SUM(CL1.TotalLevel3WithDefects)
 				ELSE 0
 			END AS NCSemPeso
 		   ,CASE
@@ -1254,14 +1254,14 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= CL2.ConsolidationDate)
+						AND G.AddDate <= CL1.ConsolidationDate)
 					> 0 THEN (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
 						FROM ParGoal G
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= CL2.ConsolidationDate
+						AND G.AddDate <= CL1.ConsolidationDate
 						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
 
 				ELSE (SELECT TOP 1
@@ -1278,6 +1278,7 @@ FROM (SELECT
 			ON IND.Id = CL1.ParLevel1_Id
               AND ISNULL(IND.ShowScorecard,1) = 1 
               AND IND.IsActive = 1 
+              AND IND.ID != 42 
               AND IND.ID != 43 
         INNER JOIN ParCompany UNI (NOLOCK)
 			ON UNI.Id = CL1.UnitId
@@ -1285,12 +1286,12 @@ FROM (SELECT
 			ON A4.UNIDADE = UNI.Id
 			AND A4.INDICADOR = IND.ID
             AND A4.DATA = CL1.ConsolidationDate
-		INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
-			ON CL2.ConsolidationLevel1_id = CL1.Id
-		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
-			ON CL2.ParLevel2_id = L2.Id
-		INNER JOIN ParDepartment D WITH (NOLOCK)
-			ON L2.ParDepartment_Id = D.Id
+		--  INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
+		--  	ON CL2.ConsolidationLevel1_id = CL1.Id
+		--  INNER JOIN ParLevel2 L2 WITH (NOLOCK)
+		--  	ON CL2.ParLevel2_id = L2.Id
+		--  INNER JOIN ParDepartment D WITH (NOLOCK)
+		--  	ON L2.ParDepartment_Id = D.Id
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		AND UNI.Name = '{form.unitName }'
         {whereDepartment}
@@ -1306,7 +1307,7 @@ FROM (SELECT
 				,UNI.Name
 				,CL1.ParLevel1_Id
 				,CL1.UnitId
-                ,CL2.ConsolidationDate) S1
+                ,CL1.ConsolidationDate) S1
 	GROUP BY Unidade
 			,Unidade_Id
 			,Level1Name
