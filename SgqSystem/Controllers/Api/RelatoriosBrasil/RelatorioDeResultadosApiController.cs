@@ -204,7 +204,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             #region Indicadores com Acao Concluída: Sim ou Não
 
-            if (form.createActionPlane == 1) 
+            if (form.createActionPlane == 1)
             {
                 SQLcentro += @"";
                 SQLcentro += @"";
@@ -285,7 +285,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
-            
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
@@ -456,7 +456,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
-            
+
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -1159,7 +1159,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
         }
-         
+
         [HttpPost]
         [Route("GetGraficoHistoricoModal")]
         public List<RetornoGenerico> GetGraficoHistoricoModal([FromBody] FormularioParaRelatorioViewModel form)
@@ -1169,16 +1169,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.level3Id != 0)
             {
-                query = getQueryHistoricoTarefa(form, true,3); // 0: Listagem / 1: Evolutivo 
+                query = getQueryHistoricoTarefa(form, true, 3); // 0: Listagem / 1: Evolutivo 
 
             }
             else if (form.level2Id != 0)
             {
-                query = getQueryHistoricoMonitoramento(form, true,2); // 0: Listagem / 1: Evolutivo 
+                query = getQueryHistoricoMonitoramento(form, true, 2); // 0: Listagem / 1: Evolutivo 
             }
             else
             {
-                query = getQueryHistorioIndicador(form, true,1); // 0: Listagem / 1: Evolutivo 
+                query = getQueryHistorioIndicador(form, true, 1); // 0: Listagem / 1: Evolutivo 
             }
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -2894,7 +2894,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n   ,20.0 AS procentagemNc          " +
                 "\n   ,10.0 AS Meta                   " +
                 "\n   ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end AS nc        " +
-                                 //case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end
+                //case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end
                 "\n   ,50.0 as av                     " +
                 "\n   ,max(mesData) as [date]                 " +
 
@@ -3779,7 +3779,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = "";
 
-            query = getQueryHistorioGeral(form,true,5);
+            query = getQueryHistorioGeral(form, true, 5);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -3797,7 +3797,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = "";
 
-            query = getQueryHistorioGeral(form,true,4);
+            query = getQueryHistorioGeral(form, true, 4);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -3808,11 +3808,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno2;
         }
 
-        private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form, bool? tipoVisao = false,int? nivel=1) // || tipoVisao => 0: Listagem / 1: Evolutivo  || nivel =>  1: indicador / 2: Monitoramento / 3: Tarefa / 4: Unidade / 5: JBS 
+        private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form, bool? tipoVisao = false, int? nivel = 1) // || tipoVisao => 0: Listagem / 1: Evolutivo  || nivel =>  1: indicador / 2: Monitoramento / 3: Tarefa / 4: Unidade / 5: JBS 
         {
 
             #region Filtros
-            
+
             var titulo = "Histórico da Tarefa";
 
             var Wmodulo = "";
@@ -4250,12 +4250,12 @@ ORDER BY 3
             #endregion
 
 
-            if (tipoVisao==false) // 0: Listagem / 1: Evolutivo 
+            if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
                 #region ScriptLista
                 script += @"
 
-            "+ SQLcentro + @"
+            " + SQLcentro + @"
 
             SELECT 
             	Indicador AS level1Id
@@ -4289,7 +4289,7 @@ ORDER BY 3
             " + SQLcentro + @"
 
             SELECT 
-               '"+ titulo + @"' AS ChartTitle
+               '" + titulo + @"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -4474,7 +4474,8 @@ ORDER BY 3
 
         [HttpPost]
         [Route("listaResultados")]
-        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form) {
+        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form)
+        {
 
 
 
@@ -4482,15 +4483,15 @@ ORDER BY 3
 
             if (form.level3Id != 0)
             {
-                query = getQueryHistoricoTarefa(form,false,3);
+                query = getQueryHistoricoTarefa(form, false, 3);
             }
             else if (form.level2Id != 0)
             {
-                query = getQueryHistoricoMonitoramento(form,false,2);
+                query = getQueryHistoricoMonitoramento(form, false, 2);
             }
             else
             {
-                query = getQueryHistorioIndicador(form,false,1);
+                query = getQueryHistorioIndicador(form, false, 1);
             }
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -4500,7 +4501,7 @@ ORDER BY 3
 
             //if(retornaSomenteAv == true)
             //{
-                //retorno3 = retorno3.Where(r => r.av > 0).ToList();
+            //retorno3 = retorno3.Where(r => r.av > 0).ToList();
             //}
 
             //GetMockListaResultados();
@@ -4526,7 +4527,7 @@ ORDER BY 3
             {
                 query = getQueryHistorioIndicador(form, false, 1);
             }
-            
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 retorno4 = factory.SearchQuery<RetornoGenerico>(query).ToList();
@@ -4842,11 +4843,11 @@ ORDER BY 3
             var Wmonitoramento = "";
             var Wtarefa = "";
 
-            
 
-            if(nivel == 1 || nivel == 2 || nivel == 3)
-            { 
-            // Indicador
+
+            if (nivel == 1 || nivel == 2 || nivel == 3)
+            {
+                // Indicador
                 if (form.level1IdArr.Length > 0 && form.level1IdArr[0] != 0)
                 {
                     Windicador = " AND CL1.ParLevel1_id IN (" + string.Join(",", form.level1IdArr) + ")";
@@ -4857,7 +4858,8 @@ ORDER BY 3
                 }
             }
             // Monitoramento
-            if (nivel == 2 || nivel == 3) {
+            if (nivel == 2 || nivel == 3)
+            {
                 if (form.level2IdArr.Length > 0 && form.level2IdArr[0] != 0)
                 {
                     Wmonitoramento = " AND CL2.ParLevel2_id IN (" + string.Join(",", form.level2IdArr) + ")";
@@ -5016,6 +5018,7 @@ ORDER BY 3
             " + Wunidade + @"
             " + Windicador + @"
             AND CL1.ParLevel1_Id != 43
+            AND CL1.ParLevel1_Id != 42
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
@@ -5377,6 +5380,7 @@ ORDER BY 3
             " + Windicador + @"
             " + Wmonitoramento + @"
             AND CL1.ParLevel1_Id != 43
+            AND CL1.ParLevel1_Id != 42
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level2 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id); 
@@ -5631,11 +5635,11 @@ ORDER BY 3
             }
 
             else if (nivel == 3)
-            { 
+            {
 
                 #region Consolidação Por Indicador, Monitoramento e Tarefa
 
-            Query = @"
+                Query = @"
             
         DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
         DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
@@ -5757,6 +5761,7 @@ ORDER BY 3
         " + Wmonitoramento + @"
         " + Wtarefa + @"
         AND CL1.ParLevel1_Id != 43
+        AND CL1.ParLevel1_Id != 42
         
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
@@ -5970,7 +5975,7 @@ ORDER BY 3
         
             ";
 
-            #endregion
+                #endregion
 
             }
 
@@ -5982,7 +5987,8 @@ ORDER BY 3
         {
             var whereStatusQuery = "";
 
-            if(whereStatus == 1){
+            if (whereStatus == 1)
+            {
                 whereStatusQuery = " AND WHERESTATUS.PC < WHERESTATUS.Meta ";
             }
             if (whereStatus == 2)
@@ -6109,6 +6115,95 @@ ORDER BY 3
             ";
 
             return Query;
+        }
+
+        [HttpPost]
+        [Route("GraficoTarefasAcumuladas")]
+        public List<NaoConformidadeResultsSet> GraficoTarefasAcumuladas([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            var _list = new List<NaoConformidadeResultsSet>();
+
+            var whereDepartment = "";
+            var whereShift = "";
+            var whereCriticalLevel = "";
+            var whereLevel1 = "";
+
+            if (form.departmentId != 0)
+            {
+                whereDepartment = "\n AND MON.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.level1IdArr.Length > 0)
+            {
+                whereLevel1 = $@"AND IND.Id IN({ string.Join(",", form.level1IdArr)})";
+            }
+
+            var queryGraficoTarefasAcumuladas = $@"
+            SELECT
+            
+            	IND.Id AS Indicador_id
+               ,IND.Name AS IndicadorName
+               ,IND.Id AS Monitoramento_Id
+               ,IND.Name AS MonitoramentoName
+               ,R3.ParLevel3_Id AS Tarefa_Id
+               ,R3.ParLevel3_Name AS TarefaName
+               ,UNI.Name AS UnidadeName
+               ,UNI.Id AS Unidade_Id
+               ,SUM(R3.Defects) AS NC
+            FROM Result_Level3 R3 (NOLOCK)
+            INNER JOIN CollectionLevel2 C2 (NOLOCK)
+            	ON C2.Id = R3.CollectionLevel2_Id
+            INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
+            	ON CL2.Id = C2.ConsolidationLevel2_Id
+            INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
+            	ON CL1.Id = CL2.ConsolidationLevel1_Id
+            INNER JOIN ParCompany UNI (NOLOCK)
+            	ON UNI.Id = CL1.UnitId
+            INNER JOIN ParLevel1 IND (NOLOCK)
+            	ON IND.Id = CL1.ParLevel1_Id
+            INNER JOIN ParLevel2 MON (NOLOCK)
+            	ON MON.Id = CL2.ParLevel2_Id
+            WHERE 1 = 1 
+            { whereLevel1 }
+            /* and MON.Id = 1 */
+            AND C2.ParLevel1_Id != 43
+            AND C2.ParLevel1_Id != 42
+            AND CL2.UNITID = { form.unitId }
+            AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
+            { whereDepartment }
+            { whereShift }            
+            { whereCriticalLevel }
+            GROUP BY IND.Id
+            		,IND.Name
+            		,R3.ParLevel3_Id
+            		,R3.ParLevel3_Name
+            		,UNI.Name
+            		,UNI.Id
+            HAVING SUM(R3.WeiDefects) > 0
+            AND SUM(R3.Defects) > 0
+            ORDER BY 9 DESC";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(queryGraficoTarefasAcumuladas).ToList();
+            }
+
+            return _list;
         }
 
     }
