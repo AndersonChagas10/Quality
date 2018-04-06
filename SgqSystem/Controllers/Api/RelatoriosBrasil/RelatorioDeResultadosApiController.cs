@@ -4943,41 +4943,48 @@ ORDER BY 3
             
             	-- DROP TABLE #AMOSTRA4
             
-            	SELECT
-            		UNIDADE
-            	   ,INDICADOR
-            	   ,DATA
-            	   ,COUNT(1) AM
-            	   ,SUM(DEF_AM) DEF_AM
-            	INTO #AMOSTRA4
-            	FROM (SELECT
-            			CAST(C2.CollectionDate AS DATE) AS DATA
-            		   ,C.Id AS UNIDADE
-            		   ,C2.ParLevel1_Id AS INDICADOR
-            		   ,C2.EvaluationNumber AS AV
-            		   ,C2.Sample AS AM
-            		   ,CASE
-            				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-            				ELSE 1
-            			END DEF_AM
-            		FROM CollectionLevel2 C2 (NOLOCK)
-            		INNER JOIN ParLevel1 L1 (NOLOCK)
-            			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
-                        AND L1.Id <> 43
-            		INNER JOIN ParCompany C (NOLOCK)
-            			ON C.Id = C2.UnitId
-            		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATEINI AND @DATEFIM
-            		AND C2.NotEvaluatedIs = 0
-            		AND C2.Duplicated = 0
-            		AND L1.ParConsolidationType_Id = 4
-            		GROUP BY C.Id
-            				,ParLevel1_Id
-            				,EvaluationNumber
-            				,Sample
-            				,CAST(CollectionDate AS DATE)) TAB
-            	GROUP BY UNIDADE
-            			,INDICADOR
-            			,DATA
+	SELECT
+		UNIDADE
+	   ,INDICADOR
+       ,[SHIFT]
+       ,[PERIOD]
+       ,DATA
+	   ,COUNT(1) AM
+	   ,SUM(DEF_AM) DEF_AM
+INTO #AMOSTRA4
+FROM (SELECT
+			CAST(C2.CollectionDate AS DATE) AS DATA
+		   ,C.Id AS UNIDADE
+		   ,C2.ParLevel1_Id AS INDICADOR
+           ,C2.[SHIFT]
+           ,C2.[PERIOD]
+		   ,C2.EvaluationNumber AS AV
+		   ,C2.Sample AS AM
+		   ,CASE
+				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+				ELSE 1
+			END DEF_AM
+		FROM CollectionLevel2 C2 (NOLOCK)
+		INNER JOIN ParLevel1 L1 (NOLOCK)
+			ON L1.Id = C2.ParLevel1_Id
+		INNER JOIN ParCompany C (NOLOCK)
+			ON C.Id = C2.UnitId
+		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+		AND C2.NotEvaluatedIs = 0
+		AND C2.Duplicated = 0
+		AND L1.ParConsolidationType_Id = 4
+		GROUP BY C.Id
+				,ParLevel1_Id
+                ,C2.[SHIFT]
+                ,C2.[PERIOD]
+				,EvaluationNumber
+				,Sample
+				,CAST(CollectionDate AS DATE)) TAB
+	GROUP BY UNIDADE
+			,INDICADOR
+            ,DATA
+            ,[SHIFT]
+            ,[PERIOD]
             
             -- NA
             -- DROP TABLE #NA
@@ -5004,6 +5011,8 @@ ORDER BY 3
             	CL1.ConsolidationDate,
             	CL1.UnitId,
             	CL1.ParLevel1_Id,
+            	CL1.[Shift],
+            	CL1.[Period],
             	CL1.DefectsResult,
             	CL1.WeiDefects,
             	CL1.EvaluatedResult,
@@ -5057,7 +5066,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
@@ -5071,7 +5083,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(c1.TotalLevel3WithDefects)
@@ -5092,7 +5107,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
@@ -5106,7 +5124,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.TotalLevel3WithDefects)
@@ -5212,12 +5233,14 @@ ORDER BY 3
             	,L1.ParConsolidationType_Id	
             	,L1.hashKey
             	,C1.ParLevel1_Id 	
+            	,C1.[Shift] 	
+            	,C1.[Period] 	
             	,L1.Name 	
             	,L1C.ParCriticalLevel_Id	
             	,CRL.Name
             	,L1.IsRuleConformity
             
-                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+                UPDATE #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
 
             	-- DROP TABLE #DIM
             
@@ -6162,15 +6185,22 @@ ORDER BY 3
             var queryGraficoTarefasAcumuladas = $@"
             SELECT
             
-            	IND.Id AS Indicador_id
-               ,IND.Name AS IndicadorName
-               ,IND.Id AS Monitoramento_Id
-               ,IND.Name AS MonitoramentoName
-               ,R3.ParLevel3_Id AS Tarefa_Id
+            	--IND.Id AS Indicador_id
+               --,IND.Name AS IndicadorName
+               --,MON.Id AS Monitoramento_Id
+               --,MON.Name AS MonitoramentoName
+                R3.ParLevel3_Id AS Tarefa_Id
                ,R3.ParLevel3_Name AS TarefaName
-               ,UNI.Name AS UnidadeName
-               ,UNI.Id AS Unidade_Id
-               ,SUM(NULLIF(R3.WeiDefects,0)) / SUM(R3.WeiEvaluation) * 100 AS [Proc]
+               -- ,UNI.Name AS UnidadeName
+               -- ,UNI.Id AS Unidade_Id
+               ,CASE 
+						WHEN CAST(SUM(R3.WeiDefects) AS INT) = 0 OR CAST(SUM(R3.WeiEvaluation) AS INT) = 0 
+						THEN 0 
+						WHEN CAST(SUM(R3.WeiDefects) AS INT)>CAST(SUM(R3.WeiEvaluation) AS INT)
+						THEN 100
+						ELSE ISNULL(NULLIF(SUM(R3.WeiDefects),0) / NULLIF(SUM(R3.WeiEvaluation),0),0) * 100 
+				END  AS [PROC]
+
             FROM Result_Level3 R3 (NOLOCK)
             INNER JOIN CollectionLevel2 C2 (NOLOCK)
             	ON C2.Id = R3.CollectionLevel2_Id
@@ -6194,15 +6224,17 @@ ORDER BY 3
             { whereDepartment }
             { whereShift }            
             { whereCriticalLevel }
-            GROUP BY IND.Id
-            		,IND.Name
-            		,R3.ParLevel3_Id
+            GROUP BY --IND.Id
+            		--,IND.Name
+            		--,MON.Id
+            		--,MON.Name
+            		 R3.ParLevel3_Id
             		,R3.ParLevel3_Name
-            		,UNI.Name
-            		,UNI.Id
+            		--,UNI.Name
+            		--,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0
             AND SUM(R3.Defects) > 0
-            ORDER BY 9 DESC";
+            ORDER BY 3 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {

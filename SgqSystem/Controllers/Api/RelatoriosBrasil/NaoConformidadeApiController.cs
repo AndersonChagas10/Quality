@@ -1115,6 +1115,8 @@ WHERE NAME = '{ form.unitName }'
  CREATE TABLE #AMOSTRATIPO4 ( 
  UNIDADE INT NULL, 
  INDICADOR INT NULL,
+ [SHIFT] INT NULL,
+ [PERIOD] INT NULL,
  DATA DATETIME,
  AM INT NULL, 
  DEF_AM INT NULL 
@@ -1123,6 +1125,8 @@ INSERT INTO #AMOSTRATIPO4
 	SELECT
 		UNIDADE
 	   ,INDICADOR
+       ,[SHIFT]
+       ,[PERIOD]
        ,DATA
 	   ,COUNT(1) AM
 	   ,SUM(DEF_AM) DEF_AM
@@ -1130,6 +1134,8 @@ INSERT INTO #AMOSTRATIPO4
 			CAST(C2.CollectionDate AS DATE) AS DATA
 		   ,C.Id AS UNIDADE
 		   ,C2.ParLevel1_Id AS INDICADOR
+           ,C2.[SHIFT]
+           ,C2.[PERIOD]
 		   ,C2.EvaluationNumber AS AV
 		   ,C2.Sample AS AM
 		   ,CASE
@@ -1147,12 +1153,16 @@ INSERT INTO #AMOSTRATIPO4
 		AND L1.ParConsolidationType_Id = 4
 		GROUP BY C.Id
 				,ParLevel1_Id
+                ,C2.[SHIFT]
+                ,C2.[PERIOD]
 				,EvaluationNumber
 				,Sample
 				,CAST(CollectionDate AS DATE)) TAB
 	GROUP BY UNIDADE
 			,INDICADOR
             ,DATA
+            ,[SHIFT]
+            ,[PERIOD]
 --------------------------------                                                                                                                     
                                                                                                                                                       
                                                                                                                                                       
@@ -1286,6 +1296,8 @@ FROM (SELECT
 			ON A4.UNIDADE = UNI.Id
 			AND A4.INDICADOR = IND.ID
             AND A4.DATA = CL1.ConsolidationDate
+            AND A4.[SHIFT] = CL1.[SHIFT]
+            AND A4.[PERIOD] = CL1.[PERIOD]
 		--  INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
 		--  	ON CL2.ConsolidationLevel1_id = CL1.Id
 		--  INNER JOIN ParLevel2 L2 WITH (NOLOCK)
@@ -1785,8 +1797,8 @@ DROP TABLE #AMOSTRATIPO4 ";
             
             	IND.Id AS Indicador_id
                ,IND.Name AS IndicadorName
-               ,IND.Id AS Monitoramento_Id
-               ,IND.Name AS MonitoramentoName
+               ,MON.Id AS Monitoramento_Id
+               ,MON.Name AS MonitoramentoName
                ,R3.ParLevel3_Id AS Tarefa_Id
                ,R3.ParLevel3_Name AS TarefaName
                ,UNI.Name AS UnidadeName
@@ -1815,6 +1827,8 @@ DROP TABLE #AMOSTRATIPO4 ";
                 { whereCriticalLevel }
             GROUP BY IND.Id
             		,IND.Name
+            		,MON.Id
+            		,MON.Name
             		,R3.ParLevel3_Id
             		,R3.ParLevel3_Name
             		,UNI.Name
