@@ -427,9 +427,9 @@ namespace SGQDBContext
             string sql = "" +
                 "\n  select count(1) from " +
                 "\n ( " +
-                "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " AND IsActive = 1 " +
+                "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " AND IsActive = 1 AND ParCluster_Id is null " +
                 "\n union all " +
-                "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  AND IsActive = 1 " +
+                "\n select * from ParEvaluation (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  AND IsActive = 1  AND ParCluster_Id is null" +
                 "\n ) temAv ";
 
             SqlCommand command = new SqlCommand(sql, db);
@@ -445,9 +445,9 @@ namespace SGQDBContext
             string sql = "" +
                 "\n  select count(1) from " +
                 "\n ( " +
-                "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " and IsActive = 1 " +
+                "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " and IsActive = 1  AND ParCluster_Id is null " +
                 "\n union all " +
-                "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  and IsActive = 1 " +
+                "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  and IsActive = 1  AND ParCluster_Id is null " +
                 "\n ) temAm ";
 
             SqlCommand command = new SqlCommand(sql, db);
@@ -552,17 +552,17 @@ namespace SGQDBContext
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1  AND ParCluster_Id is null and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
                          "\n union all " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1  AND ParCluster_Id is null and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
                          "\n ) temAv) > 0 " +
 
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1  AND ParCluster_Id is null and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
                          "\n union all " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1  AND ParCluster_Id is null and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
                          "\n ) temAm) > 0 " +
 
                          "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
@@ -726,7 +726,7 @@ namespace SGQDBContext
                              "INNER JOIN ParEvaluation PE   (nolock)                                                " +
                              "ON PE.ParLevel2_Id = PL2.Id                                                 " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
-                             " AND PE.IsActive = 1 " +
+                             " AND PE.IsActive = 1  AND PE.ParCluster_Id is null " +
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PE.Number, PE.AlterDate, PE.AddDate, PE.ParCompany_Id              " +
                              "ORDER BY PE.ParCompany_Id  DESC, PE.AlterDate, PE.AddDate                                           ";
@@ -894,7 +894,7 @@ namespace SGQDBContext
                              "INNER JOIN ParSample PS     (nolock)                                       " +
                              "ON PS.ParLevel2_Id = PL2.Id                                      " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                 " +
-                             " AND PS.IsActive = 1 " +
+                             " AND PS.IsActive = 1  AND PS.ParCluster_Id is null" +
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id, PS.AlterDate, PS.AddDate, PS.ParCompany_Id           " +
                              "ORDER BY PS.ParCompany_Id desc, PS.AlterDate DESC, PS.AddDate DESC                                ";
