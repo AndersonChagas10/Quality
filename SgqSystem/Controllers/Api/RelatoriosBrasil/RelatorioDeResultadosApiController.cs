@@ -5016,6 +5016,7 @@ ORDER BY 3
             " + Wunidade + @"
             " + Windicador + @"
             AND CL1.ParLevel1_Id != 43
+            AND CL1.ParLevel1_Id != 42
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
@@ -5377,6 +5378,7 @@ ORDER BY 3
             " + Windicador + @"
             " + Wmonitoramento + @"
             AND CL1.ParLevel1_Id != 43
+            AND CL1.ParLevel1_Id != 42
             
             CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id); 
             CREATE INDEX IDX_HashConsolidationLevel_level2 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id); 
@@ -5757,6 +5759,7 @@ ORDER BY 3
         " + Wmonitoramento + @"
         " + Wtarefa + @"
         AND CL1.ParLevel1_Id != 43
+        AND CL1.ParLevel1_Id != 42
         
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
@@ -6175,6 +6178,8 @@ ORDER BY 3
             WHERE 1 = 1 
             { whereLevel1 }
             /* and MON.Id = 1 */
+            AND C2.ParLevel1_Id != 43
+            AND C2.ParLevel1_Id != 42
             AND CL2.UNITID = { form.unitId }
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
             { whereDepartment }
