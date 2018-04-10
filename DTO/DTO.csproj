@@ -102,6 +102,7 @@
     <Compile Include="DTO\CorrectiveActionLevelsDTO.cs" />
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
     <Compile Include="DTO\DefectDTO.cs" />
+    <Compile Include="DTO\ParClusterXModulesDTO.cs" />
     <Compile Include="DTO\RecravacaoSugestaoDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3EvaluationSampleDTO.cs" />
     <Compile Include="DTO\Result_Level3_PhotosDTO.cs" />

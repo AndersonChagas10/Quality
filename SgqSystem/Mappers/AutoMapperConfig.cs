@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dominio;
 using SgqSystem.Mappers.ParamsBrasil;
 
 namespace SgqSystem.Mappers
@@ -22,7 +23,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParStructureGroupMapperProfile>();
                 x.AddProfile<ParCompanyClusterProfile>();
                 x.AddProfile<ParGoalMapperProfile>();
-
+                x.AddProfile<ParClusterXModuleMapperProfile>();
                 /*
                  * Par Level1 Mapping
                  */
@@ -97,7 +98,9 @@ namespace SgqSystem.Mappers
                 x.AddProfile<EmailContentMapperProfile>();
 
                 x.AddProfile<RoleUserSgqMapperProfile>();
-                
+
+               
+
 
 
                 ///*PA............*/
