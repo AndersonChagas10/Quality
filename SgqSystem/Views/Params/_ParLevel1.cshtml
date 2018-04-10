@@ -8,6 +8,7 @@
     var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
     var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
     var urlHeaderLevel1HeaderFieldGroupUnlink = Url.Action("UnlinkGroupParHeaderField", "api/ParamsApi"); //URL relativa
+    Session["IsRecravacao"] = Model.paramsDto?.parLevel1Dto?.IsRecravacao ?? false;
 
 }
 
