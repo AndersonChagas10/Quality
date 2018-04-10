@@ -12,12 +12,13 @@
 <script type="text/javascript">
     // This example adds C3 chart renderers.
 
+    var pivotTableId = "";
     function CarregaPivotTable(arr){
         var derivers = $.pivotUtilities.derivers;
         var renderers = $.extend($.pivotUtilities.renderers,
             $.pivotUtilities.c3_renderers);
 
-        $("#output").pivotUI(arr, {
+        $("#" + pivotTableId).pivotUI(arr, {
             renderers: renderers,
             rendererOptions: {
                 c3: {
@@ -32,6 +33,4 @@
         });
     }
 </script>
-
-<div id="output" style="margin: 30px;"></div>
 

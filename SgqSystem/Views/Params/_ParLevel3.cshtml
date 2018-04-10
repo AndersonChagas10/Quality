@@ -38,22 +38,29 @@
 
                     </tr>
 
-                    <tr class="row" style="display:none;">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && (bool)Session["IsRecravacao"])
+                    {
+                        <tr class="row" style="display:none;">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row showAsReencravation">
+                            @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
 
-                    <tr class="row showAsReencravation">
-                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
-                    </tr>
                     <tr class="row">
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>
-                    <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
-                    </tr>
-                    <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA), Table.PosicaoLabel.left, null, null)
-                    </tr>
+
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && (bool)Session["IsRecravacao"])
+                    {
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
                 </table>
 
                 @{
@@ -105,31 +112,31 @@
                             </div>
                         </div>
                     </div>
-                        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
+                    @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
-                        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog  modal-sm" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header modal-header-gray">
-                                        <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                                            <div class="col-xs-12">
-                                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
-                                            </div>
+                    <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog  modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header modal-header-gray">
+                                    <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputMeasurementUnit" />
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                                        <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
-                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                                    <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
                     }
 

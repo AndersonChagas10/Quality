@@ -226,6 +226,7 @@
     <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="Controllers\Home2Controller.cs" />
+    <Compile Include="Helpers\Rodape.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
@@ -984,6 +985,7 @@
     <Content Include="Views\Shared\_Calendar.cshtml" />
     <Content Include="Views\Home2\Index2.cshtml" />
     <Content Include="Views\Centauro\Index.cshtml" />
+    <Content Include="Views\Shared\_Rodape.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

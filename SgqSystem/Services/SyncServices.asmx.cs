@@ -7046,6 +7046,18 @@ namespace SgqSystem.Services
         {
             try
             {
+
+                //inserir a acção corretiva com processo
+
+                string parCluster_Id_parLevel1_id = ParLevel1_Id.Replace(quebraProcesso, "|");
+                string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+                ParLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+
+                string parCluster_Id_parLevel2_id = ParLevel2_Id.Replace(quebraProcesso, "|");
+                ParLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
+
+            
+
                 //using (var transacao = new TransactionScope())
                 //{
                 SlaughterId = DefaultValueReturn(SlaughterId, "1");
@@ -7056,7 +7068,7 @@ namespace SgqSystem.Services
 
                 if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
                 {
-                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data).ToString();
+                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data, parCluster_Id).ToString();
                     if (CollectionLevel2_Id == "0")
                     {
                         return "error";
@@ -7097,6 +7109,7 @@ namespace SgqSystem.Services
                 }
                 else
                 {
+                    int insertLog = insertLogJson("", "", "N/A", "N/A", "Na InsertCorrectiveAction não achou uma referencia");
                     throw new Exception();
                 }
                 // }
@@ -7109,7 +7122,7 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string reauditnumber, string data)
+        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string reauditnumber, string data, string parCluster_Id)
         {
             //Converte a data no padrão de busca do Banco de Dados
 
@@ -7122,8 +7135,10 @@ namespace SgqSystem.Services
                 data = ano + "-" + mes + "-" + dia;
             }
 
-            string sql = "SELECT Id FROM CollectionLevel2  WITH (NOLOCK) WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift +
-                    "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' and CAST(CollectionDate as date)=CAST('" + data + "' as date) and reauditNumber=" + reauditnumber; //"' AND HaveCorrectiveAction=1";
+            string sql = "SELECT c2.Id FROM CollectionLevel2  WITH (NOLOCK) " +
+                " left join CollectionLevel2XCluster C2C on C2C.CollectionLevel2_Id = C2.id " +
+                " WHERE ParLevel1_Id ='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift +
+                    "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' and CAST(CollectionDate as date)=CAST('" + data + "' as date) and c2c.parCluster_Id = '" + parCluster_Id + " and reauditNumber=" + reauditnumber; //"' AND HaveCorrectiveAction=1";
 
             //string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "'AND ReauditNumber='" + reauditnumber +
             //"' AND HaveCorrectiveAction=1";
