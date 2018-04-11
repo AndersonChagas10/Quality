@@ -1,6 +1,9 @@
-﻿@model Dominio.ParClusterXModule
+﻿@model DTO.DTO.ParClusterXModulesDTO
+
 
 @{
+    /**/
+
     ViewBag.Title = Resources.Resource.create;
 }
 
@@ -62,7 +65,8 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Points, Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control number_decimal" } })
+                                                @{decimal points = Model?.Points ?? 0;}
+                                                @Html.TextBox("Points", points, new { htmlAttributes = new { @class = "form-control number_decimal"} })
                                                 @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -81,7 +85,7 @@
                                             @Html.LabelFor(model => model.EffectiveDate, Resources.Resource.effectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-2">
                                                 @{string effectiveDate = Model?.EffectiveDate?.ToString("yyyy-MM-dd") ?? "";}
-                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type="date" })
+                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type = "date" })
                                                 @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -107,12 +111,17 @@
 
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
 
     <script>
+       
+        $(document).ready(function () {
+            $("#Points").val('');
 
-        setTimeout(function () {
-            $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
-        },100);
+            setTimeout(function () {
+                $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
+            }, 100);
+        });
+
+       
     </script>
 }

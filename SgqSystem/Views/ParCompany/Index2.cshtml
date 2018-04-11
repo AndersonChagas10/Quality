@@ -35,9 +35,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
 
@@ -94,8 +94,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>                               
-                                
+                                </div>
+
                             </div>
 
                         </div>
@@ -186,8 +186,8 @@
                                         @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parStructureDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                     </tr>
                                     <tr class="row">
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
                                         @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureDTO_ParStructureGroup_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
                                     </tr>
                                 </tbody>
@@ -307,7 +307,7 @@
                 });
             }).fail(function (e, h, x) {
                 console.log(e);
-            });
+                });
         },
         editar: function (object) {
             $('#modalCompany .modal-dialog').addClass('modal-xl');
@@ -325,22 +325,32 @@
 
     var indexParStructure = {
         enviarDadosParaApi: function (result) {
+            var name = $("#parStructureDTO_Name").val();
+            var description = $("#parStructureDTO_Description").val();
+            var groupId = $("#parStructureDTO_ParStructureGroup_Id option:selected").val();
+            var mensagemErroCompleta = "";
+            var retorno = ValidaFormulario(name, description, groupId, mensagemErroCompleta);
 
-            var dados = $('#formParStructure').serializeObject();
-            if(result)
-                dados = result;
+            if (retorno.length > 0) {
+                openMessageModal("@Resources.Resource.warning", retorno);
+            }
+            else{
+                var dados = $('#formParStructure').serializeObject();
+                if (result)
+                    dados = result;
 
-            $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                console.log(objetoReturn);
-                console.log(statusmessage);
-                console.log(respostaCompleta);
+                $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    console.log(objetoReturn);
+                    console.log(statusmessage);
+                    console.log(respostaCompleta);
 
-                $.get("GetParStructure", function (data) {
-                    $('#formParStructure').replaceWith(data);
+                    $.get("GetParStructure", function (data) {
+                        $('#formParStructure').replaceWith(data);
+                    });
+                }).fail(function (e, h, x) {
+                    console.log(e);
                 });
-            }).fail(function (e, h, x) {
-                console.log(e);
-            });
+            }
         },
         editar: function (object) {
             $('#modalCompany .modal-dialog').removeClass('modal-xl');
@@ -358,22 +368,31 @@
 
     var indexParStructureGroup = {
         enviarDadosParaApi: function (result) {
-            
-            var dados = $('#formParStructureGroup').serializeObject();
-            if (result)
-                dados = result;
+            var name = $("#parStructureDTO_Name").val();
+            var description = $("#parStructureDTO_Description").val();
+            var groupId = $("#parStructureDTO_ParStructureGroup_Id option:selected").val();
+            var mensagemErroCompleta = "";
+            var retorno = ValidaFormulario(name, description, groupId, mensagemErroCompleta);
 
-            $.post(urlStructureGroup, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                console.log(objetoReturn);
-                console.log(statusmessage);
-                console.log(respostaCompleta);
+            if (retorno.length > 0) {
+                openMessageModal("@Resources.Resource.warning", retorno);
+            } else {
+                var dados = $('#formParStructureGroup').serializeObject();
+                if (result)
+                    dados = result;
 
-                $.get("GetParStructureGroup", function (data) {
-                    $('#formParStructureGroup').replaceWith(data);
+                $.post(urlStructureGroup, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    console.log(objetoReturn);
+                    console.log(statusmessage);
+                    console.log(respostaCompleta);
+
+                    $.get("GetParStructureGroup", function (data) {
+                        $('#formParStructureGroup').replaceWith(data);
+                    });
+                }).fail(function (e, h, x) {
+                    console.log(e);
                 });
-            }).fail(function (e, h, x) {
-                console.log(e);
-            });
+            }
         },
         editar: function (object) {
             $('#modalCompany .modal-dialog').removeClass('modal-xl');
@@ -410,6 +429,20 @@
         $('#modalStructureGroupObj').addClass('hide');
 
         $('#modalCompany').modal('hide');
+    }
+
+    function ValidaFormulario(name, description, groupId, mensagemErroCompleta) {
+        if (name.length <= 0) {
+                mensagemErroCompleta = ("Campo nome é obrigatório!".replace("!", "<br />"));
+        }
+        if (description.length <= 0) {
+            mensagemErroCompleta += ("Campo descrição é obrigatório!".replace("!", "<br />"))
+        }
+        if (groupId.length <= 0) {
+            mensagemErroCompleta += ("Campo grupo é obrigatório!")
+        }
+
+        return mensagemErroCompleta;
     }
 
 

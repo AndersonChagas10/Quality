@@ -143,9 +143,6 @@
 
         @RenderBody()
         <hr />
-        @*<footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>*@
     </div>
 
     <div id="overlay" class="overlay" style="display:none"></div>
@@ -156,6 +153,7 @@
             <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
         </div>
     </div>
+       @Html.Partial("~/Views/Shared/_Rodape.cshtml")
 
 
 

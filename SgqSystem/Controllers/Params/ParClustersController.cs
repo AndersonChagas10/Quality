@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using SgqSystem.Secirity;
 using Helper;
+using System;
 
 namespace SgqSystem.Controllers
 {
@@ -49,6 +50,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ParClusterGroup_Id,Name,Description,ParClusterParent_Id,AddDate,AlterDate,IsActive")] ParCluster parCluster)
         {
+            ValidModelState(parCluster);
             if (ModelState.IsValid)
             {
                 parCluster.IsActive = true;
@@ -59,6 +61,21 @@ namespace SgqSystem.Controllers
 
             ViewBag.ParClusterGroup_Id = new SelectList(db.ParClusterGroup, "Id", "Name", parCluster.ParClusterGroup_Id);
             return View(parCluster);
+        }
+
+        private void ValidModelState(ParCluster parCluster)
+        {
+
+            ModelState.Clear();
+
+            if (string.IsNullOrEmpty(parCluster.Name))
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (string.IsNullOrEmpty(parCluster.Description))
+                ModelState.AddModelError("Description", Resources.Resource.required_field + " " + Resources.Resource.description);
+
+            if (!parCluster.ParClusterParent_Id.HasValue)
+                ModelState.AddModelError("ParClusterParent_Id", Resources.Resource.required_field + " " + Resources.Resource.cluster_group);
         }
 
         // GET: ParClusters/Edit/5
