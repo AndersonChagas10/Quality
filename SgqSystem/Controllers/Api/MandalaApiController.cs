@@ -20,199 +20,291 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("MostrarIndicadorMandala")]
-        public List<JObject> MostrarIndicadorMandala([FromBody] FormularioParaRelatorioViewModel form)
+        public List<JObject> MostrarIndicadorMandala([FromBody] int data )
         {
-            var whereDepartment = "";
-            var whereShift = "";
-            var whereCluster = "";
-            var whereStructure = "";
-            var whereUnit = "";
-            var whereCriticalLevel = "";
-            var whereClusterGroup = "";
+            //FormularioParaRelatorioViewModel form
+            var empresas = GetUserUnits(data);
 
-            var dataInicio = "20170304";
-            var dataFim = "20180304";
+            //string.Join(",", GetUserUnits(form.auditorId));
 
             var query = $@"
-                 DECLARE @DATAINICIAL DATETIME = '{ dataInicio} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ dataFim } {" 23:59:59"}'
-                 DECLARE @VOLUMEPCC int
-                                                                  
-                 CREATE TABLE #AMOSTRATIPO4 ( 
-                 UNIDADE INT NULL, 
-                 INDICADOR INT NULL, 
-                 AM INT NULL, 
-                 DEF_AM INT NULL 
-                 )
-                INSERT INTO #AMOSTRATIPO4
-                	SELECT
-                		UNIDADE
-                	   ,INDICADOR
-                	   ,COUNT(1) AM
-                	   ,SUM(DEF_AM) DEF_AM
-                	FROM (SELECT
-                			CAST(C2.CollectionDate AS DATE) AS DATA
-                		   ,C.Id AS UNIDADE
-                		   ,C2.ParLevel1_Id AS INDICADOR
-                		   ,C2.EvaluationNumber AS AV
-                		   ,C2.Sample AS AM
-                		   ,CASE
-                				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-                				ELSE 1
-                			END DEF_AM
-                		FROM CollectionLevel2 C2 (NOLOCK)
-                		INNER JOIN ParLevel1 L1 (NOLOCK)
-                			ON L1.Id = C2.ParLevel1_Id
-                		INNER JOIN ParCompany C (NOLOCK)
-                			ON C.Id = C2.UnitId
-                		WHERE C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                		AND C2.NotEvaluatedIs = 0
-                		AND C2.Duplicated = 0
-                		AND L1.ParConsolidationType_Id = 4
-                		GROUP BY C.Id
-                				,ParLevel1_Id
-                				,EvaluationNumber
-                				,Sample
-                				,CAST(CollectionDate AS DATE)) TAB
-                	GROUP BY UNIDADE
-                			,INDICADOR
-                SELECT
-                	Unidade AS UnidadeName
-                   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
-                   ,ProcentagemNc AS [proc]
-                   ,nc
-                   ,av
-                FROM (SELECT
-                		Unidade
-                	   ,Unidade_Id
-                	   ,SUM(avSemPeso) AS av
-                	   ,SUM(ncSemPeso) AS nc
-                	   ,CASE
-                			WHEN SUM(AV) IS NULL OR
-                				SUM(AV) = 0 THEN 0
-                			ELSE SUM(NC) / SUM(AV) * 100
-                		END AS ProcentagemNc
-                	FROM (SELECT
-                			IND.Id AS level1_Id
-                		   ,IND.Name AS Level1Name
-                		   ,UNI.Id AS Unidade_Id
-                		   ,UNI.Name AS Unidade
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.ConsolidationDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
-                				ELSE 0
-                			END AS Av
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.ConsolidationDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
-                				ELSE 0
-                			END AS AvSemPeso
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
-                				ELSE 0
-                			END AS NC
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
-                				ELSE 0
-                			END AS NCSemPeso
-                		   ,CASE
-                
-                				WHEN (SELECT
-                							COUNT(1)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate)
-                					> 0 THEN (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate
-                						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-                
-                				ELSE (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-                			END
-                			AS Meta
-                		FROM ConsolidationLevel1 CL1 (NOLOCK)
-                		INNER JOIN ParLevel1 IND (NOLOCK)
-                			ON IND.Id = CL1.ParLevel1_Id 
-                            AND isnull(IND.ShowScorecard,1) = 1
-                            AND IND.IsActive = 1
-                            AND IND.ID != 43
-                		INNER JOIN ParCompany UNI (NOLOCK)
-                			ON UNI.Id = CL1.UnitId
-                            and UNI.IsActive = 1
-                		--INNER JOIN ParCompanyXUserSgq CU(nolock) 
-                		--ON CU.UserSgq_Id = { 1 } and CU.ParCompany_Id = UNI.Id 
-                		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
-                			ON A4.UNIDADE = UNI.Id
-                			AND A4.INDICADOR = IND.ID
-                		-- INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
-                			-- ON CL2.ConsolidationLevel1_id = CL1.Id
-                		-- INNER JOIN ParLevel2 L2 WITH (NOLOCK)
-                			-- ON CL2.ParLevel2_id = L2.Id
-                		-- INNER JOIN ParDepartment D WITH (NOLOCK)
-                			-- ON L2.ParDepartment_Id = D.Id
-                        LEFT JOIN ParCompanyCluster PCC
-		                	ON PCC.ParCompany_Id = UNI.Id
-                            and PCC.Active = 1
-		                LEFT JOIN ParCluster PC
-		                	ON PCC.ParCluster_Id = PC.Id
-		                LEFT JOIN ParClusterGroup PCG
-		                	ON PC.ParClusterGroup_Id = PCG.Id
-                		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                        
-                        { whereDepartment }
-                        { whereShift }
-                		-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
-                        { whereUnit }
-                		{ whereCluster }
-                        { whereStructure } 
-                        { whereCriticalLevel }
-                        { whereClusterGroup }
-                		) S1
-                	GROUP BY Unidade
-                			,Unidade_Id) S2
-                 WHERE ProcentagemNc <> 0
-                ORDER BY 3 DESC
-                DROP TABLE #AMOSTRATIPO4";
+            declare @inicio datetime = '2017-06-15' -- DATEADD(DAY,-1,GETDATE()) 
+            declare @Fim datetime = '2017-06-15' -- DATEADD(DAY,0,GETDATE())
+
+            SELECT 
+
+		            ParCompany_id,
+		            ParCompany_Name,
+		            ParLevel1_id,
+		            ParLevel1_name,
+		            --ParLevel2_id,
+		            --ParLevel2_Name,
+		            SUM([EvaluationPlan]) AS [Avaliacoes_Planejadas],
+		            SUM([Evaluation])     AS [Avaliacoes_Realizadas],
+		            SUM([SamplePlan])	  AS [Amostras_Planejadas],
+		            SUM([Sample])		  AS [Amostras_Realizadas],
+		            ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 AS [Coletado],
+		            CASE 
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN  0.00000 AND  44.99999 THEN 'red'
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN 45.00000 AND  69.99999 THEN 'yellow'
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN 70.00000 AND 100.00000 THEN 'green'
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 > 100 THEN 'green'
+		            END AS [Cor]
+             FROM (
+
+	            SELECT 
+		             Cubo.ParStructureGroup_Name
+		            ,Cubo.ParStructure_Name
+		            ,Cubo.ParCompany_id
+		            ,Cubo.ParCompany_Name
+		            ,Cubo.Data
+		            ,Cubo.ANO as Year
+		            ,Cubo.MES as Month
+		            ,Cubo.DIA as Day
+		            ,Cubo.ParConsolidationType_Id
+		            ,Cubo.ParLevel1_Id
+		            ,Cubo.ParLevel1_Name
+		            ,Cubo.ParLevel2_id
+		            ,Cubo.ParLevel2_Name
+		            ,Cubo.ParFrequency_Id
+		            ,Cubo.ShiftPlan
+		            ,Cubo.PeriodPlan
+		            ,MAX(Cubo.EvaluationPlan) AS EvaluationPlan
+		            ,MAX(Cubo.SamplePlan) AS SamplePlan
+		            ,MAX(Cubo.Evaluation) AS Evaluation
+		            ,MAX(Cubo.Sample) AS [Sample]
+	
+	
+	             FROM (
+	            SELECT -- TOP 10
+	            (SELECT TOP 1 Name FROM ParStructureGroup WHERE id in (SELECT TOP 1 ParStructureGroup_Id FROM ParStructure WHERE 1=1 AND id in (SELECT ParStructure_Id FROM ParCompanyXStructure CS WHERE CS.ParCompany_id = Levantamento.ParCompany_id))) ParStructureGroup_Name,
+	            (SELECT TOP 1 Name FROM ParStructure WHERE 1=1 AND id in (SELECT ParStructure_Id FROM ParCompanyXStructure CS WHERE CS.ParCompany_id = Levantamento.ParCompany_id)) ParStructure_Name,
+	            ParCompany_id,
+	            (SELECT TOP 1 Name FROM ParCompany C WITH (NOLOCK) WHERE 1=1 AND C.id = Levantamento.ParCompany_id ) AS ParCompany_Name,
+	
+	            Data,
+	            YEAR(Data) ANO,
+	            MONTH(Data) MES,
+	            DAY(Data) DIA,
+	            (SELECT TOP 1 ParConsolidationType_Id FROM ParLevel1 L1 WHERE 1=1 AND L1.id = Levantamento.ParLevel1_Id) ParConsolidationType_Id,
+	            ParLevel1_Id,
+	            (SELECT TOP 1 Name FROM ParLevel1 P1 WITH (NOLOCK) WHERE 1=1 AND P1.id = Levantamento.ParLevel1_Id ) AS ParLevel1_Name,
+	            ParLevel2_id,
+	            (SELECT TOP 1 Name FROM ParLevel2 P2 WITH (NOLOCK) WHERE 1=1 AND P2.id = Levantamento.ParLevel2_id ) AS ParLevel2_Name,
+	            ParFrequency_Id,
+	            ShiftPlan,
+	            PeriodPlan,
+	            EvaluationPlan,
+	            SamplePlan,
+	            Evaluation,
+	            Sample
+	
+	             FROM 
+			            (
+	
+		            SELECT 
+			            ORCADO.Data,
+			            ISNULL((SELECT Top 1 ParLevel1_Id FROM ParLevel2Level1 P21 WITH (NOLOCK) where IsActive = 1 AND P21.ParLevel2_Id = ORCADO.ParLevel2_Id AND P21.ParCompany_Id = ORCADO.ParCompany_Id)
+		                ,(SELECT Top 1 ParLevel1_Id FROM ParLevel2Level1 P21 WITH (NOLOCK) where IsActive = 1 AND P21.ParLevel2_Id = ORCADO.ParLevel2_Id AND P21.ParCompany_Id IS NULL)) AS ParLevel1_Id,
+			            ORCADO.ParLevel2_id,
+			            ORCADO.ParCompany_id,
+			            ORCADO.ParFrequency_Id,
+			
+			            ORCADO.Shift AS ShiftPlan,
+			            ORCADO.Period AS PeriodPlan,
+		
+			            ISNULL(ORCADO.EvaluationPlan,0) AS EvaluationPlan,
+			            ISNULL(ORCADO.SamplePlan,0) AS SamplePlan,
+		
+			            ISNULL(REAL.EvaluationNumber,0) AS Evaluation,
+			            ISNULL(REAL.Sample,0) AS Sample 
+		
+		            FROM (
+		
+			            SELECT 
+				            Data
+				            ,ParLevel2_id
+				            ,ParCompany_id
+				            ,ParFrequency_Id
+				            ,Period
+				            ,Shift
+				            ,EvaluationPlan
+				            ,SamplePlan
+
+                        FROM(
+                            SELECT
+
+                            ParLevel2_id
+                            , ParCompany_id
+                            , ParFrequency_Id
+                            , Period
+                            , Shift
+                            , ISNULL((SELECT TOP 1 Number FROM ParEvaluation PE WHERE PE.ParLevel2_Id = CO.ParLevel2_id AND PE.ParCompany_Id = CO.ParCompany_Id and PE.IsActive = 1)
+                            , (SELECT TOP 1 Number FROM ParEvaluation PE WHERE PE.ParLevel2_Id = CO.ParLevel2_id AND PE.ParCompany_Id IS NULL and PE.IsActive = 1)) AS EvaluationPlan
+				            ,ISNULL((SELECT TOP 1 Number FROM ParSample PS WHERE PS.ParLevel2_Id = CO.ParLevel2_id AND PS.ParCompany_Id = CO.ParCompany_Id and PS.IsActive = 1)
+				            ,(SELECT TOP 1 Number FROM ParSample PS WITH(NOLOCK) WHERE PS.ParLevel2_Id = CO.ParLevel2_id AND PS.ParCompany_Id IS NULL and PS.IsActive = 1)) AS SamplePlan
+
+                             FROM(
+                              SELECT
+
+                                 P2.id ParLevel2_id
+                                , PC.id ParCompany_id
+                                , P2.Shift
+                                , P2.Period
+
+                              FROM(
+                                    SELECT id, Shift, Period, ParFrequency_id
+
+                                        FROM ParLevel2 P2 WITH(NOLOCK)
+
+                                    CROSS JOIN
+                                        (SELECT 1 Shift UNION ALL SELECT 2) Shift
+
+                                    CROSS JOIN
+                                        (SELECT 1 Period) Period
+
+                                    WHERE ParFrequency_id = 1
+
+                                    UNION ALL
+
+                                    SELECT id, Shift, Period, ParFrequency_id FROM(
+                                    SELECT id, 1 Period, ParFrequency_id
+
+                                        FROM ParLevel2 P2
+
+                                    WHERE ParFrequency_id != 1)a
+
+                                    CROSS JOIN
+                                        (SELECT 1 Shift UNION ALL SELECT 2) Shift) P2
+
+                                CROSS JOIN ParCompany PC WITH(NOLOCK)
+
+                                WHERE PC.IsActive = 1
+                                ) CO
+                            LEFT JOIN ParLevel2 P2 WITH(NOLOCK)
+
+                                ON CO.ParLevel2_id = p2.Id
+
+
+                            WHERE IsActive = 1
+			            )ORCADO
+                        CROSS JOIN ParCalendar Cal WITH(NOLOCK)
+		            ) ORCADO
+                    LEFT JOIN(
+                            SELECT
+
+                                cast(c2.CollectionDate as date) Data,
+                                unitid ParCompany_id,
+                                ParLevel2_id,
+                                Shift,
+                                Period,
+                                MAX(EvaluationNumber) EvaluationNumber,
+                                MAX(Sample) Sample
+
+                                FROM CollectionLevel2 c2 WITH(NOLOCK)
+
+                                LEFT JOIN ParCalendar Cal WITH(NOLOCK) ON cast(c2.CollectionDate as date) = Cal.Data
+
+                                LEFT JOIN ParLevel1 L1 ON c2.ParLevel1_Id = L1.Id
+
+                                WHERE L1.IsActive = 1
+
+                            Group by
+
+                                cast(c2.CollectionDate as date),
+                                ParLevel2_id,
+                                unitid,
+                                Shift,
+                                Period
+                        )REAL
+
+
+                    ON ORCADO.Data = REAL.Data
+
+                     AND ORCADO.ParLevel2_id = REAL.ParLevel2_id
+
+                     AND ORCADO.ParCompany_id = REAL.ParCompany_id
+
+                     AND ORCADO.Shift = REAL.Shift
+
+                     AND(ORCADO.Period = REAL.Period OR ORCADO.Period = 1)
+
+                    WHERE 1 = 1
+
+                     AND ORCADO.Data BETWEEN @inicio AND @Fim
+		             ) Levantamento
+                      WHERE 1 = 1
+
+                     AND ParLevel1_Id is not null
+		            )CUBO
+                        INNER JOIN ParLevel1 L1
+                            ON CUBO.ParLevel1_id = L1.id
+
+                            AND L1.IsActive = 1
+
+
+                        INNER JOIN ParCompanyCluster CCL WITH(NOLOCK)
+
+                            ON CCL.ParCompany_id = CUBO.ParCompany_id
+
+                            AND CCL.Active = 1
+
+
+                        LEFT JOIN ParCompanyXStructure CS WITH(NOLOCK)
+
+                            ON CUBO.ParCompany_Id = CS.ParCompany_Id
+
+                            AND CS.Active = 1
+
+
+                        LEFT JOIN ParStructure S WITH(NOLOCK)
+
+                            ON CS.ParStructure_id = S.id
+
+
+                        LEFT JOIN ParStructureGroup SG WITH(NOLOCK)
+
+                            ON S.ParStructureGroup_Id = SG.ID
+
+
+                        WHERE 1 = 1
+
+                    GROUP BY
+
+                    Cubo.ParStructureGroup_Name
+			            ,Cubo.ParStructure_Name
+			            ,Cubo.ParCompany_id
+			            ,Cubo.ParCompany_Name
+			            ,Cubo.Data
+			            ,Cubo.ANO
+			            ,Cubo.MES
+			            ,Cubo.DIA
+			            ,Cubo.ParConsolidationType_Id
+			            ,Cubo.ParLevel1_Id
+			            ,Cubo.ParLevel1_Name
+			            ,Cubo.ParLevel2_id
+			            ,Cubo.ParLevel2_Name
+			            ,Cubo.ParFrequency_Id
+			            ,Cubo.ShiftPlan
+			            ,Cubo.PeriodPlan
+                        --,Cubo.EvaluationPlan
+                        --,Cubo.SamplePlan
+                        --,Cubo.Evaluation
+                        --,Cubo.Sample
+            ) CUBO
+            WHERE 1 = 1
+            AND ParCompany_Name = 'Mozarlândia'
+            --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
+            --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
+            Group by
+
+                ParCompany_Name,
+	            ParCompany_id,
+	            ParLevel1_id,
+	            ParLevel1_Name
+                --ParLevel2_id,
+	            --ParLevel2_Name,
+	            --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
@@ -226,197 +318,285 @@ namespace SgqSystem.Controllers.Api
         [Route("MostrarMonitoramentoMandala")]
         public List<JObject> MostrarMonitoramentoMandala([FromBody] FormularioParaRelatorioViewModel form)
         {
-            var whereDepartment = "";
-            var whereShift = "";
-            var whereCluster = "";
-            var whereStructure = "";
-            var whereUnit = "";
-            var whereCriticalLevel = "";
-            var whereClusterGroup = "";
-
-            var dataInicio = "20170304";
-            var dataFim = "20180304";
 
             var query = $@"
-                 DECLARE @DATAINICIAL DATETIME = '{ dataInicio} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ dataFim } {" 23:59:59"}'
-                 DECLARE @VOLUMEPCC int
-                                                                  
-                 CREATE TABLE #AMOSTRATIPO4 ( 
-                 UNIDADE INT NULL, 
-                 INDICADOR INT NULL, 
-                 AM INT NULL, 
-                 DEF_AM INT NULL 
-                 )
-                INSERT INTO #AMOSTRATIPO4
-                	SELECT
-                		UNIDADE
-                	   ,INDICADOR
-                	   ,COUNT(1) AM
-                	   ,SUM(DEF_AM) DEF_AM
-                	FROM (SELECT
-                			CAST(C2.CollectionDate AS DATE) AS DATA
-                		   ,C.Id AS UNIDADE
-                		   ,C2.ParLevel1_Id AS INDICADOR
-                		   ,C2.EvaluationNumber AS AV
-                		   ,C2.Sample AS AM
-                		   ,CASE
-                				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-                				ELSE 1
-                			END DEF_AM
-                		FROM CollectionLevel2 C2 (NOLOCK)
-                		INNER JOIN ParLevel1 L1 (NOLOCK)
-                			ON L1.Id = C2.ParLevel1_Id
-                		INNER JOIN ParCompany C (NOLOCK)
-                			ON C.Id = C2.UnitId
-                		WHERE C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                		AND C2.NotEvaluatedIs = 0
-                		AND C2.Duplicated = 0
-                		AND L1.ParConsolidationType_Id = 4
-                		GROUP BY C.Id
-                				,ParLevel1_Id
-                				,EvaluationNumber
-                				,Sample
-                				,CAST(CollectionDate AS DATE)) TAB
-                	GROUP BY UNIDADE
-                			,INDICADOR
-                SELECT
-                	Unidade AS UnidadeName
-                   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
-                   ,ProcentagemNc AS [proc]
-                   ,nc
-                   ,av
-                FROM (SELECT
-                		Unidade
-                	   ,Unidade_Id
-                	   ,SUM(avSemPeso) AS av
-                	   ,SUM(ncSemPeso) AS nc
-                	   ,CASE
-                			WHEN SUM(AV) IS NULL OR
-                				SUM(AV) = 0 THEN 0
-                			ELSE SUM(NC) / SUM(AV) * 100
-                		END AS ProcentagemNc
-                	FROM (SELECT
-                			IND.Id AS level1_Id
-                		   ,IND.Name AS Level1Name
-                		   ,UNI.Id AS Unidade_Id
-                		   ,UNI.Name AS Unidade
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.ConsolidationDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
-                				ELSE 0
-                			END AS Av
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.ConsolidationDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
-                				ELSE 0
-                			END AS AvSemPeso
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
-                				ELSE 0
-                			END AS NC
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
-                				ELSE 0
-                			END AS NCSemPeso
-                		   ,CASE
-                
-                				WHEN (SELECT
-                							COUNT(1)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate)
-                					> 0 THEN (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate
-                						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-                
-                				ELSE (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-                			END
-                			AS Meta
-                		FROM ConsolidationLevel1 CL1 (NOLOCK)
-                		INNER JOIN ParLevel1 IND (NOLOCK)
-                			ON IND.Id = CL1.ParLevel1_Id 
-                            AND isnull(IND.ShowScorecard,1) = 1
-                            AND IND.IsActive = 1
-                            AND IND.ID != 43
-                		INNER JOIN ParCompany UNI (NOLOCK)
-                			ON UNI.Id = CL1.UnitId
-                            and UNI.IsActive = 1
-                		--INNER JOIN ParCompanyXUserSgq CU(nolock) 
-                		--ON CU.UserSgq_Id = { 1 } and CU.ParCompany_Id = UNI.Id 
-                		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
-                			ON A4.UNIDADE = UNI.Id
-                			AND A4.INDICADOR = IND.ID
-                		-- INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
-                			-- ON CL2.ConsolidationLevel1_id = CL1.Id
-                		-- INNER JOIN ParLevel2 L2 WITH (NOLOCK)
-                			-- ON CL2.ParLevel2_id = L2.Id
-                		-- INNER JOIN ParDepartment D WITH (NOLOCK)
-                			-- ON L2.ParDepartment_Id = D.Id
-                        LEFT JOIN ParCompanyCluster PCC
-		                	ON PCC.ParCompany_Id = UNI.Id
-                            and PCC.Active = 1
-		                LEFT JOIN ParCluster PC
-		                	ON PCC.ParCluster_Id = PC.Id
-		                LEFT JOIN ParClusterGroup PCG
-		                	ON PC.ParClusterGroup_Id = PCG.Id
-                		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                        
-                        { whereDepartment }
-                        { whereShift }
-                		-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
-                        { whereUnit }
-                		{ whereCluster }
-                        { whereStructure } 
-                        { whereCriticalLevel }
-                        { whereClusterGroup }
-                		) S1
-                	GROUP BY Unidade
-                			,Unidade_Id) S2
-                 WHERE ProcentagemNc <> 0
-                ORDER BY 3 DESC
-                DROP TABLE #AMOSTRATIPO4";
+            declare @inicio datetime = '2017-06-15' -- DATEADD(DAY,-1,GETDATE()) 
+            declare @Fim datetime = '2017-06-15' -- DATEADD(DAY,0,GETDATE())
+
+            SELECT 
+
+		            ParCompany_id,
+		            ParCompany_Name,
+		            ParLevel1_id,
+		            ParLevel1_name,
+		            ParLevel2_id,
+		            ParLevel2_Name,
+		            SUM([EvaluationPlan]) AS [Avaliacoes_Planejadas],
+		            SUM([Evaluation])     AS [Avaliacoes_Realizadas],
+		            SUM([SamplePlan])	  AS [Amostras_Planejadas],
+		            SUM([Sample])		  AS [Amostras_Realizadas],
+		            ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 AS [Coletado],
+		            CASE 
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN  0.00000 AND  44.99999 THEN 'red'
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN 45.00000 AND  69.99999 THEN 'yellow'
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN 70.00000 AND 100.00000 THEN 'green'
+			            WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 > 100 THEN 'green'
+		            END AS [Cor]
+             FROM (
+
+	            SELECT 
+		             Cubo.ParStructureGroup_Name
+		            ,Cubo.ParStructure_Name
+		            ,Cubo.ParCompany_id
+		            ,Cubo.ParCompany_Name
+		            ,Cubo.Data
+		            ,Cubo.ANO as Year
+		            ,Cubo.MES as Month
+		            ,Cubo.DIA as Day
+		            ,Cubo.ParConsolidationType_Id
+		            ,Cubo.ParLevel1_Id
+		            ,Cubo.ParLevel1_Name
+		            ,Cubo.ParLevel2_id
+		            ,Cubo.ParLevel2_Name
+		            ,Cubo.ParFrequency_Id
+		            ,Cubo.ShiftPlan
+		            ,Cubo.PeriodPlan
+		            ,MAX(Cubo.EvaluationPlan) AS EvaluationPlan
+		            ,MAX(Cubo.SamplePlan) AS SamplePlan
+		            ,MAX(Cubo.Evaluation) AS Evaluation
+		            ,MAX(Cubo.Sample) AS [Sample]
+	
+	
+	             FROM (
+	            SELECT -- TOP 10
+	            (SELECT TOP 1 Name FROM ParStructureGroup WHERE id in (SELECT TOP 1 ParStructureGroup_Id FROM ParStructure WHERE 1=1 AND id in (SELECT ParStructure_Id FROM ParCompanyXStructure CS WHERE CS.ParCompany_id = Levantamento.ParCompany_id))) ParStructureGroup_Name,
+	            (SELECT TOP 1 Name FROM ParStructure WHERE 1=1 AND id in (SELECT ParStructure_Id FROM ParCompanyXStructure CS WHERE CS.ParCompany_id = Levantamento.ParCompany_id)) ParStructure_Name,
+	            ParCompany_id,
+	            (SELECT TOP 1 Name FROM ParCompany C WITH (NOLOCK) WHERE 1=1 AND C.id = Levantamento.ParCompany_id ) AS ParCompany_Name,
+	
+	            Data,
+	            YEAR(Data) ANO,
+	            MONTH(Data) MES,
+	            DAY(Data) DIA,
+	            (SELECT TOP 1 ParConsolidationType_Id FROM ParLevel1 L1 WHERE 1=1 AND L1.id = Levantamento.ParLevel1_Id) ParConsolidationType_Id,
+	            ParLevel1_Id,
+	            (SELECT TOP 1 Name FROM ParLevel1 P1 WITH (NOLOCK) WHERE 1=1 AND P1.id = Levantamento.ParLevel1_Id ) AS ParLevel1_Name,
+	            ParLevel2_id,
+	            (SELECT TOP 1 Name FROM ParLevel2 P2 WITH (NOLOCK) WHERE 1=1 AND P2.id = Levantamento.ParLevel2_id ) AS ParLevel2_Name,
+	            ParFrequency_Id,
+	            ShiftPlan,
+	            PeriodPlan,
+	            EvaluationPlan,
+	            SamplePlan,
+	            Evaluation,
+	            Sample
+	
+	             FROM 
+			            (
+	
+		            SELECT 
+			            ORCADO.Data,
+			            ISNULL((SELECT Top 1 ParLevel1_Id FROM ParLevel2Level1 P21 WITH (NOLOCK) where IsActive = 1 AND P21.ParLevel2_Id = ORCADO.ParLevel2_Id AND P21.ParCompany_Id = ORCADO.ParCompany_Id)
+		                ,(SELECT Top 1 ParLevel1_Id FROM ParLevel2Level1 P21 WITH (NOLOCK) where IsActive = 1 AND P21.ParLevel2_Id = ORCADO.ParLevel2_Id AND P21.ParCompany_Id IS NULL)) AS ParLevel1_Id,
+			            ORCADO.ParLevel2_id,
+			            ORCADO.ParCompany_id,
+			            ORCADO.ParFrequency_Id,
+			
+			            ORCADO.Shift AS ShiftPlan,
+			            ORCADO.Period AS PeriodPlan,
+		
+			            ISNULL(ORCADO.EvaluationPlan,0) AS EvaluationPlan,
+			            ISNULL(ORCADO.SamplePlan,0) AS SamplePlan,
+		
+			            ISNULL(REAL.EvaluationNumber,0) AS Evaluation,
+			            ISNULL(REAL.Sample,0) AS Sample 
+		
+		            FROM (
+		
+			            SELECT 
+				            Data
+				            ,ParLevel2_id
+				            ,ParCompany_id
+				            ,ParFrequency_Id
+				            ,Period
+				            ,Shift
+				            ,EvaluationPlan
+				            ,SamplePlan
+
+                        FROM(
+                            SELECT
+
+                            ParLevel2_id
+                            , ParCompany_id
+                            , ParFrequency_Id
+                            , Period
+                            , Shift
+                            , ISNULL((SELECT TOP 1 Number FROM ParEvaluation PE WHERE PE.ParLevel2_Id = CO.ParLevel2_id AND PE.ParCompany_Id = CO.ParCompany_Id and PE.IsActive = 1)
+                            , (SELECT TOP 1 Number FROM ParEvaluation PE WHERE PE.ParLevel2_Id = CO.ParLevel2_id AND PE.ParCompany_Id IS NULL and PE.IsActive = 1)) AS EvaluationPlan
+				            ,ISNULL((SELECT TOP 1 Number FROM ParSample PS WHERE PS.ParLevel2_Id = CO.ParLevel2_id AND PS.ParCompany_Id = CO.ParCompany_Id and PS.IsActive = 1)
+				            ,(SELECT TOP 1 Number FROM ParSample PS WITH(NOLOCK) WHERE PS.ParLevel2_Id = CO.ParLevel2_id AND PS.ParCompany_Id IS NULL and PS.IsActive = 1)) AS SamplePlan
+
+                             FROM(
+                              SELECT
+
+                                 P2.id ParLevel2_id
+                                , PC.id ParCompany_id
+                                , P2.Shift
+                                , P2.Period
+
+                              FROM(
+                                    SELECT id, Shift, Period, ParFrequency_id
+
+                                        FROM ParLevel2 P2 WITH(NOLOCK)
+
+                                    CROSS JOIN
+                                        (SELECT 1 Shift UNION ALL SELECT 2) Shift
+
+                                    CROSS JOIN
+                                        (SELECT 1 Period) Period
+
+                                    WHERE ParFrequency_id = 1
+
+                                    UNION ALL
+
+                                    SELECT id, Shift, Period, ParFrequency_id FROM(
+                                    SELECT id, 1 Period, ParFrequency_id
+
+                                        FROM ParLevel2 P2
+
+                                    WHERE ParFrequency_id != 1)a
+
+                                    CROSS JOIN
+                                        (SELECT 1 Shift UNION ALL SELECT 2) Shift) P2
+
+                                CROSS JOIN ParCompany PC WITH(NOLOCK)
+
+                                WHERE PC.IsActive = 1
+                                ) CO
+                            LEFT JOIN ParLevel2 P2 WITH(NOLOCK)
+
+                                ON CO.ParLevel2_id = p2.Id
+
+
+                            WHERE IsActive = 1
+			            )ORCADO
+                        CROSS JOIN ParCalendar Cal WITH(NOLOCK)
+		            ) ORCADO
+                    LEFT JOIN(
+                            SELECT
+
+                                cast(c2.CollectionDate as date) Data,
+                                unitid ParCompany_id,
+                                ParLevel2_id,
+                                Shift,
+                                Period,
+                                MAX(EvaluationNumber) EvaluationNumber,
+                                MAX(Sample) Sample
+
+                                FROM CollectionLevel2 c2 WITH(NOLOCK)
+
+                                LEFT JOIN ParCalendar Cal WITH(NOLOCK) ON cast(c2.CollectionDate as date) = Cal.Data
+
+                                LEFT JOIN ParLevel1 L1 ON c2.ParLevel1_Id = L1.Id
+
+                                WHERE L1.IsActive = 1
+
+                            Group by
+
+                                cast(c2.CollectionDate as date),
+                                ParLevel2_id,
+                                unitid,
+                                Shift,
+                                Period
+                        )REAL
+
+
+                    ON ORCADO.Data = REAL.Data
+
+                     AND ORCADO.ParLevel2_id = REAL.ParLevel2_id
+
+                     AND ORCADO.ParCompany_id = REAL.ParCompany_id
+
+                     AND ORCADO.Shift = REAL.Shift
+
+                     AND(ORCADO.Period = REAL.Period OR ORCADO.Period = 1)
+
+                    WHERE 1 = 1
+
+                     AND ORCADO.Data BETWEEN @inicio AND @Fim
+		             ) Levantamento
+                      WHERE 1 = 1
+
+                     AND ParLevel1_Id is not null
+		            )CUBO
+                        INNER JOIN ParLevel1 L1
+                            ON CUBO.ParLevel1_id = L1.id
+
+                            AND L1.IsActive = 1
+
+
+                        INNER JOIN ParCompanyCluster CCL WITH(NOLOCK)
+
+                            ON CCL.ParCompany_id = CUBO.ParCompany_id
+
+                            AND CCL.Active = 1
+
+
+                        LEFT JOIN ParCompanyXStructure CS WITH(NOLOCK)
+
+                            ON CUBO.ParCompany_Id = CS.ParCompany_Id
+
+                            AND CS.Active = 1
+
+
+                        LEFT JOIN ParStructure S WITH(NOLOCK)
+
+                            ON CS.ParStructure_id = S.id
+
+
+                        LEFT JOIN ParStructureGroup SG WITH(NOLOCK)
+
+                            ON S.ParStructureGroup_Id = SG.ID
+
+
+                        WHERE 1 = 1
+
+                    GROUP BY
+
+                    Cubo.ParStructureGroup_Name
+			            ,Cubo.ParStructure_Name
+			            ,Cubo.ParCompany_id
+			            ,Cubo.ParCompany_Name
+			            ,Cubo.Data
+			            ,Cubo.ANO
+			            ,Cubo.MES
+			            ,Cubo.DIA
+			            ,Cubo.ParConsolidationType_Id
+			            ,Cubo.ParLevel1_Id
+			            ,Cubo.ParLevel1_Name
+			            ,Cubo.ParLevel2_id
+			            ,Cubo.ParLevel2_Name
+			            ,Cubo.ParFrequency_Id
+			            ,Cubo.ShiftPlan
+			            ,Cubo.PeriodPlan
+                        --,Cubo.EvaluationPlan
+                        --,Cubo.SamplePlan
+                        --,Cubo.Evaluation
+                        --,Cubo.Sample
+            ) CUBO
+            WHERE 1 = 1
+            AND ParCompany_Name = 'Mozarlândia'
+            --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
+            --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
+            Group by
+
+                ParCompany_Name,
+	            ParCompany_id,
+	            ParLevel1_id,
+	            ParLevel1_Name,
+	            ParLevel2_id,
+	            ParLevel2_Name
+                --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
@@ -430,197 +610,285 @@ namespace SgqSystem.Controllers.Api
         [Route("MostrarTarefaMandala")]
         public List<JObject> MostrarTarefaMandala([FromBody] FormularioParaRelatorioViewModel form)
         {
-            var whereDepartment = "";
-            var whereShift = "";
-            var whereCluster = "";
-            var whereStructure = "";
-            var whereUnit = "";
-            var whereCriticalLevel = "";
-            var whereClusterGroup = "";
 
-            var dataInicio = "20170304";
-            var dataFim = "20180304";
+            var query = $@"              
+                declare @inicio datetime = '2017-06-15' -- DATEADD(DAY,-1,GETDATE()) 
+                declare @Fim datetime = '2017-06-15' -- DATEADD(DAY,0,GETDATE())
 
-            var query = $@"
-                 DECLARE @DATAINICIAL DATETIME = '{ dataInicio} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ dataFim } {" 23:59:59"}'
-                 DECLARE @VOLUMEPCC int
-                                                                  
-                 CREATE TABLE #AMOSTRATIPO4 ( 
-                 UNIDADE INT NULL, 
-                 INDICADOR INT NULL, 
-                 AM INT NULL, 
-                 DEF_AM INT NULL 
-                 )
-                INSERT INTO #AMOSTRATIPO4
-                	SELECT
-                		UNIDADE
-                	   ,INDICADOR
-                	   ,COUNT(1) AM
-                	   ,SUM(DEF_AM) DEF_AM
-                	FROM (SELECT
-                			CAST(C2.CollectionDate AS DATE) AS DATA
-                		   ,C.Id AS UNIDADE
-                		   ,C2.ParLevel1_Id AS INDICADOR
-                		   ,C2.EvaluationNumber AS AV
-                		   ,C2.Sample AS AM
-                		   ,CASE
-                				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-                				ELSE 1
-                			END DEF_AM
-                		FROM CollectionLevel2 C2 (NOLOCK)
-                		INNER JOIN ParLevel1 L1 (NOLOCK)
-                			ON L1.Id = C2.ParLevel1_Id
-                		INNER JOIN ParCompany C (NOLOCK)
-                			ON C.Id = C2.UnitId
-                		WHERE C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                		AND C2.NotEvaluatedIs = 0
-                		AND C2.Duplicated = 0
-                		AND L1.ParConsolidationType_Id = 4
-                		GROUP BY C.Id
-                				,ParLevel1_Id
-                				,EvaluationNumber
-                				,Sample
-                				,CAST(CollectionDate AS DATE)) TAB
-                	GROUP BY UNIDADE
-                			,INDICADOR
-                SELECT
-                	Unidade AS UnidadeName
-                   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
-                   ,ProcentagemNc AS [proc]
-                   ,nc
-                   ,av
-                FROM (SELECT
-                		Unidade
-                	   ,Unidade_Id
-                	   ,SUM(avSemPeso) AS av
-                	   ,SUM(ncSemPeso) AS nc
-                	   ,CASE
-                			WHEN SUM(AV) IS NULL OR
-                				SUM(AV) = 0 THEN 0
-                			ELSE SUM(NC) / SUM(AV) * 100
-                		END AS ProcentagemNc
-                	FROM (SELECT
-                			IND.Id AS level1_Id
-                		   ,IND.Name AS Level1Name
-                		   ,UNI.Id AS Unidade_Id
-                		   ,UNI.Name AS Unidade
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.ConsolidationDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
-                				ELSE 0
-                			END AS Av
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.ConsolidationDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
-                				ELSE 0
-                			END AS AvSemPeso
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
-                				ELSE 0
-                			END AS NC
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
-                				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
-                				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
-                				ELSE 0
-                			END AS NCSemPeso
-                		   ,CASE
-                
-                				WHEN (SELECT
-                							COUNT(1)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate)
-                					> 0 THEN (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate
-                						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
-                
-                				ELSE (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-                			END
-                			AS Meta
-                		FROM ConsolidationLevel1 CL1 (NOLOCK)
-                		INNER JOIN ParLevel1 IND (NOLOCK)
-                			ON IND.Id = CL1.ParLevel1_Id 
-                            AND isnull(IND.ShowScorecard,1) = 1
-                            AND IND.IsActive = 1
-                            AND IND.ID != 43
-                		INNER JOIN ParCompany UNI (NOLOCK)
-                			ON UNI.Id = CL1.UnitId
-                            and UNI.IsActive = 1
-                		--INNER JOIN ParCompanyXUserSgq CU(nolock) 
-                		--ON CU.UserSgq_Id = { 1 } and CU.ParCompany_Id = UNI.Id 
-                		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
-                			ON A4.UNIDADE = UNI.Id
-                			AND A4.INDICADOR = IND.ID
-                		-- INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
-                			-- ON CL2.ConsolidationLevel1_id = CL1.Id
-                		-- INNER JOIN ParLevel2 L2 WITH (NOLOCK)
-                			-- ON CL2.ParLevel2_id = L2.Id
-                		-- INNER JOIN ParDepartment D WITH (NOLOCK)
-                			-- ON L2.ParDepartment_Id = D.Id
-                        LEFT JOIN ParCompanyCluster PCC
-		                	ON PCC.ParCompany_Id = UNI.Id
-                            and PCC.Active = 1
-		                LEFT JOIN ParCluster PC
-		                	ON PCC.ParCluster_Id = PC.Id
-		                LEFT JOIN ParClusterGroup PCG
-		                	ON PC.ParClusterGroup_Id = PCG.Id
-                		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                        
-                        { whereDepartment }
-                        { whereShift }
-                		-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
-                        { whereUnit }
-                		{ whereCluster }
-                        { whereStructure } 
-                        { whereCriticalLevel }
-                        { whereClusterGroup }
-                		) S1
-                	GROUP BY Unidade
-                			,Unidade_Id) S2
-                 WHERE ProcentagemNc <> 0
-                ORDER BY 3 DESC
-                DROP TABLE #AMOSTRATIPO4";
+                SELECT 
+
+		                ParCompany_id,
+		                ParCompany_Name,
+		                --ParLevel1_id,
+		                --ParLevel1_name,
+		                --ParLevel2_id,
+		                --ParLevel2_Name,
+		                SUM([EvaluationPlan]) AS [Avaliacoes_Planejadas],
+		                SUM([Evaluation])     AS [Avaliacoes_Realizadas],
+		                SUM([SamplePlan])	  AS [Amostras_Planejadas],
+		                SUM([Sample])		  AS [Amostras_Realizadas],
+		                ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 AS [Coletado],
+		                CASE 
+			                WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN  0.00000 AND  44.99999 THEN 'red'
+			                WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN 45.00000 AND  69.99999 THEN 'yellow'
+			                WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 BETWEEN 70.00000 AND 100.00000 THEN 'green'
+			                WHEN ISNULL(SUM([Evaluation])/SUM(NULLIF([EvaluationPlan],0)),0)*100 > 100 THEN 'green'
+		                END AS [Cor]
+                 FROM (
+
+	                SELECT 
+		                 Cubo.ParStructureGroup_Name
+		                ,Cubo.ParStructure_Name
+		                ,Cubo.ParCompany_id
+		                ,Cubo.ParCompany_Name
+		                ,Cubo.Data
+		                ,Cubo.ANO as Year
+		                ,Cubo.MES as Month
+		                ,Cubo.DIA as Day
+		                ,Cubo.ParConsolidationType_Id
+		                ,Cubo.ParLevel1_Id
+		                ,Cubo.ParLevel1_Name
+		                ,Cubo.ParLevel2_id
+		                ,Cubo.ParLevel2_Name
+		                ,Cubo.ParFrequency_Id
+		                ,Cubo.ShiftPlan
+		                ,Cubo.PeriodPlan
+		                ,MAX(Cubo.EvaluationPlan) AS EvaluationPlan
+		                ,MAX(Cubo.SamplePlan) AS SamplePlan
+		                ,MAX(Cubo.Evaluation) AS Evaluation
+		                ,MAX(Cubo.Sample) AS [Sample]
+	
+	
+	                 FROM (
+	                SELECT -- TOP 10
+	                (SELECT TOP 1 Name FROM ParStructureGroup WHERE id in (SELECT TOP 1 ParStructureGroup_Id FROM ParStructure WHERE 1=1 AND id in (SELECT ParStructure_Id FROM ParCompanyXStructure CS WHERE CS.ParCompany_id = Levantamento.ParCompany_id))) ParStructureGroup_Name,
+	                (SELECT TOP 1 Name FROM ParStructure WHERE 1=1 AND id in (SELECT ParStructure_Id FROM ParCompanyXStructure CS WHERE CS.ParCompany_id = Levantamento.ParCompany_id)) ParStructure_Name,
+	                ParCompany_id,
+	                (SELECT TOP 1 Name FROM ParCompany C WITH (NOLOCK) WHERE 1=1 AND C.id = Levantamento.ParCompany_id ) AS ParCompany_Name,
+	
+	                Data,
+	                YEAR(Data) ANO,
+	                MONTH(Data) MES,
+	                DAY(Data) DIA,
+	                (SELECT TOP 1 ParConsolidationType_Id FROM ParLevel1 L1 WHERE 1=1 AND L1.id = Levantamento.ParLevel1_Id) ParConsolidationType_Id,
+	                ParLevel1_Id,
+	                (SELECT TOP 1 Name FROM ParLevel1 P1 WITH (NOLOCK) WHERE 1=1 AND P1.id = Levantamento.ParLevel1_Id ) AS ParLevel1_Name,
+	                ParLevel2_id,
+	                (SELECT TOP 1 Name FROM ParLevel2 P2 WITH (NOLOCK) WHERE 1=1 AND P2.id = Levantamento.ParLevel2_id ) AS ParLevel2_Name,
+	                ParFrequency_Id,
+	                ShiftPlan,
+	                PeriodPlan,
+	                EvaluationPlan,
+	                SamplePlan,
+	                Evaluation,
+	                Sample
+	
+	                 FROM 
+			                (
+	
+		                SELECT 
+			                ORCADO.Data,
+			                ISNULL((SELECT Top 1 ParLevel1_Id FROM ParLevel2Level1 P21 WITH (NOLOCK) where IsActive = 1 AND P21.ParLevel2_Id = ORCADO.ParLevel2_Id AND P21.ParCompany_Id = ORCADO.ParCompany_Id)
+		                    ,(SELECT Top 1 ParLevel1_Id FROM ParLevel2Level1 P21 WITH (NOLOCK) where IsActive = 1 AND P21.ParLevel2_Id = ORCADO.ParLevel2_Id AND P21.ParCompany_Id IS NULL)) AS ParLevel1_Id,
+			                ORCADO.ParLevel2_id,
+			                ORCADO.ParCompany_id,
+			                ORCADO.ParFrequency_Id,
+			
+			                ORCADO.Shift AS ShiftPlan,
+			                ORCADO.Period AS PeriodPlan,
+		
+			                ISNULL(ORCADO.EvaluationPlan,0) AS EvaluationPlan,
+			                ISNULL(ORCADO.SamplePlan,0) AS SamplePlan,
+		
+			                ISNULL(REAL.EvaluationNumber,0) AS Evaluation,
+			                ISNULL(REAL.Sample,0) AS Sample 
+		
+		                FROM (
+		
+			                SELECT 
+				                Data
+				                ,ParLevel2_id
+				                ,ParCompany_id
+				                ,ParFrequency_Id
+				                ,Period
+				                ,Shift
+				                ,EvaluationPlan
+				                ,SamplePlan
+
+                            FROM(
+                                SELECT
+
+                                ParLevel2_id
+                                , ParCompany_id
+                                , ParFrequency_Id
+                                , Period
+                                , Shift
+                                , ISNULL((SELECT TOP 1 Number FROM ParEvaluation PE WHERE PE.ParLevel2_Id = CO.ParLevel2_id AND PE.ParCompany_Id = CO.ParCompany_Id and PE.IsActive = 1)
+                                , (SELECT TOP 1 Number FROM ParEvaluation PE WHERE PE.ParLevel2_Id = CO.ParLevel2_id AND PE.ParCompany_Id IS NULL and PE.IsActive = 1)) AS EvaluationPlan
+				                ,ISNULL((SELECT TOP 1 Number FROM ParSample PS WHERE PS.ParLevel2_Id = CO.ParLevel2_id AND PS.ParCompany_Id = CO.ParCompany_Id and PS.IsActive = 1)
+				                ,(SELECT TOP 1 Number FROM ParSample PS WITH(NOLOCK) WHERE PS.ParLevel2_Id = CO.ParLevel2_id AND PS.ParCompany_Id IS NULL and PS.IsActive = 1)) AS SamplePlan
+
+                                 FROM(
+                                  SELECT
+
+                                     P2.id ParLevel2_id
+                                    , PC.id ParCompany_id
+                                    , P2.Shift
+                                    , P2.Period
+
+                                  FROM(
+                                        SELECT id, Shift, Period, ParFrequency_id
+
+                                            FROM ParLevel2 P2 WITH(NOLOCK)
+
+                                        CROSS JOIN
+                                            (SELECT 1 Shift UNION ALL SELECT 2) Shift
+
+                                        CROSS JOIN
+                                            (SELECT 1 Period) Period
+
+                                        WHERE ParFrequency_id = 1
+
+                                        UNION ALL
+
+                                        SELECT id, Shift Period, ParFrequency_id FROM(
+                                        SELECT id, 1 Period, ParFrequency_id
+
+                                            FROM ParLevel2 P2
+
+                                        WHERE ParFrequency_id != 1)a
+
+                                        CROSS JOIN
+                                            (SELECT 1 Shift UNION ALL SELECT 2) Shift) P2
+
+                                    CROSS JOIN ParCompany PC WITH(NOLOCK)
+
+                                    WHERE PC.IsActive = 1
+                                    ) CO
+                                LEFT JOIN ParLevel2 P2 WITH(NOLOCK)
+
+                                    ON CO.ParLevel2_id = p2.Id
+
+
+                                WHERE IsActive = 1
+			                )ORCADO
+                            CROSS JOIN ParCalendar Cal WITH(NOLOCK)
+		                ) ORCADO
+                        LEFT JOIN(
+                                SELECT
+
+                                    cast(c2.CollectionDate as date) Data,
+                                    unitid ParCompany_id,
+                                    ParLevel2_id,
+                                    Shift,
+                                    Period,
+                                    MAX(EvaluationNumber) EvaluationNumber,
+                                    MAX(Sample) Sample
+
+                                    FROM CollectionLevel2 c2 WITH(NOLOCK)
+
+                                    LEFT JOIN ParCalendar Cal WITH(NOLOCK) ON cast(c2.CollectionDate as date) = Cal.Data
+
+                                    LEFT JOIN ParLevel1 L1 ON c2.ParLevel1_Id = L1.Id
+
+                                    WHERE L1.IsActive = 1
+
+                                Group by
+
+                                    cast(c2.CollectionDate as date),
+                                    ParLevel2_id,
+                                    unitid,
+                                    Shift,
+                                    Period
+                            )REAL
+
+
+                        ON ORCADO.Data = REAL.Data
+
+                         AND ORCADO.ParLevel2_id = REAL.ParLevel2_id
+
+                         AND ORCADO.ParCompany_id = REAL.ParCompany_id
+
+                         AND ORCADO.Shift = REAL.Shift
+
+                         AND(ORCADO.Period = REAL.Period OR ORCADO.Period = 1)
+
+                        WHERE 1 = 1
+
+                         AND ORCADO.Data BETWEEN @inicio AND @Fim
+		                 ) Levantamento
+                          WHERE 1 = 1
+
+                         AND ParLevel1_Id is not null
+		                )CUBO
+                            INNER JOIN ParLevel1 L1
+                                ON CUBO.ParLevel1_id = L1.id
+
+                                AND L1.IsActive = 1
+
+
+                            INNER JOIN ParCompanyCluster CCL WITH(NOLOCK)
+
+                                ON CCL.ParCompany_id = CUBO.ParCompany_id
+
+                                AND CCL.Active = 1
+
+
+                            LEFT JOIN ParCompanyXStructure CS WITH(NOLOCK)
+
+                                ON CUBO.ParCompany_Id = CS.ParCompany_Id
+
+                                AND CS.Active = 1
+
+
+                            LEFT JOIN ParStructure S WITH(NOLOCK)
+
+                                ON CS.ParStructure_id = S.id
+
+
+                            LEFT JOIN ParStructureGroup SG WITH(NOLOCK)
+
+                                ON S.ParStructureGroup_Id = SG.ID
+
+
+                            WHERE 1 = 1
+
+                        GROUP BY
+
+                        Cubo.ParStructureGroup_Name
+			                ,Cubo.ParStructure_Name
+			                ,Cubo.ParCompany_id
+			                ,Cubo.ParCompany_Name
+			                ,Cubo.Data
+			                ,Cubo.ANO
+			                ,Cubo.MES
+			                ,Cubo.DIA
+			                ,Cubo.ParConsolidationType_Id
+			                ,Cubo.ParLevel1_Id
+			                ,Cubo.ParLevel1_Name
+			                ,Cubo.ParLevel2_id
+			                ,Cubo.ParLevel2_Name
+			                ,Cubo.ParFrequency_Id
+			                ,Cubo.ShiftPlan
+			                ,Cubo.PeriodPlan
+                            --,Cubo.EvaluationPlan
+                            --,Cubo.SamplePlan
+                            --,Cubo.Evaluation
+                            --,Cubo.Sample
+                ) CUBO
+                WHERE 1 = 1
+                AND ParCompany_Name = 'Mozarlândia'
+                --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
+                --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
+                Group by
+
+                    ParCompany_Name,
+	                ParCompany_id
+                    --ParLevel1_id,
+	                --ParLevel1_Name
+                    --ParLevel2_id,
+	                --ParLevel2_Name,
+	                --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
@@ -628,6 +896,14 @@ namespace SgqSystem.Controllers.Api
             }
 
             return Lista;
+        }
+
+        private string GetUserUnits(int User)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
+            }
         }
     }
 }

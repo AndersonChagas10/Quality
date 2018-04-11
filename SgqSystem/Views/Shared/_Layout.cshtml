@@ -664,11 +664,12 @@
     <script src="~/Scripts/PluginGRT/mandalaGRT.js"></script>
 
     <script>
-        function MostrarIndicador() {           
+        function MostrarIndicador() {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("MostrarIndicadorMandala", "api/Mandala")',
                 dataType: 'json', 
+                data: GetUsuarioId(),
                 success: function (result) {     
                     mandalaGRT.Inicializar({
                         idElemento: "mandala",
@@ -676,14 +677,14 @@
                         margemDoCentro: 80,
                         tamanhoDoElemento: 10,
                         posicaoNaTela: 'left bottom',
-                        estiloDoElemento: "background: green;border-radius: 100% !important;",
-                        atributosElemento: 'data-unidade="{Unidade_Id}" data-cor="green" data-texto="{UnidadeName}"',
+                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
+                        atributosElemento: 'data-unidade="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
                         elementoDeCentro: ""
                     });
                     $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
+                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade') + " - " + $(this).attr('data-processo'));
                         $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                        $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
+                        $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
                         $('#mandalaModal').modal('show');
                     }, function () {
                         $('#mandalaModal').modal('hide');
@@ -707,13 +708,13 @@
                         margemDoCentro: 80,
                         tamanhoDoElemento: 10,
                         posicaoNaTela: 'left bottom',
-                        estiloDoElemento: "background: yellow;border-radius: 100% !important;",
-                        atributosElemento: 'data-unidade="{Unidade_Id}" data-cor="green" data-texto="{UnidadeName}"',
+                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
+                        atributosElemento: 'data-indicador="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
                         elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
                     });
 
                     $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador'));
+                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador') + " - " + $(this).attr('data-processo'));
                         $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
                         $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
                         $('#mandalaModal').modal('show');
@@ -744,13 +745,13 @@
                         margemDoCentro: 80,
                         tamanhoDoElemento: 10,
                         posicaoNaTela: 'left bottom',
-                        estiloDoElemento: "background: red;border-radius: 100% !important;",
-                        atributosElemento: 'data-unidade="{Unidade_Id}" data-cor="green" data-texto="{UnidadeName}"',
+                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
+                        atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
                         elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
                     });
 
                     $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento'));
+                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + $(this).attr('data-processo'));
                         $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
                         $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto'));
                         $('#mandalaModal').modal('show');
