@@ -120,7 +120,7 @@ namespace Helper
                             filterContext.Controller.ViewBag.IsAdmin = false;
                         }
                         //Extends cookie ttl
-                        cookie.Expires = DateTime.Now.AddMinutes(60);
+                        cookie.Expires = DateTime.Now.AddHours(48);
                         filterContext.HttpContext.Response.Cookies.Set(cookie);
                         //ok - cookie is found.
                         //Gracefully check if the cookie has the key-value as expected.

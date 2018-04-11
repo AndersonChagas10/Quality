@@ -148,7 +148,8 @@ namespace SgqSystem.Controllers.Api
 
 
             var cookie = new CookieHeaderValue("webControlCookie", values);
-            cookie.MaxAge = TimeSpan.FromMinutes(60);
+            cookie.MaxAge = TimeSpan.FromHours(48);
+            cookie.Expires = DateTime.Now.AddHours(48);
             cookie.Path = "/";
 
             return cookie;
