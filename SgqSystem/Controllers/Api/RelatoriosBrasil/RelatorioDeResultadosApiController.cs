@@ -6124,6 +6124,7 @@ ORDER BY 3
             var whereShift = "";
             var whereCriticalLevel = "";
             var whereLevel1 = "";
+            var whereUnit = "";
 
             if (form.departmentId != 0)
             {
@@ -6147,21 +6148,33 @@ ORDER BY 3
 
             if (form.level1IdArr.Length > 0)
             {
-                whereLevel1 = $@"AND IND.Id IN({ string.Join("," , form.level1IdArr)})";
+                whereLevel1 = $@"AND IND.Id IN({ string.Join(",", form.level1IdArr) })";
+            }
+
+            if (form.unitIdArr.Length > 0 && form.unitId > 0)
+            {
+                whereUnit = $@"AND CL2.UNITID IN({ string.Join(",", form.unitIdArr) })";
             }
 
             var queryGraficoTarefasAcumuladas = $@"
             SELECT
             
-            	IND.Id AS Indicador_id
-               ,IND.Name AS IndicadorName
-               ,IND.Id AS Monitoramento_Id
-               ,IND.Name AS MonitoramentoName
-               ,R3.ParLevel3_Id AS Tarefa_Id
+            	--IND.Id AS Indicador_id
+               --,IND.Name AS IndicadorName
+               --,MON.Id AS Monitoramento_Id
+               --,MON.Name AS MonitoramentoName
+                R3.ParLevel3_Id AS Tarefa_Id
                ,R3.ParLevel3_Name AS TarefaName
-               ,UNI.Name AS UnidadeName
-               ,UNI.Id AS Unidade_Id
-               ,SUM(R3.Defects) AS NC
+               -- ,UNI.Name AS UnidadeName
+               -- ,UNI.Id AS Unidade_Id
+               ,CASE 
+						WHEN CAST(SUM(R3.WeiDefects) AS INT) = 0 OR CAST(SUM(R3.WeiEvaluation) AS INT) = 0 
+						THEN 0 
+						WHEN CAST(SUM(R3.WeiDefects) AS INT)>CAST(SUM(R3.WeiEvaluation) AS INT)
+						THEN 100
+						ELSE ISNULL(NULLIF(SUM(R3.WeiDefects),0) / NULLIF(SUM(R3.WeiEvaluation),0),0) * 100 
+				END  AS [PROC]
+
             FROM Result_Level3 R3 (NOLOCK)
             INNER JOIN CollectionLevel2 C2 (NOLOCK)
             	ON C2.Id = R3.CollectionLevel2_Id
@@ -6177,23 +6190,25 @@ ORDER BY 3
             	ON MON.Id = CL2.ParLevel2_Id
             WHERE 1 = 1 
             { whereLevel1 }
+            { whereUnit }
             /* and MON.Id = 1 */
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
-            AND CL2.UNITID = { form.unitId }
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
             { whereDepartment }
             { whereShift }            
             { whereCriticalLevel }
-            GROUP BY IND.Id
-            		,IND.Name
-            		,R3.ParLevel3_Id
+            GROUP BY --IND.Id
+            		--,IND.Name
+            		--,MON.Id
+            		--,MON.Name
+            		 R3.ParLevel3_Id
             		,R3.ParLevel3_Name
-            		,UNI.Name
-            		,UNI.Id
+            		--,UNI.Name
+            		--,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0
             AND SUM(R3.Defects) > 0
-            ORDER BY 9 DESC";
+            ORDER BY 3 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
