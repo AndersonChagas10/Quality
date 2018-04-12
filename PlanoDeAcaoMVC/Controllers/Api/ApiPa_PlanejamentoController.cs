@@ -17,6 +17,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public ApiPa_PlanejamentoController()
         {
             db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+
+            Jobs.UpdateStatus();
         }
 
         [HttpGet]
@@ -31,6 +33,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public IEnumerable<Pa_Planejamento> GetPlanejamentoAcaoRange(string startDate, string endDate)
         {
             return Pa_Planejamento.GetPlanejamentoAcao(startDate, endDate);
+        }
+
+        [HttpGet]
+        [Route("GetPlanejamentoRange")]
+        public IEnumerable<Pa_Planejamento> GetPlanejamentoRange(string startDate, string endDate)
+        {
+            return Pa_Planejamento.GetPlanejamentoRange(startDate, endDate);
         }
 
         [HttpGet]

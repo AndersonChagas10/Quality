@@ -206,13 +206,11 @@ namespace PlanoAcaoCore
                     if (_StatusName.Contains("Concluido") || _StatusName.Contains("Concluído") || _StatusName.Contains("Cancelado"))
                         return "Finalizado";
 
-                var agora = DateTime.Now;
-                if (QuandoFim > agora)
-                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
-                else if (QuandoFim < agora)
-                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
+                var agora = DateTime.Now.Date;
+                //if (QuandoFim >= agora && QuandoFim <= agora)
+                return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
 
-                return string.Empty;
+                //return string.Empty;
             }
         }
 

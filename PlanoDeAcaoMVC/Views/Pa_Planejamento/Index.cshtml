@@ -32,7 +32,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Gerencia_Id", new SelectList(ViewBag.Gerencia, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required tatico " })
+                    @Html.DropDownListFor(model => model.Gerencia_Id, new SelectList(ViewBag.Gerencia, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required tatico " })
                     @Html.ValidationMessageFor(model => model.Gerencia_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
@@ -92,7 +92,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Dimensao_Id", new SelectList(ViewBag.Dimensao, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm  required estrategico" })
+                    @Html.DropDownListFor(model => model.Dimensao_Id, new SelectList(ViewBag.Dimensao, "Id", "Name", Model.Dimensao_Id), "Selecione...", new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Dimensao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -230,7 +230,7 @@
                     @Html.LabelFor(model => model.ValorDe, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.EditorFor(model => model._ValorDe, new { htmlAttributes = new { @class = "form-control ValorDe" } })
+                    @Html.EditorFor(model => model._ValorDe, new { htmlAttributes = new { @class = "form-control ValorDe", @autocomplete = "off" } })
                 </td>
                 <td></td>
             </tr>
@@ -240,7 +240,7 @@
                     @Html.LabelFor(model => model.ValorPara, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.EditorFor(model => model._ValorPara, new { htmlAttributes = new { @class = "form-control ValorPara" } })
+                    @Html.EditorFor(model => model._ValorPara, new { htmlAttributes = new { @class = "form-control ValorPara", @autocomplete = "off" } })
                 </td>
                 <td></td>
             </tr>
