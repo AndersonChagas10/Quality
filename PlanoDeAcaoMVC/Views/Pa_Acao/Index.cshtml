@@ -252,7 +252,7 @@
                         @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label" })
                     </td>
                     <td>
-                        @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control QuantoCusta" } })
+                        @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control QuantoCusta", @autocomplete = "off" } })
                         @*@Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })*@
                         @Html.ValidationMessageFor(model => model._QuantoCusta, "", new { @class = "text-danger" })
                     </td>
