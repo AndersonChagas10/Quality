@@ -393,6 +393,10 @@
         <div class="col-md-12" style="margin-left:10px;">
             <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal" disabled> Novo Planejamento Estratégico</button>
 
+            <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','Tático', 'Estratégico')" id="btnModalNovoTatico" data-toggle="modal"> Novo Tático</button>
+
+            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','Ação', 'Tático')" id="btnModalNovaAcao" data-toggle="modal"> Novo Ação</button>
+
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">Visão Geral dos Projetos Diretriz</button>
@@ -1648,7 +1652,7 @@
             } else {
                 $('#Header').html(title + title2);
             }
-            
+
             $.get(urlNovoPlanejamento, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
@@ -2401,7 +2405,7 @@
                 if (jaExisteoptionNoDropDown)
                     if (r.IsActive) {
                         $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
-                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);                    
+                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
                         $(tempInput).select2('destroy');
                         $(tempInput).val(r.Id).trigger('change');
                         $(tempInput).select2();
@@ -3422,6 +3426,78 @@
             },500);
         }
 
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Criar "+NomeDoQueSeraCriado+" apartir de "+NomeApartirDeQueSeraCriado);
+            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
+                }});
+                var tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    buttons: {buttons: []},
+                    initComplete: function(){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
+                            if($(this).attr('data-tipo') == 'tatico'){
+                                AbreModalDePlanejamento($(this).attr('data-id'));
+                            }else if($(this).attr('data-tipo') == 'acao'){
+                                AbreModalDeAcao($(this).attr('data-id'));
+                            }
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+                        
+                        setTimeout(function (e) {
+                            tableModalNovoApartirDe.draw();
+                        }, 500);
+                    }
+                });
+            });
+        }
+
+        function AbreModalDePlanejamento(id){
+            Clicked(true, false, true);
+            $.get(urlGetPlanejamento, { id: id }, function (r) {
+                ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
+            });
+        }
+        
+        function AbreModalDeAcao(id){
+            Clicked(true, true);
+            
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty();
+            $('#Header').html("Planejamento Operacional");
+
+            $.get(PlanejamentoDetalhes, { id: id }, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#NovaAcao').show();
+                $('#NovaAcao').click();
+            });
+        }
+
+
     </script>
 
-}
+}<!-- Modal -->
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table ></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
