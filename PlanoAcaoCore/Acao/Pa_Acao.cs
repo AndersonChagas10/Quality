@@ -367,6 +367,8 @@ namespace PlanoAcaoCore
             //retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
             retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
             retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
+            //retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString();
+            //retorno._QuandoFim = retorno.QuandoFim.ToShortDateString();
 
             using (var dbSgq = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
