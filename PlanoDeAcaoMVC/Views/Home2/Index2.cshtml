@@ -2887,6 +2887,8 @@
                     $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
                     $('.content3 select').select2();
                     $('.UnidadeMedida').change();
+
+                    InitDatePiker();
                 }, 1);
 
                 $(r).attr("id", "formEditAcao");
@@ -2896,7 +2898,7 @@
 
                 $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                 $('#obj').show(); //Apagar depois
-                InitDatePiker();
+                
                 $('#CausaGenerica_Id').change();
                 $('#modalNovo > div > div > div.modal-footer > button').show();
 
