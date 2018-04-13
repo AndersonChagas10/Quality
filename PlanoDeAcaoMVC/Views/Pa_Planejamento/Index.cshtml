@@ -13,15 +13,15 @@
     @Html.HiddenFor(model => model.IsTatico)
     @Html.HiddenFor(model => model.Tatico_Id)
 
-    <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+    <table class="nowrap .col-md-6 .col-md-offset-3 table table-striped" style="width: 100%;">
         <tbody>
             <tr>
-                <td style="width: 43%;">
+                <td style="width: 24%;">
                     @Html.LabelFor(model => model.Diretoria_Id, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
-                <td style="min-width: 43%;">
-                    @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required estrategico" })
+                <td style="min-width: 60%;">
+                    @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required estrategico col-xs-12" })
                     @Html.ValidationMessageFor(model => model.Diretoria_Id, "", new { @class = "text-danger" })
                 </td>
                 <td style="width: 16%;"></td>

@@ -976,7 +976,7 @@
                     <h4 class="modal-title">Alterar planejamento</h4>
                 </div>
                 <div class="modal-body">
-                    <table id="tablePessego"></table>
+                    <table id="tablePessego" class="table table-striped"></table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -3476,9 +3476,9 @@
             $('#Header').html("Planejamento Operacional");
 
             $.get(PlanejamentoDetalhes, { id: id }, function (r) {
-                $('#modalLindo').find('.modal-body').empty().append(r);
                 $('#NovaAcao').show();
                 $('#NovaAcao').click();
+                $('#modalLindo').find('.modal-body').empty().prepend(r);
             });
         }
 
@@ -3495,7 +3495,7 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <table ></table>
+                <table class="table table-striped"></table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

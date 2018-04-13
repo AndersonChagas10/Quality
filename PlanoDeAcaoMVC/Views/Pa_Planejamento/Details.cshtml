@@ -1,53 +1,64 @@
 ﻿@model PlanoAcaoCore.Pa_Planejamento
-<h5 class="showAsEstrategy">Planejamento Estratégico</h5>
-<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display showAsEstrategy" cellspacing="0" style="width: 100%;">
-    <tbody>
-        <tr>
-            <td style="width: 43%;">
-                @Html.DisplayNameFor(model => model.Diretoria_Id)
-            </td>
-            <td style="width: 43%;">
-                @Html.DisplayFor(model => model.Diretoria)
-            </td>
-            <td style="width: 16%;"></td>
-        </tr>
-        @*<tr>
+
+
+<div class="panel-group accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h5 class="showAsEstrategy">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#divPlanejamentoEstrategicoAcaoDetails" aria-expanded="false" style="display:block;cursor:pointer">Planejamento Estratégico</a>
+            </h5>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoEstrategicoAcaoDetails">
+    <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display table table-striped showAsEstrategy" cellspacing="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td style="width: 24%;">
+                    @Html.DisplayNameFor(model => model.Diretoria_Id)
+                </td>
+                <td style="width: 60%;">
+                    @Html.DisplayFor(model => model.Diretoria)
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
+            @*<tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Gerencia_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Gerencia)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Coordenacao_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Coordenacao)
+                    </td>
+                    <td></td>
+                </tr>*@
+            <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Gerencia_Id)
+                    @Html.DisplayNameFor(model => model.Missao_Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.Gerencia)
+                    @Html.DisplayFor(model => model.Missao)
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Coordenacao_Id)
+                    @Html.DisplayNameFor(model => model.Visao_Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.Coordenacao)
+                    @Html.DisplayFor(model => model.Visao)
                 </td>
                 <td></td>
-            </tr>*@
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.Missao_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Missao)
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.Visao_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Visao)
-            </td>
-            <td></td>
-        </tr>
-       <tr>
+            </tr>
+            <tr>
                 <td>
                     @Html.DisplayNameFor(model => model.TemaAssunto_Id)
                 </td>
@@ -56,219 +67,230 @@
                 </td>
                 <td></td>
             </tr>
-           @* <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.IndicadoresDeProjeto)
-        </td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.Iniciativa_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Iniciativa)
-        </td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.ObjetivoGerencial)
-        </td>
-        <td></td>
-    </tr>*@
-        <tr>
-            <td>
-                @*@Html.DisplayNameFor(model => model.Dimensao)*@ 
-                Dimensão
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Dimensao)
-                
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.Objetivo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Objetivo)
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.IndicadoresDiretriz_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.IndicadoresDiretriz)
-            </td>
-            <td></td>
-        </tr>
-        @*<tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.ValorDe)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.ValorDe)
-                </td>
-                <td></td>
-            </tr>
+            @* <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.IndicadoresDeProjeto)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Iniciativa_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Iniciativa)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ObjetivoGerencial)
+                    </td>
+                    <td></td>
+                </tr>*@
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.ValorPara)
+                    @*@Html.DisplayNameFor(model => model.Dimensao)*@
+                    Dimensão
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.ValorPara)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.DataInicio)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.DataInicio)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.DataFim)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.DataFim)
-                </td>
-                <td></td>
-            </tr>*@
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.Responsavel_Diretriz)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Responsavel_Diretriz_Quem.Name)
-            </td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-<br />
+                    @Html.DisplayFor(model => model.Dimensao)
 
-@if (Model.Tatico_Id > 0)
-{
-
-    <h5  class="showAsEstrategy">Planejamento Tático</h5>
-    <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display showAsEstrategy" cellspacing="0" style="width: 100%;">
-        <tbody>
-            <tr>
-                <td style="width: 43%;">
-                    @Html.DisplayNameFor(model => model.Gerencia_Id)
-                </td>
-                <td style="width: 43%;">
-                    @Html.DisplayFor(model => model.Gerencia)
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.Coordenacao_Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.Coordenacao)
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Iniciativa_Id)
+                    @Html.DisplayNameFor(model => model.Objetivo)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.Iniciativa)
+                    @Html.DisplayFor(model => model.Objetivo)
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
+                    @Html.DisplayNameFor(model => model.IndicadoresDiretriz_Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.IndicadoresDeProjeto)
+                    @Html.DisplayFor(model => model.IndicadoresDiretriz)
                 </td>
                 <td></td>
             </tr>
+            @*<tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ValorDe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ValorDe)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ValorPara)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ValorPara)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.DataInicio)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.DataInicio)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.DataFim)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.DataFim)
+                    </td>
+                    <td></td>
+                </tr>*@
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
+                    @Html.DisplayNameFor(model => model.Responsavel_Diretriz)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.ObjetivoGerencial)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.ValorDe)
-                </td>
-                <td class="money">
-                    @Html.DisplayFor(model => model.ValorDe)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.ValorPara)
-                </td>
-                <td class="money">
-                    @Html.DisplayFor(model => model.ValorPara)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.UnidadeDeMedida_Id)
-                </td>
-                <td>
-
-                    @Html.DisplayFor(model => model._UnidadeDeMedida_Id.Name)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.DataInicio)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.DataInicio)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.DataFim)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.DataFim)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.Responsavel_Projeto)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.Responsavel_Projeto_Quem.Name)
+                    @Html.DisplayFor(model => model.Responsavel_Diretriz_Quem.Name)
                 </td>
                 <td></td>
             </tr>
         </tbody>
     </table>
+</div>
+<br />
+
+@if (Model.Tatico_Id > 0)
+{
+
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="showAsEstrategy">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#divPlanejamentoAcaoDetails" aria-expanded="false" style="display:block;cursor:pointer">Planejamento Tático</a>
+                </h5>
+            </div>
+        </div>
+    </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcaoDetails">
+            <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display table table-striped showAsEstrategy" cellspacing="0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="width: 24%;">
+                            @Html.DisplayNameFor(model => model.Gerencia_Id)
+                        </td>
+                        <td style="width: 60%;">
+                            @Html.DisplayFor(model => model.Gerencia)
+                        </td>
+                        <td style="width: 16%;"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Coordenacao_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Coordenacao)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Iniciativa_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Iniciativa)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.IndicadoresDeProjeto)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.ObjetivoGerencial)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ValorDe)
+                        </td>
+                        <td class="money">
+                            @Html.DisplayFor(model => model.ValorDe)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ValorPara)
+                        </td>
+                        <td class="money">
+                            @Html.DisplayFor(model => model.ValorPara)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.UnidadeDeMedida_Id)
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(model => model._UnidadeDeMedida_Id.Name)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.DataInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.DataInicio)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.DataFim)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.DataFim)
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Responsavel_Projeto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Responsavel_Projeto_Quem.Name)
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 }
 <br />
 
@@ -276,7 +298,7 @@
 
     $(document).ready(function () {
         $('td.money').each(function (i, e) {
-            $(e).text('R$ '+$(e).text());
+            $(e).text('R$ ' + $(e).text());
         })
     });
 

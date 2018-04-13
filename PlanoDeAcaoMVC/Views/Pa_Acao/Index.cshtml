@@ -20,15 +20,15 @@
         @Html.HiddenFor(r => r.Id)
         @Html.HiddenFor(r => r.Panejamento_Id)
 
-        <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+        <table class="nowrap .col-md-6 .col-md-offset-3 table table-striped" style="width: 100%;">
             <tbody id="test">
 
                 <tr>
-                    <td style="width: 43%;">
+                    <td style="width: 24%;">
                         @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
                         <i style="color:red">*</i>
                     </td>
-                    <td style="width: 43%;">
+                    <td style="width: 60%;">
                         @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
                         @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger " })
                     </td>
@@ -45,10 +45,10 @@
                         <td></td>
                     </tr>*@
                 <tr class="showAsEstrategy">
-                    <td style="width: 43%;">
+                    <td style="width: 24%;">
                         @Html.Label("Tipo de Indicador", htmlAttributes: new { @class = "control-label " })
                     </td>
-                    <td style="width: 43%;">
+                    <td style="width: 60%;">
                         <select name="TipoIndicador" class="form-control input-sm" id="tipoIndicador">
                             <option value="0">Selecione...</option>
                             <option value="1">Indicadores Diretrizes</option>

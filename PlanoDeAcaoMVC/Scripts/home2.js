@@ -602,9 +602,9 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', funct
 
     $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
 
-        $('#modalLindo').find('.modal-body').empty().append(r);
         $('#NovaAcao').show();
         $('#NovaAcao').click();
+        $('#modalLindo').find('.modal-body').empty().prepend(r);
 
         InitDatePiker();
 
