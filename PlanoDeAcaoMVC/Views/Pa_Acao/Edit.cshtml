@@ -29,7 +29,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td style="width: 43%;">
-                    @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
+                    @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required operacional" })
                     @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
 
                 </td>
@@ -105,7 +105,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm required" })
+                    @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm required operacional" })
                 </td>
                 <td></td>
             </tr>
@@ -133,7 +133,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.EditorFor(r => r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control required" } })
+                    @Html.EditorFor(r => r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control required operacional" } })
 
                 </td>
                 <td></td>
@@ -144,7 +144,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control required" } })
+                    @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control required operacional" } })
                 </td>
                 <td></td>
             </tr>
@@ -155,7 +155,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
+                    @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required operacional" })
                 </td>
                 <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
@@ -175,7 +175,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker required" } })
+                    @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker required operacional" } })
                     @Html.ValidationMessageFor(model => model.QuandoInicio, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -196,7 +196,7 @@
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker required" } })
+                    @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker required operacional" } })
                     @Html.ValidationMessageFor(model => model.QuandoFim, "", new { @class = "text-danger" })
                 </td>
                 <td></td>

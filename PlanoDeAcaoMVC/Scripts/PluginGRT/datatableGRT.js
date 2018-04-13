@@ -16,6 +16,34 @@
             "next": 'Proximo',
         }
     },
+    buttons: {
+        buttons: [{
+            extend: 'excel',
+            text: '<i class="fa fa-file-excel-o" title="Excel"></i>',
+            title: "",
+            exportOptions: {
+                columns: ':visible'
+            },
+            footer: true,
+            autoPrint: false
+        }/*, {
+                    extend: 'copy',
+                    text: '<i class="fa fa-copy" title="Copy"></i>',
+                    exportOptions: {
+                        modifier: {
+                            page: ':visible'
+                        }
+                    }
+                }*/],
+        dom: {
+            container: {
+                className: 'dt-buttons'
+            },
+            button: {
+                className: 'btn btn-default'
+            }
+        }
+    },
     numeroLinhasNaTabela: 25,
     aplicarResponsividade: true,
     tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
@@ -46,6 +74,8 @@
             this.tamanhosDoMenu = config.tamanhosDoMenu;
         if (config.definicaoColuna != undefined)
             this.definicaoColuna = config.definicaoColuna;
+        if (config.buttons != undefined)
+            this.buttons = config.buttons;
 
         if ($.inArray(this.numeroLinhasNaTabela, this.tamanhosDoMenu[0]) < 0) {
             this.tamanhosDoMenu[0].push(this.numeroLinhasNaTabela);
@@ -66,34 +96,7 @@
             "language": this.linguagem,
             initComplete: this.initComplete,
             dom: 'Blfrtip',
-            buttons: {
-                buttons: [{
-                    extend: 'excel',
-                    text: '<i class="fa fa-file-excel-o" title="Excel"></i>',
-                    title: "",
-                    exportOptions: {
-                        columns: ':visible'
-                    },
-                    footer: true,
-                    autoPrint: false
-                }/*, {
-                    extend: 'copy',
-                    text: '<i class="fa fa-copy" title="Copy"></i>',
-                    exportOptions: {
-                        modifier: {
-                            page: ':visible'
-                        }
-                    }
-                }*/],
-                dom: {
-                    container: {
-                        className: 'dt-buttons'
-                    },
-                    button: {
-                        className: 'btn btn-default'
-                    }
-                }
-            },
+            buttons: this.buttons,
             createdRow: this.createdRow,
             "drawCallback": function (settings) {
 

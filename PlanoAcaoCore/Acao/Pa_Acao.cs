@@ -206,13 +206,11 @@ namespace PlanoAcaoCore
                     if (_StatusName.Contains("Concluido") || _StatusName.Contains("Concluído") || _StatusName.Contains("Cancelado"))
                         return "Finalizado";
 
-                var agora = DateTime.Now;
-                if (QuandoFim > agora)
-                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
-                else if (QuandoFim < agora)
-                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
+                var agora = DateTime.Now.Date;
+                //if (QuandoFim >= agora && QuandoFim <= agora)
+                return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
 
-                return string.Empty;
+                //return string.Empty;
             }
         }
 
@@ -369,6 +367,8 @@ namespace PlanoAcaoCore
             //retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
             retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
             retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
+            //retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString();
+            //retorno._QuandoFim = retorno.QuandoFim.ToShortDateString();
 
             using (var dbSgq = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {

@@ -308,7 +308,7 @@
                 <h4 class="modal-title" id="novoHeader">Digite a Senha</h4>
             </div>
             <div class="modal-body" id="novoBody">
-                <form id="passCheck">
+                <form id="passCheck" onsubmit="return false">
                     <div class="form-group">
                         <div>
                             <input type="password" class="form-control" id="" name="pass">
@@ -425,7 +425,7 @@
             if(typeof(form.CausaGenerica_Id) == "string"){
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
                     openMessageModal('Registro salvo com sucesso!', '');
-                    window.location.href = '@Url.Action("Index", "PaPlanejamentoAcao")';
+                    window.location.href = '@Url.Action("Index2", "Home2")';
                 }).fail(function(xhr, err) {
                     var responseTitle= $(xhr.responseText).filter('title').get(0);
                     openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
@@ -448,7 +448,7 @@
 
                     $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
                         openMessageModal('Registro salvo com sucesso!', '');
-                        window.location.href = '@Url.Action("Index", "PaPlanejamentoAcao")';
+                        window.location.href = '@Url.Action("Index2", "Home2")';
                     }).fail(function(xhr, err) {
                         var responseTitle= $(xhr.responseText).filter('title').get(0);
                         openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
@@ -462,8 +462,9 @@
         $().ready(function () {
             InitDatePiker();
             if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
-            $('#Assinatura1').select2();
-            $('#Assinatura2').select2();
+            //$('#Assinatura1').select2();
+            //$('#Assinatura2').select2();
+            $('select').select2();
         });
 
     </script>

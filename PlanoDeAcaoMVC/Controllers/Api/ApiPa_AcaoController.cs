@@ -116,9 +116,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 throw (new Exception("fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj); " + ex.StackTrace.ToString()));
             }
 
-
-
-
             try
             {
                 SalvaFTA(fta);
@@ -154,9 +151,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             {
                 throw (new Exception("CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA); " + ex.StackTrace.ToString()));
             }
-
-
-
 
             return obj;
         }

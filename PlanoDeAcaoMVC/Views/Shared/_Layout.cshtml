@@ -219,14 +219,19 @@
             https://uxsolutions.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=0&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=linked&clearBtn=false&language=pt-BR&orientation=auto&multidate=false&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on#sandbox
         */
         function InitDatePiker() {
+
+            //$('.datepicker').datepicker("destroy");
+
             $('.datepicker').datepicker({
                 startDate: 0,
                 todayBtn: "linked",
                 language: "pt-BR",
                 multidate: false,
+                autoclose: true,
                 todayHighlight: true
             });
         }
+
         $(document).ready(function () {
             InitDatePiker();
             MoneyMask();
@@ -259,6 +264,7 @@
         });
 
         $.fn.serializeObject = function () {
+
             var isValid = true
 
             var tipo = "";
@@ -277,7 +283,7 @@
 
             $(this).find('.error').removeClass('error')
             $(this).find('select.required:visible' + tipo).each(function (c, o) {
-                if ($(o).find('option:selected').val().length == 0) {
+                if ($(o).find('option:selected').val() == undefined || $(o).find('option:selected').val().length == 0) {
                     $(o).addClass('error')
                     $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
                 }
