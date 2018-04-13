@@ -2472,7 +2472,7 @@
                         $(c).attr('onclick', after)
                     }
                 })
-                
+
                 if (model.Tatico_Id > 0)
                     $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' style='margin-top:10px;' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vinculo Estratégico</button>");
                 $('#modalLindo').find('.modal-body .content1').append(form);
@@ -2765,13 +2765,13 @@
 
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
-            debugger
 
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
 
             let Categories = [];
             let Data = [];
+            let Chaveamento = [];
 
             dadosfilter = dados;
 
@@ -2793,7 +2793,7 @@
 
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-                    Data.push(porcConcluidos);
+                    Data.push({ color:'#000', y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorGerencia', {
@@ -3167,7 +3167,7 @@
 
             let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-            Data.push(porcConcluidos);
+                Data.push({ color: '#000', y: porcConcluidos });
         });
 
             Highcharts.chart('graficoPorProjetos', {
@@ -3223,7 +3223,7 @@
             }]
         });
 
-            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            let PercentualTotal = Math.floor(Data.reduce((soma, obj) => soma + obj.y, 0) / Categories.length);
             $('#percentualConclusao').html(PercentualTotal + " %");
 
         }
@@ -3262,6 +3262,24 @@
                     }
                 });
             });
+        }
+
+        function processarChaveamento() {
+             $.each(dados, function (index, obj) {
+
+                 var existe = $.grep(Chaveamento, function (o, i) {
+                     return o == obj.Gerencia_Id;
+                  });
+    
+                 if (existe.length <= 0) {
+                      Chaveamento.push({ color: randomColor(),value: obj.Gerencia_Id });
+                  }
+              });
+        }
+
+        function randomColor() {
+            color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
+            return color;
         }
 
     </script>
