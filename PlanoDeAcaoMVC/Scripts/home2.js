@@ -521,6 +521,8 @@ function MountDataTable(json) {
             .column($(this).data('index'))
             .search(this.value)
             .draw();
+
+        GetFiltrosDeColunas();
     });
 
     table.draw();
@@ -568,6 +570,8 @@ function MountDataTable(json) {
     $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(5)', function () {
         tableDraw();
     });
+
+    SetFiltrosDeColunas();
 }
 
 $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
@@ -2602,6 +2606,36 @@ function SaveUserColVis() {
             openMessageModal("Erro ao salvar!");
         }
     });
+}
+
+var filtrosDeColunas = [];
+
+function GetFiltrosDeColunas() {
+
+    filtrosDeColunas = [];
+
+    $('#example_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input[type="text"]').each(function (a) {
+        if ($(this).val() != "") {
+            filtrosDeColunas.push({ Key: $(this).parent().text(), Val: $(this).val() });
+        }      
+    });
+}
+
+function SetFiltrosDeColunas() {
+
+    if (filtrosDeColunas.length > 0 ) {
+
+        filtrosDeColunas.forEach(function (o,c) {
+
+            $('#example_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input').each(function (a) {
+
+                if ($(this).parent().text() == o.Key) {
+                    $(this).val(o.Val);
+                    table.column(a).search(o.Val).draw();
+                }
+            });    
+        });
+    }
 }
 
 
