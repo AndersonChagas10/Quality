@@ -1,49 +1,11 @@
-﻿
-//var ColvisarrayVisaoAtual_show = [];
-//var ColvisarrayVisaoAtual_hide = [];
-var tablePlanejamento;
-//var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
-//var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
-//var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
-//var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
-//var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
-//var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
+﻿var tablePlanejamento;
 var dadosPlanejamento = [];
-//var ColvisarrayVisaoUsuario_show = [];
-//var ColvisarrayVisaoUsuario_hide = [];
 
 function GetDataTablePlanejamento(campo, filtro) {
 
     $.get(urlGetPlanejamentoRange, enviar, function (r) {
 
-        //Recupera colunas visíveis do usuário -- Não está em funçao pois dava loop infinito (16/01/2018 - Renan)
-        //if (getCookie('webControlCookie')) {
-
-        //    Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
-
-        //    $.post(urlGetUserColvis, { "Pa_Quem_Id": Pa_Quem_Id }, function (r) {
-
-        //        if (r.length > 0) {
-
-        //            ColvisarrayVisaoAtual_show = objectToArr(r[0].ColVisShow.split(","));
-        //            ColvisarrayVisaoAtual_hide = objectToArr(r[0].ColVisHide.split(","));
-
-        //            if (ColvisarrayVisaoAtual_hide.length > 0) {
-        //                ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
-        //                ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
-        //            }
-
-        //        }
-
-        //        //Monta a tabela
-        //        MountDataTablePlanejamento(r);
-
-        //    });
-        //}
-
         MountDataTablePlanejamento(r);
-
-        //$('#spanSubTable').text('TODAS AS TAREFAS PARA FILTRAR');
 
     });
 }
@@ -173,25 +135,11 @@ function MountDataTablePlanejamento(json) {
                 show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19/*, 39, 40*/],
                 hide: [0, 1, 2, 4, 5, 6, 20/*, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38*/]
             },
-            //{
-            //    extend: 'colvisGroup',
-            //    text: 'Planejamento Operacional',
-            //    show: [3, 20/*, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40*/],
-            //    hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-            //},
             {
                 extend: 'colvisGroup',
                 text: 'Mostrar Todos',
                 show: ':hidden'
             },
-            //{
-            //    extend: 'colvisGroup',
-            //    text: 'Visão atual',
-            //    //show: ColvisarrayVisaoAtual_show,
-            //    //hide: ColvisarrayVisaoAtual_hide
-            //    show: [],
-            //    hide: []
-            //},
             {
                 extend: 'excel',
                 text: 'Excel',
@@ -213,20 +161,6 @@ function MountDataTablePlanejamento(json) {
                     $('#btnTop').click();
                 },
             },
-            //{
-            //    text: 'Minhas Colunas',
-            //    extend: 'colvisGroup',
-            //    //show: ColvisarrayVisaoUsuario_show,
-            //    //hide: ColvisarrayVisaoUsuario_hide
-            //    show: [],
-            //    hide: []
-            //},
-            //{
-            //    text: 'Salvar Colunas',
-            //    action: function (e, dt, node, config) {
-            //        SaveUserColVis();
-            //    },
-            //},
         ],
         fixedColumns: {
             leftColumns: 0,
@@ -266,20 +200,11 @@ function MountDataTablePlanejamento(json) {
 
     setTimeout(function () {
 
-        //if (ColvisarrayVisaoAtual_hide.length != 0) {
-
-        //    $('#TablePlanejamento_wrapper > div.dt-buttons > a:nth-child(5)').click();
-        //} else {
-        //    $('#TablePlanejamento_wrapper > div.dt-buttons > a:nth-child(1)').click();
-        //}
-
         $(".dataTables_filter").css("display", "block");
 
         tablePlanejamento.draw();
 
     }, 1100);
-
-    //$('#virtualBody').css('width', '100%');
 
     //Filtros por coluna
     $('#TablePlanejamento_wrapper .dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
@@ -295,6 +220,8 @@ function MountDataTablePlanejamento(json) {
             .column($(this).data('index'))
             .search(this.value)
             .draw();
+
+        GetFiltrosDeColunasTablePlanejamento();
     });
 
     tablePlanejamento.draw();
@@ -307,15 +234,9 @@ function MountDataTablePlanejamento(json) {
         }, 5);
     }
 
-    //deixa escondido o botão que mantem as colunas atuais
-    //$('#TablePlanejamento_wrapper > div.dt-buttons > a:nth-child(5)').hide();
-
-    //clicar no botão escondido das colunas atuais
-    //if (ColvisarrayVisaoAtual_show.length > 0) {
-    //    $('#TablePlanejamento_wrapper > div.dt-buttons > a:nth-child(5)').click();
-    //}
-
     $('#TablePlanejamento_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
+
+    SetFiltrosDeColunasTablePlanejamento();
 }
 
 $('#divPlanejamento table > tbody').on('click', '.btnNovoTatico', function () {
@@ -387,147 +308,32 @@ $('#divPlanejamento table > tbody').on('click', '.btnEditarPlanejamento', functi
 
 });
 
-//$('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
-//    var data = tablePlanejamento.row($(this).parents('tr')).data();
+var filtrosDeColunasTablePlanejamento = [];
 
-//    Clicked(true, false, true);
-//    $.get(urlGetPlanejamento, {
-//        id: data.Id
-//    }, function (r) {
+function GetFiltrosDeColunasTablePlanejamento() {
 
-//        ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
-//            EditarPlanejamento(r)
-//        });
-//    });
+    filtrosDeColunasTablePlanejamento = [];
 
-//});
+    $('#TablePlanejamento_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input[type="text"]').each(function (a) {
+        if ($(this).val() != "") {
+            filtrosDeColunasTablePlanejamento.push({ Key: $(this).parent().text(), Val: $(this).val() });
+        }
+    });
+}
 
-//$('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
-//    var data = tablePlanejamento.row($(this).parents('tr')).data();
+function SetFiltrosDeColunasTablePlanejamento() {
 
-//    planejamentoCorrentId = data.Tatico_Id;
-//    Clicked(isTaticoClicked, isNovaAcao);
+    if (filtrosDeColunasTablePlanejamento.length > 0) {
 
-//    $('#modalLindo').modal();
-//    $('#modalLindo').find('.modal-body').empty();
-//    $('#Header').html("Planejamento Operacional");
+        filtrosDeColunasTablePlanejamento.forEach(function (o, c) {
 
-//    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+            $('#TablePlanejamento_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input').each(function (a) {
 
-//        $('#modalLindo').find('.modal-body').empty().append(r);
-//        $('#NovaAcao').show();
-//        $('#NovaAcao').click();
-
-//    });
-
-//});
-
-//$('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
-
-//    var data = tablePlanejamento.row($(this).parents('tr')).data();
-//    selecionado = data;
-
-//    acaoCorrentId = data.Acao.Id;
-
-//    getAcompanhamento(acaoCorrentId);
-
-//});
-
-
-//$('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
-
-//    $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
-
-//    var data = tablePlanejamento.row($(this).parents('tr')).data();
-
-//    console.log(data);
-
-//    if (data.Id > 0) {
-
-//        isClickedEstrategico = true;
-
-//        getPlanOp(data, a, b);
-
-//    }
-
-//    $('#modalLindo').find('.modal-footer button').hide();
-//    $('#Header').html("Editar");
-//    $('#modalLindo').modal();
-
-//});
-
-//function setArrayColvisAtual() {
-
-//    if (tablePlanejamento) {
-
-//        ColvisarrayVisaoAtual_show = [];
-//        ColvisarrayVisaoAtual_hide = [];
-//        var ss = [];
-
-//        $('#TablePlanejamento_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
-
-//        $('body > div.dt-button-collection.fixed.four-column').hide();
-
-//        ss = $('.buttons-columnVisibility');
-
-//        ss.each(function (i, o) {
-
-//            if ($(o).hasClass('active')) {
-
-//                ColvisarrayVisaoAtual_show.push(i);
-
-//            } else {
-
-//                ColvisarrayVisaoAtual_hide.push(i);
-//            }
-//        }).promise().done(function () {
-
-//            $('body > div.dt-button-background').click();
-
-//        });
-//    }
-//}
-
-//function SaveUserColVis() {
-
-//    setArrayColvisAtual();
-
-//    Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
-
-//    ColvisarrayVisaoAtual_show = $.grep(ColvisarrayVisaoAtual_show, function (arr) {
-//        return (arr != 39 && arr != 40);
-//    });
-
-//    ColvisarrayVisaoAtual_hide = $.grep(ColvisarrayVisaoAtual_hide, function (arr) {
-//        return (arr != 39 && arr != 40);
-//    });
-
-//    ColvisarrayVisaoAtual_show.push(39);
-//    ColvisarrayVisaoAtual_show.push(40);
-
-//    ColvisarrayVisaoAtual_hide
-
-//    let objColvis = {
-//        "ColVisShow": ColvisarrayVisaoAtual_show.toString(),
-//        "ColVisHide": ColvisarrayVisaoAtual_hide.toString(),
-//        "Pa_Quem_Id": Pa_Quem_Id
-//    }
-
-
-//    ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
-//    ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
-
-//    $.post(urlSaveUserColvis, objColvis, function (r) {
-
-//        $('body > div.dt-button-background').click();
-//        console.log(r);
-//        if (r == "") {
-//            openMessageModal("Colunas salvas!", "As Colunas foram salvas com sucesso!");
-//        } else {
-//            openMessageModal("Erro ao salvar!");
-//        }
-//    })
-
-//}
-
-
+                if ($(this).parent().text() == o.Key) {
+                    $(this).val(o.Val);
+                    table.column(a).search(o.Val).draw();
+                }
+            });
+        });
+    }
+}
