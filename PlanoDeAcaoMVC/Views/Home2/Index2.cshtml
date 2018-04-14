@@ -2773,6 +2773,8 @@
             let Data = [];
             let Chaveamento = [];
 
+            processarChaveamento();
+
             dadosfilter = dados;
 
             if (TipoGrafico == "Gerencia") {
@@ -2787,13 +2789,16 @@
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
                     }).length;
 
-                    let qtdDeGerencia = $.grep(dados, function (r) {
+                    let listaGerencia = $.grep(dados, function (r) {
                         return r.Gerencia == c;
-                    }).length;
+                    })
+
+                    let qtdDeGerencia = listaGerencia.length;
 
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-                    Data.push({ color:'#000', y: porcConcluidos });
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorGerencia', {
@@ -2864,13 +2869,16 @@
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
                     }).length;
 
-                    let qtdDeDiretriz = $.grep(dados, function (r) {
+                    let listaDiretriz = $.grep(dados, function (r) {
                         return r.IndicadoresDiretriz == c;
-                    }).length;
-
+                    });
+                    
+                    let qtdDeDiretriz = listaDiretriz.length;
+                    
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
 
-                    Data.push(porcConcluidos);
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaDiretriz[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorDiretriz', {
@@ -3142,6 +3150,8 @@
 
             Data = [];
 
+            processarChaveamento();
+
             let dados2 = dados;
 
             if (isFilter) {
@@ -3161,13 +3171,16 @@
                 return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
             }).length;
 
-            let qtdDeGerencia = $.grep(dados2, function (r) {
+            let listaGerencia = $.grep(dados2, function (r) {
                 return r.Iniciativa == c;
-            }).length;
+            });
+
+            let qtdDeGerencia = listaGerencia.length;
 
             let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-                Data.push({ color: '#000', y: porcConcluidos });
+            let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+            Data.push({ color: gerencia.color, y: porcConcluidos });
         });
 
             Highcharts.chart('graficoPorProjetos', {
@@ -3264,17 +3277,25 @@
             });
         }
 
+        var Chaveamento = [];
         function processarChaveamento() {
-             $.each(dados, function (index, obj) {
+            if (Chaveamento.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
 
-                 var existe = $.grep(Chaveamento, function (o, i) {
-                     return o == obj.Gerencia_Id;
-                  });
+                var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
     
-                 if (existe.length <= 0) {
-                      Chaveamento.push({ color: randomColor(),value: obj.Gerencia_Id });
-                  }
-              });
+                if (existe.length <= 0) {
+                    Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
+                }
+            });
+        }
+
+        function retornaChaveamentoPorGerenciaId(gerencia_id) {
+            return $.grep(Chaveamento, function (o, i) {
+                    return o.gerencia_id == gerencia_id;
+                });
         }
 
         function randomColor() {
