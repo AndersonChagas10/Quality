@@ -2917,13 +2917,15 @@
 
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
-            debugger
 
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
 
             let Categories = [];
             let Data = [];
+            let Chaveamento = [];
+
+            processarChaveamento();
 
             dadosfilter = dados;
 
@@ -2939,13 +2941,16 @@
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
                     }).length;
 
-                    let qtdDeGerencia = $.grep(dados, function (r) {
+                    let listaGerencia = $.grep(dados, function (r) {
                         return r.Gerencia == c;
-                    }).length;
+                    })
+
+                    let qtdDeGerencia = listaGerencia.length;
 
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-                    Data.push(porcConcluidos);
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorGerencia', {
@@ -3016,13 +3021,16 @@
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
                     }).length;
 
-                    let qtdDeDiretriz = $.grep(dados, function (r) {
+                    let listaDiretriz = $.grep(dados, function (r) {
                         return r.IndicadoresDiretriz == c;
-                    }).length;
-
+                    });
+                    
+                    let qtdDeDiretriz = listaDiretriz.length;
+                    
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
 
-                    Data.push(porcConcluidos);
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaDiretriz[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorDiretriz', {
@@ -3294,6 +3302,8 @@
 
             Data = [];
 
+            processarChaveamento();
+
             let dados2 = dados;
 
             if (isFilter) {
@@ -3313,13 +3323,16 @@
                 return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
             }).length;
 
-            let qtdDeGerencia = $.grep(dados2, function (r) {
+            let listaGerencia = $.grep(dados2, function (r) {
                 return r.Iniciativa == c;
-            }).length;
+            });
+
+            let qtdDeGerencia = listaGerencia.length;
 
             let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-            Data.push(porcConcluidos);
+            let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+            Data.push({ color: gerencia.color, y: porcConcluidos });
         });
 
             Highcharts.chart('graficoPorProjetos', {
@@ -3375,7 +3388,7 @@
             }]
         });
 
-            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            let PercentualTotal = Math.floor(Data.reduce((soma, obj) => soma + obj.y, 0) / Categories.length);
             $('#percentualConclusao').html(PercentualTotal + " %");
 
         }
@@ -3480,8 +3493,35 @@
                 $('#NovaAcao').click();
                 $('#modalLindo').find('.modal-body').empty().prepend(r);
             });
+                });
+            });
         }
 
+        var Chaveamento = [];
+        function processarChaveamento() {
+            if (Chaveamento.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
+    
+                if (existe.length <= 0) {
+                    Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
+                }
+            });
+        }
+
+        function retornaChaveamentoPorGerenciaId(gerencia_id) {
+            return $.grep(Chaveamento, function (o, i) {
+                    return o.gerencia_id == gerencia_id;
+                });
+        }
+
+        function randomColor() {
+            color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
+            return color;
+        }
 
     </script>
 
