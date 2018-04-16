@@ -94,44 +94,58 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL } {" 23:59:59"}'
                  DECLARE @VOLUMEPCC int
                                                                   
-                 CREATE TABLE #AMOSTRATIPO4 ( 
-                 UNIDADE INT NULL, 
-                 INDICADOR INT NULL, 
-                 AM INT NULL, 
-                 DEF_AM INT NULL 
-                 )
-                INSERT INTO #AMOSTRATIPO4
-                	SELECT
-                		UNIDADE
-                	   ,INDICADOR
-                	   ,COUNT(1) AM
-                	   ,SUM(DEF_AM) DEF_AM
-                	FROM (SELECT
-                			CAST(C2.CollectionDate AS DATE) AS DATA
-                		   ,C.Id AS UNIDADE
-                		   ,C2.ParLevel1_Id AS INDICADOR
-                		   ,C2.EvaluationNumber AS AV
-                		   ,C2.Sample AS AM
-                		   ,CASE
-                				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-                				ELSE 1
-                			END DEF_AM
-                		FROM CollectionLevel2 C2 (NOLOCK)
-                		INNER JOIN ParLevel1 L1 (NOLOCK)
-                			ON L1.Id = C2.ParLevel1_Id
-                		INNER JOIN ParCompany C (NOLOCK)
-                			ON C.Id = C2.UnitId
-                		WHERE C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                		AND C2.NotEvaluatedIs = 0
-                		AND C2.Duplicated = 0
-                		AND L1.ParConsolidationType_Id = 4
-                		GROUP BY C.Id
-                				,ParLevel1_Id
-                				,EvaluationNumber
-                				,Sample
-                				,CAST(CollectionDate AS DATE)) TAB
-                	GROUP BY UNIDADE
-                			,INDICADOR
+ CREATE TABLE #AMOSTRATIPO4 ( 
+ UNIDADE INT NULL, 
+ INDICADOR INT NULL,
+ [SHIFT] INT NULL,
+ [PERIOD] INT NULL,
+ DATA DATETIME,
+ AM INT NULL, 
+ DEF_AM INT NULL 
+ )
+INSERT INTO #AMOSTRATIPO4
+	SELECT
+		UNIDADE
+	   ,INDICADOR
+       ,[SHIFT]
+       ,[PERIOD]
+       ,DATA
+	   ,COUNT(1) AM
+	   ,SUM(DEF_AM) DEF_AM
+	FROM (SELECT
+			CAST(C2.CollectionDate AS DATE) AS DATA
+		   ,C.Id AS UNIDADE
+		   ,C2.ParLevel1_Id AS INDICADOR
+           ,C2.[SHIFT]
+           ,C2.[PERIOD]
+		   ,C2.EvaluationNumber AS AV
+		   ,C2.Sample AS AM
+		   ,CASE
+				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+				ELSE 1
+			END DEF_AM
+		FROM CollectionLevel2 C2 (NOLOCK)
+		INNER JOIN ParLevel1 L1 (NOLOCK)
+			ON L1.Id = C2.ParLevel1_Id
+		INNER JOIN ParCompany C (NOLOCK)
+			ON C.Id = C2.UnitId
+		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+		AND C2.NotEvaluatedIs = 0
+		AND C2.Duplicated = 0
+		AND L1.ParConsolidationType_Id = 4
+		GROUP BY C.Id
+				,ParLevel1_Id
+                ,C2.[SHIFT]
+                ,C2.[PERIOD]
+				,EvaluationNumber
+				,Sample
+				,CAST(CollectionDate AS DATE)) TAB
+	GROUP BY UNIDADE
+			,INDICADOR
+            ,DATA
+            ,[SHIFT]
+            ,[PERIOD]
+
                 SELECT
                 	Unidade AS UnidadeName
                    ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
@@ -207,15 +221,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
                 						AND (G.ParCompany_id = CL1.UnitId
                 						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate)
+                						AND G.EffectiveDate <= CL1.ConsolidationDate)
                 					> 0 THEN (SELECT TOP 1
                 							ISNULL(G.PercentValue, 0)
                 						FROM ParGoal G
                 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
                 						AND (G.ParCompany_id = CL1.UnitId
                 						OR G.ParCompany_id IS NULL)
-                						AND G.AddDate <= CL1.ConsolidationDate
-                						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+                						AND G.EffectiveDate <= CL1.ConsolidationDate
+                						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 
                 				ELSE (SELECT TOP 1
                 							ISNULL(G.PercentValue, 0)
@@ -223,7 +237,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
                 						AND (G.ParCompany_id = CL1.UnitId
                 						OR G.ParCompany_id IS NULL)
-                						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                                        AND G.EffectiveDate <= CL1.ConsolidationDate
+                						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 			END
                 			AS Meta
                 		FROM ConsolidationLevel1 CL1 (NOLOCK)
@@ -232,14 +247,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                             AND isnull(IND.ShowScorecard,1) = 1
                             AND IND.IsActive = 1
                             AND IND.ID != 43
+                            AND IND.ID != 42
                 		INNER JOIN ParCompany UNI (NOLOCK)
                 			ON UNI.Id = CL1.UnitId
                             and UNI.IsActive = 1
                 		--INNER JOIN ParCompanyXUserSgq CU(nolock) 
                 		--ON CU.UserSgq_Id = { form.auditorId } and CU.ParCompany_Id = UNI.Id 
                 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
-                			ON A4.UNIDADE = UNI.Id
-                			AND A4.INDICADOR = IND.ID
+			                ON A4.UNIDADE = UNI.Id
+			                AND A4.INDICADOR = IND.ID
+                            AND A4.DATA = CL1.ConsolidationDate
+                            AND A4.[SHIFT] = CL1.[SHIFT]
+                            AND A4.[PERIOD] = CL1.[PERIOD]
                 		-- INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
                 			-- ON CL2.ConsolidationLevel1_id = CL1.Id
                 		-- INNER JOIN ParLevel2 L2 WITH (NOLOCK)
@@ -309,7 +328,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var query = @"
              
-                         DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL +" 00:00:00"+ @"'
+                         DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00:00" + @"'
                                                                                                                                                                                                                                             
                          DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59:59" + @"'
                                                                                                                                                                                                                                             
@@ -481,15 +500,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
             							AND (G.ParCompany_id = CL1.UnitId
             							OR G.ParCompany_id IS NULL)
-            							AND G.AddDate <= CL2.ConsolidationDate)
+            							AND G.EffectiveDate <= CL2.ConsolidationDate)
             						> 0 THEN (SELECT TOP 1
             								ISNULL(G.PercentValue, 0)
             							FROM ParGoal G
             							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
             							AND (G.ParCompany_id = CL1.UnitId
             							OR G.ParCompany_id IS NULL)
-            							AND G.AddDate <= CL2.ConsolidationDate
-            							ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            							AND G.EffectiveDate <= CL2.ConsolidationDate
+            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             
             					ELSE (SELECT TOP 1
             								ISNULL(G.PercentValue, 0)
@@ -497,7 +516,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
             							AND (G.ParCompany_id = CL1.UnitId
             							OR G.ParCompany_id IS NULL)
-            							ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                                        AND G.EffectiveDate <= CL2.ConsolidationDate
+            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             				END
             				AS Meta
             			   ,D.Name AS DepartamentoName
@@ -538,7 +558,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             		,Unidade_Id
             		,DepartamentoName
             		,Departamento_Id
-            HAVING SUM(ncComPeso) <> 0
+            HAVING SUM(ncComPeso) > 0
+            AND SUM(NC) > 0
             ORDER BY 3 DESC
             DROP TABLE #AMOSTRATIPO4 ";
 
@@ -756,15 +777,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
             							AND (G.ParCompany_id = CL1.UnitId
             							OR G.ParCompany_id IS NULL)
-            							AND G.AddDate <= @DATAFINAL)
+            							AND G.EffectiveDate <= @DATAFINAL)
             						> 0 THEN (SELECT TOP 1
             								ISNULL(G.PercentValue, 0)
             							FROM ParGoal G
             							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
             							AND (G.ParCompany_id = CL1.UnitId
             							OR G.ParCompany_id IS NULL)
-            							AND G.AddDate <= @DATAFINAL
-            							ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            							AND G.EffectiveDate <= @DATAFINAL
+            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             
             					ELSE (SELECT TOP 1
             								ISNULL(G.PercentValue, 0)
@@ -772,7 +793,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
             							AND (G.ParCompany_id = CL1.UnitId
             							OR G.ParCompany_id IS NULL)
-            							ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                                        AND G.EffectiveDate <= @DATAFINAL
+            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             				END
             				AS Meta
             			   ,D.Name AS DepartamentoName
@@ -1003,16 +1025,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n  ,                                                                                                                                                                                                                                                                  " +
                "\n  CASE                                                                                                                                                                                                                                                               " +
                "\n                                                                                                                                                                                                                                                                     " +
-               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
                "\n                                                                                                                                                                                                                                                                     " +
                "\n     ELSE                                                                                                                                                                                                                                                            " +
-               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
                "\n  END                                                                                                                                                                                                                                                                " +
                "\n  AS Meta                                                                                                                                                                                                                                                            " +
                 "\n         FROM ConsolidationLevel1 CL1  (nolock)" +
                 "\n         INNER JOIN ParLevel1 IND  (nolock)" +
-                "\n            ON IND.Id = CL1.ParLevel1_Id  "+
+                "\n            ON IND.Id = CL1.ParLevel1_Id  " +
                 "\n            AND ISNULL(IND.ShowScorecard,1) = 1 " +
                 "\n            AND IND.IsActive = 1 " +
                 "\n            AND IND.ID != 43 " +
@@ -1264,15 +1286,15 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= CL1.ConsolidationDate)
+						AND G.EffectiveDate <= CL1.ConsolidationDate)
 					> 0 THEN (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
 						FROM ParGoal G
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= CL1.ConsolidationDate
-						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+						AND G.EffectiveDate <= CL1.ConsolidationDate
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 
 				ELSE (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
@@ -1280,7 +1302,8 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                        AND G.EffectiveDate <= CL1.ConsolidationDate
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 			END
 			AS Meta
 		FROM ConsolidationLevel1 CL1 (NOLOCK)
@@ -1533,15 +1556,15 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL)
+						AND G.EffectiveDate <= @DATAFINAL)
 					> 0 THEN (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
 						FROM ParGoal G
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL
-						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+						AND G.EffectiveDate <= @DATAFINAL
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 
 				ELSE (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
@@ -1549,7 +1572,8 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                        AND G.EffectiveDate <= @DATAFINAL
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 			END
 			AS Meta
 		FROM ConsolidationLevel1 CL1 (NOLOCK)
@@ -1751,7 +1775,8 @@ DROP TABLE #AMOSTRATIPO4 ";
 
                "\n ) S1 " +
             "\n  GROUP BY Level2Name " +
-            "\n   HAVING sum(NC) <> 0 " +
+            "\n   HAVING sum(NCSemPeso) > 0 " +
+            "\n  AND SUM(NC) > 0 " +
             "\n  ORDER BY 4 DESC ";
 
 
@@ -1786,7 +1811,7 @@ DROP TABLE #AMOSTRATIPO4 ";
             {
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
-            
+
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
@@ -1956,7 +1981,8 @@ DROP TABLE #AMOSTRATIPO4 ";
                           "\n ,ind.hashKey " +
                           "\n ,ind.ParConsolidationType_Id " +
 
-                         "\n HAVING SUM(R3.WeiDefects) > 0" +
+                         "\n HAVING SUM(R3.WeiDefects) > 0 " +
+                         "\n AND SUM(R3.Defects) > 0 " +
                          "\n ) TAB ORDER BY 4 DESC";
 
 
@@ -2013,7 +2039,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                         "\n ,R3.ParLevel3_Name " +
                         "\n ,UNI.Name " +
                         "\n ,UNI.Id " +
-                        "\n HAVING (SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100) <> 0" +
+                        "\n HAVING (SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100) > 0" +
                         "\n ORDER BY 4 DESC";
 
 

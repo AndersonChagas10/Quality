@@ -338,9 +338,9 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></span>'
+                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">?</b></i></span>'
                 else
-                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></span>';
+                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">?</b></i></span>';
                 counter++;
             }
 
@@ -2789,7 +2789,23 @@
 
         //enviar.isLevel = 2;
 
-        subtitle = Resources('unit') + ": " + $('#unitIdV :selected').text();
+
+     // Quando ambos estão filtrados
+
+        if ((enviar.unitIdArr != undefined && enviar.unitIdArr.length > 0) && (enviar.level1IdArr != undefined && enviar.level1IdArr.length > 0)) {
+            subtitle = Resources('unit') + ": " + $('#unitIdV :selected').text();
+            subtitle += " | " + Resources('level1') + ": " + $('#level1Idv :selected').text();
+        }
+
+     // Quando unidade está filtrada
+        else if (enviar.unitIdArr != undefined && enviar.unitIdArr.length > 0) {
+            subtitle = Resources('unit') + ": " + $('#unitIdV :selected').text();
+        }
+
+    // Quando indicador está filtrado
+        else if (enviar.level1IdArr != undefined && enviar.level1IdArr.length > 0) {
+            subtitle = Resources('level1') + ": " + $('#level1Idv :selected').text();
+        }
 
         //if (pathDirect == 1)
         //    subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
@@ -3148,7 +3164,7 @@
             enviarFTA['_DataInicioFTA'] = enviar.startDate;
             enviarFTA['_DataFimFTA'] = enviar.endDate;
             enviarFTA['Supervisor_Id'] = GetUsuarioId();
-            enviarFTA['Unidade_Id'] = Unidades[that.x] == null ? 0 : Unidades[that.x];
+            enviarFTA['Unidade_Id'] = enviar.unitId == null ? 0 : enviar.unitId;
             enviarFTA['PercentualNCFTA'] = ncs[that.x] == null ? 0 : ncs[that.x]
             enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
 
