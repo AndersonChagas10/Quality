@@ -218,9 +218,11 @@ INSERT INTO #AMOSTRATIPO4
                 				WHEN (SELECT
                 							COUNT(1)
                 						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+                						WHERE 1=1 
+                                        AND G.ParLevel1_id = CL1.ParLevel1_Id
                 						AND (G.ParCompany_id = CL1.UnitId
                 						OR G.ParCompany_id IS NULL)
+                                        AND G.IsActive = 1
                 						AND G.EffectiveDate <= CL1.ConsolidationDate)
                 					> 0 THEN (SELECT TOP 1
                 							ISNULL(G.PercentValue, 0)
@@ -228,15 +230,18 @@ INSERT INTO #AMOSTRATIPO4
                 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
                 						AND (G.ParCompany_id = CL1.UnitId
                 						OR G.ParCompany_id IS NULL)
+                                        AND G.IsActive = 1
                 						AND G.EffectiveDate <= CL1.ConsolidationDate
                 						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 
                 				ELSE (SELECT TOP 1
                 							ISNULL(G.PercentValue, 0)
                 						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+                						WHERE 1=1 
+                                        AND G.ParLevel1_id = CL1.ParLevel1_Id
                 						AND (G.ParCompany_id = CL1.UnitId
                 						OR G.ParCompany_id IS NULL)
+                                        AND G.IsActive = 1 
                                         AND G.EffectiveDate <= CL1.ConsolidationDate
                 						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 			END
