@@ -224,6 +224,8 @@ function MountDataTablePlanejamento(json) {
         GetFiltrosDeColunasTablePlanejamento();
     });
 
+    SetFiltrosDeColunasTablePlanejamento();
+
     tablePlanejamento.draw();
 
     if (ColvisarrayVisaoAtual_show.length == 0) {
@@ -236,7 +238,6 @@ function MountDataTablePlanejamento(json) {
 
     $('#TablePlanejamento_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
 
-    SetFiltrosDeColunasTablePlanejamento();
 }
 
 $('#divPlanejamento table > tbody').on('click', '.btnNovoTatico', function () {
@@ -331,7 +332,7 @@ function SetFiltrosDeColunasTablePlanejamento() {
 
                 if ($(this).parent().text() == o.Key) {
                     $(this).val(o.Val);
-                    table.column(a).search(o.Val).draw();
+                    tablePlanejamento.column(a).search(o.Val).draw();
                 }
             });
         });

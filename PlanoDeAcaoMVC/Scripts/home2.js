@@ -525,6 +525,8 @@ function MountDataTable(json) {
         GetFiltrosDeColunas();
     });
 
+    SetFiltrosDeColunas();
+
     table.draw();
 
     if (ColvisarrayVisaoAtual_show.length == 0) {
@@ -536,8 +538,6 @@ function MountDataTable(json) {
         }, 5);
     }
 
-
-
     //deixa escondido o botão que mantem as colunas atuais
     $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
@@ -547,7 +547,6 @@ function MountDataTable(json) {
         $('#example_wrapper > div.dt-buttons > a:nth-child(6)').click();
 
     }
-
 
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
 
@@ -570,8 +569,7 @@ function MountDataTable(json) {
     $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(5)', function () {
         tableDraw();
     });
-
-    SetFiltrosDeColunas();
+    
 }
 
 $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
@@ -2504,8 +2502,6 @@ $('#btnFiltroPie2').click(function () {
     geraData2(dadosPie2);
     $('#spanPie2').html($('#campo1FiltroPie2 option:selected').text());
 })
-
-
 
 //Celso
 $('#btnpanel5').off('click').on('click', function () {
