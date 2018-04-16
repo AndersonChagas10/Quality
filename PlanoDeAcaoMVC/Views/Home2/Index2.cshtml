@@ -3441,39 +3441,6 @@
             },500);
         }
 
-        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
-        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
-            $('#ModalNovoApartirDeAlgo').find('h4').text("Criar "+NomeDoQueSeraCriado+" apartir de "+NomeApartirDeQueSeraCriado);
-            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
-                var col = r.columns;
-                col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
-                }});
-                var tableModalNovoApartirDe = datatableGRT.Inicializar({
-                    idTabela: "ModalNovoApartirDeAlgo table",
-                    listaDeDados: r.datas,
-                    colunaDosDados:r.columns,
-                    buttons: {buttons: []},
-                    initComplete: function(){
-                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
-                            if($(this).attr('data-tipo') == 'tatico'){
-                                AbreModalDePlanejamento($(this).attr('data-id'));
-                            }else if($(this).attr('data-tipo') == 'acao'){
-                                AbreModalDeAcao($(this).attr('data-id'));
-                            }
-                            $('#ModalNovoApartirDeAlgo').modal('hide');
-                        });
-
-                        $('#ModalNovoApartirDeAlgo').modal('show');
-                        
-                        setTimeout(function (e) {
-                            tableModalNovoApartirDe.draw();
-                        }, 500);
-                    }
-                });
-            });
-        }
-
         function AbreModalDePlanejamento(id){
             Clicked(true, false, true);
             $.get(urlGetPlanejamento, { id: id }, function (r) {
@@ -3520,10 +3487,45 @@
             color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
             return color;
         }
+        
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Criar "+NomeDoQueSeraCriado+" apartir de "+NomeApartirDeQueSeraCriado);
+            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
+                }});
+                var tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    buttons: {buttons: []},
+                    initComplete: function(){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
+                            if($(this).attr('data-tipo') == 'tatico'){
+                                AbreModalDePlanejamento($(this).attr('data-id'));
+                            }else if($(this).attr('data-tipo') == 'acao'){
+                                AbreModalDeAcao($(this).attr('data-id'));
+                            }
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+                        
+                        setTimeout(function (e) {
+                            tableModalNovoApartirDe.draw();
+                        }, 500);
+                    }
+                });
+            });
+        }
 
     </script>
 
-}<!-- Modal -->
+}
+
+<!-- Modal -->
 <div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
     <div class="modal-dialog">
         <!-- Modal content-->

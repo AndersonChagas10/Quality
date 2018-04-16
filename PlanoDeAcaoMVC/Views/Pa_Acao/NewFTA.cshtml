@@ -1,8 +1,6 @@
 ﻿@model PlanoAcaoCore.Acao.FTA
 @{
 
-
-
 }
 <style>
     /*td span {
@@ -51,6 +49,8 @@
     }
 </style>
 
+
+<script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
 
 
@@ -223,8 +223,8 @@
                 </tr>
 
                 <tr>
-                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
-                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
+                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>Assinatura 1<span style="color:red">*</span></strong></span></td>
+                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>Assinatura 2<span style="color:red">*</span></strong></span></td>
                 </tr>
 
                 <tr>
@@ -246,6 +246,18 @@
                     <td width="10%"></td>
                     <td width="10%"></td>
                     <td width="10%"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="10">
+                        <button type="button" class="btn btn-success" id="AbrirModalNovoApartirDeAlgoTático" onclick="AbrirModalNovoApartirDeAlgo('acao', 'Tático', '');" style=""><strong>Vincular Tático <span style="color:red">*</span></strong></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <input id="Panejamento_Id" name="Panejamento_Id" type="hidden">
+                        <table id="tabelaModalTaticoSelecionado" class="table table-bordered"></table>
+                    </td>
                 </tr>
             </table>
             <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
@@ -340,7 +352,7 @@
                 if(user == 0){ user0.Status = !r.isInvalid; }
                 if(user == 1){ user1.Status = !r.isInvalid; }
                 openMessageModal(r.response, '');
-                if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+                HabilitaBotaoSalvar()
                 if(!user0.Status)
                     $('[id=Assinatura1]').val('').change();
                 if(!user1.Status)
@@ -363,7 +375,7 @@
             $('#btnOk').off('click').on('click', function() { ValidaSenha(0); });
             $('#modalPass').modal();
             $('#passCheck').find('[name=pass]').val('')
-            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+            HabilitaBotaoSalvar()
         });
 
         $('[id=Assinatura2]').off('change').on('change', function () {
@@ -372,7 +384,7 @@
             $('#btnOk').off('click').on('click', function() { ValidaSenha(1); });
             $('#modalPass').modal();
             $('#passCheck').find('[name=pass]').val('')
-            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+            HabilitaBotaoSalvar()
         });
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
@@ -417,7 +429,8 @@
         function save() {
 
             var form = $('form').serializeObject();
-            form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+            //form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+            form["Panejamento_Id"] = $('input#Panejamento_Id').val();
             form["TipoIndicador"] = 2; //Para Indicador SGQ
             var index = 0;
             var arr = [];
@@ -434,7 +447,8 @@
             else{
                 form.CausaGenerica_Id.forEach(function(o,c) {
                     var singleForm = $('form').serializeObject();
-                    singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+                    //singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+                    singleForm["Panejamento_Id"] = $('input#Panejamento_Id').val();
                     singleForm["TipoIndicador"] = 2; //Para Indicador SGQ
                     singleForm.CausaEspecifica = form.CausaEspecifica[c];
                     singleForm.CausaGenerica_Id = form.CausaGenerica_Id[c];
@@ -461,14 +475,72 @@
 
         $().ready(function () {
             InitDatePiker();
-            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+            HabilitaBotaoSalvar();
             //$('#Assinatura1').select2();
             //$('#Assinatura2').select2();
             $('select').select2();
         });
 
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado){
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Vincular "+NomeDoQueSeraCriado);
+            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-success">Vincular '+NomeDoQueSeraCriado+'</button>';
+                }});
+                var tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    buttons: {buttons: []},
+                    initComplete: function(){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
+                            $('#tabelaModalTaticoSelecionado').html('<tbody><tr>'+$(this).parents('tr').html()+'</tr></tbody>');
+                            $('#tabelaModalTaticoSelecionado').prepend('<thead>'+$(this).parents('.dataTables_scroll').find('.dataTables_scrollHead').find('thead').html()+'</thead>')
+                            $('#tabelaModalTaticoSelecionado thead th:first-child').remove();
+                            $('#tabelaModalTaticoSelecionado button').parent().remove();
+                            $('input#Panejamento_Id').val($(this).attr('data-id'));
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                            HabilitaBotaoSalvar();
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+
+                        setTimeout(function (e) {
+                            tableModalNovoApartirDe.draw();
+                        }, 500);
+                    }
+                });
+            });
+        }
+
+        function HabilitaBotaoSalvar(){
+            if(user0.Status && user1.Status && $('#tabelaModalTaticoSelecionado tbody').length > 0){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+        }
+
     </script>
 
 }
+
+<!-- Modal -->
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog" style="width:1150px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
