@@ -27,8 +27,14 @@ namespace DTO
         public string MailSmtp { get; set; }
         public bool MockEmail { get; set; }
     }
+    public class Mandala
+    {
+        public int IdUsuarioLogado { get; set; }
+        public string EmpresaSelecionada { get; set; }
+        public string ProcessoSelecionado { get; set; }
+    }
 
-    public class HtmlDoTablet
+        public class HtmlDoTablet
     {
         public string Html { get; set; }
         public DateTime? DataInicio { get; set; }

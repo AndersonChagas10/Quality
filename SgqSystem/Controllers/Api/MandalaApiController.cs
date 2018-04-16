@@ -19,15 +19,14 @@ namespace SgqSystem.Controllers.Api
         private List<JObject> Lista { get; set; }
 
         [HttpPost]
-        [Route("MostrarIndicadorMandala")]
-        public List<JObject> MostrarIndicadorMandala([FromBody] int data )
+        [Route("MostrarEmpresaMandala")]
+        public List<JObject> MostrarEmpresaMandala([FromBody] FormularioParaRelatorioViewModel form)
         {
-            //FormularioParaRelatorioViewModel form
-            var empresas = GetUserUnits(data);
 
-            //string.Join(",", GetUserUnits(form.auditorId));
+            var where = BuscarListaEmpresas(form);
 
             var query = $@"
+           
             declare @inicio datetime = '2017-06-15' -- DATEADD(DAY,-1,GETDATE()) 
             declare @Fim datetime = '2017-06-15' -- DATEADD(DAY,0,GETDATE())
 
@@ -35,8 +34,8 @@ namespace SgqSystem.Controllers.Api
 
 		            ParCompany_id,
 		            ParCompany_Name,
-		            ParLevel1_id,
-		            ParLevel1_name,
+		           -- ParLevel1_id,
+		            --ParLevel1_name,
 		            --ParLevel2_id,
 		            --ParLevel2_Name,
 		            SUM([EvaluationPlan]) AS [Avaliacoes_Planejadas],
@@ -292,19 +291,18 @@ namespace SgqSystem.Controllers.Api
                         --,Cubo.Evaluation
                         --,Cubo.Sample
             ) CUBO
-            WHERE 1 = 1
-            AND ParCompany_Name = 'Mozarlândia'
+            {where}
             --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
             --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
             Group by
 
                 ParCompany_Name,
-	            ParCompany_id,
-	            ParLevel1_id,
-	            ParLevel1_Name
-                --ParLevel2_id,
-	            --ParLevel2_Name,
-	            --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+	            ParCompany_id
+	            --ParLevel1_id,
+	            --ParLevel1_Name,
+	            --ParLevel2_id,
+	            --ParLevel2_Name
+                --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
@@ -314,10 +312,12 @@ namespace SgqSystem.Controllers.Api
             return Lista;
         }
 
+
         [HttpPost]
-        [Route("MostrarMonitoramentoMandala")]
-        public List<JObject> MostrarMonitoramentoMandala([FromBody] FormularioParaRelatorioViewModel form)
+        [Route("MostrarIndicadorMandala")]
+        public List<JObject> MostrarIndicadorMandala([FromBody] FormularioParaRelatorioViewModel form)
         {
+            var empresaSelecionada = form.unitName;
 
             var query = $@"
             declare @inicio datetime = '2017-06-15' -- DATEADD(DAY,-1,GETDATE()) 
@@ -329,8 +329,8 @@ namespace SgqSystem.Controllers.Api
 		            ParCompany_Name,
 		            ParLevel1_id,
 		            ParLevel1_name,
-		            ParLevel2_id,
-		            ParLevel2_Name,
+		            --ParLevel2_id,
+		           -- ParLevel2_Name,
 		            SUM([EvaluationPlan]) AS [Avaliacoes_Planejadas],
 		            SUM([Evaluation])     AS [Avaliacoes_Realizadas],
 		            SUM([SamplePlan])	  AS [Amostras_Planejadas],
@@ -584,18 +584,18 @@ namespace SgqSystem.Controllers.Api
                         --,Cubo.Evaluation
                         --,Cubo.Sample
             ) CUBO
-            WHERE 1 = 1
-            AND ParCompany_Name = 'Mozarlândia'
-            --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
+            Where ParCompany_Name = '{empresaSelecionada}'
+
+           --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
             --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
             Group by
 
                 ParCompany_Name,
 	            ParCompany_id,
 	            ParLevel1_id,
-	            ParLevel1_Name,
-	            ParLevel2_id,
-	            ParLevel2_Name
+	            ParLevel1_Name
+	            --ParLevel2_id,
+	            --ParLevel2_Name
                 --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
@@ -607,22 +607,25 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("MostrarTarefaMandala")]
-        public List<JObject> MostrarTarefaMandala([FromBody] FormularioParaRelatorioViewModel form)
+        [Route("MostrarMonitoramentoMandala")]
+        public List<JObject> MostrarMonitoramentoMandala([FromBody] FormularioParaRelatorioViewModel form)
         {
+            var processoSelecionado = form.level1Name;
+            var empresaSelecionada = form.unitName;
 
             var query = $@"              
                 declare @inicio datetime = '2017-06-15' -- DATEADD(DAY,-1,GETDATE()) 
                 declare @Fim datetime = '2017-06-15' -- DATEADD(DAY,0,GETDATE())
 
+
                 SELECT 
 
 		                ParCompany_id,
 		                ParCompany_Name,
-		                --ParLevel1_id,
-		                --ParLevel1_name,
-		                --ParLevel2_id,
-		                --ParLevel2_Name,
+		                ParLevel1_id,
+		                ParLevel1_name,
+		                ParLevel2_id,
+		                ParLevel2_Name,
 		                SUM([EvaluationPlan]) AS [Avaliacoes_Planejadas],
 		                SUM([Evaluation])     AS [Avaliacoes_Realizadas],
 		                SUM([SamplePlan])	  AS [Amostras_Planejadas],
@@ -751,7 +754,7 @@ namespace SgqSystem.Controllers.Api
 
                                         UNION ALL
 
-                                        SELECT id, Shift Period, ParFrequency_id FROM(
+                                        SELECT id, Shift, Period, ParFrequency_id FROM(
                                         SELECT id, 1 Period, ParFrequency_id
 
                                             FROM ParLevel2 P2
@@ -876,19 +879,18 @@ namespace SgqSystem.Controllers.Api
                             --,Cubo.Evaluation
                             --,Cubo.Sample
                 ) CUBO
-                WHERE 1 = 1
-                AND ParCompany_Name = 'Mozarlândia'
-                --AND ParLevel1_Name = '(%) NC Análise Microbiológica em Produto (Desossa)'
+                WHERE ParCompany_Name = '{empresaSelecionada}'
+                AND ParLevel1_Name = '{processoSelecionado}'
                 --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
                 Group by
 
                     ParCompany_Name,
-	                ParCompany_id
-                    --ParLevel1_id,
-	                --ParLevel1_Name
-                    --ParLevel2_id,
-	                --ParLevel2_Name,
-	                --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+	                ParCompany_id,
+	                ParLevel1_id,
+	                ParLevel1_Name,
+	                ParLevel2_id,
+	                ParLevel2_Name
+                    --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
@@ -904,6 +906,15 @@ namespace SgqSystem.Controllers.Api
             {
                 return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
             }
+        }
+
+        private string BuscarListaEmpresas(FormularioParaRelatorioViewModel form)
+        {
+            var empresas = GetUserUnits(form.auditorId);
+
+            var listaEmpresa = string.Join(",", GetUserUnits(form.auditorId));
+
+            return $"Where ParCompany_Id in ({listaEmpresa})";
         }
     }
 }
