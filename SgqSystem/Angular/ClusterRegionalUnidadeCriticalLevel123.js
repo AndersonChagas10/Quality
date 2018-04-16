@@ -85,6 +85,7 @@
                     $('#criticalLevelId').prop("disabled", false);
                 } else {
                     $('#criticalLevelId').prop("disabled", true);
+                    $('#criticalLevelId').text("");
                 }
 
                 if ($scope.clusterValue) {
