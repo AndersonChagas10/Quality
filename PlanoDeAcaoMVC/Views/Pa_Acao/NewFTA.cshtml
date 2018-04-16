@@ -435,6 +435,14 @@
             var index = 0;
             var arr = [];
 
+            if (form["_QuandoFim"].length > 0){
+                form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5,3) + "/" + form["_QuandoFim"].substring(2,0) + "/" + form["_QuandoFim"].substring(10,6));
+                if (form["_QuandoFim"] < new Date()) {
+                    openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
+                    return;
+                }
+            }
+
             if(typeof(form.CausaGenerica_Id) == "string"){
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
                     openMessageModal('Registro salvo com sucesso!', '');
