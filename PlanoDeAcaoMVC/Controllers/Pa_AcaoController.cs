@@ -348,7 +348,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 var dtEnd = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToString("yyyyMMdd");
 
 
-                if (level1.IsNotNull())
+                if (level1.IsNotNull() || level1.Id > 0)
                 {
                     metaQuery = "SELECT ISNULL(ROUND(CASE" +
 "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
