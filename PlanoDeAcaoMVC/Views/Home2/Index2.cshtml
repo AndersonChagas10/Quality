@@ -2517,7 +2517,6 @@
             })
         };
 
-
         function SetaValoresModal(id, item, isActive) {
 
             $('#btnCancelarNovo').click();
@@ -2532,6 +2531,7 @@
             }
 
         }
+
         function isPositiveInteger(n) {
             return n == "0" || ((n | 0) > 0 && n % 1 == 0);
         }
@@ -2740,7 +2740,6 @@
             $.LoadingOverlay("hide");
             counter--;
         });
-
 
         $(function () {
             GetDataTable();
@@ -3463,6 +3462,7 @@
         }
 
         var Chaveamento = [];
+
         function processarChaveamento() {
             if (Chaveamento.length > 0){
                 return;
