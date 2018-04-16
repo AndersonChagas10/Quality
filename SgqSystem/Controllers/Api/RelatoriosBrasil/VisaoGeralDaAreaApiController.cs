@@ -67,6 +67,166 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return _mock;
         }
 
+        public static string sqlBaseGraficosScorecardDiario()
+        {
+            string query = @"
+                                        (
+                                          SELECT
+                                          mesData,
+                                          companySigla,
+                                          LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, regId, regName,
+                                          AVG(META) META,
+                                          SUM(AV) AV,
+                                          SUM(NC) NC,
+                                          sum(PontosIndicador) PontosIndicador,
+                                          sum(PontosAtingidos) PontosAtingidos,
+                                          case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end companyScorecard,
+  
+                                          CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100 [% NC],
+  
+                                          CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100 END AS [NN],
+
+  
+                                          CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
+                                          CASE WHEN SUM(AV) > 0 THEN
+
+                                                      CASE WHEN TIPOINDICADOR = 1 THEN
+
+                                                        CASE WHEN(SUM(NC) / SUM(AV) * 100) <= AVG(META) THEN 100 ELSE(AVG(META) / (CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) * 100) END
+                                                 ELSE
+
+                                                        CASE WHEN(SUM(NC) / SUM(AV) * 100) >= AVG(META) THEN 100 ELSE((CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) / SUM(META) * 100) END
+                                                 END
+                                          ELSE 0
+                                          END END [SCORE],
+  
+                                          CASE WHEN
+                                              CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
+                                              CASE WHEN SUM(AV) > 0 THEN
+                                                          CASE WHEN TIPOINDICADOR = 1 THEN
+                                                              CASE WHEN(SUM(NC) / SUM(AV) * 100) <= AVG(META) THEN 100 ELSE(AVG(META) / (CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) * 100) END
+                                                     ELSE
+
+                                                            CASE WHEN(SUM(NC) / SUM(AV) * 100) >= AVG(META) THEN 100 ELSE((CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) / SUM(META) * 100) END
+                                                     END
+
+                                              ELSE 0
+
+                                              END END
+                                          > 70 THEN
+                                                CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
+                                                CASE WHEN SUM(AV) > 0 THEN
+                                                          CASE WHEN TIPOINDICADOR = 1 THEN
+                                                              CASE WHEN(SUM(NC) / SUM(AV) * 100) <= AVG(META) THEN 100 ELSE(AVG(META) / (CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) * 100) END
+                                                     ELSE
+
+                                                            CASE WHEN(SUM(NC) / SUM(AV) * 100) >= AVG(META) THEN 100 ELSE((CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) / SUM(META) * 100) END
+                                                     END
+
+                                              ELSE 0
+
+                                              END END / 100 * sum(PontosIndicador)
+                                          ELSE 0 END [PONTOS ATINGIDOS OK]
+
+                                          FROM(
+
+                                          SELECT
+                                          C.Initials companySigla, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, S.mesData,
+                                          SUM(AV) AV,
+                                          SUM(NC) NC,
+                                          MAX(PontosIndicador) PontosIndicador,
+                                          MAX(PontosAtingidos) PontosAtingidos
+                                          -- CASE WHEN CASE WHEN SUM(PontosIndicador) = 0 OR SUM(PontosIndicador) IS NULL THEN 0 ELSE SUM(PontosAtingidos) / SUM(PontosIndicador) END < 0.7 THEN 0 ELSE SUM(PontosAtingidos) END PontosAtingidos
+                                          FROM ParStructure Reg
+                                          LEFT JOIN ParCompanyXStructure CS
+                                          ON CS.ParStructure_Id = Reg.Id
+                                          left join ParCompany C
+                                          on C.Id = CS.ParCompany_Id
+                                          left join #SCORE S  
+                                          on C.Id = S.ParCompany_Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id";
+            return query;
+        }
+
+        public static string sqlBaseGraficosVGA()
+        {
+            string query = @"
+                                        (
+                                          SELECT
+                                          
+                                          companySigla,
+                                          LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, regId, regName,
+                                          AVG(META) META,
+                                          SUM(AV) AV,
+                                          SUM(NC) NC,
+                                          sum(PontosIndicador) PontosIndicador,
+                                          sum(PontosAtingidos) PontosAtingidos,
+                                          case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end companyScorecard,
+  
+                                          CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100 [% NC],
+  
+                                          CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100 END AS [NN],
+
+  
+                                          CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
+                                          CASE WHEN SUM(AV) > 0 THEN
+
+                                                      CASE WHEN TIPOINDICADOR = 1 THEN
+
+                                                        CASE WHEN(SUM(NC) / SUM(AV) * 100) <= AVG(META) THEN 100 ELSE(AVG(META) / (CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) * 100) END
+                                                 ELSE
+
+                                                        CASE WHEN(SUM(NC) / SUM(AV) * 100) >= AVG(META) THEN 100 ELSE((CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) / SUM(META) * 100) END
+                                                 END
+                                          ELSE 0
+                                          END END [SCORE],
+  
+                                          CASE WHEN
+                                              CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
+                                              CASE WHEN SUM(AV) > 0 THEN
+                                                          CASE WHEN TIPOINDICADOR = 1 THEN
+                                                              CASE WHEN(SUM(NC) / SUM(AV) * 100) <= AVG(META) THEN 100 ELSE(AVG(META) / (CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) * 100) END
+                                                     ELSE
+
+                                                            CASE WHEN(SUM(NC) / SUM(AV) * 100) >= AVG(META) THEN 100 ELSE((CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) / SUM(META) * 100) END
+                                                     END
+
+                                              ELSE 0
+
+                                              END END
+                                          > 70 THEN
+                                                CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
+                                                CASE WHEN SUM(AV) > 0 THEN
+                                                          CASE WHEN TIPOINDICADOR = 1 THEN
+                                                              CASE WHEN(SUM(NC) / SUM(AV) * 100) <= AVG(META) THEN 100 ELSE(AVG(META) / (CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) * 100) END
+                                                     ELSE
+
+                                                            CASE WHEN(SUM(NC) / SUM(AV) * 100) >= AVG(META) THEN 100 ELSE((CASE WHEN SUM(AV) > 0 THEN CASE WHEN TIPOINDICADOR = 1 THEN SUM(NC) / SUM(AV) ELSE(SUM(NC) / SUM(AV)) END ELSE 0 END * 100) / SUM(META) * 100) END
+                                                     END
+
+                                              ELSE 0
+
+                                              END END / 100 * sum(PontosIndicador)
+                                          ELSE 0 END [PONTOS ATINGIDOS OK]
+
+                                          FROM(
+
+                                          SELECT
+                                          C.Initials companySigla, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, 
+                                          SUM(AV) AV,
+                                          SUM(NC) NC,
+                                          MAX(PontosIndicador) PontosIndicador,
+                                          MAX(PontosAtingidos) PontosAtingidos
+                                          -- CASE WHEN CASE WHEN SUM(PontosIndicador) = 0 OR SUM(PontosIndicador) IS NULL THEN 0 ELSE SUM(PontosAtingidos) / SUM(PontosIndicador) END < 0.7 THEN 0 ELSE SUM(PontosAtingidos) END PontosAtingidos
+                                          FROM ParStructure Reg
+                                          LEFT JOIN ParCompanyXStructure CS
+                                          ON CS.ParStructure_Id = Reg.Id
+                                          left join ParCompany C
+                                          on C.Id = CS.ParCompany_Id
+                                          left join #SCORE S  
+                                          on C.Id = S.ParCompany_Id LEFT JOIN ParCompany PC ON S.ParCompany_id = pc.id";
+            return query;
+        }
+
         public static string sqlBase(DataCarrierFormulario form, bool evolutivo = false)
         {
             DateTime dtIni = form._dataInicio;
@@ -118,8 +278,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  "\n  																																																																						                                               " +
  "\n  DECLARE @I INT = 0																																																																		                                               " +
  "\n  																																																																						                                               " +
- "\n  WHILE (SELECT @I) < 1																																																																	                                               " +
- "\n  BEGIN  																																																																					                                           " +
  "\n     																																																																						                                           " +
  "\n      																																																																					                                               " +
  "\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
@@ -155,7 +313,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  "\n UNIDADE INT NULL, " +
                  "\n INDICADOR INT NULL, " +
                  "\n AM INT NULL, " +
-                 "\n DEF_AM INT NULL " +
+                 "\n DEF_AM INT NULL, " +
+                 "\n DATA DATE NULL " +
                  "\n ) " +
 
 
@@ -170,8 +329,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
                  "\n     C.Id AS UNIDADE " +
                  "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                 "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
+                 "\n , COUNT(DISTINCT CONCAT(c2.Period, '-', c2.shift, '-', C2.EvaluationNumber, '-', C2.Sample, '-', cast(cast(C2.CollectionDate as date) as varchar))) AM " +
                  "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
+                 "\n , CAST(C2.COLLECTIONDATE AS DATE) AS DATA " +
                  //"\n     , C2.EvaluationNumber AS AV " +
                  // "\n     , C2.Sample AS AM " +
                  //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
@@ -185,7 +345,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  "\n     and C2.NotEvaluatedIs = 0 " +
                  "\n     and C2.Duplicated = 0 " +
                  "\n     and L1.ParConsolidationType_Id = 4 " +
-                 "\n     group by C.Id, ParLevel1_Id" +
+                 "\n     group by C.Id, ParLevel1_Id, CAST(C2.COLLECTIONDATE AS DATE) " +
             /*
             "\n ) TAB " +
             "\n GROUP BY UNIDADE, INDICADOR " +
@@ -221,15 +381,53 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  "\n                                                                                                                                                                                                                                                                        					                                               " +
  "\n    insert into #freq                                                                                                                                                                                                                                                                                                                   " +
  "\n    SELECT                                                                                                                                                                                                                                                                                                                              " +
- "\n    CL.Id                                                                                                                                                                                                                                                                                                                               " +
- "\n    , CL.Name                                                                                                                                                                                                                                                                                                                           " +
+
+ "\n    CL.Id   ,                                                                                                                                                                                                                                                                                                                            " +
+ @"(
+             SELECT TOP 1 (select name from parcluster where id = L1Ca.ParCluster_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             ) ClusterName" +
+
+ //"\n    , CL.Name                                                                                                                                                                                                                                                                                                                           " +
  "\n    , S.Id                                                                                                                                                                                                                                                                                                                              " +
  "\n    , S.Name                                                                                                                                                                                                                                                                                                                            " +
  "\n    , C.Id                                                                                                                                                                                                                                                                                                                              " +
- "\n    , C.Name                                                                                                                                                                                                                                                                                                                            " +
- "\n    , L1C.ParCriticalLevel_Id                                                                                                                                                                                                                                                                                                           " +
- "\n    , CRL.Name                                                                                                                                                                                                                                                                                                                          " +
- "\n    , L1C.Points                                                                                                                                                                                                                                                                                                                        " +
+ "\n    , C.Name ,                                                                                                                                                                                                                                                                                                                           " +
+ @"(
+             SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             ) CriticalLevel_Id," +
+
+ //"\n    , L1C.ParCriticalLevel_Id                                                                                                                                                                                                                                                                                                           " +
+ @"(
+             SELECT top 1 (select name from parcriticallevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             ) Name," +
+
+ //"\n    , CRL.Name                                                                                                                                                                                                                                                                                                                          " +
+ @"(
+             SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             ) Points                                                                                                                                                                                                                                              
+             " +
+
+ //"\n    , L1C.Points                                                                                                                                                                                                                                                                                                                        " +
  "\n                                                                                                                                                                                                                                                                                                                                        " +
  "\n    FROM ParCompany C                                                                                                                                                                                                                                                                                                                   " +
  "\n                                                                                                                                                                                                                                                                                                                                        " +
@@ -269,10 +467,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  "\n   /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              					                                               " +
  "\n   CREATE TABLE #VOLUMES (                                                                                                                                                                                                                                                                                                              " +
  "\n 	DIASABATE INT NULL,                                                                                                                                                                                                                                                                                                                " +
- "\n 	VOLUMEPCC INT NULL, unitid int null                                                                                                                                                                                                                                                                                                                 " +
+ "\n 	VOLUMEPCC INT NULL, unitid int null, DATA DATE NULL                                                                                                                                                                                                                                                                                                                 " +
  "\n   )                                                                                                                                                                                                                                                                                                                                    " +
  "\n   INSERT INTO #VOLUMES                                                                                                                                                                                                                                                                    					                           " +
- "\n   SELECT COUNT(1) AS DIASABATE, SUM(Quartos) AS VOLUMEPCC, ParCompany_id as UnitId FROM VolumePcc1b WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL GROUP BY ParCompany_id                                                                                                  					                                                                   " +
+ "\n   SELECT COUNT(1) AS DIASABATE, SUM(Quartos) AS VOLUMEPCC, ParCompany_id as UnitId, DATA FROM VolumePcc1b WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL GROUP BY ParCompany_id, DATA                                                                                                  					                                                                   " +
  "\n                                                                                                                                                                                                                                                                                                                                        " +
  "\n   CREATE TABLE #DIASVERIFICACAO (                                                                                                                                                                                                                                                                                                      " +
  "\n 	DIASVERIFICACAO INT NULL,                                                                                                                                                                                                                                                                                                          " +
@@ -290,17 +488,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n                                                                                                                                                                                                                                                                                                                                        " +
  "\n   CREATE TABLE #NAPCC (                                                                                                                                                                                                                                                                                                                " +
  "\n 	NAPCC INT NULL,                                                                                                                                                                                                                                                                                                                    " +
- "\n 	UnitId INT NULL                                                                                                                                                                                                                                                                                                                    " +
+ "\n 	UnitId INT NULL, DATA DATE NULL                                                                                                                                                                                                                                                                                                                    " +
  "\n   )                                                                                                                                                                                                                                                                                                                                    " +
  "\n   INSERT INTO #NAPCC  					                                                                                                                                                                                                                                               					                               " +
  "\n   SELECT                                                                                                                                                                                                                                                              					                                               " +
  "\n            COUNT(1) as NAPCC,                                                                                                                                                                                                                                                                                                          " +
- "\n 		   UnitId                                                                                                                                                                                                                                                 						                                               " +
+ "\n 		   UnitId, DATA                                                                                                                                                                                                                                                 						                                               " +
  "\n            FROM                                                                                                                                                                                                                                                     						                                           " +
  "\n       (                                                                                                                                                                                                                                                             						                                           " +
  "\n                SELECT                                                                                                                                                                                                                                               						                                           " +
  "\n                COUNT(1) AS NA,                                                                                                                                                                                                                                                                                                         " +
- "\n 			   C2.UnitId                                                                                                                                                                                                                                      						                                                   " +
+ "\n 			   C2.UnitId, CAST(C2.COLLECTIONDATE AS DATE) DATA                                                                                                                                                                                                                                      						                                                   " +
  "\n                FROM CollectionLevel2 C2                                                                                                                                                                                                                             						                                           " +
  "\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
  "\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
@@ -308,10 +506,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  "\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
  "\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
  "\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
- "\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
+ "\n                GROUP BY C2.ID, C2.UnitId, CAST(C2.COLLECTIONDATE AS DATE)                                                                                                                                                                                                                                       						                                   " +
  "\n            ) NA		                                                                                                                                                                                                                                                        						                                   " +
  "\n            WHERE NA = 2                                                                                                                                                                                                                                             						                                           " +
- "\n 		   GROUP BY UnitId                                                                                                                                                                                                                                                                                                                                                                                                                                " +
+ "\n 		   GROUP BY UnitId, DATA                                                                                                                                                                                                                                                                                                                                                                                                                                " +
  "\n   																																																																						                                               " +
  "\n   INSERT INTO #SCORE																																						" +
  "\n SELECT                                                                                                                                                                                                                                                                                                                                                        " +
@@ -338,7 +536,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  "\n  , case when(isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) > 100 then 100 else (isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) end as Scorecard " +
 
  "\n  , TipoScore " +
- "\n  , max(mesData) mesData FROM                                                                                                                                                                                                                                           " +
+ "\n  , MAX(mesData) FROM                                                                                                                                                                                                                                           " +
             "\n (                                                                                                                                                                                                                                                                   " +
             "\n SELECT                                                                                                                                                                                                                                                              " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -485,12 +683,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
 
- "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
-   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
-   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
-   "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = 0)) AS RegionalName                                                                                                                                                                         " +
-   "\n , ISNULL(CL1.UnitId, 0) AS ParCompanyId                                                                                                                                                                                                                       " +
-   "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = 0)) AS ParCompanyName                                                                                                                                                                        " +
+ "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
+   "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
+   "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
+   "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
+   "\n , ISNULL(CL1.UnitId, (SELECT top 1 unitId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyId                                                                                                                                                                                                                       " +
+   "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
    "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
    "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
    "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
@@ -503,14 +701,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n             -- AND L1Ca.IsActive = 1 " +
+    "\n             AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
     "\n         ORDER BY L1Ca.EffectiveDate  desc " +
      "\n	)" +
    "" +
-   "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+   "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Criterio                                                                                                                                                                      " +
    "\n , ISNULL(" +
    "( " +
 
@@ -520,13 +718,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n            -- AND L1Ca.IsActive = 1 " +
+    "\n            AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
     "\n         ORDER BY L1Ca.EffectiveDate  desc " +
      "\n	)" +
-   ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+   ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS CriterioName                                                                                                                                                                  " +
    "\n , ISNULL(" +
    "( " +
 
@@ -536,14 +734,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-    "\n           --  AND L1Ca.IsActive = 1 " +
+    "\n           AND L1Ca.IsActive = 1 " +
 
     "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
     "\n         ORDER BY L1Ca.EffectiveDate desc  " +
      "\n	)" +
-   ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
-   "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
+   ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
+   "\n   , ISNULL(CL1.ConsolidationDate, FT.DATA) as mesData                                                                                                                                                                                                                       " +
 
 
  "\n                                                                                                                                                                                                                                                                     " +
@@ -567,14 +765,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+             "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE))                                                                                                                                                                                         " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-             "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
+             "\n       WHEN CT.Id IN(4) THEN AVG(A4.AM)																																																													                                               " +
              "\n     END                                                                                                                                                                                                                                                               					                                               " +
 
 
@@ -588,14 +786,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+             "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE))                                                                                                                                                                                         " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-             "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
+             "\n       WHEN CT.Id IN(4) THEN AVG(A4.AM)																																																													                                               " +
              "\n     END                                                                                                                                                                                                                                                               					                                               " +
 
 
@@ -604,7 +802,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
             "\n       CASE                                                                                                                                                                                                                                                          " +
             "\n                                                                                                                                                                                                                                                                     " +
-            //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+            "\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -618,7 +816,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
             "\n       CASE                                                                                                                                                                                                                                                          " +
             "\n                                                                                                                                                                                                                                                                     " +
-            //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+            "\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -639,14 +837,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
             "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+             "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE))                                                                                                                                                                                         " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-             "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
+             "\n       WHEN CT.Id IN(4) THEN AVG(A4.AM)																																																													                                               " +
              "\n     END                                                                                                                                                                                                                                                               					                                               " +
 
             "\n                                                                                                                                                                                                                                                                 " +
@@ -661,21 +859,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n           /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                      " +
             "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+             "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE))                                                                                                                                                                                         " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-             "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
+             "\n       WHEN CT.Id IN(4) THEN AVG(A4.AM)																																																													                                               " +
              "\n     END                                                                                                                                                                                                                                                               					                                               " +
             "\n             /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                    " +
             "\n             -  /* SUBTRAÇÃO */                                                                                                                                                                                                                                      " +
             "\n                /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                 " +
             "\n           CASE                                                                                                                                                                                                                                                      " +
             "\n                                                                                                                                                                                                                                                                     " +
-            //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+            "\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -688,7 +886,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n           /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                      " +
             "\n           CASE                                                                                                                                                                                                                                                      " +
             "\n                                                                                                                                                                                                                                                                     " +
-            //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+            "\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -706,14 +904,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
             "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+             "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
-             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+             "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id AND DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE))                                                                                                                                                                                         " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
              "\n                                                                                                                                                                                                                                                                       					                                               " +
              "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-             "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
+             "\n       WHEN CT.Id IN(4) THEN AVG(A4.AM)																																																													                                               " +
              "\n     END                                                                                                                                                                                                                                                               					                                               " +
             "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -724,11 +922,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n  ,                                                                                                                                                                                                                                                                  " +
             "\n  CASE                                                                                                                                                                                                                                                               " +
             "\n                                                                                                                                                                                                                                                                     " +
-            "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-            "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+            "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+            "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n     ELSE                                                                                                                                                                                                                                                            " +
-            "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+            "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
             "\n  END                                                                                                                                                                                                                                                                " +
             "\n  AS META                                                                                                                                                                                                                                                            " +
             "\n                                                                                                                                                                                                                                                                     " +
@@ -746,6 +944,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n LEFT JOIN #AMOSTRATIPO4 A4    (nolock)                                                                                                                                                                                                                                        " +
             "\n         ON A4.UNIDADE = C.Id                                                                                                                                                                                                                                      " +
             "\n         AND A4.INDICADOR = L1.ID                                                                                                                                 " +
+            "\n         AND A4.DATA = CAST(CL1.CONSOLIDATIONDATE AS DATE) " +
             "\n LEFT JOIN ParCompanyXStructure CS   (nolock)                                                                                                                                                                                                                                  " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n        ON CS.ParCompany_Id = C.Id                                                                                                                                                                                                                                   " +
@@ -764,40 +963,40 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n LEFT JOIN ParConsolidationType CT  (nolock)                                                                                                                                                                                                                                   " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
-            "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
+            "\n -- LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
             "\n                                                                                                                                                                                                                                                                     " +
-            "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
+            "\n        -- ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
             "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
  "\n  --------------------------                                                                                                                                                                                                                                                    " +
  "\n  --------------------------                                                                                                                                                                                                                                                    " +
  "\n                                                                                                                                                                                                                                                                                " +
- //"\n  LEFT JOIN                                                                                                                                                                                                                                                                     " +
- //"\n (                                                                                                                                                                                                                                                                              " +
- //"\n SELECT 25 AS INDICADOR, CASE WHEN DATAP IS NULL THEN DATAV ELSE DATAP END AS DATA, *,                                                                                                                                                                                                                                                     " +
- //"\n CASE WHEN ISNULL(V.DIASDEVERIFICACAO, 0) > ISNULL(P.DIASABATE, 0) THEN ISNULL(P.DIASABATE, 0) ELSE ISNULL(V.DIASDEVERIFICACAO, 0) END AS FREQ                                                                                                                                  " +
- //"\n FROM                                                                                                                                                                                                                                                                           " +
- //"\n (                                                                                                                                                                                                                                                                              " +
- //"\n SELECT Data AS DATAP, COUNT(1) DIASABATE, SUM(Quartos) VOLUMEPCC, ParCompany_id                                                                                                                                                                                                " +
- //"\n FROM VolumePcc1b(nolock)                                                                                                                                                                                                                                                       " +
- //"\n WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                 " +
- //"\n GROUP BY ParCompany_id, Data                                                                                                                                                                                                                                                   " +
- //"\n ) P                                                                                                                                                                                                                                                                            " +
- //"\n FULL JOIN                                                                                                                                                                                                                                                                      " +
- //"\n (                                                                                                                                                                                                                                                                              " +
- //"\n SELECT COUNT(1) AS DIASDEVERIFICACAO, UNITID, DATA AS DATAV                                                                                                                                                                                                                    " +
- //"\n FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA, cl1.UNITID FROM ConsolidationLevel1 CL1(nolock)                                                                                                                                                                             " +
- //"\n WHERE ParLevel1_Id = 24                                                                                                                                                                                                                                                        " +
- //"\n AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                      " +
- //"\n GROUP BY CONVERT(DATE, ConsolidationDate), UNITID) VT                                                                                                                                                                                                                          " +
- //"\n GROUP BY DATA, UNITID                                                                                                                                                                                                                                                          " +
- //"\n ) V                                                                                                                                                                                                                                                                            " +
- //"\n ON V.DATAV = P.DataP                                                                                                                                                                                                                                                           " +
- //"\n AND V.UnitId = P.ParCompany_id                                                                                                                                                                                                                                                 " +
- //"\n                                                                                                                                                                                                                                                                                " +
- //"\n ) FT                                                                                                                                                                                                                                                                           " +
- //"\n ON L1.Id = FT.INDICADOR                                                                                                                                                                                                                                                        " +
+ "\n  LEFT JOIN                                                                                                                                                                                                                                                                     " +
+ "\n (                                                                                                                                                                                                                                                                              " +
+ "\n SELECT 25 AS INDICADOR, CASE WHEN DATAP IS NULL THEN DATAV ELSE DATAP END AS DATA, *,                                                                                                                                                                                                                                                     " +
+ "\n CASE WHEN ISNULL(V.DIASDEVERIFICACAO, 0) > ISNULL(P.DIASABATE, 0) THEN ISNULL(P.DIASABATE, 0) ELSE ISNULL(V.DIASDEVERIFICACAO, 0) END AS FREQ                                                                                                                                  " +
+ "\n FROM                                                                                                                                                                                                                                                                           " +
+ "\n (                                                                                                                                                                                                                                                                              " +
+ "\n SELECT Data AS DATAP, COUNT(1) DIASABATE, SUM(Quartos) VOLUMEPCC, ParCompany_id                                                                                                                                                                                                " +
+ "\n FROM VolumePcc1b(nolock)                                                                                                                                                                                                                                                       " +
+ "\n WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                 " +
+ "\n GROUP BY ParCompany_id, Data                                                                                                                                                                                                                                                   " +
+ "\n ) P                                                                                                                                                                                                                                                                            " +
+ "\n FULL JOIN                                                                                                                                                                                                                                                                      " +
+ "\n (                                                                                                                                                                                                                                                                              " +
+ "\n SELECT COUNT(1) AS DIASDEVERIFICACAO, UNITID, DATA AS DATAV                                                                                                                                                                                                                    " +
+ "\n FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA, cl1.UNITID FROM ConsolidationLevel1 CL1(nolock)                                                                                                                                                                             " +
+ "\n WHERE ParLevel1_Id = 24                                                                                                                                                                                                                                                        " +
+ "\n AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                      " +
+ "\n GROUP BY CONVERT(DATE, ConsolidationDate), UNITID) VT                                                                                                                                                                                                                          " +
+ "\n GROUP BY DATA, UNITID                                                                                                                                                                                                                                                          " +
+ "\n ) V                                                                                                                                                                                                                                                                            " +
+ "\n ON V.DATAV = P.DataP                                                                                                                                                                                                                                                           " +
+ "\n AND V.UnitId = P.ParCompany_id                                                                                                                                                                                                                                                 " +
+ "\n                                                                                                                                                                                                                                                                                " +
+ "\n ) FT                                                                                                                                                                                                                                                                           " +
+ "\n ON L1.Id = FT.INDICADOR                                                                                                                                                                                                                                                        " +
  "\n                                                                                                                                                                                                                                                                                " +
  "\n  --------------------------                                                                                                                                                                                                                                                    " +
  "\n  --------------------------                                                                                                                                                                                                                                                    " +
@@ -816,12 +1015,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n     , L1.Name                                                                                                                                                                                                                                                       " +
             "\n     , CRL.Id                                                                                                                                                                                                                                                        " +
             "\n     , CRL.Name                                                                                                                                                                                                                                                      " +
-            //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
+            "\n     -- , L1C.Points                                                                                                                                                                                                                                                    " +
             "\n     , ST.Name                                                                                                                                                                                                                                                       " +
             "\n     , CT.Id                                                                                                                                                                                                                                                         " +
             "\n     , L1.HashKey " +
             "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
-            //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
+            "\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
             "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
             "\n                                                                                                                                                                                                                                                                     " +
             "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
@@ -845,15 +1044,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
  "\n   , CriterioName         " +
  "\n   , TipoScore            " +
 
- "\n    ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
+ "\n    ,CAST(mesData AS DATE)   ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
+ "\n    -- ORDER BY 11, 10 " +
  "\n    DROP TABLE #AMOSTRATIPO4                                                                                                                                                                                                                                                                                                            " +
  "\n    DROP TABLE #VOLUMES	                                                                                                                                                                                                                                                                                                               " +
  "\n    DROP TABLE #DIASVERIFICACAO                                                                                                                                                                                                                                                                                                         " +
  "\n    DROP TABLE #NAPCC	DROP TABLE #FREQ																																																														                                                       " +
- "\n  																																																																						                                               " +
- "\n    SET @I = @I + 1																																																																		                                               " +
- "\n  																																																																						                                               " +
- "\n  END                                                                                                                                                                                                                                                                                                                                   " +
+ "\n  	DROP TABLE #ConsolidationLevel																																																																					                                               " +
  "\n  																																																																						                                               " +
  "\n     ";
 
@@ -914,8 +1111,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   "\n  																																																																						                                               " +
   "\n  DECLARE @I INT = 0																																																																		                                               " +
   "\n  																																																																						                                               " +
-  "\n  WHILE (SELECT @I) < 1																																																																	                                               " +
-  "\n  BEGIN  																																																																					                                           " +
   "\n     																																																																						                                           " +
   "\n      																																																																					                                               " +
   "\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
@@ -967,7 +1162,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                   //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
                   "\n     C.Id AS UNIDADE " +
                   "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                  "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
+                  "\n , COUNT(DISTINCT CONCAT(c2.Period, '-', c2.shift, '-', C2.EvaluationNumber, '-', C2.Sample, '-', cast(cast(C2.CollectionDate as date) as varchar))) AM " +
                   "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
                   //"\n     , C2.EvaluationNumber AS AV " +
                   // "\n     , C2.Sample AS AM " +
@@ -1135,7 +1330,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   "\n  , case when(isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) > 100 then 100 else (isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) end as Scorecard " +
 
   "\n  , TipoScore " +
-  "\n  , max(mesData) mesData FROM                                                                                                                                                                                                                                           " +
+  "\n  , MAX(mesData) FROM                                                                                                                                                                                                                                           " +
              "\n (                                                                                                                                                                                                                                                                   " +
              "\n SELECT                                                                                                                                                                                                                                                              " +
              "\n                                                                                                                                                                                                                                                                     " +
@@ -1282,12 +1477,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
 
-  "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
-    "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
-    "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
-    "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = 0)) AS RegionalName                                                                                                                                                                         " +
-    "\n , ISNULL(CL1.UnitId, 0) AS ParCompanyId                                                                                                                                                                                                                       " +
-    "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = 0)) AS ParCompanyName                                                                                                                                                                        " +
+  "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
+    "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
+    "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
+    "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
+    "\n , ISNULL(CL1.UnitId, (SELECT top 1 unitId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyId                                                                                                                                                                                                                       " +
+    "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
     "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
     "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
     "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
@@ -1300,14 +1495,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n           --  AND L1Ca.IsActive = 1 " +
+     "\n             AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
      "\n         ORDER BY L1Ca.EffectiveDate  desc " +
       "\n	)" +
     "" +
-    "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
+    "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Criterio                                                                                                                                                                      " +
     "\n , ISNULL(" +
     "( " +
 
@@ -1317,13 +1512,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n           --  AND L1Ca.IsActive = 1 " +
+     "\n             AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
      "\n         ORDER BY L1Ca.EffectiveDate  desc " +
       "\n	)" +
-    ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
+    ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS CriterioName                                                                                                                                                                  " +
     "\n , ISNULL(" +
     "( " +
 
@@ -1333,14 +1528,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
      "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
-     "\n           --  AND L1Ca.IsActive = 1 " +
+     "\n             AND L1Ca.IsActive = 1 " +
 
      "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
 
      "\n         ORDER BY L1Ca.EffectiveDate desc  " +
       "\n	)" +
-    ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
-    "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
+    ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
+    "\n   , ISNULL(CL1.ConsolidationDate, FT.DATA) as mesData                                                                                                                                                                                                                       " +
 
 
   "\n                                                                                                                                                                                                                                                                     " +
@@ -1364,7 +1559,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
              "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
-              ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+              "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
               "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -1385,7 +1580,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
             "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
-              ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+              "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
               "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -1401,7 +1596,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
              "\n       CASE                                                                                                                                                                                                                                                          " +
              "\n                                                                                                                                                                                                                                                                     " +
-             //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+             "\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
              "\n                                                                                                                                                                                                                                                                     " +
@@ -1415,7 +1610,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
              "\n       CASE                                                                                                                                                                                                                                                          " +
              "\n                                                                                                                                                                                                                                                                     " +
-             //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+             "\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
              "\n                                                                                                                                                                                                                                                                     " +
@@ -1436,7 +1631,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
              "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
-              //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+              "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
               "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -1458,7 +1653,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n           /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                      " +
              "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
-              //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+              "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
               "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -1472,7 +1667,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n                /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                 " +
              "\n           CASE                                                                                                                                                                                                                                                      " +
              "\n                                                                                                                                                                                                                                                                     " +
-             //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+             "\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
              "\n                                                                                                                                                                                                                                                                     " +
@@ -1485,7 +1680,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n           /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                      " +
              "\n           CASE                                                                                                                                                                                                                                                      " +
              "\n                                                                                                                                                                                                                                                                     " +
-             //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
+             "\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
              "\n                                                                                                                                                                                                                                                                     " +
@@ -1503,7 +1698,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
              "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
-              //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
+              "\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
               "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
               "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -1521,11 +1716,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n  ,                                                                                                                                                                                                                                                                  " +
              "\n  CASE                                                                                                                                                                                                                                                               " +
              "\n                                                                                                                                                                                                                                                                     " +
-             "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-             "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+             "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+             "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n     ELSE                                                                                                                                                                                                                                                            " +
-             "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+             "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
              "\n  END                                                                                                                                                                                                                                                                " +
              "\n  AS META                                                                                                                                                                                                                                                            " +
              "\n                                                                                                                                                                                                                                                                     " +
@@ -1561,40 +1756,40 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n LEFT JOIN ParConsolidationType CT  (nolock)                                                                                                                                                                                                                                   " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
-             "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
+             "\n -- LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
              "\n                                                                                                                                                                                                                                                                     " +
-             "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
+             "\n        -- ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
              "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
   "\n  --------------------------                                                                                                                                                                                                                                                    " +
   "\n  --------------------------                                                                                                                                                                                                                                                    " +
   "\n                                                                                                                                                                                                                                                                                " +
-  //"\n  LEFT JOIN                                                                                                                                                                                                                                                                     " +
-  //"\n (                                                                                                                                                                                                                                                                              " +
-  //"\n SELECT 25 AS INDICADOR, CASE WHEN DATAP IS NULL THEN DATAV ELSE DATAP END AS DATA, *,                                                                                                                                                                                                                                                     " +
-  //"\n CASE WHEN ISNULL(V.DIASDEVERIFICACAO, 0) > ISNULL(P.DIASABATE, 0) THEN ISNULL(P.DIASABATE, 0) ELSE ISNULL(V.DIASDEVERIFICACAO, 0) END AS FREQ                                                                                                                                  " +
-  //"\n FROM                                                                                                                                                                                                                                                                           " +
-  //"\n (                                                                                                                                                                                                                                                                              " +
-  //"\n SELECT Data AS DATAP, COUNT(1) DIASABATE, SUM(Quartos) VOLUMEPCC, ParCompany_id                                                                                                                                                                                                " +
-  //"\n FROM VolumePcc1b(nolock)                                                                                                                                                                                                                                                       " +
-  //"\n WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                 " +
-  //"\n GROUP BY ParCompany_id, Data                                                                                                                                                                                                                                                   " +
-  //"\n ) P                                                                                                                                                                                                                                                                            " +
-  //"\n FULL JOIN                                                                                                                                                                                                                                                                      " +
-  //"\n (                                                                                                                                                                                                                                                                              " +
-  //"\n SELECT COUNT(1) AS DIASDEVERIFICACAO, UNITID, DATA AS DATAV                                                                                                                                                                                                                    " +
-  //"\n FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA, cl1.UNITID FROM ConsolidationLevel1 CL1(nolock)                                                                                                                                                                             " +
-  //"\n WHERE ParLevel1_Id = 24                                                                                                                                                                                                                                                        " +
-  //"\n AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                      " +
-  //"\n GROUP BY CONVERT(DATE, ConsolidationDate), UNITID) VT                                                                                                                                                                                                                          " +
-  //"\n GROUP BY DATA, UNITID                                                                                                                                                                                                                                                          " +
-  //"\n ) V                                                                                                                                                                                                                                                                            " +
-  //"\n ON V.DATAV = P.DataP                                                                                                                                                                                                                                                           " +
-  //"\n AND V.UnitId = P.ParCompany_id                                                                                                                                                                                                                                                 " +
-  //"\n                                                                                                                                                                                                                                                                                " +
-  //"\n ) FT                                                                                                                                                                                                                                                                           " +
-  //"\n ON L1.Id = FT.INDICADOR                                                                                                                                                                                                                                                        " +
+  "\n  LEFT JOIN                                                                                                                                                                                                                                                                     " +
+  "\n (                                                                                                                                                                                                                                                                              " +
+  "\n SELECT 25 AS INDICADOR, CASE WHEN DATAP IS NULL THEN DATAV ELSE DATAP END AS DATA, *,                                                                                                                                                                                                                                                     " +
+  "\n CASE WHEN ISNULL(V.DIASDEVERIFICACAO, 0) > ISNULL(P.DIASABATE, 0) THEN ISNULL(P.DIASABATE, 0) ELSE ISNULL(V.DIASDEVERIFICACAO, 0) END AS FREQ                                                                                                                                  " +
+  "\n FROM                                                                                                                                                                                                                                                                           " +
+  "\n (                                                                                                                                                                                                                                                                              " +
+  "\n SELECT Data AS DATAP, COUNT(1) DIASABATE, SUM(Quartos) VOLUMEPCC, ParCompany_id                                                                                                                                                                                                " +
+  "\n FROM VolumePcc1b(nolock)                                                                                                                                                                                                                                                       " +
+  "\n WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                 " +
+  "\n GROUP BY ParCompany_id, Data                                                                                                                                                                                                                                                   " +
+  "\n ) P                                                                                                                                                                                                                                                                            " +
+  "\n FULL JOIN                                                                                                                                                                                                                                                                      " +
+  "\n (                                                                                                                                                                                                                                                                              " +
+  "\n SELECT COUNT(1) AS DIASDEVERIFICACAO, UNITID, DATA AS DATAV                                                                                                                                                                                                                    " +
+  "\n FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA, cl1.UNITID FROM ConsolidationLevel1 CL1(nolock)                                                                                                                                                                             " +
+  "\n WHERE ParLevel1_Id = 24                                                                                                                                                                                                                                                        " +
+  "\n AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                      " +
+  "\n GROUP BY CONVERT(DATE, ConsolidationDate), UNITID) VT                                                                                                                                                                                                                          " +
+  "\n GROUP BY DATA, UNITID                                                                                                                                                                                                                                                          " +
+  "\n ) V                                                                                                                                                                                                                                                                            " +
+  "\n ON V.DATAV = P.DataP                                                                                                                                                                                                                                                           " +
+  "\n AND V.UnitId = P.ParCompany_id                                                                                                                                                                                                                                                 " +
+  "\n                                                                                                                                                                                                                                                                                " +
+  "\n ) FT                                                                                                                                                                                                                                                                           " +
+  "\n ON L1.Id = FT.INDICADOR                                                                                                                                                                                                                                                        " +
   "\n                                                                                                                                                                                                                                                                                " +
   "\n  --------------------------                                                                                                                                                                                                                                                    " +
   "\n  --------------------------                                                                                                                                                                                                                                                    " +
@@ -1613,12 +1808,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              "\n     , L1.Name                                                                                                                                                                                                                                                       " +
              "\n     , CRL.Id                                                                                                                                                                                                                                                        " +
              "\n     , CRL.Name                                                                                                                                                                                                                                                      " +
-             //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
+             "\n     --, L1C.Points                                                                                                                                                                                                                                                    " +
              "\n     , ST.Name                                                                                                                                                                                                                                                       " +
              "\n     , CT.Id                                                                                                                                                                                                                                                         " +
              "\n     , L1.HashKey " +
              "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
-             //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
+             "\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
              "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
              "\n                                                                                                                                                                                                                                                                     " +
              "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
@@ -1642,15 +1837,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
   "\n   , CriterioName         " +
   "\n   , TipoScore            " +
 
-  "\n    ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
+  "\n    --,CAST(mesData AS DATE)   ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
+  "\n    ORDER BY 11, 10 " +
   "\n    DROP TABLE #AMOSTRATIPO4                                                                                                                                                                                                                                                                                                            " +
   "\n    DROP TABLE #VOLUMES	                                                                                                                                                                                                                                                                                                               " +
   "\n    DROP TABLE #DIASVERIFICACAO                                                                                                                                                                                                                                                                                                         " +
   "\n    DROP TABLE #NAPCC	DROP TABLE #FREQ																																																														                                                       " +
-  "\n  																																																																						                                               " +
-  "\n    SET @I = @I + 1																																																																		                                               " +
-  "\n  																																																																						                                               " +
-  "\n  END                                                                                                                                                                                                                                                                                                                                   " +
+  "\n  	 DROP TABLE #ConsolidationLevel																																																																					                                               " +
   "\n  																																																																						                                               " +
   "\n     ";
 
@@ -1704,96 +1897,66 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
-            //_mock = new List<VisaoGeralDaAreaResultSet>();
-
-            //_mock.Add(new VisaoGeralDaAreaResultSet()
-            //{
-            //    regId = 1,
-            //    regName = "reg1",
-            //    scorecardJbs = 80M,
-            //    scorecardJbsReg = 26.5M
-            //});
-
-            //_mock.Add(new VisaoGeralDaAreaResultSet()
-            //{
-            //    regId = 2,
-            //    regName = "reg2",
-            //    scorecardJbs = 80M,
-            //    scorecardJbsReg = 66.2M
-            //});
-
             _list = new List<VisaoGeralDaAreaResultSet>();
 
-            string query = VisaoGeralDaAreaApiController.sqlBase1(form) +
-            //string query = ""+
-
-            //query 1 retorna o valor da empresa    
-            //"\n  																																																																						                                               " +
-            "\n declare @valorEmpresa decimal(5,2) " +
-//"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
-//"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 " +
-
-@"
-     SELECT
-    @valorEmpresa = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end
-        FROM ParStructure Reg  with(nolock)
-     LEFT JOIN ParCompanyXStructure CS  with(nolock)
-  ON CS.ParStructure_Id = Reg.Id
-     left join ParCompany C  with(nolock)
-  on C.Id = CS.ParCompany_Id
-     left join ParLevel1 P1  with(nolock)
-  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
-     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
-  ON PP.ParLevel1_Id = P1.Id
-     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
-  ON PP.ParGroupParLevel1_Id = PP1.Id
-     LEFT JOIN #SCORE S  with (nolock)
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
-  WHERE 1 = 1
-  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
-  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
-" +
 
 
-            ////query 2 retorna o valor da regional       
-            //"\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
-            //"\n   Reg.Name regName,                                                                                                                                                                                                                                                                                                                " +
-            //"\n   Reg.Id regId,                                                                                                                                                                                                                                                                                                                      " +
-            //"\n @valorEmpresa as scorecardJbs, " +
-            ////"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbs,                                                                                                                                                                               " +
-            //"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbsReg                                                                                                                                                                             " +
-            //"\n   FROM ParStructure Reg                                                                                                                                                                                                                                                                                                                " +
-            //"\n   left join #SCORE S                                                                                                                                                                                                                                                                                                                   " +
-            //"\n   on S.Regional = Reg.Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id                                                                                                                                                                                                                                                                                                               " +
-            //"\n   where                                                                                                                                                                                                                                                                                                            " +
-            //"\n   Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 AND PC.IsActive = 1                                                                                                                                                                                                                                                                                                                  " +
-            //"\n   GROUP BY Reg.Name, Reg.id ORDER BY 4 DESC   ";
+            string query = VisaoGeralDaAreaApiController.sqlBase(form) +
 
-            $@" SELECT Reg.Name as regName, Reg.id as regId,
- @valorEmpresa as scorecardJbs,
- case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end as scorecardJbsReg
- FROM ParStructure Reg
-  LEFT JOIN ParCompanyXStructure CS
-  ON CS.ParStructure_Id = Reg.Id
-  left join ParCompany C
-  on C.Id = CS.ParCompany_Id
-  left join ParLevel1 P1
-  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
-  LEFT JOIN ParGroupParLevel1XParLevel1 PP
-  ON PP.ParLevel1_Id = P1.Id
-  LEFT JOIN ParGroupParLevel1 PP1
-  ON PP.ParGroupParLevel1_Id = PP1.Id
- LEFT JOIN #SCORE S 
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id
-  WHERE 1 = 1
-  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
- { whereClusterGroup }
- { whereCluster }
- { whereStructure }
- { whereCriticalLevel }
- -- { whereUnit }
- GROUP BY Reg.Name , Reg.id
- ORDER BY 4 DESC ";
+
+         @" 
+        
+        declare @valorEmpresa float 
+        
+        SELECT
+          @valorEmpresa = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end 
+          FROM " + VisaoGeralDaAreaApiController.sqlBaseGraficosVGA() +
+        @"
+        where (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) 
+        
+        " + whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+            @"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND C.IsActive = 1        
+            GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+        
+            ) AAA
+        
+            GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+            ) A
+        
+        
+        SELECT
+          regName,
+          regId,
+          @valorEmpresa as scorecardJbs, 
+          -- case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull([PONTOS ATINGIDOS OK], 0)) / sum(isnull(PontosIndicador, 0)) * 100 end scorecardJbsReg
+          case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end scorecardJbsReg
+          FROM " + VisaoGeralDaAreaApiController.sqlBaseGraficosVGA() +
+        @"
+        where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) 
+        
+        " + whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+            @"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND C.IsActive = 1
+            GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+        
+            ) AAA
+        
+            GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+            ) A
+        
+        GROUP BY RegId, RegName
+        ORDER BY 4 DESC 
+        ";
+
 
 
 
@@ -1872,82 +2035,77 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             _list = new List<VisaoGeralDaAreaResultSet>();
 
+            string queryBaseGrafico2 = VisaoGeralDaAreaApiController.sqlBaseGraficosVGA();
+
             string query = VisaoGeralDaAreaApiController.sqlBase(form) +
+                    @"
+                    declare @valorEmpresa float 
+                    declare @valorRegional float 
+                      
+                     SELECT
+                      @valorEmpresa = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end
+                      FROM " + queryBaseGrafico2 +
 
-//  "\n declare @valorEmpresa decimal(5,2) " +
-//"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
-//"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 " +
+                      @" 
+                         where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)
 
+                    " + whereClusterGroup +
+                         whereCluster +
+                         whereStructure +
+                         whereCriticalLevel +
+                      @"
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                        AND C.IsActive = 1
+                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
-"\n declare @valorEmpresa decimal(5,2) " +
-"\n declare @valorRegional decimal(5, 2) " +
+                      ) AAA
 
-@"
-     SELECT
-    @valorEmpresa = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end
-        FROM ParStructure Reg  with(nolock)
-     LEFT JOIN ParCompanyXStructure CS  with(nolock)
-  ON CS.ParStructure_Id = Reg.Id
-     left join ParCompany C  with(nolock)
-  on C.Id = CS.ParCompany_Id
-     left join ParLevel1 P1  with(nolock)
-  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
-     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
-  ON PP.ParLevel1_Id = P1.Id
-     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
-  ON PP.ParGroupParLevel1_Id = PP1.Id
-     LEFT JOIN #SCORE S  with (nolock)
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
-  WHERE 1 = 1
-  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
-  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
-" +
+                      GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      ) A
 
+                      SELECT
+                      @valorRegional = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end 
+                      FROM " + queryBaseGrafico2 +
 
-@"
-     SELECT
-    @valorRegional = case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end
-        FROM ParStructure Reg  with(nolock)
-     LEFT JOIN ParCompanyXStructure CS  with(nolock)
-  ON CS.ParStructure_Id = Reg.Id
-     left join ParCompany C  with(nolock)
-  on C.Id = CS.ParCompany_Id
-     left join ParLevel1 P1  with(nolock)
-  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
-     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
-  ON PP.ParLevel1_Id = P1.Id
-     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
-  ON PP.ParGroupParLevel1_Id = PP1.Id
-     LEFT JOIN #SCORE S  with (nolock)
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
-	INNER JOIN ParCompany PC 
-  ON S.ParCompany_id = pc.id 
-  WHERE 1 = 1
-  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null
-  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
-" +
-"\n  AND Reg.Id = '" + form.Query.ToString() + "' AND pC.IsActive = 1 " +
+                      @"
+                       where Reg.Id = '" + form.Query.ToString() + @"' AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) 
+                      " + whereClusterGroup +
+                         whereCluster +
+                         whereStructure +
+                         whereCriticalLevel +
+                      @"
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                        AND C.IsActive = 1  
+                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
+                      ) AAA
 
-"\n  SELECT " +
-"\n  C.Initials companySigla, " +
-"\n  case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end companyScorecard, " +
-"\n  @valorEmpresa as scorecardJbs, " +
-"\n  @valorRegional as scorecardJbsReg " +
-"\n  FROM ParStructure Reg " +
-"\n  LEFT JOIN ParCompanyXStructure CS " +
-"\n  ON CS.ParStructure_Id = Reg.Id " +
-"\n  left join ParCompany C " +
-"\n  on C.Id = CS.ParCompany_Id " +
-"\n  left join #SCORE S  " +
-"\n  on C.Id = S.ParCompany_Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id  " +
-"\n  where Reg.Id = '" + form.Query.ToString() + "' AND pC.IsActive = 1 " +
-     whereClusterGroup +
-     whereCluster +
-     whereStructure +
-     whereCriticalLevel +
-// whereUnit +
-"\n  GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials ORDER BY 2 DESC ";
+                      GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      ) A
+
+                      SELECT companySigla, 
+                       case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end AS companyScorecard,
+                      @valorEmpresa as scorecardJbs, 
+                      @valorRegional as scorecardJbsReg
+                      FROM " + queryBaseGrafico2 +
+                      @"
+                        where Reg.Id = '" + form.Query.ToString() + @"'  AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)
+
+                      " + whereClusterGroup +
+                         whereCluster +
+                         whereStructure +
+                         whereCriticalLevel +
+                      @"
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                        AND C.IsActive = 1  
+                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+
+                      ) AAA
+
+                      GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      ) A
+                      group by companySigla
+                      ORDER BY 2 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -2196,12 +2354,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                   " \n CASE " +
 
 
-                     " \n WHEN(SELECT COUNT(1) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN " +
-                         " \n (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC) " +
+                     " \n WHEN(SELECT COUNT(1) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN " +
+                         " \n (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC) " +
 
 
                      " \n ELSE " +
-                         " \n (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC) " +
+                         " \n (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC) " +
                   " \n END " +
                   " \n AS Meta " +
                          " \n --, CL1.ConsolidationDate as Data " +
