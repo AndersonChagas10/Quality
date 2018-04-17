@@ -196,7 +196,8 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
+            ViewBag.PlanejamentosComFTA = fta.Panejamento_Id;
+            //ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq(fta);
             fta.IsFTA = true;
@@ -288,7 +289,7 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA2(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
+            ViewBag.PlanejamentosComFTA = fta.Panejamento_Id;//GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq2(fta);
             fta.IsFTA = true;
