@@ -1474,7 +1474,7 @@
     <value>Sign</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
-    <value>Slaughter signature</value>
+    <value>Department signature</value>
   </data>
   <data name="technical_signature" xml:space="preserve">
     <value>Technical signature</value>
@@ -1894,7 +1894,7 @@
     <value>Last</value>
   </data>
   <data name="insert_slaughter_signature" xml:space="preserve">
-    <value>Insert Slaughter Signature</value>
+    <value>Insert Department Signature</value>
   </data>
   <data name="insert_technical_signature" xml:space="preserve">
     <value>Insert Technical Signature</value>

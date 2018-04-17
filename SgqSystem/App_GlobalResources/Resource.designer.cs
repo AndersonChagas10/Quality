@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -277,7 +277,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows less privileged users to edit the Tasks / Samples Related to Monitoring Linked to this Audit.
         ///   Looks up a localized string similar to Allows less privileged users to edit the Tasks / Samples Related to Monitoring Linked to this Audit.
         /// </summary>
         internal static string allows_less_privileged_users_to_edit_the_tasks_samples {
@@ -2780,7 +2779,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert Slaughter Signature.
+        ///   Looks up a localized string similar to Insert Department Signature.
         /// </summary>
         internal static string insert_slaughter_signature {
             get {
@@ -2861,6 +2860,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is partial save.
+        /// </summary>
+        internal static string isPartialSave_popover {
+            get {
+                return ResourceManager.GetString("isPartialSave_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A tarefa se repete a cada numero de pontos  da lata na Recravação.
         /// </summary>
         internal static string IsPointLess {
@@ -2875,16 +2883,6 @@ namespace Resources {
         internal static string IsRecravacao {
             get {
                 return ResourceManager.GetString("IsRecravacao", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Is active.
-        ///   Looks up a localized string similar to Is partial save.
-        /// </summary>
-        internal static string isPartialSave_popover {
-            get {
-                return ResourceManager.GetString("isPartialSave_popover", resourceCulture);
             }
         }
         
@@ -4285,7 +4283,6 @@ namespace Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Origionation Date.
-        ///   Looks up a localized string similar to Origionation Date.
         /// </summary>
         internal static string origionation_date {
             get {
@@ -4519,7 +4516,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Planning.
         ///   Looks up a localized string similar to Planning.
         /// </summary>
         internal static string planning {
@@ -5942,7 +5938,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Slaughter signature.
+        ///   Looks up a localized string similar to Department signature.
         /// </summary>
         internal static string slaughter_signature {
             get {
