@@ -9,6 +9,8 @@ namespace PlanoAcaoCore
     public class Pa_Planejamento : Pa_BaseObject
     {
 
+        public bool EmDia { get; set; } = true;
+
         #region Estrategico
 
         [Display(Name = "Diretoria")]
@@ -550,6 +552,11 @@ LEFT JOIN Pa_Dimensao DIME
             var acoes = Pa_Acao.Listar();
             var remover = new List<int>();
 
+            var statusAberto = new int[] { 1, 5, 6 };
+            var statusFechado = new int[] { 3, 4, 7, 8 };
+
+            var dtInit = DTO.Helpers.Guard.ParseDateToSqlV2(dataInit, DTO.Helpers.Guard.CultureCurrent.BR);
+            var dtFim = DTO.Helpers.Guard.ParseDateToSqlV2(dataFim, DTO.Helpers.Guard.CultureCurrent.BR);
 
             foreach (var i in planejamentos)
             {
@@ -595,6 +602,10 @@ LEFT JOIN Pa_Dimensao DIME
                 var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
                 if (acoesTmp.Count() > 0)
                 {
+                    i.EmDia = 
+                        (i.DataFim <= dtFim) ||
+                        !(acoesTmp.Any(a => statusAberto.Contains(a.Status)) && i.DataFim <= dtFim);
+
                     foreach (var k in acoesTmp)
                     {
                         var planTemp = new Pa_Planejamento();
@@ -661,13 +672,13 @@ LEFT JOIN Pa_Dimensao DIME
                 }
             }
 
-            var dtInit = DTO.Helpers.Guard.ParseDateToSqlV2(dataInit, DTO.Helpers.Guard.CultureCurrent.BR);
-            var dtFim = DTO.Helpers.Guard.ParseDateToSqlV2(dataFim, DTO.Helpers.Guard.CultureCurrent.BR);
-
-            var statusAberto = new int[] { 1, 5, 6 };
-            var statusFechado = new int[] { 3, 4, 7, 8 };
-
-            retorno = retorno.Where(r => statusAberto.Contains(r.Acao.Status) || (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit) || r.Acao.Id == 0).ToList();
+            retorno = retorno.Where(r => 
+                (statusAberto.Contains(r.Acao.Status) && r.DataFim <= dtFim) //Ações abertas com projetos com data final menor que a selecionada
+                //|| (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit)
+                || (statusFechado.Contains(r.Acao.Status) && r.DataFim <= dtFim && r.DataFim >= dtInit) //Ações fechadas com projetos ainda em andamento
+                || r.Acao.Id == 0 //Projetos sem ações
+                || !r.EmDia //Projetos que não estão em dia
+            ).ToList();
 
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
 
