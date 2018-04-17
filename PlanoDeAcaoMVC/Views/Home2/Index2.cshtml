@@ -2917,18 +2917,20 @@
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
 
+            Chaveamento = [];
+            ChaveamentoObjetivo = [];
+
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
 
             let Categories = [];
             let Data = [];
-            let Chaveamento = [];
-
-            processarChaveamento();
 
             dadosfilter = dados;
 
             if (TipoGrafico == "Gerencia") {
+
+                processarChaveamento();
 
                 Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
 
@@ -3010,26 +3012,28 @@
 
             } else {
 
-                Categories = Object.values(MapeiaValorParaHC(dados, "IndicadoresDiretriz").filter(onlyUnique));
+                processarChaveamentoObjetivo();
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "Objetivo").filter(onlyUnique));
 
                 Data = [];
 
                 Categories.forEach(function (c, o) {
 
                     let qtdConcluido = $.grep(dados, function (r) {
-                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Objetivo == c);
                     }).length;
 
-                    let listaDiretriz = $.grep(dados, function (r) {
-                        return r.IndicadoresDiretriz == c;
+                    let listaObjetivo = $.grep(dados, function (r) {
+                        return r.Objetivo == c;
                     });
                     
-                    let qtdDeDiretriz = listaDiretriz.length;
+                    let qtdDeObjetivo = listaObjetivo.length;
                     
-                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
 
-                    let gerencia = retornaChaveamentoPorGerenciaId(listaDiretriz[0].Gerencia_Id)[0];
-                    Data.push({ color: gerencia.color, y: porcConcluidos });
+                    let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorDiretriz', {
@@ -3066,8 +3070,8 @@
                             point: {
                                 events: {
                                     click: function () {
-                                        filterDados("IndicadoresDiretriz", this.category, getTablesModal);
-                                        getGraficoPorProjetos("IndicadoresDiretriz", this.category, true);
+                                        filterDados("Objetivo", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Objetivo", this.category, true);
                                     }
                                 }
                             },
@@ -3301,6 +3305,7 @@
 
             Data = [];
 
+            processarChaveamentoObjetivo();
             processarChaveamento();
 
             let dados2 = dados;
@@ -3329,9 +3334,14 @@
             let qtdDeGerencia = listaGerencia.length;
 
             let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
-
-            let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
-            Data.push({ color: gerencia.color, y: porcConcluidos });
+                
+            if (TipoGrafico == "Gerencia") {
+                let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                Data.push({ color: gerencia.color, y: porcConcluidos });
+            }else{
+                let objetivo = retornaChaveamentoPorObjetivo(listaGerencia[0].Objetivo_Id)[0];
+                Data.push({ color: objetivo.color, y: porcConcluidos });
+            }
         });
 
             Highcharts.chart('graficoPorProjetos', {
@@ -3462,6 +3472,7 @@
         }
 
         var Chaveamento = [];
+        var ChaveamentoObjetivo = [];
 
         function processarChaveamento() {
             if (Chaveamento.length > 0){
@@ -3477,10 +3488,30 @@
             });
         }
 
+        function processarChaveamentoObjetivo() {
+            if (ChaveamentoObjetivo.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
+    
+                if (existe.length <= 0) {
+                    ChaveamentoObjetivo.push({ color: randomColor(),objetivo_id: obj.Objetivo_Id});
+                }
+            });
+        }
+
         function retornaChaveamentoPorGerenciaId(gerencia_id) {
             return $.grep(Chaveamento, function (o, i) {
-                    return o.gerencia_id == gerencia_id;
-                });
+                return o.gerencia_id == gerencia_id;
+            });
+        }
+
+        function retornaChaveamentoPorObjetivo(objetivo_id) {
+            return $.grep(ChaveamentoObjetivo, function (o, i) {
+                return o.objetivo_id == objetivo_id;
+            });
         }
 
         function randomColor() {
