@@ -448,7 +448,7 @@ namespace SGQDBContext
 
         }
 
-        public int getExisteAmostra(int ParCompany_Id, int ParLevel2_Id)
+        public int getExisteAmostra(int ParCompany_Id, int ParLevel2_Id, int ParLevel1_Id)
         {
 
             //SqlConnection db = new SqlConnection(conexao);
@@ -459,6 +459,8 @@ namespace SGQDBContext
                 "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " and IsActive = 1 " +
                 "\n union all " +
                 "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  and IsActive = 1 " +
+                "\n union all " +
+                "\n select * from ParSample (nolock)  where ParLevel2_id = " + ParLevel2_Id + " and ParLevel1_Id = " + ParLevel1_Id + "  AND IsActive = 1 " +
                 "\n ) temAm ";
 
             SqlCommand command = new SqlCommand(sql, db);
@@ -2509,28 +2511,28 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             {
                 string sql = @"
                             SELECT 
-                            Id, 
-                            ConsolidationLevel1_Id, 
-                            UnitId, 
-                            ParLevel2_Id, 
-                            ConsolidationDate, 
-                            WeiEvaluation, 
-                            EvaluateTotal, 
-                            DefectsTotal, 
-                            WeiDefects, 
-                            TotalLevel3Evaluation, 
-                            TotalLevel3WithDefects, 
-                            EvaluatedResult, 
-                            ReauditIs, 
-                            ReauditNumber 
+                            c2.Id, 
+                            c2.ConsolidationLevel1_Id, 
+                            c2.UnitId, 
+                            c2.ParLevel2_Id, 
+                            c2.ConsolidationDate, 
+                            c2.WeiEvaluation, 
+                            c2.EvaluateTotal, 
+                            c2.DefectsTotal, 
+                            c2.WeiDefects, 
+                            c2.TotalLevel3Evaluation, 
+                            c2.TotalLevel3WithDefects, 
+                            c2.EvaluatedResult, 
+                            c2.ReauditIs, 
+                            c2.ReauditNumber 
                             FROM ConsolidationLevel2 c2 with (nolock) 
                             LEFT JOIN ConsolidationLevel2XCluster C2C
                             ON C2C.ConsolidationLevel2_id = c2.Id
-                            WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
-                            "AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
-                            "AND UnitId='" + ParCompany_Id + "' " +
-                            "AND ReauditIs=" + reaudit + " " +
-                            "and reauditnumber=" + reauditNumber + " " +
+                            WHERE c2.ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
+                            "AND c2.ParLevel2_Id= '" + ParLevel2_Id + "' " +
+                            "AND c2.UnitId='" + ParCompany_Id + "' " +
+                            "AND c2.ReauditIs=" + reaudit + " " +
+                            "and c2.reauditnumber=" + reauditNumber + " " +
                             " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
 
 

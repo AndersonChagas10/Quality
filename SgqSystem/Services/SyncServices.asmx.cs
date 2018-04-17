@@ -3953,7 +3953,7 @@ namespace SgqSystem.Services
 
             string sql = "" +
                "\n DECLARE @ParCompany_id int = 16 " +
-               "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
+               "\n DECLARE @ParLevel1_id int =  " + parlevel1.ParLevel1_Id +
                "\n DECLARE @ParCluster_id int = " + parlevel1.ParCluster_Id +
 
                "\n SELECT max(Number) as av FROM ParSample EV (nolock)  " +
@@ -4514,6 +4514,28 @@ namespace SgqSystem.Services
                                     alertaNivel1 = alertas.Nivel1;
                                     alertaNivel2 = alertas.Nivel2;
                                     alertaNivel3 = "a4";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
+                            else if (tipoAlerta == 5)  //# de NC
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a5";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
+                            else if (tipoAlerta == 6)  //# de NC
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a6";
                                     volumeAlerta = alertas.VolumeAlerta;
                                     meta = alertas.Meta;
                                 }
@@ -7135,10 +7157,10 @@ namespace SgqSystem.Services
                 data = ano + "-" + mes + "-" + dia;
             }
 
-            string sql = "SELECT c2.Id FROM CollectionLevel2  WITH (NOLOCK) " +
+            string sql = "SELECT c2.Id FROM CollectionLevel2 c2 WITH (NOLOCK) " +
                 " left join CollectionLevel2XCluster C2C on C2C.CollectionLevel2_Id = C2.id " +
                 " WHERE ParLevel1_Id ='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift +
-                    "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' and CAST(CollectionDate as date)=CAST('" + data + "' as date) and c2c.parCluster_Id = '" + parCluster_Id + " and reauditNumber=" + reauditnumber; //"' AND HaveCorrectiveAction=1";
+                    "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' and CAST(CollectionDate as date)=CAST('" + data + "' as date) and c2c.parCluster_Id = '" + parCluster_Id + "' and reauditNumber= " + reauditnumber; //"' AND HaveCorrectiveAction=1";
 
             //string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "'AND ReauditNumber='" + reauditnumber +
             //"' AND HaveCorrectiveAction=1";
