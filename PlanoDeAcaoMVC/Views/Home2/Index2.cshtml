@@ -395,7 +395,7 @@
 
             <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','Tático', 'Estratégico')" id="btnModalNovoTatico" data-toggle="modal"> Novo Tático</button>
 
-            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','Ação', 'Tático')" id="btnModalNovaAcao" data-toggle="modal"> Novo Ação</button>
+            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','Ação', 'Tático')" id="btnModalNovaAcao" data-toggle="modal"> Nova Ação</button>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
 
@@ -1041,7 +1041,7 @@
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>        
+            </div>
             <div class="clearfix"></div>
         </div>
         <div class="modal-footer">
@@ -2319,6 +2319,19 @@
 
             var sendObj = $(o).serializeObject();
 
+            if (sendObj != undefined) {
+                if (sendObj.TipoIndicador == 1) {
+
+                    sendObj.Level1Id = 0;
+                    sendObj.Level2Id = 0;
+                    sendObj.Level3Id = 0;
+
+                } else if (sendObj.TipoIndicador == 2) {
+
+                    sendObj.Pa_IndicadorSgqAcao_Id = 0;
+                }
+            }
+
             if (isEdit == undefined && sendObj != undefined) {
                 sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
@@ -2897,7 +2910,7 @@
 
                 $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                 $('#obj').show(); //Apagar depois
-                
+
                 $('#CausaGenerica_Id').change();
                 $('#modalNovo > div > div > div.modal-footer > button').show();
 
@@ -3210,8 +3223,7 @@
                 var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-
-                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays - 1) + " Dias" };
 
                 return valor;
             } else {
@@ -3220,7 +3232,7 @@
                 }
             }
 
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3456,10 +3468,10 @@
                 ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
             });
         }
-        
+
         function AbreModalDeAcao(id){
             Clicked(true, true);
-            
+
             $('#modalLindo').modal();
             $('#modalLindo').find('.modal-body').empty();
             $('#Header').html("Planejamento Operacional");
@@ -3481,7 +3493,7 @@
             $.each(dados, function (index, obj) {
 
                 var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
-    
+
                 if (existe.length <= 0) {
                     Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
                 }
