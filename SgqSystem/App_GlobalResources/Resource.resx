@@ -1327,7 +1327,7 @@
     <value>Data collection execution and action plan</value>
   </data>
   <data name="general_view_of_the_area" xml:space="preserve">
-    <value>Area Overview</value>
+    <value>General view of the area</value>
   </data>
   <data name="indicators_evolution" xml:space="preserve">
     <value>Indicators evolution</value>
@@ -2453,5 +2453,32 @@
   </data>
   <data name="new" xml:space="preserve">
     <value>New</value>
+  </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Counter Name</value>
+  </data>
+  <data name="conclued_plan_action" xml:space="preserve">
+    <value>Conclued action plan.</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>among others ...</value>
+  </data>
+  <data name="av_with_weight" xml:space="preserve">
+    <value>Av With Weight</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc WithWeight</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Back to Departments</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Unit of Measurement Name</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Bigger</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Smaller</value>
   </data>
 </root>

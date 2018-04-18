@@ -2058,4 +2058,31 @@
   <data name="new" xml:space="preserve">
     <value>Novo</value>
   </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Nome Contador</value>
+  </data>
+  <data name="conclued_action_plan" xml:space="preserve">
+    <value>Plano de ação concluído.</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>entre outros ...</value>
+  </data>
+  <data name="av_with_weight" xml:space="preserve">
+    <value>Av Com Peso</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc Com Peso</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Voltar para Departamentos</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Nome da Unidade de Medida</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Maior</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Menor</value>
+  </data>
 </root>

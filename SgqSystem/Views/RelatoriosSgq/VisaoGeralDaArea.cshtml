@@ -1,6 +1,7 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
 @{
-    ViewBag.Title = "Visão Geral da Área";
+    ViewBag.Title = Resources.Resource.general_view_of_the_area;
 
     var url = Url.Action("Index", "Home");
     var urlTabela1 = Url.Action("GetTable", "RelatoriosSgq");
@@ -251,11 +252,11 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     var contadorAJAX = 0;
     var contadorAJAX_historico = 0;
-
+    var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var Chart = {
 
         /*
@@ -584,7 +585,7 @@
     function Send(toggle) {
 
 
-            
+
 
 
             // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
@@ -656,7 +657,7 @@
                     EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
                     EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
                 }
-                
+
             } else {
 
                 enviar["level1Name"] = "";
@@ -723,7 +724,7 @@
             }
 
 
-            
+
 
 
 
@@ -805,7 +806,7 @@
                 }, "funcoesPorUnidade");
             }
 
-            
+
         }
 
         function GetIndicadoresPorUnidade2(paramCol, paramRow) {
@@ -882,7 +883,7 @@
                 }, "tabela2div");
             }
 
-            
+
         }
 
         function GetInicadoresPorRegional(paramRow) {
@@ -957,7 +958,7 @@
                     scroolTable(container)
                 }, "inicadoresPorRegional");
             }
-            
+
         }
 
         function GetIndicadoresPorUnidade3(paramCol, paramRow) {
@@ -1033,7 +1034,7 @@
                 }, "tabela2div");
             }
 
-            
+
         }
 
         function GetIndicadoresPorUnidade() {
@@ -1109,7 +1110,7 @@
                 }, "inicadoresPorRegional");
             }
 
-            
+
         }
 
         function GetIndicadoresPorUnidadeReg() {
@@ -1185,7 +1186,7 @@
                 }, "IndicadoresPorUnidadeReg");
             }
 
-            
+
         }
 
         function GetTabela2(paramCol, paramRow) {
@@ -1283,11 +1284,12 @@
                 }, "tabela2div");
             }
 
-            
+
         }
 
         function CallbackGrafico1(data) {
-
+       
+        var meta = (isBrazil == true ? meta = "Meta 83%" : meta = "Goals 83%");
         var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
         var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
         var NomeRegional = MapeiaValorParaHC(data, "regName");
@@ -1339,7 +1341,7 @@
                     dashStyle: 'dash',
                     zIndex: 4,
                     label: {
-                        text: 'Meta 83%',
+                        text: meta,
                         align: 'right',
                         y: -10,
                         x: 0
@@ -1421,10 +1423,11 @@
                 EasyAjax(urlGrafico2, enviar, CallbackGrafico2, "grafico2");
             }
 
-            
+
         }
 
         function CallbackGrafico2(data) {
+
             var sigla = MapeiaValorParaHC(data, "companySigla");
             var scorecard = MapeiaValorParaHC(data, "companyScorecard");
             var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
@@ -1548,7 +1551,7 @@
 
         function Grafico3(paramCol, paramRow) {
 
-
+            debugger
             if (typeof (contadorAJAX) != "undefined") {
                 if (contadorAJAX > 0) {
                     console.log("Tem AJAX pendente! Aguarde!"); openMessageModal("Aguarde","Já tem uma requisição aberta."); openMessageModal("Aguarde","Já tem uma requisição aberta.");
@@ -1558,7 +1561,7 @@
 
                     setTimeout(function () { contadorAJAX_historico = 0; }, 500);
 
-            
+
                     $('#grafico5').empty();
 
                     if (enviar["ParametroTableRow"][1] != undefined) {
@@ -1588,7 +1591,7 @@
 
 
 
-            
+
         }
 
         function CallbackGrafico3(data) {
@@ -1759,7 +1762,7 @@
         //    enviar["ParametroTableCol"].push(paramCol);
         //}
 
-           
+        debugger
 
             if (typeof (contadorAJAX_historico) != "undefined") {
                 if (contadorAJAX_historico < 1) {
@@ -2028,7 +2031,7 @@
     }
 
     function CallbackGrafico5(data) {
-
+        debugger
         var level1Name = MapeiaValorParaHC(data, "level1Name")[0];
         var level2Name = MapeiaValorParaHC(data, "level2Name")[0];
         var nome = MapeiaValorParaHC(data, "level3Name");
@@ -2619,7 +2622,7 @@
                 EasyAjax(urlGraficoEvolutivoUnidade, enviar, CallAjaxUnidade, "grafico2");
             }
 
-            
+
         }
 
         function CallAjaxUnidade(data)
@@ -2929,6 +2932,6 @@
             $('#menu-toggle').click();
         }
 
-</script>
+    </script>
 
 }

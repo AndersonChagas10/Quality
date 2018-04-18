@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -421,6 +421,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to among others ....
+        /// </summary>
+        internal static string among_others {
+            get {
+                return ResourceManager.GetString("among_others", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evaluations with defects.
         /// </summary>
         internal static string Amostras_com_defeitos {
@@ -592,6 +601,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Av With Weight.
+        /// </summary>
+        internal static string av_with_weight {
+            get {
+                return ResourceManager.GetString("av_with_weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string back {
@@ -601,11 +619,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to Departments.
+        /// </summary>
+        internal static string back_to_departments {
+            get {
+                return ResourceManager.GetString("back_to_departments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to list.
         /// </summary>
         internal static string back_to_list {
             get {
                 return ResourceManager.GetString("back_to_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bigger.
+        /// </summary>
+        internal static string bigger {
+            get {
+                return ResourceManager.GetString("bigger", resourceCulture);
             }
         }
         
@@ -916,6 +952,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conclued action plan..
+        /// </summary>
+        internal static string conclued_action_plan {
+            get {
+                return ResourceManager.GetString("conclued_action_plan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirmation password required.
         /// </summary>
         internal static string confirmation_password_required {
@@ -1074,6 +1119,15 @@ namespace Resources {
         internal static string counters {
             get {
                 return ResourceManager.GetString("counters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Counter Name.
+        /// </summary>
+        internal static string counter_name {
+            get {
+                return ResourceManager.GetString("counter_name", resourceCulture);
             }
         }
         
@@ -3184,6 +3238,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nc WithWeight.
+        /// </summary>
+        internal static string nc_with_weight {
+            get {
+                return ResourceManager.GetString("nc_with_weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Negative.
         /// </summary>
         internal static string negative {
@@ -5056,6 +5119,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smaller.
+        /// </summary>
+        internal static string smaller {
+            get {
+                return ResourceManager.GetString("smaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SMP.
         /// </summary>
         internal static string smp {
@@ -5538,6 +5610,15 @@ namespace Resources {
         internal static string unit_changed_login_again {
             get {
                 return ResourceManager.GetString("unit_changed_login_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit of Measurement Name.
+        /// </summary>
+        internal static string unit_of_measurement_name {
+            get {
+                return ResourceManager.GetString("unit_of_measurement_name", resourceCulture);
             }
         }
         
