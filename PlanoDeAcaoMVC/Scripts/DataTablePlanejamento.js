@@ -2,11 +2,8 @@
 var dadosPlanejamento = [];
 
 //function GetDataTablePlanejamento(campo, filtro) {
-
 //    //$.get(urlGetPlanejamentoRange, enviar, function (r) {
-
 //    //    MountDataTablePlanejamento(r);
-
 //    //});
 //}
 
