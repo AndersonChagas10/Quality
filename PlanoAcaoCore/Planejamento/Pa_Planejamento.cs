@@ -602,9 +602,14 @@ LEFT JOIN Pa_Dimensao DIME
                 var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
                 if (acoesTmp.Count() > 0)
                 {
-                    i.EmDia = 
-                        (i.DataFim <= dtFim) ||
-                        !(acoesTmp.Any(a => statusAberto.Contains(a.Status)) && i.DataFim <= dtFim);
+                    bool existemAcoesAbertas = acoesTmp.Any(a => statusAberto.Contains(a.Status));
+                    i.EmDia =
+                        (!existemAcoesAbertas &&
+                            (i.DataInicio >= dtInit || i.DataInicio <= dtFim)
+                            ||
+                            (i.DataFim <= dtFim && i.DataFim >= dtInit))
+                            ||
+                            existemAcoesAbertas && (i.DataFim <= dtFim || i.DataInicio <= dtFim);
 
                     foreach (var k in acoesTmp)
                     {
@@ -660,6 +665,7 @@ LEFT JOIN Pa_Dimensao DIME
                                 break;
                         }
 
+                        k._StatusName = k._StatusName ?? ""; 
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
@@ -673,11 +679,11 @@ LEFT JOIN Pa_Dimensao DIME
             }
 
             retorno = retorno.Where(r => 
-                (statusAberto.Contains(r.Acao.Status) && r.DataFim <= dtFim) //Ações abertas com projetos com data final menor que a selecionada
+                //(statusAberto.Contains(r.Acao.Status) && r.DataFim <= dtFim) //Ações abertas com projetos com data final menor que a selecionada
                 //|| (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit)
-                || (statusFechado.Contains(r.Acao.Status) && r.DataFim <= dtFim && r.DataFim >= dtInit) //Ações fechadas com projetos ainda em andamento
-                || r.Acao.Id == 0 //Projetos sem ações
-                || !r.EmDia //Projetos que não estão em dia
+                //|| (statusFechado.Contains(r.Acao.Status) && r.DataFim <= dtFim && r.DataFim >= dtInit) //Ações fechadas com projetos ainda em andamento
+                r.Acao.Id == 0 //Projetos sem ações
+                || r.EmDia //Projetos que não estão em dia
             ).ToList();
 
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
