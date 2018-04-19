@@ -148,7 +148,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -236,7 +236,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Unidade
                ,UnidadeName 
                ,concat(IndicadorName, ' - ', UnidadeName) AS IndicadorUnidade
-               --,'" + titulo + @"' AS ChartTitle
+               --,'" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -253,6 +253,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsIndicador
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName
@@ -270,7 +274,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -279,6 +283,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -320,7 +328,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -412,7 +420,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Monitoramento 
                ,MonitoramentoName 
                ,concat(MonitoramentoName, ' - ', UnidadeName) AS MonitoramentoUnidade
-               --,'" + titulo + @"' AS ChartTitle
+               --,'" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -422,6 +430,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsMonitoramento
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName
@@ -441,7 +453,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -450,6 +462,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -492,7 +508,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -586,7 +602,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Tarefa
                ,TarefaName 
                ,concat(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
-               --,'" + titulo + @"' AS ChartTitle
+               --,'" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -596,6 +612,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsTarefa
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName
@@ -617,7 +637,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -626,6 +646,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -689,7 +713,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -776,7 +800,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             SELECT 
             	Indicador 
                ,IndicadorName 
-               --,'" + titulo + @"' AS ChartTitle
+               --,'" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -786,6 +810,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsIndicador
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -801,7 +829,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -810,6 +838,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -850,7 +882,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -939,7 +971,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IndicadorName 
                ,Monitoramento
                ,MonitoramentoName
-               --,'" + titulo + @"' AS ChartTitle
+               --,'" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -949,6 +981,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsMonitoramento
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -966,7 +1002,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -975,6 +1011,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -1016,7 +1056,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -1106,7 +1146,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,MonitoramentoName
                ,Tarefa
                ,TarefaName
-               --,'" + titulo + @"' AS ChartTitle
+               --,'" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS PC
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -1116,6 +1156,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,cast(1 as bit) IsTarefa
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -1135,7 +1179,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS pc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -1144,6 +1188,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
             ORDER BY 3 
@@ -1202,750 +1250,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             * 
             */
 
-            var query = "" +
+            var query = VisaoGeralDaAreaApiController.sqlBase(form);
 
-// "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'    " +
-// "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n  IF OBJECT_ID('tempdb.dbo.#SCORE', 'U') IS NOT NULL																																																										                                               " +
-"\n    DROP TABLE #SCORE; 																																																																	                                               " +
-"\n  																																																																						                                               " +
-"\n  CREATE TABLE #SCORE (																																																																	                                               " +
-"\n  	Cluster int null,																																																																	                                               " +
-"\n  	ClusterName Varchar(153) null,																																																														                                               " +
-"\n  	Regional int null,																																																																	                                               " +
-"\n  	RegionalName Varchar(153) null, 																																																													                                               " +
-"\n  	ParCompany_Id int null,																																																																                                               " +
-"\n  	ParCompanyName Varchar(153) null, 																																																													                                               " +
-"\n  	TipoIndicador int null,																																																																                                               " +
-"\n  	TipoIndicadorName Varchar(153) null, 																																																												                                               " +
-"\n  	Level1Id int null,																																																																	                                               " +
-"\n  	Level1Name Varchar(153) null, 																																																														                                               " +
-"\n  	Criterio int null,																																																																	                                               " +
-"\n  	CriterioName Varchar(153) null, 																																																													                                               " +
-"\n  	Av decimal(30,5) null,																																																																                                               " +
-"\n  	Nc decimal(30,5) null,																																																																                                               " +
-"\n  	Pontos decimal(30,5) null,																																																															                                               " +
-"\n  	PontosIndicador decimal(30,5) null,																																																													                                               " +
-"\n  	Meta decimal(30,5) null,																																																															                                               " +
-"\n  	Real decimal(30,5) null,																																																															                                               " +
-"\n  	PontosAtingidos decimal(30,5) null,																																																													                                               " +
-"\n  	Scorecard decimal(30,5) null,																																																														                                               " +
-"\n  	TipoScore Varchar(153) null," +
-"\n mesData datetime2(7) null  " +
-"\n  	)																																																																					                                               " +
-"\n  																																																																						                                               " +
-"\n  																																																																						                                               " +
-"\n  																																																																						                                               " +
-"\n  DECLARE @I INT = 0																																																																		                                               " +
-"\n  																																																																						                                               " +
-"\n  WHILE (SELECT @I) < 1																																																																	                                               " +
-"\n  BEGIN  																																																																					                                           " +
-"\n     																																																																						                                           " +
-"\n      																																																																					                                               " +
-"\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
-"\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
-
-
-@"            SELECT 
-
-                CL1.id,
-            	CL1.ConsolidationDate,
-            	CL1.UnitId,
-            	CL1.ParLevel1_Id,
-            	CL1.DefectsResult,
-            	CL1.WeiDefects,
-            	CL1.EvaluatedResult,
-            	CL1.WeiEvaluation,
-            	CL1.EvaluateTotal,
-            	CL1.TotalLevel3WithDefects,
-            	CL1.DefectsTotal
-            INTO #ConsolidationLevel
-            FROM ConsolidationLevel1 CL1 WITH(NOLOCK)
-            WHERE 1 = 1
-            AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-
-            CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
-            CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
-            CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
-            CREATE INDEX IDX_HashConsolidationLevel_id ON #ConsolidationLevel (id); " +
-
-
-               // Alteração
-               "\n CREATE TABLE #AMOSTRATIPO4 ( " +
-
-                "\n UNIDADE INT NULL, " +
-                "\n INDICADOR INT NULL, " +
-                "\n AM INT NULL, " +
-                "\n DEF_AM INT NULL " +
-                "\n ) " +
-
-
-                "\n INSERT INTO #AMOSTRATIPO4 " +
-                /*
-                "\n SELECT " +
-                "\n  UNIDADE, INDICADOR, " +
-                "\n FROM " +
-                "\n ( " +
-                */
-                "\n     SELECT " +
-                //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
-                "\n     C.Id AS UNIDADE " +
-                "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
-                "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
-                //"\n     , C2.EvaluationNumber AS AV " +
-                // "\n     , C2.Sample AS AM " +
-                //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
-                "\n     FROM CollectionLevel2 C2 (nolock) " +
-                "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
-                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1" +
-
-                "\n     INNER JOIN ParCompany C (nolock)  " +
-                "\n     ON C.Id = C2.UnitId " +
-                "\n     where C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n     and C2.NotEvaluatedIs = 0 " +
-                "\n     and C2.Duplicated = 0 " +
-                "\n     and L1.ParConsolidationType_Id = 4 " +
-                "\n     group by C.Id, ParLevel1_Id" +
-           /*
-           "\n ) TAB " +
-           "\n GROUP BY UNIDADE, INDICADOR " +
-           */
-
-
-
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n DECLARE @VOLUMEPCC INT                                                                                                                                                                                                                                              " +
-           "\n DECLARE @DIASABATE INT                                                                                                                                                                                                                                              " +
-           "\n DECLARE @DIASDEVERIFICACAO INT                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n DECLARE @AVFREQUENCIAVERIFICACAO INT                                                                                                                                                                                                                                " +
-           "\n DECLARE @NCFREQUENCIAVERIFICACAO INT                                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-
-"\n   /* INICIO DADOS DA FREQUENCIA ------------------------------------------------------*/                                                                                                                                                                              					                                               " +
-"\n                                                                                                                                                                                                                                                                       					                                               " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n CREATE TABLE #FREQ (                                                                                                                                                                                                                                                                                                                   " +
-"\n    clusterId int null                                                                                                                                                                                                                                                                                                                  " +
-"\n    ,     cluster varchar(255) null                                                                                                                                                                                                                                                                                                     " +
-"\n    , regionalId int null                                                                                                                                                                                                                                                                                                               " +
-"\n    , regional varchar(255) null                                                                                                                                                                                                                                                                                                        " +
-"\n    , unitId int null                                                                                                                                                                                                                                                                                                                   " +
-"\n    , unidade  varchar(255) null                                                                                                                                                                                                                                                                                                        " +
-"\n    , criticalLevelId  int null                                                                                                                                                                                                                                                                                                         " +
-"\n    , criticalLevel varchar(255) null                                                                                                                                                                                                                                                                                                   " +
-"\n    , pontos decimal(35, 10) null                                                                                                                                                                                                                                                                                                       " +
-"\n    )                                                                                                                                                                                                                                                                                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                 					                                                                                   " +
-"\n                                                                                                                                                                                                                                                                        					                                               " +
-"\n    insert into #freq                                                                                                                                                                                                                                                                                                                   " +
-"\n    SELECT                                                                                                                                                                                                                                                                                                                              " +
-"\n    CL.Id                                                                                                                                                                                                                                                                                                                               " +
-"\n    , CL.Name                                                                                                                                                                                                                                                                                                                           " +
-"\n    , S.Id                                                                                                                                                                                                                                                                                                                              " +
-"\n    , S.Name                                                                                                                                                                                                                                                                                                                            " +
-"\n    , C.Id                                                                                                                                                                                                                                                                                                                              " +
-"\n    , C.Name                                                                                                                                                                                                                                                                                                                            " +
-"\n    , L1C.ParCriticalLevel_Id                                                                                                                                                                                                                                                                                                           " +
-"\n    , CRL.Name                                                                                                                                                                                                                                                                                                                          " +
-"\n    , L1C.Points                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n    FROM ParCompany C                                                                                                                                                                                                                                                                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n    LEFT JOIN ParCompanyXStructure CS                                                                                                                                                                                                                                                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON CS.ParCompany_Id = C.Id                                                                                                                                                                                                                                                                                                   " +
-"\n    LEFT JOIN ParStructure S                                                                                                                                                                                                                                                                                                            " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON S.Id = CS.ParStructure_Id                                                                                                                                                                                                                                                                                                 " +
-"\n    LEFT JOIN ParStructureGroup SG                                                                                                                                                                                                                                                                                                      " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                                                                                            " +
-"\n    LEFT JOIN ParCompanyCluster CCL                                                                                                                                                                                                                                                                                                     " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                                                                              " +
-"\n    LEFT JOIN ParCluster CL                                                                                                                                                                                                                                                                                                             " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                                                                                 " +
-"\n    LEFT JOIN ParLevel1XCluster L1C                                                                                                                                                                                                                                                                                                     " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1   AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                                                             " +
-"\n    LEFT JOIN ParCriticalLevel CRL                                                                                                                                                                                                                                                                                                      " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParCriticalLevel_Id = CRL.Id                                                                                                                                                                                                                                                                                          " +
-"\n    WHERE C.Id >= 1                                                                                                                                                                                                                                                                                                                     " +
-"\n    AND L1C.ParLevel1_Id = 25                                                                                                                                                                                                                                                                                                           " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                       					                                               " +
-"\n   /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              					                                               " +
-"\n   CREATE TABLE #VOLUMES (                                                                                                                                                                                                                                                                                                              " +
-"\n 	DIASABATE INT NULL,                                                                                                                                                                                                                                                                                                                " +
-"\n 	VOLUMEPCC INT NULL, unitid int null                                                                                                                                                                                                                                                                                                                 " +
-"\n   )                                                                                                                                                                                                                                                                                                                                    " +
-"\n   INSERT INTO #VOLUMES                                                                                                                                                                                                                                                                    					                           " +
-"\n   SELECT COUNT(1) AS DIASABATE, SUM(Quartos) AS VOLUMEPCC, ParCompany_id as UnitId FROM VolumePcc1b WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL GROUP BY ParCompany_id                                                                                                  					                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n   CREATE TABLE #DIASVERIFICACAO (                                                                                                                                                                                                                                                                                                      " +
-"\n 	DIASVERIFICACAO INT NULL,                                                                                                                                                                                                                                                                                                          " +
-"\n 	UnitId INT NULL                                                                                                                                                                                                                                                                                                                    " +
-"\n   )                                                                                                                                                                                                                                                                                                                                    " +
-"\n   INSERT INTO #DIASVERIFICACAO                                                                                                                                                                                                                                                                    					                   " +
-"\n   SELECT COUNT(1) as DIASDEVERIFICACAO, UnitId FROM                                                                                                                                                                                                                                                                                    " +
-"\n   (                                                                                                                                                                                                                                                                                                                                    " +
-"\n 	SELECT CL1.UnitId, CONVERT(DATE, ConsolidationDate) DATA                                                                                                                                                                                                                                                                           " +
-"\n 	FROM ConsolidationLevel1 CL1                                                                                                                                                                                                                                                                                                       " +
-"\n 	WHERE ParLevel1_Id = 24 AND CONVERT(DATE, ConsolidationDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                   " +
-"\n 	GROUP BY CONVERT(DATE, ConsolidationDate), CL1.UnitId                                                                                                                                                                                                                                                                              " +
-"\n   ) VT                                                                                                                                                                                                                                                                                                                                 " +
-"\n   GROUP BY UnitId    " +
-           "\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n   CREATE TABLE #NAPCC (                                                                                                                                                                                                                                                                                                                " +
-"\n 	NAPCC INT NULL,                                                                                                                                                                                                                                                                                                                    " +
-"\n 	UnitId INT NULL                                                                                                                                                                                                                                                                                                                    " +
-"\n   )                                                                                                                                                                                                                                                                                                                                    " +
-"\n   INSERT INTO #NAPCC  					                                                                                                                                                                                                                                               					                               " +
-"\n   SELECT                                                                                                                                                                                                                                                              					                                               " +
-"\n            COUNT(1) as NAPCC,                                                                                                                                                                                                                                                                                                          " +
-"\n 		   UnitId                                                                                                                                                                                                                                                 						                                               " +
-"\n            FROM                                                                                                                                                                                                                                                     						                                           " +
-"\n       (                                                                                                                                                                                                                                                             						                                           " +
-"\n                SELECT                                                                                                                                                                                                                                               						                                           " +
-"\n                COUNT(1) AS NA,                                                                                                                                                                                                                                                                                                         " +
-"\n 			   C2.UnitId                                                                                                                                                                                                                                      						                                                   " +
-"\n                FROM CollectionLevel2 C2                                                                                                                                                                                                                             						                                           " +
-"\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
-"\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
-"\n                WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           						                                           " +
-"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
-"\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
-"\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
-"\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
-"\n            ) NA		                                                                                                                                                                                                                                                        						                                   " +
-"\n            WHERE NA = 2                                                                                                                                                                                                                                             						                                           " +
-"\n 		   GROUP BY UnitId                                                                                                                                                                                                                                                                                                                                                                                                                                " +
-"\n   																																																																						                                               " +
-"\n   INSERT INTO #SCORE																																						" +
-"\n SELECT                                                                                                                                                                                                                                                                                                                                                        " +
-"\n   Cluster                                                                                                                                                                                                                                                                                                                                                     " +
-"\n  , ClusterName                                                                                                                                                                                                                                                                                                                                                " +
-"\n  , Regional                                                                                                                                                                                                                                                                                                                                                   " +
-"\n  , RegionalName                                                                                                                                                                                                                                                                                                                                               " +
-"\n  , ParCompanyId                                                                                                                                                                                                                                                                                                                                              " +
-"\n  , ParCompanyName                                                                                                                                                                                                                                                                                                                                             " +
-"\n  , TipoIndicador                                                                                                                                                                                                                                                                                                                                              " +
-"\n  , TipoIndicadorName                                                                                                                                                                                                                                                                                                                                          " +
-"\n  , Level1Id                                                                                                                                                                                                                                                                                                                                                   " +
-"\n  , Level1Name                                                                                                                                                                                                                                                                                                                                                 " +
-"\n  , Criterio                                                                                                                                                                                                                                                                                                                                                   " +
-"\n  , CriterioName                                                                                                                                                                                                                                                                                                                                               " +
-"\n  , case when Level1Id = 3 then avg(av) else sum(av) end av                                                                                                                                                                                                                                                                                                                                                 " +
-"\n  , sum(nc) nc                                                                                                                                                                                                                                                                                                                                                 " +
-"\n  , (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) pontos                                                                                                                                                                                                                                                                                                                                         " +
-"\n  , (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) pontosIndicador                                                                                                                                                                                                                                                                                                                                " +
-"\n  , max(meta) meta                                                                                                                                                                                                                                                                                                                                             " +
-
-"\n  , round(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) * 100) end end, 2) real " +
-"\n  , case when(isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) > 100 then 100 else (isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) end / 100 * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) as pontosAtingidos " +
-"\n  , case when(isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) > 100 then 100 else (isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) end as Scorecard " +
-
-"\n  , TipoScore " +
-"\n  , max(mesData) mesData FROM                                                                                                                                                                                                                                           " +
-           "\n (                                                                                                                                                                                                                                                                   " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n   Cluster                                                                                                                                                                                                                                                           " +
-           "\n  , ClusterName                                                                                                                                                                                                                                                      " +
-           "\n  , Regional                                                                                                                                                                                                                                                         " +
-           "\n  , RegionalName                                                                                                                                                                                                                                                     " +
-           "\n  , ParCompanyId                                                                                                                                                                                                                                                     " +
-           "\n  , ParCompanyName                                                                                                                                                                                                                                                   " +
-           "\n  , CASE WHEN TipoIndicador = 0 THEN 1 ELSE 2 END TipoIndicador                                                                                                                                                                                                      " +
-           "\n  , CASE WHEN TipoIndicador = 0 THEN 'Menor' ELSE 'Maior' END TipoIndicadorName                                                                                                                                                                                      " +
-           "\n  , Level1Id                                                                                                                                                                                                                                                         " +
-           "\n  , Level1Name                                                                                                                                                                                                                                                       " +
-           "\n  , Criterio                                                                                                                                                                                                                                                         " +
-           "\n  , CriterioName                                                                                                                                                                                                                                                     " +
-           "\n  , AV AV                                                                                                                                                                                                                                                               " +
-           "\n  , CASE WHEN Level1Id = 25 THEN AV - NC ELSE NC END NC /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                                                                             " +
-           "\n  , Pontos Pontos                                                                                                                                                                                                                                                           " +
-           "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
-           "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
-           "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
-           "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM                                                                                                                                                                                                                                                                " +
-           "\n (                                                                                                                                                                                                                                                                   " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n *,                                                                                                                                                                                                                                                                  " +
-           "\n /* INICIO SCORECARD COMPLETO-------------------------------------*/                                                                                                                                                                                                 " +
-           "\n CASE                                                                                                                                                                                                                                                                " +
-           "\n     WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end                                                                                                                                                                                                                                                                " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     > 1                                                                                                                                                                                                                                                             " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 1                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n END * 100                                                                                                                                                                                                                                                           " +
-           "\n /* FIM SCORECARD COMPLETO----------------------------------------*/                                                                                                                                                                                                 " +
-           "\n AS SCORECARD                                                                                                                                                                                                                                                        " +
-           "\n ,                                                                                                                                                                                                                                                                   " +
-           "\n /* INICIO SCORECARD COMPLETO-------------------------------------*/                                                                                                                                                                                                 " +
-           "\n CASE                                                                                                                                                                                                                                                                " +
-           "\n     WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 when (Meta / NC) < 0.00 then 0 else Meta / NC end                                                                                                                                                                                                                                                                 " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     > 1                                                                                                                                                                                                                                                             " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 1                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     < 0.00                                                                                                                                                                                                                                                           " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 0                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n END                                                                                                                                                                                                                                                                 " +
-           "\n /* FIM SCORECARD COMPLETO----------------------------------------*/                                                                                                                                                                                                 " +
-           "\n * /* MULTIPLICAÇÃO */                                                                                                                                                                                                                                               " +
-           "\n PONTOS                                                                                                                                                                                                                                                              " +
-           "\n AS PONTOSATINGIDOS                                                                                                                                                                                                                                                  " +
-           "\n FROM                                                                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n (                                                                                                                                                                                                                                                                   " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
- //"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
- //"\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
- //"\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
- //"\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
- //"\n , ISNULL(CL1.UnitId, ft.ParCompany_id) AS ParCompanyId                                                                                                                                                                                                                       " +
- //"\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
- //"\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
- //"\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
- //"\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
- //"\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Criterio                                                                                                                                                                      " +
- //"\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS CriterioName                                                                                                                                                                  " +
- //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
- //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
-
- "\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
-  "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
-  "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
-  "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = 0)) AS RegionalName                                                                                                                                                                         " +
-  "\n , ISNULL(CL1.UnitId, 0) AS ParCompanyId                                                                                                                                                                                                                       " +
-  "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = 0)) AS ParCompanyName                                                                                                                                                                        " +
-  "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
-  "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
-  "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
-  "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
-
-
-"\n                                                                                                                                                                                                                                                                     " +
-           "\n  --ISNULL(CL.Id, @CLUSTER) AS Cluster                                                                                                                                                                                                                               " +
-           "\n  --, (CL.Name)AS ClusterName                                                                                                                                                                                                                                        " +
-           "\n  --, (S.Id)AS Regional                                                                                                                                                                                                                                              " +
-           "\n  --, (S.Name)AS RegionalName                                                                                                                                                                                                                                        " +
-           "\n  --, (CL1.UnitId)AS ParCompanyId                                                                                                                                                                                                                                    " +
-           "\n  --, (C.Name)AS ParCompanyName                                                                                                                                                                                                                                      " +
-           "\n  --, L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                           " +
-           "\n  --, L1.Id AS Level1Id                                                                                                                                                                                                                                              " +
-           "\n  --, L1.Name AS Level1Name                                                                                                                                                                                                                                          " +
-           "\n  --, (CRL.Id)AS Criterio                                                                                                                                                                                                                                            " +
-           "\n  --, (CRL.Name)AS CriterioName                                                                                                                                                                                                                                      " +
-           "\n  --, (L1C.Points)AS Pontos                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n  , ST.Name AS TipoScore                                                                                                                                                                                                                                             " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n   /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                              " +
-
-
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //    "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC)        FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date ) ) " +
-
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-
-
-
-           "\n   /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                              " +
-           "\n   AS AV                                                                                                                                                                                                                                                             " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n   /*INICIO NC COMPLETO----------------------------------------------*/                                                                                                                                                                                              " +
-           "\n   CASE WHEN L1.IsRuleConformity = 1 THEN                                                                                                                                                                                                                            " +
-           "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
-          "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
-
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-
-
-           "\n         /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                        " +
-           "\n         -                                                                                                                                                                                                                                                           " +
-           "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       CASE                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                        " +
-
-           "\n       END                                                                                                                                                                                                                                                           " +
-           "\n       /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n    ELSE                                                                                                                                                                                                                                                             " +
-           "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       CASE                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                        " +
-
-           "\n       END                                                                                                                                                                                                                                                           " +
-           "\n       /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n      end                                                                                                                                                                                                                                                           " +
-           "\n    /*FIM NC COMPLETO-------------------------------------------------*/                                                                                                                                                                                             " +
-           "\n    AS NC                                                                                                                                                                                                                                                            " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n   CASE                                                                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
-
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-
-           "\n                                                                                                                                                                                                                                                                 " +
-           "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       = 0                                                                                                                                                                                                                                                           " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 0                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      ELSE                                                                                                                                                                                                                                                           " +
-           "\n       /*INICIO NC COMPLETO----------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       CASE WHEN L1.IsRuleConformity = 1 THEN                                                                                                                                                                                                                        " +
-           "\n           /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
-
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-           "\n             /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                    " +
-           "\n             -  /* SUBTRAÇÃO */                                                                                                                                                                                                                                      " +
-           "\n                /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                 " +
-           "\n           CASE                                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                            " +
-           "\n           END                                                                                                                                                                                                                                                       " +
-           "\n           /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n        ELSE                                                                                                                                                                                                                                                         " +
-           "\n           /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n           CASE                                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                            " +
-
-           "\n           END                                                                                                                                                                                                                                                       " +
-           "\n           /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n        END                                                                                                                                                                                                                                                         " +
-           "\n        /*FIM NC COMPLETO-------------------------------------------------*/                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        / /*DIVISÃO*/                                                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
-
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-           "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      END * 100                                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      AS REAL                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n  CASE                                                                                                                                                                                                                                                               " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
-           "\n  END                                                                                                                                                                                                                                                                " +
-           "\n  AS META                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM ParLevel1(nolock) L1    -- (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
-           "\n LEFT JOIN #ConsolidationLevel CL1   (nolock)                                                                                                                                                                                                                                  " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1.Id = CL1.ParLevel1_Id AND ISNULL(ShowScorecard, 1) = 1                                                                                                                                                                                                                                " +
-           "\n LEFT JOIN ParScoreType ST  (nolock)                                                                                                                                                                                                                                           " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                " +
-           "\n LEFT JOIN ParCompany C    (nolock)                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON C.Id = CL1.UnitId                                                                                                                                                                                                                                         " +
-           "\n LEFT JOIN #AMOSTRATIPO4 A4    (nolock)                                                                                                                                                                                                                                        " +
-           "\n         ON A4.UNIDADE = C.Id                                                                                                                                                                                                                                      " +
-           "\n         AND A4.INDICADOR = L1.ID                                                                                                                                 " +
-           "\n LEFT JOIN ParCompanyXStructure CS   (nolock)                                                                                                                                                                                                                                  " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CS.ParCompany_Id = C.Id                                                                                                                                                                                                                                   " +
-           "\n LEFT JOIN ParStructure S     (nolock)                                                                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON S.Id = CS.ParStructure_Id                                                                                                                                                                                                                                 " +
-           "\n LEFT JOIN ParStructureGroup SG     (nolock)                                                                                                                                                                                                                                   " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                            " +
-           "\n LEFT JOIN ParCompanyCluster CCL   (nolock)                                                                                                                                                                                                                                    " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                               " +
-           "\n LEFT JOIN ParCluster CL       (nolock)                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                 " +
-           "\n LEFT JOIN ParConsolidationType CT  (nolock)                                                                                                                                                                                                                                   " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
-           "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1 AND CCL.ParCluster_Id = L1C.ParCluster_Id                                                                                                                                                                                                  " +
-           "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-"\n                                                                                                                                                                                                                                                                                " +
-//"\n  LEFT JOIN                                                                                                                                                                                                                                                                     " +
-//"\n (                                                                                                                                                                                                                                                                              " +
-//"\n SELECT 25 AS INDICADOR, CASE WHEN DATAP IS NULL THEN DATAV ELSE DATAP END AS DATA, *,                                                                                                                                                                                                                                                     " +
-//"\n CASE WHEN ISNULL(V.DIASDEVERIFICACAO, 0) > ISNULL(P.DIASABATE, 0) THEN ISNULL(P.DIASABATE, 0) ELSE ISNULL(V.DIASDEVERIFICACAO, 0) END AS FREQ                                                                                                                                  " +
-//"\n FROM                                                                                                                                                                                                                                                                           " +
-//"\n (                                                                                                                                                                                                                                                                              " +
-//"\n SELECT Data AS DATAP, COUNT(1) DIASABATE, SUM(Quartos) VOLUMEPCC, ParCompany_id                                                                                                                                                                                                " +
-//"\n FROM VolumePcc1b(nolock)                                                                                                                                                                                                                                                       " +
-//"\n WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                 " +
-//"\n GROUP BY ParCompany_id, Data                                                                                                                                                                                                                                                   " +
-//"\n ) P                                                                                                                                                                                                                                                                            " +
-//"\n FULL JOIN                                                                                                                                                                                                                                                                      " +
-//"\n (                                                                                                                                                                                                                                                                              " +
-//"\n SELECT COUNT(1) AS DIASDEVERIFICACAO, UNITID, DATA AS DATAV                                                                                                                                                                                                                    " +
-//"\n FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA, cl1.UNITID FROM ConsolidationLevel1 CL1(nolock)                                                                                                                                                                             " +
-//"\n WHERE ParLevel1_Id = 24                                                                                                                                                                                                                                                        " +
-//"\n AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                      " +
-//"\n GROUP BY CONVERT(DATE, ConsolidationDate), UNITID) VT                                                                                                                                                                                                                          " +
-//"\n GROUP BY DATA, UNITID                                                                                                                                                                                                                                                          " +
-//"\n ) V                                                                                                                                                                                                                                                                            " +
-//"\n ON V.DATAV = P.DataP                                                                                                                                                                                                                                                           " +
-//"\n AND V.UnitId = P.ParCompany_id                                                                                                                                                                                                                                                 " +
-//"\n                                                                                                                                                                                                                                                                                " +
-//"\n ) FT                                                                                                                                                                                                                                                                           " +
-//"\n ON L1.Id = FT.INDICADOR                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-           "\n WHERE(ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL OR L1.Id = 25)                                                                                                                                                                                          " +
-           "\n   AND(C.Id >= 1  OR(C.Id IS NULL AND L1.Id = 25))                                                                                                                                                                                                       " +
-           "\n GROUP BY                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      CL.Id                                                                                                                                                                                                                                                          " +
-           "\n     , CL.Name                                                                                                                                                                                                                                                       " +
-           "\n     , S.Id                                                                                                                                                                                                                                                          " +
-           "\n     , S.Name                                                                                                                                                                                                                                                        " +
-           "\n     , CL1.UnitId                                                                                                                                                                                                                                                    " +
-           "\n     , C.Name                                                                                                                                                                                                                                                        " +
-           "\n     , L1.IsRuleConformity                                                                                                                                                                                                                                           " +
-           "\n     , L1.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.Name                                                                                                                                                                                                                                                       " +
-           "\n     , CRL.Id                                                                                                                                                                                                                                                        " +
-           "\n     , CRL.Name                                                                                                                                                                                                                                                      " +
-           //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
-           "\n     , ST.Name                                                                                                                                                                                                                                                       " +
-           "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
-           //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
-           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n ) FIM                                                                                                                                                                                                                                                               " +
-           "\n                                                                                                                                                                                                                                                                     " +
-"\n    ) SC                                                                                                                                                                                                                                                               					                                               " +
-"\n WHERE ParCompanyId <> 2 " +
-"\n GROUP BY                 " +
-"\n   Cluster                " +
-"\n   , ClusterName          " +
-"\n   , Regional             " +
-"\n   , RegionalName         " +
-"\n   , ParCompanyId         " +
-"\n   , ParCompanyName       " +
-"\n   , TipoIndicador        " +
-"\n   , TipoIndicadorName    " +
-"\n   , Level1Id             " +
-"\n   , Level1Name           " +
-"\n   , Criterio             " +
-"\n   , CriterioName         " +
-"\n   , TipoScore            " +
-"\n   , mesData              " +
-
-"\n    ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
-"\n    DROP TABLE #AMOSTRATIPO4                                                                                                                                                                                                                                                                                                            " +
-"\n    DROP TABLE #VOLUMES	                                                                                                                                                                                                                                                                                                               " +
-"\n    DROP TABLE #DIASVERIFICACAO                                                                                                                                                                                                                                                                                                         " +
-"\n    DROP TABLE #NAPCC	DROP TABLE #FREQ																																																														                                                       " +
-"\n  																																																																						                                               " +
-"\n    SET @I = @I + 1																																																																		                                               " +
-"\n  																																																																						                                               " +
-"\n  END                                                                                                                                                                                                                                                                                                                                   " +
-"\n  																																																																						                                               " +
-"\n     ";
 
             #endregion
 
@@ -1988,52 +1294,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             where += "";
 
 
-            var query4 =
+            var queryTotal =
 
-                 "SELECT                     " +
-
-                "\n    0 as level1Id                " +
-                "\n   ,'a1' as Level1Name             " +
-                "\n   ,'a2' as ChartTitle             " +
-                "\n   ,0 as UnidadeId               " +
-                "\n   ,'a4' as UnidadeName            " +
-                "\n   ,20.0 AS procentagemNc          " +
-                "\n   ,10.0 AS Meta                   " +
-                "\n   ,CAST(ISNULL(case when sum(av) is null or sum(av) = 0 then '0'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end, 0) AS DECIMAL(10,2)) AS nc        " +
-                "\n   ,50.0 as av                     " +
-                "\n   ,mesData as [date]                 " +
-
-
-                  "\n FROM ParStructure Reg " +
-                    "\n  LEFT JOIN ParCompanyXStructure CS " +
-                    "\n  ON CS.ParStructure_Id = Reg.Id " +
-                    "\n  left join ParCompany C " +
-                    "\n  on C.Id = CS.ParCompany_Id " +
-                    "\n  left join ParLevel1 P1 " +
-                    "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
-
-                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
-                    "\n  ON PP.ParLevel1_Id = P1.Id " +
-                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
-                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
-
-                    "\n INNER JOIN #SCORE S " +
-                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
-
-                    "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    whereUnit +
-                    "\n group by mesData ORDER BY 10";
+                $@" SELECT
+                   mesData [date]
+                   ,  0 as level1Id                
+                   ,'a1' as Level1Name             
+                   ,'a2' as ChartTitle             
+                   ,0 as UnidadeId               
+                   ,'a4' as UnidadeName            
+                   ,20.0 AS procentagemNc          
+                   ,10.0 AS Meta           
+                   ,50.0 as av                     
+                  ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end nc
+                  FROM " + VisaoGeralDaAreaApiController.sqlBaseGraficosScorecardDiario() +
+                  @"
+                  where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) 
+                  " + whereClusterGroup +
+                  whereCluster +
+                  whereStructure +
+                  whereCriticalLevel +
+                  whereUnit +
+                @"
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                  AND C.IsActive = 1
+                GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
+                
+                  ) AAA 
+                  GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
+                      ) A
+              group by mesData";
 
             #endregion
 
-            //db.Database.ExecuteSqlCommand(query);
 
-            string grandeQuery = query + " " + query4;
+            string grandeQuery = query + " " + queryTotal;
 
             var result = new List<RetornoGenerico>();
             using (Factory factory = new Factory("DefaultConnection"))
@@ -2041,17 +1336,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
             }
 
-            //var result1 = result.Where(r => r.QUERY == 1).ToList();
-            //var result2 = result.Where(r => r.QUERY == 2).ToList();
-            //var result3 = result.Where(r => r.QUERY == 3).ToList();
-            // var result4 = result.Where(r => r.QUERY == 4).ToList();
-            //var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
-
-            var retorno = result;
-
-
-
-            return retorno;
+            return result;
         }
 
         [HttpPost]
@@ -2065,783 +1350,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             * 
             */
 
-            var query = "" +
-
-// "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'    " +
-// "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n  IF OBJECT_ID('tempdb.dbo.#SCORE', 'U') IS NOT NULL																																																										                                               " +
-"\n    DROP TABLE #SCORE; 																																																																	                                               " +
-"\n  																																																																						                                               " +
-"\n  CREATE TABLE #SCORE (																																																																	                                               " +
-"\n  	Cluster int null,																																																																	                                               " +
-"\n  	ClusterName Varchar(153) null,																																																														                                               " +
-"\n  	Regional int null,																																																																	                                               " +
-"\n  	RegionalName Varchar(153) null, 																																																													                                               " +
-"\n  	ParCompany_Id int null,																																																																                                               " +
-"\n  	ParCompanyName Varchar(153) null, 																																																													                                               " +
-"\n  	TipoIndicador int null,																																																																                                               " +
-"\n  	TipoIndicadorName Varchar(153) null, 																																																												                                               " +
-"\n  	Level1Id int null,																																																																	                                               " +
-"\n  	Level1Name Varchar(153) null, 																																																														                                               " +
-"\n  	Criterio int null,																																																																	                                               " +
-"\n  	CriterioName Varchar(153) null, 																																																													                                               " +
-"\n  	Av decimal(30,5) null,																																																																                                               " +
-"\n  	Nc decimal(30,5) null,																																																																                                               " +
-"\n  	Pontos decimal(30,5) null,																																																															                                               " +
-"\n  	PontosIndicador decimal(30,5) null,																																																													                                               " +
-"\n  	Meta decimal(30,5) null,																																																															                                               " +
-"\n  	Real decimal(30,5) null,																																																															                                               " +
-"\n  	PontosAtingidos decimal(30,5) null,																																																													                                               " +
-"\n  	Scorecard decimal(30,5) null,																																																														                                               " +
-"\n  	TipoScore Varchar(153) null," +
-"\n mesData datetime2(7) null  " +
-"\n  	)																																																																					                                               " +
-"\n  																																																																						                                               " +
-"\n  																																																																						                                               " +
-"\n  																																																																						                                               " +
-"\n  DECLARE @I INT = 0																																																																		                                               " +
-"\n  																																																																						                                               " +
-"\n  WHILE (SELECT @I) < 1																																																																	                                               " +
-"\n  BEGIN  																																																																					                                           " +
-"\n     																																																																						                                           " +
-"\n      																																																																					                                               " +
-"\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
-"\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
-
-
-@"            SELECT 
-
-                CL1.id,
-            	CL1.ConsolidationDate,
-            	CL1.UnitId,
-            	CL1.ParLevel1_Id,
-            	CL1.DefectsResult,
-            	CL1.WeiDefects,
-            	CL1.EvaluatedResult,
-            	CL1.WeiEvaluation,
-            	CL1.EvaluateTotal,
-            	CL1.TotalLevel3WithDefects,
-            	CL1.DefectsTotal
-            INTO #ConsolidationLevel
-            FROM ConsolidationLevel1 CL1 WITH(NOLOCK)
-            WHERE 1 = 1
-            AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-
-            CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id); 
-            CREATE INDEX IDX_HashConsolidationLevel_level1 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id); 
-            CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
-            CREATE INDEX IDX_HashConsolidationLevel_id ON #ConsolidationLevel (id); " +
-
-
-
-               // Alteração
-               "\n CREATE TABLE #AMOSTRATIPO4 ( " +
-
-                "\n UNIDADE INT NULL, " +
-                "\n INDICADOR INT NULL, " +
-                "\n AM INT NULL, " +
-                "\n DEF_AM INT NULL " +
-                "\n ) " +
-
-
-                "\n INSERT INTO #AMOSTRATIPO4 " +
-                /*
-                "\n SELECT " +
-                "\n  UNIDADE, INDICADOR, " +
-                "\n FROM " +
-                "\n ( " +
-                */
-                "\n     SELECT " +
-                //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
-                "\n     C.Id AS UNIDADE " +
-                "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
-                "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
-                //"\n     , C2.EvaluationNumber AS AV " +
-                // "\n     , C2.Sample AS AM " +
-                //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
-                "\n     FROM CollectionLevel2 C2 (nolock) " +
-                "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
-                "\n     ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1" +
-
-                "\n     INNER JOIN ParCompany C (nolock)  " +
-                "\n     ON C.Id = C2.UnitId " +
-                "\n     where C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n     and C2.NotEvaluatedIs = 0 " +
-                "\n     and C2.Duplicated = 0 " +
-                "\n     and L1.ParConsolidationType_Id = 4 " +
-                "\n     group by C.Id, ParLevel1_Id" +
-           /*
-           "\n ) TAB " +
-           "\n GROUP BY UNIDADE, INDICADOR " +
-           */
-
-
-
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n DECLARE @VOLUMEPCC INT                                                                                                                                                                                                                                              " +
-           "\n DECLARE @DIASABATE INT                                                                                                                                                                                                                                              " +
-           "\n DECLARE @DIASDEVERIFICACAO INT                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n DECLARE @AVFREQUENCIAVERIFICACAO INT                                                                                                                                                                                                                                " +
-           "\n DECLARE @NCFREQUENCIAVERIFICACAO INT                                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-
-"\n   /* INICIO DADOS DA FREQUENCIA ------------------------------------------------------*/                                                                                                                                                                              					                                               " +
-"\n                                                                                                                                                                                                                                                                       					                                               " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n CREATE TABLE #FREQ (                                                                                                                                                                                                                                                                                                                   " +
-"\n    clusterId int null                                                                                                                                                                                                                                                                                                                  " +
-"\n    ,     cluster varchar(255) null                                                                                                                                                                                                                                                                                                     " +
-"\n    , regionalId int null                                                                                                                                                                                                                                                                                                               " +
-"\n    , regional varchar(255) null                                                                                                                                                                                                                                                                                                        " +
-"\n    , unitId int null                                                                                                                                                                                                                                                                                                                   " +
-"\n    , unidade  varchar(255) null                                                                                                                                                                                                                                                                                                        " +
-"\n    , criticalLevelId  int null                                                                                                                                                                                                                                                                                                         " +
-"\n    , criticalLevel varchar(255) null                                                                                                                                                                                                                                                                                                   " +
-"\n    , pontos decimal(35, 10) null                                                                                                                                                                                                                                                                                                       " +
-"\n    )                                                                                                                                                                                                                                                                                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                 					                                                                                   " +
-"\n                                                                                                                                                                                                                                                                        					                                               " +
-"\n    insert into #freq                                                                                                                                                                                                                                                                                                                   " +
-"\n    SELECT                                                                                                                                                                                                                                                                                                                              " +
-"\n    CL.Id                                                                                                                                                                                                                                                                                                                               " +
-"\n    , CL.Name                                                                                                                                                                                                                                                                                                                           " +
-"\n    , S.Id                                                                                                                                                                                                                                                                                                                              " +
-"\n    , S.Name                                                                                                                                                                                                                                                                                                                            " +
-"\n    , C.Id                                                                                                                                                                                                                                                                                                                              " +
-"\n    , C.Name                                                                                                                                                                                                                                                                                                                            " +
-"\n    , L1C.ParCriticalLevel_Id                                                                                                                                                                                                                                                                                                           " +
-"\n    , CRL.Name                                                                                                                                                                                                                                                                                                                          " +
-"\n    , L1C.Points                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n    FROM ParCompany C                                                                                                                                                                                                                                                                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n    LEFT JOIN ParCompanyXStructure CS                                                                                                                                                                                                                                                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON CS.ParCompany_Id = C.Id                                                                                                                                                                                                                                                                                                   " +
-"\n    LEFT JOIN ParStructure S                                                                                                                                                                                                                                                                                                            " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON S.Id = CS.ParStructure_Id                                                                                                                                                                                                                                                                                                 " +
-"\n    LEFT JOIN ParStructureGroup SG                                                                                                                                                                                                                                                                                                      " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                                                                                            " +
-"\n    LEFT JOIN ParCompanyCluster CCL                                                                                                                                                                                                                                                                                                     " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                                                                              " +
-"\n    LEFT JOIN ParCluster CL                                                                                                                                                                                                                                                                                                             " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                                                                                 " +
-"\n    LEFT JOIN ParLevel1XCluster L1C                                                                                                                                                                                                                                                                                                     " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParLevel1_Id = 25 AND L1C.ParCluster_Id = Cl.Id   AND L1C.IsActive = 1                                                                                                                                                                                                                                                " +
-"\n    LEFT JOIN ParCriticalLevel CRL                                                                                                                                                                                                                                                                                                      " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n           ON L1C.ParCriticalLevel_Id = CRL.Id                                                                                                                                                                                                                                                                                          " +
-"\n    WHERE C.Id >= 1                                                                                                                                                                                                                                                                                                                     " +
-"\n    AND L1C.ParLevel1_Id = 25                                                                                                                                                                                                                                                                                                           " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                       					                                               " +
-"\n   /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              					                                               " +
-"\n   CREATE TABLE #VOLUMES (                                                                                                                                                                                                                                                                                                              " +
-"\n 	DIASABATE INT NULL,                                                                                                                                                                                                                                                                                                                " +
-"\n 	VOLUMEPCC INT NULL, unitid int null                                                                                                                                                                                                                                                                                                                 " +
-"\n   )                                                                                                                                                                                                                                                                                                                                    " +
-"\n   INSERT INTO #VOLUMES                                                                                                                                                                                                                                                                    					                           " +
-"\n   SELECT COUNT(1) AS DIASABATE, SUM(Quartos) AS VOLUMEPCC, ParCompany_id as UnitId FROM VolumePcc1b WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL GROUP BY ParCompany_id                                                                                                  					                                                                   " +
-"\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n   CREATE TABLE #DIASVERIFICACAO (                                                                                                                                                                                                                                                                                                      " +
-"\n 	DIASVERIFICACAO INT NULL,                                                                                                                                                                                                                                                                                                          " +
-"\n 	UnitId INT NULL                                                                                                                                                                                                                                                                                                                    " +
-"\n   )                                                                                                                                                                                                                                                                                                                                    " +
-"\n   INSERT INTO #DIASVERIFICACAO                                                                                                                                                                                                                                                                    					                   " +
-"\n   SELECT COUNT(1) as DIASDEVERIFICACAO, UnitId FROM                                                                                                                                                                                                                                                                                    " +
-"\n   (                                                                                                                                                                                                                                                                                                                                    " +
-"\n 	SELECT CL1.UnitId, CONVERT(DATE, ConsolidationDate) DATA                                                                                                                                                                                                                                                                           " +
-"\n 	FROM ConsolidationLevel1 CL1                                                                                                                                                                                                                                                                                                       " +
-"\n 	WHERE ParLevel1_Id = 24 AND CONVERT(DATE, ConsolidationDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                   " +
-"\n 	GROUP BY CONVERT(DATE, ConsolidationDate), CL1.UnitId                                                                                                                                                                                                                                                                              " +
-"\n   ) VT                                                                                                                                                                                                                                                                                                                                 " +
-"\n   GROUP BY UnitId    " +
-           "\n                                                                                                                                                                                                                                                                                                                                        " +
-"\n   CREATE TABLE #NAPCC (                                                                                                                                                                                                                                                                                                                " +
-"\n 	NAPCC INT NULL,                                                                                                                                                                                                                                                                                                                    " +
-"\n 	UnitId INT NULL                                                                                                                                                                                                                                                                                                                    " +
-"\n   )                                                                                                                                                                                                                                                                                                                                    " +
-"\n   INSERT INTO #NAPCC  					                                                                                                                                                                                                                                               					                               " +
-"\n   SELECT                                                                                                                                                                                                                                                              					                                               " +
-"\n            COUNT(1) as NAPCC,                                                                                                                                                                                                                                                                                                          " +
-"\n 		   UnitId                                                                                                                                                                                                                                                 						                                               " +
-"\n            FROM                                                                                                                                                                                                                                                     						                                           " +
-"\n       (                                                                                                                                                                                                                                                             						                                           " +
-"\n                SELECT                                                                                                                                                                                                                                               						                                           " +
-"\n                COUNT(1) AS NA,                                                                                                                                                                                                                                                                                                         " +
-"\n 			   C2.UnitId                                                                                                                                                                                                                                      						                                                   " +
-"\n                FROM CollectionLevel2 C2                                                                                                                                                                                                                             						                                           " +
-"\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
-"\n                ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    						                                           " +
-"\n                WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           						                                           " +
-"\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
-"\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
-"\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
-"\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
-"\n            ) NA		                                                                                                                                                                                                                                                        						                                   " +
-"\n            WHERE NA = 2                                                                                                                                                                                                                                             						                                           " +
-"\n 		   GROUP BY UnitId                                                                                                                                                                                                                                                                                                                                                                                                                                " +
-"\n   																																																																						                                               " +
-"\n   INSERT INTO #SCORE																																						" +
-"\n SELECT                                                                                                                                                                                                                                                                                                                                                        " +
-"\n   Cluster                                                                                                                                                                                                                                                                                                                                                     " +
-"\n  , ClusterName                                                                                                                                                                                                                                                                                                                                                " +
-"\n  , Regional                                                                                                                                                                                                                                                                                                                                                   " +
-"\n  , RegionalName                                                                                                                                                                                                                                                                                                                                               " +
-"\n  , ParCompanyId                                                                                                                                                                                                                                                                                                                                              " +
-"\n  , ParCompanyName                                                                                                                                                                                                                                                                                                                                             " +
-"\n  , TipoIndicador                                                                                                                                                                                                                                                                                                                                              " +
-"\n  , TipoIndicadorName                                                                                                                                                                                                                                                                                                                                          " +
-"\n  , Level1Id                                                                                                                                                                                                                                                                                                                                                   " +
-"\n  , Level1Name                                                                                                                                                                                                                                                                                                                                                 " +
-"\n  , Criterio                                                                                                                                                                                                                                                                                                                                                   " +
-"\n  , CriterioName                                                                                                                                                                                                                                                                                                                                               " +
-"\n  , case when Level1Id = 3 then avg(av) else sum(av) end av                                                                                                                                                                                                                                                                                                                                                 " +
-"\n  , sum(nc) nc                                                                                                                                                                                                                                                                                                                                                 " +
-"\n  , (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) pontos                                                                                                                                                                                                                                                                                                                                         " +
-"\n  , (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) pontosIndicador                                                                                                                                                                                                                                                                                                                                " +
-"\n  , max(meta) meta                                                                                                                                                                                                                                                                                                                                             " +
-
-"\n  , round(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) * 100) end end, 2) real " +
-"\n  , case when(isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) > 100 then 100 else (isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) end / 100 * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) as pontosAtingidos " +
-"\n  , case when(isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) > 100 then 100 else (isnull(case when (case when Level1Id = 3 then avg(av) else sum(av) end) = 0 then 0 else case when sum(nc) = 0 then (case when tipoIndicador = 1 then 100 else 0 end) else case when tipoIndicador = 1 then(max(meta) / (sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end))) else ((sum(nc) / (case when Level1Id = 3 then avg(av) else sum(av) end)) / max(meta) * 100 * 100) end end * (CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END) / nullif((CASE WHEN SUM(AV) = 0 THEN 0 ELSE max(pontos) END), 0) end, 0)) end as Scorecard " +
-
-"\n  , TipoScore " +
-"\n  , max(mesData) mesData FROM                                                                                                                                                                                                                                           " +
-           "\n (                                                                                                                                                                                                                                                                   " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n   Cluster                                                                                                                                                                                                                                                           " +
-           "\n  , ClusterName                                                                                                                                                                                                                                                      " +
-           "\n  , Regional                                                                                                                                                                                                                                                         " +
-           "\n  , RegionalName                                                                                                                                                                                                                                                     " +
-           "\n  , ParCompanyId                                                                                                                                                                                                                                                     " +
-           "\n  , ParCompanyName                                                                                                                                                                                                                                                   " +
-           "\n  , CASE WHEN TipoIndicador = 0 THEN 1 ELSE 2 END TipoIndicador                                                                                                                                                                                                      " +
-           "\n  , CASE WHEN TipoIndicador = 0 THEN 'Menor' ELSE 'Maior' END TipoIndicadorName                                                                                                                                                                                      " +
-           "\n  , Level1Id                                                                                                                                                                                                                                                         " +
-           "\n  , Level1Name                                                                                                                                                                                                                                                       " +
-           "\n  , Criterio                                                                                                                                                                                                                                                         " +
-           "\n  , CriterioName                                                                                                                                                                                                                                                     " +
-           "\n  , AV AV                                                                                                                                                                                                                                                               " +
-           "\n  , CASE WHEN Level1Id = 25 THEN AV - NC ELSE NC END NC /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                                                                             " +
-           "\n  , Pontos Pontos                                                                                                                                                                                                                                                           " +
-           "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
-           "\n  , Meta AS Meta                                                                                                                                                                                                                                                             " +
-           "\n  , CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND  NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
-           "\n  , CASE WHEN Level1Id = 43 AND AV > 0 AND NC = 0 THEN 100 ELSE Scorecard END  Scorecard                                                                                                                                                                                                                                                        " +
-           "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM                                                                                                                                                                                                                                                                " +
-           "\n (                                                                                                                                                                                                                                                                   " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n *,                                                                                                                                                                                                                                                                  " +
-           "\n /* INICIO SCORECARD COMPLETO-------------------------------------*/                                                                                                                                                                                                 " +
-           "\n CASE                                                                                                                                                                                                                                                                " +
-           "\n     WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end                                                                                                                                                                                                                                                                " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     > 1                                                                                                                                                                                                                                                             " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 1                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n END * 100                                                                                                                                                                                                                                                           " +
-           "\n /* FIM SCORECARD COMPLETO----------------------------------------*/                                                                                                                                                                                                 " +
-           "\n AS SCORECARD                                                                                                                                                                                                                                                        " +
-           "\n ,                                                                                                                                                                                                                                                                   " +
-           "\n /* INICIO SCORECARD COMPLETO-------------------------------------*/                                                                                                                                                                                                 " +
-           "\n CASE                                                                                                                                                                                                                                                                " +
-           "\n     WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 when (Meta / NC) < 0.00 then 0 else Meta / NC end                                                                                                                                                                                                                                                                 " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     > 1                                                                                                                                                                                                                                                             " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 1                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     < 0.00                                                                                                                                                                                                                                                           " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 0                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n     /*INICIO SCORECARD------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n     CASE                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN TipoIndicador = 1 THEN                                                                                                                                                                                                                                 " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN (CASE WHEN Level1Id = 25 then 100 else 0 end) ELSE (CASE WHEN Level1Id = 25 then (100 - real) else real end) / meta END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         ELSE                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             CASE WHEN NC = 0 AND AV > 0 THEN 100 ELSE META / NULLIF(REAL,0) END                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         END                                                                                                                                                                                                                                                         " +
-           "\n     /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            " +
-           "\n END                                                                                                                                                                                                                                                                 " +
-           "\n /* FIM SCORECARD COMPLETO----------------------------------------*/                                                                                                                                                                                                 " +
-           "\n * /* MULTIPLICAÇÃO */                                                                                                                                                                                                                                               " +
-           "\n PONTOS                                                                                                                                                                                                                                                              " +
-           "\n AS PONTOSATINGIDOS                                                                                                                                                                                                                                                  " +
-           "\n FROM                                                                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n (                                                                                                                                                                                                                                                                   " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-//"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
-//"\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
-//"\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
-//"\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
-//"\n , ISNULL(CL1.UnitId, ft.ParCompany_id) AS ParCompanyId                                                                                                                                                                                                                       " +
-//"\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
-//"\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
-//"\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
-//"\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-//"\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Criterio                                                                                                                                                                      " +
-//"\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS CriterioName                                                                                                                                                                  " +
-//"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
-//"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
-
-
-"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
-  "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
-  "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
-  "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = 0)) AS RegionalName                                                                                                                                                                         " +
-  "\n , ISNULL(CL1.UnitId, 0) AS ParCompanyId                                                                                                                                                                                                                       " +
-  "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = 0)) AS ParCompanyName                                                                                                                                                                        " +
-  "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
-  "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
-  "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
-  "\n , ISNULL(" +
-  "( " +
-
-   "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
-
-   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
-
-   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
-
-   "\n           --  AND L1Ca.IsActive = 1 " +
-
-   "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
-
-   "\n         ORDER BY L1Ca.EffectiveDate  desc " +
-    "\n	)" +
-  "" +
-  "\n , (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
-  "\n , ISNULL(" +
-  "( " +
-
-   "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
-
-   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
-
-   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
-
-   "\n           --  AND L1Ca.IsActive = 1 " +
-
-   "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
-
-   "\n         ORDER BY L1Ca.EffectiveDate  desc " +
-    "\n	)" +
-  ", (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
-  "\n , ISNULL(" +
-  "( " +
-
-   "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
-
-   "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
-
-   "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
-
-   "\n           --  AND L1Ca.IsActive = 1 " +
-
-   "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
-
-   "\n         ORDER BY L1Ca.EffectiveDate desc  " +
-    "\n	)" +
-  ", (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
-  "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
-
-
-"\n                                                                                                                                                                                                                                                                     " +
-           "\n  --ISNULL(CL.Id, @CLUSTER) AS Cluster                                                                                                                                                                                                                               " +
-           "\n  --, (CL.Name)AS ClusterName                                                                                                                                                                                                                                        " +
-           "\n  --, (S.Id)AS Regional                                                                                                                                                                                                                                              " +
-           "\n  --, (S.Name)AS RegionalName                                                                                                                                                                                                                                        " +
-           "\n  --, (CL1.UnitId)AS ParCompanyId                                                                                                                                                                                                                                    " +
-           "\n  --, (C.Name)AS ParCompanyName                                                                                                                                                                                                                                      " +
-           "\n  --, L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                           " +
-           "\n  --, L1.Id AS Level1Id                                                                                                                                                                                                                                              " +
-           "\n  --, L1.Name AS Level1Name                                                                                                                                                                                                                                          " +
-           "\n  --, (CRL.Id)AS Criterio                                                                                                                                                                                                                                            " +
-           "\n  --, (CRL.Name)AS CriterioName                                                                                                                                                                                                                                      " +
-           "\n  --, (L1C.Points)AS Pontos                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n  , ST.Name AS TipoScore                                                                                                                                                                                                                                             " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n   /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                              " +
-
-
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-
-
-
-           "\n   /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                              " +
-           "\n   AS AV                                                                                                                                                                                                                                                             " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n   /*INICIO NC COMPLETO----------------------------------------------*/                                                                                                                                                                                              " +
-           "\n   CASE WHEN L1.IsRuleConformity = 1 THEN                                                                                                                                                                                                                            " +
-           "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
-          "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            ////"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-
-
-           "\n         /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                        " +
-           "\n         -                                                                                                                                                                                                                                                           " +
-           "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       CASE                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                        " +
-
-           "\n       END                                                                                                                                                                                                                                                           " +
-           "\n       /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n    ELSE                                                                                                                                                                                                                                                             " +
-           "\n       /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       CASE                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n         WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                        " +
-
-           "\n       END                                                                                                                                                                                                                                                           " +
-           "\n       /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n      end                                                                                                                                                                                                                                                           " +
-           "\n    /*FIM NC COMPLETO-------------------------------------------------*/                                                                                                                                                                                             " +
-           "\n    AS NC                                                                                                                                                                                                                                                            " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n   CASE                                                                                                                                                                                                                                                              " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN                                                                                                                                                                                                                                                            " +
-           "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-
-           "\n                                                                                                                                                                                                                                                                 " +
-           "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       = 0                                                                                                                                                                                                                                                           " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     THEN 0                                                                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      ELSE                                                                                                                                                                                                                                                           " +
-           "\n       /*INICIO NC COMPLETO----------------------------------------------*/                                                                                                                                                                                          " +
-           "\n       CASE WHEN L1.IsRuleConformity = 1 THEN                                                                                                                                                                                                                        " +
-           "\n           /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-           "\n             /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                    " +
-           "\n             -  /* SUBTRAÇÃO */                                                                                                                                                                                                                                      " +
-           "\n                /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                 " +
-           "\n           CASE                                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                            " +
-           "\n           END                                                                                                                                                                                                                                                       " +
-           "\n           /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n        ELSE                                                                                                                                                                                                                                                         " +
-           "\n           /*INICIO NC-------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n           CASE                                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           //"\n             WHEN L1.Id = 25 THEN SUM(FT.FREQ)       " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                            " +
-
-           "\n           END                                                                                                                                                                                                                                                       " +
-           "\n           /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                      " +
-           "\n        END                                                                                                                                                                                                                                                         " +
-           "\n        /*FIM NC COMPLETO-------------------------------------------------*/                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        / /*DIVISÃO*/                                                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n       /*INICIO AV-------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n     CASE                                                                                                                                                                                                                                                              					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 					                                               " +
-            "\n                                                                                                                                                                                                                                                                       					                                               " +
-            "\n       WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                					                                               " +
-            "\n       WHEN CT.Id IN(4) THEN SUM(A4.AM)																																																													                                               " +
-            "\n     END                                                                                                                                                                                                                                                               					                                               " +
-           "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      END * 100                                                                                                                                                                                                                                                      " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      AS REAL                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n  ,                                                                                                                                                                                                                                                                  " +
-           "\n  CASE                                                                                                                                                                                                                                                               " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
-           "\n  END                                                                                                                                                                                                                                                                " +
-           "\n  AS META                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM ParLevel1(nolock) L1    -- (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                           " +
-           "\n LEFT JOIN #ConsolidationLevel CL1   (nolock)                                                                                                                                                                                                                                  " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1.Id = CL1.ParLevel1_Id AND ISNULL(ShowScorecard, 1) = 1                                                                                                                                                                                                                                " +
-           "\n LEFT JOIN ParScoreType ST  (nolock)                                                                                                                                                                                                                                           " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                " +
-           "\n LEFT JOIN ParCompany C    (nolock)                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON C.Id = CL1.UnitId                                                                                                                                                                                                                                         " +
-           "\n LEFT JOIN #AMOSTRATIPO4 A4    (nolock)                                                                                                                                                                                                                                        " +
-           "\n         ON A4.UNIDADE = C.Id                                                                                                                                                                                                                                      " +
-           "\n         AND A4.INDICADOR = L1.ID                                                                                                                                 " +
-           "\n LEFT JOIN ParCompanyXStructure CS   (nolock)                                                                                                                                                                                                                                  " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CS.ParCompany_Id = C.Id                                                                                                                                                                                                                                   " +
-           "\n LEFT JOIN ParStructure S     (nolock)                                                                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON S.Id = CS.ParStructure_Id                                                                                                                                                                                                                                 " +
-           "\n LEFT JOIN ParStructureGroup SG     (nolock)                                                                                                                                                                                                                                   " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                            " +
-           "\n LEFT JOIN ParCompanyCluster CCL   (nolock)                                                                                                                                                                                                                                    " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                                 " +
-           "\n LEFT JOIN ParCluster CL       (nolock)                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                 " +
-           "\n LEFT JOIN ParConsolidationType CT  (nolock)                                                                                                                                                                                                                                   " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                                                                                                        " +
-           "\n LEFT JOIN ParLevel1XCluster L1C  (nolock)                                                                                                                                                                                                                                     " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
-           "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                              " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-"\n                                                                                                                                                                                                                                                                                " +
-//"\n  LEFT JOIN                                                                                                                                                                                                                                                                     " +
-//"\n (                                                                                                                                                                                                                                                                              " +
-//"\n SELECT 25 AS INDICADOR, CASE WHEN DATAP IS NULL THEN DATAV ELSE DATAP END AS DATA, *,                                                                                                                                                                                                                                                     " +
-//"\n CASE WHEN ISNULL(V.DIASDEVERIFICACAO, 0) > ISNULL(P.DIASABATE, 0) THEN ISNULL(P.DIASABATE, 0) ELSE ISNULL(V.DIASDEVERIFICACAO, 0) END AS FREQ                                                                                                                                  " +
-//"\n FROM                                                                                                                                                                                                                                                                           " +
-//"\n (                                                                                                                                                                                                                                                                              " +
-//"\n SELECT Data AS DATAP, COUNT(1) DIASABATE, SUM(Quartos) VOLUMEPCC, ParCompany_id                                                                                                                                                                                                " +
-//"\n FROM VolumePcc1b(nolock)                                                                                                                                                                                                                                                       " +
-//"\n WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                                 " +
-//"\n GROUP BY ParCompany_id, Data                                                                                                                                                                                                                                                   " +
-//"\n ) P                                                                                                                                                                                                                                                                            " +
-//"\n FULL JOIN                                                                                                                                                                                                                                                                      " +
-//"\n (                                                                                                                                                                                                                                                                              " +
-//"\n SELECT COUNT(1) AS DIASDEVERIFICACAO, UNITID, DATA AS DATAV                                                                                                                                                                                                                    " +
-//"\n FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA, cl1.UNITID FROM ConsolidationLevel1 CL1(nolock)                                                                                                                                                                             " +
-//"\n WHERE ParLevel1_Id = 24                                                                                                                                                                                                                                                        " +
-//"\n AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                                                                      " +
-//"\n GROUP BY CONVERT(DATE, ConsolidationDate), UNITID) VT                                                                                                                                                                                                                          " +
-//"\n GROUP BY DATA, UNITID                                                                                                                                                                                                                                                          " +
-//"\n ) V                                                                                                                                                                                                                                                                            " +
-//"\n ON V.DATAV = P.DataP                                                                                                                                                                                                                                                           " +
-//"\n AND V.UnitId = P.ParCompany_id                                                                                                                                                                                                                                                 " +
-//"\n                                                                                                                                                                                                                                                                                " +
-//"\n ) FT                                                                                                                                                                                                                                                                           " +
-//"\n ON L1.Id = FT.INDICADOR                                                                                                                                                                                                                                                        " +
-"\n                                                                                                                                                                                                                                                                                " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-"\n  --------------------------                                                                                                                                                                                                                                                    " +
-           "\n WHERE(ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL OR L1.Id = 25)                                                                                                                                                                                          " +
-           "\n   AND(C.Id >= 1  OR(C.Id IS NULL AND L1.Id = 25))                                                                                                                                                                                                       " +
-           "\n GROUP BY                                                                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n      CL.Id                                                                                                                                                                                                                                                          " +
-           "\n     , CL.Name                                                                                                                                                                                                                                                       " +
-           "\n     , S.Id                                                                                                                                                                                                                                                          " +
-           "\n     , S.Name                                                                                                                                                                                                                                                        " +
-           "\n     , CL1.UnitId                                                                                                                                                                                                                                                    " +
-           "\n     , C.Name                                                                                                                                                                                                                                                        " +
-           "\n     , L1.IsRuleConformity                                                                                                                                                                                                                                           " +
-           "\n     , L1.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.Name                                                                                                                                                                                                                                                       " +
-           "\n     , CRL.Id                                                                                                                                                                                                                                                        " +
-           "\n     , CRL.Name                                                                                                                                                                                                                                                      " +
-           //"\n     , L1C.Points                                                                                                                                                                                                                                                    " +
-           "\n     , ST.Name                                                                                                                                                                                                                                                       " +
-           "\n     , CT.Id                                                                                                                                                                                                                                                         " +
-           "\n     , L1.HashKey " +
-           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                   " +
-           //"\n     , C.Id   , CL1.ConsolidationDate,FT.DATA, FT.PARCOMPANY_ID                                                                                                                                                                                                                                                        " +
-           "\n     , C.Id   , CL1.ConsolidationDate                                                                                                                                                                                                                                                        " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
-           "\n ) FIM                                                                                                                                                                                                                                                               " +
-           "\n                                                                                                                                                                                                                                                                     " +
-"\n    ) SC                                                                                                                                                                                                                                                               					                                               " +
-"\n WHERE ParCompanyId <> 2 " +
-"\n GROUP BY                 " +
-"\n   Cluster                " +
-"\n   , ClusterName          " +
-"\n   , Regional             " +
-"\n   , RegionalName         " +
-"\n   , ParCompanyId         " +
-"\n   , ParCompanyName       " +
-"\n   , TipoIndicador        " +
-"\n   , TipoIndicadorName    " +
-"\n   , Level1Id             " +
-"\n   , Level1Name           " +
-"\n   , Criterio             " +
-"\n   , CriterioName         " +
-"\n   , TipoScore            " +
-
-"\n    ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
-"\n    DROP TABLE #AMOSTRATIPO4                                                                                                                                                                                                                                                                                                            " +
-"\n    DROP TABLE #VOLUMES	                                                                                                                                                                                                                                                                                                               " +
-"\n    DROP TABLE #DIASVERIFICACAO                                                                                                                                                                                                                                                                                                         " +
-"\n    DROP TABLE #NAPCC	DROP TABLE #FREQ																																																														                                                       " +
-"\n  																																																																						                                               " +
-"\n    SET @I = @I + 1																																																																		                                               " +
-"\n  																																																																						                                               " +
-"\n  END                                                                                                                                                                                                                                                                                                                                   " +
-"\n  																																																																						                                               " +
-"\n     ";
+            var query = VisaoGeralDaAreaApiController.sqlBase(form);
 
             #endregion
 
@@ -2881,51 +1390,79 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var where = string.Empty;
             where += "";
 
+            string queryLocal =
 
-            var query4 =
+             $@" SELECT
+              '0001-01-01' [date]
+              ,  0 as level1Id                
+              ,'a1' as Level1Name             
+              ,'a2' as ChartTitle             
+              ,0 as UnidadeId               
+              ,'a4' as UnidadeName            
+              ,20.0 AS procentagemNc          
+              ,10.0 AS Meta           
+              ,50.0 as av                     
+             ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end nc
+             FROM " + VisaoGeralDaAreaApiController.sqlBaseGraficosVGA() +
+               @"
+                 where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)
+                 " + whereClusterGroup +
+               whereCluster +
+               whereStructure +
+               whereCriticalLevel +
+               whereUnit +
+               @"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND C.IsActive = 1
+               GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
-                 "SELECT                     " +
+             ) AAA 
+             GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      ) A
+                     ";
 
-                "\n    0 as level1Id                " +
-                "\n   ,'a1' as Level1Name             " +
-                "\n   ,'a2' as ChartTitle             " +
-                "\n   ,0 as UnidadeId               " +
-                "\n   ,'a4' as UnidadeName            " +
-                "\n   ,20.0 AS procentagemNc          " +
-                "\n   ,10.0 AS Meta                   " +
-                "\n   ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as decimal (10, 1)) end AS nc        " +
-                                 //case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos), 100) = 0 or isnull(sum(PontosAtingidos), 100) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 100) / isnull(sum(Pontos), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end
-                "\n   ,50.0 as av                     " +
-                "\n   ,max(mesData) as [date]                 " +
+            //var queryLocal =
+            //                    $@" SELECT
+            //                     '0001-01-01' [date]
+            //                       ,  0 as level1Id                
+            //                       ,'a1' as Level1Name             
+            //                       ,'a2' as ChartTitle             
+            //                       ,0 as UnidadeId               
+            //                       ,'a4' as UnidadeName            
+            //                       ,20.0 AS procentagemNc          
+            //                       ,10.0 AS Meta           
+            //                       ,50.0 as av                     
+            //                      ,case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull([PONTOS ATINGIDOS OK], 0)) / sum(isnull(PontosIndicador, 0)) * 100 end nc
+            //                      FROM(
 
-  @"      FROM ParStructure Reg  with(nolock)
-     LEFT JOIN ParCompanyXStructure CS  with(nolock)
-  ON CS.ParStructure_Id = Reg.Id
-     left join ParCompany C  with(nolock)
-  on C.Id = CS.ParCompany_Id
-     left join ParLevel1 P1  with(nolock)
-  on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
-     LEFT JOIN ParGroupParLevel1XParLevel1 PP  with(nolock)
-  ON PP.ParLevel1_Id = P1.Id
-     LEFT JOIN ParGroupParLevel1 PP1  with(nolock)
-  ON PP.ParGroupParLevel1_Id = PP1.Id
-     LEFT JOIN #SCORE S  with (nolock)
-  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id 
-  WHERE 1 = 1 
-  -- AND C.id IN(SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = 8 AND PCC.Active = 1)
-  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null " +
-                    whereClusterGroup +
-                    whereCluster +
-                    whereStructure +
-                    whereCriticalLevel +
-                    // whereUnit +
-                    "\n  ORDER BY 10";
+            //                      SELECT
+            //                      '0001-01-01' AS mesData,C.Initials companySigla,
+            //                      SUM(PontosIndicador) PontosIndicador,
+            //                      CASE WHEN CASE WHEN SUM(PontosIndicador) = 0 OR SUM(PontosIndicador) IS NULL THEN 0 ELSE SUM(PontosAtingidos) / SUM(PontosIndicador) END < 0.7 THEN 0 ELSE SUM(PontosAtingidos) END PontosAtingidos
+            //                      FROM ParStructure Reg
+            //                      LEFT JOIN ParCompanyXStructure CS
+            //                      ON CS.ParStructure_Id = Reg.Id
+            //                      left join ParCompany C
+            //                      on C.Id = CS.ParCompany_Id
+            //                      left join #SCORE S  
+            //                      on C.Id = S.ParCompany_Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id
+            //                      where 1=1 AND pC.IsActive = 1  
+            //                    " + whereClusterGroup +
+            //                        whereCluster +
+            //                        whereStructure +
+            //                        whereCriticalLevel +
+
+            //                    @"GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, s.level1id
+
+            //                      ) AAA 
+            //                      GROUP BY mesData";
+
 
             #endregion
 
-            //db.Database.ExecuteSqlCommand(query);
 
-            string grandeQuery = query + " " + query4;
+
+            string grandeQuery = query + " " + queryLocal;
 
             var result = new List<RetornoGenerico>();
             using (Factory factory = new Factory("DefaultConnection"))
@@ -2933,17 +1470,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 result = factory.SearchQuery<RetornoGenerico>(grandeQuery).ToList();
             }
 
-            //var result1 = result.Where(r => r.QUERY == 1).ToList();
-            //var result2 = result.Where(r => r.QUERY == 2).ToList();
-            //var result3 = result.Where(r => r.QUERY == 3).ToList();
-            // var result4 = result.Where(r => r.QUERY == 4).ToList();
-            //var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
-
-            var retorno = result;
-
-
-
-            return retorno;
+            return result;
         }
 
         [HttpPost]
@@ -3048,7 +1575,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
                 "\n     C.Id AS UNIDADE " +
                 "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
+                "\n , COUNT(DISTINCT CONCAT(c2.Period, '-', c2.shift, '-', C2.EvaluationNumber, '-', C2.Sample, '-', cast(cast(C2.CollectionDate as date) as varchar))) AM " +
                 "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
                 //"\n     , C2.EvaluationNumber AS AV " +
                 // "\n     , C2.Sample AS AM " +
@@ -3147,10 +1674,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n   /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              					                                               " +
 "\n   CREATE TABLE #VOLUMES (                                                                                                                                                                                                                                                                                                              " +
 "\n 	DIASABATE INT NULL,                                                                                                                                                                                                                                                                                                                " +
-"\n 	VOLUMEPCC INT NULL, unitid int null                                                                                                                                                                                                                                                                                                                 " +
+"\n 	VOLUMEPCC INT NULL, unitid int null , data date null                                                                                                                                                                                                                                                                                                                " +
 "\n   )                                                                                                                                                                                                                                                                                                                                    " +
 "\n   INSERT INTO #VOLUMES                                                                                                                                                                                                                                                                    					                           " +
-"\n   SELECT COUNT(1) AS DIASABATE, SUM(Quartos) AS VOLUMEPCC, ParCompany_id as UnitId FROM VolumePcc1b WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL GROUP BY ParCompany_id                                                                                                  					                                                                   " +
+"\n   SELECT COUNT(1) AS DIASABATE, SUM(Quartos) AS VOLUMEPCC, ParCompany_id as UnitId, cast(data as date) data FROM VolumePcc1b WHERE Data BETWEEN @DATAINICIAL AND @DATAFINAL GROUP BY ParCompany_id, cast(data as date)                                                                                                  					                                                                   " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n   CREATE TABLE #DIASVERIFICACAO (                                                                                                                                                                                                                                                                                                      " +
 "\n 	DIASVERIFICACAO INT NULL,                                                                                                                                                                                                                                                                                                          " +
@@ -3168,16 +1695,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
            "\n                                                                                                                                                                                                                                                                                                                                        " +
 "\n   CREATE TABLE #NAPCC (                                                                                                                                                                                                                                                                                                                " +
 "\n 	NAPCC INT NULL,                                                                                                                                                                                                                                                                                                                    " +
-"\n 	UnitId INT NULL                                                                                                                                                                                                                                                                                                                    " +
+"\n 	UnitId INT NULL, data date null                                                                                                                                                                                                                                                                                                                    " +
 "\n   )                                                                                                                                                                                                                                                                                                                                    " +
 "\n   INSERT INTO #NAPCC  					                                                                                                                                                                                                                                               					                               " +
 "\n   SELECT                                                                                                                                                                                                                                                              					                                               " +
-"\n            COUNT(1) as NAPCC,                                                                                                                                                                                                                                                                                                          " +
-"\n 		   UnitId                                                                                                                                                                                                                                                 						                                               " +
+"\n            COUNT(1) as NAPCC, unitId, data                                                                                                                                                                                                                                                                                                          " +
+"\n 		                                                                                                                                                                                                                                                   						                                               " +
 "\n            FROM                                                                                                                                                                                                                                                     						                                           " +
 "\n       (                                                                                                                                                                                                                                                             						                                           " +
 "\n                SELECT                                                                                                                                                                                                                                               						                                           " +
-"\n                COUNT(1) AS NA,                                                                                                                                                                                                                                                                                                         " +
+"\n                COUNT(1) AS NA, cast(c2.collectiondate as date) data,                                                                                                                                                                                                                                                                                                         " +
 "\n 			   C2.UnitId                                                                                                                                                                                                                                      						                                                   " +
 "\n                FROM CollectionLevel2 C2                                                                                                                                                                                                                             						                                           " +
 "\n                LEFT JOIN Result_Level3 C3                                                                                                                                                                                                                           						                                           " +
@@ -3186,10 +1713,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n                AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             						                                           " +
 "\n                --AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       						                                           " +
 "\n                AND IsNotEvaluate = 1                                                                                                                                                                                                                                						                                           " +
-"\n                GROUP BY C2.ID, C2.UnitId                                                                                                                                                                                                                                       						                                   " +
+"\n                GROUP BY C2.ID, C2.UnitId, cast(c2.collectiondate as date)                                                                                                                                                                                                                                       						                                   " +
 "\n            ) NA		                                                                                                                                                                                                                                                        						                                   " +
 "\n            WHERE NA = 2                                                                                                                                                                                                                                             						                                           " +
-"\n 		   GROUP BY UnitId                                                                                                                                                                                                                                                                                                                                                                                                                                " +
+"\n 		   GROUP BY UnitId, data                                                                                                                                                                                                                                                                                                                                                                                                                                " +
 "\n   																																																																						                                               " +
 "\n   INSERT INTO #SCORE																																						" +
 "\n SELECT                                                                                                                                                                                                                                                                                                                                                        " +
@@ -3362,19 +1889,19 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 //"\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Pontos                                    " +
 //"\n   , ISNULL(CL1.ConsolidationDate, FT.Data) as mesData                                                                                                                                                                                                                       " +
 
-"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = 0)) AS Cluster                                                                                                                                                                      " +
-  "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = 0)) AS ClusterName                                                                                                                                                                          " +
-  "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = 0)) AS Regional                                                                                                                                                                             " +
-  "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = 0)) AS RegionalName                                                                                                                                                                         " +
+"\n           ISNULL(CL.Id, (SELECT top 1 clusterId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Cluster                                                                                                                                                                      " +
+  "\n , ISNULL(CL.Name, (SELECT top 1 cluster FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ClusterName                                                                                                                                                                          " +
+  "\n , ISNULL(S.Id, (SELECT top 1 regionalId FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS Regional                                                                                                                                                                             " +
+  "\n , ISNULL(S.Name, (SELECT top 1 regional FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS RegionalName                                                                                                                                                                         " +
   "\n , ISNULL(CL1.UnitId, 0) AS ParCompanyId                                                                                                                                                                                                                       " +
-  "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = 0)) AS ParCompanyName                                                                                                                                                                        " +
+  "\n , ISNULL(C.Name, (SELECT top 1 unidade FROM #FREQ WHERE unitId = FT.PARCOMPANY_ID)) AS ParCompanyName                                                                                                                                                                        " +
   "\n , L1.IsRuleConformity AS TipoIndicador                                                                                                                                                                                                                                       " +
   "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                          " +
   "\n , L1.Name AS Level1Name                                                                                                                                                                                                                                                      " +
   "\n , ISNULL(CRL.Id, (SELECT top 1 criticalLevelId FROM #FREQ WHERE unitId = 0)) AS Criterio                                                                                                                                                                      " +
   "\n , ISNULL(CRL.Name, (SELECT top 1 criticalLevel FROM #FREQ WHERE unitId = 0)) AS CriterioName                                                                                                                                                                  " +
   "\n , ISNULL((select top 1 Points from ParLevel1XCluster aaa (nolock) where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate < @DATAFINAL), (SELECT top 1 pontos FROM #FREQ WHERE unitId = 0)) AS Pontos                                    " +
-  "\n   , ISNULL(CL1.ConsolidationDate, '0001-01-01') as mesData                                                                                                                                                                                                                       " +
+  "\n   , ISNULL(CL1.ConsolidationDate, FT.DATA) as mesData                                                                                                                                                                                                                       " +
 
 
 "\n                                                                                                                                                                                                                                                                     " +
@@ -3424,7 +1951,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id and data = cast(cl1.ConsolidationDate as date)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id  and data = cast(cl1.ConsolidationDate as date))                                                                                                                                                                                         " +
 
             "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
 
@@ -3478,7 +2005,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id and data = cast(cl1.ConsolidationDate as date)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id  and data = cast(cl1.ConsolidationDate as date))                                                                                                                                                                                         " +
 
             "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
 
@@ -3503,7 +2030,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id and data = cast(cl1.ConsolidationDate as date)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id  and data = cast(cl1.ConsolidationDate as date))                                                                                                                                                                                         " +
 
             "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
 
@@ -3551,7 +2078,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n                                                                                                                                                                                                                                                                       					                                               " +
             //"\n       WHEN L1.Id = 25 THEN SUM(FT.DIASABATE)       " +
             "\n                                                                                                                                                                                                                                                                       					                                               " +
-            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id)                                                                                                                                                                                         " +
+            //"\n       WHEN L1.hashKey = 1 THEN (SELECT sum(VOLUMEPCC) FROM #VOLUMES WHERE UnitId = C.Id and data = cast(cl1.ConsolidationDate as date)) - (SELECT isnull(sum(NAPCC),0) FROM #NAPCC WHERE UnitId = C.Id  and data = cast(cl1.ConsolidationDate as date))                                                                                                                                                                                         " +
 
             "\n       WHEN L1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = C.Id AND Data = cast(CL1.ConsolidationDate as date )) " +
 
@@ -3570,11 +2097,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
            "\n  ,                                                                                                                                                                                                                                                                  " +
            "\n  CASE                                                                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -3691,7 +2218,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n   , TipoScore            " +
 "\n   , month(mesData) + '-' + month(mesData)              " +
 
-"\n    ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
+"\n    ,CAST(mesData AS DATE)   ORDER BY 11, 10                                                                                                                                                                                                                                                    					                                               " +
 "\n    DROP TABLE #AMOSTRATIPO4                                                                                                                                                                                                                                                                                                            " +
 "\n    DROP TABLE #VOLUMES	                                                                                                                                                                                                                                                                                                               " +
 "\n    DROP TABLE #DIASVERIFICACAO                                                                                                                                                                                                                                                                                                         " +
@@ -3832,7 +2359,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -3922,7 +2449,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,MonitoramentoName AS Level2Name
                ,Tarefa AS level3Id
                ,TarefaName AS level3Name
-               ,'" + titulo + @"' AS ChartTitle
+               ,'" + titulo + $@"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -3933,6 +2460,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -3955,7 +2486,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -3968,6 +2499,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
                 GROUP BY 
                     ConsolidationDate
             ORDER BY 3 
@@ -4006,7 +2541,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -4094,7 +2629,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IndicadorName AS Level1Name
                ,Monitoramento AS level2Id
                ,MonitoramentoName AS Level2Name
-               ,'" + titulo + @"' AS ChartTitle
+               ,'" + titulo + $@"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4105,6 +2640,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -4125,7 +2664,7 @@ ORDER BY 7
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -4137,6 +2676,10 @@ ORDER BY 7
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
 ORDER BY 3 
@@ -4174,7 +2717,7 @@ ORDER BY 3
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -4260,7 +2803,7 @@ ORDER BY 3
             SELECT 
             	Indicador AS level1Id
                ,IndicadorName AS Level1Name
-               ,'" + titulo + @"' AS ChartTitle
+               ,'" + titulo + $@"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4271,6 +2814,10 @@ ORDER BY 3
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
@@ -4289,7 +2836,7 @@ ORDER BY 3
             " + SQLcentro + @"
 
             SELECT 
-               '"+ titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -4299,7 +2846,11 @@ ORDER BY 3
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,sum(ISNULL(Meta,0)) AS Meta
-	FROM #CUBO Cubo WITH (NOLOCK)
+	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
 ORDER BY 3 
@@ -4336,7 +2887,7 @@ ORDER BY 3
 
             if (form.clusterIdArr.Length > 0)
             {
-                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.structureIdArr) + ") ";
+                Wprocesso += " AND ParCluster_ID IN (" + string.Join(",", form.clusterIdArr) + ") ";
             }
 
             // Regional
@@ -4421,7 +2972,7 @@ ORDER BY 3
             SELECT 
             	Indicador AS level1Id
                ,IndicadorName AS Level1Name
-               ,'" + titulo + @"' AS ChartTitle
+               ,'" + titulo + $@"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
@@ -4431,14 +2982,18 @@ ORDER BY 3
 		       ,sum(ISNULL(AV,0)) AS AV
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,AVG(ISNULL(Meta,0)) AS Meta
-	FROM #CUBO Cubo WITH (NOLOCK)
+	        FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 Indicador 
                ,IndicadorName 
 		       ,Unidade	
 		       ,UnidadeName 
                ,ConsolidationDate
-ORDER BY 7 
+            ORDER BY 7 
             ";
                 #endregion
             }
@@ -4450,7 +3005,7 @@ ORDER BY 7
             " + SQLcentro + @"
 
             SELECT 
-               '" + titulo + @"' AS ChartTitle
+               '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName) UnidadeName
@@ -4460,6 +3015,10 @@ ORDER BY 7
 		       ,sum(ISNULL(NC,0)) AS NC
 		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
+            WHERE 1=1 
+                { Wprocesso }
+                { Wregional }
+                { Wnivelcritico }
             GROUP BY 
                 ConsolidationDate
 ORDER BY 3 
@@ -5057,8 +3616,8 @@ ORDER BY 3
             																  AND C1.ParLevel1_id = A4.INDICADOR 
             																  AND C1.ConsolidationDate = A4.DATA)
             															,0)
-            				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
-            				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
+            				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.WeiEvaluation)
+            				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.WeiEvaluation)
             				ELSE SUM(0)
             	 END AS [AVComPeso]
             	,CASE 
@@ -5098,7 +3657,7 @@ ORDER BY 3
             	 END AS [AV]
             	,CASE 
             				WHEN L1.ParConsolidationType_Id = 1 THEN SUM(C1.DefectsTotal)
-            				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.WeiDefects)
+            				WHEN L1.ParConsolidationType_Id = 2 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.DefectsResult)
             				WHEN L1.ParConsolidationType_Id = 4 THEN  ISNULL((SELECT SUM(DEF_AM) DEF_AM FROM #AMOSTRA4 A4 
             																WHERE 1=1 
@@ -5117,15 +3676,15 @@ ORDER BY 3
             	--			WHERE G.ParLevel1_Id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_Id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			AND G.AddDate <= C1.ConsolidationDate)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate)
             	--		> 0 THEN (SELECT TOP 1
             	--				ISNULL(G.PercentValue, 0)
             	--			FROM ParGoal G WITH (NOLOCK)
             	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			AND G.AddDate <= C1.ConsolidationDate
-            	--			ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 --
             	--	ELSE (SELECT TOP 1
             	--				ISNULL(G.PercentValue, 0)
@@ -5133,7 +3692,8 @@ ORDER BY 3
             	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+                --          AND G.EffectiveDate <= C1.ConsolidationDate
+                --			ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             	--		END
             	--		AS Meta
                 ,ISNULL((  SELECT TOP 1
@@ -5142,20 +3702,20 @@ ORDER BY 3
 					            WHERE 1=1
 					            AND pg.IsActive = 1
 					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
-					            AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
-					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC),
+					            Order By /*EffectiveDate DESC,*/ EffectiveDate DESC, ParCompany_Id DESC),
 					            (  SELECT TOP 1
 					                PercentValue
 					            FROM ParGoal pg
 					            WHERE 1=1
 					            AND pg.IsActive = 1
 					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
-					            --AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
-					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC))	AS Meta
+					            Order By /*EffectiveDate DESC,*/ EffectiveDate DESC, ParCompany_Id DESC))	AS Meta
             	INTO #CUBO
             	FROM #ConsolidationLevel C1
             	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -5486,15 +4046,15 @@ ORDER BY 3
             	--			WHERE G.ParLevel1_Id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_Id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			AND G.AddDate <= C1.ConsolidationDate)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate)
             	--		> 0 THEN (SELECT TOP 1
             	--				ISNULL(G.PercentValue, 0)
             	--			FROM ParGoal G WITH (NOLOCK)
             	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			AND G.AddDate <= C1.ConsolidationDate
-            	--			ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 --
             	--	ELSE (SELECT TOP 1
             	--				ISNULL(G.PercentValue, 0)
@@ -5502,8 +4062,9 @@ ORDER BY 3
             	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			ORDER BY G.ParCompany_Id DESC, AddDate ASC)
-            	--		END
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
+                --		END
             	--		AS Meta
                 ,ISNULL((  SELECT TOP 1
 					                PercentValue
@@ -5511,20 +4072,20 @@ ORDER BY 3
 					            WHERE 1=1
 					            AND pg.IsActive = 1
 					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
-					            AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
-					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC),
+					            Order By /*EffectiveDate DESC,*/ EffectiveDate DESC, ParCompany_Id DESC),
 					            (  SELECT TOP 1
 					                PercentValue
 					            FROM ParGoal pg
 					            WHERE 1=1
 					            AND pg.IsActive = 1
 					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
-					            --AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
-					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC))	AS Meta
+					            Order By /*EffectiveDate DESC,*/ EffectiveDate DESC, ParCompany_Id DESC))	AS Meta
             	INTO #CUBO
             	FROM #ConsolidationLevel C1
             	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -5821,15 +4382,15 @@ ORDER BY 3
             	--			WHERE G.ParLevel1_Id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_Id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			AND G.AddDate <= C1.ConsolidationDate)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate)
             	--		> 0 THEN (SELECT TOP 1
             	--				ISNULL(G.PercentValue, 0)
             	--			FROM ParGoal G WITH (NOLOCK)
             	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			AND G.AddDate <= C1.ConsolidationDate
-            	--			ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
                 --
             	--	ELSE (SELECT TOP 1
             	--				ISNULL(G.PercentValue, 0)
@@ -5837,7 +4398,8 @@ ORDER BY 3
             	--			WHERE G.ParLevel1_id = C1.ParLevel1_Id
             	--			AND (G.ParCompany_id = C1.UnitId
             	--			OR G.ParCompany_id IS NULL)
-            	--			ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+            	--			AND G.EffectiveDate <= C1.ConsolidationDate
+            	--			ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             	--		END
             	--		AS Meta
                 ,ISNULL((  SELECT TOP 1
@@ -5846,20 +4408,20 @@ ORDER BY 3
 					            WHERE 1=1
 					            AND pg.IsActive = 1
 					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
-					            AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
-					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC),
+					            Order By /*EffectiveDate DESC,*/ EffectiveDate DESC, ParCompany_Id DESC),
 					            (  SELECT TOP 1
 					                PercentValue
 					            FROM ParGoal pg
 					            WHERE 1=1
 					            AND pg.IsActive = 1
 					            AND pg.ParLevel1_Id = C1.ParLevel1_Id
-					            --AND (isnull(pg.AlterDate,pg.AddDate) <= C1.ConsolidationDate)
+					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            -- AND (isnull(pg.EffectiveDate,'1900-01-01') <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
-					            Order By /*EffectiveDate DESC,*/ AddDate DESC, ParCompany_Id DESC))	AS Meta
+					            Order By /*EffectiveDate DESC,*/ EffectiveDate DESC, ParCompany_Id DESC))	AS Meta
         	INTO #CUBO
         	FROM #ConsolidationLevel C1
         	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -6044,15 +4606,15 @@ ORDER BY 3
             				WHERE G.ParLevel1_Id = Indicador
             				AND (G.ParCompany_Id = Unidade
             				OR G.ParCompany_id IS NULL)
-            				AND G.AddDate <= @DATEFIM)
+            				AND G.EffectiveDate <= @DATEFIM)
             			> 0 THEN (SELECT TOP 1
             					ISNULL(G.PercentValue, 0)
             				FROM ParGoal G WITH (NOLOCK)
             				WHERE G.ParLevel1_id = Indicador
             				AND (G.ParCompany_id = Unidade
             				OR G.ParCompany_id IS NULL)
-            				AND G.AddDate <= @DATEFIM
-            				ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            				AND G.EffectiveDate <= @DATEFIM
+            				ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             
             		ELSE (SELECT TOP 1
             					ISNULL(G.PercentValue, 0)
@@ -6060,7 +4622,8 @@ ORDER BY 3
             				WHERE G.ParLevel1_id = Indicador
             				AND (G.ParCompany_id = Unidade
             				OR G.ParCompany_id IS NULL)
-            				ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+            				AND G.EffectiveDate <= @DATEFIM
+            				ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             			END
             			AS Meta
              INTO #WHERESTATUS

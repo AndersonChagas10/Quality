@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = Resources.Resource.evolutional;
 
+
     //Condições de dropdown que podem ser multiplos
     ViewBag.UnitIdArr = true;
     ViewBag.ClusterIdArr = true;
@@ -188,9 +189,14 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var Subtitle = "";
+
+    var indicador = @Html.Raw(Json.Encode(ViewBag.Level01));
+    var monitoramento = @Html.Raw(Json.Encode(ViewBag.Level02));
+    var tarefa = @Html.Raw(Json.Encode(ViewBag.Level03));
+    var unidade = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));
 
     //        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
     var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
@@ -220,7 +226,12 @@
     exibeTodosLevels = false;
 
 
+
+
     function Send(toggle) {
+
+        //debugger;
+
 
         limpaDadosTela();
 
@@ -230,12 +241,16 @@
             enviar['clusterSelected_Id'] = [];
         }
         if ($('#unitIdV').prev().find('a.actived').length > 0) {
-            enviar['unitId'] = 0;
-            enviar['unitIdArr'] = [];
+            enviar['unitId'] = unidade[0].Id;
+            if (enviar['unitIdArr'] == undefined)
+                unidade.forEach(function (o, c) {
+                    enviar['unitIdArr'].push(unidade[c].id);
+            })
         }
         if ($('#level1Idv').prev().find('a.actived').length > 0) {
             enviar['level1Id'] = 0;
             enviar['level1IdArr'] = [];
+
         }
         if ($('#level2Idv').prev().find('a.actived').length > 0) {
             enviar['level2Id'] = 0;
@@ -250,6 +265,14 @@
             enviar['criticalLevelIdArr'] = [];
         }
 
+        if (enviar.level3IdArr != undefined && enviar.level3IdArr[0] > 0) {
+            enviar.level3Id = enviar.level3IdArr[0];
+        }
+
+        if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)))
+                retornaSubtitulos()
+
+
         enviar['auditorId'] = GetUsuarioId();
 
         if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
@@ -257,7 +280,18 @@
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         }
 
-        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) || ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+
+            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        } else 
+        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] == undefined) || (enviar['level1IdArr'].length == 0))) {
+
+                EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        } else
+
+        if (((enviar['unitIdArr'] == undefined) || (enviar['unitIdArr'].length == 0)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
 
             EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
@@ -338,9 +372,9 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></span>'
+                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">?</b></i></span>'
                 else
-                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></span>';
+                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">?</b></i></span>';
                 counter++;
             }
 
@@ -459,26 +493,26 @@
             var SubtitleIndicador = "";
 
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text() + "  <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleIndicador += Resources("unit") + ": " + enviar.unidadesFiltradas ;
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
                     SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " | ";
+                SubtitleIndicador += Resources("level1") + ": " + enviar.nivel1Filtrado;;
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleIndicador += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+                SubtitleIndicador += Resources("level2") + ": " + enviar.nivel2Filtrado;;
             }
 
             SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
@@ -817,7 +851,7 @@
 
         let TituloHistoricoModal = "";
 
-        subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
+        subtitleAux = Resources("unit") + ": " + enviar.unidadesFiltradas;
 
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
@@ -1363,22 +1397,17 @@
 
                 var SubtitleConsolidado = "";
 
-                if (enviar.unitId != null || enviar.unitId != "") {
-                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  "
-                };
-
-                SubtitleConsolidado = "";
                 if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
+                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
                 }
                 if (enviar.structureId != '' && enviar.structureId != undefined) {
-                    SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
+                    SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
                 }
                 if (enviar.unitId != '' && enviar.unitId != undefined) {
-                    SubtitleConsolidado += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
+                    SubtitleConsolidado += Resources("unit") + ": " + enviar.unidadesFiltradas;
                 }
 
-                SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 2));
+                SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 1  ));
 
 
                 $('#GraficoHistoricoUnidade').removeClass('loader');
@@ -1595,29 +1624,25 @@
 
             var SubtitleIndicador = "";
 
-            if (enviar.unitId != null || enviar.unitId != "") {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/> "
-            }
-            ;
             SubtitleIndicador = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("unit") + ": " + enviar.unidadesFiltradas;
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
                     SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("level1") + ": " + enviar.nivel1Filtrado;;
             }
             SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
 
@@ -1834,26 +1859,26 @@
 
             SubtitleMonitoramento = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleMonitoramento += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("unit") + ": " + enviar.unidadesFiltradas;
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
                     SubtitleMonitoramento += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleMonitoramento += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+                SubtitleMonitoramento += Resources("level1") + ": " + enviar.nivel1Filtrado;;
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+                SubtitleMonitoramento += Resources("level2") + ": " + enviar.nivel2Filtrado;;
             }
 
             SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 0));
@@ -2096,7 +2121,7 @@
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
         enviarAxI['level3Id'] = data[0].level3Id;
-        enviarAxI['unitId'] = enviar3.unitId;
+        enviarAxI['unitId'] = data[0].unitId;
 
         //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
         //subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
@@ -2587,29 +2612,29 @@
 
         Subtitle = "";
         if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
         }
         if (enviar.structureId != '' && enviar.structureId != undefined) {
-            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
         }
         if (enviar.unitId != '' && enviar.unitId != undefined) {
-            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("unit") + ": " + enviar.unidadesFiltradas;
         }
         if (enviar.auditorId != '' && enviar.auditorId != undefined) {
             if (!$('#auditorId :selected').text() == "All")
                 Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
         }
         if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
         }
         if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+            Subtitle += Resources("level1") + ": " + enviar.nivel1Filtrado;
         }
         if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+            Subtitle += Resources("level2") + ": " + enviar.nivel2Filtrado;
         }
         if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
-            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + " entre outros ..." + " |   ";
+            Subtitle += Resources("level3") + ": " + enviar.nivel3Filtrado;
         }
         Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
@@ -2697,33 +2722,6 @@
 
             $('#btnSend').prop("disabled", true);
 
-            Subtitle = "";
-            if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
-            }
-            if (enviar.structureId != '' && enviar.structureId != undefined) {
-                Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
-            }
-            if (enviar.unitId != '' && enviar.unitId != undefined) {
-                Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
-            }
-            if (enviar.auditorId != '' && enviar.auditorId != undefined) {
-                if (!$('#auditorId :selected').text() == "All")
-                    Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
-            }
-            if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
-            }
-            if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
-            }
-            if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
-            }
-            if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
-                Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
-            }
-            Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
             Send(true);
 
@@ -2789,7 +2787,23 @@
 
         //enviar.isLevel = 2;
 
-        subtitle = Resources('unit') + ": " + $('#unitIdV :selected').text();
+
+     // Quando ambos estão filtrados
+
+        if ((enviar.unitIdArr != undefined && enviar.unitIdArr.length > 0) && (enviar.level1IdArr != undefined && enviar.level1IdArr.length > 0)) {
+            subtitle = Resources('unit') + ": " + enviar.unidadesFiltradas;
+            subtitle += Resources('level1') + ": " + enviar.nivel1Filtrado
+        }
+
+     // Quando unidade está filtrada
+        else if (enviar.unitIdArr != undefined && enviar.unitIdArr.length > 0) {
+            subtitle = Resources('unit') + ": " + enviar.unidadesFiltradas;
+        }
+
+    // Quando indicador está filtrado
+        else if (enviar.level1IdArr != undefined && enviar.level1IdArr.length > 0) {
+            subtitle = Resources('level1') + ": " + enviar.nivel1Filtrado;
+        }
 
         //if (pathDirect == 1)
         //    subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
@@ -3136,38 +3150,192 @@
             },
         }
 
-        function FTATarefasAcumuladas(that, dados) {
+    function FTATarefasAcumuladas(that, dados) {
 
-            debugger
+        let Levels3 = MapeiaValorParaHC(dados, "Tarefa_Id");
+        let Unidades = MapeiaValorParaHC(dados, "Unidade_Id");
+        let ncs = MapeiaValorParaHC(dados, "Proc");
 
-            let Levels3 = MapeiaValorParaHC(dados, "Tarefa_Id");
-            let Unidades = MapeiaValorParaHC(dados, "Unidade_Id");
-            let ncs = MapeiaValorParaHC(dados, "Proc");
-
-            var enviarFTA = {};
-            enviarFTA['_DataInicioFTA'] = enviar.startDate;
-            enviarFTA['_DataFimFTA'] = enviar.endDate;
-            enviarFTA['Supervisor_Id'] = GetUsuarioId();
-            enviarFTA['Unidade_Id'] = Unidades[that.x] == null ? 0 : Unidades[that.x];
-            enviarFTA['PercentualNCFTA'] = ncs[that.x] == null ? 0 : ncs[that.x]
-            enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
+        var enviarFTA = {};
+        enviarFTA['_DataInicioFTA'] = enviar.startDate;
+        enviarFTA['_DataFimFTA'] = enviar.endDate;
+        enviarFTA['Supervisor_Id'] = GetUsuarioId();
+        enviarFTA['Unidade_Id'] = enviar.unitId == null || enviar.unitId == "" ? 0 : enviar.unitId;
+        enviarFTA['PercentualNCFTA'] = ncs[that.x] == null ? 0 : ncs[that.x]
+        enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
 
 
-            if (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length == 1) {
-                enviarFTA['level1Id'] == enviar.level1IdArr[0];
-            }
-
-            let params = enviarFTA;
-            let str = jQuery.param(params);
-            let preServer = GetUrlFTA();
-            preServer = preServer.substr(0, (preServer.length - 1));
-            preServer += "2?"
-
-            $('#ftaModal').modal();
-            $('#ftaModalSim').attr('href', preServer + str);
-
+        if (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length == 1) {
+            enviarFTA['level1Id'] = enviar.level1IdArr[0];
         }
 
-    </script>
+        let params = enviarFTA;
+        let str = jQuery.param(params);
+        let preServer = GetUrlFTA();
+        preServer = preServer.substr(0, (preServer.length - 1));
+        preServer += "2?"
+
+        $('#ftaModal').modal();
+        $('#ftaModalSim').attr('href', preServer + str);
+
+    }
+
+    function retornaSubtitulos() {
+
+        // Subtitulo Unidades
+
+
+        if (enviar.unitId > 0) {
+
+
+            // Cria array de Sigla de Unidades
+            var sigla = [];
+            enviar['unitInitials'] = [];
+            enviar.unitIdArr.forEach(function (o, c) {
+                sigla = unidade.filter(function (obj) { return obj.Id == o; });
+                enviar['unitInitials'].push(sigla[0].Initials);
+                return enviar['unitInitials'];
+            })
+
+            //Transforma em Subtitle
+            enviar['unidadesFiltradas'] = "";
+
+            enviar.unitInitials.forEach(function (o, c) {
+                enviar.unidadesFiltradas += " " + o + " ";
+                if (enviar.unitInitials.length-1 != c) {
+                    enviar.unidadesFiltradas += "|";
+                }
+            })
+
+            enviar.unidadesFiltradas = enviar.unidadesFiltradas + "  <br/> ";
+        }
+        // Subtitulo Level 1
+        if (enviar.level1Id > 0) {
+
+            // Cria array de Sigla de Unidades
+
+            var name = [];
+            enviar['level1Name'] = [];
+            enviar.level1IdArr.forEach(function (o, c) {
+                name = indicador.filter(function (obj) { return obj.Id == o; });
+                enviar['level1Name'].push(name[0].Name);
+                return enviar['level1Name'];
+            })
+
+            //Transforma em Subtitle
+            enviar['nivel1Filtrado'] = "";
+            enviar.level1Name.forEach(function (o, c) {
+
+                tam = enviar.nivel1Filtrado.length;
+
+                if (tam <= 100) {
+                    enviar.nivel1Filtrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.nivel1Filtrado.length;
+            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + "entre outros ...  <br/> " : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
+        }
+
+        // Subtitulo Level 2
+        if (enviar.level2Id > 0) {
+
+            // Cria array de Sigla de Monitoramento
+
+            var name = [];
+            enviar['level2Name'] = [];
+            enviar.level2IdArr.forEach(function (o, c) {
+                name = monitoramento.filter(function (obj) { return obj.Id == o; });
+                enviar['level2Name'].push(name[0].Name);
+                return enviar['level2Name'];
+            })
+
+            //Transforma em Subtitle
+            enviar['nivel2Filtrado'] = "";
+            enviar.level2Name.forEach(function (o, c) {
+
+                tam = enviar.nivel2Filtrado.length;
+
+                if (tam <= 100) {
+                    enviar.nivel2Filtrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.nivel2Filtrado.length;
+            enviar.nivel2Filtrado =  tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + "entre outros ...  <br/>" : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
+        }
+
+        // Subtitulo Level 3
+        if (enviar.level3Id > 0) {
+
+            // Cria array de Sigla de Monitoramento
+
+            var name = [];
+            enviar['level3Name'] = [];
+            enviar.level3IdArr.forEach(function (o, c) {
+                name = tarefa.filter(function (obj) { return obj.Id == o; });
+                enviar['level3Name'].push(name[0].Name);
+                return enviar['level3Name'];
+            })
+
+            //Transforma em Subtitle
+            enviar['nivel3Filtrado'] = "";
+            enviar.level3Name.forEach(function (o, c) {
+
+                tam = enviar.nivel3Filtrado.length;
+
+                if (tam <= 100) {
+                    enviar.nivel3Filtrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.nivel3Filtrado.length;
+            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + "entre outros ...  <br/>" : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
+        }
+
+        subtitleGeneral();
+
+    }
+
+    function subtitleGeneral() {
+
+        Subtitle = "";
+        if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
+        }
+        if (enviar.structureId != '' && enviar.structureId != undefined) {
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
+        }
+        if (enviar.unitId != '' && enviar.unitId != undefined) {
+            Subtitle += Resources("unit") + ": " + enviar.unidadesFiltradas + "  <br/> ";
+        }
+        if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+            if (!$('#auditorId :selected').text() == "All")
+                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+        }
+        if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
+        }
+        if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+            Subtitle += Resources("level1") + ": " + enviar.nivel1Filtrado;
+        }
+        if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+            Subtitle += Resources("level2") + ": " + enviar.nivel2Filtrado;
+        }
+        if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+            Subtitle += Resources("level3") + ": " + enviar.nivel3Filtrado;
+        }
+        Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
+
+
+    }
+
+</script>
 
 }

@@ -98,6 +98,7 @@
         overflow-x: hidden;
     }
 
+    /*
     #fixBody1::-webkit-scrollbar-track {
         background-color: #FFFFFF;
     }
@@ -109,7 +110,7 @@
     }
 
     #fixBody1::-webkit-scrollbar-thumb {
-        background: #383434; /*#bf0d0e;*/
+        background: #383434;
     }
 
     #colUie1::-webkit-scrollbar-track {
@@ -123,7 +124,7 @@
     }
 
     #colUie1::-webkit-scrollbar-thumb {
-        background: #383434; /*#bf0d0e;*/
+        background: #383434;
     }
 
     #colUieFim1::-webkit-scrollbar-track {
@@ -137,8 +138,9 @@
     }
 
     #colUieFim1::-webkit-scrollbar-thumb {
-        background: #383434; /*#bf0d0e;*/
+        background: #383434;
     }
+        */
 
     #showNCGeral {
         /*height: 250px;
@@ -251,7 +253,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     var contadorAJAX = 0;
     var contadorAJAX_historico = 0;
@@ -584,7 +586,7 @@
     function Send(toggle) {
 
 
-            
+
 
 
             // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
@@ -656,7 +658,7 @@
                     EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
                     EasyAjax(UrlGraficoHistoricoGeralNumero, enviar, GerarGraficoHistoricoGeralNumero, "loaderNCGeral", undefined);
                 }
-                
+
             } else {
 
                 enviar["level1Name"] = "";
@@ -723,7 +725,7 @@
             }
 
 
-            
+
 
 
 
@@ -805,7 +807,7 @@
                 }, "funcoesPorUnidade");
             }
 
-            
+
         }
 
         function GetIndicadoresPorUnidade2(paramCol, paramRow) {
@@ -882,7 +884,7 @@
                 }, "tabela2div");
             }
 
-            
+
         }
 
         function GetInicadoresPorRegional(paramRow) {
@@ -957,7 +959,7 @@
                     scroolTable(container)
                 }, "inicadoresPorRegional");
             }
-            
+
         }
 
         function GetIndicadoresPorUnidade3(paramCol, paramRow) {
@@ -1033,7 +1035,7 @@
                 }, "tabela2div");
             }
 
-            
+
         }
 
         function GetIndicadoresPorUnidade() {
@@ -1109,7 +1111,7 @@
                 }, "inicadoresPorRegional");
             }
 
-            
+
         }
 
         function GetIndicadoresPorUnidadeReg() {
@@ -1185,7 +1187,7 @@
                 }, "IndicadoresPorUnidadeReg");
             }
 
-            
+
         }
 
         function GetTabela2(paramCol, paramRow) {
@@ -1283,7 +1285,7 @@
                 }, "tabela2div");
             }
 
-            
+
         }
 
         function CallbackGrafico1(data) {
@@ -1421,7 +1423,7 @@
                 EasyAjax(urlGrafico2, enviar, CallbackGrafico2, "grafico2");
             }
 
-            
+
         }
 
         function CallbackGrafico2(data) {
@@ -1558,7 +1560,7 @@
 
                     setTimeout(function () { contadorAJAX_historico = 0; }, 500);
 
-            
+
                     $('#grafico5').empty();
 
                     if (enviar["ParametroTableRow"][1] != undefined) {
@@ -1588,7 +1590,7 @@
 
 
 
-            
+
         }
 
         function CallbackGrafico3(data) {
@@ -1759,7 +1761,7 @@
         //    enviar["ParametroTableCol"].push(paramCol);
         //}
 
-           
+
 
             if (typeof (contadorAJAX_historico) != "undefined") {
                 if (contadorAJAX_historico < 1) {
@@ -2619,7 +2621,7 @@
                 EasyAjax(urlGraficoEvolutivoUnidade, enviar, CallAjaxUnidade, "grafico2");
             }
 
-            
+
         }
 
         function CallAjaxUnidade(data)
@@ -2929,6 +2931,6 @@
             $('#menu-toggle').click();
         }
 
-</script>
+    </script>
 
 }
