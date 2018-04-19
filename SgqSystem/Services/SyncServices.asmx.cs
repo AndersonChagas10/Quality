@@ -6232,7 +6232,48 @@ namespace SgqSystem.Services
             }//Intervalo em minutos
             else if (parLevel3.ParLevel3InputType_Id == 7)
             {
-                input = html.campoTextoMinutos(id: parLevel3.Id.ToString());
+                //input = html.campoTextoMinutos(id: parLevel3.Id.ToString());
+
+                classInput = " interval";
+
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
+
+                labels = html.div(
+
+
+
+                                            outerhtml: valorCompleto + " min",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                //input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                //                                intervalMin: parLevel3.IntervalMin,
+                //                                intervalMax: parLevel3.IntervalMax,
+                //                                unitName: parLevel3.ParMeasurementUnit_Name);
+
+                input = html.campoTextoMinutos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {

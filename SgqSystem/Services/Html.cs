@@ -409,13 +409,38 @@ namespace SgqSystem.Services
             return texto;
         }
 
-        public string campoTextoMinutos(string id, string classe = null)
+        public string campoTextoMinutos_(string id, string classe = null)
         {
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "         <input type=\"time\" class=\"form-control text-center levelValue antes naoValidarInput\" style=\"width:50%;\">     " +
                                  "         <input type=\"time\" class=\"form-control text-center levelValue depois naoValidarInput\" style=\"width:50%;\">     " +
                                  "</div>                                                    ";
             return texto;
+        }
+
+        public string campoTextoMinutos(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+                                 "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
+                                  "         <input type=\"time\" class=\"form-control text-center levelValue antes inputMinutes\" style=\"width:50%;\">     " +
+                                 "         <input type=\"time\" class=\"form-control text-center levelValue depois inputMinutes\" style=\"width:50%;\">     " +
+                                 "     </span>                                                                                                                                                                " +
+                                 "</div>   ";
+
+            //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+            //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
+            //                     "</div> ";
+            return intervalo;
         }
 
         public string campoRangeSlider(string id, decimal min, decimal max, string classe = null)
