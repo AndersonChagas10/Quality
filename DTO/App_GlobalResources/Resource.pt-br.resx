@@ -2085,4 +2085,7 @@
   <data name="smaller" xml:space="preserve">
     <value>Menor</value>
   </data>
+  <data name="indicators_by_units" xml:space="preserve">
+    <value>Indicadores por Unidades</value>
+  </data>
 </root>

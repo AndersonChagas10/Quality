@@ -2743,6 +2743,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Indicators by Units.
+        /// </summary>
+        internal static string indicators_by_units {
+            get {
+                return ResourceManager.GetString("indicators_by_units", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It was not possible to verify indicators, try again..
         /// </summary>
         internal static string indicators_error_try_again {
