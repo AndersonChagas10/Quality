@@ -3670,6 +3670,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to minutes.
+        /// </summary>
+        internal static string minutes {
+            get {
+                return ResourceManager.GetString("minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min.
+        /// </summary>
+        internal static string minutes_initials {
+            get {
+                return ResourceManager.GetString("minutes_initials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Min Interval.
         /// </summary>
         internal static string min_interval {

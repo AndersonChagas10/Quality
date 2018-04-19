@@ -6259,7 +6259,7 @@ namespace SgqSystem.Services
 
 
 
-                                            outerhtml: valorCompleto + " min",
+                                            outerhtml: valorCompleto + " " + Resources.Resource.minutes_initials,
                                            classe: "levelName"
                                        //style: "margin-top:7px;"
                                        );

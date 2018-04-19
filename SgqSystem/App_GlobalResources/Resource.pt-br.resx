@@ -2451,4 +2451,10 @@
   <data name="new" xml:space="preserve">
     <value>Novo</value>
   </data>
+  <data name="minutes" xml:space="preserve">
+    <value>minutos</value>
+  </data>
+  <data name="minutes_initials" xml:space="preserve">
+    <value>min</value>
+  </data>
 </root>
