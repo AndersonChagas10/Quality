@@ -91,6 +91,7 @@ function GetDataTable(campo, filtro) {
 
                 //Monta a tabela
                 MountDataTable(json);
+                //MountDataTablePlanejamento(json);
 
             });
         }
@@ -114,6 +115,8 @@ function objectToArr(myObj) {
 }
 
 function MountDataTable(json) {
+
+    GetDataTablePlanejamento(Object.assign([], json));
 
     if (ColvisarrayVisaoAtual_show.length != 0) {
         setArrayColvisAtual();
@@ -2485,7 +2488,7 @@ $('#btnTop').click(function () {
 
     GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 
-    GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+    //GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 })
 
 $('#btnFiltroPie2').click(function () {

@@ -1489,6 +1489,7 @@
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').append(r);
                         $('#NovaAcao').show();
+                       
                     });
                 } else {
                     $('#modalLindo').find('.modal-body').empty();
@@ -1501,6 +1502,7 @@
 
             $('#Fechar').show();
             $('#Salvar').show();
+
             /*Fim Botões*/
 
         }
@@ -1730,6 +1732,8 @@
                 $('.money').each(function () {
                     $(this).maskMoney('mask', $(this).val());
                 });
+
+                $('#UnidadeDeMedida_Id').trigger('change');
 
             });
             /*Botões*/
@@ -2757,7 +2761,7 @@
         $(function () {
             GetDataTable();
 
-            GetDataTablePlanejamento();
+            //GetDataTablePlanejamento();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
                 if (selectPredecessor != undefined) {
@@ -3537,7 +3541,7 @@
             $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
                 }});
                 var tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",
@@ -3545,11 +3549,12 @@
                     colunaDosDados:r.columns,
                     buttons: {buttons: []},
                     initComplete: function(){
-                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
-                            if($(this).attr('data-tipo') == 'tatico'){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {                            
+                            if ($(this).attr('data-tipo') == 'tatico') {
                                 AbreModalDePlanejamento($(this).attr('data-id'));
-                            }else if($(this).attr('data-tipo') == 'acao'){
-                                AbreModalDeAcao($(this).attr('data-id'));
+                            } else if ($(this).attr('data-tipo') == 'acao') {
+                                planejamentoCorrentId = $(this).attr('data-id');
+                                AbreModalDeAcao(planejamentoCorrentId);
                             }
                             $('#ModalNovoApartirDeAlgo').modal('hide');
                         });
