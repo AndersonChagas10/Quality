@@ -208,7 +208,7 @@ namespace PlanoAcaoCore
 
                 var agora = DateTime.Now.Date;
                 //if (QuandoFim >= agora && QuandoFim <= agora)
-                return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
+                return string.Format("{0} Dias", Math.Round((QuandoFim.Date - agora).TotalDays));
 
                 //return string.Empty;
             }

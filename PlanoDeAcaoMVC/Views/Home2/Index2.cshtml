@@ -395,7 +395,7 @@
 
             <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','Tático', 'Estratégico')" id="btnModalNovoTatico" data-toggle="modal"> Novo Tático</button>
 
-            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','Ação', 'Tático')" id="btnModalNovaAcao" data-toggle="modal"> Novo Ação</button>
+            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','Ação', 'Tático')" id="btnModalNovaAcao" data-toggle="modal"> Nova Ação</button>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
 
@@ -1041,7 +1041,7 @@
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>        
+            </div>
             <div class="clearfix"></div>
         </div>
         <div class="modal-footer">
@@ -1489,6 +1489,7 @@
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').append(r);
                         $('#NovaAcao').show();
+                       
                     });
                 } else {
                     $('#modalLindo').find('.modal-body').empty();
@@ -1501,6 +1502,7 @@
 
             $('#Fechar').show();
             $('#Salvar').show();
+
             /*Fim Botões*/
 
         }
@@ -1730,6 +1732,8 @@
                 $('.money').each(function () {
                     $(this).maskMoney('mask', $(this).val());
                 });
+
+                $('#UnidadeDeMedida_Id').trigger('change');
 
             });
             /*Botões*/
@@ -2319,6 +2323,19 @@
 
             var sendObj = $(o).serializeObject();
 
+            if (sendObj != undefined) {
+                if (sendObj.TipoIndicador == 1) {
+
+                    sendObj.Level1Id = 0;
+                    sendObj.Level2Id = 0;
+                    sendObj.Level3Id = 0;
+
+                } else if (sendObj.TipoIndicador == 2) {
+
+                    sendObj.Pa_IndicadorSgqAcao_Id = 0;
+                }
+            }
+
             if (isEdit == undefined && sendObj != undefined) {
                 sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
@@ -2517,7 +2534,6 @@
             })
         };
 
-
         function SetaValoresModal(id, item, isActive) {
 
             $('#btnCancelarNovo').click();
@@ -2532,6 +2548,7 @@
             }
 
         }
+
         function isPositiveInteger(n) {
             return n == "0" || ((n | 0) > 0 && n % 1 == 0);
         }
@@ -2741,11 +2758,10 @@
             counter--;
         });
 
-
         $(function () {
             GetDataTable();
 
-            GetDataTablePlanejamento();
+            //GetDataTablePlanejamento();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
                 if (selectPredecessor != undefined) {
@@ -2898,7 +2914,7 @@
 
                 $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                 $('#obj').show(); //Apagar depois
-                
+
                 $('#CausaGenerica_Id').change();
                 $('#modalNovo > div > div > div.modal-footer > button').show();
 
@@ -2918,18 +2934,20 @@
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
 
+            Chaveamento = [];
+            ChaveamentoObjetivo = [];
+
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
 
             let Categories = [];
             let Data = [];
-            let Chaveamento = [];
-
-            processarChaveamento();
 
             dadosfilter = dados;
 
             if (TipoGrafico == "Gerencia") {
+
+                processarChaveamento();
 
                 Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
 
@@ -3011,26 +3029,28 @@
 
             } else {
 
-                Categories = Object.values(MapeiaValorParaHC(dados, "IndicadoresDiretriz").filter(onlyUnique));
+                processarChaveamentoObjetivo();
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "Objetivo").filter(onlyUnique));
 
                 Data = [];
 
                 Categories.forEach(function (c, o) {
 
                     let qtdConcluido = $.grep(dados, function (r) {
-                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Objetivo == c);
                     }).length;
 
-                    let listaDiretriz = $.grep(dados, function (r) {
-                        return r.IndicadoresDiretriz == c;
+                    let listaObjetivo = $.grep(dados, function (r) {
+                        return r.Objetivo == c;
                     });
                     
-                    let qtdDeDiretriz = listaDiretriz.length;
+                    let qtdDeObjetivo = listaObjetivo.length;
                     
-                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
 
-                    let gerencia = retornaChaveamentoPorGerenciaId(listaDiretriz[0].Gerencia_Id)[0];
-                    Data.push({ color: gerencia.color, y: porcConcluidos });
+                    let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorDiretriz', {
@@ -3067,8 +3087,8 @@
                             point: {
                                 events: {
                                     click: function () {
-                                        filterDados("IndicadoresDiretriz", this.category, getTablesModal);
-                                        getGraficoPorProjetos("IndicadoresDiretriz", this.category, true);
+                                        filterDados("Objetivo", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Objetivo", this.category, true);
                                     }
                                 }
                             },
@@ -3207,8 +3227,7 @@
                 var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-
-                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
+                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays - 1) + " Dias" };
 
                 return valor;
             } else {
@@ -3217,7 +3236,7 @@
                 }
             }
 
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3302,6 +3321,7 @@
 
             Data = [];
 
+            processarChaveamentoObjetivo();
             processarChaveamento();
 
             let dados2 = dados;
@@ -3330,9 +3350,14 @@
             let qtdDeGerencia = listaGerencia.length;
 
             let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
-
-            let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
-            Data.push({ color: gerencia.color, y: porcConcluidos });
+                
+            if (TipoGrafico == "Gerencia") {
+                let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                Data.push({ color: gerencia.color, y: porcConcluidos });
+            }else{
+                let objetivo = retornaChaveamentoPorObjetivo(listaGerencia[0].Objetivo_Id)[0];
+                Data.push({ color: objetivo.color, y: porcConcluidos });
+            }
         });
 
             Highcharts.chart('graficoPorProjetos', {
@@ -3441,13 +3466,82 @@
             },500);
         }
 
+        function AbreModalDePlanejamento(id){
+            Clicked(true, false, true);
+            $.get(urlGetPlanejamento, { id: id }, function (r) {
+                ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
+            });
+        }
+
+        function AbreModalDeAcao(id){
+            Clicked(true, true);
+
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty();
+            $('#Header').html("Planejamento Operacional");
+
+            $.get(PlanejamentoDetalhes, { id: id }, function (r) {
+                $('#NovaAcao').show();
+                $('#NovaAcao').click();
+                $('#modalLindo').find('.modal-body').empty().prepend(r);
+            });
+        }
+
+        var Chaveamento = [];
+        var ChaveamentoObjetivo = [];
+
+        function processarChaveamento() {
+            if (Chaveamento.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
+
+                if (existe.length <= 0) {
+                    Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
+                }
+            });
+        }
+
+        function processarChaveamentoObjetivo() {
+            if (ChaveamentoObjetivo.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
+    
+                if (existe.length <= 0) {
+                    ChaveamentoObjetivo.push({ color: randomColor(),objetivo_id: obj.Objetivo_Id});
+                }
+            });
+        }
+
+        function retornaChaveamentoPorGerenciaId(gerencia_id) {
+            return $.grep(Chaveamento, function (o, i) {
+                return o.gerencia_id == gerencia_id;
+            });
+        }
+
+        function retornaChaveamentoPorObjetivo(objetivo_id) {
+            return $.grep(ChaveamentoObjetivo, function (o, i) {
+                return o.objetivo_id == objetivo_id;
+            });
+        }
+
+        function randomColor() {
+            color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
+            return color;
+        }
+        
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
         function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
             $('#ModalNovoApartirDeAlgo').find('h4').text("Criar "+NomeDoQueSeraCriado+" apartir de "+NomeApartirDeQueSeraCriado);
             $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
                 }});
                 var tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",
@@ -3455,11 +3549,12 @@
                     colunaDosDados:r.columns,
                     buttons: {buttons: []},
                     initComplete: function(){
-                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
-                            if($(this).attr('data-tipo') == 'tatico'){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {                            
+                            if ($(this).attr('data-tipo') == 'tatico') {
                                 AbreModalDePlanejamento($(this).attr('data-id'));
-                            }else if($(this).attr('data-tipo') == 'acao'){
-                                AbreModalDeAcao($(this).attr('data-id'));
+                            } else if ($(this).attr('data-tipo') == 'acao') {
+                                planejamentoCorrentId = $(this).attr('data-id');
+                                AbreModalDeAcao(planejamentoCorrentId);
                             }
                             $('#ModalNovoApartirDeAlgo').modal('hide');
                         });
@@ -3474,56 +3569,11 @@
             });
         }
 
-        function AbreModalDePlanejamento(id){
-            Clicked(true, false, true);
-            $.get(urlGetPlanejamento, { id: id }, function (r) {
-                ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
-            });
-        }
-        
-        function AbreModalDeAcao(id){
-            Clicked(true, true);
-            
-            $('#modalLindo').modal();
-            $('#modalLindo').find('.modal-body').empty();
-            $('#Header').html("Planejamento Operacional");
-
-            $.get(PlanejamentoDetalhes, { id: id }, function (r) {
-                $('#NovaAcao').show();
-                $('#NovaAcao').click();
-                $('#modalLindo').find('.modal-body').empty().prepend(r);
-            });
-        }
-
-        var Chaveamento = [];
-        function processarChaveamento() {
-            if (Chaveamento.length > 0){
-                return;
-            }
-            $.each(dados, function (index, obj) {
-
-                var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
-    
-                if (existe.length <= 0) {
-                    Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
-                }
-            });
-        }
-
-        function retornaChaveamentoPorGerenciaId(gerencia_id) {
-            return $.grep(Chaveamento, function (o, i) {
-                    return o.gerencia_id == gerencia_id;
-                });
-        }
-
-        function randomColor() {
-            color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
-            return color;
-        }
-
     </script>
 
-}<!-- Modal -->
+}
+
+<!-- Modal -->
 <div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
     <div class="modal-dialog">
         <!-- Modal content-->

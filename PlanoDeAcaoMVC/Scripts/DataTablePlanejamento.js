@@ -1,13 +1,48 @@
 ﻿var tablePlanejamento;
 var dadosPlanejamento = [];
 
-function GetDataTablePlanejamento(campo, filtro) {
+//function GetDataTablePlanejamento(campo, filtro) {
+//    //$.get(urlGetPlanejamentoRange, enviar, function (r) {
+//    //    MountDataTablePlanejamento(r);
+//    //});
+//}
 
-    $.get(urlGetPlanejamentoRange, enviar, function (r) {
+function GetDataTablePlanejamento(json) {
 
-        MountDataTablePlanejamento(r);
+    dadosPlanejamento = [];
+
+    var idsTaticos = [];
+
+    json.forEach(function (r) {
+        if (r.Tatico_Id != null && r.Tatico_Id != undefined)
+            idsTaticos.push(r.Tatico_Id)
+    })
+
+    idsTaticos = idsTaticos.filter(onlyUnique);
+
+    idsTaticos.forEach(function (o) {
+
+        var Tatico
+
+        var Planejamentos = $.grep(json, function (oo) {
+            if (oo.Tatico_Id == o) { return oo };
+        });
+
+        var PlanejamentosComAcoes = $.grep(Planejamentos, function (oo) {
+            if (oo.Acao.Id > 0) { return oo };
+        });
+
+        Tatico = $.extend({},Planejamentos[0]);
+
+        Tatico["QtdeAcao"] = PlanejamentosComAcoes.length;
+
+        Tatico.Acao = null;
+
+        dadosPlanejamento.push(Tatico);
 
     });
+
+    MountDataTablePlanejamento(dadosPlanejamento);
 }
 
 function objectToArr(myObj) {
@@ -224,6 +259,8 @@ function MountDataTablePlanejamento(json) {
         GetFiltrosDeColunasTablePlanejamento();
     });
 
+    SetFiltrosDeColunasTablePlanejamento();
+
     tablePlanejamento.draw();
 
     if (ColvisarrayVisaoAtual_show.length == 0) {
@@ -236,7 +273,6 @@ function MountDataTablePlanejamento(json) {
 
     $('#TablePlanejamento_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
 
-    SetFiltrosDeColunasTablePlanejamento();
 }
 
 $('#divPlanejamento table > tbody').on('click', '.btnNovoTatico', function () {
@@ -331,7 +367,7 @@ function SetFiltrosDeColunasTablePlanejamento() {
 
                 if ($(this).parent().text() == o.Key) {
                     $(this).val(o.Val);
-                    table.column(a).search(o.Val).draw();
+                    tablePlanejamento.column(a).search(o.Val).draw();
                 }
             });
         });
