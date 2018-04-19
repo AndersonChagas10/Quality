@@ -4887,6 +4887,7 @@ FROM (SELECT
         public decimal? limiteInferior { get; set; }
         public decimal? limiteSuperior { get; set; }
         public string levelName { get; set; }
+        public int? UnidadeId { get; set; }
         public string UnidadeName { get; set; }
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }
