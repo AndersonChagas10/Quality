@@ -205,6 +205,42 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         }
 
         [HttpPost]
+        [Route("GetParLevel1Group")]
+        public List<ParCriticalLevelDTO> GetParLevel1Group([FromBody] ModelForm model)
+        {
+            var retorno = new List<ParCriticalLevelDTO>();
+
+
+
+            //var whereCluster = "";
+
+            //if (model.Cluster > 0)
+            //{
+            //    whereCluster = "AND cc.ParCluster_Id = " + model.Cluster;
+            //}
+            //else
+            //    if (model.ClusterArr.Length > 0)
+            //{
+            //    whereCluster = $"AND cc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
+            //}
+
+            var query = $@"SELECT
+                    	distinct p1.Id, p1.Name
+                    FROM ParGroupParLevel1 p1
+                    WHERE 1 = 1
+                    AND IsActive = 1
+                    ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retorno = factory.SearchQuery<ParCriticalLevelDTO>(query).ToList();
+            }
+
+
+            return retorno;
+        }
+
+        [HttpPost]
         [Route("GetParCriticalLevel")]
         public List<ParCriticalLevelDTO> GetParCriticalLevel([FromBody] ModelForm model)
         {
@@ -308,6 +344,83 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             return retorno;
         }
 
+        [HttpPost]
+        [Route("GetLevel1ParLevel1Group")]
+        public List<ParLevel1DTO> GetLevel1ParLevel1Group([FromBody] ModelForm model)
+        {
+            var retorno = new List<ParLevel1DTO>();
+
+
+            var whereCriticalLevel = "";
+            var whereCluster = "";
+            var whereLevel1Group = "";
+
+            if (model.CriticalLevel > 0)
+            {
+                whereCriticalLevel = "AND pcl.Id = " + model.CriticalLevel;
+            }
+            else
+                if (model.CriticalLevelArr.Length > 0)
+            {
+                whereCluster = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
+            }
+
+            if (model.Cluster > 0)
+            {
+                whereCluster = "AND plc.ParCluster_Id = " + model.Cluster;
+            }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND plc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
+            }
+
+            if (model.GroupParLevel1Arr.Length > 0)
+            {
+                whereLevel1Group = $"AND PGP1.ParGroupParLevel1_Id IN ({ string.Join(",", model.GroupParLevel1Arr) })"; ;
+            }
+
+                var query = $@"SELECT
+                        DISTINCT
+                        	l1.Name
+                           ,L1.ID
+                        FROM ParLevel1XCluster plc
+                        INNER JOIN ParCompanyCluster pcc
+                        	ON pcc.ParCluster_Id = plc.ParCluster_Id
+                        INNER JOIN ParCompany pc
+                        	ON pcc.ParCompany_Id = pc.Id
+                        INNER JOIN ParCompanyCluster CC
+                        	ON CC.ParCompany_Id = PC.Id
+                        INNER JOIN ParLevel1 L1
+                        	ON plc.ParLevel1_Id = l1.Id
+                        INNER JOIN ParCriticalLevel pcl
+                        	ON plc.ParCriticalLevel_Id = pcl.Id
+                        INNER JOIN ParCompanyXStructure PCS
+                        	ON PCS.ParCompany_Id = PC.Id
+                        INNER JOIN ParStructure PS
+                        	ON PS.ID = PCS.ParStructure_Id
+                        	AND PS.ParStructureParent_Id = 1
+                        LEFT JOIN ParGroupParLevel1XParLevel1 PGP1
+	                        ON L1.ID = PGP1.ParLevel1_Id
+	                        AND PGP1.IsActive = 1
+                        WHERE 1 = 1
+                        AND plc.IsActive = 1
+                        AND L1.IsActive = 1
+                        { whereCriticalLevel }
+                        { whereCluster }
+                        { whereLevel1Group }
+                        ORDER BY L1.Name";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retorno = factory.SearchQuery<ParLevel1DTO>(query).ToList();
+            }
+
+
+            return retorno;
+        }
+
+
         private string GetUserUnits(int User)
         {
             using (var db = new SgqDbDevEntities())
@@ -328,6 +441,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public int[] StructureArr { get; set; } = new int[] { };
         public int[] ClusterArr { get; set; } = new int[] { };
         public int[] CriticalLevelArr { get; set; } = new int[] { };
+        public int[] GroupParLevel1Arr { get; set; } = new int[] { };
 
         public int[] Level1IdArr { get; set; } = new int[] { };
         public int[] Level2IdArr { get; set; } = new int[] { };
