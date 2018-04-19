@@ -2439,4 +2439,7 @@
   <data name="new" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="level1Group" xml:space="preserve">
+    <value>Functions</value>
+  </data>
 </root>
