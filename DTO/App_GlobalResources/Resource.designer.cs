@@ -601,15 +601,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Av With Weight.
-        /// </summary>
-        internal static string av_with_weight {
-            get {
-                return ResourceManager.GetString("av_with_weight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string back {
@@ -633,6 +624,15 @@ namespace Resources {
         internal static string back_to_list {
             get {
                 return ResourceManager.GetString("back_to_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back to Units of Measurement.
+        /// </summary>
+        internal static string back_to_unit_of_measurement {
+            get {
+                return ResourceManager.GetString("back_to_unit_of_measurement", resourceCulture);
             }
         }
         
@@ -1866,6 +1866,15 @@ namespace Resources {
         internal static string everything_synchronized_sucessfully {
             get {
                 return ResourceManager.GetString("everything_synchronized_sucessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ev With Weight.
+        /// </summary>
+        internal static string ev_with_weight {
+            get {
+                return ResourceManager.GetString("ev_with_weight", resourceCulture);
             }
         }
         

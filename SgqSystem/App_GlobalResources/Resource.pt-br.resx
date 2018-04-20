@@ -2460,7 +2460,7 @@
   <data name="among_others" xml:space="preserve">
     <value>entre outros ...</value>
   </data>
-  <data name="av_with_weight" xml:space="preserve">
+  <data name="ev_with_weight" xml:space="preserve">
     <value>Av Com Peso</value>
   </data>
   <data name="nc_with_weight" xml:space="preserve">
@@ -2480,5 +2480,8 @@
   </data>
   <data name="indicators_by_units" xml:space="preserve">
     <value>Indicadores por Unidades</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Voltar para Unidades de Medida</value>
   </data>
 </root>

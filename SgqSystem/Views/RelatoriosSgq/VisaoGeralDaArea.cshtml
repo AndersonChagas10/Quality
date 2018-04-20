@@ -2754,11 +2754,12 @@
 
     function GerarGraficoHistoricoGeral(data){
 
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         if (data.length > 0) {
 
             $('#showNCGeral').show();
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");

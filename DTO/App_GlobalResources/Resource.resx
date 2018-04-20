@@ -2088,8 +2088,8 @@
   <data name="among_others" xml:space="preserve">
     <value>among others ...</value>
   </data>
-  <data name="av_with_weight" xml:space="preserve">
-    <value>Av With Weight</value>
+  <data name="ev_with_weight" xml:space="preserve">
+    <value>Ev With Weight</value>
   </data>
   <data name="nc_with_weight" xml:space="preserve">
     <value>Nc WithWeight</value>
@@ -2108,5 +2108,8 @@
   </data>
   <data name="indicators_by_units" xml:space="preserve">
     <value>Indicators by Units</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Back to Units of Measurement</value>
   </data>
 </root>
