@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=301879
+  -->
+<configuration>
+
+  <configSections>
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+  </configSections>
+
+  <connectionStrings>
+
+    <!--ATENÇÃO 
+      1 - SE VOCE ALTERAR ESTE DOCUMENTO E CONTIVER ERROS, MÁ IDENTAÇÃO, PROBLEMAS DE BUILD, PROBLEMAS DE CONNECTION STRING, VAI DESEJAR NÃO TER FEITO, 
+      brincadeira... mas também é verdade...
+      2 - ESTE DOCUMENTO DEVE ESTAR SEMPRE EM ORDEM E ORGANIZADO.-->
+
+    <!--SGQ-BR GRT-->
+    <!--<add name="DefaultConnection" connectionString="data source=SERVERGRT\MSSQLSERVER2014;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=SERVERGRT\MSSQLSERVER2014;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=1qazmko0;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!--<add name="DefaultConnection" connectionString="data source=DESKTOP-6M17EOF\SQLEXPRESS2017;initial catalog=EmptySGQ;persist security info=True;user id=sa;password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-6M17EOF\SQLEXPRESS2017;initial catalog=EmptySGQ;persist security info=True;user id=sa;password=betsy1;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+
+
+    <!--SGQ-USAV3 GRT-->
+    <!--<add name="DefaultConnection" connectionString="data source=SERVERGRT\MSSQLSERVER2014;initial catalog=SgqUSAV3;persist security info=True;user id=sa;password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=SgqUSAV3;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=SERVERGRT\MSSQLSERVER2014;initial catalog=SgqUSAV3;persist security info=True;user id=sa;password=1qazmko0;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="data source=SERVERGRT\MSSQLSERVER2014;initial catalog=SgqUSAV3;persist security info=True;user id=sa;password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="data source=SERVERGRT\MSSQLSERVER2014;initial catalog=SgqUSAV3;persist security info=True;user id=sa;password=1qazmko0;" providerName="System.Data.SqlClient" />-->
+
+    <!--SGQ-USAV2 GRT-->
+    <!--<add name="DefaultConnection" connectionString="data source=SERVERGRT\MSSQLSERVER2014;initial catalog=SgqUSAV2;persist security info=True;user id=sa;password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=SgqUSAV2;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient"/>
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=SERVERGRT\MSSQLSERVER2014;initial catalog=SgqUSAV2;persist security info=True;user id=sa;password=1qazmko0;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=SgqUSAV3;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=SgqUSAV3;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />-->
+
+    <!--Conexões das procedures de Reprocesso-->
+    <add name="CONN_ParReprocessoHeaderOP" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoCertificadosSaidaOP" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoEntradaOP" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoSaidaOP" connectionString="Data Source=SERVERGRT\MSSQLSERVER2014;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+
+
+    <!--____________________________________________________________________________________-->
+    <!--BRUNO-->
+
+    <!--<add name="DefaultConnection" connectionString="data source=(localdb)\MSSQLLocalDb;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=(localdb)\MSSQLLocalDb;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=(localdb)\MSSQLLocalDb;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=1qazmko0;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="Data Source=(localdb)\MSSQLLocalDb;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=1qazmko0;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="metadata=res://*/SgqBrasilEfContext.csdl|res://*/SgqBrasilEfContext.ssdl|res://*/SgqBrasilEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=(localdb)\MSSQLLocalDb;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=1qazmko0;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+
+    <!--GABRIEL NUNES-->
+
+    <!--CONNEXOES GABRIEL NUNES-->
+    <!--<add name="DefaultConnection" connectionString="data source=dellgabriel\MSSQL2014;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=dellgabriel\MSSQL2014;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=dellgabriel\MSSQL2014;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=dellgabriel\MSSQL2014;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=betsy1;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="SGQ_GlobalEntities" connectionString="metadata=res://*/SgqBrasilEfContext.csdl|res://*/SgqBrasilEfContext.ssdl|res://*/SgqBrasilEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=dellgabriel\MSSQL2014;initial catalog=dbGQualidade;persist security info=True;user id=sa;password=betsy1;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!-- Conexões das procedures de Reprocesso-->
+    <!--<add name="CONN_ParReprocessoHeaderOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoCertificadosSaidaOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoEntradaOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoSaidaOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />-->
+
+    <!--CONNEXOES GABRIEL NUNES-->
+
+    <add name="DefaultConnection" connectionString="data source=DESKTOP-6M17EOF;initial catalog=dbGQualidade_;persist security info=True;user id=sa;password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-6M17EOF;initial catalog=dbGQualidade_;persist security info=True;user id=sa;password=betsy1;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+
+    <!-- Conexões das procedures de Reprocesso Gabriel-->
+    <!--<add name="CONN_ParReprocessoHeaderOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoCertificadosSaidaOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoEntradaOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />
+    <add name="CONN_ParReprocessoSaidaOP" connectionString="Data Source=DESKTOP-6M17EOF;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=sa; password=betsy1;" providerName="System.Data.SqlClient" />-->
+
+    <!--____________________________________________________________________________________-->
+    <!--RENAN SANTINI-->
+
+    <!--<add name="DefaultConnection" connectionString="data source=DESKTOP-0KN2R6G;initial catalog=SgqUSAV3;Integrated Security=true;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=DESKTOP-0KN2R6G;Initial Catalog=SgqUSAV3;Integrated Security=true;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-0KN2R6G;initial catalog=SgqUSAV3;Integrated Security=true;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="data source=DESKTOP-0KN2R6G;initial catalog=SgqUSAV3;Integrated Security=true;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="data source=DESKTOP-0KN2R6G;initial catalog=SgqUSAV3;Integrated Security=true;" providerName="System.Data.SqlClient" />-->
+
+    <!--____________________________________________________________________________________-->
+    <!--CONNEXOES JBS-->
+
+    <!--<add name="DefaultConnection" connectionString="data source=10.255.5.93;initial catalog=dbGQualidade;persist security info=True;user id=userGQualidade;password=grJsoluco3s;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.255.5.93;Initial Catalog=dbGQualidade;Persist Security Info=True;User id=userGQualidade; password=grJsoluco3s;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.255.5.93;initial catalog=dbGQualidade;persist security info=True;user id=userGQualidade;password=grJsoluco3s;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.255.5.93;Initial Catalog=dbGQualidade;Persist Security Info=True;User id=userGQualidade; password=grJsoluco3s;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="metadata=res://*/SgqBrasilEfContext.csdl|res://*/SgqBrasilEfContext.ssdl|res://*/SgqBrasilEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.255.5.93;initial catalog=dbGQualidade;persist security info=True;user id=userGQualidade;password=grJsoluco3s;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!--<add name="DefaultConnection" connectionString="data source=10.160.99.84;initial catalog=QA_GRJ;persist security info=True;user id=grjuser;password=wordpass14t;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.160.99.84;Initial Catalog=QA_GRJ;Persist Security Info=True;User ID=grjuser; password=wordpass14t;" providerName="System.Data.SqlClient"/>
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.160.99.84;initial catalog=QA_GRJ;persist security info=True;user id=grjuser;password=wordpass14t;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!--CONNEXOES GABRIEL NUNES JBS Brasil-->
+    <!--<add name="DefaultConnection" connectionString="data source=10.255.0.16;initial catalog=dbGQualidade;persist security info=True;user id=UserGQualidade;password=grJsoluco3s;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.255.0.16;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=UserGQualidade; password=grJsoluco3s;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.255.0.16;Initial Catalog=dbGQualidade;Persist Security Info=True;User ID=UserGQualidade; password=grJsoluco3s;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.255.0.16;initial catalog=dbGQualidade;persist security info=True;user id=UserGQualidade;password=grJsoluco3s;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="SGQ_GlobalEntities" connectionString="metadata=res://*/SgqBrasilEfContext.csdl|res://*/SgqBrasilEfContext.ssdl|res://*/SgqBrasilEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.255.0.16;initial catalog=dbGQualidade;persist security info=True;user id=UserGQualidade;password=grJsoluco3s;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!--SgqUSA NOS EUA DEBUG HML-->
+    <!--<add name="DefaultConnection" connectionString="data source=10.190.1.166;initial catalog=SGQUSAHML;persist security info=True;user id=grjuser;password=wordpass14t;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.190.1.166;Initial Catalog=SGQUSAHML;Persist Security Info=True;User ID=grjuser; password=wordpass14t;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.190.1.166;initial catalog=SGQUSAHML;persist security info=True;user id=grjuser;password=wordpass14t;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="Data Source=10.190.1.166;Initial Catalog=SGQUSAHML;Persist Security Info=True;User ID=grjuser; password=wordpass14t;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="Data Source=10.190.1.166;Initial Catalog=SGQUSAHML;Persist Security Info=True;User ID=grjuser; password=wordpass14t;" providerName="System.Data.SqlClient" />-->
+
+
+    <!--____________________________________________________________________________________-->
+    <!-- OUTRAS CONEXÕES -->
+
+    <!-- BANCO DE DADOS DE PRODUÇÃO Banco Santander -->
+    <!--<add name="DefaultConnection" connectionString="data source=servergrtpa.database.windows.net;initial catalog=SGQ;persist security info=True;user id=grt;password=1qazmko0#;" providerName="System.Data.SqlClient" />
+    <add name="DefaultConnection" connectionString="Data Source=servergrtpa.database.windows.net;Initial Catalog=SGQ;Persist Security Info=True;User ID=grt; password=1qazmko0#;" providerName="System.Data.SqlClient" />
+    <add name="SgqDbDevEntities" connectionString="metadata=res://*/SgqEfContext.csdl|res://*/SgqEfContext.ssdl|res://*/SgqEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=servergrtpa.database.windows.net;initial catalog=SGQ;persist security info=True;user id=grt;password=1qazmko0#;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="DefaultConnection" connectionString="Data Source=servergrtpa.database.windows.net;Initial Catalog=SGQ;Persist Security Info=True;User ID=grt; password=1qazmko0#;" providerName="System.Data.SqlClient" />
+    <add name="SGQ_GlobalEntities" connectionString="metadata=res://*/SgqBrasilEfContext.csdl|res://*/SgqBrasilEfContext.ssdl|res://*/SgqBrasilEfContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=servergrtpa.database.windows.net;initial catalog=SGQ;persist security info=True;user id=grt;password=1qazmko0#;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!--____________________________________________________________________________________-->
+
+  </connectionStrings>
+  <appSettings>
+    <add key="aspnet:MaxJsonDeserializerMembers" value="2147483644" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+
+    <add key="PROC_ParReprocessoHeaderOP" value="PROC_ParReprocessoHeaderOP" />
+    <add key="PROC_ParReprocessoCertificadosSaidaOP" value="PROC_ParReprocessoCertificadosSaidaOP" />
+    <add key="PROC_ParReprocessoSaidaOP" value="PROC_ParReprocessoSaidaOP" />
+    <add key="PROC_ParReprocessoEntradaOP" value="PROC_ParReprocessoEntradaOP" />
+
+    <!--AMBIENTE-->
+    <!--<add key="BuildEm" value="Desenvolvimento" />-->
+    <add key="BuildEm" value="DesenvolvimentoDeployServidorGrtParaTeste" />
+    <!--<add key="BuildEm" value="Homologacao" />-->
+    <!--<add key="BuildEm" value="Producao" />-->
+
+    <add key="BuildPermission" value="xq3PWcjbNGm2X9YmshjIXw==" />
+
+    <!--URL EMAIL SERVICE ALERTAS DEV-->
+    <!--<add key="EnderecoEmailAlertaBRDesenvolvimento" value="http://192.168.25.200/SGQbr/api/hf/SendMail" />
+    <add key="EnderecoEmailAlertaEUADesenvolvimento" value="http://192.168.25.200/SgqUsa/api/hf/SendMail" />
+    <add key="EnderecoEmailAlertaYTOARADesenvolvimento" value="" />-->
+
+    <!--URL EMAIL SERVICE ALERTAS HML-->
+    <!--<add key="EnderecoEmailAlertaBRHomologacao" value="" />
+    <add key="EnderecoEmailAlertaEUAHomologacao" value="https://sgqtest.jbssa.com/HMLUSA/api/hf/SendMail" />
+    <add key="EnderecoEmailAlertaYTOARAHomologacao" value="" />-->
+
+    <!--URL EMAIL SERVICE ALERTAS PROD-->
+    <!--<add key="EnderecoEmailAlertaBRProducao" value="http://mtzsvmqsc/SGQ/api/hf/SendMail" />
+    <add key="EnderecoEmailAlertaEUAProducao" value="https://sgq.jbssa.com/SGQ//api/hf/SendMail" />
+    <add key="EnderecoEmailAlertaYTOARAProducao" value="" />-->
+
+    <!--Conexões para URL do Plano de Ação-->
+    <!--<add key="URL_PA" value="https://sgq.jbssa.com/ActionPlan;https://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?"/> -->
+    <!--USA PROD-->
+    <!--
+    <add key="URL_PA" value="https://sgqtest.jbssa.com/actionPlanHML;https://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?"/> -->
+    <!--USA HML-->
+    <!--
+    <add key="URL_PA" value="http://192.168.25.200/PlanoAcaoUSA;http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?"/> -->
+    <!--USA GRT-->
+    <add key="URL_PA" value="http://192.168.25.200/PlanoAcao;http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?" />
+    <!--BR GRT-->
+    <!--<add key="URL_PA" value="http://mtzsvmqsc/PlanoDeAcao;http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?"/> -->
+    <!--JBS HML / PROD-->
+    <!--
+    <add key="URL_PA" value="http://localhost/PlanoAcao;http://localhost/PlanoAcao/Pa_Acao/NewFTA?"/> -->
+    <!--Localhost-->
+    <!--
+    <add key="URL_PA" value="http://mtzsvmqsc/PlanoDeAcao;http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?"/> -->
+    <!--JBS HML / PROD-->
+
+
+    <add key="EnderecoEmailAlertaBR" value="http://localhost:57506/api/hf/SendMail" />
+
+    <add key="SendMailJob" value="exec" />
+    <add key="ResendProcessJsonJob" value="exec" />
+
+  </appSettings>
+  <!--
+    For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
+
+    The following attributes can be set on the <httpRuntime> tag.
+      <system.Web>
+        <httpRuntime targetFramework="4.5" />
+      </system.Web>
+  -->
+
+  <system.net>
+    <connectionManagement>
+      <add address="*" maxconnection="6464" />
+    </connectionManagement>
+  </system.net>
+
+  <system.web>
+    <customErrors mode="Off" />
+    <authentication mode="Forms">
+      <forms loginUrl="~/UserAuthentication/LogIn" path="/" domain="*" timeout="60" enableCrossAppRedirects="true" />
+    </authentication>
+    <compilation debug="true" targetFramework="4.5.2" />
+    <httpRuntime targetFramework="4.5" requestValidationMode="2.0" executionTimeout="900000" />
+    <httpModules>
+      <add name="ApplicationInsightsWebTracking" type="Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web" />
+    </httpModules>
+    <pages validateRequest="false">
+      <namespaces>
+        <add namespace="GridMvc" />
+      </namespaces>
+    </pages>
+
+    <webServices>
+      <protocols>
+        <add name="HttpGet" />
+        <!--Libera protocolo remoto de comunicação no SERVICE-->
+        <add name="HttpPost" />
+      </protocols>
+    </webServices>
+  </system.web>
+  <system.web.extensions>
+    <scripting>
+      <webServices>
+        <jsonSerialization maxJsonLength="2147483644" />
+      </webServices>
+    </scripting>
+  </system.web.extensions>
+  <system.webServer>
+    <httpProtocol>
+      <customHeaders>
+        <add name="Access-Control-Allow-Origin" value="*" />
+        <add name="Access-Control-Allow-Headers" value="Content-Type" />
+        <add name="Access-Control-Allow-Methods" value="GET, POST, PUT, DELETE, OPTIONS" />
+        <!-- <remove name="FormsAuthentication" />
+        <add name="FormsAuthentication" type="System.Web.Security.FormsAuthenticationModule" /> -->
+      </customHeaders>
+    </httpProtocol>
+    <modules>
+      <remove name="FormsAuthentication" />
+      <remove name="ApplicationInsightsWebTracking" />
+      <add name="ApplicationInsightsWebTracking" type="Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web" preCondition="managedHandler" />
+    </modules>
+    <handlers>
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <remove name="OPTIONSVerbHandler" />
+      <remove name="TRACEVerbHandler" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="*" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <validation validateIntegratedModeConfiguration="false" />
+  </system.webServer>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security.OAuth" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security.Cookies" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" culture="neutral" publicKeyToken="30ad4fe6b2a6aeed" />
+        <bindingRedirect oldVersion="0.0.0.0-9.0.0.0" newVersion="9.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Optimization" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-1.1.0.0" newVersion="1.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="WebGrease" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-1.5.2.14234" newVersion="1.5.2.14234" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.                           ers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Http" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Ninject" publicKeyToken="c7192dc5380945e7" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.2.0.0" newVersion="3.2.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.AI.Agent.Intercept" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.0.7.0" newVersion="2.0.7.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+  <entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">
+      <parameters>
+        <parameter value="mssqllocaldb" />
+      </parameters>
+    </defaultConnectionFactory>
+    <providers>
+      <provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" />
+    </providers>
+  </entityFramework>
+  <system.codedom>
+    <compilers>
+      <compiler language="c#;cs;csharp" extension=".cs" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:6 /nowarn:1659;1699;1701" />
+      <compiler language="vb;vbs;visualbasic;vbscript" extension=".vb" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:14 /nowarn:41008 /define:_MYTYPE=\&quot;Web\&quot; /optionInfer+" />
+    </compilers>
+  </system.codedom>
+  <system.diagnostics>
+    <trace autoflush="true" indentsize="0">
+      <listeners>
+        <add name="myAppInsightsListener" type="Microsoft.ApplicationInsights.TraceListener.ApplicationInsightsTraceListener, Microsoft.ApplicationInsights.TraceListener" />
+      </listeners>
+    </trace>
+  </system.diagnostics>
+</configuration>
