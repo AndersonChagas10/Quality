@@ -1263,49 +1263,31 @@
 
             $('#vinculoLevel1').attr("disabled", true);
             if (permiteVincularMonitoramentosTarefas) {
-
                 $('#vinculoLevel1').attr("disabled", false);
-
             }
 
             if ($('#btnNewLevel2').attr('disabled') == undefined) {
                 $('#vinculoLevel1').attr("disabled", false);
             }
 
-            
-
             if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
 
-                /*Bloqueia os campos para Tipos de dados de entrada*/
-                $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
-                $('#selectTipoInput').on('change', function() {
-                    $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
-                });
-
-                $('#level3_accordion').find('input').attr("disabled", true).attr("readonly", true);
+                $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
                 $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
-                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
-                $('#level3_PesoL3_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
-                $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
-                3
                 $('#level3_data_type_accordion').find('button').attr("disabled", true);
-                $('#btnSaveNewLevel3').attr('disabled', true);
 
-                if(permiteEditarPadrãoDasTarefas  && level2Vinculado && hasVinculoLevel3){
+                
+                if(permiteEditarPadrãoDasTarefas && level2Vinculado && hasVinculoLevel3){
+                    $('#level3_accordion').find('input').attr("disabled", false).attr("readonly", false);
+                    $('#btnSaveCounter').attr("disabled", true);
+
                     /*Libera os campos para Tipos de dados de entrada*/
-                    $('#level3_data_type_accordion').find('button').attr("disabled", false);
                     $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                     $('#selectTipoInput').on('change', function() {
                         $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                     });
-                    $('#level3_accordion').find('input').attr("disabled", false).attr("readonly", false);
-                    $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
-
-                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
-                    $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
-                    $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
 
                     /*Libera os campos para Avaliacao Amostra*/
                     $('#level3_AvAmostra_accordion').find('button').attr("disabled", false);
@@ -1313,47 +1295,49 @@
 
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
-                        //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
-                        //    $(this).find('input, select, button').attr("disabled", true);
-                        //}
                         if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
                             $(this).find('input, select, button').attr("disabled", true);
                             $(this).remove();
                         }
                     });
+
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableAvAmLevel3 > tbody > tr').each(function() {
-                        //if(!($(this).data().ParLevel1_Id > 0) || !($(this).data().ParLevel2_Id > 0)){
-                        //    $(this).find('input, select, button').attr("disabled", true);
-                        //}
                         if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
                             $(this).remove();
                             $(this).find('input, select, button').attr("disabled", true);
                         }
                     });
-                    $('#btnSaveCounter').attr("disabled", true);
-                    $('#btnSaveNewLevel3').attr('disabled', false);
+                }else{
+                    $('#level3_accordion').find('input').attr("disabled", true).attr("readonly", true);
+
+                    /*Bloqueia os campos para Tipos de dados de entrada*/
+                    $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
+                    $('#selectTipoInput').on('change', function() {
+                        $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
+                    });
                 }
 
-                /*Bloqueia Edicao do Peso*/
-                $('#tablePeso > tbody > tr').each(function() {
-                    $(this).find('input, select, button').attr("disabled", true);
-                });
-                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
-
-                if(permiteEditarPesoDasTarefas  && level2Vinculado && hasVinculoLevel3){
+                if(permiteEditarPesoDasTarefas && level2Vinculado && hasVinculoLevel3){
+                    /*Desbloqueia PESO nas tarefas*/
+                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
+                    $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
+                    
                     /*habilita Edicao do Peso*/
                     $('#tablePeso > tbody > tr').each(function() {
                         if($(this).data().ParCompany_Id == unitId){
                             $(this).find('input, select, button').attr("disabled", false);
                         }
                     });
-                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
-                    $('#btnSaveNewLevel3').attr('disabled', false);
+                }else{
+                    /*Bloqueia Edicao do Peso*/
+                    $('#tablePeso > tbody > tr').each(function() {
+                        $(this).find('input, select, button').attr("disabled", true);
+                    });
+                    $('#level3_PesoL3_accordion').find('input, select').attr("disabled", true).attr("readonly", true);
+                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
                 }
 
-                //if(!permiteEditarPadrãoDasTarefas && !permiteEditarPesoDasTarefas || (!level2Vinculado && !hasVinculoLevel3))
-                //    $('#btnSaveNewLevel3').attr('disabled', true);
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
                 $('#vinculoLevel1').attr("disabled", true);
@@ -1372,7 +1356,6 @@
                 $('#tableAvAmLevel3 > tbody > tr').each(function() {
                     $(this).find('input, select, button').attr("disabled", true);
                 });
-                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
             }
 
             if ($('#tableAvAmLevel3 > tbody > tr').length == 0)
