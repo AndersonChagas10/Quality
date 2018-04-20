@@ -910,11 +910,11 @@
             $('#level1Groupv').on('change', function (e) {
                 @if(ViewBag.Level3IdArr == null){
                     <text>
-                enviar['level1GroupIdArr'] = parseInt($('#level1Groupv').val().replace(/\D/g, ''), 10);
+                enviar['groupParLevel1IdArr'] = parseInt($('#level1Groupv').val().replace(/\D/g, ''), 10);
                     </text>
                 }else{
                     <text>
-                enviar['level1GroupIdArr'] = RetornaArrayInteiro($('#level1Groupv').val());
+                enviar['groupParLevel1IdArr'] = RetornaArrayInteiro($('#level1Groupv').val());
                     </text>
                 }
                 $('#level1Idv').change();

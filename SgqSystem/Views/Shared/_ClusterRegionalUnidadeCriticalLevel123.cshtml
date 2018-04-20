@@ -82,9 +82,9 @@
                 </a>
             </span>
             <select id="level1Groupv" data-ng-model="level1GroupValue"
-                    @Html.Raw(ViewBag.GroupParLevel1Arr != null ? "multiple='multiple'" : "")
+                    @Html.Raw(ViewBag.groupParLevel1IdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="GetLevel1ByLevel1Group()" class="form-control" style="width:210px">
-                    @Html.Raw(ViewBag.GroupParLevel1Arr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
+                    @Html.Raw(ViewBag.groupParLevel1IdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")
                 <option ng-repeat="u in level1Group |orderBy:'Name' track by u.Id" value="{{u.Id}}">{{u.Name}}</option>
             </select>
         </div>

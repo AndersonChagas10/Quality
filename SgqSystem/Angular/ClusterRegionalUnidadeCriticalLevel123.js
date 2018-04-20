@@ -221,8 +221,8 @@
 
             $scope.GetLevel1ByLevel1Group = function () {
 
-                enviar['level1GroupId'] = document.getElementById('level1Groupv').value;
-                enviar['level1GroupIdArr'] = $('#level1Groupv').val();
+                enviar['groupParLevel1Id'] = document.getElementById('level1Groupv').value;
+                enviar['groupParLevel1IdArr'] = $('#level1Groupv').val();
                 enviar['level1Id'] = parseInt(document.getElementById('level1Idv').value);
                 enviar['level1IdArr'] = $('#level1Idv').val();
 
@@ -230,7 +230,7 @@
                     $http({
                         method: 'POST',
                         url: GetListLevel1VinculadoLevel1Group,
-                        data: JSON.stringify({ "ClusterArr": $scope.clusterValue, "GroupParLevel1Arr": $scope.level1GroupValue })
+                        data: JSON.stringify({ "ClusterArr": $scope.clusterValue, "groupParLevel1IdArr": $scope.level1GroupValue })
                     }).
                         then(function (r) {
                             $scope.level1 = r.data;

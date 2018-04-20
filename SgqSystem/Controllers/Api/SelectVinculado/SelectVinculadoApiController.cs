@@ -362,7 +362,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             else
                 if (model.CriticalLevelArr.Length > 0)
             {
-                whereCluster = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
+                whereCriticalLevel = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
             }
 
             if (model.Cluster > 0)
@@ -375,9 +375,9 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 whereCluster = $"AND plc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
             }
 
-            if (model.GroupParLevel1Arr.Length > 0)
+            if (model.groupParLevel1IdArr.Length > 0)
             {
-                whereLevel1Group = $"AND PGP1.ParGroupParLevel1_Id IN ({ string.Join(",", model.GroupParLevel1Arr) })"; ;
+                whereLevel1Group = $"AND PGP1.ParGroupParLevel1_Id IN ({ string.Join(",", model.groupParLevel1IdArr) })"; ;
             }
 
                 var query = $@"SELECT
@@ -441,7 +441,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public int[] StructureArr { get; set; } = new int[] { };
         public int[] ClusterArr { get; set; } = new int[] { };
         public int[] CriticalLevelArr { get; set; } = new int[] { };
-        public int[] GroupParLevel1Arr { get; set; } = new int[] { };
+        public int[] groupParLevel1IdArr { get; set; } = new int[] { };
 
         public int[] Level1IdArr { get; set; } = new int[] { };
         public int[] Level2IdArr { get; set; } = new int[] { };

@@ -93,8 +93,8 @@ namespace DTO
         public int createActionPlane { get; set; }
         public int criticalLevelId { get; set; }
         public int[] criticalLevelIdArr { get; set; } = new int[] { };
-        public int GroupParLevel1id { get; set; }
-        public int[] GroupParLevel1Arr { get; set; } = new int[] { };
+        public int groupParLevel1id { get; set; }
+        public int[] groupParLevel1IdArr { get; set; } = new int[] { };
 
         public int MetaFTA { get; set; }
         public int PercentualNCFTA { get; set; }
