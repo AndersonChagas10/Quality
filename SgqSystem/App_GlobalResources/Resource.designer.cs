@@ -1042,6 +1042,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Config.
+        /// </summary>
+        internal static string config {
+            get {
+                return ResourceManager.GetString("config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config Global.
+        /// </summary>
+        internal static string config_global {
+            get {
+                return ResourceManager.GetString("config_global", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conclued action plan..
         /// </summary>
         internal static string conclued_plan_action {
@@ -1956,6 +1974,15 @@ namespace Resources {
         internal static string equipaments {
             get {
                 return ResourceManager.GetString("equipaments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Equipments.
+        /// </summary>
+        internal static string equipments {
+            get {
+                return ResourceManager.GetString("equipments", resourceCulture);
             }
         }
         
@@ -4426,6 +4453,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameterization Email Alert.
+        /// </summary>
+        internal static string parameterization_email_alert {
+            get {
+                return ResourceManager.GetString("parameterization_email_alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pareto.
         /// </summary>
         internal static string pareto_chart {
@@ -6145,6 +6181,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String2 {
+            get {
+                return ResourceManager.GetString("String2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regional.
         /// </summary>
         internal static string structure {
@@ -6753,6 +6798,15 @@ namespace Resources {
         internal static string update_tablet_message {
             get {
                 return ResourceManager.GetString("update_tablet_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Parameterization.
+        /// </summary>
+        internal static string update_tablet_screen {
+            get {
+                return ResourceManager.GetString("update_tablet_screen", resourceCulture);
             }
         }
         

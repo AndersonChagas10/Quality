@@ -2493,4 +2493,19 @@
   <data name="back_to_unit_of_measurement" xml:space="preserve">
     <value>Voltar para Unidades de Medida</value>
   </data>
+  <data name="config" xml:space="preserve">
+    <value>Configuração</value>
+  </data>
+  <data name="config_global" xml:space="preserve">
+    <value>Configuração Global</value>
+  </data>
+  <data name="equipments" xml:space="preserve">
+    <value>Equipamentos</value>
+  </data>
+  <data name="parameterization_email_alert" xml:space="preserve">
+    <value>Parametrização de Email Alerta</value>
+  </data>
+  <data name="update_tablet_screen" xml:space="preserve">
+    <value>Atualizar Parametrização</value>
+  </data>
 </root>
