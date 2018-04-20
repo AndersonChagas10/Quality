@@ -790,7 +790,7 @@
 
     <!-- Menu Toggle Script -->
 
-    <script>
+<script>
 
 
         var enviar = {};
@@ -905,6 +905,19 @@
 
             $('#criticalLevelId').on('change',function(e){
                 enviar['criticalLevelId'] = $('#criticalLevelId option:selected').val();
+            });
+
+            $('#level1Groupv').on('change', function (e) {
+                @if(ViewBag.Level3IdArr == null){
+                    <text>
+                enviar['groupParLevel1IdArr'] = parseInt($('#level1Groupv').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['groupParLevel1IdArr'] = RetornaArrayInteiro($('#level1Groupv').val());
+                    </text>
+                }
+                $('#level1Idv').change();
             });
 
             $('#level1Idv').on('change', function (e) {
@@ -1108,11 +1121,11 @@
             });
 
             $('#unitId').select2();
-            
+
             //Se não for multiplo força um change para selecionar o valor (motivo: ele remove o primeiro item 'todos' e não aplicava o evento change)
-            if(!$('#unitId').attr('multiple')) 
+            if(!$('#unitId').attr('multiple'))
                 setTimeout(function(){$('#unitId').trigger('change');},500);
-            
+
 
         });
 
@@ -1302,4 +1315,4 @@
             expand();
         }
 
-    </script>
+</script>

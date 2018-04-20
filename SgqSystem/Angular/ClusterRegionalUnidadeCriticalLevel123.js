@@ -36,6 +36,14 @@
 
             $http({
                 method: 'POST',
+                url: GetParLevel1Group
+            }).
+                then(function (r) {
+                    $scope.level1Group = r.data;
+                });
+
+            $http({
+                method: 'POST',
                 url: GetListLevel1
             }).
                 then(function (r) {
@@ -204,6 +212,25 @@
                         method: 'POST',
                         url: GetListLevel1VinculadoCriticalLevel,
                         data: JSON.stringify({ "ClusterArr": $scope.clusterValue, "CriticalLevelArr": $scope.criticalLevelValue })
+                    }).
+                        then(function (r) {
+                            $scope.level1 = r.data;
+                        });
+                }
+            }
+
+            $scope.GetLevel1ByLevel1Group = function () {
+
+                enviar['groupParLevel1Id'] = document.getElementById('level1Groupv').value;
+                enviar['groupParLevel1IdArr'] = $('#level1Groupv').val();
+                enviar['level1Id'] = parseInt(document.getElementById('level1Idv').value);
+                enviar['level1IdArr'] = $('#level1Idv').val();
+
+                if ($scope.level1GroupValue) {
+                    $http({
+                        method: 'POST',
+                        url: GetListLevel1VinculadoLevel1Group,
+                        data: JSON.stringify({ "ClusterArr": $scope.clusterValue, "groupParLevel1IdArr": $scope.level1GroupValue })
                     }).
                         then(function (r) {
                             $scope.level1 = r.data;

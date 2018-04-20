@@ -135,7 +135,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
 
             // Módulo
 
@@ -171,6 +171,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -315,7 +322,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -351,6 +359,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+            
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -495,7 +510,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -531,6 +547,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -700,7 +723,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -736,6 +760,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -869,7 +900,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -905,6 +937,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -1043,7 +1082,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -1079,6 +1119,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -2346,7 +2393,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -2383,6 +2431,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
             }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
+            }
+
 
             #endregion
 
@@ -2528,7 +2584,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -2564,6 +2621,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -2704,7 +2768,8 @@ ORDER BY 3
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -2740,6 +2805,13 @@ ORDER BY 3
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT distinct ParLevel1_id  FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -2874,7 +2946,8 @@ ORDER BY 3
             var Wprocesso = "";
             var Wregional = "";
             var Wnivelcritico = "";
-
+            var Wfuncao = "";
+            
 
             // Módulo
 
@@ -2910,6 +2983,13 @@ ORDER BY 3
             else if (form.criticalLevelId > 0)
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
+            }
+
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND Indicador IN (SELECT id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
             }
 
             #endregion
@@ -3400,12 +3480,19 @@ ORDER BY 3
             var Windicador = "";
             var Wmonitoramento = "";
             var Wtarefa = "";
+            var Wfuncao = "";
 
-            
 
-            if(nivel == 1 || nivel == 2 || nivel == 3)
-            { 
-            // Indicador
+            // Função
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                Wfuncao += " AND CL1.ParLevel1_id IN (SELECT distinct ParLevel1_id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
+            }
+
+            if (nivel == 1 || nivel == 2 || nivel == 3)
+            {
+                // Indicador
                 if (form.level1IdArr.Length > 0 && form.level1IdArr[0] != 0)
                 {
                     Windicador = " AND CL1.ParLevel1_id IN (" + string.Join(",", form.level1IdArr) + ")";
@@ -3573,6 +3660,7 @@ ORDER BY 3
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
             " + Wunidade + @"
+            " + Wfuncao + @"
             " + Windicador + @"
             AND CL1.ParLevel1_Id != 43
             AND CL1.ParLevel1_Id != 42
@@ -3935,6 +4023,7 @@ ORDER BY 3
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
             " + Wunidade + @"
+            " + Wfuncao + @"
             " + Windicador + @"
             " + Wmonitoramento + @"
             AND CL1.ParLevel1_Id != 43
@@ -4316,6 +4405,7 @@ ORDER BY 3
         WHERE 1=1 
         AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
         " + Wunidade + @"
+        " + Wfuncao + @"
         " + Windicador + @"
         " + Wmonitoramento + @"
         " + Wtarefa + @"
@@ -4861,6 +4951,7 @@ ORDER BY 3
         public decimal? limiteInferior { get; set; }
         public decimal? limiteSuperior { get; set; }
         public string levelName { get; set; }
+        public int? UnidadeId { get; set; }
         public string UnidadeName { get; set; }
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }

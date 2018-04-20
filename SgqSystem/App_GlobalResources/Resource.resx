@@ -2454,6 +2454,9 @@
   <data name="new" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="level1Group" xml:space="preserve">
+    <value>Functions</value>
+  </data>
   <data name="minutes" xml:space="preserve">
     <value>minutes</value>
   </data>
