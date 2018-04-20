@@ -1160,6 +1160,9 @@ namespace SgqSystem.Controllers
             tabela.CallBackTableEsquerda = form.CallBackTableEsquerda;
             tabela.CallBackTableX = form.CallBackTableX;
             tabela.Title = form.Title;
+            if (tabela.trsCabecalho1[0].name == "Indicadores por Unidades") {
+                tabela.trsCabecalho1[0].name = Resources.Resource.indicators_by_units;
+            }
             return View(tabela);
         }
 

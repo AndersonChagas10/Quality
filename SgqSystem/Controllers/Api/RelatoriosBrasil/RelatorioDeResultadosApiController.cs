@@ -4963,7 +4963,7 @@ ORDER BY 3
 
                 if (date.HasValue)
                 {
-                    return date.Value.ToString("yyyy-MM-dd");
+                    return date.Value.ToString("MM-dd-yyyy");
                 }
                 else
                 {

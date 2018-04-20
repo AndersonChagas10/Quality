@@ -1,6 +1,7 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
 @{
-    ViewBag.Title = "Visão Geral da Área";
+    ViewBag.Title = Resources.Resource.general_view_of_the_area;
 
     var url = Url.Action("Index", "Home");
     var urlTabela1 = Url.Action("GetTable", "RelatoriosSgq");
@@ -257,7 +258,7 @@
 
     var contadorAJAX = 0;
     var contadorAJAX_historico = 0;
-
+    var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var Chart = {
 
         /*
@@ -1289,7 +1290,8 @@
         }
 
         function CallbackGrafico1(data) {
-
+       
+        var meta = (isBrazil == true ? meta = "Meta 83%" : meta = "Goals 83%");
         var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
         var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
         var NomeRegional = MapeiaValorParaHC(data, "regName");
@@ -1341,7 +1343,7 @@
                     dashStyle: 'dash',
                     zIndex: 4,
                     label: {
-                        text: 'Meta 83%',
+                        text: meta,
                         align: 'right',
                         y: -10,
                         x: 0
@@ -1427,6 +1429,7 @@
         }
 
         function CallbackGrafico2(data) {
+
             var sigla = MapeiaValorParaHC(data, "companySigla");
             var scorecard = MapeiaValorParaHC(data, "companyScorecard");
             var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
@@ -1550,7 +1553,7 @@
 
         function Grafico3(paramCol, paramRow) {
 
-
+            debugger
             if (typeof (contadorAJAX) != "undefined") {
                 if (contadorAJAX > 0) {
                     console.log("Tem AJAX pendente! Aguarde!"); openMessageModal("Aguarde","Já tem uma requisição aberta."); openMessageModal("Aguarde","Já tem uma requisição aberta.");
@@ -2030,7 +2033,7 @@
     }
 
     function CallbackGrafico5(data) {
-
+        debugger
         var level1Name = MapeiaValorParaHC(data, "level1Name")[0];
         var level2Name = MapeiaValorParaHC(data, "level2Name")[0];
         var nome = MapeiaValorParaHC(data, "level3Name");
@@ -2473,7 +2476,7 @@
 
     }
 
-    function CallbackGraficoEvolutivoRegional(div,titulo,desvio,meta,real,id) {
+        function CallbackGraficoEvolutivoRegional(div, titulo, desvio, meta, real, id) {
         var desvio = desvio;
         var meta = meta;
         var real = real;
@@ -2753,11 +2756,12 @@
 
     function GerarGraficoHistoricoGeral(data){
 
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         if (data.length > 0) {
 
             $('#showNCGeral').show();
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");

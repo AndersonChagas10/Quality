@@ -124,8 +124,10 @@
             /*RegraNc*/
             if ($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length) {
                 crudNxN.modalAlterarRegraNc(obj);
-                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+                console.log(obj);
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {                
                     var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
+                    console.log("clique salvar" + editado);
                     $(e).parents('tr').removeData();
                     $(e).parents('tr').data(editado);
                     $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
@@ -515,7 +517,6 @@
 
 
         modalAlterarRegraNc: function (obj) {
-
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
 
             var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
@@ -544,8 +545,8 @@
             obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
             obj.ParNotConformityRule_Name = $('#crudNxNEdit #selectNotConformityRule :selected').text();
             obj.Value = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
-            obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
+            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? true : false;            
+            obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n";
 
             return obj;
         },
