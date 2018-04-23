@@ -136,9 +136,10 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.TipoProjeto_Id, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("TipoProjeto_Id", new SelectList(ViewBag.TipoProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("TipoProjeto_Id", new SelectList(ViewBag.TipoProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required tatico" })
                     @Html.ValidationMessageFor(model => model.TipoProjeto_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -146,9 +147,10 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.TemaProjeto_Id, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("TemaProjeto_Id", new SelectList(ViewBag.TemaProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("TemaProjeto_Id", new SelectList(ViewBag.TemaProjeto, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required tatico" })
                     @Html.ValidationMessageFor(model => model.TemaProjeto_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
