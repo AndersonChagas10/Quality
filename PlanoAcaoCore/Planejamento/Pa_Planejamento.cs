@@ -605,7 +605,7 @@ LEFT JOIN Pa_Dimensao DIME
                     bool existemAcoesAbertas = acoesTmp.Any(a => statusAberto.Contains(a.Status));
                     i.EmDia =
                         (!existemAcoesAbertas &&
-                            (i.DataInicio >= dtInit || i.DataInicio <= dtFim)
+                            (i.DataInicio >= dtInit && i.DataInicio <= dtFim)
                             ||
                             (i.DataFim <= dtFim && i.DataFim >= dtInit))
                             ||
