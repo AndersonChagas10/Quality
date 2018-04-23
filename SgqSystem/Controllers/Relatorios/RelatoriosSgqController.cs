@@ -3174,6 +3174,7 @@ namespace SgqSystem.Controllers
 
                 GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
+            WHERE companySigla IS NOT NULL
             GROUP BY companySigla";
 
 
@@ -3351,6 +3352,7 @@ namespace SgqSystem.Controllers
 
                 GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
+                WHERE LEVEL1NAME IS NOT NULL
 				 GROUP BY LEVEL1NAME";
 
             //Dados das colunas do corpo da tabela de dados central
@@ -3418,6 +3420,9 @@ namespace SgqSystem.Controllers
                 WHERE 1=1  ) _CROSS
                    ON _CROSS.CLASSIFIC_NEGOCIO = a.LEVEL1NAME
                    AND _CROSS.MACROPROCESSO = a.companySigla
+                    WHERE 1=1
+                     AND _CROSS.CLASSIFIC_NEGOCIO IS NOT NULL
+                     AND _CROSS.MACROPROCESSO IS NOT NULL
 				 GROUP BY _CROSS.CLASSIFIC_NEGOCIO,_CROSS.MACROPROCESSO";
 
 
