@@ -441,6 +441,7 @@
                     openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
                     return;
                 }
+                form["_QuandoFim"] = moment(form["_QuandoFim"]).format("DD/MM/YYYY");
             }
 
             if(typeof(form.CausaGenerica_Id) == "string"){
