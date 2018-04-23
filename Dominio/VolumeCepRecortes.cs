@@ -34,7 +34,9 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public Nullable<int> ParCompany_id { get; set; }
         public Nullable<int> ParLevel1_id { get; set; }
-    
+
+        public Nullable<int> QtdadeFamiliaProduto { get; set; }
+
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
     }
