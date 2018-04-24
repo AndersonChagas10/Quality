@@ -1,4 +1,4 @@
-﻿@model Dominio.ParClusterXModule
+﻿@model DTO.DTO.ParClusterXModulesDTO
 
 @{
     ViewBag.Title = Resources.Resource.edit;
@@ -18,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.module X @Resources.Resource.clusters</span>
+                    <span>@Resources.Resource.edit</span>
                 </li>
             </ul>
         </div>
@@ -37,7 +37,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                @using (Html.BeginForm())
+                                @using (Html.BeginForm("Edit", "ParClusterXModules", FormMethod.Post, new { @onsubmit = "tirarMascara()" }))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -66,7 +66,8 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Points, Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control number_decimal" } })
+                                                @Html.TextBox("Points", null, new { htmlAttributes = new { @class = "form-control number_decimal" } })
+                                                @Html.HiddenFor(model => model.Points)
                                                 @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -85,7 +86,7 @@
                                             @Html.LabelFor(model => model.EffectiveDate, Resources.Resource.effectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-2">
                                                 @{string effectiveDate = Model.EffectiveDate?.ToString("yyyy-MM-dd") ?? "";}
-                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type="date" })
+                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type = "date" })
                                                 @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -97,7 +98,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                                    }
+                                }
                             </div>
 
                         </div>
@@ -127,11 +128,30 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
+  
     <script>
-        
+
+        $("#Points").inputmask('decimal', {
+            radixPoint: ",",
+            groupSeparator: ".",
+            autoGroup: false,
+            digits: 2,
+            digitsOptional: false,
+            placeholder: '0',
+            rightAlign: false,
+            onBeforeMask: function (value, opts) {
+                return value;
+            },
+        });
+
+        function tirarMascara() {
+            $("#Points").val().replace(".", "");
+        };
+
         setTimeOut(function () {
             $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
-        },100);
+        }, 100);
+s
     </script>
 }
