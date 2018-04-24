@@ -114,13 +114,13 @@
                     var tfootAtual = $('#' + settings.nTableWrapper.id + ' .dataTables_scrollHead table').find('tfoot');
 
                     if (tfootAtual.length > 0) {
-                        $(tfootAtual).find('input[data-index=' + i + ']').css('width', (width - 10) + 'px');
+                        $(tfootAtual).find('[data-index=' + i + ']').css('width', (width - 10) + 'px');
                     } else {
                         var title = th.text();
                         if (title.length > 0)
                             tfoot += '<td style="padding-left:5px !important; padding-right:5px !important;"><input type="text" class="search-input-tfoot" style="width:' + (width - 10) + 'px !important" placeholder="' + title + '" data-index="' + i + '" /></td>';
                         else
-                            tfoot += '<td style="padding-left:5px !important; padding-right:5px !important;"><span type="text" style="display:block;width:' + (width - 10) + 'px !important"></span></td>';
+                            tfoot += '<td style="padding-left:5px !important; padding-right:5px !important;"><span type="text" style="display:block;width:' + (width - 10) + 'px !important" data-index="' + i + '"></span></td>';
                     }
                 });
                 tfoot += "</tr></tfoot>";

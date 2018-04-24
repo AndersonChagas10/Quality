@@ -168,6 +168,10 @@
         /*#body {
             overflow: auto;
         }*/
+
+        .dataTables_scroll table {
+            width:100% !important;
+        }
     </style>
 
     <style>
@@ -1489,7 +1493,7 @@
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').append(r);
                         $('#NovaAcao').show();
-                       
+
                     });
                 } else {
                     $('#modalLindo').find('.modal-body').empty();
@@ -2052,7 +2056,7 @@
                             }
                         } else {
                             if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {//se não for numero
-                                    event.preventDefault();
+                                event.preventDefault();
                             }
                         }
                     }
@@ -2701,7 +2705,7 @@
 
                 $("#SaveAcompanhamento").on("click", function (event) {
                     var obj = $("#acompanhamento").serializeObject();
-                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
+                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined || obj.MailTo == undefined || !(obj.Status_Id > 0))
                         alert("Os campos devem ser preenchidos")
                     else
                         SalvarAcompanhamento(obj);
@@ -3044,9 +3048,9 @@
                     let listaObjetivo = $.grep(dados, function (r) {
                         return r.Objetivo == c;
                     });
-                    
+
                     let qtdDeObjetivo = listaObjetivo.length;
-                    
+
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
 
                     let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
@@ -3194,21 +3198,21 @@
 
             var arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            var valor = o['Acao'].ContramedidaEspecifica;
+                var valor = o['Acao'].ContramedidaEspecifica;
 
-            if (o['Acao'].Status == 5) {
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    return "Não possui Ação Específica";
+                if (o['Acao'].Status == 5) {
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor =  "Não possui Ação Específica";
+                    }
                 }
-            }
 
-        });
+            });
 
             Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
-            AcoesEspecificas.push([i]);
-        });
+                AcoesEspecificas.push([i]);
+            });
 
             let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
 
@@ -3219,22 +3223,22 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            if (o['Acao'].Status == 1) {
+                if (o['Acao'].Status == 1) {
 
-                dataFim = new Date(o['Acao'].QuandoFim);
-                dataHoje = new Date();
+                    dataFim = new Date(o['Acao'].QuandoFim);
+                    dataHoje = new Date();
 
-                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays - 1) + " Dias" };
+                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "Não possui Ação Específica";
 
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    valor = { 0: "Não possui Ação Específica", 1: "" };
+                    return { 0:  valor, 1: String(diffDays - 1) + " Dias" };
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
-            }
 
             });
 
@@ -3250,23 +3254,23 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            dataInicio = new Date(o['Acao'].QuandoInicio);
-            dataHoje = new Date();
+                dataInicio = new Date(o['Acao'].QuandoInicio);
+                dataHoje = new Date();
 
-            if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
+                if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
 
-                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
 
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    return { 0: "Não possui Ação Específica", 1: "" };
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
-            }
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3280,20 +3284,20 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+                if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
 
-                let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+                    let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
 
-                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
 
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    return { 0: "Não possui Ação Específica", 1: "" };
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor =  { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
-            }
 
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3310,12 +3314,12 @@
 
             if (isFilter) {
 
-            dadosInternos = $.grep(dados, function (r) {
+                dadosInternos = $.grep(dados, function (r) {
 
-                return r[prop] == value ;
+                    return r[prop] == value ;
 
-            });
-        }
+                });
+            }
 
             Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
 
@@ -3339,79 +3343,79 @@
 
             Categories.forEach(function (c, o) {
 
-            let qtdConcluido = $.grep(dados2, function (r) {
-                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
-            }).length;
+                let qtdConcluido = $.grep(dados2, function (r) {
+                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+                }).length;
 
-            let listaGerencia = $.grep(dados2, function (r) {
-                return r.Iniciativa == c;
+                let listaGerencia = $.grep(dados2, function (r) {
+                    return r.Iniciativa == c;
+                });
+
+                let qtdDeGerencia = listaGerencia.length;
+
+                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+                if (TipoGrafico == "Gerencia") {
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
+                }else{
+                    let objetivo = retornaChaveamentoPorObjetivo(listaGerencia[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
+                }
             });
-
-            let qtdDeGerencia = listaGerencia.length;
-
-            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
-                
-            if (TipoGrafico == "Gerencia") {
-                let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
-                Data.push({ color: gerencia.color, y: porcConcluidos });
-            }else{
-                let objetivo = retornaChaveamentoPorObjetivo(listaGerencia[0].Objetivo_Id)[0];
-                Data.push({ color: objetivo.color, y: porcConcluidos });
-            }
-        });
 
             Highcharts.chart('graficoPorProjetos', {
 
-            title: {
-                text: '% CONCLUÍDA - DEMANDAS'
-            },
-            credits: {
-                enabled: false
-            },
-            subtitle: {
-                text: ''
-            },
-            yAxis: {
                 title: {
-                    text: '% de Conclusão'
-                }
-            },
-            xAxis: {
-                categories: Categories,
-            },
-            plotOptions: {
-                column: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.0f} %',
-                        //distance: -10,
-                        style: {
-                            color: 'black',
-                            fontSize: '10px',
+                    text: '% CONCLUÍDA - DEMANDAS'
+                },
+                credits: {
+                    enabled: false
+                },
+                subtitle: {
+                    text: ''
+                },
+                yAxis: {
+                    title: {
+                        text: '% de Conclusão'
+                    }
+                },
+                xAxis: {
+                    categories: Categories,
+                },
+                plotOptions: {
+                    column: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f} %',
+                            //distance: -10,
+                            style: {
+                                color: 'black',
+                                fontSize: '10px',
+                            },
+                            //connectorColor: 'silver'
                         },
-                        //connectorColor: 'silver'
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                console.log(this.category)
+                        point: {
+                            events: {
+                                click: function () {
+                                    console.log(this.category)
 
-                                filterDados("Iniciativa", this.category, getTablesModal)
+                                    filterDados("Iniciativa", this.category, getTablesModal)
+                                }
                             }
-                        }
+                        },
                     },
                 },
-            },
-            tooltip: {
-                pointFormat: '{point.y:.0f} %'
-            },
-            series: [{
-                type: 'column',
-                colorByPoint: true,
-                data: Data,
-                showInLegend: false
-            }]
-        });
+                tooltip: {
+                    pointFormat: '{point.y:.0f} %'
+                },
+                series: [{
+                    type: 'column',
+                    colorByPoint: true,
+                    data: Data,
+                    showInLegend: false
+                }]
+            });
 
             let PercentualTotal = Math.floor(Data.reduce((soma, obj) => soma + obj.y, 0) / Categories.length);
             $('#percentualConclusao').html(PercentualTotal + " %");
@@ -3511,7 +3515,7 @@
             $.each(dados, function (index, obj) {
 
                 var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
-    
+
                 if (existe.length <= 0) {
                     ChaveamentoObjetivo.push({ color: randomColor(),objetivo_id: obj.Objetivo_Id});
                 }
@@ -3534,7 +3538,7 @@
             color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
             return color;
         }
-        
+        var tableModalNovoApartirDe={};
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
         function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
             $('#ModalNovoApartirDeAlgo').find('h4').text("Criar "+NomeDoQueSeraCriado+" apartir de "+NomeApartirDeQueSeraCriado);
@@ -3543,13 +3547,13 @@
                 col.unshift({"render": function ( data, type, row ) {
                     return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
                 }});
-                var tableModalNovoApartirDe = datatableGRT.Inicializar({
+                tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",
                     listaDeDados: r.datas,
                     colunaDosDados:r.columns,
                     buttons: {buttons: []},
                     initComplete: function(){
-                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {                            
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {
                             if ($(this).attr('data-tipo') == 'tatico') {
                                 AbreModalDePlanejamento($(this).attr('data-id'));
                             } else if ($(this).attr('data-tipo') == 'acao') {
@@ -3560,7 +3564,7 @@
                         });
 
                         $('#ModalNovoApartirDeAlgo').modal('show');
-                        
+
                         setTimeout(function (e) {
                             tableModalNovoApartirDe.draw();
                         }, 500);
