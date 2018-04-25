@@ -206,7 +206,7 @@ INSERT INTO #AMOSTRATIPO4
                 			END AS NC
                 		   ,CASE
                 				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
-                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
+                				WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
                 				WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
                 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
                 				WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
@@ -1276,7 +1276,7 @@ FROM (SELECT
 			END AS NC
 		   ,CASE
 				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.DefectsTotal)
-				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.WeiDefects)
 				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.DefectsResult)
 				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)
 				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL1.DefectsTotal)
@@ -1546,7 +1546,7 @@ FROM (SELECT
 			END AS NC
 		   ,CASE
 				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL2.DefectsTotal)
-				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.DefectsTotal)
+				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL2.WeiDefects)
 				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL2.DefectsResult)
 				WHEN IND.ParConsolidationType_Id = 4 THEN SUM(A4.DEF_AM)
 				WHEN IND.ParConsolidationType_Id = 5 THEN SUM(CL2.DefectsTotal)
@@ -1752,7 +1752,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
                 "\n         , CASE " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.DefectsResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects " +
