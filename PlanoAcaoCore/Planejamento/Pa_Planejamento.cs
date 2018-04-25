@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlanoAcaoCore.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
@@ -682,8 +683,8 @@ LEFT JOIN Pa_Dimensao DIME
                 //(statusAberto.Contains(r.Acao.Status) && r.DataFim <= dtFim) //Ações abertas com projetos com data final menor que a selecionada
                 //|| (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit)
                 //|| (statusFechado.Contains(r.Acao.Status) && r.DataFim <= dtFim && r.DataFim >= dtInit) //Ações fechadas com projetos ainda em andamento
-                r.Acao.Id == 0 //Projetos sem ações
-                || r.EmDia //Projetos que não estão em dia
+                (r.Acao.Id == 0 //Projetos sem ações
+                || r.EmDia) && r.Acao.Status != (int) Enums.Status.Cancelado //Projetos que não estão em dia
             ).ToList();
 
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
