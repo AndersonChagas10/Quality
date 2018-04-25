@@ -13,5 +13,10 @@ namespace PlanoAcaoCore.Enum
             Monetario,
             Absoluto
         }
+
+        public enum Status
+        {
+            Atrasado = 1, Cancelado, Concluido, ConcluidoComAtraso, EmAndamento, Retorno, Finalizada, FinalizadaComAtraso
+        };
     }
 }
