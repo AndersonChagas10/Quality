@@ -495,26 +495,55 @@
             var SubtitleIndicador = "";
 
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + " : " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+               // SubtitleIndicador += Resources("cluster") + " : " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + " : " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+                //SubtitleIndicador += Resources("structure") + " : " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + " : " + $('#unitIdV :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+                //SubtitleIndicador += Resources("unit") + " : " + $('#unitIdV :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
-                if (!$('#auditorId :selected').text() == "All")
-                    SubtitleIndicador += Resources("auditor") + " : " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+                if (!$('#auditorId :selected').text() == "All") {
+                    //SubtitleIndicador += Resources("auditor") + " : " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                    var array = [];
+                    $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
+                    SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                }
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + " : " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+                //SubtitleIndicador += Resources("department") + " : " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + " : " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") + " | ";
+                //SubtitleIndicador += Resources("level1") + " : " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") + " | ";
+
+                var array = [];
+                $.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleIndicador += Resources("level2") + " : " + $('#level2Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
+                //SubtitleIndicador += Resources("level2") + " : " + $('#level2Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
+
+                var array = [];
+                $.each($('#level2Idv').val(), function (i, o) { array.push($('#level2Idv option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
 
             SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
