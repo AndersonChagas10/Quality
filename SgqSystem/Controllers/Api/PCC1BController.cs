@@ -125,7 +125,7 @@ namespace SgqSystem.Controllers.Api
                 "WHERE parlevel1_Id = "+ parLevel1.Id + "                                                          " +
                 "and ParLevel2_Id in ("+ parLevel2IdDianteiro + ", "+ parLevel2Id2Traseiro + ")                    " +   
                 "and UnitId = "+receive.Unit+"                                                                     " +
-                "and CollectionDate Between('"+ receive.Data+ " 00:00:00.0000000') and('" + receive.Data +         " 23:59:59.0000000')   ";
+                "and CollectionDate Between('"+ receive.Data+ " 00:00:00.0000000') and('" + receive.Data +         " 23:59:59')   ";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {

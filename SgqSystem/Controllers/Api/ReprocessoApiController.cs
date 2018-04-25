@@ -207,7 +207,7 @@ namespace SgqSystem.Controllers.Api
                         ON C2O.CollectionLevel2_Id = C2.Id
                         WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
                         AND ParHeaderField_Id in (" + headerEntrada.ToString() + " ," + headerSaida.ToString() + @")
-                        AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + " 23:59' GROUP BY R3.Value";
+                        AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + "  23:59:59' GROUP BY R3.Value";
 
 
             var retorno = factory.QueryNinjaADO(query);
@@ -325,7 +325,7 @@ namespace SgqSystem.Controllers.Api
                             WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
                             AND ParLevel2_Id = " + level2_idEntrada.ToString() + @"
                             AND ParHeaderField_Id = " + cabecalho_idEntrada.ToString() + @"
-                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @" 23:59'
+                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @"  23:59:59'
                             AND HF.Value = '" + cl2_Id.ToString() + @"' 
                             -- GROUP BY C2.id, c2.collectiondate, C2.PARLEVEL2_ID
                             
@@ -366,7 +366,7 @@ namespace SgqSystem.Controllers.Api
                             WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
                             AND ParLevel2_Id = " + level2_idSaida.ToString() + @"
                             AND ParHeaderField_Id = " + cabecalho_idSaida.ToString() + @"
-                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @" 23:59'
+                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @"  23:59:59'
                             AND HF.Value = '" + cl2_Id.ToString() + @"' 
                             -- GROUP BY C2.id, c2.collectiondate, C2.PARLEVEL2_ID
                            
@@ -438,7 +438,7 @@ namespace SgqSystem.Controllers.Api
                             ON cast(PMV.Id as varchar) = HF.Value and HF.ParFieldType_Id = 1
                             WHERE C2.UnitId = " + ParCompany_Id.ToString() + @"
                             AND HF.ParHeaderField_Id in ("+ cabecalho_idEntrada.ToString() + " ," + cabecalho_idSaida.ToString() + @")
-                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @" 23:59'
+                            AND C2.CollectionDate BETWEEN '" + dtIni.ToString() + " 00:00' AND '" + dtFim.ToString() + @"  23:59:59'
                             AND HF.Value = '" + cl2_Id.ToString() + "')";
 
             var retorno = factory.QueryNinjaADO(query);

@@ -126,7 +126,7 @@ public class ScorecardResultSet
 
            "\n DECLARE @ParCompany_Id INT = " + unidadeId + "                                                                                                                                                                                                                                     " +
            "\n DECLARE @DATAINICIAL DATETIME = '" + dtInicio.ToString("yyyyMMdd") + " 00:00'                                                                                                                                                                                                                    " +
-           "\n DECLARE @DATAFINAL   DATETIME = '" + dtFim.ToString("yyyyMMdd") + " 23:59'                                                                                                                                                                                                                    " +
+           "\n DECLARE @DATAFINAL   DATETIME = '" + dtFim.ToString("yyyyMMdd") + "  23:59:59'                                                                                                                                                                                                                    " +
 
 
                // Alteração
