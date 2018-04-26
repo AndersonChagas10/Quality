@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Dominio;
 using AutoMapper;
 using DTO.DTO;
+using System.Text.RegularExpressions;
 
 namespace SgqSystem.Controllers
 {
@@ -82,9 +83,11 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModule.ParCluster_Id);
-            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModule.ParModule_Id);
-            return View(parClusterXModule);
+            ParClusterXModulesDTO parClusterXModuleDTO = Mapper.Map<ParClusterXModulesDTO>(parClusterXModule);
+            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModuleDTO.ParCluster_Id);
+            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModuleDTO.ParModule_Id);
+                     
+            return View(parClusterXModuleDTO);
         }
 
         // POST: ParClusterXModules/Edit/5
@@ -103,9 +106,9 @@ namespace SgqSystem.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModule.ParCluster_Id);
-            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModule.ParModule_Id);
-            return View(parClusterXModule);
+            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModuleDTO.ParCluster_Id);
+            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModuleDTO.ParModule_Id);
+            return View(parClusterXModuleDTO);
         }
 
         // GET: ParClusterXModules/Delete/5
