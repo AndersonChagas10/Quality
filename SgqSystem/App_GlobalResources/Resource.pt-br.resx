@@ -2508,4 +2508,10 @@
   <data name="update_tablet_screen" xml:space="preserve">
     <value>Atualizar Parametrização</value>
   </data>
+  <data name="new_binary_input_type" xml:space="preserve">
+    <value>Novo - Tipo de Entrada Binária</value>
+  </data>
+  <data name="typification_check" xml:space="preserve">
+    <value>Verificação da Tipificação</value>
+  </data>
 </root>
