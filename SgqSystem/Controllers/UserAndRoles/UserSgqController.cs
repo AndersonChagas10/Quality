@@ -346,7 +346,7 @@ namespace SgqSystem.Controllers
                             myCookie.Values.Add("rolesCompany", "");
 
                     //set cookie expiry date-time. Made it to last for next 12 hours.
-                    myCookie.Expires = DateTime.Now.AddMinutes(1800);
+                    myCookie.Expires = DateTime.Now.AddHours(48);
 
                     //Most important, write the cookie to client.
                     Response.Cookies.Add(myCookie);

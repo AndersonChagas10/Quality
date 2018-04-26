@@ -7,6 +7,12 @@
     //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
     //  var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
 }
+<style>
+    .btnCalc {
+        min-width: 32.3px;
+        min-height: 32.3px;
+    }
+</style>
 <div id="newLevel3Modal">
     @using (Html.BeginForm())
     {
@@ -32,15 +38,30 @@
 
                     </tr>
 
-                    <tr class="row" style="display:none;">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && (bool)Session["IsRecravacao"])
+                    {
+                        <tr class="row" style="display:none;">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row showAsReencravation">
+                            @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
 
                     <tr class="row">
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>
-                </table>
 
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && (bool)Session["IsRecravacao"])
+                    {
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
+                </table>
 
                 @{
                     Model.levelControl = 3;
@@ -124,6 +145,260 @@
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
+    function newExpressaObj(){
+        return {
+            OuterEmpresa_Id: null,
+            OuterEmpresa_Text: '',
+            OuterLevel3_Id: null,
+            OuterLevel3_Text: '',
+            OuterLevel3Value_Id: null,
+            OuterLevel3Value_Text: '',
+            OuterLevel3ValueIntervalMinValue: 0,
+            OuterLevel3ValueIntervalMaxValue: 0,
+            ParLevel3_Id: 0,
+            ParLevel3_Name: null,
+            ParLevel3InputType_Id: 0,
+            ParCompany_Id: 0,
+            ParCompany_Name: null,
+            ParMeasurementUnit_Id: 0,
+            ParMeasurementUnit_Name: null,
+            IsActive:  true
+        }
+    }
+
+    var expressaoObj = newExpressaObj()
+    var expressaoArr = []
+
+    function getLevel3ReencravacaoInputCalcOutro(id) {
+        console.log(id)
+    }
+
+    @*var pl3Id = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.Id))
+    var pl3Name =  @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.Name))*@
+
+    function clickSinal(sinal){
+
+        expressaoObj = {
+            //ParLevel3_Id: pl3Id, //Resolved in BE
+            //ParLevel3_Name: pl3Name, //Resolved in BE
+            ParLevel3InputType_Id: $('#selectTipoInput option:selected').val(),
+            ParLevel3InputType_Name: $('#selectTipoInput option:selected').text(),
+            ParCompany_Id: $('#empresaRecravacao option:selected').val(),
+            ParCompany_Name: $('#empresaRecravacao option:selected').text(),
+            ParMeasurementUnit_Id: 0,
+            ParMeasurementUnit_Name: null,
+            OuterEmpresa_Id: $('#empresaRecravacao option:selected').val(),
+            OuterEmpresa_Text: $('#empresaRecravacao option:selected').text(),
+            OuterLevel3_Id: $('#parlevel3Recravacao option:selected').val(),
+            OuterLevel3_Text: $('#parlevel3Recravacao option:selected').text(),
+            OuterLevel3Value_Id: $('#parlevel3RecravacaoValue option:selected').val(),
+            OuterLevel3Value_Text: $('#parlevel3RecravacaoValue option:selected').text(),
+            OuterLevel3ValueIntervalMinValue: $('#parlevel3RecravacaoValue option:selected').attr('minvalue'),
+            OuterLevel3ValueIntervalMaxValue: $('#parlevel3RecravacaoValue option:selected').attr('maxvalue'),
+        }
+
+        if(sinal == "undo"){
+            expressaoArr.pop()
+            updateLogicExpression()
+        }else{
+            expressaoObj["Operator"] = sinal
+            expressaoObj["Order"] = expressaoArr.length + 1
+            expressaoArr.push(JSON.parse(JSON.stringify(expressaoObj)))
+            expressaoObj = newExpressaObj()
+            //$('#empresaRecravacao').val(-1).change()
+            //$('#parlevel3Recravacao').val(-1).change()
+            //$('#parlevel3RecravacaoValue').val(-1).change()
+            console.log(expressaoArr)
+            updateLogicExpression()
+        }
+    }
+
+    function rainbow(value, s, l, max, min, start, end) {
+        value = ((value - min) * (start - end) / max)+end;
+        return 'hsl(' + value + ','+s+'%,'+l+'%)';
+    }
+
+    function createRainbowDiv(start,end){
+        var gradient = [];
+        for (var i = start; ((i <= end) && (i >= start)) || ((i >= end) && (i <= start));
+            i += (end-start) / Math.abs(end-start)){
+            gradient.push(rainbow(i, 100,50, Math.max(start,end), Math.min(start,end), start,end));
+        }
+
+        return gradient;
+    }
+
+    function returnUpperCase (stringExp){
+        var positions = [];
+        for(var i=0; i<stringExp.length; i++){
+            if(stringExp[i].match(/[A-Z]/) != null){
+                positions.push(i);
+            }
+        }
+        let retorno = ''
+        if(positions.length > 1)
+            positions.forEach(function (o,c) {retorno += stringExp[o]})
+        else
+            retorno = stringExp.slice(0,3).toUpperCase()
+
+        return retorno
+    }
+
+    function updateLogicExpression(retorno){
+        let expressaoFinal = ''
+        arrGradientCounter = 0;
+        expressaoArr.forEach(function(o, c){
+            if(o.Operator == "dados"){
+                console.log(o)
+                //expressaoFinal += `(${o.OuterEmpresa_Text}, ${o.OuterLevel3_Text}: ${o.OuterLevel3Value_Text}) `
+                let name = o.OuterLevel3_Text.split(' - ')[1]
+                name = returnUpperCase(name)
+                expressaoFinal += `<span style="background-color:#0600ff40">${name}</span> `
+            }else {
+                if(o.Operator == '('){
+                    let color = percentToRGB(arrGradientCounter, 1)
+                    arrGradientCounter = arrGradientCounter + 25;
+                    expressaoFinal += `<span style="background-color:${color}">${o.Operator} </span>`
+                }
+                else if (o.Operator == ')'){
+                    if(arrGradientCounter > 0)
+                        arrGradientCounter = arrGradientCounter - 25;
+                    let color = percentToRGB(arrGradientCounter, 1)
+                    expressaoFinal += `<span style="background-color:${color}">${o.Operator} </span>`
+                }
+                else {
+                    expressaoFinal += `<span>${o.Operator}</span> `
+                }
+            }
+        })
+
+        if(retorno)
+            return expressaoFinal
+        else
+            $('#expFinal').empty().append($('<span style="background-color:#ff380063">' + expressaoFinal + '</span>')) //$('#expFinal').text($(expressaoFinal))
+    }
+
+    function saveLogExpression(){
+
+        let tipo = $('#selectTipoInput option:selected').text()
+        let unidade = $('#empresaRecravacao option:selected').text()
+        let expressao = updateLogicExpression(true)
+        let limites
+
+        if($('#selectUnidadeDeMedidas option:selected').val() && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parIntervalosType option:selected').val() >= 0){
+            let limites = {
+                UnidadeMedida_Id: $('#selectUnidadeDeMedidas option:selected').val(),
+                UnidadeMedidaText:$('#selectUnidadeDeMedidas option:selected').text(),
+                LimInferior: $('#parLevel3Value_IntervalMin').val(),
+                LimSuperior: $('#parLevel3Value_IntervalMax').val(),
+                AceitavelEntre_Id: $('#parIntervalosType option:selected').val(),
+                AceitavelEntreText: $('#parIntervalosType option:selected').text(),
+            }
+
+            expressaoArr.forEach(function(o, c){
+                o['UnidadeMedida_Id'] = limites.UnidadeMedida_Id
+                o['UnidadeMedidaText'] = limites.UnidadeMedidaText
+                o['LimInferior'] = limites.LimInferior
+                o['LimSuperior'] = limites.LimSuperior
+                o['AceitavelEntre_Id'] = limites.AceitavelEntre_Id
+                o['AceitavelEntreText'] = limites.AceitavelEntreText
+            })
+        }
+
+        let tr = `<tr pos="undefined">` +
+                    `<td>${tipo}</td>` +
+                    `<td></td>` +
+                    `<td></td>` +
+                    `<td>${unidade}</td>` +
+                    `<td></td>` +
+                    `<td>${$('#parLevel3Value_IntervalMin').val()}</td>` +
+                    `<td>${$('#parLevel3Value_IntervalMax').val()}</td>` +
+                    `<td>${expressao}</td>` +
+                    `<td></td>` +
+                    `<td></td>` +
+                    `<td>` +
+                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover Item Inserido" data-trigger="hover" data-placement="right" name="" onclick="removeExpression($(this));" data-toggle="popover" data-original-title="" title="">` +
+                            `<i class="fa fa-times" aria-hidden="true"></i>` +
+                        `</button>` +
+                        //`<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                        //    `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                        //`</button>` +
+                    `</td>` +
+                `</tr>`;
+
+        $('#tableLevel3Value tbody').prepend(tr)
+        $('#tableLevel3Value tbody tr:first').data('ParLevel3Value_OuterList', expressaoArr)
+
+        if($('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').show()
+        if(!$('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').hide()
+
+        expressaoObj = newExpressaObj()
+        expressaoArr = []
+        updateLogicExpression()
+    }
+
+    function myfunction() {
+        $('#parlevel3RecravacaoValue').empty()
+        let arr = [{text: 'Viado',
+            val: 10,
+            defaultSelected: false,
+            nowSelected: false,
+        },
+        {text: 'Jelsafa',
+            val: 11,
+            defaultSelected: false,
+            nowSelected: false
+        },{text: 'Jelsafa Viado',
+            val: 12,
+            defaultSelected: false,
+            nowSelected: false
+        }]
+
+        arr.forEach(atribuiOptionsADdl);
+    }
+
+    function atribuiOptionsADdl(o, c){
+        let option = new Option(o.text,o.val,o.defaultSelected,o.nowSelected)
+        $('#parlevel3RecravacaoValue').append(option)
+    }
+
+
+    function getLevel3ValueReencravacaoInputCalcOutro(id) {
+        $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "api/ParamsApi")', {'': id}, function (r){
+
+            let text = ''
+            let val = 1
+            let defaultSelected = false;
+            let nowSelected     = false;
+
+            $('#parlevel3RecravacaoValue').empty()
+            $('#parlevel3RecravacaoValue').append( new Option('Selecione...', -1, defaultSelected, nowSelected) );
+            r.forEach(function(o, c){
+                if(o.ParLevel3InputType_Id == 3){
+                    if (o.AcceptableValueBetween) {
+                        val = o.Id
+                        text = 'Valor não está entre: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
+                        let option = new Option(text,val,defaultSelected,nowSelected)
+                        option.setAttribute("minValue", o.IntervalMin)
+                        option.setAttribute("maxValue", o.IntervalMax)
+                        $('#parlevel3RecravacaoValue').append(option)
+                    } else {
+                        val = o.Id
+                        text = 'Valor está entre: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
+                        let option = new Option(text,val,defaultSelected,nowSelected)
+                        option.setAttribute("minValue", o.IntervalMin)
+                        option.setAttribute("maxValue", o.IntervalMax)
+                        $('#parlevel3RecravacaoValue').append(option)
+                    }
+                }
+            })
+            if($('#parlevel3RecravacaoValue option:first').length < 3)
+                $('#parlevel3RecravacaoValue').val($('#parlevel3RecravacaoValue option:first').next().val()).change()
+        })
+    }
+
     function UpdateUnidadeMedidas() {
         var valor = $("#modalInputMeasurementUnit").val();
         $.get(urlSaveMeassurementUnit,{valor: valor}, function(r) {
@@ -134,6 +409,91 @@
             $('#modalUnidadeMedida').hide();
         });
     }
+
+    var reencravacoes = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterList))
+    var reencravacoes2 = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterListGrouped))
+    function loadRecravacoes (){
+        console.log(reencravacoes)
+
+        if(reencravacoes2 != null && reencravacoes2!= undefined && reencravacoes2.length){
+            reencravacoes2.forEach(function(o,c){
+                expressaoArr = o
+                updateLogicExpression(true)
+
+                let tipo = reencravacoes[0].ParLevel3InputType_Name
+                let unidade = reencravacoes[0].ParCompany_Name
+                let expressao = updateLogicExpression(true)
+                let UnidadeMedidaText = reencravacoes[0].UnidadeMedidaText
+                let AceitavelEntreText = reencravacoes[0].AceitavelEntreText
+                let LimInferior = reencravacoes[0].LimInferior
+                let LimSuperior = reencravacoes[0].LimSuperior
+
+                let tr = `<tr pos="undefined">` +
+                            `<td>${tipo}</td>` +
+                            `<td></td>` +
+                            `<td></td>` +
+                            `<td>${unidade}</td>` +
+                            `<td>${UnidadeMedidaText}</td>` +
+                            `<td>${LimInferior}</td>` +
+                            `<td>${LimSuperior}</td>` +
+                            `<td>${expressao} (${AceitavelEntreText})</td>` +
+                            `<td></td>` +
+                            `<td></td>` +
+                            `<td>` +
+                                `<button style="display:none" type="button" class="btn btn-danger btn-xs popovers" data-content="Ativar Item" data-trigger="hover" data-placement="right" name="" onclick="inactivateExpression($(this), true);" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-undo" aria-hidden="true"></i>` +
+                                `</button>`+
+                                `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar Item" data-trigger="hover" data-placement="right" name="" onclick="inactivateExpression($(this), false);" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-times" aria-hidden="true"></i>` +
+                                `</button>` +
+                                //`<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                                //    `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                                //`</button>` +
+                            `</td>` +
+                        `</tr>`;
+
+                $('#tableLevel3Value tbody').prepend(tr)
+                $('#tableLevel3Value tbody tr:first').data('ParLevel3Value_OuterList', expressaoArr)
+
+                if($('#tableLevel3Value tbody tr').length)
+                    $('#tableLevel3Value').show()
+                if(!$('#tableLevel3Value tbody tr').length)
+                    $('#tableLevel3Value').hide()
+
+                expressaoObj = newExpressaObj()
+                expressaoArr = []
+                updateLogicExpression()
+            })
+        }
+    }
+
+    function removeExpression(row){
+        console.log(row)
+        row.parents('tr').remove()
+        if($('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').show()
+        if(!$('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').hide()
+    }
+
+    function inactivateExpression(row, conditional){
+        console.log(row)
+        if(conditional){
+            $(row.parents('tr').find('button')[0]).hide()
+            $(row.parents('tr').find('button')[1]).show()
+        }
+        else {
+            $(row.parents('tr').find('button')[0]).show()
+            $(row.parents('tr').find('button')[1]).hide()
+        }
+        row.parents('tr').each(function (cc,oo) {
+            $(oo).data('ParLevel3Value_OuterList').forEach(function (o,c) {
+                o['IsActive'] =  conditional
+            })
+        })
+    }
+
+    loadRecravacoes()
 
     /*Vinculo Level3Level2*/
     function saveLevel3Level2() {
@@ -178,6 +538,53 @@
 
     $('#pesoDefinido').html(hasPeso).show();
     $('#painelPeso').show();
+
+    $('#btnUnidadeMedida').click(function (e) {
+        $('#modalUnidadeMedida').modal({ backdrop: false });
+    });
+
+    $('#btnPositiveNegative').click(function (e) {
+        $('#modalPositiveNegative').modal({ backdrop: false });
+    });
+
+    function clicModalBinarioSave() {
+
+        var valInpPos = $('#modalInputPositive').val();
+        var valInpNeg =  $('#modalInputNegative').val();
+
+        if(!valInpPos.length){
+            alert("Valor invalido para:", "Valor Positivo");
+            return;
+        }
+
+        if(!valInpNeg.length){
+            alert(Resources('invalid_value_for'), Resources('positive_value'));
+            return;
+        }
+
+        var dados = {nameTrue : valInpPos, nameFalse : valInpNeg}
+        $.post(urlSaveBinaryImputType, dados, function (r) {
+
+            try {
+
+                $('#selectConforme').append('<option value="' + r.True.Id + '">' + r.True.Name + '</option>');
+                $('#selectNaoConforme').append('<option value="' + r.False.Id + '">' + r.False.Name + '</option>');
+
+                $('#selectConforme').val(r.True.Id).change();
+                $('#selectNaoConforme').val(r.False.Id).change();
+
+                $('#modalInputPositive').val("");
+                $('#modalInputNegative').val("");
+
+                $('#modalPositiveNegative').modal("hide");
+
+            } catch (e) {
+                console.log(e);
+            }
+        }).fail(function (e, h, x) {
+
+        });
+    };
 
     var urlLowPerm = '@Url.Action("AlteraVinculoLevel3", "api/ParamsApi")';
 

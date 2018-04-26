@@ -8,9 +8,40 @@
         "search": 'Buscar',
         "lengthMenu": "_MENU_",
         "zeroRecords": 'Sem dados',
+        "info": "Página _PAGE_ de _PAGES_",
+        "infoEmpty": "Sem registros",
+        "infoFiltered": "(Filtrado de _MAX_ registros)",
         "paginate": {
             "previous": 'Anterior',
             "next": 'Proximo',
+        }
+    },
+    buttons: {
+        buttons: [{
+            extend: 'excel',
+            text: '<i class="fa fa-file-excel-o" title="Excel"></i>',
+            title: "",
+            exportOptions: {
+                columns: ':visible'
+            },
+            footer: true,
+            autoPrint: false
+        }/*, {
+                    extend: 'copy',
+                    text: '<i class="fa fa-copy" title="Copy"></i>',
+                    exportOptions: {
+                        modifier: {
+                            page: ':visible'
+                        }
+                    }
+                }*/],
+        dom: {
+            container: {
+                className: 'dt-buttons'
+            },
+            button: {
+                className: 'btn btn-default'
+            }
         }
     },
     numeroLinhasNaTabela: 25,
@@ -43,6 +74,8 @@
             this.tamanhosDoMenu = config.tamanhosDoMenu;
         if (config.definicaoColuna != undefined)
             this.definicaoColuna = config.definicaoColuna;
+        if (config.buttons != undefined)
+            this.buttons = config.buttons;
 
         if ($.inArray(this.numeroLinhasNaTabela, this.tamanhosDoMenu[0]) < 0) {
             this.tamanhosDoMenu[0].push(this.numeroLinhasNaTabela);
@@ -50,7 +83,7 @@
         }
 
         $('#' + config.idTabela).empty()
-        return $('#' + config.idTabela).DataTable({
+        var table = $('#' + config.idTabela).DataTable({
             data: this.listaDeDados,
             "columnDefs": this.definicaoColuna,
             columns: this.colunaDosDados,
@@ -63,34 +96,8 @@
             "language": this.linguagem,
             initComplete: this.initComplete,
             dom: 'Blfrtip',
-            buttons: {
-                buttons: [{
-                    extend: 'excel',
-                    text: '<i class="fa fa-file-excel-o" title="Excel"></i>',
-                    title: "",
-                    exportOptions: {
-                        columns: ':visible'
-                    },
-                    footer: true,
-                    autoPrint: false
-                }/*, {
-                    extend: 'copy',
-                    text: '<i class="fa fa-copy" title="Copy"></i>',
-                    exportOptions: {
-                        modifier: {
-                            page: ':visible'
-                        }
-                    }
-                }*/],
-                dom: {
-                    container: {
-                        className: 'dt-buttons'
-                    },
-                    button: {
-                        className: 'btn btn-default'
-                    }
-                }
-            },
+            buttons: this.buttons,
+            createdRow: this.createdRow,
             "drawCallback": function (settings) {
 
                 var tfoot = "<tfoot><tr class='search-input-tfoot-tr'>";
@@ -107,13 +114,13 @@
                     var tfootAtual = $('#' + settings.nTableWrapper.id + ' .dataTables_scrollHead table').find('tfoot');
 
                     if (tfootAtual.length > 0) {
-                        $(tfootAtual).find('input[data-index=' + i + ']').css('width', (width - 10) + 'px');
+                        $(tfootAtual).find('[data-index=' + i + ']').css('width', (width - 10) + 'px');
                     } else {
                         var title = th.text();
                         if (title.length > 0)
                             tfoot += '<td style="padding-left:5px !important; padding-right:5px !important;"><input type="text" class="search-input-tfoot" style="width:' + (width - 10) + 'px !important" placeholder="' + title + '" data-index="' + i + '" /></td>';
                         else
-                            tfoot += '<td style="padding-left:5px !important; padding-right:5px !important;"><span type="text" style="display:block;width:' + (width - 10) + 'px !important"></span></td>';
+                            tfoot += '<td style="padding-left:5px !important; padding-right:5px !important;"><span type="text" style="display:block;width:' + (width - 10) + 'px !important" data-index="' + i + '"></span></td>';
                     }
                 });
                 tfoot += "</tr></tfoot>";
@@ -139,5 +146,6 @@
         });
 
         table.draw();
+        return table;
     }
 };

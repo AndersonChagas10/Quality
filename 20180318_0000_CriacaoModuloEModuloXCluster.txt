@@ -1,0 +1,51 @@
+-- 18 03 2018 - LEO (Criação de Modulo X Processos)
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180318_0000_CriacaoModuloEModuloXCluster',GetDate())
+
+/****** Object:  Table [dbo].[ParCluster]    Script Date: 12/03/2018 10:34:32 ******/
+SET ANSI_NULLS ON
+
+SET QUOTED_IDENTIFIER ON
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParModule' AND xtype='U')
+	CREATE TABLE [dbo].[ParModule](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[Name] [nvarchar](155) NOT NULL,
+		[Description] [nvarchar](max) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NOT NULL,
+	 CONSTRAINT [PK__ParModule] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+	
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParClusterXModule' AND xtype='U')
+	CREATE TABLE [dbo].[ParClusterXModule](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[ParCluster_Id] [int] NOT NULL,
+		[ParModule_Id] [int] NOT NULL,
+		[Points] [decimal](10, 5) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NOT NULL,
+		[EffectiveDate] [datetime] NULL,
+	 CONSTRAINT [PK_ParClusterModule] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+ALTER TABLE [dbo].[ParClusterXModule] ADD  CONSTRAINT [DF__ParCluste__EffectiveDate]  DEFAULT ('2015-01-01 00:00:00:0000') FOR [EffectiveDate]
+
+ALTER TABLE [dbo].[ParClusterXModule]  WITH CHECK ADD  CONSTRAINT [FK_ParClusterXModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+REFERENCES [dbo].[ParCluster] ([Id])
+
+ALTER TABLE [dbo].[ParClusterXModule] CHECK CONSTRAINT [FK_ParClusterXModule_ParCluster]
+
+ALTER TABLE [dbo].[ParClusterXModule]  WITH CHECK ADD  CONSTRAINT [FK_ParClusterXModule_ParModule] FOREIGN KEY([ParModule_Id])
+REFERENCES [dbo].[ParModule] ([Id])
+
+ALTER TABLE [dbo].[ParClusterXModule] CHECK CONSTRAINT [FK_ParClusterXModule_ParModule]
+

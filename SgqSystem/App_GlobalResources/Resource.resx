@@ -1327,7 +1327,7 @@
     <value>Data collection execution and action plan</value>
   </data>
   <data name="general_view_of_the_area" xml:space="preserve">
-    <value>Area Overview</value>
+    <value>General view of the area</value>
   </data>
   <data name="indicators_evolution" xml:space="preserve">
     <value>Indicators evolution</value>
@@ -1474,7 +1474,7 @@
     <value>Sign</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
-    <value>Slaughter signature</value>
+    <value>Department signature</value>
   </data>
   <data name="technical_signature" xml:space="preserve">
     <value>Technical signature</value>
@@ -1894,7 +1894,7 @@
     <value>Last</value>
   </data>
   <data name="insert_slaughter_signature" xml:space="preserve">
-    <value>Insert Slaughter Signature</value>
+    <value>Insert Department Signature</value>
   </data>
   <data name="insert_technical_signature" xml:space="preserve">
     <value>Insert Technical Signature</value>
@@ -2298,6 +2298,21 @@
   <data name="none" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="Pl1ShowInTablet" xml:space="preserve">
+    <value>Show in Tablet</value>
+  </data>
+  <data name="IsRecravacao" xml:space="preserve">
+    <value>Is Recravacao</value>
+  </data>
+  <data name="IsPointLess" xml:space="preserve">
+    <value>A tarefa se repete a cada numero de pontos  da lata na Recravação</value>
+  </data>
+  <data name="AllowNA" xml:space="preserve">
+    <value>Allow not avaliable</value>
+  </data>
+  <data name="OrderColumn" xml:space="preserve">
+    <value>Order in data aquisition list</value>
+  </data>
   <data name="sampleInterval" xml:space="preserve">
     <value>Sample Interval</value>
   </data>
@@ -2438,5 +2453,65 @@
   </data>
   <data name="new" xml:space="preserve">
     <value>New</value>
+  </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Counter Name</value>
+  </data>
+  <data name="conclued_plan_action" xml:space="preserve">
+    <value>Conclued action plan.</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>among others ...</value>
+  </data>
+  <data name="ev_with_weight" xml:space="preserve">
+    <value>Ev With Weight</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc WithWeight</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Back to Departments</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Unit of Measurement Name</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Bigger</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
+  <data name="indicators_by_units" xml:space="preserve">
+    <value>Indicators by Units</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Back to Unit of Measurement</value>
+  </data>
+  <data name="level1Group" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="minutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="minutes_initials" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="config" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="config_global" xml:space="preserve">
+    <value>Config Global</value>
+  </data>
+  <data name="equipments" xml:space="preserve">
+    <value>Equipments</value>
+  </data>
+  <data name="parameterization_email_alert" xml:space="preserve">
+    <value>Parameterization Email Alert</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="update_tablet_screen" xml:space="preserve">
+    <value>Update Parameterization</value>
   </data>
 </root>

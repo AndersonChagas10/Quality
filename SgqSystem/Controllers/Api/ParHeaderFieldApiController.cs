@@ -61,7 +61,7 @@ namespace SgqSystem.Controllers.Api
                 "AND PH.LinkNumberEvaluetion = 1                                               " +
                 "WHERE C.UnitId = " + UnitId + " AND                                           " +
                 "C.CollectionDate BETWEEN '" + TransformedDate + " 00:00' AND                  " +
-                "'" + TransformedDate + " 23:59'";
+                "'" + TransformedDate + " 23:59:59'";
 
             List<CollectionHeaderField> Lista1 = new List<CollectionHeaderField>();
             using (Factory factory = new Factory("DefaultConnection"))

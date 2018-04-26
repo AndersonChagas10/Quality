@@ -73,7 +73,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 return retorno;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Dictionary<string, int>();
             }
@@ -213,7 +213,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 return retorno;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new List<AcoesConcluidas>();
             }
@@ -308,7 +308,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 return retorno;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new List<Pa_Acao>();
             }

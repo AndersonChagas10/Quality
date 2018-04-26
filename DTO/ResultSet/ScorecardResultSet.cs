@@ -108,11 +108,11 @@ public class ScorecardResultSet
 
         string where = "";
 
-        if(clusterSelected_Id > 0)
+        if (clusterSelected_Id > 0)
         {
             where = " WHERE cluster = " + clusterSelected_Id;
         }
-       
+
 
         if (tipo == 0)
         {
@@ -166,10 +166,10 @@ public class ScorecardResultSet
                 "\n     and C2.Duplicated = 0 " +
                 "\n     and L1.ParConsolidationType_Id = 4 " +
                 "\n     group by C.Id, ParLevel1_Id" +
-                /*
-                "\n ) TAB " +
-                "\n GROUP BY UNIDADE, INDICADOR " +
-                */
+           /*
+           "\n ) TAB " +
+           "\n GROUP BY UNIDADE, INDICADOR " +
+           */
 
 
 
@@ -193,17 +193,66 @@ public class ScorecardResultSet
            "\n DECLARE @CRITERIONAME VARCHAR(153)                                                                                                                                                                                                                                  " +
            "\n DECLARE @PONTOS VARCHAR(153)                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n SELECT                                                                                                                                                                                                                                                              " +
-           "\n  @CLUSTER = CL.Id                                                                                                                                                                                                                                                   " +
-           "\n , @CLUSTERNAME = CL.Name                                                                                                                                                                                                                                            " +
-           "\n , @REGIONAL = S.Id                                                                                                                                                                                                                                                  " +
-           "\n , @REGIONALNAME = S.Name                                                                                                                                                                                                                                            " +
-           "\n , @PARCOMPANY = C.Id                                                                                                                                                                                                                                                " +
-           "\n , @PARCOMPANYNAME = C.Name                                                                                                                                                                                                                                          " +
-           "\n , @CRITERIO = L1C.ParCriticalLevel_Id                                                                                                                                                                                                                               " +
-           "\n , @CRITERIONAME = CRL.Name                                                                                                                                                                                                                                          " +
-           "\n , @PONTOS = L1C.Points                                                                                                                                                                                                                                              " +
-           "\n FROM ParCompany C  (nolock)                                                                                                                                                                                                                                                   " +
+
+           @"SELECT                                                                                                                                                                                                                                                              
+              @CLUSTER = CL.Id                                                                                                                                                                                                                                                   
+             , @CLUSTERNAME = 
+             (
+             SELECT TOP 1 (select name from parcluster where id = L1Ca.ParCluster_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                                           
+             , @REGIONAL = S.Id                                                                                                                                                                                                                                                  
+             , @REGIONALNAME = S.Name                                                                                                                                                                                                                                            
+             , @PARCOMPANY = C.Id                                                                                                                                                                                                                                                
+             , @PARCOMPANYNAME = C.Name                                                                                                                                                                                                                                          
+             , @CRITERIO = 
+             (
+             SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                               
+             , @CRITERIONAME = 
+             (
+             SELECT top 1 (select name from parcriticallevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                                        
+             , @PONTOS = 
+             (
+             SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
+                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                         AND 25 = L1Ca.ParLevel1_Id 
+                         AND L1Ca.IsActive = 1 
+                         AND L1Ca.EffectiveDate <= @DATAFINAL 
+                     ORDER BY L1Ca.EffectiveDate  desc
+             )                                                                                                                                                                                                                                              
+             FROM ParCompany C  (nolock) " +
+
+
+
+
+
+           //"\n SELECT                                                                                                                                                                                                                                                              " +
+           //"\n  @CLUSTER = CL.Id                                                                                                                                                                                                                                                   " +
+           //"\n , @CLUSTERNAME = CL.Name                                                                                                                                                                                                                                            " +
+           //"\n , @REGIONAL = S.Id                                                                                                                                                                                                                                                  " +
+           //"\n , @REGIONALNAME = S.Name                                                                                                                                                                                                                                            " +
+           //"\n , @PARCOMPANY = C.Id                                                                                                                                                                                                                                                " +
+           //"\n , @PARCOMPANYNAME = C.Name                                                                                                                                                                                                                                          " +
+           //"\n , @CRITERIO = L1C.ParCriticalLevel_Id                                                                                                                                                                                                                               " +
+           //"\n , @CRITERIONAME = CRL.Name                                                                                                                                                                                                                                          " +
+           //"\n , @PONTOS = L1C.Points                                                                                                                                                                                                                                              " +
+           //"\n FROM ParCompany C  (nolock)                                                                                                                                                                                                                                                   " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n LEFT JOIN ParCompanyXStructure CS  (nolock)                                                                                                                                                                                                                                   " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -272,7 +321,7 @@ public class ScorecardResultSet
            "\n  , ParCompanyId                                                                                                                                                                                                                                                     " +
            "\n  , ParCompanyName                                                                                                                                                                                                                                                   " +
            "\n  , CASE WHEN TipoIndicador = 0 THEN 1 ELSE 2 END TipoIndicador                                                                                                                                                                                                      " +
-           "\n  , CASE WHEN TipoIndicador = 0 THEN 'Menor' ELSE 'Maior' END TipoIndicadorName                                                                                                                                                                                      " +
+           "\n  , CASE WHEN TipoIndicador = 0 THEN '" + Resources.Resource.smaller.ToString() + "' ELSE '"+ Resources.Resource.bigger.ToString() +"' END TipoIndicadorName                                                                                                                                                                                      " +
            "\n  , Level1Id                                                                                                                                                                                                                                                         " +
            "\n  , Level1Name                                                                                                                                                                                                                                                       " +
            "\n  , Criterio                                                                                                                                                                                                                                                         " +
@@ -410,7 +459,7 @@ public class ScorecardResultSet
 
            "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
 
-           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id AND CL1C.ParCluster_Id = L1Ca.ParCluster_ID " +
 
            "\n             AND L1Ca.IsActive = 1 " +
 
@@ -428,7 +477,7 @@ public class ScorecardResultSet
 
            "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
 
-           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id AND CL1C.ParCluster_Id = L1Ca.ParCluster_ID " +
 
            "\n             AND L1Ca.IsActive = 1 " +
 
@@ -446,7 +495,7 @@ public class ScorecardResultSet
 
                "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
 
-               "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+               "\n             AND L1.Id = L1Ca.ParLevel1_Id AND CL1C.ParCluster_Id = L1Ca.ParCluster_ID " +
 
                "\n             AND L1Ca.IsActive = 1 " +
 
@@ -479,7 +528,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     WHEN L1.hashKey = 1 THEN @VOLUMEPCC - @NAPCC                                                                                                                                                                                                                    " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 " +
+           "\n     WHEN CT.Id IN(1, 2, 5) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                " +
            "\n     WHEN CT.Id IN(4) THEN AVG(A4.AM)" +
@@ -497,7 +546,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN L1.hashKey = 1 THEN @VOLUMEPCC - @NAPCC                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                             " +
+           "\n         WHEN CT.Id IN(1, 2, 5) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                             " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -511,7 +560,7 @@ public class ScorecardResultSet
            "\n         WHEN L1.Id = 25 THEN @NCFREQUENCIAVERIFICACAO                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(5) THEN CASE WHEN SUM(CL1.WeiDefects) > SUM(CL1.WeiEvaluation) THEN SUM(CL1.WeiEvaluation) ELSE SUM(CL1.WeiDefects) END                                                                                                                                                                                                                                                            " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                        " +
@@ -525,7 +574,7 @@ public class ScorecardResultSet
            "\n         WHEN L1.Id = 25 THEN @NCFREQUENCIAVERIFICACAO                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                                " +
-           "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(5) THEN CASE WHEN SUM(CL1.WeiDefects) > SUM(CL1.WeiEvaluation) THEN SUM(CL1.WeiEvaluation) ELSE SUM(CL1.WeiDefects) END                                                                                                                                                                                                                                                            " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                        " +
@@ -547,7 +596,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN L1.hashKey = 1 THEN @VOLUMEPCC - @NAPCC                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                             " +
+           "\n         WHEN CT.Id IN(1, 2, 5) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                             " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -569,7 +618,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN L1.hashKey = 1 THEN @VOLUMEPCC - @NAPCC                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                         " +
+           "\n             WHEN CT.Id IN(1, 2, 5) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -584,7 +633,7 @@ public class ScorecardResultSet
            "\n             WHEN L1.Id = 25 THEN @NCFREQUENCIAVERIFICACAO                                                                                                                                                                                                           " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
+           "\n             WHEN CT.Id IN(5) THEN CASE WHEN SUM(CL1.WeiDefects) > SUM(CL1.WeiEvaluation) THEN SUM(CL1.WeiEvaluation) ELSE SUM(CL1.WeiDefects) END                                                                                                                                                                                                                                                        " +
            "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                            " +
@@ -597,7 +646,7 @@ public class ScorecardResultSet
            "\n             WHEN L1.Id = 25 THEN @NCFREQUENCIAVERIFICACAO                                                                                                                                                                                                           " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiDefects)                                                                                                                                                                                                            " +
-           "\n                                                                                                                                                                                                                                                                     " +
+           "\n             WHEN CT.Id IN(5) THEN CASE WHEN SUM(CL1.WeiDefects) > SUM(CL1.WeiEvaluation) THEN SUM(CL1.WeiEvaluation) ELSE SUM(CL1.WeiDefects) END                                                                                                                                                                                                                                                        " +
            "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(4) THEN AVG(A4.DEF_AM)                                                                                                                                                                                                                            " +
@@ -616,7 +665,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN L1.hashKey = 1 THEN @VOLUMEPCC - @NAPCC                                                                                                                                                                                                                " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n         WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                             " +
+           "\n         WHEN CT.Id IN(1, 2, 5) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                             " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -632,19 +681,21 @@ public class ScorecardResultSet
            "\n  ,                                                                                                                                                                                                                                                                  " +
            "\n  CASE                                                                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM     (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                             " +
+           "\n FROM     (SELECT * FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                             " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
+           "\n  LEFT JOIN ConsolidationLevel1XCluster CL1C " +
+           "\n  ON CL1C.ConsolidationLevel1_Id = CL1.Id    " +
            "\n LEFT JOIN ParScoreType ST  (nolock)                                                                                                                                                                                                                                           " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                " +
@@ -665,7 +716,7 @@ public class ScorecardResultSet
            "\n        ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                            " +
            "\n LEFT JOIN ParCompanyCluster CCL   (nolock)                                                                                                                                                                                                                                    " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1                                                                                                                                                                                                                                 " +
+           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1     and CL1C.ParCluster_Id = ccl.parcluster_id                                                                                                                                                                                                                            " +
            "\n LEFT JOIN ParCluster CL       (nolock)                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                 " +
@@ -698,7 +749,7 @@ public class ScorecardResultSet
            "\n     , CT.Id                                                                                                                                                                                                                                                         " +
            "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
            "\n     , C.Id                                                                                                                                                                                                                                                          " +
-           "\n     , CCL.ParCluster_ID                                                                                                                                                                                                                                                               " +
+           "\n     , CCL.ParCluster_ID, CL1C.ParCluster_Id                                                                                                                                                                                                                                                               " +
            "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n ) FIM                                                                                                                                                                                                                                                               " +
@@ -754,7 +805,7 @@ public class ScorecardResultSet
             "\n	)" +
 
            "\n , @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  " +
-           
+
            "\n ,0 as av " +
            "\n ,0 as nc " +
 
@@ -779,11 +830,11 @@ public class ScorecardResultSet
            "\n , 0 AS PontosIndicador                                                                                                                                                                                                                                              " +
            "\n , ROUND(CASE                                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END,2)                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n , 0 AS Real                                                                                                                                                                                                                                                         " +

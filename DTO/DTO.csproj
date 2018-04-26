@@ -102,6 +102,8 @@
     <Compile Include="DTO\CorrectiveActionLevelsDTO.cs" />
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
     <Compile Include="DTO\DefectDTO.cs" />
+    <Compile Include="DTO\ParClusterXModulesDTO.cs" />
+    <Compile Include="DTO\RecravacaoSugestaoDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3EvaluationSampleDTO.cs" />
     <Compile Include="DTO\Result_Level3_PhotosDTO.cs" />
     <Compile Include="DTO\DepartmentDTO.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="DTO\Params\ParLevel2SampleEvaluationDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3Level2DTO.cs" />
     <Compile Include="DTO\Params\ParLevel3Level2Level1DTO.cs" />
+    <Compile Include="DTO\Params\ParLevel3Value_OuterListDTO.cs" />
     <Compile Include="DTO\Params\ParMeasurementUnitDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3BoolTrueDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3BoolFalseDTO.cs" />

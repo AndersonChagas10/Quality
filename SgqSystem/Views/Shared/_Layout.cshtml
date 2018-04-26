@@ -32,6 +32,7 @@
     //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
 
 
+    ViewBag.urlHome = Url.Action("Index", "Home");
 }
 <!DOCTYPE html>
 <html ng-app="sgqSystem">
@@ -74,6 +75,9 @@
     <link href="~/Content/datatableGRT.css" rel="stylesheet" />
     <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/pivot.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/c3.min.css">
+
 </head>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
 
@@ -95,6 +99,8 @@
 
     <script src="~/Scripts/Timeout/timeout-dialog.js"></script>
     <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/humanizeduration/humanize-duration.js"></script>
+    <script src="~/Scripts/Timer/angular-timer.min.js"></script>
     <script src="~/Angular/app.js"></script>
     <script src="~/Scripts/smart-table.min.js"></script>
 
@@ -244,7 +250,7 @@
 
         <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px; z-index: 999;">
             <label class="pull-right">Version: @Html.AssemblyVersion()</label>
-            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </label>
+            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - GRT </label>
         </p>
 
     </footer>
@@ -544,45 +550,6 @@
         timerSession.verificarCookieExiste();*@
         //FIM Metodo de exibir Modal de alerta de expirar sessão
 
-
-        $(document).ready(function () {
-            //var settngs = $.data($('form')[0], 'validator').settings;
-            //settngs.ignore = ".ignore";
-        });
-
-        @*var cccccounter = 0;
-        if (!!getCookie('webControlCookie')) {
-            var keepAlive = '@Url.Action(ViewBag.KeepAlive, "UserAuthentication")';
-            setTimeout(function () {
-                $.timeoutDialog({
-                    timeout: 305,
-                    countdown: 300,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    keep_alive_url: keepAlive,
-                });
-            }, 300000 * 8);
-
-            console.log("0/3 (300000 * 8): " + new Date());
-
-            setTimeout(function () {
-
-                console.log(cccccounter + "/3 (300000 * 8): " + new Date());
-                cccccounter++;
-
-            }, 100000 * 8);
-        }*@
-
-        @*$(function () {
-            $("#timeout-example").click(function (e) {
-                e.preventDefault();
-                $.timeoutDialog({ timeout: 1,
-                    countdown: 60,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    restart_on_yes: false
-                });
-            });
-        });*@
-
         var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
         var flag_beforeunload = false;
 
@@ -659,6 +626,50 @@
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+
+        $(document).ready(function () {
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+
+            //Função para paleativo de numerico e decimal permitindo apenas . ao inves de ,
+            $('.number_decimal').keypress(function(event) {
+                var $this = $(this);
+                // this next line...
+                if ((event.which != 44 || $this.val().indexOf(',') != -1) &&
+                   ((event.which < 48 || event.which > 57) &&
+                   (event.which != 0 && event.which != 8))) {
+                    event.preventDefault();
+                }
+
+                var text = $(this).val().replace('.',',');
+                // this next line...
+                if ((event.which == 44) && (text.indexOf(',') == -1)) {
+                    setTimeout(function() {
+                        if ($this.val().substring($this.val().indexOf(',')).length > 3) {
+                            $this.val($this.val().substring(0, $this.val().indexOf(',') + 3));
+                        }
+                    }, 1);
+                }
+
+                if ((text.indexOf(',') != -1) &&
+                    (text.substring(text.indexOf(',')).length > 2) &&
+                    (event.which != 0 && event.which != 8) &&
+                    ($(this)[0].selectionStart >= text.length - 2)) {
+                    event.preventDefault();
+                }
+
+                $(this).val(text.replace(',','.'));
+            });
+
+            $('.number_decimal').keypress();
+        });
     </script>
 
     <script src="~/Scripts/PluginGRT/mandalaGRT.js"></script>
@@ -792,6 +803,10 @@
 
         </div>
     </div>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/c3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/d3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/pivot.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/c3_renderers.js"></script>
 
 </body>
 </html>

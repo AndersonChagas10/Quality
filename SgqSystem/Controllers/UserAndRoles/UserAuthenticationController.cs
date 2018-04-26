@@ -17,7 +17,6 @@ namespace SgqSystem.Controllers.Api
         private readonly IUserDomain _userDomain;
         private readonly IBaseDomain<UserSgq, UserDTO> _userBaseDomain;
         private IBaseDomain<UserSgq, UserSgqDTO> _userSgqDomain;
-        private IBaseDomain<EmailContent, EmailContentDTO> _emailContent;
 
         public UserAuthenticationController(IUserDomain userDomain, IBaseDomain<UserSgq, UserDTO> userBaseDomain, IBaseDomain<UserSgq, UserSgqDTO> userSgqDomain
             /*,IBaseDomain<EmailContent, EmailContentDTO> emailContent*/)

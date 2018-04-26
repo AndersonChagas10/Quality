@@ -80,7 +80,7 @@ namespace SgqSystem.Controllers
                     Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
 

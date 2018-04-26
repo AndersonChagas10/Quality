@@ -10,7 +10,6 @@ namespace CrossCutting.IOC.Module
         {
             Bind(typeof(IBaseDomain<,>)).To(typeof(BaseDomain<,>));
             Bind<IUserDomain>().To<UserDomain>();
-            Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
             Bind<IExampleDomain>().To<ExampleDomain>();
             Bind<IParamsDomain>().To<ParamsDomain>();
             Bind<ICompanyDomain>().To<CompanyDomain>();

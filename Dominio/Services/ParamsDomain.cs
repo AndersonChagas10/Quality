@@ -8,6 +8,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System;
 using System.Data;
+using ADOFactory;
 
 namespace Dominio.Services
 {
@@ -199,6 +200,7 @@ namespace Dominio.Services
                                             , ListaParCounterLocal, listNonCoformitRule, listaReincidencia, listParGoal);
 
                 if (DTO.GlobalConfig.Brasil)
+                {
                     if (paramsDto.parLevel1Dto.IsSpecific)
                     {
                         var query = "UPDATE PARLEVEL1 SET {0} = {1} WHERE id = {2} SELECT 1";
@@ -210,6 +212,14 @@ namespace Dominio.Services
                         queryExcute = string.Format(query, "AllowEditWeightOnLevel3", paramsDto.parLevel1Dto.AllowEditWeightOnLevel3 ? 1 : 0, paramsDto.parLevel1Dto.Id);
                         db.Database.ExecuteSqlCommand(queryExcute);
                     }
+                    if (paramsDto.parLevel1Dto.IsRecravacao)
+                    {
+                        var query = "UPDATE PARLEVEL1 SET {0} = {1} WHERE id = {2} SELECT 1";
+                        var queryExcute = string.Empty;
+                        queryExcute = string.Format(query, "IsRecravacao", paramsDto.parLevel1Dto.IsRecravacao ? 1 : 0, paramsDto.parLevel1Dto.Id);
+                        db.Database.ExecuteSqlCommand(queryExcute);
+                    }
+                }
             }
             catch (DbUpdateException e)
             {
@@ -270,6 +280,10 @@ namespace Dominio.Services
                 parlevel1Dto.AllowEditPatternLevel3Task = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
                 queryExcute = string.Format(query, "AllowEditWeightOnLevel3", parlevel1Dto.Id);
                 parlevel1Dto.AllowEditWeightOnLevel3 = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
+
+                //Recravação
+                queryExcute = string.Format(query, "IsRecravacao", parlevel1Dto.Id);
+                parlevel1Dto.IsRecravacao = db.Database.SqlQuery<bool?>(queryExcute).FirstOrDefault() ?? false;
             }
 
             #endregion
@@ -471,6 +485,46 @@ namespace Dominio.Services
             try
             {
 
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, null, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
+
+                db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET IsPointLess = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.IsPointLess ? "1" : "0", saveParamLevel3.Id));
+                db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET AllowNA = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.AllowNA ? "1" : "0", saveParamLevel3.Id));
+
+                if (paramsDto.parLevel3Dto.ParLevel3Value_OuterList != null)
+                    foreach (var i in paramsDto.parLevel3Dto.ParLevel3Value_OuterList)
+                    {
+                        if (i.Id <= 0)
+                        {
+                            i.ParLevel3_Id = saveParamLevel3.Id;
+                            i.ParLevel3_Name = saveParamLevel3.Name;
+                            i.IsActive = true;
+                            //i.LimSuperior = 1.02M;
+                            db.ParLevel3Value_Outer.Add(Mapper.Map<ParLevel3Value_Outer>(i));
+                        }
+                        else
+                        {
+                            if (i.IsActive)
+                            {
+                                var queryUpdateParLevel3Value_OuterList = string.Format(@"
+                                UPDATE ParLevel3Value_Outer 
+                                SET AlterDate = {0}, IsActive = {1}
+                                WHERE Id = {2}", "GETDATE()", i.IsActive ? "1" : "0", i.Id);
+
+                                db.Database.ExecuteSqlCommand(queryUpdateParLevel3Value_OuterList);
+                            }
+                            else
+                            {
+                                var queryUpdateParLevel3Value_OuterList = string.Format(@"
+                                delete from ParLevel3Value_Outer 
+                                WHERE Id = {0}", i.Id);
+
+                                db.Database.ExecuteSqlCommand(queryUpdateParLevel3Value_OuterList);
+                            }
+                        }
+
+                    }
+
+                db.SaveChanges();
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listSaveParLevel3EvaluationSample, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
                 if (parLevel3Level2peso != null)
                     foreach (var i in parLevel3Level2peso?.Where(r => r.IsActive))
@@ -513,6 +567,7 @@ namespace Dominio.Services
             var group = db.ParLevel3Group.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
             var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
+            var parlevel3Reencravacao = db.ParLevel3Value_Outer.Where(r => r.IsActive && r.ParLevel3_Id == parlevel3.Id).ToList();// (string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1", parlevel3.Id)).ToList();
             var level3EvaluationSample = parlevel3.ParLevel3EvaluationSample.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
 
             #endregion
@@ -525,7 +580,8 @@ namespace Dominio.Services
             level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(level3Value);
             level3.listParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSampleDTO>>(level3EvaluationSample);
             retorno.parLevel3Value = new ParLevel3ValueDTO(); // Mini Gambi....
-
+            level3.ParLevel3Value_OuterList = Mapper.Map<List<ParLevel3Value_OuterListDTO>>(parlevel3Reencravacao);
+            level3.ParLevel3Value_OuterListGrouped = level3.ParLevel3Value_OuterList.GroupBy(r=>r.ParCompany_Id);
             #endregion
 
             #region Rn's
@@ -536,6 +592,11 @@ namespace Dominio.Services
             foreach (var Level3Value in level3.listLevel3Value)/*ParLevel 3 Value*/
                 Level3Value.PreparaGet();
 
+            var pointLess = db.Database.SqlQuery<bool?>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault() ?? false;
+            level3.IsPointLess = pointLess;
+
+            var AllowNA = db.Database.SqlQuery<bool?>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault() ?? false;
+            level3.AllowNA = AllowNA;
             foreach (var parLevel3EvaluationSample in level3.listParLevel3EvaluationSample)/*ParLevel 3 Value*/
                 parLevel3EvaluationSample.PreparaGet();
 
@@ -687,13 +748,16 @@ namespace Dominio.Services
             var response = false;
             using (var db = new SgqDbDevEntities())
             {
-                var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + " AND Active = 1)";
-                var result1 = db.Database.SqlQuery<ParLevel3Level2Level1>(sql1).ToList();
-                var result2 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2 && r.IsActive == true).ToList();
-                if (result1?.Count() > 0 || result2?.Count() > 0)
-                    response = true;
-                else
-                    response = false;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + " AND Active = 1)";
+                    var result1 = factory.SearchQuery<ParLevel3Level2Level1>(sql1).ToList();
+                    var result2 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2 && r.IsActive == true).ToList();
+                    if (result1?.Count() > 0 || result2?.Count() > 0)
+                        response = true;
+                    else
+                        response = false;
+                }
             }
             return response;
         }
@@ -704,24 +768,27 @@ namespace Dominio.Services
 
             using (var db = new SgqDbDevEntities())
             {
-                var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
-                var sql2 = "SELECT * FROM ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
-                var result1 = db.Database.SqlQuery<ParLevel3Level2Level1>(sql1).ToList();
-                var result2 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2).ToList();
-                if (result1?.Count() > 0 || result2?.Count() > 0)
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    if (result1?.Count() > 0)
-                        sql1 = "DELETE ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
-                    if (result2?.Count() > 0)
-                        sql2 = "DELETE ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
-                }
-                else
-                {
-                    return false;
-                }
+                    var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                    var sql2 = "SELECT * FROM ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
+                    var result1 = factory.SearchQuery<ParLevel3Level2Level1>(sql1).ToList();
+                    var result2 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2).ToList();
+                    if (result1?.Count() > 0 || result2?.Count() > 0)
+                    {
+                        if (result1?.Count() > 0)
+                            sql1 = "DELETE ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                        if (result2?.Count() > 0)
+                            sql2 = "DELETE ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
-                var r1 = db.Database.ExecuteSqlCommand(sql1);
-                var r2 = db.Database.ExecuteSqlCommand(sql2);
+                    var r1 = db.Database.ExecuteSqlCommand(sql1);
+                    var r2 = db.Database.ExecuteSqlCommand(sql2);
+                }
             }
 
             return true;
