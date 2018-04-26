@@ -1042,6 +1042,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conclued action plan..
+        /// </summary>
+        internal static string conclued_plan_action {
+            get {
+                return ResourceManager.GetString("conclued_plan_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config.
         /// </summary>
         internal static string config {
@@ -1056,15 +1065,6 @@ namespace Resources {
         internal static string config_global {
             get {
                 return ResourceManager.GetString("config_global", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Conclued action plan..
-        /// </summary>
-        internal static string conclued_plan_action {
-            get {
-                return ResourceManager.GetString("conclued_plan_action", resourceCulture);
             }
         }
         
@@ -3112,6 +3112,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Functions.
+        /// </summary>
+        internal static string level1Group {
+            get {
+                return ResourceManager.GetString("level1Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 % Non-conformities.
         /// </summary>
         internal static string level1Non_Conformities {
@@ -3945,6 +3954,15 @@ namespace Resources {
         internal static string negative_value {
             get {
                 return ResourceManager.GetString("negative_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New - Binary Input Type.
+        /// </summary>
+        internal static string new_binary_input_type {
+            get {
+                return ResourceManager.GetString("new_binary_input_type", resourceCulture);
             }
         }
         
@@ -6663,6 +6681,15 @@ namespace Resources {
         internal static string type_of_pavement {
             get {
                 return ResourceManager.GetString("type_of_pavement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typification Check.
+        /// </summary>
+        internal static string typification_check {
+            get {
+                return ResourceManager.GetString("typification_check", resourceCulture);
             }
         }
         
