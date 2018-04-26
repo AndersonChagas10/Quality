@@ -22,7 +22,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.module X @Resources.Resource.clusters</span>
+                    <span>@Resources.Resource.create</span>
                 </li>
             </ul>
         </div>
@@ -40,7 +40,7 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm())
+                                @using (Html.BeginForm("Create", "ParClusterXModules", FormMethod.Post, new { @onsubmit = "tirarMascara()" }))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -66,7 +66,8 @@
                                             @Html.LabelFor(model => model.Points, Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @{decimal points = Model?.Points ?? 0;}
-                                                @Html.TextBox("Points", points, new { htmlAttributes = new { @class = "form-control number_decimal"} })
+                                                @Html.TextBox("_Points", points, new { htmlAttributes = new { @class = "form-control number_decimal"} })
+                                                @Html.HiddenFor(model => model.Points)
                                                 @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -111,17 +112,33 @@
 
 
 @section Scripts {
-
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
     <script>
-       
+
+
         $(document).ready(function () {
-            $("#Points").val('');
+            $("input[name=_Points]").inputmask('decimal', {
+                radixPoint: ",",
+                groupSeparator: ".",
+                autoGroup: false,
+                digits: 2,
+                digitsOptional: false,
+                placeholder: '0',
+                rightAlign: false,
+                onBeforeMask: function (value, opts) {
+                    return value;
+                },
+            });
+
 
             setTimeout(function () {
                 $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
             }, 100);
         });
 
-       
+        function tirarMascara() {
+            $("#Points").val($("input[name=_Points]").val().replace(".","")); 
+        };
+
     </script>
 }
