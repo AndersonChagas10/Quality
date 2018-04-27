@@ -187,7 +187,7 @@ namespace SgqSystem.Controllers.Api
                 isQueryEdit = true;
                 GetDataToEdit();
 
-                if (string.IsNullOrEmpty(Value))
+                if (string.IsNullOrEmpty(Value) || Value.Substring(0,1) == "x")
                 {
                     using (var databaseSgq = new SgqDbDevEntities())
                     {

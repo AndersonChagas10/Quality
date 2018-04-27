@@ -40,7 +40,7 @@
                         url: url + "/" + elementValue,
                     }).
                     then(function (r) {
-                        $scope.level2 = r.data;
+                       // $scope.level2 = r.data;
                         $scope.level3 = [];
                         $scope[elementChainedName] = r.data;
                     });
