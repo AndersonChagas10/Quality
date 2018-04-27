@@ -211,7 +211,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             #region Indicadores com Acao Concluída: Sim ou Não
 
-            if (form.createActionPlane == 1) 
+            if (form.createActionPlane == 1)
             {
                 SQLcentro += @"";
                 SQLcentro += @"";
@@ -300,7 +300,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
-            
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 retorno = factory.SearchQuery<RelatorioResultadosPeriodo>(script).ToList();
@@ -323,7 +323,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -360,7 +360,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 Wnivelcritico += " AND ParCriticalLevel_Id  IN (" + form.criticalLevelId + ") ";
             }
-            
+
             // Função
 
             if (form.groupParLevel1IdArr.Length > 0)
@@ -487,7 +487,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             ";
                 #endregion
             }
-            
+
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -511,7 +511,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -724,7 +724,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -901,7 +901,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -1083,7 +1083,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -1254,7 +1254,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
         }
-         
+
         [HttpPost]
         [Route("GetGraficoHistoricoModal")]
         public List<RetornoGenerico> GetGraficoHistoricoModal([FromBody] FormularioParaRelatorioViewModel form)
@@ -1264,16 +1264,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.level3Id != 0)
             {
-                query = getQueryHistoricoTarefa(form, true,3); // 0: Listagem / 1: Evolutivo 
+                query = getQueryHistoricoTarefa(form, true, 3); // 0: Listagem / 1: Evolutivo 
 
             }
             else if (form.level2Id != 0)
             {
-                query = getQueryHistoricoMonitoramento(form, true,2); // 0: Listagem / 1: Evolutivo 
+                query = getQueryHistoricoMonitoramento(form, true, 2); // 0: Listagem / 1: Evolutivo 
             }
             else
             {
-                query = getQueryHistorioIndicador(form, true,1); // 0: Listagem / 1: Evolutivo 
+                query = getQueryHistorioIndicador(form, true, 1); // 0: Listagem / 1: Evolutivo 
             }
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -2353,7 +2353,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = "";
 
-            query = getQueryHistorioGeral(form,true,5);
+            query = getQueryHistorioGeral(form, true, 5);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -2371,7 +2371,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = "";
 
-            query = getQueryHistorioGeral(form,true,4);
+            query = getQueryHistorioGeral(form, true, 4);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -2382,11 +2382,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno2;
         }
 
-        private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form, bool? tipoVisao = false,int? nivel=1) // || tipoVisao => 0: Listagem / 1: Evolutivo  || nivel =>  1: indicador / 2: Monitoramento / 3: Tarefa / 4: Unidade / 5: JBS 
+        private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form, bool? tipoVisao = false, int? nivel = 1) // || tipoVisao => 0: Listagem / 1: Evolutivo  || nivel =>  1: indicador / 2: Monitoramento / 3: Tarefa / 4: Unidade / 5: JBS 
         {
 
             #region Filtros
-            
+
             var titulo = "Histórico da Tarefa";
 
             var Wmodulo = "";
@@ -2394,7 +2394,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -2585,7 +2585,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -2769,7 +2769,7 @@ ORDER BY 3
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -2865,12 +2865,12 @@ ORDER BY 3
             #endregion
 
 
-            if (tipoVisao==false) // 0: Listagem / 1: Evolutivo 
+            if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
                 #region ScriptLista
                 script += @"
 
-            "+ SQLcentro + @"
+            " + SQLcentro + @"
 
             SELECT 
             	Indicador AS level1Id
@@ -2947,7 +2947,7 @@ ORDER BY 3
             var Wregional = "";
             var Wnivelcritico = "";
             var Wfuncao = "";
-            
+
 
             // Módulo
 
@@ -3113,7 +3113,8 @@ ORDER BY 3
 
         [HttpPost]
         [Route("listaResultados")]
-        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form) {
+        public List<RetornoGenerico> listaResultados([FromBody] FormularioParaRelatorioViewModel form)
+        {
 
 
 
@@ -3121,15 +3122,15 @@ ORDER BY 3
 
             if (form.level3Id != 0)
             {
-                query = getQueryHistoricoTarefa(form,false,3);
+                query = getQueryHistoricoTarefa(form, false, 3);
             }
             else if (form.level2Id != 0)
             {
-                query = getQueryHistoricoMonitoramento(form,false,2);
+                query = getQueryHistoricoMonitoramento(form, false, 2);
             }
             else
             {
-                query = getQueryHistorioIndicador(form,false,1);
+                query = getQueryHistorioIndicador(form, false, 1);
             }
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -3139,7 +3140,7 @@ ORDER BY 3
 
             //if(retornaSomenteAv == true)
             //{
-                //retorno3 = retorno3.Where(r => r.av > 0).ToList();
+            //retorno3 = retorno3.Where(r => r.av > 0).ToList();
             //}
 
             //GetMockListaResultados();
@@ -3165,7 +3166,7 @@ ORDER BY 3
             {
                 query = getQueryHistorioIndicador(form, false, 1);
             }
-            
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 retorno4 = factory.SearchQuery<RetornoGenerico>(query).ToList();
@@ -3503,7 +3504,8 @@ ORDER BY 3
                 }
             }
             // Monitoramento
-            if (nivel == 2 || nivel == 3) {
+            if (nivel == 2 || nivel == 3)
+            {
                 if (form.level2IdArr.Length > 0 && form.level2IdArr[0] != 0)
                 {
                     Wmonitoramento = " AND CL2.ParLevel2_id IN (" + string.Join(",", form.level2IdArr) + ")";
@@ -3587,41 +3589,48 @@ ORDER BY 3
             
             	-- DROP TABLE #AMOSTRA4
             
-            	SELECT
-            		UNIDADE
-            	   ,INDICADOR
-            	   ,DATA
-            	   ,COUNT(1) AM
-            	   ,SUM(DEF_AM) DEF_AM
-            	INTO #AMOSTRA4
-            	FROM (SELECT
-            			CAST(C2.CollectionDate AS DATE) AS DATA
-            		   ,C.Id AS UNIDADE
-            		   ,C2.ParLevel1_Id AS INDICADOR
-            		   ,C2.EvaluationNumber AS AV
-            		   ,C2.Sample AS AM
-            		   ,CASE
-            				WHEN SUM(C2.WeiDefects) = 0 THEN 0
-            				ELSE 1
-            			END DEF_AM
-            		FROM CollectionLevel2 C2 (NOLOCK)
-            		INNER JOIN ParLevel1 L1 (NOLOCK)
-            			ON L1.Id = C2.ParLevel1_Id AND ISNULL(L1.ShowScorecard, 1) = 1
-                        AND L1.Id <> 43
-            		INNER JOIN ParCompany C (NOLOCK)
-            			ON C.Id = C2.UnitId
-            		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATEINI AND @DATEFIM
-            		AND C2.NotEvaluatedIs = 0
-            		AND C2.Duplicated = 0
-            		AND L1.ParConsolidationType_Id = 4
-            		GROUP BY C.Id
-            				,ParLevel1_Id
-            				,EvaluationNumber
-            				,Sample
-            				,CAST(CollectionDate AS DATE)) TAB
-            	GROUP BY UNIDADE
-            			,INDICADOR
-            			,DATA
+	SELECT
+		UNIDADE
+	   ,INDICADOR
+       ,[SHIFT]
+       ,[PERIOD]
+       ,DATA
+	   ,COUNT(1) AM
+	   ,SUM(DEF_AM) DEF_AM
+INTO #AMOSTRA4
+FROM (SELECT
+			CAST(C2.CollectionDate AS DATE) AS DATA
+		   ,C.Id AS UNIDADE
+		   ,C2.ParLevel1_Id AS INDICADOR
+           ,C2.[SHIFT]
+           ,C2.[PERIOD]
+		   ,C2.EvaluationNumber AS AV
+		   ,C2.Sample AS AM
+		   ,CASE
+				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+				ELSE 1
+			END DEF_AM
+		FROM CollectionLevel2 C2 (NOLOCK)
+		INNER JOIN ParLevel1 L1 (NOLOCK)
+			ON L1.Id = C2.ParLevel1_Id
+		INNER JOIN ParCompany C (NOLOCK)
+			ON C.Id = C2.UnitId
+		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+		AND C2.NotEvaluatedIs = 0
+		AND C2.Duplicated = 0
+		AND L1.ParConsolidationType_Id = 4
+		GROUP BY C.Id
+				,ParLevel1_Id
+                ,C2.[SHIFT]
+                ,C2.[PERIOD]
+				,EvaluationNumber
+				,Sample
+				,CAST(CollectionDate AS DATE)) TAB
+	GROUP BY UNIDADE
+			,INDICADOR
+            ,DATA
+            ,[SHIFT]
+            ,[PERIOD]
             
             -- NA
             -- DROP TABLE #NA
@@ -3648,6 +3657,8 @@ ORDER BY 3
             	CL1.ConsolidationDate,
             	CL1.UnitId,
             	CL1.ParLevel1_Id,
+            	CL1.[Shift],
+            	CL1.[Period],
             	CL1.DefectsResult,
             	CL1.WeiDefects,
             	CL1.EvaluatedResult,
@@ -3702,7 +3713,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.WeiEvaluation)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.WeiEvaluation)
@@ -3716,7 +3730,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(c1.WeiDefects)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(c1.TotalLevel3WithDefects)
@@ -3737,7 +3754,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.EvaluateTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.EvaluateTotal)
@@ -3751,7 +3771,10 @@ ORDER BY 3
             																WHERE 1=1 
             																  AND C1.Unitid = A4.UNIDADE 
             																  AND C1.ParLevel1_id = A4.INDICADOR 
-            																  AND C1.ConsolidationDate = A4.DATA)
+            																  AND C1.[SHIFT] = A4.[SHIFT]
+            																  AND C1.[PERIOD] = A4.[PERIOD]
+            																  AND C1.ConsolidationDate = A4.DATA
+                                                                             )
             															,0)
             				WHEN L1.ParConsolidationType_Id = 5 THEN SUM(C1.DefectsTotal)
             				WHEN L1.ParConsolidationType_Id = 6 THEN SUM(C1.TotalLevel3WithDefects)
@@ -3858,12 +3881,14 @@ ORDER BY 3
             	,L1.ParConsolidationType_Id	
             	,L1.hashKey
             	,C1.ParLevel1_Id 	
+            	,C1.[Shift] 	
+            	,C1.[Period] 	
             	,L1.Name 	
             	,L1C.ParCriticalLevel_Id	
             	,CRL.Name
             	,L1.IsRuleConformity
             
-                update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
+                UPDATE #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta))
 
             	-- DROP TABLE #DIM
             
@@ -4283,11 +4308,11 @@ ORDER BY 3
             }
 
             else if (nivel == 3)
-            { 
+            {
 
                 #region Consolidação Por Indicador, Monitoramento e Tarefa
 
-            Query = @"
+                Query = @"
             
         DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
         DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
@@ -4625,7 +4650,7 @@ ORDER BY 3
         
             ";
 
-            #endregion
+                #endregion
 
             }
 
@@ -4637,7 +4662,8 @@ ORDER BY 3
         {
             var whereStatusQuery = "";
 
-            if(whereStatus == 1){
+            if (whereStatus == 1)
+            {
                 whereStatusQuery = " AND WHERESTATUS.PC < WHERESTATUS.Meta ";
             }
             if (whereStatus == 2)
