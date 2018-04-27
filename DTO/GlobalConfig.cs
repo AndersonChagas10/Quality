@@ -27,8 +27,21 @@ namespace DTO
         public string MailSmtp { get; set; }
         public bool MockEmail { get; set; }
     }
+    public class Mandala
+    {
+        public int ParLevel1_id { get; set; }
+        public string ParLevel1_name { get; set; }
+        public int ParCompany_id { get; set; }
+        public string ParCompany_Name { get; set; }
+        public string Coletado { get; set; }
+        public string Cor { get; set; }
+        public string Avaliacoes_Planejadas { get; set; }
+        public string Avaliacoes_Realizadas { get; set; }
+        public string Amostras_Planejadas { get; set; }
+        public string Amostras_Realizadas { get; set; }
+    }
 
-    public class HtmlDoTablet
+        public class HtmlDoTablet
     {
         public string Html { get; set; }
         public DateTime? DataInicio { get; set; }
@@ -71,7 +84,9 @@ namespace DTO
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
         public static bool MockOn { get; set; }
-
+        public static List<Mandala> MandalaUnidade { get; set; }
+        public static List<Mandala> MandalaIndicador { get; set; }
+        public static List<Mandala> MandalaMonitoramento { get; set; }
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
