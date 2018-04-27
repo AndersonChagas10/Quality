@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -423,6 +424,7 @@
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
+    <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />
@@ -1678,6 +1680,7 @@
     <Content Include="Views\ParModuleXModules\Edit.cshtml" />
     <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
+    <Content Include="Views\Shared\_Mandala.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

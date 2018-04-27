@@ -589,11 +589,11 @@
                 return _event_;
         }
 
-        function GetUsuarioId() {
-            return $.grep(getCookie('webControlCookie'), function (a, b) {
-                return a.indexOf('userId') != -1;
-            })[0].split('=')[1];
-        }
+        //function GetUsuarioId() {
+        //    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        //        return a.indexOf('userId') != -1;
+        //    })[0].split('=')[1];
+        //}
 
         function GetUrlFTA(){
             return @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA))
@@ -639,19 +639,19 @@
             }
 
             //Função para paleativo de numerico e decimal permitindo apenas . ao inves de ,
-            $('.number_decimal').keypress(function(event) {
+            $('.number_decimal').keypress(function (event) {
                 var $this = $(this);
                 // this next line...
                 if ((event.which != 44 || $this.val().indexOf(',') != -1) &&
-                   ((event.which < 48 || event.which > 57) &&
-                   (event.which != 0 && event.which != 8))) {
+                    ((event.which < 48 || event.which > 57) &&
+                        (event.which != 0 && event.which != 8))) {
                     event.preventDefault();
                 }
 
-                var text = $(this).val().replace('.',',');
+                var text = $(this).val().replace('.', ',');
                 // this next line...
                 if ((event.which == 44) && (text.indexOf(',') == -1)) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         if ($this.val().substring($this.val().indexOf(',')).length > 3) {
                             $this.val($this.val().substring(0, $this.val().indexOf(',') + 3));
                         }
@@ -665,128 +665,17 @@
                     event.preventDefault();
                 }
 
-                $(this).val(text.replace(',','.'));
+                $(this).val(text.replace(',', '.'));
             });
 
             $('.number_decimal').keypress();
         });
     </script>
 
-    <script src="~/Scripts/PluginGRT/mandalaGRT.js"></script>
 
-    <script>
-        function MostrarEmpresa() {
-            enviar['auditorId'] = GetUsuarioId();
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("MostrarEmpresaMandala", "api/Mandala")',
-                dataType: 'json', 
-                data: enviar,
-                success: function (result) {     
-                    mandalaGRT.Inicializar({
-                        idElemento: "mandala",
-                        listaDeDados: result,
-                        margemDoCentro: 80,
-                        tamanhoDoElemento: 10,
-                        posicaoNaTela: 'left bottom',
-                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                        atributosElemento: 'data-unidade="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}"',
-                        elementoDeCentro: ""
-                    });
-                    $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
-                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                        $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
-                        $('#mandalaModal').modal('show');
-                    }, function () {
-                        $('#mandalaModal').modal('hide');
-                    });
 
-                    $('#' + mandalaGRT.idElemento + ' a').on('click', function () {
-                        var empresa = $(this).attr('data-unidade');
-                        MostrarIndicador(empresa);
-                    });             
-                }
-            });                  
-        }
-        function MostrarIndicador(empresa) {
-            enviar['unitName'] = empresa;
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("MostrarIndicadorMandala", "api/Mandala")',
-                dataType: 'json',
-                data: enviar,
-                success: function (result) {     
-                    mandalaGRT.Inicializar({
-                        idElemento: "mandala",
-                        listaDeDados: result,
-                        margemDoCentro: 80,
-                        tamanhoDoElemento: 10,
-                        posicaoNaTela: 'left bottom',
-                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                        atributosElemento: 'data-indicador="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
-                        elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
-                    });
 
-                    $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador') + " - " + $(this).attr('data-processo'));
-                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                        $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
-                        $('#mandalaModal').modal('show');
-                    }, function () {
-                        $('#mandalaModal').modal('hide');
-                    });
-
-                    $('#' + mandalaGRT.idElemento + ' a').on('click', function () {
-                        var processo = $(this).attr('data-processo');
-                        MostrarMonitoramento(processo, empresa);
-                    });
-
-                    $('#mandalaVoltar').on('click', function () {
-                        MostrarEmpresa();
-                    });            
-                }
-            });
-           
-        }
-        function MostrarMonitoramento(processo, empresa) {
-            enviar['level1Name'] = processo;
-            debugger
-               $.ajax({
-                type: "POST",
-                url: '@Url.Action("MostrarMonitoramentoMandala", "api/Mandala")',
-                dataType: 'json', 
-                data: enviar,
-                success: function (result) {     
-                    mandalaGRT.Inicializar({
-                        idElemento: "mandala",
-                        listaDeDados: result,
-                        margemDoCentro: 80,
-                        tamanhoDoElemento: 10,
-                        posicaoNaTela: 'left bottom',
-                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                        atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
-                        elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
-                    });
-
-                    $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + $(this).attr('data-processo'));
-                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                        $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
-                        $('#mandalaModal').modal('show');
-                    }, function () {
-                        $('#mandalaModal').modal('hide');
-                    });
-
-                    $('#mandalaVoltar').on('click', function () {
-                        MostrarIndicador(empresa);
-                    });          
-                }
-            }); 
-        }
-
-        MostrarEmpresa ();
-    </script>
+    <!--tirei o script do mandala daquie-->
 
     <div id="mandalaModal" class="modal" role="dialog" style="z-index:9999998">
         <div class="modal-dialog">
@@ -800,13 +689,14 @@
                 <div class="modal-body">
                 </div>
             </div>
-
         </div>
     </div>
     <script type="text/javascript" src="~/Scripts/PluginGRT/c3.min.js"></script>
     <script type="text/javascript" src="~/Scripts/PluginGRT/d3.min.js"></script>
     <script type="text/javascript" src="~/Scripts/PluginGRT/pivot.js"></script>
     <script type="text/javascript" src="~/Scripts/PluginGRT/c3_renderers.js"></script>
+
+    @Html.Partial("_Mandala")
 
 </body>
 </html>
