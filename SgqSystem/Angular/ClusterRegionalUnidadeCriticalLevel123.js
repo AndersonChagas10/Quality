@@ -90,10 +90,14 @@
 
                 // Desabilita Nivel Critico se processo não selecionado
                 if ($('#clusterId').val().length > 0) {
-                    $('#criticalLevelId').prop("disabled", false);
+                    $('#criticalLevelId').attr('disabled', false);
                 } else {
-                    $('#criticalLevelId').prop("disabled", true);
-                    $('#criticalLevelId').text("");
+                    $('#criticalLevelId').attr('disabled', true);
+                    $scope.criticalLevelValue = null;
+
+                    setTimeout(function () {
+                        $('#criticalLevelId').trigger('change')
+                    }, 1);
                 }
 
                 if ($scope.clusterValue) {
@@ -145,10 +149,13 @@
                             if (!$scope.structureValue) {
                                 $scope.unit = UnitList;
                             }
+
                         });
 
                     $scope.criticalLevel = [];
                 }
+
+                //AtribuiCriticalLevel();
             }
 
             $scope.GetListUnitVinculadoStructure = function () {
@@ -380,4 +387,23 @@ function AtribuiLevel2() {
     setTimeout(function () {
         enviar['level2Id'] = document.getElementById('level2Idv').value;
     }, 1);
+}
+
+function AtribuiCriticalLevel() {
+    // Desabilita Nivel Critico se processo não selecionado
+    if ($('#clusterId').val().length > 0) {
+        $('#criticalLevelId').attr('disabled', false);
+    } else {
+        //$('#criticalLevelId').prop("value", '').trigger('change');
+        $('#criticalLevelId').attr('disabled', true);
+        $scope.criticalLevelValue = null;
+            //$('#criticalLevelId').attr('value', '');
+
+        setTimeout(function () {
+
+            $('#criticalLevelId').trigger('change')
+
+
+        }, 200);
+    }
 }
