@@ -329,7 +329,7 @@ namespace SgqSystem.Controllers
  "\n     																																																																						                                           " +
  "\n      																																																																					                                               " +
  "\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
- "\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
+ "\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "  23:59:59'                                                                                                                                                                                                                    					                                               " +
 
 @"            SELECT 
 
