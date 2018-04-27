@@ -2508,6 +2508,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,'" + titulo + $@"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
+               ,1 IsTarefa
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -2543,6 +2544,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             SELECT 
                '" + titulo + $@"' AS ChartTitle
+               ,1 IsTarefa
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 			   ,max(UnidadeName)UnidadeName
@@ -2698,6 +2700,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,UnidadeName AS UnidadeName
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+               ,1 IsMonitoramento
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
 		       ,sum(ISNULL(AV,0)) AS AV
@@ -2731,6 +2734,7 @@ ORDER BY 7
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+               ,1 IsMonitoramento
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
 			   ,max(MonitoramentoName) level2Name
@@ -2878,6 +2882,7 @@ ORDER BY 3
                ,'" + titulo + $@"' AS ChartTitle
 		       ,Unidade	AS UnidadeId			
 		       ,UnidadeName AS UnidadeName
+               ,1 IsIndicador
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -2911,6 +2916,7 @@ ORDER BY 3
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
                ,ConsolidationDate as [date]
+               ,1 IsIndicador
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
@@ -4997,6 +5003,9 @@ FROM (SELECT
                 }
             }
         }
+        public bool IsIndicador { get; set; }
+        public bool IsMonitoramento { get; set; }
+        public bool IsTarefa { get; set; }
     }
 
     //public class RetornoSugestao
