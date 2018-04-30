@@ -142,7 +142,7 @@ namespace Dominio.Services
                                 }
                             }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     { }
                     #endregion
                 }

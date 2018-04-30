@@ -11,7 +11,7 @@ namespace Dominio
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class ParClusterXModule
     {
         public int Id { get; set; }

@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-
 @section Styles {
 
     <style>
@@ -169,6 +168,10 @@
         /*#body {
             overflow: auto;
         }*/
+
+        .dataTables_scroll table {
+            width:100% !important;
+        }
     </style>
 
     <style>
@@ -387,28 +390,16 @@
         }
     </style>
 
-    <script>
-        /**/
-        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
-        /**/
-        /**/
-        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
-        /**/
-        /**/
-        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
-        /**/
-        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
-
-    </script>
-
 }
-
-@*<h2>Plano de Ação</h2>*@
 
 <div class="container-fluid">
     <div class="row" style="width:100% !important">
         <div class="col-md-12" style="margin-left:10px;">
-            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
+            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal" disabled> Novo Planejamento Estratégico</button>
+
+            <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','Tático', 'Estratégico')" id="btnModalNovoTatico" data-toggle="modal"> Novo Tático</button>
+
+            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','Ação', 'Tático')" id="btnModalNovaAcao" data-toggle="modal"> Nova Ação</button>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">Visão Geral dos Projetos Gerencia</button>
 
@@ -743,9 +734,20 @@
     </div>
 
     <div class="clearfix"></div>
+
     <!--FIM LINHA 2-->
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" onclick="tableAcaoRedrown()" data-toggle="collapse" data-target="#divPlanejamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">Tabela de Ações</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+
     <!--LINHA 3-->
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcao">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
             <div class="defaultGroupTitle">
                 <span class="defaultTitle">Gerenciador de Tarefas</span>
@@ -855,7 +857,90 @@
     </div>
     <div class="clearfix"></div>
     <!--FIM LINHA 3-->
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" onclick="tablePlanejamentoRedrown()" data-toggle="collapse" data-target="#divPlanejamento" aria-expanded="false" style="display:block;cursor:pointer">Tabela de Projetos</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <!--LINHA 4-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamento">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Gerenciador de Tarefas</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">Todas os Planejamentos para filtrar</span>
+            </div>
 
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="TablePlanejamento" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--FIM LINHA 4-->
 </div>
 
 <div class="container">
@@ -895,7 +980,7 @@
                     <h4 class="modal-title">Alterar planejamento</h4>
                 </div>
                 <div class="modal-body">
-                    <table id="tablePessego"></table>
+                    <table id="tablePessego" class="table table-striped"></table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -944,21 +1029,22 @@
                                         <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">Salvar Edição</button>
                                         <button type="button" class="btn btn-default hide" id="btnCancelarNovo">Cancelar</button>
                                     </div>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-7">
-                <table id="tableNovo" class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="col-sm-7">
+                    <table id="tableNovo" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -968,8 +1054,6 @@
     </div>
 </div>
 
-
-
 <div class="minmaxCon"></div>
 
 <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
@@ -977,6 +1061,7 @@
 @section Scripts {
 
     <script type="text/javascript">
+
         $('.container').each(function (i, o) {
             $(o).removeClass('container').addClass('container-fluid');
         });
@@ -989,6 +1074,7 @@
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/i18n/pt-BR.js"></script>
     <script src="~/Scripts/home2.js"></script>
+    <script src="~/Scripts/DataTablePlanejamento.js"></script>
 
     <script>
         //Graficos Instancia
@@ -1227,6 +1313,10 @@
             $('#campo1Filtro').css('width', '200px');
             $('#valor1Filtro').css('width', '200px');
 
+            if (IsAdmin) {
+                $('#NovoPlanejamento').prop("disabled", false);
+            }
+
         });
 
         var selectPredecessor;
@@ -1243,6 +1333,19 @@
         /**/
         var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
         /**/
+        /**/
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
+        var urlGetPlanejamentoRange = '@Url.Action("GetPlanejamentoRange", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
+        /**/
+        /**/
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
+        /**/
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+
+        var IsAdmin = getRole("Admin").length > 0;
 
         var counter = 0;
         var planejamentoCorrentId = 0;
@@ -1390,6 +1493,7 @@
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').append(r);
                         $('#NovaAcao').show();
+
                     });
                 } else {
                     $('#modalLindo').find('.modal-body').empty();
@@ -1402,6 +1506,7 @@
 
             $('#Fechar').show();
             $('#Salvar').show();
+
             /*Fim Botões*/
 
         }
@@ -1440,7 +1545,7 @@
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-                    $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                    //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
@@ -1569,7 +1674,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
                         if (model != undefined) {
 
                             //$('#Id').val(model.Id);
@@ -1602,7 +1707,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
-                        $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
                         DdlChangeEstrategico();
                     }
@@ -1611,6 +1716,7 @@
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                    //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
@@ -1631,6 +1737,8 @@
                     $(this).maskMoney('mask', $(this).val());
                 });
 
+                $('#UnidadeDeMedida_Id').trigger('change');
+
             });
             /*Botões*/
 
@@ -1644,8 +1752,13 @@
 
         function DdlChangeEstrategico(v1, v2, v3, edit) {
 
-            var change1 = v1 != undefined ? v1 : null;
-            var change2 = v2 != undefined ? v2 : null;
+            var change1 = v1 != undefined ? v1 : "";
+            var change2 = v2 != undefined ? v2 : "";
+
+            change1 = change1 == 0 ? "" : change1;
+            change2 = change2 == 0 ? "" : change2;
+
+            v3 = v3 == 0 ? "" : v3;
 
             let Dimensao_Id = $('#Dimensao_Id')
             let Objetivo_Id = $('#Objetivo_Id')
@@ -1663,9 +1776,9 @@
                     })
                 }
                 else {
-                    $('#Objetivo_Id').val(null).attr('disabled', true);
+                    $('#Objetivo_Id').val("").change().attr('disabled', true);
                     $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
-                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
                     $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
@@ -1681,7 +1794,7 @@
                     });
                 }
                 else {
-                    $('#IndicadoresDiretriz_Id').val(null).attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
                     $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
                 }
             });
@@ -1724,7 +1837,8 @@
 
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
 
-                            $('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                            //$('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                            $('#ObjetivoGerencial_Id').addClass('tatico');
 
                             try {
                                 $('#modalLindo span.select2').prev('select').select2('destroy');
@@ -1736,6 +1850,7 @@
 
                         });
                     });
+
                     $('#IndicadoresDeProjeto_Id').change();
 
                 });
@@ -1812,6 +1927,11 @@
                     header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
                     header.find("select:visible").select2();
                     $('.UnidadeMedida').change();
+
+                    $('[name="TipoIndicador"]').each(function () {
+                        $(this).select2();
+                    });
+
                 }, 1);
 
                 myfunction();
@@ -1848,7 +1968,11 @@
 
                 $(inputQuantoCusta).maskMoney('destroy');
                 //$(inputQuantoCusta).get(0).type = 'number';
-                $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+
+                if (valor != "" && valor != NaN)
+                    $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+                else
+                    $(inputQuantoCusta).val(valor);
 
                 $(inputQuantoCusta).on("keypress", function (event) {
 
@@ -1886,16 +2010,39 @@
                 $(inputValorPara).maskMoney(config);
                 $(inputValorPara).maskMoney('mask');
 
-            } else {
+                $(inputValorDe).prop("disabled", false);
+                $(inputValorPara).prop("disabled", false);
+
+            } else if (unidadeMedida == "" || unidadeMedida == null || unidadeMedida == undefined || unidadeMedida == NaN) {
+
+                $(inputValorDe).maskMoney('destroy');
+                $(inputValorPara).maskMoney('destroy');
+
+
+                $(inputValorDe).val("").prop("disabled", true);
+                $(inputValorPara).val("").prop("disabled", true);
+            }
+            else
+            {
 
                 $(inputValorDe).maskMoney('destroy');
                 //$(inputValorDe).get(0).type = 'number';
-                $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+
+                if (valorDe != "" && valorDe != NaN)
+                    $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorDe).val(valorDe);
+
 
                 $(inputValorPara).maskMoney('destroy');
                 //$(inputValorPara).get(0).type = 'number';
-                $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+                if (valorPara != "" && valorPara != NaN)
+                    $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorPara).val(valorPara);
 
+                $(inputValorDe).prop("disabled", false);
+                $(inputValorPara).prop("disabled", false);
 
                 $(inputValorDe).on("keypress", function (event) {
 
@@ -1903,10 +2050,14 @@
 
                         var $this = $(this);
 
-                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
-                            ((event.which < 48 || event.which > 57) &&
-                                (event.which != 0 && event.which != 8))) {
-                            event.preventDefault();
+                        if (event.which == 46 || event.which == 44) {//Caso for ponto ou virgula
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {//se já existir um ponto ou uma virgula
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {//se não for numero
+                                event.preventDefault();
+                            }
                         }
                     }
                 });
@@ -1917,10 +2068,14 @@
 
                         var $this = $(this);
 
-                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
-                            ((event.which < 48 || event.which > 57) &&
-                                (event.which != 0 && event.which != 8))) {
-                            event.preventDefault();
+                        if (event.which == 46 || event.which == 44) {
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {
+                                event.preventDefault();
+                            }
                         }
                     }
                 });
@@ -2172,6 +2327,19 @@
 
             var sendObj = $(o).serializeObject();
 
+            if (sendObj != undefined) {
+                if (sendObj.TipoIndicador == 1) {
+
+                    sendObj.Level1Id = 0;
+                    sendObj.Level2Id = 0;
+                    sendObj.Level3Id = 0;
+
+                } else if (sendObj.TipoIndicador == 2) {
+
+                    sendObj.Pa_IndicadorSgqAcao_Id = 0;
+                }
+            }
+
             if (isEdit == undefined && sendObj != undefined) {
                 sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
@@ -2197,6 +2365,7 @@
             $tr.find('#remove').show();
             $tr.find('#adicionar').hide();
             $tr.after($clone);
+
         }
 
         //Verificando
@@ -2224,9 +2393,10 @@
             SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
 
             var label = $(btn).parents('tr').find('label').html();
+            $('#modalNovo > div > div.modal-footer').hide();
             $('#modalNovo').modal();
             $('#novoHeader').html("Gerenciar: " + label);
-            $('#nomeItemNovo').html(label)
+            $('#nomeItemNovo').html(label);
 
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
@@ -2257,7 +2427,10 @@
                     if (r.IsActive) {
                         $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
                         $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
+                        $(tempInput).select2('destroy');
                         $(tempInput).val(r.Id).trigger('change');
+                        $(tempInput).select2();
+
                     } else {
                         $(tempInput).find('option:first').prop('selected', true);
                         $(tempInput).find("option[value= " + r.Id + "]").remove();
@@ -2365,7 +2538,6 @@
             })
         };
 
-
         function SetaValoresModal(id, item, isActive) {
 
             $('#btnCancelarNovo').click();
@@ -2380,6 +2552,7 @@
             }
 
         }
+
         function isPositiveInteger(n) {
             return n == "0" || ((n | 0) > 0 && n % 1 == 0);
         }
@@ -2403,6 +2576,7 @@
                 form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
                 form.attr('id', 'formEditTatico');
 
                 form.find('button').each(function (o, c) {
@@ -2416,8 +2590,10 @@
                 });
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Tático</button><hr>");
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+                if (model.Acao && model.Acao.Id > 0)
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vínculo Tático</button>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+
                 myfunction();
 
             } else {
@@ -2428,7 +2604,7 @@
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
                 form.find('table > tbody > tr:nth-child(3)').hide();
-                form.find('table > tbody > tr:nth-child(10)').hide();
+                //form.find('table > tbody > tr:nth-child(10)').hide();
                 form.find('table > tbody > tr:nth-child(11)').hide();
                 form.find('table > tbody > tr:nth-child(12)').hide();
                 form.find('table > tbody > tr:nth-child(13)').hide();
@@ -2448,14 +2624,23 @@
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
                         //console.log(before)
-                        let after = `Novo(this, 'formEditTatico #${before}`
+                        let after = `Novo(this, 'formEditEstrategy #${before}`
                         $(c).attr('onclick', after)
                     }
                 })
 
-                $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning' id='Salvar' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Estratégico</button><hr>");
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+
+                if (IsAdmin) {
+                    $('#modalLindo').find('.modal-body .content1').append(form);
+                }
+
+                if (model.Tatico_Id > 0)
+                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>Alterar Vínculo Estratégico</button>");
+
+                if (IsAdmin) {
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"isClickedEstrategico=true;isClickedTaticoVinculado=false;SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                }
+
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
                 //}
@@ -2489,7 +2674,7 @@
 
                 //Colocar o retorno no modal
                 formReset();
-                getAcompanhamento(obj.Acao_Id);
+                //getAcompanhamento(obj.Acao_Id);
                 $('#btnTop').click();
                 openMessageModal('Registro salvo com sucesso!', '');
 
@@ -2520,7 +2705,7 @@
 
                 $("#SaveAcompanhamento").on("click", function (event) {
                     var obj = $("#acompanhamento").serializeObject();
-                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
+                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined || obj.MailTo == undefined || !(obj.Status_Id > 0))
                         alert("Os campos devem ser preenchidos")
                     else
                         SalvarAcompanhamento(obj);
@@ -2539,7 +2724,7 @@
 
                         getPlanEstrat(data, a, b);
 
-                    } else if (data.Acao.Id > 0) {
+                    } else if (data.Acao && data.Acao.Id > 0) {
 
                         getAcao(data, a, b);
                     }
@@ -2547,6 +2732,7 @@
                     $('#modalLindo').find('.modal-footer button').hide();
                     $('#Header').html("Editar");
                     $('#modalLindo').modal();
+                    $('#Fechar').show();
                 });
 
                 setTimeout(function () {
@@ -2576,9 +2762,10 @@
             counter--;
         });
 
-
         $(function () {
             GetDataTable();
+
+            //GetDataTablePlanejamento();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
                 if (selectPredecessor != undefined) {
@@ -2611,8 +2798,10 @@
         function getPlanOp(data, a, b) {
 
             $.get(urlEditPlanOp, { id: data.Id }, function (r) {
+
                 TesteRenan(r, 'Estrategico', data);
                 $('#modalNovo > div > div > div.modal-footer > button').show();
+
                 if (data.Estrategico_Id > 0) {
                     getPlanEstrat(data, a, b);
                 }
@@ -2628,36 +2817,72 @@
                 //DDLs ENCADEADAS da PARTIAL VIEW
                 changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
 
-                $('#formEditTatico #Iniciativa_Id').off('change').on('change', function () {
-                    var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
-                    manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+                changeIniciativa();
 
-                    $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').off('change').on('change', function () {
+                changeIndicadoresProjetos();
 
-                            var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
-                            manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
-
-                            $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-
-                                $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
-
-                                $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
-                            });
-                        });
-                        $('#formEditTatico #IndicadoresDeProjeto_Id').change();
-                    });
-                });
                 //HideForOperacional();
 
                 $('.UnidadeDeMedidaTatico').change();
 
-                if (data.Acao.Id > 0) {
+                if (data.Acao && data.Acao.Id > 0) {
                     getAcao(data, a, b);
                 }
-            }
-            );
+
+            });
+        }
+
+        function changeIniciativa() {
+
+            $('#formEditTatico').on('change','#Iniciativa_Id', function () {
+
+                var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+
+                manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                //if (Iniciativa_Id <= 0) {
+                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", true);
+                //} else {
+                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", false);
+                //}
+
+                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+
+                    //changeIndicadoresProjetos();
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').select2();
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+                });
+            });
+        }
+
+        function changeIndicadoresProjetos() {
+
+            $('#formEditTatico').on('change', '#IndicadoresDeProjeto_Id' , function () {
+
+                var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+
+                manageButton(Objetivo_Id, 'formEditTatico #ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                //if (Objetivo_Id <= 0) {
+                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
+                //} else {
+                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
+                //}
+
+                $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
+
+                    //$('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+                    $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').select2();
+                });
+            });
         }
 
         function getAcao(data, a, b) {
@@ -2682,6 +2907,8 @@
                     $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
                     $('.content3 select').select2();
                     $('.UnidadeMedida').change();
+
+                    InitDatePiker();
                 }, 1);
 
                 $(r).attr("id", "formEditAcao");
@@ -2689,9 +2916,9 @@
                 MoneyMask();
                 myfunction();
 
-                $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
+                $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                 $('#obj').show(); //Apagar depois
-                InitDatePiker();
+
                 $('#CausaGenerica_Id').change();
                 $('#modalNovo > div > div > div.modal-footer > button').show();
 
@@ -2704,12 +2931,15 @@
                 $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
                 $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
 
+                $('#Fechar').show();
             });
         }
 
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
-            debugger
+
+            Chaveamento = [];
+            ChaveamentoObjetivo = [];
 
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
@@ -2721,6 +2951,8 @@
 
             if (TipoGrafico == "Gerencia") {
 
+                processarChaveamento();
+
                 Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
 
                 Data = [];
@@ -2731,13 +2963,16 @@
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
                     }).length;
 
-                    let qtdDeGerencia = $.grep(dados, function (r) {
+                    let listaGerencia = $.grep(dados, function (r) {
                         return r.Gerencia == c;
-                    }).length;
+                    })
+
+                    let qtdDeGerencia = listaGerencia.length;
 
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
-                    Data.push(porcConcluidos);
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorGerencia', {
@@ -2798,23 +3033,28 @@
 
             } else {
 
-                Categories = Object.values(MapeiaValorParaHC(dados, "IndicadoresDiretriz").filter(onlyUnique));
+                processarChaveamentoObjetivo();
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "Objetivo").filter(onlyUnique));
 
                 Data = [];
 
                 Categories.forEach(function (c, o) {
 
                     let qtdConcluido = $.grep(dados, function (r) {
-                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.IndicadoresDiretriz == c);
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Objetivo == c);
                     }).length;
 
-                    let qtdDeDiretriz = $.grep(dados, function (r) {
-                        return r.IndicadoresDiretriz == c;
-                    }).length;
+                    let listaObjetivo = $.grep(dados, function (r) {
+                        return r.Objetivo == c;
+                    });
 
-                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeDiretriz) * 100
+                    let qtdDeObjetivo = listaObjetivo.length;
 
-                    Data.push(porcConcluidos);
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
+
+                    let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorDiretriz', {
@@ -2851,8 +3091,8 @@
                             point: {
                                 events: {
                                     click: function () {
-                                        filterDados("IndicadoresDiretriz", this.category, getTablesModal);
-                                        getGraficoPorProjetos("IndicadoresDiretriz", this.category, true);
+                                        filterDados("Objetivo", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Objetivo", this.category, true);
                                     }
                                 }
                             },
@@ -2958,21 +3198,21 @@
 
             var arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            var valor = o['Acao'].ContramedidaEspecifica;
+                var valor = o['Acao'].ContramedidaEspecifica;
 
-            if (o['Acao'].Status == 5) {
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    return "Não possui Ação Específica";
+                if (o['Acao'].Status == 5) {
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor =  "Não possui Ação Específica";
+                    }
                 }
-            }
 
-        });
+            });
 
             Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
-            AcoesEspecificas.push([i]);
-        });
+                AcoesEspecificas.push([i]);
+            });
 
             let TituloAcoesEspecificas = [{ title: "Ação Específica" }]
 
@@ -2983,25 +3223,24 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            if (o['Acao'].Status == 1) {
+                if (o['Acao'].Status == 1) {
 
-                dataFim = new Date(o['Acao'].QuandoFim);
-                dataHoje = new Date();
+                    dataFim = new Date(o['Acao'].QuandoFim);
+                    dataHoje = new Date();
 
-                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
+                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "Não possui Ação Específica";
 
-                return { 0: o['Acao'].ContramedidaEspecifica, 1: String(diffDays) + " Dias" };
-
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    valor = { 0: "Não possui Ação Específica", 1: "" };
+                    return { 0:  valor, 1: String(diffDays - 1) + " Dias" };
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
-            }
 
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3015,23 +3254,23 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            dataInicio = new Date(o['Acao'].QuandoInicio);
-            dataHoje = new Date();
+                dataInicio = new Date(o['Acao'].QuandoInicio);
+                dataHoje = new Date();
 
-            if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
+                if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
 
-                var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
 
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    return { 0: "Não possui Ação Específica", 1: "" };
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
-            }
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3045,20 +3284,20 @@
 
             arrayRetorno = $.map(dadosfilter, function (o, c) {
 
-            if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+                if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
 
-                let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+                    let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
 
-                var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
 
-                return valor;
-            } else {
-                if (o['Acao'].Id == 0) {
-                    return { 0: "Não possui Ação Específica", 1: "" };
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor =  { 0: "Não possui Ação Específica", 1: "" };
+                    }
                 }
-            }
 
-        });
+            });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
@@ -3075,16 +3314,19 @@
 
             if (isFilter) {
 
-            dadosInternos = $.grep(dados, function (r) {
+                dadosInternos = $.grep(dados, function (r) {
 
-                return r[prop] == value ;
+                    return r[prop] == value ;
 
-            });
-        }
+                });
+            }
 
             Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
 
             Data = [];
+
+            processarChaveamentoObjetivo();
+            processarChaveamento();
 
             let dados2 = dados;
 
@@ -3101,73 +3343,81 @@
 
             Categories.forEach(function (c, o) {
 
-            let qtdConcluido = $.grep(dados2, function (r) {
-                return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
-            }).length;
+                let qtdConcluido = $.grep(dados2, function (r) {
+                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+                }).length;
 
-            let qtdDeGerencia = $.grep(dados2, function (r) {
-                return r.Iniciativa == c;
-            }).length;
+                let listaGerencia = $.grep(dados2, function (r) {
+                    return r.Iniciativa == c;
+                });
 
-            let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+                let qtdDeGerencia = listaGerencia.length;
 
-            Data.push(porcConcluidos);
-        });
+                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+                if (TipoGrafico == "Gerencia") {
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
+                }else{
+                    let objetivo = retornaChaveamentoPorObjetivo(listaGerencia[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
+                }
+            });
 
             Highcharts.chart('graficoPorProjetos', {
 
-            title: {
-                text: '% CONCLUÍDA - DEMANDAS'
-            },
-            credits: {
-                enabled: false
-            },
-            subtitle: {
-                text: ''
-            },
-            yAxis: {
                 title: {
-                    text: '% de Conclusão'
-                }
-            },
-            xAxis: {
-                categories: Categories,
-            },
-            plotOptions: {
-                column: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.0f} %',
-                        //distance: -10,
-                        style: {
-                            color: 'black',
-                            fontSize: '10px',
+                    text: '% CONCLUÍDA - DEMANDAS'
+                },
+                credits: {
+                    enabled: false
+                },
+                subtitle: {
+                    text: ''
+                },
+                yAxis: {
+                    title: {
+                        text: '% de Conclusão'
+                    }
+                },
+                xAxis: {
+                    categories: Categories,
+                },
+                plotOptions: {
+                    column: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f} %',
+                            //distance: -10,
+                            style: {
+                                color: 'black',
+                                fontSize: '10px',
+                            },
+                            //connectorColor: 'silver'
                         },
-                        //connectorColor: 'silver'
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                console.log(this.category)
+                        point: {
+                            events: {
+                                click: function () {
+                                    console.log(this.category)
 
-                                filterDados("Iniciativa", this.category, getTablesModal)
+                                    filterDados("Iniciativa", this.category, getTablesModal)
+                                }
                             }
-                        }
+                        },
                     },
                 },
-            },
-            tooltip: {
-                pointFormat: '{point.y:.0f} %'
-            },
-            series: [{
-                type: 'column',
-                colorByPoint: true,
-                data: Data,
-                showInLegend: false
-            }]
-        });
+                tooltip: {
+                    pointFormat: '{point.y:.0f} %'
+                },
+                series: [{
+                    type: 'column',
+                    colorByPoint: true,
+                    data: Data,
+                    showInLegend: false
+                }]
+            });
 
-            let PercentualTotal = Math.floor(Data.reduce((a, b) => a + b, 0) / Categories.length);
+            let PercentualTotal = Math.floor(Data.reduce((soma, obj) => soma + obj.y, 0) / Categories.length);
             $('#percentualConclusao').html(PercentualTotal + " %");
 
         }
@@ -3186,17 +3436,138 @@
                     initComplete: function(){
                         $('#tablePessego').off().on('click','button[data-id]',function(){
                             if(confirm("Deseja alterar o vinculo!?")){
-                                debugger
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
                                 //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
                                 $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
                                     //alert("Atualizou o rolê!");
-                                    openMessageModal("Vinculo atualizado!");
+                                    openMessageModal("Vínculo atualizado!");
                                     location.reload();
                                 });
                             }
                         });
+
+                        setTimeout(function (e) {
+                            var oTable = $('#tablePessego').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                            }
+                        }, 1400);
+                    }
+                });
+            });
+        }
+
+        function tableAcaoRedrown() {
+            setTimeout(function () {
+                table.draw();
+            },500);
+        }
+
+        function tablePlanejamentoRedrown() {
+            setTimeout(function () {
+                tablePlanejamento.draw();
+            },500);
+        }
+
+        function AbreModalDePlanejamento(id){
+            Clicked(true, false, true);
+            $.get(urlGetPlanejamento, { id: id }, function (r) {
+                ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
+            });
+        }
+
+        function AbreModalDeAcao(id){
+            Clicked(true, true);
+
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty();
+            $('#Header').html("Planejamento Operacional");
+
+            $.get(PlanejamentoDetalhes, { id: id }, function (r) {
+                $('#NovaAcao').show();
+                $('#NovaAcao').click();
+                $('#modalLindo').find('.modal-body').empty().prepend(r);
+            });
+        }
+
+        var Chaveamento = [];
+        var ChaveamentoObjetivo = [];
+
+        function processarChaveamento() {
+            if (Chaveamento.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
+
+                if (existe.length <= 0) {
+                    Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
+                }
+            });
+        }
+
+        function processarChaveamentoObjetivo() {
+            if (ChaveamentoObjetivo.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
+
+                if (existe.length <= 0) {
+                    ChaveamentoObjetivo.push({ color: randomColor(),objetivo_id: obj.Objetivo_Id});
+                }
+            });
+        }
+
+        function retornaChaveamentoPorGerenciaId(gerencia_id) {
+            return $.grep(Chaveamento, function (o, i) {
+                return o.gerencia_id == gerencia_id;
+            });
+        }
+
+        function retornaChaveamentoPorObjetivo(objetivo_id) {
+            return $.grep(ChaveamentoObjetivo, function (o, i) {
+                return o.objetivo_id == objetivo_id;
+            });
+        }
+
+        function randomColor() {
+            color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
+            return color;
+        }
+        var tableModalNovoApartirDe={};
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Criar "+NomeDoQueSeraCriado+" apartir de "+NomeApartirDeQueSeraCriado);
+            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">Criar '+NomeDoQueSeraCriado+'</button>';
+                }});
+                tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    buttons: {buttons: []},
+                    initComplete: function(){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {
+                            if ($(this).attr('data-tipo') == 'tatico') {
+                                AbreModalDePlanejamento($(this).attr('data-id'));
+                            } else if ($(this).attr('data-tipo') == 'acao') {
+                                planejamentoCorrentId = $(this).attr('data-id');
+                                AbreModalDeAcao(planejamentoCorrentId);
+                            }
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+
+                        setTimeout(function (e) {
+                            tableModalNovoApartirDe.draw();
+                        }, 500);
                     }
                 });
             });
@@ -3205,3 +3576,22 @@
     </script>
 
 }
+
+<!-- Modal -->
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

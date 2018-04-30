@@ -1,0 +1,174 @@
+﻿@model SgqSystem.Controllers.Recravacao.ParRecravacao_TipoLataDTO
+
+@{
+    ViewBag.Title = "Recravação: Novo Tipo de Lata";
+    var imagePath = "";
+    if (Request["photoChoice"] != null)
+    {
+        imagePath = @"images\" + Request["photoChoice"];
+    }
+}
+
+<div class="container page-content-wrapper">
+    <div class="page-content" style="min-height: 600px;">
+        <br />
+        <h1 class="page-title">
+            Recravação
+            <small>Novo Tipo de Lata</small>
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@ViewBag.urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span> Recravação: Novo Tipo de Lata </span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+
+            </div>
+        </div>
+
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal col-sm-6 col-sx-6 col-md-10">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(r => r.Id)
+                @Html.HiddenFor(r => r.AddDate)
+                @Html.HiddenFor(r => r.AlterDate)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NumberOfPoints, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NumberOfPoints, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NumberOfPoints, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div id="package">
+
+                    <div class="form-group imagem" id="imagem" style="display:none;">
+                        <label class="control-label col-md-2"></label>
+                        <div class="col-md-10">
+                            <img id="blah" alt="" width="100" height="100" />
+                            <input type="file" name="files" onchange="caramba(this)">
+                        </div>
+                    </div>
+
+                    @for (int i = 1; i <= Model.NumberOfPoints; i++)
+                    {
+                        if (Model.ParLataImagensList.Any(r=>r.PontoIndex == i))
+                        {
+                            var modelIndex = Model.ParLataImagensList.FirstOrDefault(r => r.PontoIndex == i);
+                            <div class="form-group imagem" id="imagem" style="">
+                                <label class="control-label col-md-2">Ponto @modelIndex.PontoIndex</label>
+                                <div class="col-md-10">
+                                    <img id="blah" alt="" width="100" height="100" src="~/Imagens/@modelIndex.FileName"/>
+                                    <input type="file" name="files" value="" onchange="caramba(this)" />
+                                    <input type="checkbox" name="RemoverImagemDoPonto" /> <label>Remover</label>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group imagem" id="imagem" style="">
+                                <label class="control-label col-md-2">Ponto @i</label>
+                                <div class="col-md-10">
+                                    <img id="blah" alt="" width="100" height="100" />
+                                    <input type="file" name="files" onchange="caramba(this)">
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                @*@foreach (var img in Model.ParLataImagensList)
+                {
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Ponto X</label>
+                        <div class="col-md-10">
+                            <img id="blah" alt="your image" width="100" height="100" />
+                            <img src="~/Imagens/@img.FileName" alt="Sample Image" width="300px" />
+                            <input type="file" name="files" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    </div>
+                }*@
+
+
+                <div class="form-group">
+                    @Html.Label("Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IsActive@*, new { htmlAttributes = new { @class = "form-control" } }*@)
+                        @*@Html.ValidationMessageFor(model => model.NumberOfPoints, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Salvar" class="btn btn-default" />
+                        &nbsp;
+                        @Html.ActionLink("Cancelar", "Index")
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        navbarSelect("navbar7");
+        $('#NumberOfPoints').off('change').on('change', function () {
+            $('#package').find('div:visible').remove()
+            let quantidade = parseInt($(this).val()) + 1
+            multiplyNode(document.querySelector('#imagem'), quantidade, true)
+        })
+
+        $('form').addClass('container')
+
+
+    });
+
+    function caramba(item ) {
+        $(item).parent().find('#blah').attr('src', window.URL.createObjectURL(item.files[0]))
+    }
+
+    function multiplyNode(node, count, deep) {
+        for (var i = 0, copy; i < count - 1; i++) {
+            copy = node.cloneNode(deep);
+            node.parentNode.insertBefore(copy, node);
+            $(copy).show()
+            $(copy).find('label').text('Ponto ' + (i + 1))
+        }
+    }
+
+
+</script>

@@ -153,6 +153,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var cookie = new CookieHeaderValue("webControlCookie", values);
             cookie.MaxAge = TimeSpan.FromMinutes(Conn.sessionTimer);
+            cookie.Expires = DateTime.Now.AddMinutes(Conn.sessionTimer);
             cookie.Path = "/";
 
             return cookie;

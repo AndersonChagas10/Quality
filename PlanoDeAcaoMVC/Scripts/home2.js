@@ -1,6 +1,4 @@
-﻿
-
-//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+﻿//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
@@ -12,6 +10,7 @@ var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy 
 var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
 var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
 var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
+var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
 var dados = [];
 var dadosfilter = [];
 var dadosPie2 = [];
@@ -92,6 +91,7 @@ function GetDataTable(campo, filtro) {
 
                 //Monta a tabela
                 MountDataTable(json);
+                //MountDataTablePlanejamento(json);
 
             });
         }
@@ -115,6 +115,8 @@ function objectToArr(myObj) {
 }
 
 function MountDataTable(json) {
+
+    GetDataTablePlanejamento(Object.assign([], json));
 
     if (ColvisarrayVisaoAtual_show.length != 0) {
         setArrayColvisAtual();
@@ -181,7 +183,11 @@ function MountDataTable(json) {
                     var html = "";
 
                     if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
-                        html += "<br>" + btnEditarPlanejamento
+                        if (!IsAdmin && !parseInt(data.Tatico_Id) && !parseInt(data.Tatico_Id) > 0) {
+                            html += "<br>" + btnEditarPlanejamentoDisabled;
+                        } else {
+                            html += "<br>" + btnEditarPlanejamento;
+                        }                      
                     }
 
                     if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
@@ -196,8 +202,6 @@ function MountDataTable(json) {
                     return html;
                 }
             }
-
-
         ],
         'aoColumnDefs': [
             { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
@@ -520,7 +524,11 @@ function MountDataTable(json) {
             .column($(this).data('index'))
             .search(this.value)
             .draw();
+
+        GetFiltrosDeColunas();
     });
+
+    SetFiltrosDeColunas();
 
     table.draw();
 
@@ -533,8 +541,6 @@ function MountDataTable(json) {
         }, 5);
     }
 
-
-
     //deixa escondido o botão que mantem as colunas atuais
     $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
@@ -545,11 +551,31 @@ function MountDataTable(json) {
 
     }
 
-
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(2)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(3)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(4)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(4)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(5)', function () {
+        tableDraw();
+    });
+    
 }
 
-$('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
     var data = table.row($(this).parents('tr')).data();
     //console.log(data);
 
@@ -565,7 +591,7 @@ $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
 
 });
 
-$('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
     var data = table.row($(this).parents('tr')).data();
     //console.log(data);
     planejamentoCorrentId = data.Tatico_Id;
@@ -577,15 +603,17 @@ $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
 
     $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
 
-        $('#modalLindo').find('.modal-body').empty().append(r);
         $('#NovaAcao').show();
         $('#NovaAcao').click();
+        $('#modalLindo').find('.modal-body').empty().prepend(r);
+
+        InitDatePiker();
 
     });
 
 });
 
-$('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
     selecionado = data;
@@ -597,8 +625,7 @@ $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
 });
 
-
-$('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
     //var data = selecionado
 
@@ -629,8 +656,14 @@ $('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
     $('#modalLindo').find('.modal-footer button').hide();
     $('#Header').html("Editar");
     $('#modalLindo').modal();
-
+    $('#Fechar').show();
 });
+
+function tableDraw() {
+    setTimeout(function () {
+        table.draw();
+    }, 50);
+}
 
 /**
  *
@@ -1537,7 +1570,7 @@ function pintaStatus(seriesFilter, serieArrFinal) {
 
 //GLOBAL
 var enviar = {};
-var start = moment().add('month', -1);
+var start = moment();
 var end = moment();
 
 //DatePicker Config / Instance
@@ -2454,6 +2487,8 @@ $('#btnTop').click(function () {
     getDateRange($("input[name='daterange']").val());
 
     GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+
+    //GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 })
 
 $('#btnFiltroPie2').click(function () {
@@ -2470,8 +2505,6 @@ $('#btnFiltroPie2').click(function () {
     geraData2(dadosPie2);
     $('#spanPie2').html($('#campo1FiltroPie2 option:selected').text());
 })
-
-
 
 //Celso
 $('#btnpanel5').off('click').on('click', function () {
@@ -2571,8 +2604,37 @@ function SaveUserColVis() {
         } else {
             openMessageModal("Erro ao salvar!");
         }
-    })
+    });
+}
 
+var filtrosDeColunas = [];
+
+function GetFiltrosDeColunas() {
+
+    filtrosDeColunas = [];
+
+    $('#example_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input[type="text"]').each(function (a) {
+        if ($(this).val() != "") {
+            filtrosDeColunas.push({ Key: $(this).parent().text(), Val: $(this).val() });
+        }      
+    });
+}
+
+function SetFiltrosDeColunas() {
+
+    if (filtrosDeColunas.length > 0 ) {
+
+        filtrosDeColunas.forEach(function (o,c) {
+
+            $('#example_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input').each(function (a) {
+
+                if ($(this).parent().text() == o.Key) {
+                    $(this).val(o.Val);
+                    table.column(a).search(o.Val).draw();
+                }
+            });    
+        });
+    }
 }
 
 

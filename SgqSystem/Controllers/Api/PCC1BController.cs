@@ -45,8 +45,6 @@ namespace SgqSystem.Controllers.Api
         public _PCC1B Next(_Receive receive)
         {
 
-            string connectionString = "SgqDbDevEntities";
-
             ParCompany company;
             var retorno = new _PCC1B();
             retorno.Side = 1;

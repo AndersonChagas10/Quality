@@ -267,7 +267,7 @@ namespace SgqSystem.Services
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
         }
 
-        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0, string othersTags = null)
+        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, string accordeonId = "", string othersTags = null)
         {
             string collapseIn = " in";
             if (aberto == false)
@@ -287,7 +287,7 @@ namespace SgqSystem.Services
             }
 
             string accordeonIdTag = null;
-            if (accordeonId > 0)
+            if (accordeonId.Length > 0)
             {
                 accordeonIdTag = " id=\"" + accordeonId + "\"";
             }
@@ -343,6 +343,7 @@ namespace SgqSystem.Services
 
             return binario;
         }
+
         public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
 
         {
@@ -366,7 +367,37 @@ namespace SgqSystem.Services
                                  "     </span>                                                                                                                                                                " +
                                  "</div>   ";
 
+            //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+            //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
+            //                     "</div> ";
+            return intervalo;
+        }
 
+        public string campoIntervaloTexto(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+                                 "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
+
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue2 naoValidarInput\" style=\"width:100%;\" placeholder=\"" + Resources.Resource.notes + "\">  " +
+
+                                 "         <button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                                                                 " +
+                                 "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
+                                 "             </button></span><input type=\"text\" value=\"\" class=\"form-control text-center levelValue interval\">     " +
+                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                    " +
+                                 "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
+                                 "         </button>                                                                                                                                                          " +
+                                 "     </span>                                                                                                                                                                " +
+                                 "</div>   ";
 
             //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
             //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
@@ -388,6 +419,68 @@ namespace SgqSystem.Services
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "    <span class=\"input-group-btn btn-minus\"> </span>             " +
                                  "         <input type=\"text\" class=\"form-control text-center levelValue texto naoValidarInput\" style=\"width:100%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoTextoBinario(string id, string classe = null)
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "    <span class=\"input-group-btn btn-minus\"> </span>             " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoTextoMinutos_(string id, string classe = null)
+        {
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "         <input type=\"time\" class=\"form-control text-center levelValue antes naoValidarInput\" style=\"width:50%;\">     " +
+                                 "         <input type=\"time\" class=\"form-control text-center levelValue depois naoValidarInput\" style=\"width:50%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoTextoMinutos(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+                                 "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
+                                  "         <input type=\"time\" class=\"form-control text-center levelValue antes inputMinutes\" style=\"width:50%;\">     " +
+                                 "         <input type=\"time\" class=\"form-control text-center levelValue depois inputMinutes\" style=\"width:50%;\">     " +
+                                 "     </span>                                                                                                                                                                " +
+                                 "</div>   ";
+
+            //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+            //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
+            //                     "</div> ";
+            return intervalo;
+        }
+
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null)
+        {
+            var idRandomico = "valor_range_"+new Random().Next(999999);
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "         <input type=\"range\" oninput=\"document.getElementById('" + idRandomico + "').innerHTML = this.value;\" min=\"" + Convert.ToInt32(min) + "\" max=\"" + Convert.ToInt32(max) + "\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:80%;\">     " +
+                                 "         <span id=\""+ idRandomico + "\" style=\"display: block; float:right; width: 20%; text-align:center;\"></span>     " +
                                  "</div>                                                    ";
             return texto;
         }
@@ -438,19 +531,31 @@ namespace SgqSystem.Services
                                  "</div>                                                                                                                                                                      ";
             return calculado;
         }
+
+        public string campoIntervaloMinuto(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+        {
+
+            string calculado = "<div class=\"input-group input-group-sm width180 pull-right " + classe + "\" style=\"width: 100% !important;\">   " +
+                                 "    <input type=\"text\" style=\"width:25px; padding: 0px;\" value=\"\" class=\"form-control text-center input01 \">     " +
+                                 " <span style=\"padding-left:2px;padding-right:2px; font-size:10px\"><b>x10^</b></span>" +
+                                 "    <input type=\"text\" style=\"width:25px; padding: 0px;\" value=\"\" class=\"form-control text-center input02 \">     " +
+                                 " </span> " +
+                                 "</div> ";
+            return calculado;
+        }
         //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
         //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
 
         public string level2(string id, string label,
                              string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
-                             bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0,
+                             bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
                              bool HasTakePhoto = false)
         {
 
             string tagLevel1Group = null;
-            if (level1Group_Id > 0)
+            if (level1Group_Id.Length > 0)
             {
                 tagLevel1Group = " parlevel1_id_group=\"" + level1Group_Id + "\"";
             }

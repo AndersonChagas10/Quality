@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlanoAcaoCore.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
@@ -8,6 +9,8 @@ namespace PlanoAcaoCore
 {
     public class Pa_Planejamento : Pa_BaseObject
     {
+
+        public bool EmDia { get; set; } = true;
 
         #region Estrategico
 
@@ -184,6 +187,8 @@ namespace PlanoAcaoCore
 
         public bool? IsfiltrarAcao { get; set; }
 
+        public int QtdeAcao { get; set; }
+
         public Pa_Acao Acao { get; set; }
 
         public string _resumo
@@ -340,7 +345,7 @@ FROM (SELECT
 	   ,Pl1.IndicadoresDiretriz_Id
 	   ,Pl2.IndicadoresDeProjeto_Id
 	   ,Pl2.Estrategico_Id
-	   ,Pl2.Responsavel_Diretriz
+	   ,Pl1.Responsavel_Diretriz
 	   ,Pl2.Responsavel_Projeto
 	   ,Pl2.UnidadeDeMedida_Id
 	   ,Pl2.IsTatico
@@ -495,6 +500,7 @@ LEFT JOIN Pa_Dimensao DIME
                     i._DataFim = string.Empty;
 
                 var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
+
                 if (acoesTmp.Count() > 0)
                 {
                     foreach (var k in acoesTmp)
@@ -547,6 +553,11 @@ LEFT JOIN Pa_Dimensao DIME
             var acoes = Pa_Acao.Listar();
             var remover = new List<int>();
 
+            var statusAberto = new int[] { 1, 5, 6 };
+            var statusFechado = new int[] { 3, 4, 7, 8 };
+
+            var dtInit = DTO.Helpers.Guard.ParseDateToSqlV2(dataInit, DTO.Helpers.Guard.CultureCurrent.BR);
+            var dtFim = DTO.Helpers.Guard.ParseDateToSqlV2(dataFim, DTO.Helpers.Guard.CultureCurrent.BR);
 
             foreach (var i in planejamentos)
             {
@@ -558,7 +569,7 @@ LEFT JOIN Pa_Dimensao DIME
                     if (i.ValorPara > 0)
                         i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
                 }
-                //Percentual
+                else//Percentual
                 if (i.UnidadeDeMedida_Id == 2)
                 {
                     if (i.ValorDe > 0)
@@ -592,6 +603,15 @@ LEFT JOIN Pa_Dimensao DIME
                 var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
                 if (acoesTmp.Count() > 0)
                 {
+                    bool existemAcoesAbertas = acoesTmp.Any(a => statusAberto.Contains(a.Status));
+                    i.EmDia =
+                        (!existemAcoesAbertas &&
+                            (i.DataInicio >= dtInit && i.DataInicio <= dtFim)
+                            ||
+                            (i.DataFim <= dtFim && i.DataFim >= dtInit))
+                            ||
+                            existemAcoesAbertas && (i.DataFim <= dtFim || i.DataInicio <= dtFim);
+
                     foreach (var k in acoesTmp)
                     {
                         var planTemp = new Pa_Planejamento();
@@ -646,6 +666,7 @@ LEFT JOIN Pa_Dimensao DIME
                                 break;
                         }
 
+                        k._StatusName = k._StatusName ?? ""; 
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
@@ -658,15 +679,143 @@ LEFT JOIN Pa_Dimensao DIME
                 }
             }
 
+            retorno = retorno.Where(r => 
+                //(statusAberto.Contains(r.Acao.Status) && r.DataFim <= dtFim) //Ações abertas com projetos com data final menor que a selecionada
+                //|| (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit)
+                //|| (statusFechado.Contains(r.Acao.Status) && r.DataFim <= dtFim && r.DataFim >= dtInit) //Ações fechadas com projetos ainda em andamento
+                (r.Acao.Id == 0 //Projetos sem ações
+                || r.EmDia) && r.Acao.Status != (int) Enums.Status.Cancelado //Projetos que não estão em dia
+            ).ToList();
+
+            //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
+
+            return retorno;
+        }
+
+        public static List<Pa_Planejamento> GetPlanejamentoRange(string dataInit, string dataFim)
+        {
+            var retorno = new List<Pa_Planejamento>();
+            var planejamentos = Listar();
+            var acoes = Pa_Acao.Listar();
+            var remover = new List<int>();
+
+            foreach (var i in planejamentos)
+            {
+                //$
+                if (i.UnidadeDeMedida_Id == 1)
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = "R$ " + i.ValorDe.ToString("0.##");
+                    if (i.ValorPara > 0)
+                        i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
+                }
+                else//Percentual
+                if (i.UnidadeDeMedida_Id == 2)
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = i.ValorDe.ToString("0.##") + " %";
+                    if (i.ValorPara > 0)
+                        i._ValorPara = i.ValorPara.ToString("0.##") + " %";
+                }
+                else
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = i.ValorDe.ToString("0.##");
+                    if (i.ValorPara > 0)
+                        i._ValorPara = i.ValorPara.ToString("0.##");
+                }
+
+                if (i.DataInicio.GetValueOrDefault() != DateTime.MinValue)
+                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("yyyy-MM-dd");
+                else
+                    i._DataInicio = string.Empty;
+
+                if (i.DataFim.GetValueOrDefault() != DateTime.MinValue)
+                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("yyyy-MM-dd");
+                else
+                    i._DataFim = string.Empty;
+
+                var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
+
+                i.QtdeAcao = acoesTmp.Count();
+
+                //if (acoesTmp.Count() > 0)
+                //{
+                //    foreach (var k in acoesTmp)
+                //    {
+                //        var planTemp = new Pa_Planejamento();
+                //        foreach (var pt in planTemp.GetType().GetProperties())
+                //            try
+                //            {
+                //                pt.SetValue(planTemp, i.GetType().GetProperty(pt.Name).GetValue(i));
+                //            }
+                //            catch (Exception)
+                //            {
+                //                //throw;
+                //            }
+
+                //        if (k.QuandoInicio != DateTime.MinValue)
+                //            k._QuandoInicio = k.QuandoInicio.ToString("yyyy-MM-dd");
+                //        else
+                //            k._QuandoFim = string.Empty;
+
+                //        if (k.QuandoFim != DateTime.MinValue)
+                //            k._QuandoFim = k.QuandoFim.ToString("yyyy-MM-dd");
+                //        else
+                //            k._QuandoFim = string.Empty;
+
+                //        if (k.UnidadeDeMedida_Id == 1)
+                //        {
+                //            if (k.QuantoCusta > 0)
+                //                k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+                //        }
+                //        else if (k.UnidadeDeMedida_Id == 2)
+                //        {
+                //            if (k.QuantoCusta > 0)
+                //                k._QuantoCusta = k.QuantoCusta.ToString("0.##") + " %";
+                //        }
+                //        else
+                //        {
+                //            if (k.QuantoCusta > 0)
+                //                k._QuantoCusta = k.QuantoCusta.ToString("0.##");
+                //        }
+
+                //        switch (k.TipoIndicador)
+                //        {
+                //            case 1:
+                //                k.TipoIndicadorName = "Diretrizes";
+                //                break;
+                //            case 2:
+                //                k.TipoIndicadorName = "Scorecard";
+                //                break;
+                //            default:
+                //                k.TipoIndicadorName = "";
+                //                break;
+                //        }
+
+                //        planTemp.Acao = k;
+                //        retorno.Add(planTemp);
+                //    }
+                //}
+                //else
+                //{
+                //    i.Acao = new Pa_Acao();
+
+                retorno.Add(i);
+                //}
+            }
+
             var dtInit = DTO.Helpers.Guard.ParseDateToSqlV2(dataInit, DTO.Helpers.Guard.CultureCurrent.BR);
             var dtFim = DTO.Helpers.Guard.ParseDateToSqlV2(dataFim, DTO.Helpers.Guard.CultureCurrent.BR);
 
             var statusAberto = new int[] { 1, 5, 6 };
             var statusFechado = new int[] { 3, 4, 7, 8 };
 
-            retorno = retorno.Where(r => statusAberto.Contains(r.Acao.Status) || (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit) || r.Acao.Id == 0).ToList();
+            //retorno = retorno.Where(r => statusAberto.Contains(r.Acao.Status) || (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit) || r.Acao.Id == 0).ToList();
 
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();
+
+            retorno = retorno.Where(r => r.DataFim <= dtFim && r.DataInicio >= dtInit).ToList();
 
             return retorno;
         }

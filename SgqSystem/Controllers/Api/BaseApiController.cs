@@ -148,12 +148,32 @@ namespace SgqSystem.Controllers.Api
 
 
             var cookie = new CookieHeaderValue("webControlCookie", values);
-            cookie.MaxAge = TimeSpan.FromMinutes(60);
+            cookie.MaxAge = TimeSpan.FromHours(48);
+            cookie.Expires = DateTime.Now.AddHours(48);
             cookie.Path = "/";
 
             return cookie;
         }
 
+        protected object ToDynamic(string value)
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(value, settings);
+        }
+
+        protected string ToJson(object value)
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(value, Newtonsoft.Json.Formatting.Indented, settings);
+        }
         public static string GetWebConfigSettings(string key)
         {
             return System.Configuration.ConfigurationManager.AppSettings[key];

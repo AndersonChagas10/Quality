@@ -6,6 +6,7 @@ using DTO;
 using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using SgqSystem.Controllers.Api.SelectVinculado;
 //using SGQDBContext;
 using SgqSystem.Handlres;
@@ -13,6 +14,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
@@ -301,9 +303,12 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.AddRemoveParHeaderLevel2(parLevel2XHeaderField);
         }
 
-        public class objHeaderField
+        public class ObjHeaderField
         {
             public int Id { get; set; }
+            public int Group_Id { get; set; }
+            public int ParLevel1_Id { get; set; }
+            public string HeaderFieldGroup { get; set; }
         }
 
         /*
@@ -321,8 +326,7 @@ namespace SgqSystem.Controllers.Api.Params
 
         [HttpPost]
         [Route("AddRemoveParHeaderDuplicate")]
-
-        public void AddRemoveParHeaderDuplicate(objHeaderField parHeaderField_id)
+        public void AddRemoveParHeaderDuplicate(ObjHeaderField parHeaderField_id)
         {
 
             ParHeaderField parHeaderField;
@@ -343,18 +347,73 @@ namespace SgqSystem.Controllers.Api.Params
                     if (Lista1[0].retorno == "0")
                     {
                         db.Database.ExecuteSqlCommand("UPDATE ParHeaderField SET duplicate = 1 where id = " + parHeaderField_id.Id.ToString());
-               
+
                     }
                     else
                     {
                         db.Database.ExecuteSqlCommand("UPDATE ParHeaderField SET duplicate = 0 where id = " + parHeaderField_id.Id.ToString());
-                      
+
                     }
                 }
-
             }
+        }
 
+        [HttpPost]
+        [Route("GroupParHeaderField")]
+        public ObjHeaderField GroupParHeaderField(ObjHeaderField objHeaderField)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var parentHeaderFieldGroup = db.ParLevel1XHeaderField.OrderByDescending(r => r.HeaderFieldGroup.Length).FirstOrDefault(r => (r.ParHeaderField_Id == objHeaderField.Group_Id || r.ParHeaderField_Id == objHeaderField.Id) && r.ParLevel1_Id == objHeaderField.ParLevel1_Id);
+                if (!string.IsNullOrEmpty(parentHeaderFieldGroup.HeaderFieldGroup))
+                {
+                    var arrayId = parentHeaderFieldGroup.HeaderFieldGroup.Split('-').Select(m => Convert.ToInt32(m)).Distinct().ToList();
+                    var listParHeaderField = db.ParLevel1XHeaderField.Where(r => arrayId.Contains(r.ParHeaderField_Id) && r.ParLevel1_Id == objHeaderField.ParLevel1_Id).ToList();
 
+                    if (listParHeaderField.Count > 0)
+                    {
+                        arrayId.Add(objHeaderField.Id);
+                        arrayId.Add(objHeaderField.Group_Id);
+                        arrayId = arrayId.Distinct().ToList();
+                        objHeaderField.HeaderFieldGroup = String.Join("-", arrayId);
+                        db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = '{objHeaderField.HeaderFieldGroup}' where id in ({String.Join(",", arrayId)}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
+                        return objHeaderField;
+                    }
+                }
+                else if (objHeaderField.Id > 0 && objHeaderField.Group_Id > 0)
+                {
+                    objHeaderField.HeaderFieldGroup = objHeaderField.Group_Id + "-" + objHeaderField.Id;
+                    db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = '{objHeaderField.HeaderFieldGroup}' where id in ({objHeaderField.Group_Id},{objHeaderField.Id}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
+                    return objHeaderField;
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Route("UnlinkGroupParHeaderField")]
+        public ObjHeaderField UnlinkGroupParHeaderField(ObjHeaderField objHeaderField)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var parentHeaderFieldGroup = db.ParLevel1XHeaderField.OrderByDescending(r => r.HeaderFieldGroup.Length).FirstOrDefault(r => r.ParHeaderField_Id == objHeaderField.Id && r.ParLevel1_Id == objHeaderField.ParLevel1_Id);
+                if (!string.IsNullOrEmpty(parentHeaderFieldGroup.HeaderFieldGroup))
+                {
+                    var arrayId = parentHeaderFieldGroup.HeaderFieldGroup.Split('-').Select(m => Convert.ToInt32(m)).Distinct().ToList();
+                    var listParHeaderField = db.ParLevel1XHeaderField.Where(r => arrayId.Contains(r.ParHeaderField_Id) && r.ParLevel1_Id == objHeaderField.ParLevel1_Id).ToList();
+
+                    if (listParHeaderField.Count > 0)
+                    {
+                        arrayId.Remove(objHeaderField.Id);
+                        arrayId = arrayId.Distinct().ToList();
+                        objHeaderField.HeaderFieldGroup = arrayId.Count > 1 ? String.Join("-", arrayId) : "";
+                        db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = '{objHeaderField.HeaderFieldGroup}' where id in ({String.Join(",", arrayId)}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
+                        db.Database.ExecuteSqlCommand($"UPDATE parlevel1xheaderfield SET HeaderFieldGroup = null where id in ({objHeaderField.Id}) and parlevel1_id = {objHeaderField.ParLevel1_Id}");
+                        return objHeaderField;
+                    }
+                }
+            }
+            return null;
         }
 
         [HttpGet]
@@ -546,8 +605,20 @@ namespace SgqSystem.Controllers.Api.Params
 
             return resourceManager.GetResourceSet(
                 Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-        }       
+        }
 
+        [HttpPost]
+        [Route("GetLevel3PorUnidadeRecravacaoDdl")]
+        public List<ParLevel3Value> GetLevel3PorUnidadeRecravacaoDdl([FromBody] int level3Id)
+        {
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Re‌​ferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                var level3 = db.ParLevel3Value.Include("ParMeasurementUnit").Where(r => r.ParLevel3_Id == level3Id).ToList();
+                return level3;
+            }
+        }
     }
 
     public class ParLevel3Bool

@@ -8,6 +8,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dominio;
+using AutoMapper;
+using DTO.DTO;
+using System.Text.RegularExpressions;
 
 namespace SgqSystem.Controllers
 {
@@ -50,8 +53,11 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ParCluster_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDate")] ParClusterXModule parClusterXModule)
+        public async Task<ActionResult> Create([Bind(Include = "Id,ParCluster_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDate")] ParClusterXModulesDTO parClusterXModuleDTO)
         {
+            ValidModelState(parClusterXModuleDTO);
+
+            ParClusterXModule parClusterXModule = Mapper.Map<ParClusterXModule>(parClusterXModuleDTO);
             if (ModelState.IsValid)
             {
                 parClusterXModule.AddDate = DateTime.Now;
@@ -62,7 +68,7 @@ namespace SgqSystem.Controllers
 
             ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModule.ParCluster_Id);
             ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModule.ParModule_Id);
-            return View(parClusterXModule);
+            return View(parClusterXModuleDTO);
         }
 
         // GET: ParClusterXModules/Edit/5
@@ -77,9 +83,11 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModule.ParCluster_Id);
-            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModule.ParModule_Id);
-            return View(parClusterXModule);
+            ParClusterXModulesDTO parClusterXModuleDTO = Mapper.Map<ParClusterXModulesDTO>(parClusterXModule);
+            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModuleDTO.ParCluster_Id);
+            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModuleDTO.ParModule_Id);
+                     
+            return View(parClusterXModuleDTO);
         }
 
         // POST: ParClusterXModules/Edit/5
@@ -87,8 +95,10 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ParCluster_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDate")] ParClusterXModule parClusterXModule)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ParCluster_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDate")] ParClusterXModulesDTO parClusterXModuleDTO)
         {
+            ValidModelState(parClusterXModuleDTO);
+            ParClusterXModule parClusterXModule = Mapper.Map<ParClusterXModule>(parClusterXModuleDTO);
             if (ModelState.IsValid)
             {
                 parClusterXModule.AlterDate = DateTime.Now;
@@ -96,9 +106,9 @@ namespace SgqSystem.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModule.ParCluster_Id);
-            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModule.ParModule_Id);
-            return View(parClusterXModule);
+            ViewBag.ParCluster_Id = new SelectList(db.ParCluster, "Id", "Name", parClusterXModuleDTO.ParCluster_Id);
+            ViewBag.ParModule_Id = new SelectList(db.ParModule, "Id", "Name", parClusterXModuleDTO.ParModule_Id);
+            return View(parClusterXModuleDTO);
         }
 
         // GET: ParClusterXModules/Delete/5
@@ -134,6 +144,25 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidModelState(ParClusterXModulesDTO parClusterXModule)
+        {
+            //ParClusterXModulesDTO testeDTO = Mapper.Map<ParClusterXModule>(parClusterXModule);
+           
+            ModelState.Clear();
+
+            if (parClusterXModule.EffectiveDate == null || parClusterXModule.EffectiveDate == DateTime.MinValue)
+                ModelState.AddModelError("EffectiveDate", Resources.Resource.required_field + " " + Resources.Resource.effectiveDate);
+
+            if (parClusterXModule.Points <= 0 || parClusterXModule.Points == null)
+                ModelState.AddModelError("Points", Resources.Resource.required_field + " " + Resources.Resource.points);
+
+            if (parClusterXModule.ParCluster_Id <= 0)
+                ModelState.AddModelError("ParCluster_Id", Resources.Resource.required_field + " " + Resources.Resource.cluster);
+
+            if (parClusterXModule.ParModule_Id <= 0)
+                ModelState.AddModelError("ParModule_Id", Resources.Resource.required_field + " " + Resources.Resource.module);
         }
     }
 }

@@ -1,0 +1,24 @@
+--LEO (ParLevel1 e ParCluster na Av e Am Level 2 (motiramento))
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180322_0000_ParLevel1EClusterAvAmLevel2',GetDate())
+
+IF COL_LENGTH('ParEvaluation','ParLevel1_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParEvaluation
+		ADD ParLevel1_Id Int null
+    END
+IF COL_LENGTH('ParSample','ParLevel1_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParSample
+		ADD ParLevel1_Id Int null
+    END
+IF COL_LENGTH('ParEvaluation','ParCluster_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParEvaluation
+		ADD ParCluster_Id Int null
+    END
+IF COL_LENGTH('ParSample','ParCluster_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParSample
+		ADD ParCluster_Id Int null
+    END

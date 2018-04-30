@@ -2079,4 +2079,37 @@
   <data name="new" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Counter Name</value>
+  </data>
+  <data name="conclued_action_plan" xml:space="preserve">
+    <value>Conclued action plan.</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>among others ...</value>
+  </data>
+  <data name="ev_with_weight" xml:space="preserve">
+    <value>Ev With Weight</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc WithWeight</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Back to Departments</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Unit of Measurement Name</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Bigger</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
+  <data name="indicators_by_units" xml:space="preserve">
+    <value>Indicators by Units</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Back to Units of Measurement</value>
+  </data>
 </root>

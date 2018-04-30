@@ -85,11 +85,16 @@ namespace DTO.DTO.Params
         //[Display(Name = "limited_number_of_evaluations", ResourceType = typeof(Resource))]
         public bool IsLimitedEvaluetionNumber { get; set; }
 
+        public bool IsRecravacao { get; set; }
+
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
         public bool ShowScorecard { get; set; } = true;
         
         public bool HasTakePhoto { get; set; } = false;
+
+        public bool ShowInTablet { get; set; } = true;
+
         public bool IsPartialSave { get; set; } = false;
 
         public bool haveRealTimeConsolidation { get; set; }

@@ -1041,44 +1041,7 @@ namespace SgqSystem.Helpers
                              where t.Id == tarefaId
                              select new { FormaAmostragem = t.FormaAmostragem, Frequencia = t.Frequencia }).FirstOrDefault();
 
-                if (dados.FormaAmostragem.Equals("Coletiva"))
-                {
-                    return db.Resultados.AsNoTracking()
-                                .Where(r => r.EmpresaId == 1
-                                && r.UnidadeId == unidadeId
-                                && r.DepartamentoId == departamentoId
-                                && r.OperacaoId == operacaoId
-                                && r.TarefaId == tarefaId
-                                && (numeroAvaliacao == 0 || (numeroAvaliacao != 0 && r.NumeroAvaliacao == numeroAvaliacao))
-                                && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHora) == DbFunctions.TruncateTime(dataConsultar))
-                                || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHora) == SqlFunctions.DatePart("wk", dataConsultar))
-                                || (dados.Frequencia == "Quinzenal" && (r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHora.Day < 16) || (dataConsultar.Day >= 16 && r.DataHora.Day >= 16))))
-                                || (dados.Frequencia == "Mensal" && r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month)))
-                                .GroupBy(r => new { r.EmpresaId, r.UnidadeId, r.DepartamentoId, r.OperacaoId, r.TarefaId })
-                                .Select(rg => rg.Sum(r => r.PecasAvaliadas.HasValue ? r.PecasAvaliadas.Value : 0))
-                                .FirstOrDefault();
-                }
-                else
-                {
-                    return db.Resultados.AsNoTracking()
-                                .Where(r => r.EmpresaId == 1
-                                && r.UnidadeId == unidadeId
-                                && r.DepartamentoId == departamentoId
-                                && r.OperacaoId == operacaoId
-                                && r.TarefaId == tarefaId
-                                && (numeroAvaliacao == 0 || (numeroAvaliacao != 0 && r.NumeroAvaliacao == numeroAvaliacao))
-                                && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHora) == DbFunctions.TruncateTime(dataConsultar))
-                                || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHora) == SqlFunctions.DatePart("wk", dataConsultar))
-                                || (dados.Frequencia == "Quinzenal" && (r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHora.Day < 16) || (dataConsultar.Day >= 16 && r.DataHora.Day >= 16))))
-                                || (dados.Frequencia == "Mensal" && r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month)))
-                                .Select(r => new { NumeroAvaliacao = r.NumeroAvaliacao, NumeroAmostra = r.NumeroAmostra })
-                                .AsEnumerable()
-                                .Select(r => string.Format("{0}-{1}", r.NumeroAvaliacao, r.NumeroAmostra))
-                                .Distinct()
-                                .Count();
-                }
-
-                //return 0;
+                return 0;
             }
         }
 
@@ -1112,46 +1075,8 @@ namespace SgqSystem.Helpers
 
                 var dados = (from t in db.Tarefas.AsNoTracking()
                              where t.Id == tarefaId
-                             select new { FormaAmostragem = t.FormaAmostragem, Frequencia = t.Frequencia }).FirstOrDefault();
-
-                if (dados.FormaAmostragem.Equals("Coletiva"))
-                {
-                    return db.Resultados.AsNoTracking()
-                                .Where(r => r.EmpresaId == 1
-                                && r.UnidadeId == unidadeId
-                                && r.DepartamentoId == departamentoId
-                                && r.OperacaoId == operacaoId
-                                && r.TarefaId == tarefaId
-                                && (numeroAvaliacao == 0 || (numeroAvaliacao != 0 && r.NumeroAvaliacao == numeroAvaliacao))
-                                && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHora) == DbFunctions.TruncateTime(dataConsultar))
-                                || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHora) == SqlFunctions.DatePart("wk", dataConsultar))
-                                || (dados.Frequencia == "Quinzenal" && (r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHora.Day < 16) || (dataConsultar.Day >= 16 && r.DataHora.Day >= 16))))
-                                || (dados.Frequencia == "Mensal" && r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month)))
-                                .GroupBy(r => new { r.EmpresaId, r.UnidadeId, r.DepartamentoId, r.OperacaoId, r.TarefaId })
-                                .Select(rg => rg.Sum(r => r.PecasAvaliadas.HasValue ? r.PecasAvaliadas.Value : 0))
-                                .FirstOrDefault();
-                }
-                else
-                {
-                    return db.Resultados.AsNoTracking()
-                                .Where(r => r.EmpresaId == 1
-                                && r.UnidadeId == unidadeId
-                                && r.DepartamentoId == departamentoId
-                                && r.OperacaoId == operacaoId
-                                && r.TarefaId == tarefaId
-                                && (numeroAvaliacao == 0 || (numeroAvaliacao != 0 && r.NumeroAvaliacao == numeroAvaliacao))
-                                && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHora) == DbFunctions.TruncateTime(dataConsultar))
-                                || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHora) == SqlFunctions.DatePart("wk", dataConsultar))
-                                || (dados.Frequencia == "Quinzenal" && (r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHora.Day < 16) || (dataConsultar.Day >= 16 && r.DataHora.Day >= 16))))
-                                || (dados.Frequencia == "Mensal" && r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month)))
-                                .Select(r => new { NumeroAvaliacao = r.NumeroAvaliacao, NumeroAmostra = r.NumeroAmostra })
-                                .AsEnumerable()
-                                .Select(r => string.Format("{0}-{1}", r.NumeroAvaliacao, r.NumeroAmostra))
-                                .Distinct()
-                                .Count();
-                }
-
-                //return 0;
+                             select new { FormaAmostragem = t.FormaAmostragem, Frequencia = t.Frequencia }).FirstOrDefault();             
+                return 0;
             }
         }
 
@@ -1187,44 +1112,7 @@ namespace SgqSystem.Helpers
                              where t.Id == tarefaId
                              select new { FormaAmostragem = t.FormaAmostragem, Frequencia = t.Frequencia }).FirstOrDefault();
 
-                if (dados.FormaAmostragem.Equals("Coletiva"))
-                {
-                    retorno = db.Resultados.AsNoTracking()
-                                .Where(r => r.EmpresaId == 1
-                                && r.UnidadeId == unidadeId
-                                && r.DepartamentoId == departamentoId
-                                && r.OperacaoId == operacaoId
-                                && r.TarefaId == tarefaId
-                                && (numeroAvaliacao == 0 || (numeroAvaliacao != 0 && r.NumeroAvaliacao == numeroAvaliacao))
-                                && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHoraMonitor.Value) == DbFunctions.TruncateTime(dataConsultar))
-                                || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHoraMonitor.Value) == SqlFunctions.DatePart("wk", dataConsultar))
-                                || (dados.Frequencia == "Quinzenal" && (r.DataHoraMonitor.Value.Year == dataConsultar.Year && r.DataHoraMonitor.Value.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHoraMonitor.Value.Day < 16) || (dataConsultar.Day >= 16 && r.DataHoraMonitor.Value.Day >= 16))))
-                                || (dados.Frequencia == "Mensal" && r.DataHoraMonitor.Value.Year == dataConsultar.Year && r.DataHoraMonitor.Value.Month == dataConsultar.Month)))
-                                .GroupBy(r => new { r.EmpresaId, r.UnidadeId, r.DepartamentoId, r.OperacaoId, r.TarefaId })
-                                .Select(rg => rg.Sum(r => r.PecasAvaliadas.Value))
-                                .FirstOrDefault();
-                }
-                else
-                {
-                    retorno = db.Resultados.AsNoTracking()
-                                .Where(r => r.EmpresaId == 1
-                                && r.UnidadeId == unidadeId
-                                && r.DepartamentoId == departamentoId
-                                && r.OperacaoId == operacaoId
-                                && r.TarefaId == tarefaId
-                                && (numeroAvaliacao == 0 || (numeroAvaliacao != 0 && r.NumeroAvaliacao == numeroAvaliacao))
-                                && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHoraMonitor.Value) == DbFunctions.TruncateTime(dataConsultar))
-                                || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHoraMonitor.Value) == SqlFunctions.DatePart("wk", dataConsultar))
-                                || (dados.Frequencia == "Quinzenal" && (r.DataHoraMonitor.Value.Year == dataConsultar.Year && r.DataHoraMonitor.Value.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHoraMonitor.Value.Day < 16) || (dataConsultar.Day >= 16 && r.DataHoraMonitor.Value.Day >= 16))))
-                                || (dados.Frequencia == "Mensal" && r.DataHoraMonitor.Value.Year == dataConsultar.Year && r.DataHoraMonitor.Value.Month == dataConsultar.Month)))
-                                .Select(r => new { NumeroAvaliacao = r.NumeroAvaliacao, NumeroAmostra = r.NumeroAmostra })
-                                .AsEnumerable()
-                                .Select(r => string.Format("{0}-{1}", r.NumeroAvaliacao, r.NumeroAmostra))
-                                .Distinct()
-                                .Count();
-                }
-
-                return retorno;
+                               return retorno;
             }
         }
 
@@ -1256,7 +1144,7 @@ namespace SgqSystem.Helpers
         {
             using (var db = new SgqDbDevEntities())
             {
-                //int retorno = 0;
+                int retorno = 0;
 
                 if (operacaoId == 27)
                 {
@@ -1271,28 +1159,14 @@ namespace SgqSystem.Helpers
                         return (amostrasRealizadas / maximoAmostras + amostrasRealizadas == maximoAmostras ? 0 : (int)Math.Ceiling((decimal)amostrasRealizadas / (decimal)maximoAmostras)/* + 1*/);
                     }
 
-                    return 0;
+                    return retorno;
                 }
 
                 var dados = (from t in db.Tarefas.AsNoTracking()
                              where t.Id == tarefaId
                              select new { Frequencia = t.Frequencia }).FirstOrDefault();
 
-                return db.Resultados.AsNoTracking()
-                            .Where(r => r.EmpresaId == 1
-                            && r.UnidadeId == unidadeId
-                            && r.DepartamentoId == departamentoId
-                            && r.OperacaoId == operacaoId
-                            && r.TarefaId == tarefaId
-                            && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHora) == DbFunctions.TruncateTime(dataConsultar))
-                            || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHora) == SqlFunctions.DatePart("wk", dataConsultar))
-                            || (dados.Frequencia == "Quinzenal" && (r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHora.Day < 16) || (dataConsultar.Day >= 16 && r.DataHora.Day >= 16))))
-                            || (dados.Frequencia == "Mensal" && r.DataHora.Year == dataConsultar.Year && r.DataHora.Month == dataConsultar.Month)))
-                            .Select(r => r.NumeroAvaliacao)
-                            .DefaultIfEmpty()
-                            .Max();
-
-                //return retorno;
+                return retorno;
             }
         }
 
@@ -1314,20 +1188,6 @@ namespace SgqSystem.Helpers
                 var dados = (from t in db.Tarefas.AsNoTracking()
                              where t.Id == tarefaId
                              select new { Frequencia = t.Frequencia }).FirstOrDefault();
-
-                retorno = db.Resultados.AsNoTracking()
-                            .Where(r => r.EmpresaId == 1
-                            && r.UnidadeId == unidadeId
-                            && r.DepartamentoId == departamentoId
-                            && r.OperacaoId == operacaoId
-                            && r.TarefaId == tarefaId
-                            && ((dados.Frequencia == "Diario" && DbFunctions.TruncateTime(r.DataHoraMonitor.Value) == DbFunctions.TruncateTime(dataConsultar))
-                            || (dados.Frequencia == "Semanal" && r.DataHora.Year == dataConsultar.Year && SqlFunctions.DatePart("wk", r.DataHoraMonitor.Value) == SqlFunctions.DatePart("wk", dataConsultar))
-                            || (dados.Frequencia == "Quinzenal" && (r.DataHoraMonitor.Value.Year == dataConsultar.Year && r.DataHoraMonitor.Value.Month == dataConsultar.Month && ((dataConsultar.Day < 16 && r.DataHoraMonitor.Value.Day < 16) || (dataConsultar.Day >= 16 && r.DataHoraMonitor.Value.Day >= 16))))
-                            || (dados.Frequencia == "Mensal" && r.DataHoraMonitor.Value.Year == dataConsultar.Year && r.DataHoraMonitor.Value.Month == dataConsultar.Month)))
-                            .Select(r => r.NumeroAvaliacao)
-                            .DefaultIfEmpty()
-                            .Max();
 
                 return retorno;
             }
@@ -1705,15 +1565,15 @@ namespace SgqSystem.Helpers
             try
             {
                 var result = 0;
-                using (var db = new SgqDbDevEntities())
-                {
-                    var dataInicio = DateTime.ParseExact(dtInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    var varDatafim = DateTime.ParseExact(dtFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    result = db.Resultados
-                        .AsNoTracking()
-                        .Where(r => DbFunctions.TruncateTime(r.Data) >= DbFunctions.TruncateTime(dataInicio) && DbFunctions.TruncateTime(r.Data) <= DbFunctions.TruncateTime(varDatafim))
-                        .Count();
-                }
+                //using (var db = new SgqDbDevEntities())
+                //{
+                //    var dataInicio = DateTime.ParseExact(dtInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                //    var varDatafim = DateTime.ParseExact(dtFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                //    result = db.Resultados
+                //        .AsNoTracking()
+                //        .Where(r => DbFunctions.TruncateTime(r.Data) >= DbFunctions.TruncateTime(dataInicio) && DbFunctions.TruncateTime(r.Data) <= DbFunctions.TruncateTime(varDatafim))
+                //        .Count();
+                //}
                 if (result > 0)
                 {
                     return RetornoPadraoJson(result, false);

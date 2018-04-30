@@ -12,6 +12,8 @@ namespace PlanoDeAcaoMVC.Controllers
         public Pa_PlanejamentoController()
         {
 
+            Jobs.UpdateStatus();
+
             //select* from Pa_Dimensao
             //select* from[Pa_Objetivo]
             //select* from Pa_IndicadoresDiretriz
