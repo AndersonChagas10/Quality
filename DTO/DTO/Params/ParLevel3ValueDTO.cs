@@ -24,7 +24,8 @@ namespace DTO.DTO.Params
         public string IntervalMinCalculado { get; set; }
         public string IntervalMaxCalculado { get; set; }
 
-
+        public string DynamicValue { get; set; }
+        
         public bool IsActive { get; set; } = true;
 
         //public ParCompanyDTO parCompany { get; set; }

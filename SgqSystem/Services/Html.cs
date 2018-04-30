@@ -445,10 +445,29 @@ namespace SgqSystem.Services
 
         public string campoRangeSlider(string id, decimal min, decimal max, string classe = null)
         {
-            var idRandomico = "valor_range_"+new Random().Next(999999);
+            var idRandomico = "valor_range_" + new Random().Next(999999);
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "         <input type=\"range\" oninput=\"document.getElementById('" + idRandomico + "').innerHTML = this.value;\" min=\"" + Convert.ToInt32(min) + "\" max=\"" + Convert.ToInt32(max) + "\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:80%;\">     " +
-                                 "         <span id=\""+ idRandomico + "\" style=\"display: block; float:right; width: 20%; text-align:center;\"></span>     " +
+                                 "         <span id=\"" + idRandomico + "\" style=\"display: block; float:right; width: 20%; text-align:center;\"></span>     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
+        public string campoResultado(string id, string value, string classe = null)
+        {
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">" +
+                                 "         <input readonly type=\"text\" resultado=\"" + value + "\" class=\"form-control text-center levelValue interval\" style=\"width:100%;\">     " +
+                                 "</div>";
+            return texto;
+        }
+
+
+        public string campoOperador(string id, string classe = null)
+        {
+
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "    <span class=\"input-group-btn btn-minus\"> </span>             " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue Operador naoValidarInput\" style=\"width:100%;\">     " +
                                  "</div>                                                    ";
             return texto;
         }
