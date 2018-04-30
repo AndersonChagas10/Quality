@@ -307,27 +307,27 @@
                                             <tbody>
 
                                                 @if (GlobalConfig.Brasil)
-                                                {
-                                                    <tr class="row">
+    {
+                                            <tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
-                                                        <td style="padding:5px;">
-                                                            Equipamento
-                                                        </td>
-                                                        <td style="padding:5px;">
-                                                            @Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })
-                                                    </td>
+                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
+                                                <td style="padding:5px;">
+                                                    Equipamento
+                                                </td>
+                                                <td style="padding:5px;">
+                                                    @Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                                <tr class="row">
+                                            <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
-                                                    <td style="padding:5px;">
-                                                        Câmara
-                                                    </td>
-                                                    <td style="padding:5px;">
-                                                        @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
+                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
+                                                <td style="padding:5px;">
+                                                    Câmara
+                                                </td>
+                                                <td style="padding:5px;">
+                                                    @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
                                                 </td>
 
                                             </tr>
@@ -350,6 +350,17 @@
                                                 <td style="padding:5px;"> Detector de Metais</td>
                                                 <td style="padding:5px;">
                                                     @Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })
+                                                </td>
+
+
+                                            </tr>
+
+                                            <tr class="row">
+
+                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetor" value="integracaoSetorValor"></td>
+                                                <td style="padding:5px;"> Setor</td>
+                                                <td style="padding:5px;">
+                                                    @Html.DropDownList("integracaoSetorList", Model.paramsDdl.DdlSetor, new { @class = "form-control input-sm equipamentos" })
                                                 </td>
 
 
@@ -381,7 +392,7 @@
                                                 <td style="padding:5px;"></td>
 
                                             </tr>
-                                                }
+}
 
                                                 <tr class="row">
 
@@ -546,6 +557,9 @@
                                                                                 break;
                                                                             case ("Detector de Metais|"):
                                                                                 tipo = "Detector de Metais";
+                                                                                break;
+                                                                            case ("Setor|"):
+                                                                                tipo = "Setor";
                                                                                 break;
                                                                             case ("familiaProduto"):
                                                                                 tipo = "Família de Produtos";
@@ -1589,6 +1603,9 @@ else
                 case "integracaoRaioXValor":
                     description = $('#integracaoRaioXList').val();
                     break;
+                case "integracaoSetorValor":
+                    description = $('#integracaoSetorList').val();
+                    break;
                 case "integracaoProduto":
                     description = "Produto";
                     break;
@@ -1639,6 +1656,9 @@ else
                     break;
                 case "integracaoRaioXValor":
                     tipo = "Detector de Metais";
+                    break;
+                case "integracaoSetorValor":
+                    tipo = "Setor";
                     break;
                 case "integracaoFamiliaProduto":
                     tipo = "Família de Produtos";

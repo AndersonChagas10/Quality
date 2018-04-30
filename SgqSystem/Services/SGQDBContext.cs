@@ -1610,7 +1610,7 @@ namespace SGQDBContext
 
             var valores = integracao.Split('|');
 
-            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais")
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais"  || valores[0] == "Setor")
             {
                 var subtipo = "";
 
