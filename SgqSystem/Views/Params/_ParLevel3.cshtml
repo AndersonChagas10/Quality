@@ -38,7 +38,7 @@
 
                     </tr>
 
-                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && (bool)Session["IsRecravacao"])
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"]  != null && (bool)Session["IsRecravacao"])
                     {
                         <tr class="row" style="display:none;">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
@@ -52,7 +52,7 @@
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>
 
-                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && (bool)Session["IsRecravacao"])
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"] != null && (bool)Session["IsRecravacao"])
                     {
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
