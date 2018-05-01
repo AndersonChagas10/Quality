@@ -47,7 +47,8 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlCamaras { get; set; }
         public IEnumerable<SelectListItem> DdlPontosDeColeta { get; set; }
         public IEnumerable<SelectListItem> DdlRaioX { get; set; }
-     
+        public IEnumerable<SelectListItem> DdlSetor { get; set; }
+
 
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
@@ -121,6 +122,7 @@ namespace DTO.DTO.Params
                 DdlCamaras = CreateSelectListEquipamentos("Câmara");
                 DdlPontosDeColeta = CreateSelectListEquipamentos("Ponto de Coleta");
                 DdlRaioX = CreateSelectListEquipamentos("Detector de Metais");
+                DdlSetor = CreateSelectListEquipamentos("Setor");
 
             }
 
