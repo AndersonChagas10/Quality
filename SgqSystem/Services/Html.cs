@@ -388,15 +388,10 @@ namespace SgqSystem.Services
             string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
 
-                                 "         <input type=\"text\" class=\"form-control text-center levelValue2 naoValidarInput\" style=\"width:100%;\" placeholder=\"" + Resources.Resource.notes + "\">  " +
+                                 "         <input type=\"text\" value=\"\" class=\"form-control text-center levelValue interval\"  style=\"width:30%;\" >     " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValueNotes naoValidarInput\" style=\"width:70%;\" placeholder=\"" + Resources.Resource.notes + "\">  " +
 
-                                 "         <button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                                                                 " +
-                                 "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
-                                 "             </button></span><input type=\"text\" value=\"\" class=\"form-control text-center levelValue interval\">     " +
-                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                    " +
-                                 "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
-                                 "         </button>                                                                                                                                                          " +
-                                 "     </span>                                                                                                                                                                " +
+                                 "                                                                                                     " +
                                  "</div>   ";
 
             //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
