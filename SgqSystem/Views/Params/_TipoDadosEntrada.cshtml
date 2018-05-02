@@ -63,7 +63,7 @@
                     </tr>
 
                     <tr class="row ParResultado" style="display: none;">
-                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.DynamicValue", Model.paramsDto.parLevel3Value.DynamicValue, new { @Id = "parLevel3Value_DynamicValue", @class = "form-control input-sm" }), @Html.Label("Equação"), Table.PosicaoLabel.top, classTd: "col-sm-12")
+                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.DynamicValue", Model.paramsDto.parLevel3Value.DynamicValue, new { @Id = "parLevel3Value_DynamicValue", @class = "form-control input-sm" }), @Html.Label("Equação"), Table.PosicaoLabel.top, classTd: "col-sm-12", colspan: 2)
                     </tr>
 
                 </table>
