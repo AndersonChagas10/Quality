@@ -8,5 +8,4 @@ IF COL_LENGTH('ParLevel3Value','DynamicValue') IS NULL
 		ADD DynamicValue varchar(100) null
     END
 
-insert into ParLevel3InputType(Id, Name, Description, AddDate, IsActive) values(10, 'Operador', 'Operador', getDate(), 1)
-insert into ParLevel3InputType(Id, Name, Description, AddDate, IsActive) values(11, 'Resultado', 'Resultado', getDate(), 1)
+insert into ParLevel3InputType(Id, Name, Description, AddDate, IsActive) values(10, 'Resultado', 'Resultado', getDate(), 1)

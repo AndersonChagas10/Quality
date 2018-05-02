@@ -3761,7 +3761,7 @@ namespace SgqSystem.Services
                                 }
 
 $(document).ready(function(){
-                            $('body').on('keyup', 'input.interval:visible', function(){
+                            $('body').on('input', 'input.interval:visible', function(){
 
                                 var id = $(this).parents('li').attr('id');
 	                            $.each($('input[resultado]:visible'), function(i, o){
@@ -3793,6 +3793,7 @@ $(document).ready(function(){
                                                 resultado = eval(resultado);
                                             }
     	                                    $(o).val(resultado);
+    	                                    $(o).trigger('input');
 
                                         }
                                     });
@@ -6317,18 +6318,8 @@ $(document).ready(function(){
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax);
-            }//Operador
-            else if (parLevel3.ParLevel3InputType_Id == 10)
-            {
-                classInput = " ";
-                labels = html.div(
-                                           outerhtml: "",
-                                           classe: "levelName"
-                                       );
-
-                input = html.campoOperador(id: parLevel3.Id.ToString());
             }//Resultado
-            else if (parLevel3.ParLevel3InputType_Id == 11)
+            else if (parLevel3.ParLevel3InputType_Id == 10)
             {
                 classInput = " interval";
 

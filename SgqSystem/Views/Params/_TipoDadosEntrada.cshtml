@@ -216,8 +216,7 @@
     var eTipoDado_BinarioComTexto = 6;
     var eTipoDado_IntervaloMinutos = 7;
     var eTipoDado_EscalaLikert = 8;
-    var eTipoDado_Operador = 10;
-    var eTipoDado_Resultado = 11;
+    var eTipoDado_Resultado = 10;
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
@@ -330,17 +329,6 @@
                 selectNaoConformeName = "";
                 selectUnidadeDeMedidas = "";
                 parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
-                parLevel3Value_DynamicValue = "";
-            }
-
-            if (selectTipoInput == eTipoDado_Operador) {
-                selectUnidadeDeMedidasName = "";
-                selectNaoConforme = "";
-                selectConforme = "";
-                selectConformeName = "";
-                selectNaoConformeName = "";
-                selectUnidadeDeMedidas = "";
-                parIntervalosTypeName = "";
                 parLevel3Value_DynamicValue = "";
             }
 
@@ -596,7 +584,7 @@
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;
-                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto || o.ParLevel3InputType_Id == eTipoDado_Operador) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -925,7 +913,7 @@
         }
 
         //Texto
-        if (tipoSelecionado == eTipoDado_Texto || tipoSelecionado == eTipoDado_Operador) {
+        if (tipoSelecionado == eTipoDado_Texto) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
