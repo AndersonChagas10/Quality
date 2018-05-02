@@ -364,6 +364,16 @@
 
                                                     </tr>
 
+                                            <tr class="row">
+
+                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetor" value="integracaoSetorValor"></td>
+                                                <td style="padding:5px;"> Setor</td>
+                                                <td style="padding:5px;">
+                                                    @Html.DropDownList("integracaoSetorList", Model.paramsDdl.DdlSetor, new { @class = "form-control input-sm equipamentos" })
+                                                </td>
+
+
+                                            </tr>
 
                                                     <tr class="row">
 
@@ -557,6 +567,9 @@
                                                                                 break;
                                                                             case ("Detector de Metais|"):
                                                                                 tipo = "Detector de Metais";
+                                                                                break;
+                                                                            case ("Setor|"):
+                                                                                tipo = "Setor";
                                                                                 break;
                                                                             case ("familiaProduto"):
                                                                                 tipo = "Família de Produtos";
@@ -1608,6 +1621,9 @@
                 case "integracaoRaioXValor":
                     description = $('#integracaoRaioXList').val();
                     break;
+                case "integracaoSetorValor":
+                    description = $('#integracaoSetorList').val();
+                    break;
                 case "integracaoProduto":
                     description = "Produto";
                     break;
@@ -1658,6 +1674,9 @@
                     break;
                 case "integracaoRaioXValor":
                     tipo = "Detector de Metais";
+                    break;
+                case "integracaoSetorValor":
+                    tipo = "Setor";
                     break;
                 case "integracaoFamiliaProduto":
                     tipo = "Família de Produtos";
