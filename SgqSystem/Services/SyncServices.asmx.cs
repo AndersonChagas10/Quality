@@ -2087,7 +2087,7 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -6198,7 +6198,7 @@ $(document).ready(function(){
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
-            else if (parLevel3.ParLevel3InputType_Id == 3)
+            else if (parLevel3.ParLevel3InputType_Id == 3 || parLevel3.ParLevel3InputType_Id == 9)
             {
                 classInput = " interval";
 
@@ -6230,11 +6230,25 @@ $(document).ready(function(){
                                        //style: "margin-top:7px;"
                                        );
 
-                input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                if(parLevel3.ParLevel3InputType_Id == 3)
+                {
+
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
                                                 intervalMin: parLevel3.IntervalMin,
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
+
+                }else if (parLevel3.ParLevel3InputType_Id == 9)
+                {
+
+                    input = html.campoIntervaloTexto(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
+
+                }
             }
+           
             else if (parLevel3.ParLevel3InputType_Id == 4)
             {
                 classInput = " calculado";

@@ -2520,4 +2520,7 @@
   <data name="typification_check" xml:space="preserve">
     <value>Typification Check</value>
   </data>
+  <data name="notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
 </root>
