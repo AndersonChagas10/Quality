@@ -1879,6 +1879,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel File.
+        /// </summary>
+        internal static string excel_file {
+            get {
+                return ResourceManager.GetString("excel_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failure Description.
         /// </summary>
         internal static string failure_description {
@@ -1938,6 +1947,15 @@ namespace Resources {
         internal static string field_name {
             get {
                 return ResourceManager.GetString("field_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Format not Supported.
+        /// </summary>
+        internal static string file_format_not_supported {
+            get {
+                return ResourceManager.GetString("file_format_not_supported", resourceCulture);
             }
         }
         
@@ -2334,6 +2352,15 @@ namespace Resources {
         internal static string immediate_corrective_action_is_empty {
             get {
                 return ResourceManager.GetString("immediate_corrective_action_is_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Excel.
+        /// </summary>
+        internal static string import_excel {
+            get {
+                return ResourceManager.GetString("import_excel", resourceCulture);
             }
         }
         
@@ -3531,6 +3558,15 @@ namespace Resources {
         internal static string no_families_level {
             get {
                 return ResourceManager.GetString("no_families_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file selected.
+        /// </summary>
+        internal static string no_file_selected {
+            get {
+                return ResourceManager.GetString("no_file_selected", resourceCulture);
             }
         }
         

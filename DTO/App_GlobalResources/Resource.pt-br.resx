@@ -2091,4 +2091,16 @@
   <data name="back_to_unit_of_measurement" xml:space="preserve">
     <value>Voltar para Unidades de Medida</value>
   </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>Formato de Arquivo não Suportado</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>Nenhum arquivo selecionado</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Importar Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Arquivo Excel</value>
+  </data>
 </root>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = @Resources.Resource.import_excel;
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "ImportacaoExcel")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.import_excel</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    @using (Html.BeginForm("Importar", "ImportacaoExcel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <span>Arquivo excel</span>
+                        <br /> <br />
+                        <input class="btn btn-default" type="file" name="arquivo" />
+                        <br />
+                        <button class="btn btn-success" type="submit" name="enviar">Ler Arquivo</button>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <br /> <br />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-lg-12 col-sm-4">
+                    @if (Model != null)
+                    {
+                        <table class="table table-striped">
+                            @foreach (var produto in Model)
+                            {
+                                <tr>
+                                    <td>@produto.Id</td>
+                                    <td>@produto.Descricao</td>
+                                    <td>@produto.Preco</td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

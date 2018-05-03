@@ -2523,4 +2523,16 @@
   <data name="notes" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>File Format not Supported</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Import Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Excel File</value>
+  </data>
 </root>
