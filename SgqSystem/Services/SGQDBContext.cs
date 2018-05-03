@@ -527,8 +527,10 @@ namespace SGQDBContext
                              "\n (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany   (nolock)                                                                    " +
                              "\n where ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and (ParCompany_Id =  " + ParCompany_Id + " or ParCompany_Id is null)   and IsActive = 1 " +
 
-                             "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
-                             "\n or F1.UNIDADE is null))  Familia                                                                                                                      " +
+                             "\n -- GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
+                             "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND F1.UNIDADE = PL.ParCompany_id) OR  (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND F1.UNIDADE IS NULL)                                                              " +
+                             "\n -- or F1.UNIDADE is null))  Familia                                                                                                                      " +
+                             "\n )  Familia                                                                                                                      " +
                              "\n ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
                              "\n WHERE P321.ParLevel1_Id = " + parLevel1.ParLevel1_Id + "                                                                                                      " +
                              "\n AND PL2.IsActive = 1     " +
