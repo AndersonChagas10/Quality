@@ -238,7 +238,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-            	Indicador 
+                ParStructure_Name as Regional
+               ,Indicador 
                ,IndicadorName 
                ,Unidade
                ,UnidadeName 
@@ -269,7 +270,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IndicadorName
                ,Unidade
                ,UnidadeName 
+               ,ParStructure_Name
             ORDER BY 6 DESC
+
+            drop table #NA
+			drop table #AMOSTRA4
+			drop table #DATA
+			drop table #VOLUMES
+			drop table #CUBO
+			drop table #ConsolidationLevel
+    
             ";
                 #endregion
             }
@@ -428,7 +438,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-                Unidade
+                ParStructure_Name as Regional
+               ,Unidade
                ,UnidadeName 
                ,Indicador 
                ,IndicadorName 
@@ -455,8 +466,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Monitoramento 
                ,MonitoramentoName 
                ,Unidade
-               ,UnidadeName 
+               ,UnidadeName
+               ,ParStructure_Name
             ORDER BY 8 DESC
+
+            drop table #NA
+			drop table #AMOSTRA4
+			drop table #DATA
+			drop table #VOLUMES
+			drop table #CUBO
+			drop table #ConsolidationLevel
             ";
                 #endregion
             }
@@ -616,7 +635,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-                Unidade
+                ParStructure_Name as Regional
+               ,Unidade
                ,UnidadeName 
                ,Indicador 
                ,IndicadorName 
@@ -648,6 +668,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,TarefaName 
                ,Unidade
                ,UnidadeName 
+               ,ParStructure_Name
             ORDER BY 10 DESC
             ";
                 #endregion
@@ -4908,6 +4929,7 @@ FROM (SELECT
     public class RelatorioResultadosPeriodo
     {
         public DateTime Data { get; set; }
+        public string Regional {get; set; }
         public int Unidade { get; set; }
         public int Indicador { get; set; }
         public int Monitoramento { get; set; }
