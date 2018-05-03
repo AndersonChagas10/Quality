@@ -76,7 +76,7 @@ namespace Helper
             {
                 if(handleErrorDelegate != null)
                     handleErrorDelegate(ex.Message + " - " + ex.StackTrace, mailEntry.Id);
-                throw;
+                //throw;
             }
 
         }
