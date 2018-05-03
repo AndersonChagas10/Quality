@@ -6213,14 +6213,41 @@ namespace SgqSystem.Services
             {
                 classInput = " calculado";
 
-                var intervalMin = Guard.ConverteValorCalculado(parLevel3.IntervalMin);
-                var intervalMax = Guard.ConverteValorCalculado(parLevel3.IntervalMax);
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax);
+
+                string valorCompleto = "";
+
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
+                //var intervalMin = Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                //var intervalMax = Guard.ConverteValorCalculado(parLevel3.IntervalMax);
 
                 labels = html.div(
-                                           outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
+
+
+
+                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "levelName"
                                        //style: "margin-top:7px;"
                                        );
+
+                //labels = html.div(
+                //                           outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
+                //                           classe: "levelName"
+                //                       //style: "margin-top:7px;"
+                //                       );
 
                 input = html.campoCalculado(id: parLevel3.Id.ToString(),
                                                 intervalMin: parLevel3.IntervalMin,
