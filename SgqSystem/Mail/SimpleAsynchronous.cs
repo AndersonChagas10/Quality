@@ -116,7 +116,7 @@ namespace SgqSystem.Mail
             catch (Exception ex)
             {
                 new CreateLog(new Exception("Erro no metodo [SendMailFromDeviationSgqApp]", ex));
-                throw ex;
+                //throw ex;
             }
         }
 
@@ -219,7 +219,8 @@ namespace SgqSystem.Mail
                     db.Configuration.LazyLoadingEnabled = false;
 
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
+                    DateTime dateLimit = DateTime.Now.AddHours(-24);
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimit).Take(tamanhoDoPool).ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {
@@ -385,7 +386,7 @@ namespace SgqSystem.Mail
                 var listaEmails = dbLegado.Database.SqlQuery<string>(query);
                 if (listaEmails != null && listaEmails.Count() > 0)
                 {
-                    return string.Join(",", listaEmails.Distinct().ToArray());
+                    return string.Join(",", listaEmails.ToArray());
                 }
                 else
                 {
