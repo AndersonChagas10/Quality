@@ -1706,7 +1706,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                         FROM
                         (
                         SELECT CL.*, P.* FROM ClassificacaoProduto CP
-                        INNER JOIN (
+                        FULL JOIN (
                         SELECT CC.cNmClassificacao as Grupo, C.*, C.nCdClassificacao as cod FROM Classificacao C
                         INNER JOIN (
 	                        SELECT * FROM Classificacao 
@@ -1715,7 +1715,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                         ON left(C.cNrClassificacao,5) = CC.cNrClassificacao
                         ) CL
                         ON CL.cod = CP.nCdClassificacao
-                        INNER JOIN PRODUTO P
+                        LEFT JOIN PRODUTO P
                         ON P.nCdProduto = CP.nCdProduto
                         ) TT
                         WHERE Grupo = 'FAMILIA'
