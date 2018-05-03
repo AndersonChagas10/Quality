@@ -1433,7 +1433,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
                 string sql = "SELECT CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 (nolock)  " +
                              "INNER JOIN ParLevel1 PL1 (nolock)  ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "'" +
-                             " AND CDL1.Consolidationdate BETWEEN '" + data_ini.ToString("yyyyMMdd") + " 00:00' and '" + data_fim.ToString("yyyyMMdd") + " 23:59'" +
+                             " AND CDL1.Consolidationdate BETWEEN '" + data_ini.ToString("yyyyMMdd") + " 00:00' and '" + data_fim.ToString("yyyyMMdd") + "  23:59:59'" +
                              " AND PL1.IsActive = 1" +
                              " GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
@@ -2441,7 +2441,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = " + ParCompany_Id + " AND ParLevel1_Id= " + ParLevel1_Id + " AND ConsolidationDate BETWEEN '" + collectionDate.ToString("yyyy-MM-dd") + " 00:00' AND '" + collectionDate.ToString("yyyy-MM-dd") + " 23:59:90.9999'";
+                string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = " + ParCompany_Id + " AND ParLevel1_Id= " + ParLevel1_Id + " AND ConsolidationDate BETWEEN '" + collectionDate.ToString("yyyy-MM-dd") + " 00:00' AND '" + collectionDate.ToString("yyyy-MM-dd") + " 23:59:59'";
 
                 //SqlConnection db = new SqlConnection(conexao);
 
@@ -2952,7 +2952,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                             "EvaluationNumber " +
                             "FROM CollectionLevel2 c1                                                                                       " +
                             "WHERE CollectionDate                                                                                           " +
-                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 23:59' and   " +
+                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + "  23:59:59' and   " +
                             "Phase > 0  and UnitId = " + ParCompany_Id + "                                                                   " +
                             "AND CONCAT(c1.ParLevel1_id, c1.ParLevel2_Id, CAST(c1.CollectionDate AS VARCHAR(500))) IN                       " +
                             "  (SELECT CONCAT(c1b.ParLevel1_id, c1b.ParLevel2_Id, CAST(MAX(c1b.CollectionDate) AS VARCHAR(500)))            " +
@@ -2961,7 +2961,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                             "                                                                                                               " +
                             "          WHERE c1b.Phase > 0                                                                                  " +
                             "                                                                                                               " +
-                            "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + " 23:59'                                     " +
+                            "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + "  23:59:59'                                     " +
                             "          AND c1b.UnitId = " + ParCompany_Id + "                                                                       " +
                             "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                              " +
                             "  )                                                                                                            ";
@@ -3038,7 +3038,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             {
                 string sql = "SELECT CAST(CollectionDate as date) as CollectionDate, Period, Shift                                                      " +
                              "FROM CollectionLevel2  (nolock) WHERE  Id >= " + Id + " AND UnitId = " + ParCompany_Id + "  AND  Shift = " + Shift + "  AND          " +
-                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'    " +
+                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59:59'    " +
                              "GROUP BY CAST(CollectionDate as date), Period, Shift ORDER BY 1";
 
                 List<ResultLevel2Period> obj = new List<ResultLevel2Period>();

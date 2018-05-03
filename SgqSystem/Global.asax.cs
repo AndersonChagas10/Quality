@@ -10,6 +10,7 @@ using DTO;
 using System.Globalization;
 using System.Threading;
 using Jobs;
+using SgqSystem.Jobs;
 
 namespace SgqSystem
 {
@@ -33,6 +34,7 @@ namespace SgqSystem
             SetGlobalConfigAmbient();
 
             ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
+            ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
             ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
 
             //if (GlobalConfig.Brasil)

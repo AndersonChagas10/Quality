@@ -81,6 +81,8 @@
 </head>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
 
+    <div id="mandala"></div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
@@ -587,11 +589,11 @@
                 return _event_;
         }
 
-        function GetUsuarioId() {
-            return $.grep(getCookie('webControlCookie'), function (a, b) {
-                return a.indexOf('userId') != -1;
-            })[0].split('=')[1];
-        }
+        //function GetUsuarioId() {
+        //    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        //        return a.indexOf('userId') != -1;
+        //    })[0].split('=')[1];
+        //}
 
         function GetUrlFTA(){
             return @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA))
@@ -637,19 +639,19 @@
             }
 
             //Função para paleativo de numerico e decimal permitindo apenas . ao inves de ,
-            $('.number_decimal').keypress(function(event) {
+            $('.number_decimal').keypress(function (event) {
                 var $this = $(this);
                 // this next line...
                 if ((event.which != 44 || $this.val().indexOf(',') != -1) &&
-                   ((event.which < 48 || event.which > 57) &&
-                   (event.which != 0 && event.which != 8))) {
+                    ((event.which < 48 || event.which > 57) &&
+                        (event.which != 0 && event.which != 8))) {
                     event.preventDefault();
                 }
 
-                var text = $(this).val().replace('.',',');
+                var text = $(this).val().replace('.', ',');
                 // this next line...
                 if ((event.which == 44) && (text.indexOf(',') == -1)) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         if ($this.val().substring($this.val().indexOf(',')).length > 3) {
                             $this.val($this.val().substring(0, $this.val().indexOf(',') + 3));
                         }
@@ -663,17 +665,38 @@
                     event.preventDefault();
                 }
 
-                $(this).val(text.replace(',','.'));
+                $(this).val(text.replace(',', '.'));
             });
 
             $('.number_decimal').keypress();
         });
     </script>
 
+
+
+
+    <!--tirei o script do mandala daquie-->
+
+    <div id="mandalaModal" class="modal" role="dialog" style="z-index:9999998">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="~/Scripts/PluginGRT/c3.min.js"></script>
     <script type="text/javascript" src="~/Scripts/PluginGRT/d3.min.js"></script>
     <script type="text/javascript" src="~/Scripts/PluginGRT/pivot.js"></script>
     <script type="text/javascript" src="~/Scripts/PluginGRT/c3_renderers.js"></script>
+
+    @Html.Partial("_Mandala")
 
 </body>
 </html>

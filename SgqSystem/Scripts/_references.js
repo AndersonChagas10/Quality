@@ -222,6 +222,7 @@
 /// <reference path="plugingrt/d3.min.js" />
 /// <reference path="plugingrt/datatablegrt.js" />
 /// <reference path="plugingrt/pivot.js" />
+/// <reference path="plugingrt/mandalagrt.js" />
 /// <reference path="print/printgrt.js" />
 /// <reference path="respond.js" />
 /// <reference path="select2.js" />

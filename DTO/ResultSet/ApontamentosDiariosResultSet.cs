@@ -108,7 +108,7 @@ public class ApontamentosDiariosResultSet
 	                    ,AlterDate 
                     INTO #CollectionLevel2
                     FROM collectionlevel2 CL2
-                        WHERE CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
+                        WHERE CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
                     CREATE INDEX IDX_CollectionLevel2_UnitId ON #CollectionLevel2(UnitId);
@@ -198,7 +198,7 @@ public class ApontamentosDiariosResultSet
                  LEFT JOIN CollectionJson CJ
                  ON CJ.Id = CLCJ.CollectionJson_Id
                  WHERE 1=1 
-                  -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF } 23:59'
+                  -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
 
         return query;
