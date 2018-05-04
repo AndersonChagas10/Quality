@@ -895,6 +895,7 @@
             });
 
             $('#structureId').on('change',function(e){
+                enviar['structureIdArr'] = $('#structureId').val();
                 enviar['structureId'] = $('#structureId option:selected').val();
             });
 
