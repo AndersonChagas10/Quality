@@ -31,6 +31,7 @@ namespace DTO
     {
         public int ParLevel1_id { get; set; }
         public string ParLevel1_name { get; set; }
+        public string ParLevel2_Name { get; set; }
         public int ParCompany_id { get; set; }
         public string ParCompany_Name { get; set; }
         public string Coletado { get; set; }

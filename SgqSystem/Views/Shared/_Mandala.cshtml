@@ -88,7 +88,6 @@ function MostrarIndicador(empresa) {
 }
 function MostrarMonitoramento(processo, empresa) {
     enviar['level1Name'] = processo;
-    debugger
     $.ajax({
         type: "POST",
         url: '@Url.Action("MostrarMonitoramentoMandala", "api/Mandala")',
@@ -102,12 +101,12 @@ function MostrarMonitoramento(processo, empresa) {
                 tamanhoDoElemento: 10,
                 posicaoNaTela: 'left bottom',
                 estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
+                atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-ParLevel2Name="{ParLevel2_Name}"',
                 elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
             });
 
             $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + $(this).attr('data-processo'));
+                $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + "-" + $(this).attr('data-processo') + "-" + $(this).attr('data-ParLevel2Name'));
                 $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
                 $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
                 $('#mandalaModal').modal('show');
