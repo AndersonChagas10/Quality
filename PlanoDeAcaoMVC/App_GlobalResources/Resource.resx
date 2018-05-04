@@ -483,4 +483,346 @@
   <data name="_new" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="all_tasks_filter" xml:space="preserve">
+    <value>ALL TASKS TO FILTER</value>
+  </data>
+  <data name="date_end_project_initiative" xml:space="preserve">
+    <value>Project end date / Initiative</value>
+  </data>
+  <data name="delivery" xml:space="preserve">
+    <value>Delivery</value>
+  </data>
+  <data name="department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="deviation_analysis_report" xml:space="preserve">
+    <value>DEVIATION ANALYSIS REPORT</value>
+  </data>
+  <data name="end_date_selected_period" xml:space="preserve">
+    <value>Initial end of selected period</value>
+  </data>
+  <data name="generic_action2" xml:space="preserve">
+    <value>GENERIC ACTION</value>
+  </data>
+  <data name="generic_cause2" xml:space="preserve">
+    <value>GENERIC CAUSE</value>
+  </data>
+  <data name="goal_indicator" xml:space="preserve">
+    <value>GOAL OF THE INDICATOR</value>
+  </data>
+  <data name="group_cause2" xml:space="preserve">
+    <value>GROUP CAUSE</value>
+  </data>
+  <data name="how" xml:space="preserve">
+    <value>How</value>
+  </data>
+  <data name="indicators_devices" xml:space="preserve">
+    <value>INDICATORS WITH DEVICES</value>
+  </data>
+  <data name="indicators_guidelines" xml:space="preserve">
+    <value>Indicators of the Guidelines</value>
+  </data>
+  <data name="indicators_project_initiative" xml:space="preserve">
+    <value>Indicators of the Project / Initiative</value>
+  </data>
+  <data name="initial_date_selected_period" xml:space="preserve">
+    <value>Initial date of selected period</value>
+  </data>
+  <data name="manage" xml:space="preserve">
+    <value>To Manage</value>
+  </data>
+  <data name="management_objective" xml:space="preserve">
+    <value>Management Objective</value>
+  </data>
+  <data name="mission" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="percentage_nc_tasks" xml:space="preserve">
+    <value>PERCENTAGE OF NON-CONFORMITY OF TASKS</value>
+  </data>
+  <data name="recurrence_deviations_period" xml:space="preserve">
+    <value>RECURRENCE OF DEVIATIONS IN THE PERIOD</value>
+  </data>
+  <data name="remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="responsible_guideline" xml:space="preserve">
+    <value>Responsible for the Guideline</value>
+  </data>
+  <data name="responsible_project_initiative" xml:space="preserve">
+    <value>Responsible for the Project / Initiative</value>
+  </data>
+  <data name="seen" xml:space="preserve">
+    <value>Seen</value>
+  </data>
+  <data name="select2" xml:space="preserve">
+    <value>select...</value>
+  </data>
+  <data name="select_delivery_date_greater_today_date" xml:space="preserve">
+    <value>Select a delivery date greater than today's date!</value>
+  </data>
+  <data name="signature1" xml:space="preserve">
+    <value>Signature 1</value>
+  </data>
+  <data name="signature2" xml:space="preserve">
+    <value>Signature 2</value>
+  </data>
+  <data name="specific_action2" xml:space="preserve">
+    <value>SPECIFIC ACTION</value>
+  </data>
+  <data name="specific_cause" xml:space="preserve">
+    <value>SPECIFIC CAUSE</value>
+  </data>
+  <data name="start_date_project_initiative" xml:space="preserve">
+    <value>Start date Project / Initiative</value>
+  </data>
+  <data name="supervisor" xml:space="preserve">
+    <value>Supervisor</value>
+  </data>
+  <data name="tactical_link" xml:space="preserve">
+    <value>Tactical Link</value>
+  </data>
+  <data name="type_password" xml:space="preserve">
+    <value>Type the password</value>
+  </data>
+  <data name="unit_measurement" xml:space="preserve">
+    <value>Unit of measurement</value>
+  </data>
+  <data name="value_for" xml:space="preserve">
+    <value>Value for</value>
+  </data>
+  <data name="value_of" xml:space="preserve">
+    <value>Value of</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="as_important_points" xml:space="preserve">
+    <value>As Important Points</value>
+  </data>
+  <data name="columns_saved_successfully" xml:space="preserve">
+    <value>Columns have been saved successfully!</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="current_view" xml:space="preserve">
+    <value>Current View</value>
+  </data>
+  <data name="end_date" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="error_saving" xml:space="preserve">
+    <value>Error Saving!</value>
+  </data>
+  <data name="for_what" xml:space="preserve">
+    <value>For what</value>
+  </data>
+  <data name="guidelines" xml:space="preserve">
+    <value>Guidelines</value>
+  </data>
+  <data name="how_much" xml:space="preserve">
+    <value>How much</value>
+  </data>
+  <data name="indicator_sgq" xml:space="preserve">
+    <value>SGQ Indicator </value>
+  </data>
+  <data name="initial_view" xml:space="preserve">
+    <value>Initial View</value>
+  </data>
+  <data name="initiative" xml:space="preserve">
+    <value>Initiative</value>
+  </data>
+  <data name="in_progress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="late" xml:space="preserve">
+    <value>Late</value>
+  </data>
+  <data name="monitoring_sgq" xml:space="preserve">
+    <value>SGQ Monitoring</value>
+  </data>
+  <data name="my_columns" xml:space="preserve">
+    <value>My Columns</value>
+  </data>
+  <data name="operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="operational_indicators" xml:space="preserve">
+    <value>Operational Indicators</value>
+  </data>
+  <data name="quality" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="save_columns" xml:space="preserve">
+    <value>Save Columns</value>
+  </data>
+  <data name="show_all" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="specific_cause2" xml:space="preserve">
+    <value>Specific Cause</value>
+  </data>
+  <data name="strategic_planning" xml:space="preserve">
+    <value>Strategic Planning</value>
+  </data>
+  <data name="task_sgq" xml:space="preserve">
+    <value>SGQ Task</value>
+  </data>
+  <data name="term" xml:space="preserve">
+    <value>Term</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="visible_columns" xml:space="preserve">
+    <value>Visible Columns</value>
+  </data>
+  <data name="when_end" xml:space="preserve">
+    <value>When (End)</value>
+  </data>
+  <data name="when_start" xml:space="preserve">
+    <value>When (Start)</value>
+  </data>
+  <data name="accompaniment_action" xml:space="preserve">
+    <value>Accompaniment of the Action</value>
+  </data>
+  <data name="action_name" xml:space="preserve">
+    <value>Action Name</value>
+  </data>
+  <data name="addressee" xml:space="preserve">
+    <value>Addressee</value>
+  </data>
+  <data name="alphabetical_order" xml:space="preserve">
+    <value>Alphabetical order</value>
+  </data>
+  <data name="apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="apr2" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="aug2" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="completed_late" xml:space="preserve">
+    <value>Completed late</value>
+  </data>
+  <data name="creation_date" xml:space="preserve">
+    <value>Creation date</value>
+  </data>
+  <data name="customized" xml:space="preserve">
+    <value>Customized</value>
+  </data>
+  <data name="dec2" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="feb2" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="finished_late" xml:space="preserve">
+    <value>Finished late</value>
+  </data>
+  <data name="fri" xml:space="preserve">
+    <value>Fri</value>
+  </data>
+  <data name="jan2" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="july2" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="june2" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="mar2" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="may2" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="mon" xml:space="preserve">
+    <value>Mon</value>
+  </data>
+  <data name="new_tactical_planning_linked" xml:space="preserve">
+    <value>New Tactical Planning Linked</value>
+  </data>
+  <data name="notify" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="nov2" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="no_operational_planning" xml:space="preserve">
+    <value>No operational planning</value>
+  </data>
+  <data name="number_action" xml:space="preserve">
+    <value>Number of Action</value>
+  </data>
+  <data name="observation" xml:space="preserve">
+    <value>Observation</value>
+  </data>
+  <data name="oct2" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="operational_indicator" xml:space="preserve">
+    <value>Operational Indicator</value>
+  </data>
+  <data name="order_by_value" xml:space="preserve">
+    <value>Order by Value</value>
+  </data>
+  <data name="problem_deviation" xml:space="preserve">
+    <value>Problem or Deviation</value>
+  </data>
+  <data name="sat" xml:space="preserve">
+    <value>Sat</value>
+  </data>
+  <data name="selection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+  <data name="sept2" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="sun" xml:space="preserve">
+    <value>Sun</value>
+  </data>
+  <data name="thur" xml:space="preserve">
+    <value>Thur</value>
+  </data>
+  <data name="tue" xml:space="preserve">
+    <value>Tue</value>
+  </data>
+  <data name="until" xml:space="preserve">
+    <value>until</value>
+  </data>
+  <data name="wed" xml:space="preserve">
+    <value>Wed</value>
+  </data>
+  <data name="when_end2" xml:space="preserve">
+    <value>When End</value>
+  </data>
+  <data name="when_start2" xml:space="preserve">
+    <value>When Start</value>
+  </data>
+  <data name="without_status" xml:space="preserve">
+    <value>Without Status</value>
+  </data>
+  <data name="_return" xml:space="preserve">
+    <value>Return</value>
+  </data>
 </root>

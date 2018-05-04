@@ -28,14 +28,14 @@
     </style>
 
 }
-<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>
+<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp @Resources.Resource.edit</button>
 <br />
 
 <div class="panel-group accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h5>
-                <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#divCollapseAcompanhamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">Acompanhamento da Ação</a>
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#divCollapseAcompanhamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">@Resources.Resource.accompaniment_action</a>
             </h5>
         </div>
     </div>
@@ -46,7 +46,7 @@
         <tbody>
             <tr>
                 <td style="width: 24%;">
-                    @Html.DisplayNameFor(model => model.Unidade_Id)
+                    @Html.Raw(Resources.Resource.unit)
                 </td>
                 <td style="width: 60%;">
                     @*@Html.DisplayFor(model => model.Unidade_Id)*@
@@ -56,7 +56,7 @@
             </tr>
             <tr class="showAsEstrategy" style="display:none;">
                 <td>
-                    @Html.DisplayNameFor(model => model.Pa_Problema_Desvio_Id)
+                    @Html.Raw(Resources.Resource.problem_deviation)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._Pa_Problema_Desvio_Id.Name)
@@ -67,7 +67,7 @@
             {
                 <tr class="showAsEstrategy">
                     <td>
-                        @Html.DisplayNameFor(model => model.Pa_IndicadorSgqAcao_Id)
+                        @Html.Raw(Resources.Resource.operational_indicator)
                     </td>
                     <td>
                         @Html.DisplayFor(model => model._Pa_IndicadorSgqAcao.Name)
@@ -79,7 +79,7 @@
             {
                 <tr class="showAsEstrategy">
                     <td>
-                        @Html.DisplayNameFor(model => model.Level1Id)
+                        @Html.Raw(Resources.Resource.indicator)
                     </td>
                     <td>
                         @Html.DisplayFor(model => model.Level1Name)
@@ -88,7 +88,7 @@
                 </tr>
                             <tr class="showAsEstrategy">
                                 <td>
-                                    @Html.DisplayNameFor(model => model.Level2Id)
+                                    @Html.Raw(Resources.Resource.monitoring)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(model => model.Level2Name)
@@ -97,7 +97,7 @@
                             </tr>
                             <tr class="showAsEstrategy">
                                 <td>
-                                    @Html.DisplayNameFor(model => model.Level3Id)
+                                    @Html.Raw(Resources.Resource.task)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(model => model.Level3Name)
@@ -108,7 +108,7 @@
 
             <tr class="showAsEstrategy">
                 <td>
-                    @Html.DisplayNameFor(model => model.CausaGenerica_Id)
+                    @Html.Raw(Resources.Resource.generic_cause)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._CausaGenerica)
@@ -117,7 +117,7 @@
             </tr>
             <tr class="showAsEstrategy">
                 <td>
-                    @Html.DisplayNameFor(model => model.GrupoCausa_Id)
+                    @Html.Raw(Resources.Resource.group_cause)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._GrupoCausa)
@@ -126,7 +126,7 @@
             </tr>
             <tr class="showAsEstrategy">
                 <td>
-                    @Html.DisplayNameFor(model => model.ContramedidaGenerica_Id)
+                    @Html.Raw(Resources.Resource.generic_action)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._ContramedidaGenerica)
@@ -135,7 +135,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayName(Conn.nameCausaEspecifica)
+                    @Html.Raw(Resources.Resource.specific_cause)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.CausaEspecifica)
@@ -144,7 +144,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayName(Conn.nameContramedidaEspecifica)
+                    @Html.Raw(Resources.Resource.specific_action)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.ContramedidaEspecifica)
@@ -154,7 +154,7 @@
 
             <tr>
                 <td>
-                    @Html.DisplayName("Quem:")
+                    @Html.Raw(Resources.Resource.who + ":")
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._Quem)
@@ -164,7 +164,7 @@
 
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.QuandoInicio)
+                    @Html.Raw(Resources.Resource.when_start2)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.QuandoInicio)
@@ -174,7 +174,7 @@
 
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.QuandoFim)
+                    @Html.Raw(Resources.Resource.when_end2)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.QuandoFim)
@@ -184,7 +184,7 @@
 
             <tr>
                 <td>
-                    @Html.DisplayName(Conn.nameComoPontosImportantes)
+                    @Html.Raw(Resources.Resource.as_important_points)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.ComoPontosimportantes)
@@ -194,7 +194,7 @@
 
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Status)
+                    @Html.Raw(Resources.Resource.status)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._StatusName)
@@ -204,7 +204,7 @@
 
             <tr>
                 <td>
-                    @Html.DisplayName("Prazo")
+                    @Html.Raw(Resources.Resource.term)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model._Prazo)
@@ -223,16 +223,16 @@
         <div class="row" style="border: 2px solid #c1c1c1;">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="short-div">
-                    <label class="redLabel" for="inputlg">Data de Criação:</label><br />
+                    <label class="redLabel" for="inputlg">@Resources.Resource.creation_date:</label><br />
                     @Html.DisplayFor(r => i.AddDate)
                 </div>
                 <hr />
-                <label class="redLabel" for="inputlg">Observação:</label><br />
+                <label class="redLabel" for="inputlg">@Resources.Resource.observation:</label><br />
                 @Html.DisplayFor(r => i.Name)
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding:0px">
                 <div class="short-div">
-                    <label class="redLabel" for="inputlg">Destinatário:</label><br />
+                    <label class="redLabel" for="inputlg">@Resources.Resource.addressee:</label><br />
                     @foreach (var quem in i._Quem.Where(r => r != null))
                     {
                         @Html.DisplayFor(r => quem.Name) <br />
@@ -240,7 +240,7 @@
                 </div>
                 <hr />
                 <div class="short-div">
-                    <label class="redLabel" for="inputlg">Status:</label><br />
+                    <label class="redLabel" for="inputlg">@Resources.Resource.status:</label><br />
                     @Html.DisplayFor(r => i._Status.Name)
                 </div>
             </div>
@@ -258,20 +258,20 @@
                 <input name="Acao_Id" type="hidden" id="Acao_Id" value="@Model.Id" />
 
                 <div class="form-group">
-                    <label class="redLabel" for="inputlg">Observação:</label>
+                    <label class="redLabel" for="inputlg">@Resources.Resource.observation:</label>
                     <textarea name="Name" class="form-control input-sm" id="Name" style="width: 100%; height: 162px;"></textarea>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="redLabel" for="inputlg">Notificar:</label>
+                    <label class="redLabel" for="inputlg">@Resources.Resource.notify:</label>
                     @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"),@*"@Resources.Resource.select",*@                                                                                                                            /**/
                                                                                                                                                 new { @class = "form-control select2Init", @style = "width:100%;", @multiple = "multiple" })
                 </div>
 
                 <div class="form-group">
-                    <label class="redLabel" for="inputlg">Status:</label>
-                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                    <label class="redLabel" for="inputlg">@Resources.Resource.status:</label>
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                 </div>
             </div>
             <br />

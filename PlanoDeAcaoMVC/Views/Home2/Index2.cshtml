@@ -1066,6 +1066,11 @@
             $(o).removeClass('container').addClass('container-fluid');
         });
 
+        var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
+        function Resources(key){
+            return $.grep(ResourcesFile , function(a) { return a.Key == key})[0].Value
+        }
+
     </script>
 
     <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
