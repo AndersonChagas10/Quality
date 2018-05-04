@@ -263,7 +263,7 @@ namespace SgqSystem.Controllers.Api
         public IEnumerable<dynamic> GetReportReprocesso(int cl2_Id, int ParCompany_Id, string dtIni, string dtFim, int cabecalho_idEntrada, int level2_idEntrada, int cabecalho_idSaida, int level2_idSaida)
         {
             Factory factory = new Factory("DefaultConnection");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
@@ -400,7 +400,7 @@ namespace SgqSystem.Controllers.Api
             var ParCompany_Id = unitId;
 
             Factory factory = new Factory("DefaultConnection");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 
@@ -452,7 +452,7 @@ namespace SgqSystem.Controllers.Api
         public IEnumerable<dynamic> GetMonitor(int user)
         {
             Factory factory = new Factory("DefaultConnection");
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities(false);
+            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
             sgqDbDevEntities.Configuration.LazyLoadingEnabled = false;
 

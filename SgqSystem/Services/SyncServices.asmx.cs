@@ -3759,6 +3759,46 @@ namespace SgqSystem.Services
 	                                    $(o).remove();
                                     });
                                 }
+
+$(document).ready(function(){
+                            $('body').on('input', 'input.interval:visible', function(){
+
+                                var id = $(this).parents('li').attr('id');
+	                            $.each($('input[resultado]:visible'), function(i, o){
+                                            if ($(o).attr('resultado').indexOf('{' + id + '}') > 0){
+                                                var resultado = $(o).attr('resultado');
+
+                                                const regex = /{([^}]+)}/g;
+                                            let m;
+
+                                            while ((m = regex.exec($(o).attr('resultado'))) !== null)
+                                            {
+                                                // This is necessary to avoid infinite loops with zero-width matches
+                                                if (m.index === regex.lastIndex)
+                                                {
+                                                    regex.lastIndex++;
+                                                }
+
+                                                var valor = $('li[id=""' + m[1] + '""] input.interval').val();
+                                                if(valor.length > 0)
+                                                    resultado = resultado.replace(m[0],valor);
+                                            }
+
+                                            if (resultado.indexOf('{') != -1)
+                                            {
+                                                resultado = """";
+                                            }
+                                            else
+                                            {
+                                                resultado = eval(resultado);
+                                            }
+    	                                    $(o).val(resultado);
+    	                                    $(o).trigger('input');
+
+                                        }
+                                    });
+                            });
+});
                               </script> ";
 
             //string resource = GetResource();
@@ -6319,6 +6359,40 @@ namespace SgqSystem.Services
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax);
+            }//Resultado
+            else if (parLevel3.ParLevel3InputType_Id == 10)
+            {
+                classInput = " interval";
+
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
+
+                labels = html.div(
+
+
+
+                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
             }
             else
             {
