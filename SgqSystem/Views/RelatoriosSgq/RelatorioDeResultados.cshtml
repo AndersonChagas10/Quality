@@ -883,18 +883,18 @@
 
         let TituloHistoricoModal = "";
 
-        subtitleAux = Resources("unit") + ": " + enviar.unidadesFiltradas;
+        subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
 
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level1Name;
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
         } else
         if (data[0].ChartTitle == "Histórico do Monitoramento") {
             //TituloHistoricoModal += Resources("level1_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
 
             TituloHistoricoModal += Resources("level2_history");
-            subtitleAux += Resources('level2') + ": " + data[0].level2Name;
+            subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
         } else
         if (data[0].ChartTitle == "Histórico da Tarefa") {
             //TituloHistoricoModal += Resources("level1_history");
@@ -2203,7 +2203,13 @@
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
         enviarAxI['level3Id'] = data[0].level3Id;
+
+        enviarAxI['level1IdArr'] = [data[0].level1Id];
+        enviarAxI['level2IdArr'] = [data[0].level2Id];
+        enviarAxI['level3IdArr'] = [data[0].level3Id];
+
         enviarAxI['unitId'] = data[0].UnidadeId;
+        enviarAxI['unitIdArr'] = [data[0].UnidadeId];
 
         //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
         //subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
