@@ -883,18 +883,18 @@
 
         let TituloHistoricoModal = "";
 
-        subtitleAux = Resources("unit") + ": " + enviar.unidadesFiltradas;
+        subtitleAux = Resources("unit") + ": " + data[0].UnidadeName + " | ";
 
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level1Name;
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
         } else
         if (data[0].ChartTitle == "Histórico do Monitoramento") {
             //TituloHistoricoModal += Resources("level1_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
 
             TituloHistoricoModal += Resources("level2_history");
-            subtitleAux += Resources('level2') + ": " + data[0].level2Name;
+            subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
         } else
         if (data[0].ChartTitle == "Histórico da Tarefa") {
             //TituloHistoricoModal += Resources("level1_history");
@@ -1246,7 +1246,8 @@
                         point: {
                             events: {
                                 click: function () {
-
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1280,6 +1281,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1314,6 +1317,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1543,7 +1548,8 @@
                         point: {
                             events: {
                                 click: function () {
-
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1577,6 +1583,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1611,6 +1619,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1654,6 +1664,8 @@
             var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
             var limInferior = MapeiaValorParaHC(data, "limiteInferior");
             //var Subtitle = "";
+
+            // FUNÇÃO => REVEZAR DATA
 
             var sumav = qtdAv.reduce(function (a, b) { return a + b; });
             var sumnc = nc.reduce(function (a, b) { return a + b; });
@@ -1807,7 +1819,8 @@
                         point: {
                             events: {
                                 click: function () {
-
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -1842,6 +1855,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -1877,6 +1892,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2043,7 +2060,8 @@
                     point: {
                         events: {
                             click: function () {
-
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2077,6 +2095,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2111,6 +2131,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2203,7 +2225,13 @@
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
         enviarAxI['level3Id'] = data[0].level3Id;
+
+        enviarAxI['level1IdArr'] = [data[0].level1Id];
+        enviarAxI['level2IdArr'] = [data[0].level2Id];
+        enviarAxI['level3IdArr'] = [data[0].level3Id];
+
         enviarAxI['unitId'] = data[0].UnidadeId;
+        enviarAxI['unitIdArr'] = [data[0].UnidadeId];
 
         //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
         //subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
@@ -2913,6 +2941,7 @@
     var GraficoTarefasAcumuladasTit ='@Resources.Resource.derivations_per_defects';
 
     function GerarGraficoTarefasAcumuladas(data) {
+        if (data.length > 0) {
 
         var Proc = MapeiaValorParaHC(data, "Proc");
         //var nc = MapeiaValorParaHC(data, "Nc");
@@ -2984,7 +3013,9 @@
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
-
+        } else {
+            $('#SemDados').show();
+        }
     }
 
     var Chart = {
@@ -3471,7 +3502,13 @@
         Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
 
-    }
+        }
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format() + ' - ' + end.format());
+            enviar['startDate'] = start.format();
+            enviar['endDate'] = end.format();
+        }
 
     </script>
 
