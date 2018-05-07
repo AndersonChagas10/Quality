@@ -150,7 +150,10 @@ namespace SGQDBContext
             //             "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
 
             string sql = @"SELECT * FROM (
-                        SELECT CAST(C.Id AS VARCHAR) + '" + SyncServices.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name + ' - ' + C.Name as Name, P1.HasTakePhoto, 
+                        -- SELECT CAST(C.Id AS VARCHAR) + '" + SyncServices.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name + ' - ' + C.Name as Name, P1.HasTakePhoto, 
+                        
+                        SELECT CAST(C.Id AS VARCHAR) + '" + SyncServices.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name, P1.HasTakePhoto, 
+
                         -- (select top 1 id from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= CAST('" + dateCollection.ToString("yyyy-MM-dd") + @"' AS DATE)  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
                         -- (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= CAST('" + dateCollection.ToString("yyyy-MM-dd") + @"' AS DATE)  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
                         
@@ -1761,6 +1764,22 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
             
+            List<Generico> lista = new List<Generico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                lista = factory.SearchQuery<Generico>(sql).ToList();
+            }
+
+            return lista;
+        }
+
+        public List<Generico> getClusterCompany(int ParCompany_Id)
+        {
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            db = new SqlConnection(conexaoBR);
+
+            var sql = "SELECT CC.ParCluster_Id as id, C.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1";
+
             List<Generico> lista = new List<Generico>();
             using (Factory factory = new Factory("DefaultConnection"))
             {

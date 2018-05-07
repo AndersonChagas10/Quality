@@ -682,10 +682,10 @@ namespace SgqSystem.Services
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2,
                              string alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
                              decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao,
-                             bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse)
+                             bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse, string ParCluster_Id)
         {
 
-            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower()+"\"");
+            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower()+"\" ParCluster_Id=\"" + ParCluster_Id + "\"");
 
             string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
             string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");
@@ -713,6 +713,27 @@ namespace SgqSystem.Services
                             outerhtml: btnReaudit + btnCA,
                             classe: "userInfo col-xs-5");
             return level01;
+        }
+
+
+        public string cluster(string ParCluster_Id, string ParCluster_Name)
+        {
+
+            StringBuilder tags = new StringBuilder("parcluster_id=\"" + ParCluster_Id + "\" parcluster_name=\"" + ParCluster_Name + "\"");
+
+            string clusterList = link(
+                                id: ParCluster_Id,
+                                classe: "cluster col-xs-7 ",
+                                //Aqui vai as tags do level01
+                                tags: tags.ToString(),
+                                outerhtml: span(outerhtml: ParCluster_Name, classe: "levelName")
+                                );
+            //Adiciona Div Lateral
+            clusterList += div(
+                            //aqui vai os botoes
+                            
+                            classe: "userInfo col-xs-5");
+            return clusterList;
         }
 
         public string painelCounters(IEnumerable<SGQDBContext.ParCounter> parCounterList, string css = "")
