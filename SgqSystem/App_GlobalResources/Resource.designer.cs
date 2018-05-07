@@ -1645,6 +1645,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete - Binary Input Type.
+        /// </summary>
+        internal static string delete_binary_input_type {
+            get {
+                return ResourceManager.GetString("delete_binary_input_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         internal static string department {
@@ -1866,6 +1875,15 @@ namespace Resources {
         internal static string edited {
             get {
                 return ResourceManager.GetString("edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edition - Binary Input Type.
+        /// </summary>
+        internal static string edition_binary_input_type {
+            get {
+                return ResourceManager.GetString("edition_binary_input_type", resourceCulture);
             }
         }
         
