@@ -271,7 +271,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Unidade
                ,UnidadeName 
                ,ParStructure_Name
-            ORDER BY 6 DESC
+            ORDER BY 7 DESC
 
             drop table #NA
 			drop table #AMOSTRA4
@@ -468,7 +468,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Unidade
                ,UnidadeName
                ,ParStructure_Name
-            ORDER BY 8 DESC
+            ORDER BY 9 DESC
 
             drop table #NA
 			drop table #AMOSTRA4
@@ -669,7 +669,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Unidade
                ,UnidadeName 
                ,ParStructure_Name
-            ORDER BY 10 DESC
+            ORDER BY 11 DESC
             ";
                 #endregion
             }
