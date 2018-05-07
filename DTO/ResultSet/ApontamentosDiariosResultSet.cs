@@ -45,6 +45,7 @@ public class ApontamentosDiariosResultSet
     public string _AddDate { get { return AddDate.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
     public string Platform { get; set; }
     public string Type { get; set; }
+    public string Processo { get; set; }
 
     public string Select(DataCarrierFormulario form)
     {
@@ -153,7 +154,8 @@ public class ApontamentosDiariosResultSet
 					WHEN CAST(C2.AddDate as date) <> CAST(C2.CollectionDate as date) THEN '2'
 				   ELSE '0'
 				   END
-				 as Type
+				 as Type,
+                 PC.Name as Processo
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -197,6 +199,10 @@ public class ApontamentosDiariosResultSet
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN CollectionJson CJ
                  ON CJ.Id = CLCJ.CollectionJson_Id
+                 LEFT JOIN CollectionLevel2XCluster C2XC
+				 ON C2XC.CollectionLevel2_Id = C2.Id
+				 LEFT JOIN ParCluster PC
+				 ON PC.Id = C2XC.ParCluster_Id
                  WHERE 1=1 
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
