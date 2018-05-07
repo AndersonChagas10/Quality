@@ -4077,7 +4077,9 @@ $(document).ready(function(){
 
             var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date, Level1ListId: Level1ListId, isVolume: isVolume); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
-            string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1, classe: "container");
+            var seiLaCluster = GetClustersCompany(ParCompany_Id);
+
+            string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1 + seiLaCluster, classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
 
@@ -4626,7 +4628,8 @@ $(document).ready(function(){
                                                          volumeAlertaIndicador: volumeAlerta,
                                                          metaIndicador: meta,
                                                          IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
-                                                         listParRelapse: listParRelapse);
+                                                         listParRelapse: listParRelapse,
+                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString());
                             //Incrementa level1
                             parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters));
                         }
@@ -4703,6 +4706,84 @@ $(document).ready(function(){
             return listlevel1.ToString();
 
         }
+
+        /// <summary>
+        /// Recupera Level1 e seus monitoramentos e tarefas relacionados
+        /// </summary>
+        /// <returns></returns>
+        public string GetClustersCompany(int ParCompany_Id)
+        {
+
+            #region Buscar CLusters da Unidade
+
+            ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
+            var html = new Html();
+
+            //Buscamos os Clusters para a unidade selecionada
+            SGQDBContext.Generico listaCluster = new Generico(db);
+            var parClusterSQL = listaCluster.getClusterCompany(ParCompany_Id: ParCompany_Id);
+
+            //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
+            //Esses itens podem ser transformados funções menores
+            System.Text.StringBuilder listCluster = new System.Text.StringBuilder();
+ 
+
+            string excecao = null;
+            #endregion
+
+            #region instancia
+
+            //Instanciamos uma variável level01GroupList
+            System.Text.StringBuilder parClusterList = new System.Text.StringBuilder();
+            //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
+            System.Text.StringBuilder parClusters = new System.Text.StringBuilder();
+         
+            //Percorremos a Lista dos Agrupamento 
+
+            #endregion
+
+            //var counter = 0;
+            foreach (var parCluster in parClusterSQL) //LOOP2
+            {
+
+                #region 1 monte de coisa que aparentemente roda rapido....
+
+                string tipoTela = "";
+
+                    
+
+                string clusterObj = html.cluster(parCluster.id,
+                                                parCluster.nome);
+
+                //Incrementa level1
+                parClusters.Append(html.listgroupItem(parCluster.id.ToString(), classe: "row " + excecao, outerhtml: clusterObj));
+
+            }
+
+            //Quando termina o loop dos itens agrupados por ParCritialLevel 
+            //Se contem ParCritialLevel
+
+
+            //Adicionamos os itens e um listgroup
+            parClusterList = new System.Text.StringBuilder(html.listgroup(
+                                            outerhtml: parClusters.ToString()
+                                        ));
+
+            //Adicionar a lista de level01 agrupados ou não a lsita geral
+            listCluster.Append(parClusters);
+           
+            //Retona as lista
+            //Podemos gerar uma verificação de atualizações
+            html.div(true,
+                    outerhtml: listCluster,
+                    classe: "ClusterList"
+                    );
+
+            return listCluster.ToString();
+
+        }
+
+
         /// <summary>
         /// Gera Linhas do level2
         /// </summary>
@@ -7989,3 +8070,4 @@ $(document).ready(function(){
     }
 }
 
+#endregion
