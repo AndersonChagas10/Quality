@@ -2112,4 +2112,7 @@
   <data name="back_to_unit_of_measurement" xml:space="preserve">
     <value>Back to Units of Measurement</value>
   </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
 </root>

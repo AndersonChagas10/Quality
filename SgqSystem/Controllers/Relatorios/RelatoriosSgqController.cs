@@ -2882,10 +2882,10 @@ namespace SgqSystem.Controllers
             #endregion
 
             #region Cabecalhos
-
+            var pacote = Resources.Resource.package;
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0] });
+            tabela.trsCabecalho1.Add(new Ths() { name = pacote + ": " + form.ParametroTableRow[0] });
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 

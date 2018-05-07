@@ -1042,6 +1042,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conclued action plan..
+        /// </summary>
+        internal static string conclued_plan_action {
+            get {
+                return ResourceManager.GetString("conclued_plan_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config.
         /// </summary>
         internal static string config {
@@ -1056,15 +1065,6 @@ namespace Resources {
         internal static string config_global {
             get {
                 return ResourceManager.GetString("config_global", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Conclued action plan..
-        /// </summary>
-        internal static string conclued_plan_action {
-            get {
-                return ResourceManager.GetString("conclued_plan_action", resourceCulture);
             }
         }
         
@@ -3112,6 +3112,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Functions.
+        /// </summary>
+        internal static string level1Group {
+            get {
+                return ResourceManager.GetString("level1Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 % Non-conformities.
         /// </summary>
         internal static string level1Non_Conformities {
@@ -4431,6 +4440,15 @@ namespace Resources {
         internal static string or_greater_than {
             get {
                 return ResourceManager.GetString("or_greater_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package.
+        /// </summary>
+        internal static string package {
+            get {
+                return ResourceManager.GetString("package", resourceCulture);
             }
         }
         

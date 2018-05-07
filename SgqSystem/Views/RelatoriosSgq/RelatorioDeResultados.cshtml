@@ -844,7 +844,9 @@
 
     function CallbackGraficoHistoricoModal(data) {
         var subtitleAux = "";
-        var dia = MapeiaValorParaHC(data, "_date");
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+        var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
         //fazGambipraMenosCem(porc)
@@ -1323,7 +1325,9 @@
 
 
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1601,7 +1605,9 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1840,7 +1846,9 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");

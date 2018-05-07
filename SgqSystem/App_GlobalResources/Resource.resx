@@ -2514,4 +2514,7 @@
   <data name="update_tablet_screen" xml:space="preserve">
     <value>Update Parameterization</value>
   </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
 </root>
