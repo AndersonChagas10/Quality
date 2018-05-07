@@ -825,4 +825,70 @@
   <data name="_return" xml:space="preserve">
     <value>Retorno</value>
   </data>
+  <data name="accompaniment" xml:space="preserve">
+    <value>Acompanhamento</value>
+  </data>
+  <data name="action_plan" xml:space="preserve">
+    <value>Plano de Ação</value>
+  </data>
+  <data name="by_grj_solutions" xml:space="preserve">
+    <value>By GRJ Soluções</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Criar</value>
+  </data>
+  <data name="dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="delete_action" xml:space="preserve">
+    <value>Excluir Ação</value>
+  </data>
+  <data name="details" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="edit_planning" xml:space="preserve">
+    <value>Editar Planejamento</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>apartir de</value>
+  </data>
+  <data name="log_off" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="name_field_required" xml:space="preserve">
+    <value>O campo nome é obrigatório.</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>Senha</value>
+  </data>
+  <data name="password_field_required" xml:space="preserve">
+    <value>O campo senha é obrigatório.</value>
+  </data>
+  <data name="plan_action_authentication" xml:space="preserve">
+    <value>Plano de Ação - Autenticação</value>
+  </data>
+  <data name="quantity_actions" xml:space="preserve">
+    <value>Quantidade de Ações</value>
+  </data>
+  <data name="reports" xml:space="preserve">
+    <value>Relatórios</value>
+  </data>
+  <data name="send" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="strategic" xml:space="preserve">
+    <value>Estratégico</value>
+  </data>
+  <data name="tactical" xml:space="preserve">
+    <value>Tático</value>
+  </data>
+  <data name="type_user" xml:space="preserve">
+    <value>Digite o usuário</value>
+  </data>
+  <data name="user" xml:space="preserve">
+    <value>Usuário</value>
+  </data>
+  <data name="username_password_invalid" xml:space="preserve">
+    <value>Usuário ou Senha inválidos.</value>
+  </data>
 </root>

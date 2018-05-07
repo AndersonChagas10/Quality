@@ -5,12 +5,12 @@
 var ColvisarrayVisaoAtual_show = [];
 var ColvisarrayVisaoAtual_hide = [];
 var table;
-var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
-var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
-var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
-var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
-var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
-var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
+var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp' + Resources('details') + '</button> ';
+var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp' + Resources('new_tactic') + '</button>';
+var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp' + Resources('new_action') + '</button> ';
+var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('accompaniment') + '</button> ';
+var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('edit_planning') + '</button> ';
+var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('edit_planning') + '</button>';
 var dados = [];
 var dadosfilter = [];
 var dadosPie2 = [];
@@ -1165,12 +1165,12 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
     if (hasFilter) {
         var categoriesArr = [];
         if (id == 'panel5') {
-            if ($('#valor1Panel5 option:selected').text() == "Todos")
+            if ($('#valor1Panel5 option:selected').text() == Resources("all"))
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel5 option:selected').text());
         } else if (id == 'panel6') {
-            if ($('#valor1Panel6 option:selected').text() == "Todos")
+            if ($('#valor1Panel6 option:selected').text() == Resources("all"))
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel6 option:selected').text());
@@ -1437,14 +1437,14 @@ function orderArray(array) {
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
     var filtroEixoX = [];
     if (id == 'panel5') {
-        if ($('#valor2Panel5 option:selected').text() == "Todos")
+        if ($('#valor2Panel5 option:selected').text() == Resources("all"))
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
     } else if (id == 'panel6') {
-        if ($('#valor2Panel6 option:selected').text() == "Todos")
+        if ($('#valor2Panel6 option:selected').text() == Resources("all"))
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel6 option:selected').text());
