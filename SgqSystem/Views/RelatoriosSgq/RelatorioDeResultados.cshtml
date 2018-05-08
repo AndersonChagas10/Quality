@@ -383,12 +383,12 @@
             if (retornoArray[0].IsIndicador) {
                 //table.column(2).visible(false);
                 //table.column(3).visible(false);
-                columnDefs.push({ "targets": [2], "visible": false });
                 columnDefs.push({ "targets": [3], "visible": false });
+                columnDefs.push({ "targets": [4], "visible": false });
             }
 
             if (retornoArray[0].IsMonitoramento) {
-                columnDefs.push({ "targets": [3], "visible": false });
+                columnDefs.push({ "targets": [4], "visible": false });
                 //table.column(7).visible(false);
                 //table.column(8).visible(false);
             }
@@ -2697,7 +2697,8 @@
 
         $('#ftaModal').modal();
         $('#ftaModalSim').attr('href', preServer + str);
-    }
+
+    };
 
     function clickSemUnidade(categoria) {
 
@@ -3504,11 +3505,11 @@
 
         }
 
-        function cb(start, end) {
-            $('#reportrange span').html(start.format() + ' - ' + end.format());
-            enviar['startDate'] = start.format();
-            enviar['endDate'] = end.format();
-        }
+    function cb(start, end) {
+        $('#reportrange span').html(start.format() + ' - ' + end.format());
+        enviar['startDate'] = start.format();
+        enviar['endDate'] = end.format();
+    }
 
     </script>
 
