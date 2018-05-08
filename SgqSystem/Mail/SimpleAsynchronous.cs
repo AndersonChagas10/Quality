@@ -531,7 +531,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception e)
             {
-                new CreateLog(e);
+                //new CreateLog(e);
                 return deviationMessage;
             }
         }

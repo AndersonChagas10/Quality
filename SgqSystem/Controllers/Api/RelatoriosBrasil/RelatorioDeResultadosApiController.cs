@@ -2584,7 +2584,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 { Wnivelcritico }
                 GROUP BY 
                     ConsolidationDate
-            ORDER BY 3 
+            ORDER BY 4 
             ";
                 #endregion
             }

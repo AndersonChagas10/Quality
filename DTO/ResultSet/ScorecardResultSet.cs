@@ -730,7 +730,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                                                                                                                                                                       " +
            "\n WHERE(ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL OR L1.Id = 25)                                                                                                                                                                                          " +
-           "\n   AND(C.Id = @ParCompany_Id OR(C.Id IS NULL AND L1.Id = 25 AND CL.Id in (SELECT DISTINCT ParCluster_Id FROM ParLevel1xCluster where IsActive = 1 AND parlevel1_id = 25 AND EffectiveDate < @DATAINICIAL)))                                                                                                                                                                                                       " +
+           "\n   AND(C.Id = @ParCompany_Id OR(C.Id IS NULL AND L1.Id = 25 AND @CLUSTER in (SELECT DISTINCT ParCluster_Id FROM ParLevel1xCluster where IsActive = 1 AND parlevel1_id = 25 AND EffectiveDate < @DATAINICIAL)))                                                                                                                                                                                                       " +
            "\n GROUP BY                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n      CL.Id                                                                                                                                                                                                                                                          " +
@@ -868,7 +868,23 @@ public class ScorecardResultSet
            "\n AND L1.IsActive <> 0                                                                                                                                                                                                                                                " +
            "\n AND L1.Id NOT IN(SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC (nolock)  WHERE CCC.UnitId = @ParCompany_Id                                                                                                                                                             " +
            "\n AND CCC.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL)                                                                                                                                                                                                      " +
-           "\n AND CL.Id = @CLUSTER                                                                                                                                                                                                                                                                    " +
+           //"\n AND L1C.ParCluster_Id = @CLUSTER                                                                                                                                                                                                                                                                    " +
+
+            " AND ( " +
+
+           "\n         SELECT TOP 1 ParCluster_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
+
+           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
+
+           "\n             AND L1Ca.IsActive = 1 " +
+
+           "\n             AND L1Ca.EffectiveDate <= @DATAFINAL " +
+
+           "\n         ORDER BY L1Ca.EffectiveDate  desc " +
+            "\n	) = @CLUSTER" +
+
            "\n  ) SC                                                                                                                                                                                                                                                               " +
            "\n  " + where +
            "\n  " + orderby + "                                                                                                                                                                                                                                                    " +

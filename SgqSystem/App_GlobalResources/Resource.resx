@@ -2523,4 +2523,10 @@
   <data name="notes" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="delete_binary_input_type" xml:space="preserve">
+    <value>Delete - Binary Input Type</value>
+  </data>
+  <data name="edition_binary_input_type" xml:space="preserve">
+    <value>Edition - Binary Input Type</value>
+  </data>
 </root>
