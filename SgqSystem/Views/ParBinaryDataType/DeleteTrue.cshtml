@@ -1,5 +1,9 @@
 ﻿@model Dominio.ParLevel3BoolTrue
 
+@{
+    ViewBag.Title = Resources.Resource.delete_binary_input_type;
+}
+
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="page-bar">
@@ -62,7 +66,7 @@
                                 </dl>
 
                                 @using (Html.BeginForm())
-            {
+                                {
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-actions no-color">

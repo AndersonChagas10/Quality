@@ -2517,4 +2517,10 @@
   <data name="notes" xml:space="preserve">
     <value>Observações</value>
   </data>
+  <data name="delete_binary_input_type" xml:space="preserve">
+    <value>Deletar - Tipo de Entrada Binária</value>
+  </data>
+  <data name="edition_binary_input_type" xml:space="preserve">
+    <value>Edição - Tipo de Entrada Binária</value>
+  </data>
 </root>
