@@ -3286,7 +3286,7 @@ ORDER BY 3
 
         #endregion
 
-        private string GetUserUnits(int User)
+        private static string GetUserUnits(int User)
         {
             using (var db = new SgqDbDevEntities())
             {
@@ -3510,6 +3510,7 @@ ORDER BY 3
             var Wtarefa = "";
             var Wfuncao = "";
 
+            var WunidadeAcesso = GetUserUnits(form.auditorId);
 
             // Função
 
@@ -3576,10 +3577,10 @@ ORDER BY 3
 
                 #region Consolidação Por JBS, Unidade e Indicador
 
-                Query = @"
+                Query = $@"
             
-            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
-            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
+            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + $@" 00:00:00'
+            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + $@" 23:59:59'
             
              DECLARE @dataFim_ date = @DATEFIM
               
@@ -3697,6 +3698,7 @@ FROM (SELECT
             FROM ConsolidationLevel1 CL1 WITH (NOLOCK) 
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
+            AND CL1.UnitId IN ({ WunidadeAcesso }) 
             " + Wunidade + @"
             " + Wfuncao + @"
             " + Windicador + @"
@@ -3959,10 +3961,10 @@ FROM (SELECT
 
                 #region Consolidação Por Indicador e Monitoramento
 
-                Query = @"
+                Query = $@"
             
-            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
-            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
+            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + $@" 00:00:00'
+            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + $@" 23:59:59'
             
              DECLARE @dataFim_ date = @DATEFIM
               
@@ -4074,6 +4076,7 @@ FROM (SELECT
             	ON CL1.ID = CL2.ConsolidationLevel1_Id
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
+            AND CL1.UnitId IN ({ WunidadeAcesso }) 
             " + Wunidade + @"
             " + Wfuncao + @"
             " + Windicador + @"
@@ -4339,10 +4342,10 @@ FROM (SELECT
 
                 #region Consolidação Por Indicador, Monitoramento e Tarefa
 
-                Query = @"
+                Query = $@"
             
-        DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
-        DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
+        DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + $@" 00:00:00'
+        DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + $@" 23:59:59'
         
           DECLARE @dataFim_ date = @DATEFIM
           
@@ -4456,6 +4459,7 @@ FROM (SELECT
         	ON C2.ID = R3.CollectionLevel2_Id
         WHERE 1=1 
         AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
+        AND CL1.UnitId IN ({ WunidadeAcesso })
         " + Wunidade + @"
         " + Wfuncao + @"
         " + Windicador + @"
@@ -4831,6 +4835,7 @@ FROM (SELECT
             var whereCriticalLevel = "";
             var whereLevel1 = "";
             var whereUnit = "";
+            var WunidadeAcesso = GetUserUnits(form.auditorId);
 
             if (form.departmentId != 0)
             {
@@ -4898,6 +4903,7 @@ FROM (SELECT
             { whereLevel1 }
             { whereUnit }
             /* and MON.Id = 1 */
+            AND CL2.UnitId in ({WunidadeAcesso}) 
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
