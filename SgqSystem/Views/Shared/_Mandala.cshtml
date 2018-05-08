@@ -27,13 +27,13 @@
                 tamanhoDoElemento: 10,
                 posicaoNaTela: 'left bottom',
                 estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-unidade="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}"',
+                atributosElemento: 'data-unidade="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
                 elementoDeCentro: ""
             });
             $('#' + mandalaGRT.idElemento + ' a').hover(function () {
                 $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
                 $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
+                $('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
                 $('#mandalaModal').modal('show');
             }, function () {
                 $('#mandalaModal').modal('hide');
@@ -61,14 +61,14 @@ function MostrarIndicador(empresa) {
                 tamanhoDoElemento: 10,
                 posicaoNaTela: 'left bottom',
                 estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-indicador="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}"',
+                atributosElemento: 'data-indicador="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
                 elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
             });
 
             $('#' + mandalaGRT.idElemento + ' a').hover(function () {
                 $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador') + " - " + $(this).attr('data-processo'));
                 $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
+                $('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
                 $('#mandalaModal').modal('show');
             }, function () {
                 $('#mandalaModal').modal('hide');
@@ -101,14 +101,14 @@ function MostrarMonitoramento(processo, empresa) {
                 tamanhoDoElemento: 10,
                 posicaoNaTela: 'left bottom',
                 estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-ParLevel2Name="{ParLevel2_Name}"',
+                atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-ParLevel2Name="{ParLevel2_Name}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
                 elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
             });
 
             $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + "-" + $(this).attr('data-processo') + "-" + $(this).attr('data-ParLevel2Name'));
+                $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + " - " + $(this).attr('data-processo') + " - " + $(this).attr('data-ParLevel2Name'));
                 $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                $('#mandalaModal').find('.modal-body').text($(this).attr('data-texto') + "%");
+                $('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
                 $('#mandalaModal').modal('show');
             }, function () {
                 $('#mandalaModal').modal('hide');

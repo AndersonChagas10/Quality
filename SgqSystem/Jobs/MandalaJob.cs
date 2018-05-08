@@ -47,7 +47,7 @@ namespace SgqSystem.Jobs
             try
             {
                 var query = $@"               
-                declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
+               declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
                 declare @Fim datetime = DATEADD(DAY,0,GETDATE())
 
 
@@ -89,10 +89,10 @@ namespace SgqSystem.Jobs
 		                ,Cubo.ParFrequency_Id
 		                ,Cubo.ShiftPlan
 		                ,Cubo.PeriodPlan
-		                ,MAX(Cubo.EvaluationPlan) AS EvaluationPlan
-		                ,MAX(Cubo.SamplePlan) AS SamplePlan
-		                ,MAX(Cubo.Evaluation) AS Evaluation
-		                ,MAX(Cubo.Sample) AS [Sample]
+		                ,MAX(CAST(Cubo.EvaluationPlan AS FLOAT)) AS EvaluationPlan
+		                ,MAX(CAST(Cubo.SamplePlan AS FLOAT)) AS SamplePlan
+		                ,MAX(CAST(Cubo.Evaluation AS FLOAT)) AS Evaluation
+		                ,MAX(CAST(Cubo.Sample AS FLOAT)) AS [Sample]
 	
 	
 	                 FROM (
@@ -218,8 +218,8 @@ namespace SgqSystem.Jobs
                                     ParLevel2_id,
                                     Shift,
                                     Period,
-                                    MAX(EvaluationNumber) EvaluationNumber,
-                                    MAX(Sample) Sample
+                                    MAX(CAST(EvaluationNumber AS FLOAT)) EvaluationNumber,
+                                    MAX(CAST(Sample AS FLOAT)) Sample
 
                                     FROM CollectionLevel2 c2 WITH(NOLOCK)
 
@@ -312,8 +312,10 @@ namespace SgqSystem.Jobs
                             --,Cubo.Evaluation
                             --,Cubo.Sample
                 ) CUBO
-                where 1 = 1
-                --WHERE ParCompany_Name = ''
+                WHERE 1 = 1
+                --where ParCompany_Name = 'Barra do Garças' 
+				--AND ParLevel1_Name = '(%) NC CEP Vácuo GRD'          
+				--WHERE ParCompany_Name = ''
                 --AND ParLevel1_Name = ''
                 --AND ParLevel2_Name = 'Análise Microbiológica em Produto (Desossa)'
                 Group by
@@ -384,11 +386,11 @@ namespace SgqSystem.Jobs
 		                ,Cubo.ParLevel2_Name
 		                ,Cubo.ParFrequency_Id
 		                ,Cubo.ShiftPlan
-		                ,Cubo.PeriodPlan
-		                ,MAX(Cubo.EvaluationPlan) AS EvaluationPlan
-		                ,MAX(Cubo.SamplePlan) AS SamplePlan
-		                ,MAX(Cubo.Evaluation) AS Evaluation
-		                ,MAX(Cubo.Sample) AS [Sample]
+		                ,Cubo.PeriodPlan		                
+                        ,MAX(CAST(Cubo.EvaluationPlan AS FLOAT)) AS EvaluationPlan
+		                ,MAX(CAST(Cubo.SamplePlan AS FLOAT)) AS SamplePlan
+		                ,MAX(CAST(Cubo.Evaluation AS FLOAT)) AS Evaluation
+		                ,MAX(CAST(Cubo.Sample AS FLOAT)) AS [Sample]
 	
 	
 	                 FROM (
@@ -514,8 +516,8 @@ namespace SgqSystem.Jobs
                                     ParLevel2_id,
                                     Shift,
                                     Period,
-                                    MAX(EvaluationNumber) EvaluationNumber,
-                                    MAX(Sample) Sample
+                                    MAX(CAST(EvaluationNumber AS FLOAT)) EvaluationNumber,
+                                    MAX(CAST(Sample AS FLOAT)) Sample
 
                                     FROM CollectionLevel2 c2 WITH(NOLOCK)
 
@@ -680,11 +682,11 @@ namespace SgqSystem.Jobs
 		                ,Cubo.ParLevel2_Name
 		                ,Cubo.ParFrequency_Id
 		                ,Cubo.ShiftPlan
-		                ,Cubo.PeriodPlan
-		                ,MAX(Cubo.EvaluationPlan) AS EvaluationPlan
-		                ,MAX(Cubo.SamplePlan) AS SamplePlan
-		                ,MAX(Cubo.Evaluation) AS Evaluation
-		                ,MAX(Cubo.Sample) AS [Sample]
+		                ,Cubo.PeriodPlan		               
+                        ,MAX(CAST(Cubo.EvaluationPlan AS FLOAT)) AS EvaluationPlan
+		                ,MAX(CAST(Cubo.SamplePlan AS FLOAT)) AS SamplePlan
+		                ,MAX(CAST(Cubo.Evaluation AS FLOAT)) AS Evaluation
+		                ,MAX(CAST(Cubo.Sample AS FLOAT)) AS [Sample]
 	
 	
 	                 FROM (
@@ -810,8 +812,8 @@ namespace SgqSystem.Jobs
                                     ParLevel2_id,
                                     Shift,
                                     Period,
-                                    MAX(EvaluationNumber) EvaluationNumber,
-                                    MAX(Sample) Sample
+                                   MAX(CAST(EvaluationNumber AS FLOAT)) EvaluationNumber,
+                                   MAX(CAST(Sample AS FLOAT)) Sample
 
                                     FROM CollectionLevel2 c2 WITH(NOLOCK)
 
