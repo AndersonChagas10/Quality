@@ -199,7 +199,7 @@ public class ScorecardResultSet
              , @CLUSTERNAME = 
              (
              SELECT TOP 1 (select name from parcluster where id = L1Ca.ParCluster_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
-                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                     WHERE @CLUSTER = L1Ca.ParCluster_ID 
                          AND 25 = L1Ca.ParLevel1_Id 
                          AND L1Ca.IsActive = 1 
                          AND L1Ca.EffectiveDate <= @DATAFINAL 
@@ -212,7 +212,7 @@ public class ScorecardResultSet
              , @CRITERIO = 
              (
              SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
-                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                     WHERE @CLUSTER = L1Ca.ParCluster_ID 
                          AND 25 = L1Ca.ParLevel1_Id 
                          AND L1Ca.IsActive = 1 
                          AND L1Ca.EffectiveDate <= @DATAFINAL 
@@ -221,7 +221,7 @@ public class ScorecardResultSet
              , @CRITERIONAME = 
              (
              SELECT top 1 (select name from parcriticallevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
-                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                     WHERE @CLUSTER = L1Ca.ParCluster_ID 
                          AND 25 = L1Ca.ParLevel1_Id 
                          AND L1Ca.IsActive = 1 
                          AND L1Ca.EffectiveDate <= @DATAFINAL 
@@ -230,7 +230,7 @@ public class ScorecardResultSet
              , @PONTOS = 
              (
              SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) 
-                     WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID 
+                     WHERE @CLUSTER = L1Ca.ParCluster_ID 
                          AND 25 = L1Ca.ParLevel1_Id 
                          AND L1Ca.IsActive = 1 
                          AND L1Ca.EffectiveDate <= @DATAFINAL 
@@ -443,7 +443,21 @@ public class ScorecardResultSet
            "\n SELECT                                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n   ISNULL(CL.Id, @CLUSTER) AS Cluster                                                                                                                                                                                                                                " +
-           "\n  , ISNULL(CL.Name, @CLUSTERNAME) AS ClusterName                                                                                                                                                                                                                     " +
+           //"\n  , ISNULL(CL.Name, @CLUSTERNAME) AS ClusterName                                                                                                                                                                                                                     " +
+           
+           "\n , ISNULL((                                                                                                           " +
+           "\n SELECT TOP 1(select name from ParCluster where id = L1Ca.ParCluster_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK)     " +
+           "\n WHERE @CLUSTER = L1Ca.ParCluster_ID                                                                                  " +
+           "\n     AND L1.Id = L1Ca.ParLevel1_Id AND @CLUSTER = L1Ca.ParCluster_ID                                                  " +
+           "\n     AND L1Ca.IsActive = 1                                                                                            " +
+           "\n     AND L1Ca.EffectiveDate <= @DATAFINAL                                                                             " +
+           "\n     ORDER BY L1Ca.EffectiveDate  desc                                                                                " +
+           "\n )                                                                                                                    " +
+           "\n , @CLUSTERNAME)  AS ClusterName                                                                                      " +
+
+
+
+
            "\n  , ISNULL(S.Id, @REGIONAL) AS Regional                                                                                                                                                                                                                              " +
            "\n  , ISNULL(S.Name, @REGIONALNAME) AS RegionalName                                                                                                                                                                                                                    " +
            "\n  , ISNULL(CL1.UnitId, @PARCOMPANY) AS ParCompanyId                                                                                                                                                                                                                  " +
@@ -457,9 +471,9 @@ public class ScorecardResultSet
 
            "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+           "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
-           "\n             AND L1.Id = L1Ca.ParLevel1_Id AND CL1C.ParCluster_Id = L1Ca.ParCluster_ID " +
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id AND @CLUSTER = L1Ca.ParCluster_ID " +
 
            "\n             AND L1Ca.IsActive = 1 " +
 
@@ -475,9 +489,9 @@ public class ScorecardResultSet
 
            "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+           "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
-           "\n             AND L1.Id = L1Ca.ParLevel1_Id AND CL1C.ParCluster_Id = L1Ca.ParCluster_ID " +
+           "\n             AND L1.Id = L1Ca.ParLevel1_Id AND @CLUSTER = L1Ca.ParCluster_ID " +
 
            "\n             AND L1Ca.IsActive = 1 " +
 
@@ -493,9 +507,9 @@ public class ScorecardResultSet
 
                "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-               "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+               "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
-               "\n             AND L1.Id = L1Ca.ParLevel1_Id AND CL1C.ParCluster_Id = L1Ca.ParCluster_ID " +
+               "\n             AND L1.Id = L1Ca.ParLevel1_Id AND @CLUSTER = L1Ca.ParCluster_ID " +
 
                "\n             AND L1Ca.IsActive = 1 " +
 
@@ -766,7 +780,7 @@ public class ScorecardResultSet
            "\n , C.Id AS ParCompanyId                                                                                                                                                                                                                                              " +
            "\n , C.Name AS ParCompanyName                                                                                                                                                                                                                                          " +
            "\n , CASE WHEN L1.IsRuleConformity = 0 THEN 1 ELSE 2 END AS TipoIndicador                                                                                                                                                                                              " +
-           "\n , CASE WHEN L1.IsRuleConformity = 0 THEN 'Menor' ELSE 'Maior' END AS TipoIndicadorName                                                                                                                                                                              " +
+           "\n , CASE WHEN L1.IsRuleConformity = 0 THEN '" + Resources.Resource.smaller.ToString() + "' ELSE '" + Resources.Resource.bigger.ToString() + "' END AS TipoIndicadorName                                                                                               " +
            "\n , L1.Id AS Level1Id                                                                                                                                                                                                                                                 " +
            "\n  , L1.Name AS Level1Name                                                                                                                                                                                                                                            " +
            "\n  , ISNULL( " +
@@ -775,7 +789,7 @@ public class ScorecardResultSet
 
            "\n         SELECT TOP 1 L1Ca.ParCriticalLevel_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+           "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
@@ -793,7 +807,7 @@ public class ScorecardResultSet
 
            "\n         SELECT TOP 1 (select top 1 name from ParCriticalLevel where id = L1Ca.ParCriticalLevel_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+           "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
@@ -815,7 +829,7 @@ public class ScorecardResultSet
 
                "\n         SELECT TOP 1 L1Ca.Points FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-               "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+               "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
                "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
@@ -874,7 +888,7 @@ public class ScorecardResultSet
 
            "\n         SELECT TOP 1 ParCluster_Id FROM ParLevel1XCluster L1Ca WITH(NOLOCK) " +
 
-           "\n         WHERE CCL.ParCluster_ID = L1Ca.ParCluster_ID " +
+           "\n         WHERE @CLUSTER = L1Ca.ParCluster_ID " +
 
            "\n             AND L1.Id = L1Ca.ParLevel1_Id " +
 
