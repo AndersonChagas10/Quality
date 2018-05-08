@@ -1165,7 +1165,7 @@
     <value>and</value>
   </data>
   <data name="and_greater_than" xml:space="preserve">
-    <value>e maior que</value>
+    <value>And greater than</value>
   </data>
   <data name="cluster_can_not_be_duplicated" xml:space="preserve">
     <value>Cluster can not be duplicated</value>

@@ -502,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e maior que.
+        ///   Looks up a localized string similar to And greater than.
         /// </summary>
         internal static string and_greater_than {
             get {
