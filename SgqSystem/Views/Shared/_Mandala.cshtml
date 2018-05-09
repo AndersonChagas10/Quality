@@ -12,116 +12,133 @@
         };
 
          function MostrarEmpresa() {
-        var enviar = {};
-        enviar['auditorId'] = GetUsuarioId();
-    $.ajax({
-        type: "POST",
-        url: '@Url.Action("MostrarEmpresaMandala", "api/Mandala")',
-        dataType: 'json',
-        data: enviar,
-        success: function (result) {
-            mandalaGRT.Inicializar({
-                idElemento: "mandala",
-                listaDeDados: result,
-                margemDoCentro: 80,
-                tamanhoDoElemento: 10,
-                posicaoNaTela: 'left bottom',
-                estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-unidade="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
-                elementoDeCentro: ""
-            });
-            $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
-                $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                $('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
-                $('#mandalaModal').modal('show');
-            }, function () {
-                $('#mandalaModal').modal('hide');
-            });
+            var enviar = {};
+            enviar['auditorId'] = GetUsuarioId();
 
-            $('#' + mandalaGRT.idElemento + ' a').on('click', function () {
-                var empresa = $(this).attr('data-unidade');
-                MostrarIndicador(empresa);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("MostrarEmpresaMandala", "api/Mandala")',
+                dataType: 'json',
+                data: enviar,
+                success: function (result) {
+                    mandalaGRT.Inicializar({
+                        idElemento: "mandala",
+                        listaDeDados: result,
+                        margemDoCentro: 80,
+                        tamanhoDoElemento: 10,
+                        posicaoNaTela: 'left bottom',
+                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
+                        atributosElemento: 'data-unidade="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
+                        elementoDeCentro: ""
+                    });
+                    $('#' + mandalaGRT.idElemento + ' a').hover(function () {
+                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
+                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));                       
+                        $('#mandalaModal').find('.cabecalhoAR').text("Amostras Realizadas:");
+                        $('#mandalaModal').find('.dadosTabelaAR').text($(this).attr('data-AmostrasR'))
+                        $('#mandalaModal').find('.cabecalhoAP').text(" Amostras Planejadas:");
+                        $('#mandalaModal').find('.dadosTabelaAP').text($(this).attr('data-AmostrasP'))
+                        $('#mandalaModal').find('.cabecalhoTotal').text("% Total");
+                        $('#mandalaModal').find('.dadosTabelaTotal').text($(this).attr('data-texto') + "%")
+                        $('#mandalaModal').modal('show');
+                    }, function () {
+                        $('#mandalaModal').modal('hide');
+                    });
+
+                    $('#' + mandalaGRT.idElemento + ' a').on('click', function () {
+                        var empresa = $(this).attr('data-unidade');
+                        MostrarIndicador(empresa);
+                    });
+                }
             });
         }
-    });
-}
-function MostrarIndicador(empresa) {
-    enviar['unitName'] = empresa;
-    $.ajax({
-        type: "POST",
-        url: '@Url.Action("MostrarIndicadorMandala", "api/Mandala")',
-        dataType: 'json',
-        data: enviar,
-        success: function (result) {
-            mandalaGRT.Inicializar({
-                idElemento: "mandala",
-                listaDeDados: result,
-                margemDoCentro: 80,
-                tamanhoDoElemento: 10,
-                posicaoNaTela: 'left bottom',
-                estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-indicador="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
-                elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
+        function MostrarIndicador(empresa) {
+            enviar['unitName'] = empresa;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("MostrarIndicadorMandala", "api/Mandala")',
+                dataType: 'json',
+                data: enviar,
+                success: function (result) {
+                    mandalaGRT.Inicializar({
+                        idElemento: "mandala",
+                        listaDeDados: result,
+                        margemDoCentro: 80,
+                        tamanhoDoElemento: 10,
+                        posicaoNaTela: 'left bottom',
+                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
+                        atributosElemento: 'data-indicador="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
+                        elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
+                    });
+
+                    $('#' + mandalaGRT.idElemento + ' a').hover(function () {
+                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador') + " - " + $(this).attr('data-processo'));
+                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));                
+                        $('#mandalaModal').find('.cabecalhoAR').text("Amostras Realizadas:");
+                        $('#mandalaModal').find('.dadosTabelaAR').text($(this).attr('data-AmostrasR'))
+                        $('#mandalaModal').find('.cabecalhoAP').text(" Amostras Planejadas:");
+                        $('#mandalaModal').find('.dadosTabelaAP').text($(this).attr('data-AmostrasP'))
+                        $('#mandalaModal').find('.cabecalhoTotal').text("% Total");
+                        $('#mandalaModal').find('.dadosTabelaTotal').text($(this).attr('data-texto') + "%")
+                        $('#mandalaModal').modal('show');
+                    }, function () {
+                        $('#mandalaModal').modal('hide');
+                    });
+
+                    $('#' + mandalaGRT.idElemento + ' a').on('click', function () {
+                        var processo = $(this).attr('data-processo');
+                        MostrarMonitoramento(processo, empresa);
+                    });
+
+                    $('#mandalaVoltar').on('click', function () {
+                        MostrarEmpresa();
+                    });
+                }
             });
 
-            $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador') + " - " + $(this).attr('data-processo'));
-                $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                $('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
-                $('#mandalaModal').modal('show');
-            }, function () {
-                $('#mandalaModal').modal('hide');
-            });
+        }
+        function MostrarMonitoramento(processo, empresa) {
+            enviar['level1Name'] = processo;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("MostrarMonitoramentoMandala", "api/Mandala")',
+                dataType: 'json',
+                data: enviar,
+                success: function (result) {
+                    mandalaGRT.Inicializar({
+                        idElemento: "mandala",
+                        listaDeDados: result,
+                        margemDoCentro: 80,
+                        tamanhoDoElemento: 10,
+                        posicaoNaTela: 'left bottom',
+                        estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
+                        atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-ParLevel2Name="{ParLevel2_Name}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
+                        elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
+                    });
 
-            $('#' + mandalaGRT.idElemento + ' a').on('click', function () {
-                var processo = $(this).attr('data-processo');
-                MostrarMonitoramento(processo, empresa);
-            });
+                    $('#' + mandalaGRT.idElemento + ' a').hover(function () {
+                        $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + " - " + $(this).attr('data-processo') + " - " + $(this).attr('data-ParLevel2Name'));
+                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
+                        //$('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
+                        $('#mandalaModal').find('.cabecalhoAR').text("Amostras Realizadas:");
+                        $('#mandalaModal').find('.dadosTabelaAR').text($(this).attr('data-AmostrasR'))
+                        $('#mandalaModal').find('.cabecalhoAP').text(" Amostras Planejadas:");
+                        $('#mandalaModal').find('.dadosTabelaAP').text($(this).attr('data-AmostrasP'))
+                        $('#mandalaModal').find('.cabecalhoTotal').text("% Total");
+                        $('#mandalaModal').find('.dadosTabelaTotal').text($(this).attr('data-texto') + "%")
+                        $('#mandalaModal').modal('show');
+                    }, function () {
+                        $('#mandalaModal').modal('hide');
+                    });
 
-            $('#mandalaVoltar').on('click', function () {
-                MostrarEmpresa();
+                    $('#mandalaVoltar').on('click', function () {
+                        MostrarIndicador(empresa);
+                    });
+                }
             });
         }
-    });
 
-}
-function MostrarMonitoramento(processo, empresa) {
-    enviar['level1Name'] = processo;
-    $.ajax({
-        type: "POST",
-        url: '@Url.Action("MostrarMonitoramentoMandala", "api/Mandala")',
-        dataType: 'json',
-        data: enviar,
-        success: function (result) {
-            mandalaGRT.Inicializar({
-                idElemento: "mandala",
-                listaDeDados: result,
-                margemDoCentro: 80,
-                tamanhoDoElemento: 10,
-                posicaoNaTela: 'left bottom',
-                estiloDoElemento: "background: {Cor};border-radius: 100% !important;",
-                atributosElemento: 'data-monitoramento="{ParCompany_Name}" data-cor="{Cor}" data-texto="{Coletado}" data-processo="{ParLevel1_name}" data-ParLevel2Name="{ParLevel2_Name}" data-AmostrasR="{Amostras_Realizadas}" data-AmostrasP="{Amostras_Planejadas}"',
-                elementoDeCentro: '<button id="mandalaVoltar" class="btn btn-link" style="{Style};padding:0px;color:#000"><i class="fa fa-close" style="font-size:40px;vertical-align:middle"></i></button>'
-            });
-
-            $('#' + mandalaGRT.idElemento + ' a').hover(function () {
-                $('#mandalaModal').find('.modal-title').text($(this).attr('data-monitoramento') + " - " + $(this).attr('data-processo') + " - " + $(this).attr('data-ParLevel2Name'));
-                $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
-                $('#mandalaModal').find('.modal-body').text("Amostras Realizadas:" + $(this).attr('data-AmostrasR') + " Amostras Planejadas:" + $(this).attr('data-AmostrasP') + " = " + $(this).attr('data-texto') + "%");
-                $('#mandalaModal').modal('show');
-            }, function () {
-                $('#mandalaModal').modal('hide');
-            });
-
-            $('#mandalaVoltar').on('click', function () {
-                MostrarIndicador(empresa);
-            });
-        }
-    });
-}
-
-MostrarEmpresa();
+        MostrarEmpresa();
     })
 </script>
 

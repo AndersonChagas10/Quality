@@ -102,7 +102,6 @@
             this.elementoDeCentro = this.SubstituirVariaveis(this.elementoDeCentro, { Style: 'width:' + (this.margemDoCentro) + 'px;height:' + (this.margemDoCentro) + 'px;position:absolute;display:block;margin-left:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;margin-top:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;transform:translate3d(0px, 0px, 0)' });
             $('#' + this.idElemento).append(this.elementoDeCentro);
         }
-
         this.RenderizaElemento(this.listaDeDados, this.margemDoCentro);
 
         //Aplica fade no evento :hover
