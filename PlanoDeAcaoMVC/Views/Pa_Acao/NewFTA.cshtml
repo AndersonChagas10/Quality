@@ -248,11 +248,11 @@
                     <td width="10%"></td>
                 </tr>
 
-                <tr>
-                    <td colspan="10">
-                        <button type="button" class="btn btn-success" id="AbrirModalNovoApartirDeAlgoTático" onclick="AbrirModalNovoApartirDeAlgo('acao', 'Tático', '');" style=""><strong>Vincular Tático <span style="color:red">*</span></strong></button>
-                    </td>
-                </tr>
+                @*<tr>
+                        <td colspan="10">
+                            <button type="button" class="btn btn-success" id="AbrirModalNovoApartirDeAlgoTático" onclick="AbrirModalNovoApartirDeAlgo('acao', 'Tático', '');" style=""><strong>Vincular Tático <span style="color:red">*</span></strong></button>
+                        </td>
+                    </tr>*@
                 <tr>
                     <td colspan="10">
                         <input id="Panejamento_Id" name="Panejamento_Id" type="hidden">
@@ -265,23 +265,23 @@
     </div>
     <script>
         var app = angular.module("App", []);
-        app.controller('FTA', ['$scope', function($scope) {
+        app.controller('FTA', ['$scope', function ($scope) {
             $scope.count = 0;
             $scope.items = [0];
 
-            $scope.myFunc = function() {
+            $scope.myFunc = function () {
                 $scope.count++;
                 $scope.items.push($scope.count);
             };
 
-            $scope.RemoverFTA = function(item) {
+            $scope.RemoverFTA = function (item) {
                 var index = $scope.items.indexOf(item);
                 $scope.items.splice(index, 1);
             };
         }]);
 
-        app.directive('myRepeatDirective', function() {
-            return function(scope, element, attrs) {
+        app.directive('myRepeatDirective', function () {
+            return function (scope, element, attrs) {
 
                 //console.log('scope');
                 //console.log('element');
@@ -428,9 +428,12 @@
 
         function save() {
 
+            const Panejamento_Id = 12; //Mock do ID Tático Genérico que vinculas as Ações
+
             var form = $('form').serializeObject();
             //form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
-            form["Panejamento_Id"] = $('input#Panejamento_Id').val();
+            //form["Panejamento_Id"] = $('input#Panejamento_Id').val();
+            form["Panejamento_Id"] = Panejamento_Id;
             form["TipoIndicador"] = 2; //Para Indicador SGQ
             var index = 0;
             var arr = [];
@@ -444,7 +447,7 @@
                 form["_QuandoFim"] = moment(form["_QuandoFim"]).format("DD/MM/YYYY");
             }
 
-            if(typeof(form.CausaGenerica_Id) == "string"){
+            if (typeof (form.CausaGenerica_Id) == "string") {
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
                     openMessageModal('Registro salvo com sucesso!', '');
                     window.location.href = '@Url.Action("Index2", "Home2")';
@@ -454,7 +457,7 @@
                 });
             }
             else{
-                form.CausaGenerica_Id.forEach(function(o,c) {
+                form.CausaGenerica_Id.forEach(function (o, c) {
                     var singleForm = $('form').serializeObject();
                     //singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
                     singleForm["Panejamento_Id"] = $('input#Panejamento_Id').val();
@@ -525,8 +528,19 @@
             });
         }
 
-        function HabilitaBotaoSalvar(){
-            if(user0.Status && user1.Status && $('#tabelaModalTaticoSelecionado tbody').length > 0){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+        function HabilitaBotaoSalvar() {
+
+            //if (user0.Status && user1.Status && $('#tabelaModalTaticoSelecionado tbody').length > 0) {
+            //    $('#Salvar').attr('disabled', false);
+            //} else {
+            //    $('#Salvar').attr('disabled', true);
+            //}
+
+            if (user0.Status && user1.Status) {
+                $('#Salvar').attr('disabled', false);
+            } else {
+                $('#Salvar').attr('disabled', true);
+            }
         }
 
     </script>
