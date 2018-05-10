@@ -4762,7 +4762,7 @@ namespace SgqSystem.Controllers
                 whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
-            whereCol = $@" AND S.ParCompany_Id IN (SELECT ParCompany_Id FROM ParCompanyXStructure WHERE Active = 1 AND ParStructure_Id = (SELECT top 1 id FROM ParStructure WHERE name = '{form.ParametroTableCol[0]}')) ";
+            whereCol = $@" AND Reg.Name = '{form.ParametroTableCol[0]}' ";
             whereLin = $@" AND S.LEVEL1ID IN (SELECT id FROM ParLevel1 Where Name = '{form.ParametroTableRow[0]}') ";
             //whereLin = $@" AND S.LEVEL1ID IN (SELECT ParLevel1_Id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 and ParGroupParLevel1_Id in (SELECT top 1 Id FROM ParGroupParLevel1 WHERE NAME = '{form.ParametroTableRow[0]}')) ";
 
