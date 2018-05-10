@@ -241,7 +241,8 @@ namespace SgqSystem.Controllers
                                               ELSE 0
 
                                               END END
-                                          > 70 THEN
+                                         -- > 70 THEN
+                                            >  0 THEN
                                                 CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
                                                 CASE WHEN SUM(AV) > 0 THEN
                                                           CASE WHEN TIPOINDICADOR = 1 THEN
@@ -3806,7 +3807,7 @@ namespace SgqSystem.Controllers
                      case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end )) / 100 * " + getMetaScore().ToString() + @" end as decimal (10,1)),2) as varchar) end as DESVIOPERCENTUAL 
                      FROM(
  SELECT 3 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO,
- avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos)  END < 0.7 THEN 0 ELSE  avg(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
+ avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos)  END < 0 THEN 0 ELSE  avg(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
   LEFT JOIN ParCompanyXStructure CS
   ON CS.ParStructure_Id = Reg.Id
   left join ParCompany C
@@ -4271,7 +4272,7 @@ namespace SgqSystem.Controllers
                      case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end )) / 100 * " + getMetaScore().ToString() + @" end as decimal (10,1)),2) as varchar) end as DESVIOPERCENTUAL 
                      FROM(
  SELECT 3 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO,
- avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos)  END < 0.7 THEN 0 ELSE  avg(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
+ avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos)  END < 0 THEN 0 ELSE  avg(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
   LEFT JOIN ParCompanyXStructure CS
   ON CS.ParStructure_Id = Reg.Id
   left join ParCompany C
@@ -6020,7 +6021,7 @@ namespace SgqSystem.Controllers
                                  case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end )) / 100 * " + getMetaScore().ToString() + @" end as decimal (10,1)),2) as varchar) end as DESVIOPERCENTUAL 
                                  FROM(
              SELECT 3 AS QUERY, Reg.Name as CLASSIFIC_NEGOCIO, P1.Name as MACROPROCESSO,
-                avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 OR avg(Pontos) IS NULL THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos) END < 0.7 THEN 0 ELSE AVG(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
+                avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 OR avg(Pontos) IS NULL THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos) END < 0 THEN 0 ELSE AVG(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
              LEFT JOIN ParCompanyXStructure CS
               ON CS.ParStructure_Id = Reg.Id
              left join ParCompany C
@@ -6484,7 +6485,7 @@ namespace SgqSystem.Controllers
                              case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end )) / 100 * " + getMetaScore().ToString() + @" end as decimal (10,1)),2) as varchar) end as DESVIOPERCENTUAL 
                              FROM(
          SELECT 3 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO,
-         avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 OR avg(Pontos) IS NULL THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos) END < 0.7 THEN 0 ELSE AVG(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
+         avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 OR avg(Pontos) IS NULL THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos) END < 0 THEN 0 ELSE AVG(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
           LEFT JOIN ParCompanyXStructure CS
           ON CS.ParStructure_Id = Reg.Id
           left join ParCompany C
