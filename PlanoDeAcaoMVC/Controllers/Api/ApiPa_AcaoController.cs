@@ -77,6 +77,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("SaveFTA")]
         public FTA SaveFTA(FTA obj)
         {
+
+            obj.Panejamento_Id = 12; //Mock do ID Tático Genérico que vinculas as Ações
+
             try
             {
                 obj.ValidaFTA();
