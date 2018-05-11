@@ -2523,4 +2523,7 @@
   <data name="edition_binary_input_type" xml:space="preserve">
     <value>Edição - Tipo de Entrada Binária</value>
   </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Apontamentos Diarios aos Domingos</value>
+  </data>
 </root>

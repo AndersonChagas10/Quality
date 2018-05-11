@@ -2091,4 +2091,7 @@
   <data name="back_to_unit_of_measurement" xml:space="preserve">
     <value>Voltar para Unidades de Medida</value>
   </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Apontamentos Diarios aos Sabados</value>
+  </data>
 </root>
