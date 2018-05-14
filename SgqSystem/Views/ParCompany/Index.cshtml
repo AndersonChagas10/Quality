@@ -293,11 +293,13 @@
 
                 if (objetoReturn["errors"] == undefined) {
                     openMessageModal("@Resources.Resource.saved_successfully","");
-                    location.reload();
                 }else{
                     openMessageModal("@Resources.Resource.error", objetoReturn.errors);
-                    location.reload();
                 }
+
+                setTimeout(function () {
+                    location.reload();
+                }, 2500);
 
                 $.get("GetParCompany", function (data) {
                     $('#formParCompany').replaceWith(data);                    
