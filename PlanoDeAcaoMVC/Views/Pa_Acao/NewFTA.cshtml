@@ -428,32 +428,52 @@
 
         function save() {
 
-            const Panejamento_Id = 12; //Mock do ID Tático Genérico que vinculas as Ações
+            //const Panejamento_Id = 12; //Mock do ID Tático Genérico que vinculas as Ações
 
             var form = $('form').serializeObject();
             //form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
             //form["Panejamento_Id"] = $('input#Panejamento_Id').val();
-            form["Panejamento_Id"] = Panejamento_Id;
+            //form["Panejamento_Id"] = Panejamento_Id;
             form["TipoIndicador"] = 2; //Para Indicador SGQ
             var index = 0;
             var arr = [];
 
-            if (form["_QuandoFim"].length > 0){
+            if (Array.isArray(form["_QuandoFim"])) {
+
+                form["_QuandoFim"].forEach(function (o, e) {
+                    o = new Date(o.substring(5, 3) + "/" + o.substring(2, 0) + "/" + o.substring(10, 6));
+
+                    if (o < new Date()) {
+                        openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
+                        return;
+                    }
+
+                    o = moment(o).format("DD/MM/YYYY");
+                });
+
+            } else if (form["_QuandoFim"].length > 0) {
+
                 form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5,3) + "/" + form["_QuandoFim"].substring(2,0) + "/" + form["_QuandoFim"].substring(10,6));
                 if (form["_QuandoFim"] < new Date()) {
                     openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
                     return;
                 }
+
                 form["_QuandoFim"] = moment(form["_QuandoFim"]).format("DD/MM/YYYY");
             }
 
             if (typeof (form.CausaGenerica_Id) == "string") {
+
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
+
                     openMessageModal('Registro salvo com sucesso!', '');
                     window.location.href = '@Url.Action("Index2", "Home2")';
-                }).fail(function(xhr, err) {
+
+                }).fail(function (xhr, err) {
+
                     var responseTitle= $(xhr.responseText).filter('title').get(0);
                     openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
+
                 });
             }
             else{
