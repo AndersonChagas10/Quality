@@ -121,6 +121,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
+        [HttpPost]
+        [Route("listaResultadosPeriodoTabela2")]
+        public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela2([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            GetResultadosTarefa(form);
+         
+            return retorno;
+        }
+
         private void GetResultadosIndicador(FormularioParaRelatorioViewModel form)
         {
             var nivel = 1;
