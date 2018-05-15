@@ -4719,58 +4719,79 @@ $(document).ready(function(){
             ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
             var html = new Html();
 
-            //Buscamos os Clusters para a unidade selecionada
-            SGQDBContext.Generico listaCluster = new Generico(db);
-            var parClusterSQL = listaCluster.getClusterCompany(ParCompany_Id: ParCompany_Id);
+            //Buscar a lista de Módulos
+            SGQDBContext.Generico listaClusterGroup = new Generico(db);
+            var parClusterGroupSQL = listaClusterGroup.getClusterGroupCompany(ParCompany_Id: ParCompany_Id);
 
+            SGQDBContext.Generico listaCluster = new Generico(db);
+
+            var parClusterSQL = new List<Generico>();
+                
             //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
             //Esses itens podem ser transformados funções menores
             System.Text.StringBuilder listCluster = new System.Text.StringBuilder();
+
+            var i = 0;
+
+            foreach (var parClusterGroup in parClusterGroupSQL)
+            {
+                i++;
+
+                //Buscamos os Clusters para a unidade selecionada
+                parClusterSQL = listaCluster.getClusterCompany(ParCompany_Id: ParCompany_Id, ParClusterGroup_Id: parClusterGroup.id);
+
  
 
-            string excecao = null;
-            #endregion
+                string excecao = null;
+                #endregion
 
-            #region instancia
+                #region instancia
 
-            //Instanciamos uma variável level01GroupList
-            System.Text.StringBuilder parClusterList = new System.Text.StringBuilder();
-            //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
-            System.Text.StringBuilder parClusters = new System.Text.StringBuilder();
-         
-            //Percorremos a Lista dos Agrupamento 
+                //Instanciamos uma variável level01GroupList
+                System.Text.StringBuilder parClusterList = new System.Text.StringBuilder();
+                //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
+                System.Text.StringBuilder parClusters = new System.Text.StringBuilder();
 
-            #endregion
+                //Percorremos a Lista dos Agrupamento 
 
-            //var counter = 0;
-            foreach (var parCluster in parClusterSQL) //LOOP2
-            {
+                #endregion
 
-                #region 1 monte de coisa que aparentemente roda rapido....
+                var meuHtml = "<div class=\"panel-group\"><div class=\"panel panel-info\"><div class=\"panel-heading\" role=\"tab\" id=\"heading" + i + "ParClusterGroup\">";
+                meuHtml += "<h4 class=\"panel-title\"><a role=\"button\" data-toggle=\"collapse\" href=\"#collapse1critivalLevel\" class=\"\" aria-expanded=\"true\" aria-controls=\"collapse" + i + "ParClusterGroup\">" + parClusterGroup.nome + "</a></h4></div>";
+                meuHtml += "<div id=\"collapse" + i + "ParClusterGroup\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"heading" + i + "ParClusterGroup\">";
 
-                string tipoTela = "";
+                parClusters.Append(meuHtml);
 
-                    
+                //var counter = 0;
+                foreach (var parCluster in parClusterSQL) //LOOP2
+                {
+                
+                    string clusterObj = html.cluster(parCluster.id,
+                                                    parCluster.nome);
 
-                string clusterObj = html.cluster(parCluster.id,
-                                                parCluster.nome);
+                    //Incrementa level1
+                    parClusters.Append(html.listgroupItem(parCluster.id.ToString(), classe: "row " + excecao, outerhtml: clusterObj));
 
-                //Incrementa level1
-                parClusters.Append(html.listgroupItem(parCluster.id.ToString(), classe: "row " + excecao, outerhtml: clusterObj));
+                }
+
+                parClusters.Append("</div></div>");
+
+                //Quando termina o loop dos itens agrupados por ParCritialLevel 
+                //Se contem ParCritialLevel
+
+
+                //Adicionamos os itens e um listgroup
+                parClusterList = new System.Text.StringBuilder(html.listgroup(
+                                                outerhtml: parClusters.ToString()
+                                            ));
+
+                //Adicionar a lista de level01 agrupados ou não a lsita geral
+                listCluster.Append(parClusters);
 
             }
 
-            //Quando termina o loop dos itens agrupados por ParCritialLevel 
-            //Se contem ParCritialLevel
+            
 
-
-            //Adicionamos os itens e um listgroup
-            parClusterList = new System.Text.StringBuilder(html.listgroup(
-                                            outerhtml: parClusters.ToString()
-                                        ));
-
-            //Adicionar a lista de level01 agrupados ou não a lsita geral
-            listCluster.Append(parClusters);
            
             //Retona as lista
             //Podemos gerar uma verificação de atualizações
@@ -6783,7 +6804,7 @@ $(document).ready(function(){
                                 , classe: "login"
                             );
         }
-        #endregion
+        
         #region Users
         [WebMethod]
         public string getCompanyUsers(string ParCompany_Id)
