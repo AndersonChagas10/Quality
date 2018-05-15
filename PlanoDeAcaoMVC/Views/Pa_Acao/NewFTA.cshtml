@@ -63,22 +63,22 @@
 
                 <tr rowspan="2">
                     <td colspan="6">
-                        <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
+                        <span class="tdLabel; centerThis" style="font-size: 20px;">@Resources.Resource.deviation_analysis_report</span>
                     </td>
                     <td colspan="4">
                         <span class="tdLabels; centerThis">
-                            Data Inicial do período selecionado - @Model._DataInicioFTA
+                            @Resources.Resource.initial_date_selected_period - @Model._DataInicioFTA
                         </span>
                         <hr />
-                        <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
+                        <span class="tdLabels; centerThis">@Resources.Resource.end_date_selected_period - @Model._DataFimFTA</span>
                     </td>
                 </tr>
 
                 <tr>
-                    <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
-                    <td colspan="2"><span class="tdLabels">Supervisor</span></td>
-                    <td colspan="2"><span class="tdLabels">Unidade</span></td>
-                    <td colspan="2"><span class="tdLabels">Departamento</span></td>
+                    <td colspan="4"><span class="tdLabels">@Resources.Resource.indicators_devices</span></td>
+                    <td colspan="2"><span class="tdLabels">@Resources.Resource.supervisor</span></td>
+                    <td colspan="2"><span class="tdLabels">@Resources.Resource.unit</span></td>
+                    <td colspan="2"><span class="tdLabels">@Resources.Resource.department</span></td>
                 </tr>
 
                 <tr>
@@ -104,8 +104,8 @@
                 </tr>
 
                 <tr>
-                    <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
-                    <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
+                    <td colspan="5"><span class="tdLabels">@Resources.Resource.goal_indicator</span></td>
+                    <td colspan="5"><span class="tdLabels">@Resources.Resource.percentage_nc_tasks</span></td>
                 </tr>
 
                 <tr>
@@ -120,7 +120,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
+                    <td colspan="10"><span class="tdLabels">@Resources.Resource.recurrence_deviations_period</span></td>
                 </tr>
 
                 <tr>
@@ -139,26 +139,26 @@
 
                             <button ng-show="items.length > 1" ng-click="RemoverFTA(item)" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
                                 <span title="Remover" style="cursor:pointer" class="glyphicon glyphicon-trash"></span>
-                                &nbsp Remover
+                                &nbsp @Resources.Resource.remove
                             </button>
                             &nbsp;
                             <button ng-click="myFunc()" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
                                 <span title="Adicionar" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>
-                                &nbsp Adicionar
+                                &nbsp @Resources.Resource.add
                             </button>
 
                         </td>
                     </tr>
 
                     <tr>
-                        <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
-                        <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
-                        <td colspan="4"><span class="tdLabels">AÇÃO GENÉRICA</span> </td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.generic_action2</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.group_cause2</span></td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.generic_action2</span> </td>
                     </tr>
 
                     <tr>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                             @*<select data-ng-model="FTABody.CausaGenerica_Id"
                                         data-ng-options="s.Id as s.Name for s in CausaGenericas | orderBy:'Name'"
                                         data-ng-change="ChangeCausaGenericas()" class="form-control" style="width:210px">
@@ -166,20 +166,20 @@
                                 </select>*@
                         </td>
                         <td colspan="2">
-                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                     </tr>
 
                     <tr>
                         <td colspan="4">
-                            <span class="tdLabels">CAUSA ESPECÍFICA</span>
+                            <span class="tdLabels">@Resources.Resource.specific_cause</span>
                         </td>
                         <td colspan="2" style="border-bottom:0;"></td>
                         <td colspan="4">
-                            <span class="tdLabels">AÇÃO ESPECÍFICA</span>
+                            <span class="tdLabels">@Resources.Resource.specific_action2</span>
                         </td>
                     </tr>
 
@@ -196,9 +196,9 @@
 
                     <tr>
                         @*<td colspan="3">Contramedida</td>*@
-                        <td colspan="4"><span class="tdLabels">Quem</span></td>
-                        <td colspan="2"><span class="tdLabels">Entrega</span></td>
-                        <td colspan="4"><span class="tdLabels">Como</span></td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.who</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.delivery</span></td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.how</span></td>
                     </tr>
 
                     <tr>
@@ -206,7 +206,7 @@
                                 @Html.EditorFor(r => r.ContramedidaEspecifica)
                             </td>*@
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="2">
                             @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
@@ -219,20 +219,20 @@
                 </tbody>
 
                 <tr>
-                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
+                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@Resources.Resource.seen</span></td>
                 </tr>
 
                 <tr>
-                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>Assinatura 1<span style="color:red">*</span></strong></span></td>
-                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>Assinatura 2<span style="color:red">*</span></strong></span></td>
+                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@Resources.Resource.signature1<span style="color:red">*</span></strong></span></td>
+                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@Resources.Resource.signature2<span style="color:red">*</span></strong></span></td>
                 </tr>
 
                 <tr>
                     <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                     </td>
                     <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                     </td>
                 </tr>
                 <tr style="display:none">
@@ -260,7 +260,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
+            <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">@Resources.Resource.save</button>
         </div>
     </div>
     <script>
@@ -317,7 +317,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
                 <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
-                <h4 class="modal-title" id="novoHeader">Digite a Senha</h4>
+                <h4 class="modal-title" id="novoHeader">@Resources.Resource.type_password</h4>
             </div>
             <div class="modal-body" id="novoBody">
                 <form id="passCheck" onsubmit="return false">
@@ -330,7 +330,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.cancel</button>
                 <button type="button" class="btn btn-primary" id="btnOk">Ok</button>
             </div>
         </div>
@@ -455,7 +455,7 @@
 
                 form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5,3) + "/" + form["_QuandoFim"].substring(2,0) + "/" + form["_QuandoFim"].substring(10,6));
                 if (form["_QuandoFim"] < new Date()) {
-                    openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
+                    openMessageModal("@Resources.Resource.select_delivery_date_greater_today_date");
                     return;
                 }
 
@@ -465,8 +465,7 @@
             if (typeof (form.CausaGenerica_Id) == "string") {
 
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
-
-                    openMessageModal('Registro salvo com sucesso!', '');
+                    openMessageModal('@Resources.Resource.registry_successfully_saved', '');
                     window.location.href = '@Url.Action("Index2", "Home2")';
 
                 }).fail(function (xhr, err) {
@@ -493,7 +492,7 @@
                     arr.push(singleForm);
 
                     $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
-                        openMessageModal('Registro salvo com sucesso!', '');
+                        openMessageModal('@Resources.Resource.registry_successfully_saved', '');
                         window.location.href = '@Url.Action("Index2", "Home2")';
                     }).fail(function(xhr, err) {
                         var responseTitle= $(xhr.responseText).filter('title').get(0);
@@ -580,7 +579,7 @@
                 <table class="table table-striped"></table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
             </div>
         </div>
     </div>
