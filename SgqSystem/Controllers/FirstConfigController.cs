@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers
                 var query = $@"insert into ParCompany
                     (Name, Description, AddDate, IsActive, Initials)
                     values
-                    ('{cfg.parCompanyDto.Name}','{cfg.parCompanyDto.Description}','{cfg.userSgqDto.AddDate}',1,'{cfg.parCompanyDto.Initials}');
+                    ('{cfg.parCompanyDto.Name}','{cfg.parCompanyDto.Description}','{cfg.parCompanyDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}',1,'{cfg.parCompanyDto.Initials}');
                     { identityId }";
 
                 using (SqlCommand cmd = new SqlCommand(query, db.connection))
@@ -66,8 +66,8 @@ namespace SgqSystem.Controllers
                     $@"insert into UserSgq 
                     (Name, Password, AddDate, Role, FullName, Email, Phone, ParCompany_Id, PasswordDate)
                     values
-                    ('{cfg.userSgqDto.Name}','{cfg.userSgqDto.Password}','{cfg.userSgqDto.AddDate}','admin','{cfg.userSgqDto.FullName}',
-'{cfg.userSgqDto.Email}','{cfg.userSgqDto.Phone}','{cfg.userSgqDto.ParCompany_Id}','{cfg.userSgqDto.AddDate}')
+                    ('{cfg.userSgqDto.Name}','{cfg.userSgqDto.Password}','{cfg.userSgqDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}','admin','{cfg.userSgqDto.FullName}',
+'{cfg.userSgqDto.Email}','{cfg.userSgqDto.Phone}','{cfg.userSgqDto.ParCompany_Id}','{cfg.userSgqDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}')
                     { identityId }";
 
                 using (SqlCommand cmd = new SqlCommand(query, db.connection))
@@ -2417,6 +2417,9 @@ INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [Alte
 INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (3, N'Intervalos', N'Intervalos', CAST(N'2017-03-03 07:48:52.8930000' AS DateTime2), NULL, 1, NULL)
 INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (4, N'Calculado', N'Calculado', CAST(N'2017-03-03 07:48:52.9100000' AS DateTime2), NULL, 1, NULL)
 INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (5, N'Texto', N'Texto', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (6, N'Binario Com Texto', N'Binario Com Texto', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (7, N'Intervalo em Minutos', N'Intervalo em Minutos', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (8, N'Escala Likert', N'Escala Likert', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
 ";
 
                 ServerConnection svrConnection = new ServerConnection(db.connection);
