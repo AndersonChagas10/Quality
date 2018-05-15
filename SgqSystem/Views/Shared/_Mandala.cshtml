@@ -15,12 +15,17 @@
             var enviar = {};
             enviar['auditorId'] = GetUsuarioId();
 
+            $('#mandala').css('display', 'none');
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("MostrarEmpresaMandala", "api/Mandala")',
                 dataType: 'json',
                 data: enviar,
                 success: function (result) {
+                    if (result.length > 0) {
+                        $('#mandala').css('display', 'block');
+                    }
                     mandalaGRT.Inicializar({
                         idElemento: "mandala",
                         listaDeDados: result,
