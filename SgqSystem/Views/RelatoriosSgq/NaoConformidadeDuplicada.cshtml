@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewBag.Title = "NaoConformidadeDuplicada";
+}
+
+@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
+@{
+    var url = Url.Action("Index", "Home");
+    var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidade");
+    var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidade");
+    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
+    var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidade");
+    var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
+    var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidade");
+    var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
+    var urlFtaGet = Url.Action("GetUrl", "api/Fta");
+    var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidade");
+    var UrlPivotTable = Url.Action("PivotTable", "api/NaoConformidade");
+    var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidade");
+    var UnidadeUsuario = ViewBag.UnidadeUsuario;
+}
+
+<style>
+    /*Não quebra a linha nos campos de cabeçalho*/
+    #example > tbody > tr:last-child > td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+            <div id="load"></div>
+            <div id="divTable">
+                <table id="example" class="table table-striped" style="width:100%"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg printable" id="myModal" role="dialog">
+
+    <div id="printThis">
+        @*This should BE printed!*@
+        <div class="modifyMe"></div>
+
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width:895px!important">
+
+                <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                    <h4 class="modal-title">Editar</h4>
+                    <div class="unitCode"><span id="estName"></span></div>
+                </div>
+
+                <div class="modal-body">
+                    <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                        <span id="Level3Name" class="levelName" name="" style=""></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" onclick="SalvarResultLevel3()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        var data =
+            [{
+                "name": "Semáforo",
+                "cor": "vermelho",
+                "ind": "estrelinha",
+                "moni": "lua",
+                "buton": "editar"
+            }, {
+                "name": "Indicador",
+                "cor": "verde",
+                "ind": "estrelinha",
+                "moni": "lua",
+                "buton": "editar"
+            }, {
+                "name": "Monitoramento",
+                "cor": "amarelo",
+                "ind": "estrelinha",
+                "moni": "lua",
+                "buton": "editar"
+            }, {
+                "name": "Tarefa",
+                "cor": "verde",
+                "ind": "estrelinha",
+                "moni": "lua",
+                "buton": "editar"
+            }, {
+                "name": "Editar",
+                "cor": "vermelho",
+                "ind": "estrelinha",
+                "moni": "lua",
+                "buton": "editar"
+              }];
+
+        $(document).ready(function () {
+            datatableGRT.Inicializar(
+                {
+                    idTabela: "example",
+                    listaDeDados: data,
+                    colunaDosDados: [{
+                        "title": "Semáforo", "data": "cor", "render": function (data, type, row) { return row.cor },
+                        }, {
+                            "title": "Indicador", "data": "ind"
+                        }, {
+                            "title": "Monitoramento", "data": "moni"
+                        }, {
+                            "title": "Tarefa", "data": "moni"
+                        }, {
+                            "title": "Editar", "data": "buton", "render": function (data, type, row) { return "<button class='btn btn-link custom-button' data-toggle='modal' data-target='#myModal'>Editar</button>" }
+                        }]
+                }
+            );
+        });
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        //var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
+        var Department = '@Resources.Resource.department'
+        var GraficoDepto = '@Resources.Resource.defects_per_deparment'; //'NC por departamento';
+        var GraficoIndic = '@Resources.Resource.defects_per_audit'; //'NC por Indicador: ';
+        var GraficoMon = '@Resources.Resource.defects_per_monitoring'; //'NC por Monitoramento: ';
+        var GraficoTarefa = '@Resources.Resource.defects_per_tasks'; //'NC por Tarefa: ';
+        var GraficoTarefasAcumuladasTit ='@Resources.Resource.derivations_per_defects'; // 'NC por Tarefas acumuladas: ';
+        var GraficoMoncomTarefa = '@Resources.Resource.defects_per_monitoring_at_tasks'; //'NC por Monitoramento na Tarefa: ';
+        var $btn = $('#btnSend');
+        var urlGraficoUnidades = @Html.Raw(Json.Encode(urlGraficoUnidades));
+        var urlGraficoIndicador = @Html.Raw(Json.Encode(urlGraficoNcPorUnidadeIndicador));
+        var urlGraficoMonitoramento = @Html.Raw(Json.Encode(urlGraficoMonitoramento));
+        var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
+        var urlGraficoTarefa = @Html.Raw(Json.Encode(urlGraficoTarefa));
+        var UnidadeUsuario = (@Html.Raw(Json.Encode(ViewBag.UnidadeUsuario)));
+        var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
+        var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
+        var UrlGraficoDepartamentosPorShift = @Html.Raw(Json.Encode(UrlGraficoDepartamentosPorShift));
+        var UrlPivotTable = @Html.Raw(Json.Encode(UrlPivotTable));
+        var urlGraficoIndicadorPorShift = @Html.Raw(Json.Encode(UrlGraficoIndicadorPorShift));
+        var urlGetUnitId = '@Url.Action("GetUnitId","api/Fta")'
+        var popoverMain;
+        var Aux;
+        var subtitle = "";
+        var pathDirect = 0; // sum 1 se user optao por departamento, se continuar 0 ele optou por indicador e pulou um método
+        var IsDepartment = false;
+        var IsDepartmentShift = false;
+        var idGrafico = "";
+        var desdobramento = "";
+        var ShiftSelected;
+
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            $("#btnSend").click(function (e) {
+                Send(true);
+            });
+
+            $('.levels').hide();
+
+            formControl.showFullCallendar();
+            formControl.showShift();
+            formControl.showClustRegUnitCriticalLevel123();
+
+            //setTimeout(function () {
+            $("#clusterGroupId").find("option").eq(0).remove();
+            $("#clusterGroupId").val(8).change();
+            if ($("#clusterGroupId").val() == null) {
+                $("#clusterGroupId").val(2).change();
+            }
+            //}, 3);
+
+            popoverMain = $('#CustomPopover').addClass('hide');
+
+            $('.sidebar-nav select').select2();
+        });
+
+        //var table = datatableGRT.Inicializar({
+        //    idTabela: "example                                                                                                                                                                                                                                                                                                                                                                                                         ",
+        //    listaDeDados: retornoArray,
+        //    colunaDosDados: colunas,
+        //    numeroLinhasNaTabela: 25,
+        //    aplicarResponsividade: true,
+        //    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+        //    loadingRecords: true,
+        //    destroy: true,
+        //    info: true,
+        //    initComplete: initDatatable,
+        //    createdRow: function (row, data, index) { }
+        //});
+
+
+    </script>
+
+}
+
