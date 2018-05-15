@@ -1408,7 +1408,7 @@ FROM (SELECT
                ,Indicador_Id
                ,IndicadorName
                ,IIF(SUM(avComPeso) IS NULL OR SUM(avComPeso) = 0, 0, SUM(ncComPeso) / SUM(avComPeso) * 100) AS [proc]
-               ,SUM(Meta) as Meta
+               ,AVG(Meta) as Meta
                ,SUM(NC) AS NC
                ,SUM(Av) AS Av
             FROM (SELECT
