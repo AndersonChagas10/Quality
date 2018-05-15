@@ -92,7 +92,7 @@
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.IntegrationId", new { @id = "parCompanyDTO_IntegrationId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                         </tr>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm required" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)                                          
                                         </tr>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, colspan: 2)
@@ -206,6 +206,7 @@
 
 <script>
 
+    var formHasError = false;
     var urlCompany = '@Html.Raw(@urlCompany)';
     var urlStructure = '@Html.Raw(@urlStructure)';
     var urlStructureGroup = '@Html.Raw(@urlStructureGroup)';
@@ -290,16 +291,13 @@
                 console.log(objetoReturn);
                 console.log(statusmessage);
                 console.log(respostaCompleta);
-
-                if (objetoReturn["errors"] == undefined) {
-                    openMessageModal("@Resources.Resource.saved_successfully","");
-                }else{
-                    openMessageModal("@Resources.Resource.error", objetoReturn.errors);
+       
+                if (objetoReturn.listaErros == null || objetoReturn.listaErros == "") {
+                    openMessageModal("@Resources.Resource.saved_successfully", "");
+                    closeCompanyModal();
+                } else {
+                    openMessageModal("@Resources.Resource.error", objetoReturn.listaErros.join(" , "));             
                 }
-
-                setTimeout(function () {
-                    location.reload();
-                }, 2500);
 
                 $.get("GetParCompany", function (data) {
                     $('#formParCompany').replaceWith(data);                    
@@ -361,6 +359,7 @@
                 console.log(statusmessage);
                 console.log(respostaCompleta);
 
+
                 $.get("GetParStructure", function (data) {
                     $('#formParStructure').replaceWith(data);
                 });
@@ -379,8 +378,6 @@
                 var obj = object[key];
                 $('#modalStructureObj #parStructureDTO_' + key).val(obj);
             }
-
-
         }
     }
 
@@ -418,7 +415,6 @@
     }
 
     $('#modalCompanySave').click(function () {
-
         if (!$('#modalCompanyObj').hasClass('hide')) {
             indexParCompany.enviarDadosParaApi($('#modalCompanyObj form').serializeObject());
         }
@@ -428,9 +424,7 @@
         else if (!$('#modalStructureGroupObj').hasClass('hide')) {
             indexParStructureGroup.enviarDadosParaApi($('#modalStructureGroupObj form').serializeObject());
         }
-
-        closeCompanyModal();
-        //location.reload();
+            //closeCompanyModal();
     });
 
     //Controles dentro do modal
