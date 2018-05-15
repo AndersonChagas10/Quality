@@ -2526,4 +2526,7 @@
   <data name="package" xml:space="preserve">
     <value>Pacote</value>
   </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Aponts. Diarios Domingo</value>
+  </data>
 </root>

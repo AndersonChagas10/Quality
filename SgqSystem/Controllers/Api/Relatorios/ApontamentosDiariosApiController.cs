@@ -4,6 +4,7 @@ using Dominio;
 using DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using DTO.ResultSet;
 using Newtonsoft.Json;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
@@ -43,6 +44,7 @@ namespace SgqSystem.Controllers.Api
 
         private List<ApontamentosDiariosResultSet> _mock { get; set; }
         private List<ApontamentosDiariosResultSet> _list { get; set; }
+        private List<ApontamentosDiariosDomingoResultSet> _listApontomentosDiarioDomingo { get; set; }
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         [HttpPost]
@@ -60,6 +62,22 @@ namespace SgqSystem.Controllers.Api
 
                 return _list;
             }
+        }
+
+        [HttpPost]
+        [Route("GetApontamentosDomingo")]
+        public List<ApontamentosDiariosDomingoResultSet> GetApontamentosDomingo ([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
+
+            var query = new ApontamentosDiariosDomingoResultSet().Select(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _listApontomentosDiarioDomingo = factory.SearchQuery<ApontamentosDiariosDomingoResultSet>(query).ToList();
+            }
+            return _listApontomentosDiarioDomingo;
         }
 
         [HttpPost]

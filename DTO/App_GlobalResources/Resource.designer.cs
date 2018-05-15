@@ -1195,6 +1195,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily Apointments on Sunday.
+        /// </summary>
+        internal static string daily_apointments_sunday {
+            get {
+                return ResourceManager.GetString("daily_apointments_sunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Meeting.
         /// </summary>
         internal static string daily_meeting {
