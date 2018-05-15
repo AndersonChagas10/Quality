@@ -3697,6 +3697,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package.
+        /// </summary>
+        internal static string package {
+            get {
+                return ResourceManager.GetString("package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pareto.
         /// </summary>
         internal static string pareto_chart {

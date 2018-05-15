@@ -502,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e maior que.
+        ///   Looks up a localized string similar to And greater than.
         /// </summary>
         internal static string and_greater_than {
             get {
@@ -4476,6 +4476,15 @@ namespace Resources {
         internal static string or_greater_than {
             get {
                 return ResourceManager.GetString("or_greater_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package.
+        /// </summary>
+        internal static string package {
+            get {
+                return ResourceManager.GetString("package", resourceCulture);
             }
         }
         
