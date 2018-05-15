@@ -195,7 +195,7 @@ public class ApontamentosDiariosResultSet
                     GROUP BY CL2HF.CollectionLevel2_Id
                  	) HF 
                  on c2.Id = HF.CollectionLevel2_Id
-                 LEFT JOIN CollectionLevel2XCollectionJson CLCJ
+                 LEFT JOIN (SELECT CollectionLevel2_Id, max(CollectionJson_Id) as CollectionJson_Id FROM CollectionLevel2XCollectionJson GROUP BY CollectionLevel2_Id) CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN CollectionJson CJ
                  ON CJ.Id = CLCJ.CollectionJson_Id
