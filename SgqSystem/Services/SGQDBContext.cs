@@ -1677,7 +1677,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             var valores = integracao.Split('|');
 
-            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais"  || valores[0] == "Setor")
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais"  || valores[0] == "Setor" || valores[0] == "Tipo de Corte" || valores[0] == "Setores BPF")
             {
                 var subtipo = "";
 
