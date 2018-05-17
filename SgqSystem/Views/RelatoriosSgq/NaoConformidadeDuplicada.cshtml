@@ -8,6 +8,8 @@
 @{
     var url = Url.Action("Index", "Home");
     var UrlCorrectiveAct = Url.Action("GetTableCorrectiveAction", "api/CorrectiveAction");
+    var UrlGetCorrectiveAct = Url.Action("GetCorrectiveAct", "api/CorrectiveAction");
+    var UrlSaveCorrectiveAct = Url.Action("SaveCorrectiveAct", "api/CorrectiveAction");
 }
 
 <style>
@@ -33,7 +35,7 @@
     </div>
 </div>
 
-<div class="modal fade bd-example-modal-lg printable" id="myModal" role="dialog">
+<div class="modal fade bd-example-modal-lg printable" id="editModal" role="dialog">
 
     <div id="printThis">
         @*This should BE printed!*@
@@ -52,11 +54,14 @@
                 <div class="modal-body">
                     <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
                         <span id="Level3Name" class="levelName" name="" style=""></span>
+                        <label>Unidade:</label><br />
+                        <input type='text' name='UnidadeName' id='UnitName'>
+
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
-                    <button type="button" onclick="SalvarResultLevel3()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-default non-printable" id="fechar" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" id="save" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
                 </div>
             </div>
         </div>
@@ -71,7 +76,9 @@
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         var $btn = $('#btnSend');      
-         var UrlCorrectiveAct = @Html.Raw(Json.Encode(UrlCorrectiveAct));
+        var UrlCorrectiveAct = @Html.Raw(Json.Encode(UrlCorrectiveAct));
+        var UrlGetCorrectiveAct = @Html.Raw(Json.Encode(UrlGetCorrectiveAct));
+        var UrlSaveCorrectiveAct = @Html.Raw(Json.Encode(UrlSaveCorrectiveAct));
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -147,6 +154,7 @@
         }
 
         function TableAcaoCorretiva(data) {
+       
             if (!(data.length > 0)) {
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
@@ -157,16 +165,57 @@
                     listaDeDados: data,
                     colunaDosDados: [
                         { title: "Unidade", mData: "Unidade" },
+                        { title: "IdGeral", mData: "Id", visible: false},
                         { title: Resources("level1"), mData: "Indicador" },
                         { title: Resources("level2"), mData: "Monitoramento" },
                         { title: "Medida Tomada", mData: "PreventativeMeasure" },
-                        { title: "Editar", mRender: function (data, type, row) { return "<button class='btn btn-link custom-button' data-toggle='modal' data-target='#myModal'>Editar</button>" } },
+                        { title: "Editar", mRender: function (data, type, row) { return "<button class='btn btn-link custom-button' data-toggle='modal' data-click='btnEditarDataTable' data-id=" + row.Id +" data-target='#editModal'>Editar</button>" } },
                     ],
                     numeroLinhasNaTabela: 20
-                });
+                });          
             }
         }
+        $('#acaoCorretiva').on('click', 'button[data-click="btnEditarDataTable"]', function () {
+           var editar = ($(this).attr('data-id'));
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: UrlGetCorrectiveAct,
+                data: {
+                    editar: editar
+                },
+                error: function () {
+                   alert('Erro!')
+                },               
+                success: function (retorno) {
+                    
+                },                
+            });
+        });
 
+        function retorno(data) {
+
+        }
+
+        $('#editModal').on('click', '#save', function () {
+            debugger
+            var save = ($(this).attr(''));
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: UrlSaveCorrectiveAct,
+                data: {
+                    save: save
+                },
+                error: function () {
+                    alert('Erro!')
+                },
+                success: function (retorno) {
+                    console.log(data)
+                },
+            });
+        });
+      
     </script>
 
 }

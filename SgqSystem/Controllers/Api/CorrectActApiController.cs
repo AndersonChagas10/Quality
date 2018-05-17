@@ -19,12 +19,13 @@ namespace SgqSystem.Controllers.Api
 
         [Route("GetTableCorrectiveAction")]
         [HttpPost]
-        public List<DTO.CorrectiveAct> GetTableCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
+        public List<CorrectiveAct> GetTableCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
         {
-            var table = new List<DTO.CorrectiveAct>();
+            var table = new List<CorrectiveAct>();
 
             var query = @"SELECT
-	                        CL2.UnitId
+                            CA.Id as Id
+	                       ,CL2.UnitId
                            ,PC.Name AS Unidade
                            ,CL2.ParLevel1_Id
                            ,P1.Name AS Indicador
@@ -44,9 +45,49 @@ namespace SgqSystem.Controllers.Api
 	                        ON Pc.Id = CL2.UnitId";
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                table = GlobalConfig.CorrectiveAct = factory.SearchQuery<DTO.CorrectiveAct>(query).ToList();
+                table = GlobalConfig.CorrectiveAct = factory.SearchQuery<CorrectiveAct>(query).ToList();
             }
             return table;
+        }
+
+        [Route("GetCorrectiveAct")]
+        [HttpGet]
+        public CorrectiveAct GetCorrectiveAct([FromUri] int editar)
+        {
+            var EditAct = new CorrectiveAct();
+            var query = @"SELECT
+	                        CA.Id
+                           ,CL2.UnitId
+                           ,PC.Name AS Unidade
+                           ,CL2.ParLevel1_Id
+                           ,P1.Name AS Indicador
+                           ,CL2.ParLevel2_Id
+                           ,P2.Name AS Monitoramento
+                           ,CA.PreventativeMeasure
+                        FROM correctiveaction AS CA WITH (NOLOCK)
+                        LEFT JOIN CollectionLevel2 AS CL2 WITH (NOLOCK)
+	                        ON CL2.Id = CA.CollectionLevel02Id
+                        LEFT JOIN Result_Level3 AS RL3 WITH (NOLOCK)
+	                        ON RL3.Id = CL2.Id
+                        LEFT JOIN ParLevel1 AS P1 WITH (NOLOCK)
+	                        ON CL2.ParLevel1_Id = P1.Id
+                        LEFT JOIN ParLevel2 AS P2 WITH (NOLOCK)
+	                        ON CL2.ParLevel2_Id = P2.Id
+                        LEFT JOIN ParCompany AS PC WITH (NOLOCK)
+	                        ON Pc.Id = CL2.UnitId
+                        WHERE CA.Id =" + editar;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                EditAct = GlobalConfig.GetCorrectiveAct = factory.SearchQuery<CorrectiveAct>(query).SingleOrDefault();
+            }
+            return EditAct;
+        }
+
+        [Route("SaveCorrectiveAct")]
+        [HttpPost]
+        public CorrectiveAct SaveCorrectiveAct([FromBody] CorrectiveAct correctiveAct)
+        {
+            return null;
         }
 
         public CorrectActApiController()

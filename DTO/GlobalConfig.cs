@@ -44,6 +44,7 @@ namespace DTO
 
     public class CorrectiveAct
     {
+        public int Id { get; set; }
         public string UnitId { get; set; }
         public string Unidade { get; set; }
         public string ParLevel1_Id { get; set; }
@@ -101,6 +102,7 @@ namespace DTO
         public static List<Mandala> MandalaIndicador { get; set; }
         public static List<Mandala> MandalaMonitoramento { get; set; }
         public static List<CorrectiveAct> CorrectiveAct { get; set; }
+        public static CorrectiveAct GetCorrectiveAct {get; set;}
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
