@@ -27,7 +27,7 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int tamanhoDoPool = 50;
+        private static int tamanhoDoPool = 2;
         private static bool running { get; set; }
 
         #region SGQ Email
@@ -88,22 +88,6 @@ namespace SgqSystem.Mail
         }
 
         /// <summary>
-        /// Gera EmailContent a partir da deviation
-        /// </summary>
-        public static void GenerateEmailContentByDeviation()
-        {
-            try
-            {
-                CreateMailSgqAppDeviation();
-            }
-            catch (Exception ex)
-            {
-                new CreateLog(new Exception("Erro no metodo [GerarEmailContentPorDeviation]", ex));
-                //throw ex;
-            }
-        }
-
-        /// <summary>
         /// Controle de chamadas para envio de email SGQ utilizando os email que estão na tabela EmailContent: (r => r.SendStatus == null && r.Project == "SGQApp"),
         /// utiliza callback e configs da tabela SgqConfig
         /// </summary>
@@ -113,7 +97,10 @@ namespace SgqSystem.Mail
             {
                 using (var db = new SgqDbDevEntities())
                 {
-                    ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp").Take(tamanhoDoPool).ToList();
+                    var listDeviation = db.Deviation.Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(100).Select(r => r.EmailContent_Id).ToList();
+
+                    ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp" && listDeviation.Contains(r.Id)).Take(tamanhoDoPool).ToList();
+                    
 
                     MailSender.HandleError HandleErrorDelegate = HandleErrorMethod;
                     if (ListaDeMail != null && ListaDeMail.Count() > 0)
@@ -270,7 +257,7 @@ namespace SgqSystem.Mail
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
                     DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).AsNoTracking().Take(tamanhoDoPool).ToList();
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).Take(tamanhoDoPool).ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {

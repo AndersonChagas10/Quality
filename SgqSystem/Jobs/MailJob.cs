@@ -29,7 +29,7 @@ namespace Jobs
                     {
                         if (GlobalConfig.Brasil)
                         {
-                            SimpleAsynchronous.GenerateEmailContentByDeviation();
+                            SimpleAsynchronous.CreateMailSgqAppDeviation();
                             Thread.Sleep(22222);
                             SimpleAsynchronous.SendEmail();
                         }
@@ -43,7 +43,7 @@ namespace Jobs
                 {
                     new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
                 }
-                Thread.Sleep(222222);
+                Thread.Sleep(22222);
             }
         }
     }
