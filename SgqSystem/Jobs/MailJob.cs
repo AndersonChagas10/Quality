@@ -29,6 +29,8 @@ namespace Jobs
                     {
                         if (GlobalConfig.Brasil)
                         {
+                            SimpleAsynchronous.GenerateEmailContentByDeviation();
+                            Thread.Sleep(22222);
                             SimpleAsynchronous.SendEmail();
                         }
                         else if (GlobalConfig.Eua)

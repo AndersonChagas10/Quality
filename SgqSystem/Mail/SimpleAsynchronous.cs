@@ -264,13 +264,13 @@ namespace SgqSystem.Mail
             {
                 try
                 {
-                    db.Configuration.ValidateOnSaveEnabled = false;
+                    //db.Configuration.ValidateOnSaveEnabled = false;
                     db.Configuration.LazyLoadingEnabled = false;
 
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
                     DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).Take(tamanhoDoPool).ToList();
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).AsNoTracking().Take(tamanhoDoPool).ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {
