@@ -1,5 +1,9 @@
 ﻿@model DTO.DTO.CorrectiveActionDTO
 
+@{ 
+    var urlSave = Url.Action("Save", "api/CorrectiveAction");
+}
+
 <style>
     @@media screen {
         #printSection {
@@ -188,6 +192,7 @@
                                         <b class="col-xs-6">@Resources.Resource.date_time:</b> <input class="col-xs-6" type="text" id="datetime" name="datetime" /><br />
                                         <b class="col-xs-6">@Resources.Resource.auditor: </b><input class="col-xs-6" type="text" id="auditor" name="auditor" /><br />
                                         <b class="col-xs-6">@Resources.Resource.shift: </b><input class="col-xs-6" type="text" id="shift" name="shift" /><br />
+                                        <b class="col-xs-6"></b><input class="col-xs-6" type="hidden" id="Id" name="Id" /><br />
                                     </div>
                                     <div class="col-xs-6" id="AuditInformation">
                                         <b class="font16">@Resources.Resource.audit_information:<br /></b>
@@ -266,10 +271,30 @@
 
 <script type="text/javascript">
 
-        $('#editCorrectiveActionModal').on('click','#btnSave',function(){
-            var form = $('#editCorrectiveActionModal form').serialize();
-            alert(JSON.stringify(form));
+    $('#editCorrectiveActionModal').on('click', '#btnSave', function () {
+        var form = $('#editCorrectiveActionModal form').serializeArray();
+        var indexed_array = {};
+
+        $.map(form, function (n, i) {
+            indexed_array[n['name']] = n['value'];
         });
+    
+        form = (JSON.stringify(indexed_array));
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json",
+            url: '@urlSave',
+            data: form,
+            error: function () {
+                alert('Erro!')
+            },
+            success: function (form) {
+                $('#editCorrectiveActionModal').modal('hide');
+                $('#btnSend').trigger('click');
+            },
+        });
+    });
 
 </script>
 
@@ -281,13 +306,6 @@
     <script type="text/javascript">
 
         var objectCa = (@Html.Raw(Json.Encode(Model)));
-
-
-        $('#editCorrectiveActionModal').on('click','#btnSave',function(){
-            var form = $('#editCorrectiveActionModal form').serialize();
-            alert(form);
-        });
-
 
     </script>
 }

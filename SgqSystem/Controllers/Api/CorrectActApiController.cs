@@ -4,7 +4,9 @@ using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
@@ -18,6 +20,19 @@ namespace SgqSystem.Controllers.Api
         public CorrectActApiController()
         {
             db.Configuration.ProxyCreationEnabled = false;
+        }
+
+        [Route("Save")]
+        [HttpPost]
+        public DTO.DTO.CorrectiveActionDTO Save(DTO.DTO.CorrectiveActionDTO save)
+        {
+            var objBanco = db.CorrectiveAction.Where(r => r.Id == save.Id).FirstOrDefault(); // busca obj do banco pela Id
+            objBanco.DescriptionFailure = save.DescriptionFailure;
+            objBanco.ImmediateCorrectiveAction = save.ImmediateCorrectiveAction;
+            objBanco.ProductDisposition = save.ProductDisposition;
+            objBanco.PreventativeMeasure = save.PreventativeMeasure;
+            db.SaveChanges();
+            return null;
         }
 
         [Route("GetCorrectiveAction")]
@@ -87,7 +102,7 @@ namespace SgqSystem.Controllers.Api
                 dados = factory.SearchQuery<CorrectiveActionDTO>(sql).ToList();
             }
 
-            
+
 
             //var list = new List<CorrectiveAction>();
 
@@ -206,6 +221,5 @@ namespace SgqSystem.Controllers.Api
 
             return obj2;
         }
-
     }
 }
