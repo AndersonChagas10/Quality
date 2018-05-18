@@ -1701,6 +1701,7 @@
     <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
     <Content Include="Views\Shared\_Mandala.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
