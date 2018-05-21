@@ -33,7 +33,7 @@ namespace SgqSystem
 
             SetGlobalConfigAmbient();
 
-            ThreadPool.SetMaxThreads(5, 1);
+            ThreadPool.SetMaxThreads(3, 3);
             ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
             //ThreadPool.QueueUserWorkItem(DeviationJob.DeviationJobFunction);
             ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
