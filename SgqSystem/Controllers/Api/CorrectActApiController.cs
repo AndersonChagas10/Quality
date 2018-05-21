@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public DTO.DTO.CorrectiveActionDTO Save(DTO.DTO.CorrectiveActionDTO save)
         {
-            var objBanco = db.CorrectiveAction.Where(r => r.Id == save.Id).FirstOrDefault(); // busca obj do banco pela Id
+            var objBanco = db.CorrectiveAction.Where(r => r.Id == save.Id).AsNoTracking().FirstOrDefault(); // busca obj do banco pela Id
             objBanco.DescriptionFailure = save.DescriptionFailure;
             objBanco.ImmediateCorrectiveAction = save.ImmediateCorrectiveAction;
             objBanco.ProductDisposition = save.ProductDisposition;

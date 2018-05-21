@@ -89,16 +89,18 @@
         //};
 
         function GerarTabela(retornoArray) {
-
-            var table = $('#results').empty().DataTable({
-                data: retornoArray,
-                columns: [{
-                    title: "@Resources.Resource.view", mData: null, defaultContent:
-                        '<button type="button" class="btn btn-info btn-sm" data-action="read" data-toggle="modal" data-target="#myModal">@Resources.Resource.view</button>'
-                },
+            
+            var table = datatableGRT.Inicializar({
+                idTabela: "results",
+                listaDeDados: retornoArray,
+                colunaDosDados: [
+                    {
+                        title: "@Resources.Resource.view", mData: null, defaultContent:
+                        '<button type="button" class="btn btn-link custom-button" data-action="read" data-toggle="modal" data-target="#myModal">@Resources.Resource.view</button>'
+                    },
                     {
                         title: "@Resources.Resource.edit", mData: null, defaultContent: 
-                        '<button type="button" class="btn btn-info btn-sm" data-action="edit" data-toggle="modal" data-target="#editCorrectiveActionModal">@Resources.Resource.edit</button>'
+                        '<button type="button" class="btn btn-link custom-button" data-action="edit" data-toggle="modal" data-target="#editCorrectiveActionModal">@Resources.Resource.edit</button>'
                     },
                    { title: "@Resources.Resource.auditor", mData: "AuditorName" },
                    { title: "@Resources.Resource.date", mData: "DateCorrectiveActionFormatadoShort" },
@@ -120,12 +122,12 @@
                    { "className": "dt-center", "targets": "_all" }
                 ],
                 scrollX: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                pageLength: 10,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                numeroLinhasNaTabela: 10,
                 loadingRecords: true,
                 destroy: true,
                 info: true,
-                responsive: true,
+                aplicarResponsividade: true,
                 initComplete: function () {
                     $('#loading').hide();
                     $('#results tbody').on('click', 'button[data-action="read"]', function (data, a, b) {
@@ -229,7 +231,7 @@
             }
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
-                    {
+                    @*{
                         extend: 'print',
                         text: '@Resources.Resource.print',
                         customize: function (win) {
@@ -240,18 +242,18 @@
                         exportOptions: {
                             columns: ':visible'
                         }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'pdf',
-                    {
+                    },*@
+                    //{
+                    //    //extend: 'excelHtml5',
+                    //    //exportOptions: {
+                    //    //    columns: ':visible'
+                    //    //}
+                    //},
+                    //'pdf',
+                    @*{
                         extend: 'colvis',
                         text: '@Resources.Resource.visible_columns',
-                    }
+                    }*@
 
                 ]
             });
