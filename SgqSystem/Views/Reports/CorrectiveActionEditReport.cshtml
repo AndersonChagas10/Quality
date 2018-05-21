@@ -95,8 +95,11 @@
                 columns: [{
                     title: "@Resources.Resource.view", mData: null, defaultContent:
                         '<button type="button" class="btn btn-info btn-sm" data-action="read" data-toggle="modal" data-target="#myModal">@Resources.Resource.view</button>'
-                        +'<button type="button" class="btn btn-info btn-sm" data-action="edit" data-toggle="modal" data-target="#editCorrectiveActionModal">@Resources.Resource.edit</button>'
                 },
+                    {
+                        title: "@Resources.Resource.edit", mData: null, defaultContent: 
+                        '<button type="button" class="btn btn-info btn-sm" data-action="edit" data-toggle="modal" data-target="#editCorrectiveActionModal">@Resources.Resource.edit</button>'
+                    },
                    { title: "@Resources.Resource.auditor", mData: "AuditorName" },
                    { title: "@Resources.Resource.date", mData: "DateCorrectiveActionFormatadoShort" },
                    { title: "@Resources.Resource.start_time", mData: "StartTimeFormatado" },

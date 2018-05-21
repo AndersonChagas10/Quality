@@ -286,10 +286,11 @@
             contentType: "application/json",
             url: '@urlSave',
             data: form,
-            error: function () {
-                alert('Erro!')
+            error: function (e) {
+                openMessageModal("Erro ao Salvar o Registro!", e.responseJSON.Message);
             },
             success: function (form) {
+                openMessageModal(Resources('saved_successfully'), '');
                 $('#editCorrectiveActionModal').modal('hide');
                 $('#btnSend').trigger('click');
             },
