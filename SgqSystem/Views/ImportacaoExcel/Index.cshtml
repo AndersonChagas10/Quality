@@ -5,6 +5,8 @@
     var urlExcel = Url.Action("SalvarExcel", "api/ImportacaoExcel");
 }
 
+
+
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="page-bar">
@@ -20,6 +22,42 @@
             <div class="page-toolbar">
             </div>
         </div>
+
+
+        <div id="ModalConfirmacao" class="modal" hidden="hidden" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação</h5>
+                        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>*@
+                    </div>
+                    <div class="modal-body">
+                        <p>Deseja realmente salvar o arquivo selecionado?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="modalSalvar" type="button" class="btn btn-primary">Salvar Arquivo</button>
+                        <button id="modalCancelar" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="ModalInformacao" class="modal" hidden="hidden" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Arquivo salvo com sucesso!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="modalSucesso" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="container-fluid">
             <div class="row  form-group">
@@ -88,23 +126,29 @@
         var urlExcel = '@Html.Raw(@urlExcel)';
 
         $("#salvar").on('click', function () {
-            var dadosPreenchidos = "";
-            if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
-                dadosPreenchidos = PreencherDadosArquivo();
-            }
 
-            var dados = JSON.stringify(dadosPreenchidos);
+            $("#ModalConfirmacao").modal('show');
 
-            $.ajax({
-                type: "Post",
-                url: urlExcel,
-                dataType: "json",
-                contentType: "application/json",
-                data: dados,
-                success: function (retorno) {
-                    console.log('Ok');
+            $("#modalSalvar").on('click', function () {
+                $("#ModalConfirmacao").modal('hide');
+                var dadosPreenchidos = "";
+                if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
+                    dadosPreenchidos = PreencherDadosArquivo();
                 }
-            });
+
+                var dados = JSON.stringify(dadosPreenchidos);
+
+                $.ajax({
+                    type: "Post",
+                    url: urlExcel,
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: dados,
+                    success: function (retorno) {
+                        $("#ModalInformacao").modal('show');                       
+                    }
+                });
+            })
 
             function PreencherDadosArquivo() {
                 var lista = [];
