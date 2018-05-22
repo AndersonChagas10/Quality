@@ -139,6 +139,33 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
+        public ActionResult ApontamentosDiariosDomingo()
+        {
+            //Retorna as Roles do usuário logado para filtrar o botão de edição
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            var db = new SgqDbDevEntities();
+            List<string> Retorno = new List<string>();
+
+            int _userId = 0;
+            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            {
+                _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
+            }
+
+            var roles = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == _userId).ToList();
+
+            foreach (var role in roles)
+            {
+                Retorno.Add(role.Role);
+            }
+
+            ViewBag.Roles = Retorno;
+            //Fim da Role
+
+            return View(form);
+        }
+
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult NaoConformidade()
         {
@@ -201,7 +228,7 @@ namespace SgqSystem.Controllers
                                         (
                                           SELECT
                                           
-                                          companySigla,
+                                          companySigla, companyTitle,
                                           LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, regId, regName,
                                           AVG(META) META,
                                           SUM(AV) AV,
@@ -260,7 +287,7 @@ namespace SgqSystem.Controllers
                                           FROM(
 
                                           SELECT
-                                          C.Initials companySigla, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, 
+                                          C.Initials companySigla, C.Name companyTitle, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, 
                                           SUM(AV) AV,
                                           SUM(NC) NC,
                                           MAX(PontosIndicador) PontosIndicador,
@@ -1251,11 +1278,11 @@ namespace SgqSystem.Controllers
                                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                                 AND C.IsActive = 1
                 
-                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
                 
                                 ) AAA
                 
-                                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                                 ) A
                             GROUP BY RegName";
 
@@ -1313,11 +1340,11 @@ namespace SgqSystem.Controllers
                     AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                     AND C.IsActive = 1
     
-                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
                     ) AAA
     
-                    GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                     ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -1376,11 +1403,11 @@ namespace SgqSystem.Controllers
                                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                                 AND C.IsActive = 1
                 
-                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
                 
                                 ) AAA
                 
-                                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                                 ) A
                             GROUP BY RegName";
 
@@ -1405,11 +1432,11 @@ namespace SgqSystem.Controllers
               @"
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                 AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A";
 
 
@@ -1459,11 +1486,11 @@ namespace SgqSystem.Controllers
                     AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                     AND C.IsActive = 1
     
-                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
                     ) AAA
     
-                    GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                     ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -1520,11 +1547,11 @@ namespace SgqSystem.Controllers
 
                $@"
             
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -1837,7 +1864,7 @@ namespace SgqSystem.Controllers
                              //
                              //"\n ORDER BY 1";
 
-                             @" SELECT companySigla as name,
+                             @" SELECT companySigla as name, companyTitle as title,
                                  4 coolspan
                 
                               FROM " + sqlBaseGraficosVGA() +
@@ -1854,13 +1881,13 @@ namespace SgqSystem.Controllers
                                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                                 AND C.IsActive = 1
                 
-                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
                 
                                 ) AAA
                 
-                                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                                 ) A
-                            GROUP BY companySigla";
+                            GROUP BY companySigla, companyTitle";
 
 
 
@@ -1919,11 +1946,11 @@ namespace SgqSystem.Controllers
                     AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                     AND C.IsActive = 1
                     AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
-                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
                     ) AAA
     
-                    GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                     ) A
                 RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -1987,13 +2014,13 @@ namespace SgqSystem.Controllers
                     AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                     AND C.IsActive = 1
                     AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
-                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
                     ) AAA
     
-                    GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                     ) A
-                GROUP BY companySigla ";
+                GROUP BY companySigla, companyTitle ";
 
 
 
@@ -2048,11 +2075,11 @@ namespace SgqSystem.Controllers
 
               @"
                 AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A";
 
 
@@ -2105,11 +2132,11 @@ namespace SgqSystem.Controllers
                     AND Reg.ParStructureGroup_Id = 2
                     AND C.IsActive = 1
                     AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
-                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
                     ) AAA
     
-                    GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                     ) A
                 RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2170,11 +2197,11 @@ namespace SgqSystem.Controllers
 
               $@"
               AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                 RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2502,11 +2529,11 @@ namespace SgqSystem.Controllers
                     AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                     AND C.IsActive = 1
                 
-                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
                 
                     ) AAA
                 
-                    GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                     ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2573,11 +2600,11 @@ namespace SgqSystem.Controllers
 
                 $@"
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2643,11 +2670,11 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2711,11 +2738,11 @@ namespace SgqSystem.Controllers
 
                                $@"
 
-                                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                                  ) AAA
 
-                                 GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                                 GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                                  ) A
                             LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                                 ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2773,11 +2800,11 @@ namespace SgqSystem.Controllers
 
                 $@"
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2840,11 +2867,11 @@ namespace SgqSystem.Controllers
 
               $@"
               
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -2883,10 +2910,10 @@ namespace SgqSystem.Controllers
             #endregion
 
             #region Cabecalhos
-
+            var pacote = Resources.Resource.package;
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0] });
+            tabela.trsCabecalho1.Add(new Ths() { name = pacote + ": " + form.ParametroTableRow[0] });
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 
@@ -3159,7 +3186,7 @@ namespace SgqSystem.Controllers
                 //"\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
                 //"\n ORDER BY 1";
 
-                @" SELECT companySigla as name, 4 coolspan 
+                @" SELECT companySigla as name, companyTitle as title, 4 coolspan 
               FROM " + sqlBaseGraficosVGA() +
               @" 
                 where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
@@ -3172,14 +3199,14 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
-            WHERE companySigla IS NOT NULL
-            GROUP BY companySigla";
+            WHERE companySigla, companyTitle IS NOT NULL
+            GROUP BY companySigla, companyTitle";
 
 
 
@@ -3235,11 +3262,11 @@ namespace SgqSystem.Controllers
 
                 @"
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
 				 GROUP BY LEVEL1NAME";
 
@@ -3265,13 +3292,13 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
-            GROUP BY companySigla";
+            GROUP BY companySigla, companyTitle";
 
             // Total Inferior Direita
             var query4 =
@@ -3293,11 +3320,11 @@ namespace SgqSystem.Controllers
               @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A";
 
 
@@ -3350,11 +3377,11 @@ namespace SgqSystem.Controllers
                 @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 WHERE LEVEL1NAME IS NOT NULL
 				 GROUP BY LEVEL1NAME";
@@ -3411,11 +3438,11 @@ namespace SgqSystem.Controllers
 
                $@"
             
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                RIGHT JOIN 
 			   (SELECT distinct A.CLASSIFIC_NEGOCIO,C.MACROPROCESSO FROM ({query2}) A
@@ -3943,7 +3970,7 @@ namespace SgqSystem.Controllers
                 whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
-            whereCol = $@" AND S.ParCompany_Id IN (SELECT ParCompany_Id FROM ParCompany WHERE IsActive = 1 AND Initials = '{form.ParametroTableCol[0]}') ";
+            whereCol = $@" AND S.ParCompany_Id IN (SELECT Id FROM ParCompany WHERE IsActive = 1 AND Initials = '{form.ParametroTableCol[0]}') ";
             whereLin = $@" AND S.LEVEL1ID IN (SELECT ParLevel1_Id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 and ParGroupParLevel1_Id in (SELECT top 1 Id FROM ParGroupParLevel1 WHERE NAME = '{form.ParametroTableRow[0]}')) ";
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -3990,11 +4017,11 @@ namespace SgqSystem.Controllers
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
             WHERE companySigla IS NOT NULL
             GROUP BY companySigla";
@@ -4054,11 +4081,11 @@ namespace SgqSystem.Controllers
                 $@"
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
 				 GROUP BY LEVEL1NAME";
 
@@ -4085,11 +4112,11 @@ namespace SgqSystem.Controllers
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
             GROUP BY companySigla";
 
@@ -4115,11 +4142,11 @@ namespace SgqSystem.Controllers
                   AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A";
 
 
@@ -4174,11 +4201,11 @@ namespace SgqSystem.Controllers
                   AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 WHERE LEVEL1NAME IS NOT NULL
 				 GROUP BY LEVEL1NAME";
@@ -4235,11 +4262,11 @@ namespace SgqSystem.Controllers
 
                $@"
             
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                RIGHT JOIN 
 			   (SELECT distinct A.CLASSIFIC_NEGOCIO,C.MACROPROCESSO FROM ({query2}) A
@@ -4810,11 +4837,11 @@ namespace SgqSystem.Controllers
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
             WHERE companySigla IS NOT NULL
             GROUP BY companySigla";
@@ -4874,11 +4901,11 @@ namespace SgqSystem.Controllers
                 $@"
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
 				 GROUP BY LEVEL1NAME";
 
@@ -4905,11 +4932,11 @@ namespace SgqSystem.Controllers
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
             GROUP BY companySigla";
 
@@ -4935,11 +4962,11 @@ namespace SgqSystem.Controllers
                     { whereLin }  
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A";
 
 
@@ -4994,11 +5021,11 @@ namespace SgqSystem.Controllers
                     { whereLin }    
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
-
-                ) AAA
-
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 WHERE LEVEL1NAME IS NOT NULL
 				 GROUP BY LEVEL1NAME";
@@ -5055,11 +5082,11 @@ namespace SgqSystem.Controllers
 
                $@"
 
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                RIGHT JOIN 
 			   (SELECT distinct A.CLASSIFIC_NEGOCIO,C.MACROPROCESSO FROM ({query2}) A
@@ -5370,7 +5397,7 @@ namespace SgqSystem.Controllers
              //  "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
              //  "\n ORDER BY 1";
 
-             @" SELECT companySigla as name, 4 coolspan 
+             @" SELECT companySigla as name, companyTitle as title, 4 coolspan 
               FROM " + sqlBaseGraficosVGA() +
               @" 
                 where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) AND Reg.Name = '" + form.ParametroTableCol[0] + "'" +
@@ -5383,13 +5410,13 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
-            GROUP BY companySigla";
+            GROUP BY companySigla, companyTitle";
 
 
 
@@ -5447,11 +5474,11 @@ namespace SgqSystem.Controllers
 
                 @"
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
 				 GROUP BY LEVEL1NAME";
 
@@ -5511,13 +5538,13 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
-            GROUP BY companySigla";
+            GROUP BY companySigla, companyTitle";
 
             // Total Inferior Direita
             var query4 =
@@ -5571,11 +5598,11 @@ namespace SgqSystem.Controllers
               @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A";
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
@@ -5623,11 +5650,11 @@ namespace SgqSystem.Controllers
                 @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
 				 GROUP BY LEVEL1NAME ";
 
@@ -5685,11 +5712,11 @@ namespace SgqSystem.Controllers
                $@"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                RIGHT JOIN 
 			   (SELECT distinct A.CLASSIFIC_NEGOCIO,C.MACROPROCESSO FROM ({query2}) A
@@ -5997,7 +6024,7 @@ namespace SgqSystem.Controllers
             //
             //     "\n ORDER BY 1";
 
-            @" SELECT companySigla as name, 4 coolspan 
+            @" SELECT companySigla as name, companyTitle as title, 4 coolspan 
               FROM " + sqlBaseGraficosVGA() +
               $@" 
                 where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) AND Reg.Name = '{ form.ParametroTableCol[0] }' " +
@@ -6010,11 +6037,11 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -6023,7 +6050,7 @@ namespace SgqSystem.Controllers
                 WHERE 1=1
                     AND PP1.Name IS NOT NULL 
                     AND PP1.Name = '{ form.ParametroTableRow[0] }'
-            GROUP BY companySigla";
+            GROUP BY companySigla, companyTitle";
 
 
             // Total Direita
@@ -6077,11 +6104,11 @@ namespace SgqSystem.Controllers
 
                 $@"
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -6147,11 +6174,11 @@ namespace SgqSystem.Controllers
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
                 AND C.IsActive = 1
 
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -6160,7 +6187,7 @@ namespace SgqSystem.Controllers
                 WHERE 1=1
                     AND PP1.Name IS NOT NULL 
                     AND PP1.Name = '{ form.ParametroTableRow[0] }'
-            GROUP BY companySigla";
+            GROUP BY companySigla, companyTitle";
 
             // Total Inferior Direita
             var query4 =
@@ -6214,11 +6241,11 @@ namespace SgqSystem.Controllers
               $@"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -6275,11 +6302,11 @@ namespace SgqSystem.Controllers
                 $@"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                 ) AAA
 
-                GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID
@@ -6343,11 +6370,11 @@ namespace SgqSystem.Controllers
                $@"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
                ) AAA
             
-               GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                ) A 
                 LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
                     ON PPP1.ParLevel1_Id = a.LEVEL1ID

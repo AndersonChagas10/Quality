@@ -4,6 +4,7 @@ using Dominio;
 using DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using DTO.ResultSet;
 using Newtonsoft.Json;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
@@ -43,6 +44,7 @@ namespace SgqSystem.Controllers.Api
 
         private List<ApontamentosDiariosResultSet> _mock { get; set; }
         private List<ApontamentosDiariosResultSet> _list { get; set; }
+        private List<ApontamentosDiariosDomingoResultSet> _listApontomentosDiarioDomingo { get; set; }
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         [HttpPost]
@@ -60,6 +62,22 @@ namespace SgqSystem.Controllers.Api
 
                 return _list;
             }
+        }
+
+        [HttpPost]
+        [Route("GetApontamentosDomingo")]
+        public List<ApontamentosDiariosDomingoResultSet> GetApontamentosDomingo ([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
+
+            var query = new ApontamentosDiariosDomingoResultSet().Select(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _listApontomentosDiarioDomingo = factory.SearchQuery<ApontamentosDiariosDomingoResultSet>(query).ToList();
+            }
+            return _listApontomentosDiarioDomingo;
         }
 
         [HttpPost]
@@ -331,7 +349,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7)) != null)//INTERVALOS
                                 return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
@@ -351,7 +369,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 5) != null)//TEXTO
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
                                 return "1";
                         }
                         catch (Exception e)
@@ -384,7 +402,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7)) != null)//INTERVALOS
                                 return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
@@ -404,7 +422,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5) != null)//TEXTO
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
                                 return "1";
                         }
                         catch (Exception e)
@@ -940,11 +958,11 @@ namespace SgqSystem.Controllers.Api
                                     return mountHtmlConform();
                                 else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 2).IsNotNull())
                                     return mountHtmlNumeroDefeitos();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 3).IsNotNull())
+                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7)).IsNotNull())
                                     return mountHtmlIntervalos();
                                 else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4).IsNotNull())
                                     return mountHtmlCalculado();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 5).IsNotNull())
+                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)).IsNotNull())
                                     return mountHtmlTexto();
                             }
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 1).IsNotNull())

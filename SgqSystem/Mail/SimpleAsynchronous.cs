@@ -27,7 +27,7 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int tamanhoDoPool = 1000;
+        private static int tamanhoDoPool = 2;
         private static bool running { get; set; }
 
         #region SGQ Email
@@ -86,6 +86,42 @@ namespace SgqSystem.Mail
                 }
             }
         }
+
+        /// <summary>
+        /// Controle de chamadas para envio de email SGQ utilizando os email que estão na tabela EmailContent: (r => r.SendStatus == null && r.Project == "SGQApp"),
+        /// utiliza callback e configs da tabela SgqConfig
+        /// </summary>
+        public static void SendEmail()
+        {
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    var listDeviation = db.Deviation.Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(100).Select(r => r.EmailContent_Id).ToList();
+
+                    ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp" && listDeviation.Contains(r.Id)).Take(tamanhoDoPool).ToList();
+                    
+
+                    MailSender.HandleError HandleErrorDelegate = HandleErrorMethod;
+                    if (ListaDeMail != null && ListaDeMail.Count() > 0)
+                        foreach (var i in ListaDeMail.Distinct().ToList())
+                        {
+                            Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true, HandleErrorDelegate));
+                            //var emailContent = db.EmailContent.Find(i.Id);
+                            i.SendStatus = "Tentando Enviar";
+                            i.AlterDate = DateTime.Now;
+                        }
+
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(new Exception("Erro no metodo [SendEmail]", ex));
+                //throw ex;
+            }
+        }
+
         /// <summary>
         /// Controle de chamadas para envio de email SGQ utilizando os email que estão na tabela EmailContent: (r => r.SendStatus == null && r.Project == "SGQApp"),
         /// utiliza callback e configs da tabela SgqConfig
@@ -95,7 +131,7 @@ namespace SgqSystem.Mail
             try
             {
                 CreateMailSgqAppDeviation();
-                //CreateMailSgqAppCorrectiveAction();
+
                 using (var db = new SgqDbDevEntities())
                 {
                     ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp").ToList();
@@ -215,12 +251,13 @@ namespace SgqSystem.Mail
             {
                 try
                 {
-                    db.Configuration.ValidateOnSaveEnabled = false;
+                    //db.Configuration.ValidateOnSaveEnabled = false;
                     db.Configuration.LazyLoadingEnabled = false;
 
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimit).Take(tamanhoDoPool).ToList();
+                    DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).Take(tamanhoDoPool).ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {
@@ -383,9 +420,10 @@ namespace SgqSystem.Mail
                             ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
                             AND U.Id NOT IN (543,546,511)"; //Tirar Célia e Mariana da JBS
 
-                var listaEmails = dbLegado.Database.SqlQuery<string>(query);
+                var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
                 if (listaEmails != null && listaEmails.Count() > 0)
                 {
+                    listaEmails = listaEmails.Distinct().ToList();
                     return string.Join(",", listaEmails.ToArray());
                 }
                 else

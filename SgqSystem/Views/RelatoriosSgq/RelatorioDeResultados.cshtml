@@ -100,6 +100,11 @@
             <br />
             <table id="DataTable"></table>
 
+            <br />
+            <h3 id="TituloTabela2"></h3>
+            <br />
+            <table id="DataTable2"></table>
+
         </div>
     </div>
 
@@ -202,6 +207,7 @@
     //        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
     var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
+    var UrlListaResultadosPeriodo2 = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela2", "api/RelatorioDeResultados"))';
     var UrlGraficoHistorico = '@Html.Raw(Url.Action("GetGraficoHistoricoModal", "api/RelatorioDeResultados"))';
     var UrlGraficoHistoricoGeral = '@Html.Raw(Url.Action("GetGraficoHistoricoModalGeral", "api/RelatorioDeResultados"))';
     var UrlGraficoHistoricoModalUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoModalUnidade", "api/RelatorioDeResultados"))';
@@ -299,6 +305,9 @@
         }
 
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+
+        EasyAjax(UrlListaResultadosPeriodo2, enviar, GerarTabela2, "DataTable2", undefined);
+
 
         /*Colocando o grafico de histórunitIdArrico geral*/
         var enviarGeral = Object.create(enviar);
@@ -461,7 +470,101 @@
                 createdRow: function (row, data, index) { }
             });
         }
-    }
+     }
+
+        function GerarTabela2(retornoArray) {
+            if (retornoArray.length > 0) {
+                var counter = 0;
+                while (counter < retornoArray.length) {
+                    if (retornoArray[counter]["Status"] == 1)
+                        retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">?</b></i></span>'
+                    else
+                        retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">?</b></i></span>';
+                    counter++;
+                }
+
+                var columnDefs = [];
+                if (retornoArray[0].IsIndicador) {
+                    //table.column(2).visible(false);
+                    //table.column(3).visible(false);
+                    columnDefs.push({ "targets": [3], "visible": false });
+                    columnDefs.push({ "targets": [4], "visible": false });
+                }
+
+                if (retornoArray[0].IsMonitoramento) {
+                    columnDefs.push({ "targets": [4], "visible": false });
+                    //table.column(7).visible(false);
+                    //table.column(8).visible(false);
+                }
+
+                if (retornoArray[0].IsTarefa) { // Alteração
+                    //table.column(7).visible(false);
+                    //table.column(8).visible(false);
+                }
+
+                var table = datatableGRT.Inicializar({
+
+                    idTabela: "DataTable2",
+                    listaDeDados: retornoArray,
+                    definicaoColuna: columnDefs,
+                    colunaDosDados: [
+                        { title: Resources("structure"), mData: "Regional" },
+                        { title: Resources("unit"), mData: "UnidadeName" },
+                        { title: Resources("level1"), mData: "IndicadorName" },
+                        { title: Resources("level2"), mData: "MonitoramentoName" },
+                        { title: Resources("level3"), mData: "TarefaName" },
+                        { title: Resources("ev"), mData: "Av" },
+                        { title: Resources("nonconformity"), mData: "Nc" },
+                        { title: Resources("ev_with_weight"), mData: "avComPeso" },
+                        { title: Resources("nc_with_weight"), mData: "ncComPeso" },
+                        {
+                            title: Resources("percentNon_conformities"), mData: "Pc",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '')
+                        },
+                        { title: "% " + Resources("goal"), mData: "Meta" },
+                        { title: "Status", mData: "Status" }
+                        
+                    ],
+                    numeroLinhasNaTabela: 13,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[13, 25, 50, 100, -1], [13, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: function () {
+                        $("#DataTable2").addClass("table_GRT RLR_Table");
+                        $('#DataTable2 tbody').on('click', 'button', function (data, a, b) {
+                            var data = table.row($(this).parents('tr')).data();
+                            enviar2 = {};
+                            enviar2["startDate"] = enviar["startDate"];
+                            enviar2["endDate"] = enviar["endDate"];
+                            enviar2["level1Id"] = data["Indicador"];
+                            //enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                            enviar2["level2Id"] = data["Monitoramento"];
+                            enviar2["level3Id"] = data["Tarefa"];
+                            enviar2["UnitId"] = data["Unidade"];
+                            //enviar2["historico_id"] = data["Historico_Id"];
+                            enviar2['QtdeAvaliado'] = data["Av"];
+                            enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
+                            enviar2["PercentualNCFTA"] = data["Pc"];
+                            if ($(this).attr('data-target') == "#modalResultados")
+                                EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
+                            else {
+                                $('#GraficoHistoricoModal').empty();
+                                $('#modalHistorico').modal()
+
+                                EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                                    //console.log(r)
+                                    $('#GraficoHistoricoModal').empty()
+                                    CallbackGraficoHistoricoModal(r)
+                                }, "GraficoHistoricoModal")
+                            }
+                        });
+                    },
+                    createdRow: function (row, data, index) { }
+                });
+            }
+        }
 
     function GerarGrafico(data) {
 
@@ -874,7 +977,9 @@
 
     function CallbackGraficoHistoricoModal(data) {
         var subtitleAux = "";
-        var dia = MapeiaValorParaHC(data, "_date");
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+        var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
         //fazGambipraMenosCem(porc)
@@ -1357,7 +1462,9 @@
 
 
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1655,7 +1762,9 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1928,7 +2037,9 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -2591,6 +2702,7 @@
         $('#Titulo').html(Titulo);
         //$('#TituloGrafico').html(TituloGrafico);
         $('#TituloTabela').html(Resources("listOf") + " " + Titulo);
+        $('#TituloTabela2').html(Resources("listOf") + " " + "Resultados das Avaliações com Indicadores, Monitoramentos e Tarefas <h7><b>(Atenção: Esta tabela demora para carregar.)</b></h7>");
     }
 
     function fazGambipraMenosCem(arr) {

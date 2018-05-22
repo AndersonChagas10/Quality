@@ -1,93 +1,93 @@
 ﻿using DTO;
 using System;
 
-
-
-public class ApontamentosDiariosResultSet
+namespace DTO.ResultSet
 {
-    public System.DateTime Data { get; set; }
-    public string _Data { get { return Data.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
-    public string _Hora { get { return Data.ToShortTimeString(); } }
-
-    public string Indicador { get; set; }
-    public string Monitoramento { get; set; }
-    public string Tarefa { get; set; }
-    public Nullable<decimal> Peso { get; set; }
-    public string IntervaloMinimo { get; set; }
-    public string IntervaloMaximo { get; set; }
-    public string Lancado { get; set; }
-
-    public Nullable<bool> Conforme { get; set; }
-    public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString();} }
-
-    public Nullable<bool> NA { get; set; }
-    public string _NA { get { return NA.Value ? GetResources.getResource("unvalued").Value.ToString() : GetResources.getResource("valued").Value.ToString(); } }
-
-    public Nullable<decimal> AV_Peso { get; set; }
-    public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
-
-    public Nullable<decimal> NC_Peso { get; set; }
-    public Nullable<int> Avaliacao { get; set; }
-    public int Amostra { get; set; }
-    public Nullable<int> Sequencial { get; set; }
-    public Nullable<int> Banda { get; set; }
-    public int ResultLevel3Id { get; set; }
-    public Nullable<int> HashKey { get; set; }
-
-    public string Unidade { get; set; }
-    public string Periodo { get; set; }
-    public string Turno { get; set; }
-    public string Auditor { get; set; }
-    public string ValueText { get; set; }
-    public string HeaderFieldList { get; set; }
-
-    public System.DateTime AddDate { get; set; }
-    public string _AddDate { get { return AddDate.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
-    public string Platform { get; set; }
-    public string Type { get; set; }
-    public string Processo { get; set; }
-
-    public string Select(DataCarrierFormulario form)
+    public class ApontamentosDiariosDomingoResultSet
     {
-        var dtInit = form._dataInicio.ToString("yyyyMMdd");
-        var dtF = form._dataFim.ToString("yyyyMMdd");
+        public System.DateTime Data { get; set; }
+        public string _Data { get { return Data.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
+        public string _Hora { get { return Data.ToShortTimeString(); } }
 
-        var sqlUnidade = "";
-        var sqlLevel1 = "";
-        var sqlLevel2 = "";
-        var sqlLevel3 = "";
-        var formatDate = "";
+        public string Indicador { get; set; }
+        public string Monitoramento { get; set; }
+        public string Tarefa { get; set; }
+        public Nullable<decimal> Peso { get; set; }
+        public string IntervaloMinimo { get; set; }
+        public string IntervaloMaximo { get; set; }
+        public string Lancado { get; set; }
 
-        if (form.unitId > 0)
+        public Nullable<bool> Conforme { get; set; }
+        public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString(); } }
+
+        public Nullable<bool> NA { get; set; }
+        public string _NA { get { return NA.Value ? GetResources.getResource("unvalued").Value.ToString() : GetResources.getResource("valued").Value.ToString(); } }
+
+        public Nullable<decimal> AV_Peso { get; set; }
+        public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
+
+        public Nullable<decimal> NC_Peso { get; set; }
+        public Nullable<int> Avaliacao { get; set; }
+        public int Amostra { get; set; }
+        public Nullable<int> Sequencial { get; set; }
+        public Nullable<int> Banda { get; set; }
+        public int ResultLevel3Id { get; set; }
+        public Nullable<int> HashKey { get; set; }
+
+        public string Unidade { get; set; }
+        public string Periodo { get; set; }
+        public string Turno { get; set; }
+        public string Auditor { get; set; }
+        public string ValueText { get; set; }
+        public string HeaderFieldList { get; set; }
+
+        public System.DateTime AddDate { get; set; }
+        public string _AddDate { get { return AddDate.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
+        public string Platform { get; set; }
+        public string Type { get; set; }
+        public string Processo { get; set; }
+
+        public string Select(DataCarrierFormulario form)
         {
-            sqlUnidade = "\n AND UN.Id = " + form.unitId;
-        }
+            var dtInit = form._dataInicio.ToString("yyyyMMdd");
+            var dtF = form._dataFim.ToString("yyyyMMdd");
 
-        if (form.level1Id > 0)
-        {
-            sqlLevel1 = "\n AND L1.Id = " + form.level1Id;
-        }
+            var sqlUnidade = "";
+            var sqlLevel1 = "";
+            var sqlLevel2 = "";
+            var sqlLevel3 = "";
+            var formatDate = "";
 
-        if (form.level2Id > 0)
-        {
-            sqlLevel2 = "\n AND C2.ParLevel2_Id = " + form.level2Id;
-        }
+            if (form.unitId > 0)
+            {
+                sqlUnidade = "\n AND UN.Id = " + form.unitId;
+            }
 
-        if (form.level3Id > 0)
-        {
-            sqlLevel3 = "\n AND L3.Id = " + form.level3Id;
-        }
+            if (form.level1Id > 0)
+            {
+                sqlLevel1 = "\n AND L1.Id = " + form.level1Id;
+            }
 
-        if (GlobalConfig.Eua)
-        {
-            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 101)";
-        }
-        else
-        {
-            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
-        }
+            if (form.level2Id > 0)
+            {
+                sqlLevel2 = "\n AND C2.ParLevel2_Id = " + form.level2Id;
+            }
 
-        var query = $@" 
+            if (form.level3Id > 0)
+            {
+                sqlLevel3 = "\n AND L3.Id = " + form.level3Id;
+            }
+
+            if (GlobalConfig.Eua)
+            {
+                formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 101)";
+            }
+            else
+            {
+                formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
+            }
+
+            var query = $@" 
 
 
                     -- DROP TABLE #CollectionLevel2
@@ -110,6 +110,7 @@ public class ApontamentosDiariosResultSet
                     INTO #CollectionLevel2
                     FROM collectionlevel2 CL2
                         WHERE CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
+                        AND  DATENAME(WEEKDAY,CL2.CollectionDate)  = 'Sunday'
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
                     CREATE INDEX IDX_CollectionLevel2_UnitId ON #CollectionLevel2(UnitId);
@@ -195,7 +196,7 @@ public class ApontamentosDiariosResultSet
                     GROUP BY CL2HF.CollectionLevel2_Id
                  	) HF 
                  on c2.Id = HF.CollectionLevel2_Id
-                 LEFT JOIN (SELECT CollectionLevel2_Id, max(CollectionJson_Id) as CollectionJson_Id FROM CollectionLevel2XCollectionJson GROUP BY CollectionLevel2_Id) CLCJ
+                 LEFT JOIN CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN CollectionJson CJ
                  ON CJ.Id = CLCJ.CollectionJson_Id
@@ -207,7 +208,7 @@ public class ApontamentosDiariosResultSet
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
 
-        return query;
+            return query;
+        }
     }
-   
 }

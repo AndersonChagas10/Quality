@@ -121,6 +121,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
+        [HttpPost]
+        [Route("listaResultadosPeriodoTabela2")]
+        public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela2([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            GetResultadosTarefa(form);
+         
+            return retorno;
+        }
+
         private void GetResultadosIndicador(FormularioParaRelatorioViewModel form)
         {
             var nivel = 1;
@@ -1386,10 +1395,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
+                GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
                 
                   ) AAA 
-                  GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
+                  GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
                       ) A
               group by mesData";
 
@@ -1482,10 +1491,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                @"
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                 AND C.IsActive = 1
-               GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
              ) AAA 
-             GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+             GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
                      ";
 

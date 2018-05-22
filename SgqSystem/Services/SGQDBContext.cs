@@ -1776,12 +1776,28 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return lista;
         }
 
-        public List<Generico> getClusterCompany(int ParCompany_Id)
+        public List<Generico> getClusterGroupCompany(int ParCompany_Id) //Buscar os módulos
         {
             string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
 
-            var sql = "SELECT CC.ParCluster_Id as id, C.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1";
+            var sql = "SELECT CG.Id as id, CG.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id LEFT JOIN ParClusterGroup CG ON CG.Id = C.ParClusterGroup_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1 and CG.IsActive = 1";
+
+            List<Generico> lista = new List<Generico>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                lista = factory.SearchQuery<Generico>(sql).ToList();
+            }
+
+            return lista;
+        }
+
+        public List<Generico> getClusterCompany(int ParCompany_Id, string ParClusterGroup_Id) //Buscar os processos
+        {
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            db = new SqlConnection(conexaoBR);
+
+            var sql = "SELECT CC.ParCluster_Id as id, C.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1 and C.ParClusterGroup_Id = " + ParClusterGroup_Id;
 
             List<Generico> lista = new List<Generico>();
             using (Factory factory = new Factory("DefaultConnection"))

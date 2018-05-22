@@ -258,7 +258,6 @@
 
     var contadorAJAX = 0;
     var contadorAJAX_historico = 0;
-    var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var Chart = {
 
         /*
@@ -1597,7 +1596,9 @@
         }
 
         function CallbackGrafico3(data) {
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");

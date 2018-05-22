@@ -116,36 +116,36 @@ function MountDataTablePlanejamento(json) {
             }
         ],
         'aoColumnDefs': [
-            { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
-            { "sTitle": "Missão", "aTargets": [1], "width": "200px" },
-            { "sTitle": "Visão", "aTargets": [2], "width": "200px" },
-            { "sTitle": "Dimensão", "aTargets": [3], "width": "50px" },
-            { "sTitle": "Diretrizes", "aTargets": [4], "width": "200px" }, // ver diretriz
-            { "sTitle": "Indicadores Diretriz", "aTargets": [5], "width": "300px" },
-            { "sTitle": "Responsável pela Diretriz", "aTargets": [6], "width": "50px" },
-            { "sTitle": "Tema | Assunto", "aTargets": [7], "width": "100px" },
-            { "sTitle": "Gerência", "aTargets": [8], "width": "100px" },
-            { "sTitle": "Coordenação", "aTargets": [9], "width": "100px" },
-            { "sTitle": "Tipo de Projeto", "aTargets": [10], "width": "100px" },
-            { "sTitle": "Tema do Projeto", "aTargets": [11], "width": "100px" },
-            { "sTitle": "Projeto | Iniciativa", "aTargets": [12], "width": "200px" },
-            { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [13], "width": "100px" },
-            { "sTitle": "Objetivo Gerencial", "aTargets": [14], "width": "100px" },
-            { "sTitle": "Valor de", "aTargets": [15], "width": "50px" },
-            { "sTitle": "Valor para", "aTargets": [16], "width": "50px" },
-            { "sTitle": "Data Início", "aTargets": [17], "width": "50px" },
-            { "sTitle": "Data Fim", "aTargets": [18], "width": "50px" },
-            { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [19], "width": "50px" },//
-            { "sTitle": "Indicadores Operacional", "aTargets": [20], "width": "100px" }, // ver indicador operacional*
-            { "sTitle": "Quantidade de Ações", "aTargets": [21], "width": "50px" },
-            { "sTitle": "Ação" },
+            { "sTitle": Resources("directorship"), "aTargets": [0], "width": "100px" },
+            { "sTitle": Resources("mission"), "aTargets": [1], "width": "200px" },
+            { "sTitle": Resources("view"), "aTargets": [2], "width": "200px" },
+            { "sTitle": Resources("dimension"), "aTargets": [3], "width": "50px" },
+            { "sTitle": Resources("guidelines"), "aTargets": [4], "width": "200px" }, // ver diretriz
+            { "sTitle": Resources("indicators_guidelines"), "aTargets": [5], "width": "300px" },
+            { "sTitle": Resources("responsible_guideline"), "aTargets": [6], "width": "50px" },
+            { "sTitle": Resources("theme_subject"), "aTargets": [7], "width": "100px" },
+            { "sTitle": Resources("management"), "aTargets": [8], "width": "100px" },
+            { "sTitle": Resources("coordination"), "aTargets": [9], "width": "100px" },
+            { "sTitle": Resources("type_of_project"), "aTargets": [10], "width": "100px" },
+            { "sTitle": Resources("project_theme"), "aTargets": [11], "width": "100px" },
+            { "sTitle": Resources("project_initiative"), "aTargets": [12], "width": "200px" },
+            { "sTitle": Resources("indicators_project_initiative"), "aTargets": [13], "width": "100px" },
+            { "sTitle": Resources("management_objective"), "aTargets": [14], "width": "100px" },
+            { "sTitle": Resources("value_of"), "aTargets": [15], "width": "50px" },
+            { "sTitle": Resources("value_for"), "aTargets": [16], "width": "50px" },
+            { "sTitle": Resources("start_date"), "aTargets": [17], "width": "50px" },
+            { "sTitle": Resources("end_date"), "aTargets": [18], "width": "50px" },
+            { "sTitle": Resources("responsible_project_initiative"), "aTargets": [19], "width": "50px" },//
+            { "sTitle": Resources("operational_indicators"), "aTargets": [20], "width": "100px" }, // ver indicador operacional*
+            { "sTitle": Resources("quantity_actions"), "aTargets": [21], "width": "50px" },
+            { "sTitle": Resources("action") },
 
         ],
         "responsive": true,
         "bSearchable": true,
         "bFilter": true,
         "paging": true,
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
+        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, Resources("all")]],
         "info": true,
         "scrollY": 370,
         "scrollX": 500,
@@ -154,25 +154,25 @@ function MountDataTablePlanejamento(json) {
         "buttons": [
             {
                 extend: 'colvisGroup',
-                text: 'Visão Inicial',
+                text: Resources("initial_view"),
                 show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19/*, 39, 40*/],
                 hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20/*, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38*/]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Planejamento Estratégico',
+                text: Resources("strategic_planning"),
                 show: [0, 1, 2, 3, 4, 5, 6/*, 35, 39, 40*/],
                 hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20/*, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38*/]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Planejamento Tático',
+                text: Resources("tactical_planning"),
                 show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19/*, 39, 40*/],
                 hide: [0, 1, 2, 4, 5, 6, 20/*, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38*/]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Mostrar Todos',
+                text: Resources("show_all"),
                 show: ':hidden'
             },
             {
@@ -184,14 +184,14 @@ function MountDataTablePlanejamento(json) {
             },
             {
                 extend: 'colvis',
-                text: 'Colunas Visíveis',
+                text: Resources("visible_columns"),
                 collectionLayout: 'fixed four-column',
                 exportOptions: {
                     columns: ':visible',
                 }
             },
             {
-                text: 'Atualizar',
+                text: Resources("update"),
                 action: function (e, dt, node, config) {
                     $('#btnTop').click();
                 },
@@ -209,26 +209,26 @@ function MountDataTablePlanejamento(json) {
 
         },
         "language": {
-            "sEmptyTable": "Nenhum registro encontrado",
-            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sEmptyTable": Resources("no_records_found"),
+            "sInfo": Resources("showing_start_to_end_of_total_records"),
+            "sInfoEmpty": Resources("showing_0_to_0_of_0_records"),
+            "sInfoFiltered": Resources("filtered_max_records"),
             "sInfoPostFix": "",
             "sInfoThousands": ".",
-            "sLengthMenu": "_MENU_ resultados por página",
-            "sLoadingRecords": "Carregando...",
-            "sProcessing": "Processando...",
-            "sZeroRecords": "Nenhum registro encontrado",
-            "sSearch": "Pesquisar",
+            "sLengthMenu": Resources("menu_results_per_page"),
+            "sLoadingRecords": Resources("loading"),
+            "sProcessing": Resources("processing"),
+            "sZeroRecords": Resources("no_records_found"),
+            "sSearch": Resources("search"),
             "oPaginate": {
-                "sNext": "Próximo",
-                "sPrevious": "Anterior",
-                "sFirst": "Primeiro",
-                "sLast": "Último"
+                "sNext": Resources("next"),
+                "sPrevious": Resources("back"),
+                "sFirst": Resources("first"),
+                "sLast": Resources("last")
             },
             "oAria": {
-                "sSortAscending": ": Ordenar colunas de forma ascendente",
-                "sSortDescending": ": Ordenar colunas de forma descendente"
+                "sSortAscending": Resources("sort_columns_ascending"),
+                "sSortDescending": Resources("sort_columns_downward")
             }
         }
     });
@@ -283,7 +283,7 @@ $('#divPlanejamento table > tbody').on('click', '.btnNovoTatico', function () {
 
     $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
 
-        ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
+        ModalOpcoesEstrategico(Resources("new_tactical_planning_linked"), 0, function () {
 
             EditarPlanejamento(r);
 
@@ -301,7 +301,7 @@ $('#divPlanejamento table > tbody').on('click', '.btnNovoOperacional', function 
 
     $('#modalLindo').modal();
     $('#modalLindo').find('.modal-body').empty();
-    $('#Header').html("Planejamento Operacional");
+    $('#Header').html(Resources("operational_planning"));
 
     $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
 
@@ -338,7 +338,7 @@ $('#divPlanejamento table > tbody').on('click', '.btnEditarPlanejamento', functi
     }
 
     $('#modalLindo').find('.modal-footer button').hide();
-    $('#Header').html("Editar");
+    $('#Header').html(Resources("edit"));
     $('#modalLindo').modal();
     $('#Fechar').show();
 
