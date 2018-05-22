@@ -1,10 +1,12 @@
 ﻿using ExcelDataReader;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -16,44 +18,54 @@ namespace SgqSystem.Controllers
         {
             return View();
         }
-        public class Produto{
+        public class Produto
+        {
             public string Id { get; set; }
             public string Descricao { get; set; }
             public string Preco { get; set; }
             public string NomeArquivo { get; set; }
+            public string Titulo { get; set; }
         }
 
         public ActionResult Importar(HttpPostedFileBase arquivo)
         {
-            List<Produto> Produtos = new List<Produto>();
+
+            var dicionarioCabecalho = new Dictionary<int, string>();
+            var dicionarioDados = new List<Dictionary<string, string>>();
             DataTable dt = UploadExcelTo(arquivo);
-            if (dt != null)
+
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                for (int i = 0; i < dt.Rows.Count; i++)
+                DataRow row = dt.Rows[i];
+                if (i == 0)
                 {
-                    DataRow row = dt.Rows[i];
-                    // var linha = i + 2;
                     if (row[0] != null && row[0].ToString().Length > 0)
                     {
-                        Produto produto = new Produto();
-                        produto.Id = row[0].ToString();
-                        produto.Descricao = row[1].ToString();
-                        produto.Preco = row[2].ToString();
-                        produto.NomeArquivo = arquivo.FileName;
-
-                        Produtos.Add(produto);
+                        for (var j = 0; j < row.ItemArray.Length; j++)
+                        {
+                            if (row[j].ToString().Length > 0)
+                                dicionarioCabecalho.Add(j, row[j].ToString());
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    var dicionarioDadosCorpo = new Dictionary<string, string>();
+                    foreach (var item in dicionarioCabecalho)
                     {
-                        var vazio = 0;
+                        dicionarioDadosCorpo.Add(item.Value, row[item.Key].ToString());
                     }
-                }             
-                return View("Index",Produtos);
+                    dicionarioDados.Add(dicionarioDadosCorpo);
+                }
             }
-            else
-            {
-                return View("Index", ModelState);
-            }
+            return View("Index", dicionarioDados);
+
+        }
+
+        [System.Web.Http.HttpGet]
+        public ActionResult SalvarExcel()
+        {
+            return null;
         }
 
         protected DataTable UploadExcelTo(HttpPostedFileBase upload)
@@ -77,7 +89,7 @@ namespace SgqSystem.Controllers
                     reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
                 }
                 else
-                {                  
+                {
                     ModelState.AddModelError("File", Resources.Resource.file_format_not_supported);
                     return null;
                 }
@@ -94,7 +106,7 @@ namespace SgqSystem.Controllers
             }
             else
             {
-               ModelState.AddModelError("File", Resources.Resource.no_file_selected);
+                ModelState.AddModelError("File", Resources.Resource.no_file_selected);
             }
             return null;
         }

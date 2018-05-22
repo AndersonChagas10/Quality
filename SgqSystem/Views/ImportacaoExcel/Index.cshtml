@@ -1,12 +1,15 @@
-﻿@{
+﻿@model List<Dictionary<string, string>>
+
+@{
     ViewBag.Title = @Resources.Resource.import_excel;
+    var urlExcel = Url.Action("SalvarExcel", "api/ImportacaoExcel");
 }
 
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="page-bar">
             <ul class="page-breadcrumb">
-                <li> 
+                <li>
                     <a href="@Url.Action("Index", "ImportacaoExcel")">Home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
@@ -21,7 +24,7 @@
         <div class="container-fluid">
             <div class="row  form-group">
                 <div class="col-md-6 col-xs-12 form-group">
-                    @using (Html.BeginForm("Importar", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("Importar", "ImportacaoExcel", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <div class="col-xs-12 form-group">
                             <h4> <label class="">Arquivo excel</label></h4>
@@ -34,6 +37,7 @@
                                     </div>
                                     <div class="col-xs-12 ">
                                         <button class="btn btn-success" type="submit" name="enviar">Ler Arquivo</button>
+                                        <button class="btn btn-primary" type="button" id="salvar" name="salvar">Salvar Arquivo</button>
                                     </div>
                                 </div>
                             </div>
@@ -47,14 +51,30 @@
                 <div class="col-md-6 col-lg-12 col-sm-4">
                     @if (Model != null)
                     {
-                        <table class="table table-striped">
+                        <table id="tabela" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Selecionar</th>
+                                    @foreach (var titulo in Model[0])
+                                    {
+                                        <th>@titulo.Key</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
                             @foreach (var produto in Model)
                             {
                                 <tr>
-                                    <td>@produto.Id</td>
-                                    <td>@produto.Descricao</td>
-                                    <td>@produto.Preco</td>
+                                    <td>
+                                        <label><input type="checkbox" checked></label>
+                                    </td>
+                                    @foreach (var titulo in produto)
+                                    {
+                                        <td class="dadosTabela" data-header="@titulo.Key">@titulo.Value</td>
+
+                                    }
                                 </tr>
+
                             }
                         </table>
                     }
@@ -63,3 +83,45 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        var urlExcel = '@Html.Raw(@urlExcel)';
+
+        $("#salvar").on('click', function () {
+            var dadosPreenchidos = "";
+            if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
+                dadosPreenchidos = PreencherDadosArquivo();
+            }
+
+            var dados = JSON.stringify(dadosPreenchidos);
+
+            $.ajax({
+                type: "Post",
+                url: urlExcel,
+                dataType: "json",
+                contentType: "application/json",
+                data: dados,
+                success: function (retorno) {
+                    console.log('Ok');
+                }
+            });
+
+            function PreencherDadosArquivo() {
+                var lista = [];
+                var objeto = {};
+
+                $.each($("#tabela tbody tr").find('[type="checkbox"]:checked'), function () {
+                    objeto = {};
+                    $.each($(this).parents("tr").find("[data-header]"), function (i, o) {
+
+                        objeto[$(this).attr("data-header")] = $(this).text();
+                    });
+                    lista.push(objeto);
+                })
+                return lista;
+            }
+        })
+
+
+    </script>
+}
