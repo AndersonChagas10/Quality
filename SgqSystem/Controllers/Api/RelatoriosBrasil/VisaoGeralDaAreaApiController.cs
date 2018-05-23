@@ -2105,7 +2105,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                       GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
                       group by companySigla, companyTitle
-                      ORDER BY 2 DESC";
+                      ORDER BY 3 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
