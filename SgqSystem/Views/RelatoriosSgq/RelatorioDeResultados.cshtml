@@ -760,6 +760,7 @@
                             click: function () {
 
                                 enviar3 = {};
+                                enviar3["auditorId"] = enviar["auditorId"];
                                 enviar3["startDate"] = enviar["startDate"];
                                 enviar3["endDate"] = enviar["endDate"];
                                 enviar3['unitId'] = Unidade[this.x];
@@ -941,6 +942,7 @@
                                 //FTA2();
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 enviar3 = {};
+                                enviar3['auditorId'] = enviar["auditorId"];
                                 enviar3['level1Id'] = Indicador[this.x];
                                 enviar3['level2Id'] = Monitoramento[this.x];
                                 enviar3['level3Id'] = Tarefa[this.x];
@@ -2331,6 +2333,7 @@
             //subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
             enviarAxI.isLevel = 1;
         }
+        enviarAxI['auditorId'] = enviar["auditorId"];
 
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
@@ -2474,7 +2477,7 @@
                             click: function () {
 
                                 enviarAI = {};
-
+                                enviarAI['auditorId'] = enviar["auditorId"];
                                 enviarAI['Data'] = date[this.x];
                                 enviarAI['level1Id'] = data[0].level1Id;
                                 enviarAI['level2Id'] = data[0].level2Id;
@@ -2521,7 +2524,7 @@
                             click: function () {
 
                                 enviarAI = {};
-
+                                enviarAI['auditorId'] = enviar["auditorId"];
                                 enviarAI['Data'] = date[this.x];
                                 enviarAI['level1Id'] = data[0].level1Id;
                                 enviarAI['level2Id'] = data[0].level2Id;
