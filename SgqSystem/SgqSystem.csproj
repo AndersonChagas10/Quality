@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -401,6 +402,7 @@
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
+    <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
@@ -1701,6 +1703,8 @@
     <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
     <Content Include="Views\Shared\_Mandala.cshtml" />
+    <Content Include="Views\RoleUserSgq\Index.cshtml" />
+    <Content Include="Views\RoleUserSgq\Create.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
