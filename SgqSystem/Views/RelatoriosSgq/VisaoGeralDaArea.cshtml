@@ -254,7 +254,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var contadorAJAX = 0;
     var contadorAJAX_historico = 0;
@@ -1289,7 +1289,8 @@
         }
 
         function CallbackGrafico1(data) {
-       
+
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var meta = (isBrazil == true ? meta = "Meta 83%" : meta = "Goals 83%");
         var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
         var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
@@ -2936,6 +2937,6 @@
             $('#menu-toggle').click();
         }
 
-    </script>
+</script>
 
 }
