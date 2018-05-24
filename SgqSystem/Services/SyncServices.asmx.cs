@@ -278,7 +278,7 @@ namespace SgqSystem.Services
                         //Estrai o resultado
                         string[] result = arrayObj[i].Split(';');
 
-                        
+
 
                         //4 98789 1190 //98789 é a chave que separa processo de produto
                         string parCluster_Id_parLevel1_id = result[0].Replace(quebraProcesso, "|");
@@ -740,7 +740,7 @@ namespace SgqSystem.Services
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
         public string ProcessJson(string device, int id, bool filho)
-       {
+        {
 
             try
             {
@@ -960,12 +960,12 @@ namespace SgqSystem.Services
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster);
 
-                  
-                        
 
-                        
-                            
-                    
+
+
+
+
+
 
                     if (arrayHeader.Length > 32)
                     {
@@ -1044,7 +1044,7 @@ namespace SgqSystem.Services
                             }
                         }
 
-                        if (!string.IsNullOrEmpty(c.CorrectiveActionJson))
+                        if (!string.IsNullOrEmpty(c.CorrectiveActionJson) && c.CorrectiveActionJson != "null")
                         {
                             c.CorrectiveActionJson = c.CorrectiveActionJson.Replace("<correctiveaction>", "").Replace("</correctiveaction>", "");
 
@@ -1336,7 +1336,7 @@ namespace SgqSystem.Services
                         {
                             return 0;
                         }
-                    }                   
+                    }
                 }
             }
             catch (SqlException ex)
@@ -2874,7 +2874,7 @@ namespace SgqSystem.Services
                 string sql = @"
 
                           declare @data date = '" + dataIni + @"' 
-                          declare @unidade int = "+ ParCompany_Id + @"
+                          declare @unidade int = " + ParCompany_Id + @"
                           declare @datainicio date  								  
                           declare @datafim date  								  
                           declare @datadiario date  								  
@@ -3231,7 +3231,7 @@ namespace SgqSystem.Services
                           CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR),'.',','),'NULL') + '""
                           CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR),'.',','),'NULL') + '"" >
                           ' + @RESPOSTA + '
-                          </ div > '  AS retorno																																													  
+                          </div> '  AS retorno																																													  
 
 
 
@@ -4496,7 +4496,8 @@ $(document).ready(function(){
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1, ParCompany_Id, dateCollect);
 
-                    if (alertas != null) { 
+                    if (alertas != null)
+                    {
                         if (parlevel1.ParCriticalLevel_Id > 0)
                         {
                             //O ParLevel1 vai estar dentro de um accordon
@@ -4638,7 +4639,7 @@ $(document).ready(function(){
                             //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
                             parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name, classe: excecao));
                         }
-                }
+                    }
                     //Instancia variável para receber todos os level3
                     StringBuilder level3Group = new StringBuilder();
 
@@ -4726,7 +4727,7 @@ $(document).ready(function(){
             SGQDBContext.Generico listaCluster = new Generico(db);
 
             var parClusterSQL = new List<Generico>();
-                
+
             //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
             //Esses itens podem ser transformados funções menores
             System.Text.StringBuilder listCluster = new System.Text.StringBuilder();
@@ -4740,7 +4741,7 @@ $(document).ready(function(){
                 //Buscamos os Clusters para a unidade selecionada
                 parClusterSQL = listaCluster.getClusterCompany(ParCompany_Id: ParCompany_Id, ParClusterGroup_Id: parClusterGroup.id);
 
- 
+
 
                 string excecao = null;
                 #endregion
@@ -4765,7 +4766,7 @@ $(document).ready(function(){
                 //var counter = 0;
                 foreach (var parCluster in parClusterSQL) //LOOP2
                 {
-                
+
                     string clusterObj = html.cluster(parCluster.id,
                                                     parCluster.nome);
 
@@ -4790,9 +4791,9 @@ $(document).ready(function(){
 
             }
 
-            
 
-           
+
+
             //Retona as lista
             //Podemos gerar uma verificação de atualizações
             html.div(true,
@@ -5151,7 +5152,7 @@ $(document).ready(function(){
                                     );
 
 
-               // string classXSLevel2 = " col-xs-5";
+                // string classXSLevel2 = " col-xs-5";
 
                 int totalSampleXEvaluate = evaluate * sample;
 
@@ -5413,7 +5414,7 @@ $(document).ready(function(){
                                             }
                                             </script> ";
 
-                           
+
 
                             form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
@@ -6178,7 +6179,7 @@ $(document).ready(function(){
                 var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.ParLevel1_Id && r.ParCounter.Name == "defects" && r.IsActive);
                 if (level2 != null)
                 {
-                    var teste = new ContadoresXX().GetContadoresXX(dbEf,ParLevel1.ParLevel1_Id, ParCompany_Id);
+                    var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.ParLevel1_Id, ParCompany_Id);
 
                     //MOCK
                     var listaShift = new List<int>();
@@ -6332,7 +6333,7 @@ $(document).ready(function(){
                                        //style: "margin-top:7px;"
                                        );
 
-                if(parLevel3.ParLevel3InputType_Id == 3)
+                if (parLevel3.ParLevel3InputType_Id == 3)
                 {
 
                     input = html.campoIntervalo(id: parLevel3.Id.ToString(),
@@ -6340,7 +6341,8 @@ $(document).ready(function(){
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
 
-                }else if (parLevel3.ParLevel3InputType_Id == 9)
+                }
+                else if (parLevel3.ParLevel3InputType_Id == 9)
                 {
 
                     input = html.campoIntervaloTexto(id: parLevel3.Id.ToString(),
@@ -6350,7 +6352,7 @@ $(document).ready(function(){
 
                 }
             }
-           
+
             else if (parLevel3.ParLevel3InputType_Id == 4)
             {
                 classInput = " calculado";
@@ -6804,7 +6806,7 @@ $(document).ready(function(){
                                 , classe: "login"
                             );
         }
-        
+
         #region Users
         [WebMethod]
         public string getCompanyUsers(string ParCompany_Id)
@@ -6929,14 +6931,14 @@ $(document).ready(function(){
                 string ParCompany_Id = deviation[0];
                 string ParLevel1_Id = deviation[1];
                 string ParLevel2_Id = deviation[2];
-                string Evaluation = deviation[3];
+                string Evaluation = deviation[3] == "" ? "0" : deviation[3];
 
                 if (Evaluation == "undefined")
                 {
                     Evaluation = "0";
                 }
 
-                string Sample = deviation[4];
+                string Sample = deviation[4] == "" ? "0" : deviation[4];
 
                 if (Sample == "undefined")
                 {
@@ -7336,7 +7338,7 @@ $(document).ready(function(){
                 string parCluster_Id_parLevel2_id = ParLevel2_Id.Replace(quebraProcesso, "|");
                 ParLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
 
-            
+
 
                 //using (var transacao = new TransactionScope())
                 //{
@@ -7351,7 +7353,7 @@ $(document).ready(function(){
                     CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data, parCluster_Id).ToString();
                     if (CollectionLevel2_Id == "0")
                     {
-                        return "error";
+                        return "erro na InsertCorrectiveAction!";
                     }
                 }
 
@@ -8047,45 +8049,49 @@ $(document).ready(function(){
                         VALUES";
 
             StringBuilder query = new StringBuilder();
-            for (int i = 0; i < list.Count; i++)
+            if (list.Count > 0)
             {
-                if (i % 1000 == 0)
-                {
-                    if (query.Length > 0)
-                        query.Append(" GO ");
-                    query.Append(sql);
-                }
-                query.Append($"({list[i].Key},{list[i].Value})");
-                if (i + 1 % 1000 != 0 && i + 1 < list.Count)
-                {
-                    query.Append(",");
-                }
-            }
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
+                for (int i = 0; i < list.Count; i++)
                 {
-                    using (SqlCommand command = new SqlCommand(query.ToString(), connection))
+                    if (i % 1000 == 0)
                     {
-                        connection.Open();
-                        Convert.ToInt32(command.ExecuteNonQuery());
+                        if (query.Length > 0)
+                            query.Append(" GO ");
+                        query.Append(sql);
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                    query.Append($"({list[i].Key},{list[i].Value})");
+                    if (i + 1 % 1000 != 0 && i + 1 < list.Count)
+                    {
+                        query.Append(",");
+                    }
                 }
-            }
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "");
-                //throw ex;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "");
-                //throw ex;
-            }
 
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(conexao))
+                    {
+                        using (SqlCommand command = new SqlCommand(query.ToString(), connection))
+                        {
+                            connection.Open();
+                            Convert.ToInt32(command.ExecuteNonQuery());
+                        }
+                        if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2XCollectionJson");
+                    //throw ex;
+                }
+                catch (Exception ex)
+                {
+                    int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2XCollectionJson");
+                    //throw ex;
+                }
+
+            }
 
         }
     }
