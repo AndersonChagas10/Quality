@@ -29,7 +29,7 @@ namespace Jobs
                     {
                         if (GlobalConfig.Brasil)
                         {
-                            SimpleAsynchronous.GenerateEmailContentByDeviation();
+                            SimpleAsynchronous.CreateMailSgqAppDeviation();
                         }
                     }
                 }

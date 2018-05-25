@@ -29,6 +29,8 @@ namespace Jobs
                     {
                         if (GlobalConfig.Brasil)
                         {
+                            SimpleAsynchronous.CreateMailSgqAppDeviation();
+                            Thread.Sleep(22222);
                             SimpleAsynchronous.SendEmail();
                         }
                         else if (GlobalConfig.Eua)
@@ -41,7 +43,7 @@ namespace Jobs
                 {
                     new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
                 }
-                Thread.Sleep(222222);
+                Thread.Sleep(22222);
             }
         }
     }
