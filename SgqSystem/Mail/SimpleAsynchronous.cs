@@ -97,7 +97,7 @@ namespace SgqSystem.Mail
             {
                 using (var db = new SgqDbDevEntities())
                 {
-                    var listDeviation = db.Deviation.Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(100).Select(r => r.EmailContent_Id).ToList();
+                    var listDeviation = db.Deviation.Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(200).Select(r => r.EmailContent_Id).ToList();
 
                     ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp" && listDeviation.Contains(r.Id)).Take(tamanhoDoPool).ToList();
                     
@@ -257,7 +257,7 @@ namespace SgqSystem.Mail
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
                     DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).Take(tamanhoDoPool).ToList();
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).OrderBy(r=> r.AddDate).Take(tamanhoDoPool).ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {
