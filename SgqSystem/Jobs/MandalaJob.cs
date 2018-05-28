@@ -50,7 +50,6 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                var HoraTrabalhada = JornadaDeTrabalho - DateTime.Now.Hour;
 
                 var query = $@"               
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
@@ -332,11 +331,11 @@ namespace SgqSystem.Jobs
                 Group by
 
                     ParCompany_Name,
-	                ParCompany_id
-	                --ParLevel1_id,
-	                --ParLevel1_Name,
-	                --ParLevel2_id,
-	                --ParLevel2_Name
+	                ParCompany_id,
+	                ParLevel1_id,
+	                ParLevel1_Name,
+	                ParLevel2_id,
+	                ParLevel2_Name
                     --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -354,7 +353,7 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                var HoraTrabalhada = DateTime.Now.Hour;
+                
                 //Thread.Sleep(30000);
                 var query = $@"                
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
@@ -636,9 +635,9 @@ namespace SgqSystem.Jobs
                         Group by
 
                             ParCompany_Name,
-	                        ParCompany_id
-	                        --ParLevel1_id,
-	                        --ParLevel1_Name,
+	                        ParCompany_id,
+	                        ParLevel1_id,
+	                        ParLevel1_Name
 	                        --ParLevel2_id,
 	                        --ParLevel2_Name
                             --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
@@ -659,7 +658,6 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                var HoraTrabalhada = DateTime.Now.Hour - Horainicio;
                 var query = $@"
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
  
