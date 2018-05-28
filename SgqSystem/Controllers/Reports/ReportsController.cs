@@ -30,6 +30,12 @@ namespace SgqSystem.Controllers
             return View();
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult CorrectiveActionEditReport()
+        {
+            return View();
+        }
+
         //public ActionResult CorrectiveActionReportDetails()
         //{
         //    using (var teste = new CorrectActApiController())

@@ -1,5 +1,9 @@
 ﻿@model DTO.DTO.CorrectiveActionDTO
 
+@{ 
+    var urlSave = Url.Action("Save", "api/CorrectiveAction");
+}
+
 <style>
     @@media screen {
         #printSection {
@@ -162,6 +166,140 @@
 </div>
 
 
+<div class="modal fade bd-example-modal-lg printable" id="editCorrectiveActionModal" role="dialog">
+
+    <div id="printThis">
+        @*This should BE printed!*@
+        <div class="modifyMe"></div>
+
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width:895px!important">
+                <div class="modal-body">
+                    <!--Começo Ação Corretiva-->
+                    <div class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                        <form>
+                            <div class="header" style="font-size:14px;font-weight:bold">
+                                <div class="unitCode">JBS <span id="estName"></span> Beef, Est. <span id="estCode"></span></div>
+                                <div>@Resources.Resource.safe_program_audit_form</div>
+                                <div>@Resources.Resource.corrective_action</div>
+                            </div>
+                            <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                <div class="row">
+                                    <div class="col-xs-6" id="CorrectiveActionTaken">
+                                        <b class="font16">@Resources.Resource.corrective_action_taken:<br /></b>
+                                        <b class="col-xs-6">@Resources.Resource.date_time:</b> <input class="col-xs-6" type="text" id="datetime" name="datetime" /><br />
+                                        <b class="col-xs-6">@Resources.Resource.auditor: </b><input class="col-xs-6" type="text" id="auditor" name="auditor" /><br />
+                                        <b class="col-xs-6">@Resources.Resource.shift: </b><input class="col-xs-6" type="text" id="shift" name="shift" /><br />
+                                        <b class="col-xs-6"></b><input class="col-xs-6" type="hidden" id="Id" name="Id" /><br />
+                                    </div>
+                                    <div class="col-xs-6" id="AuditInformation">
+                                        <b class="font16">@Resources.Resource.audit_information:<br /></b>
+                                        <b class="col-xs-6">@Resources.Resource.audit Audit: </b><input class="col-xs-6" type="text" id="auditText" name="auditText"/><br />
+                                        <b class="col-xs-6">@Resources.Resource.start_time: </b><input class="col-xs-6" type="text" id="starttime" name="starttime" /><br />
+                                        <b class="col-xs-6">@Resources.Resource.period: </b><input class="col-xs-6" type="text" id="correctivePeriod" name="correctivePeriod" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto;margin-top: 8px;">
+                                    <h4 style="margin-top:0">@Resources.Resource.description_failure</h4>
+                                    <textarea class="col-xs-12" id="DescriptionFailure" name="DescriptionFailure"></textarea>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                    <h4 style="margin-top:0">@Resources.Resource.immediate_corrective_action</h4>
+                                    <textarea class="col-xs-12" id="ImmediateCorrectiveAction" name="ImmediateCorrectiveAction"></textarea>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                    <h4 style="margin-top:0">@Resources.Resource.product_disposition</h4>
+                                    <textarea class="col-xs-12" id="ProductDisposition" name="ProductDisposition"></textarea>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                    <h4 style="margin-top:0">@Resources.Resource.preventative_measure</h4>
+                                    <textarea class="col-xs-12" id="PreventativeMeasure" name="PreventativeMeasure"></textarea>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px; height: 90px;margin-bottom:15px;">
+                                    <div class="SlaugtherSignature " style="width:50%; float: left;" id="Slaugther" userid="">
+                                        <h5 style="margin-top:0;font-weight:bold">@Resources.Resource.slaughter_signature</h5>
+                                        <input type="text" class="name col-xs-6" />
+                                        <input type="text" class="date col-xs-6" />
+                                    </div>
+                                    <div class="TechnicaSignature" style="width:49%; float: right;" id="Technical" userid="">
+                                        <h5 style="margin-top:0;font-weight:bold">@Resources.Resource.technical_signature</h5>
+                                        <input type="text" class="name col-xs-6" />
+                                        <input type="text" class="date col-xs-6" />
+                                    </div>
+                                </div>
+                            </div>
+                            @*Assinaturas*@
+
+                            <div class="footer-rodape row" style="font-size:14px;font-weight:bold; width: 100%; height:auto;">
+                                <div class="col-xs-4">
+                                    <div>@Resources.Resource.origionation_date: @Resources.Resource.origionation_date_value</div> <!--O que fazer com a Data?-->
+                                    <div>@Resources.Resource.revision_date:</div>
+                                    <div>@Resources.Resource.supersedes_date:</div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div>@Resources.Resource.document_confidential_information1</div>
+                                    <div>@Resources.Resource.document_confidential_information2</div>
+                                    <div>@Resources.Resource.document_confidential_information3</div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div></div>
+                                    <div></div>
+                                    <div>@Resources.Resource.printed <span class="printedDate"></span></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSave" class="btn btn-primary non-printable">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $('#editCorrectiveActionModal').on('click', '#btnSave', function () {
+        var form = $('#editCorrectiveActionModal form').serializeArray();
+        var indexed_array = {};
+
+        $.map(form, function (n, i) {
+            indexed_array[n['name']] = n['value'];
+        });
+    
+        form = (JSON.stringify(indexed_array));
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json",
+            url: '@urlSave',
+            data: form,
+            error: function (e) {
+                openMessageModal("Erro ao Salvar o Registro!", e.responseJSON.Message);
+            },
+            success: function (form) {
+                openMessageModal(Resources('saved_successfully'), '');
+                $('#editCorrectiveActionModal').modal('hide');
+                $('#btnSend').trigger('click');
+            },
+        });
+    });
+
+</script>
+
+
 <!--Fim Ação Corretiva-->
 
 @section Scripts {
@@ -169,7 +307,6 @@
     <script type="text/javascript">
 
         var objectCa = (@Html.Raw(Json.Encode(Model)));
-
 
     </script>
 }
