@@ -34,6 +34,7 @@ namespace SgqSystem
             SetGlobalConfigAmbient();
 
             ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
+            ThreadPool.QueueUserWorkItem(DeviationJob.DeviationJobFunction);
             ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
             ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
 

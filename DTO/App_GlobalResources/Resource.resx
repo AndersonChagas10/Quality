@@ -2124,4 +2124,10 @@
   <data name="excel_file" xml:space="preserve">
     <value>Excel File</value>
   </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Daily Apointments on Sunday</value>
+  </data>
 </root>

@@ -42,7 +42,7 @@ namespace Helper
                 //MailAddress to = new MailAddress();
                 var mails = mailEntry.To.Split(',');
 
-                mails = mails.Where(v=>v.Contains("@") && v.Length > 5).Select(v=>v.Trim()).Distinct().ToArray();
+                mails = mails.Where(v=>v.Contains("@") && v.Length > 5).Select(v=>v.Replace(" ","").Trim()).Distinct().ToArray();
 
                 //MailMessage - Subject + Body
                 // Specify the message content.
@@ -76,7 +76,7 @@ namespace Helper
             {
                 if(handleErrorDelegate != null)
                     handleErrorDelegate(ex.Message + " - " + ex.StackTrace, mailEntry.Id);
-                throw;
+                //throw;
             }
 
         }

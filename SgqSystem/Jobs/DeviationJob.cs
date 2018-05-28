@@ -11,16 +11,16 @@ using System.Configuration;
 
 namespace Jobs
 {
-    public class MailJob : IJob
+    public class DeviationJob : IJob
     {
         public void Execute(IJobExecutionContext context)
         {
-            SendMailJobFunction(null);
+            DeviationJobFunction(null);
         }
 
-        public static void SendMailJobFunction(object stateInfo)
+        public static void DeviationJobFunction(object stateInfo)
         {
-            Thread.Sleep(22222);
+            Thread.Sleep(33777);
             while (true)
             {
                 try
@@ -29,19 +29,15 @@ namespace Jobs
                     {
                         if (GlobalConfig.Brasil)
                         {
-                            SimpleAsynchronous.SendEmail();
-                        }
-                        else if (GlobalConfig.Eua)
-                        {
-                            SimpleAsynchronousUSA.SendMailUSA();
+                            SimpleAsynchronous.GenerateEmailContentByDeviation();
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
+                    new CreateLog(new Exception("Erro no metodo [DeviationJobFunction]", ex));
                 }
-                Thread.Sleep(222222);
+                Thread.Sleep(333333);
             }
         }
     }

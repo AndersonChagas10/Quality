@@ -21,6 +21,14 @@ namespace SgqSystem.Secirity
     /// ViewBag.Period 
     /// @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })                         
     /// /// </summary>
+    /// 
+
+    public class IdName
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class FormularioPesquisa : ActionFilterAttribute
     {
         //public IEnumerable<ParCompanyDTO> _ParCompanyDTO { get; set; }
@@ -35,6 +43,55 @@ namespace SgqSystem.Secirity
             {
 
                 db.Configuration.LazyLoadingEnabled = false;
+
+                List<IdName> GroupLevel1 = new List<IdName>();
+
+                
+
+                for(var i = 0; i < 5; i++)
+                {
+                    IdName obj = new IdName();
+
+                    obj.Id = i;
+                    switch (i)
+                    {
+                        case 0:
+                            obj.Name = "01 - 05";
+                            GroupLevel1.Add(obj);
+                            break;
+
+                        case 1:
+                            obj.Name = "06 - 10";
+                            GroupLevel1.Add(obj);
+                            break;
+
+                        case 2:
+                            obj.Name = "10 - 15";
+                            GroupLevel1.Add(obj);
+                            break;
+
+                        case 3:
+                            obj.Name = "16 - 20";
+                            GroupLevel1.Add(obj);
+                            break;
+
+                        case 4:
+                            obj.Name = "21 - 25";
+                            GroupLevel1.Add(obj);
+                            break;
+
+                        default:
+                            obj.Name = "26 - 30";
+                            GroupLevel1.Add(obj);
+                            break;
+
+                    }
+
+                    
+                }
+
+                filterContext.Controller.ViewBag.GroupLevel1 = new List<IdName>();
+                filterContext.Controller.ViewBag.GroupLevel1 = GroupLevel1;
 
                 filterContext.Controller.ViewBag.Level1 = new List<ParLevel1DTO>();
                 filterContext.Controller.ViewBag.Level2 = new List<ParLevel2DTO>();

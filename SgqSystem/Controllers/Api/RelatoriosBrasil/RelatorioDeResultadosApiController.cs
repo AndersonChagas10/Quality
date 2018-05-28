@@ -121,6 +121,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
+        [HttpPost]
+        [Route("listaResultadosPeriodoTabela2")]
+        public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela2([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            GetResultadosTarefa(form);
+         
+            return retorno;
+        }
+
         private void GetResultadosIndicador(FormularioParaRelatorioViewModel form)
         {
             var nivel = 1;
@@ -238,7 +247,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-            	Indicador 
+                ParStructure_Name as Regional
+               ,Indicador 
                ,IndicadorName 
                ,Unidade
                ,UnidadeName 
@@ -269,7 +279,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IndicadorName
                ,Unidade
                ,UnidadeName 
-            ORDER BY 6 DESC
+               ,ParStructure_Name
+            ORDER BY 7 DESC
+
+            drop table #NA
+			drop table #AMOSTRA4
+			drop table #DATA
+			drop table #VOLUMES
+			drop table #CUBO
+			drop table #ConsolidationLevel
+    
             ";
                 #endregion
             }
@@ -428,7 +447,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-                Unidade
+                ParStructure_Name as Regional
+               ,Unidade
                ,UnidadeName 
                ,Indicador 
                ,IndicadorName 
@@ -455,8 +475,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,Monitoramento 
                ,MonitoramentoName 
                ,Unidade
-               ,UnidadeName 
-            ORDER BY 8 DESC
+               ,UnidadeName
+               ,ParStructure_Name
+            ORDER BY 9 DESC
+
+            drop table #NA
+			drop table #AMOSTRA4
+			drop table #DATA
+			drop table #VOLUMES
+			drop table #CUBO
+			drop table #ConsolidationLevel
             ";
                 #endregion
             }
@@ -616,7 +644,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             " + SQLcentro + @"
 
             SELECT 
-                Unidade
+                ParStructure_Name as Regional
+               ,Unidade
                ,UnidadeName 
                ,Indicador 
                ,IndicadorName 
@@ -648,7 +677,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,TarefaName 
                ,Unidade
                ,UnidadeName 
-            ORDER BY 10 DESC
+               ,ParStructure_Name
+            ORDER BY 11 DESC
             ";
                 #endregion
             }
@@ -1365,10 +1395,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
+                GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
                 
                   ) AAA 
-                  GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
+                  GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
                       ) A
               group by mesData";
 
@@ -1461,10 +1491,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                @"
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                 AND C.IsActive = 1
-               GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
              ) AAA 
-             GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+             GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
                      ";
 
@@ -2563,7 +2593,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 { Wnivelcritico }
                 GROUP BY 
                     ConsolidationDate
-            ORDER BY 3 
+            ORDER BY 4 
             ";
                 #endregion
             }
@@ -3265,7 +3295,7 @@ ORDER BY 3
 
         #endregion
 
-        private string GetUserUnits(int User)
+        private static string GetUserUnits(int User)
         {
             using (var db = new SgqDbDevEntities())
             {
@@ -3489,6 +3519,7 @@ ORDER BY 3
             var Wtarefa = "";
             var Wfuncao = "";
 
+            var WunidadeAcesso = GetUserUnits(form.auditorId);
 
             // Função
 
@@ -3555,10 +3586,10 @@ ORDER BY 3
 
                 #region Consolidação Por JBS, Unidade e Indicador
 
-                Query = @"
+                Query = $@"
             
-            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
-            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
+            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + $@" 00:00:00'
+            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + $@" 23:59:59'
             
              DECLARE @dataFim_ date = @DATEFIM
               
@@ -3676,6 +3707,7 @@ FROM (SELECT
             FROM ConsolidationLevel1 CL1 WITH (NOLOCK) 
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
+            AND CL1.UnitId IN ({ WunidadeAcesso }) 
             " + Wunidade + @"
             " + Wfuncao + @"
             " + Windicador + @"
@@ -3938,10 +3970,10 @@ FROM (SELECT
 
                 #region Consolidação Por Indicador e Monitoramento
 
-                Query = @"
+                Query = $@"
             
-            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
-            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
+            DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + $@" 00:00:00'
+            DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + $@" 23:59:59'
             
              DECLARE @dataFim_ date = @DATEFIM
               
@@ -4053,6 +4085,7 @@ FROM (SELECT
             	ON CL1.ID = CL2.ConsolidationLevel1_Id
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
+            AND CL1.UnitId IN ({ WunidadeAcesso }) 
             " + Wunidade + @"
             " + Wfuncao + @"
             " + Windicador + @"
@@ -4318,10 +4351,10 @@ FROM (SELECT
 
                 #region Consolidação Por Indicador, Monitoramento e Tarefa
 
-                Query = @"
+                Query = $@"
             
-        DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + @" 00:00:00'
-        DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + @" 23:59:59'
+        DECLARE @DATEINI DATETIME = '" + form._dataInicioSQL + $@" 00:00:00'
+        DECLARE @DATEFIM DATETIME = '" + form._dataFimSQL + $@" 23:59:59'
         
           DECLARE @dataFim_ date = @DATEFIM
           
@@ -4435,6 +4468,7 @@ FROM (SELECT
         	ON C2.ID = R3.CollectionLevel2_Id
         WHERE 1=1 
         AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
+        AND CL1.UnitId IN ({ WunidadeAcesso })
         " + Wunidade + @"
         " + Wfuncao + @"
         " + Windicador + @"
@@ -4810,6 +4844,7 @@ FROM (SELECT
             var whereCriticalLevel = "";
             var whereLevel1 = "";
             var whereUnit = "";
+            var WunidadeAcesso = GetUserUnits(form.auditorId);
 
             if (form.departmentId != 0)
             {
@@ -4877,6 +4912,7 @@ FROM (SELECT
             { whereLevel1 }
             { whereUnit }
             /* and MON.Id = 1 */
+            AND CL2.UnitId in ({WunidadeAcesso}) 
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
@@ -4908,6 +4944,7 @@ FROM (SELECT
     public class RelatorioResultadosPeriodo
     {
         public DateTime Data { get; set; }
+        public string Regional {get; set; }
         public int Unidade { get; set; }
         public int Indicador { get; set; }
         public int Monitoramento { get; set; }

@@ -324,8 +324,16 @@
         }
         else
         {
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
-        }
+            @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
+    }
+            </div>
+        </li>
+
+
+        <li>
+            <div id="showGroupLevel1" style="display:none">
+                <span class="redLabel">Liderança</span>
+                @Html.DropDownList("GroupLevel1", new SelectList(ViewBag.GroupLevel1, "Id", "Name"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
@@ -895,12 +903,17 @@
             });
 
             $('#structureId').on('change',function(e){
+                enviar['structureIdArr'] = $('#structureId').val();
                 enviar['structureId'] = $('#structureId option:selected').val();
             });
 
             $('#unitIdV').on('change',function(e){
                 enviar['unitIdArr'] = $('#unitIdV').val();
                 enviar['unitId'] = $('#unitIdV option:selected').val();
+            });
+
+            $('#GroupLevel1').on('change', function (e) {
+                enviar['GroupLevel1'] = $('#GroupLevel1').val();
             });
 
             $('#criticalLevelId').on('change',function(e){
@@ -1148,6 +1161,9 @@
             showUnit: function () {
                 $('#showUnit').show();
             },
+            showGroupLevel1: function () {
+                $('#showGroupLevel1').show();
+            },  
             showTipoCEP: function () {
                 $('#showTipoCEP').show();
             },

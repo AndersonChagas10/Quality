@@ -61,6 +61,11 @@
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>", style: "", classTd: "col-sm-6")
                         @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
                     </tr>
+
+                    <tr class="row ParResultado" style="display: none;">
+                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.DynamicValue", Model.paramsDto.parLevel3Value.DynamicValue, new { @Id = "parLevel3Value_DynamicValue", @class = "form-control input-sm" }), @Html.Label("Equação"), Table.PosicaoLabel.top, classTd: "col-sm-12", colspan: 2)
+                    </tr>
+
                 </table>
                 <table class="table-erp">
                     <tr class="row" id="companyValueL3">
@@ -212,6 +217,7 @@
     var eTipoDado_IntervaloMinutos = 7;
     var eTipoDado_EscalaLikert = 8;
     var eTipoDado_IntervalosTexto = 9;
+    var eTipoDado_Resultado = 10;
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
@@ -254,6 +260,7 @@
             var parIntervalosType = $('#' + preseletor + ' #parIntervalosType :selected').val();
             var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
             var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
+            var parLevel3Value_DynamicValue = $('#' + preseletor + ' #parLevel3Value_DynamicValue').val(); //Limite Superior
 
             if (parLevel1Id == -1) {
                 parLevel1Id = null;
@@ -274,6 +281,7 @@
                 debugger
                 selectConformeName = "";
                 selectNaoConformeName = "";
+                parLevel3Value_DynamicValue = "";
             }
 
             if (selectTipoInput == eTipoDado_Binario || selectTipoInput == eTipoDado_BinarioComTexto) {
@@ -282,6 +290,7 @@
                 parLevel3Value_IntervalMax = "";
                 parIntervalosTypeName = "";
                 selectUnidadeDeMedidas = "";
+                parLevel3Value_DynamicValue = "";
             }
 
             if (selectTipoInput == eTipoDado_Texto) {
@@ -289,6 +298,7 @@
                 selectNaoConforme = "";
                 selectConforme = "";
                 selectUnidadeDeMedidas = "";
+                parLevel3Value_DynamicValue = "";
             }
 
             if (selectTipoInput == eTipoDado_EscalaLikert) {
@@ -299,6 +309,7 @@
                 selectNaoConformeName = "";
                 selectUnidadeDeMedidas = "";
                 parIntervalosTypeName = "";
+                parLevel3Value_DynamicValue = "";
             }
 
             if (selectTipoInput == eTipoDado_IntervaloMinutos) {
@@ -309,6 +320,28 @@
                 selectNaoConformeName = "";
                 selectUnidadeDeMedidas = "";
                 parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_IntervaloMinutos) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_Resultado) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "";
             }
 
             if (isEdit != undefined) {
@@ -332,6 +365,8 @@
                 obj.AcceptableValueBetween = parseInt(parIntervalosType) ? true : false;
                 obj.IntervalMin = parLevel3Value_IntervalMin;
                 obj.IntervalMax = parLevel3Value_IntervalMax;
+
+                obj.DynamicValue = parLevel3Value_DynamicValue;
 
                 //obj.ParLevel1_Id =                      parLevel1Id;
                 //obj.ParLevel1_Name =                    parLevel1Name;
@@ -363,6 +398,7 @@
                     AcceptableValueBetween: parseInt(parIntervalosType) ? true : false,
                     IntervalMin: parLevel3Value_IntervalMin,
                     IntervalMax: parLevel3Value_IntervalMax,
+                    DynamicValue: parLevel3Value_DynamicValue,
                     IsActive: true,
 
                     ParLevel1_Id: parLevel1Id,
@@ -398,6 +434,12 @@
                 }
                 if ($('#' + seletorTato + ' #parLevel3Value_IntervalMax').val().length <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('max_interval'));
+                    return false;
+                }
+            } // Resultado
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Resultado) {
+                if ($('#' + seletorTato + ' #parLevel3Value_DynamicValue').val().length <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('dynamic_value'));
                     return false;
                 }
             }
@@ -481,6 +523,7 @@
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].DynamicValue"] = o.DynamicValue;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
                 //
             });
@@ -566,6 +609,13 @@
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax;
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Resultado) {
+                        o["IntervalMin"] = "";
+                        o["IntervalMax"] = "";
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = o.DynamicValue;
                     }
 
                     if ((o.ParLevel1_Id == null
@@ -592,6 +642,11 @@
         adiciona: function (e) {
             if (level3Value.veifyAdd()) {
                 var object = level3Value.getObjAdd();
+
+                if(object.DynamicValue != null){
+                    object.AcceptableValueBetween_Name = object.DynamicValue;
+                }
+
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
 
                 $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
@@ -606,6 +661,7 @@
                 $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
                 $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
                 $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
+                $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
 
             }
         },
@@ -765,8 +821,9 @@
 
     $('#selectTipoInput').change(function () {
         var tipoSelecionado = $("#selectTipoInput option:selected").val();
-        
+
         $('.reencravacaoL3').hide();
+        $('.ParResultado').hide();
 
         if (tipoSelecionado == "-1") {
 
@@ -931,6 +988,24 @@
             //$('.reencravacaoL3').hide();
             $('.ParIntervalos').fadeIn();
             $('#companyValueL3 > td').hide()
+        }
+        
+        //Resultado
+        if (tipoSelecionado == eTipoDado_Resultado) {
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').fadeIn();
+            $('.ParIntervalos').find('td:nth-child(1)').addClass('hide');
+            $('#companyValueL3').show();
+            $('.ParResultado').show();
         }
 
         CorrigirLarguraColunas();

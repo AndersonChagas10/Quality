@@ -502,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e maior que.
+        ///   Looks up a localized string similar to And greater than.
         /// </summary>
         internal static string and_greater_than {
             get {
@@ -1357,6 +1357,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily Apointments on Sunday.
+        /// </summary>
+        internal static string daily_apointments_sunday {
+            get {
+                return ResourceManager.GetString("daily_apointments_sunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Meeting.
         /// </summary>
         internal static string daily_meeting {
@@ -1645,6 +1654,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete - Binary Input Type.
+        /// </summary>
+        internal static string delete_binary_input_type {
+            get {
+                return ResourceManager.GetString("delete_binary_input_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         internal static string department {
@@ -1866,6 +1884,15 @@ namespace Resources {
         internal static string edited {
             get {
                 return ResourceManager.GetString("edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edition - Binary Input Type.
+        /// </summary>
+        internal static string edition_binary_input_type {
+            get {
+                return ResourceManager.GetString("edition_binary_input_type", resourceCulture);
             }
         }
         
@@ -4494,6 +4521,15 @@ namespace Resources {
         internal static string or_greater_than {
             get {
                 return ResourceManager.GetString("or_greater_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package.
+        /// </summary>
+        internal static string package {
+            get {
+                return ResourceManager.GetString("package", resourceCulture);
             }
         }
         

@@ -1,24 +1,17 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = Resources.Resource.daily_apointments; //"Apontamentos Diarios";
+    ViewBag.Title = Resources.Resource.daily_apointments_sunday;
     var url = Url.Action("Index", "Home");
-    var urlGet = Url.Action("Get", "api/ApontamentosDiarios");
+    var urlGet = Url.Action("GetApontamentosDomingo", "api/ApontamentosDiarios");
     var urlEdit = Url.Action("Edit", "api/ApontamentosDiarios");
     var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
 }
 
-<style>
-    /*Não quebra a linha nos campos de cabeçalho*/
-    #resultsApontamentos > tbody > tr:last-child > td:last-child {
-        white-space: nowrap;
-    }
-</style>
 <div class="page-content-wrapper">
     <div class="page-content">
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
         <div id="formBodyContent">
-
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
@@ -29,13 +22,13 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
 
     <script type="text/javascript">
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         var urlGet = '@Html.Raw(@urlGet)';
-        var urlEdit = '@Html.Raw(@urlEdit)';
         var urlSave = '@Html.Raw(@urlSave)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));

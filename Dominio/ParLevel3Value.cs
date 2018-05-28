@@ -29,6 +29,7 @@ namespace Dominio
         public bool IsActive { get; set; }
         public Nullable<int> ParLevel1_Id { get; set; }
         public Nullable<int> ParLevel2_Id { get; set; }
+        public string DynamicValue { get; set; }
     
         public virtual ParLevel3 ParLevel3 { get; set; }
         public virtual ParLevel3BoolFalse ParLevel3BoolFalse { get; set; }
