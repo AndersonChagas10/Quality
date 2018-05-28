@@ -4,7 +4,8 @@
     listaDeDados: [],
     definicaoColuna: [],
     colunaDosDados: [],
-    linguagem: { },
+    linguagem: {},
+    ordenacao: [],
     numeroLinhasNaTabela: 25,
     aplicarResponsividade: true,
     tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
@@ -45,6 +46,9 @@
             this.tamanhosDoMenu = config.tamanhosDoMenu;
         if (config.definicaoColuna != undefined)
             this.definicaoColuna = config.definicaoColuna;
+        if (config.ordenacao != undefined) {
+            this.ordenacao = config.ordenacao;
+        }
 
         if ($.inArray(this.numeroLinhasNaTabela, this.tamanhosDoMenu[0]) < 0) {
             this.tamanhosDoMenu[0].push(this.numeroLinhasNaTabela);
@@ -65,6 +69,7 @@
             "language": this.linguagem,
             initComplete: this.initComplete,
             dom: 'Blfrtip',
+            order: this.ordenacao,
             buttons: {
                 buttons: [{
                     extend: 'excel',

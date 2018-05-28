@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers
                 var query = $@"insert into ParCompany
                     (Name, Description, AddDate, IsActive, Initials)
                     values
-                    ('{cfg.parCompanyDto.Name}','{cfg.parCompanyDto.Description}','{cfg.userSgqDto.AddDate}',1,'{cfg.parCompanyDto.Initials}');
+                    ('{cfg.parCompanyDto.Name}','{cfg.parCompanyDto.Description}','{cfg.parCompanyDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}',1,'{cfg.parCompanyDto.Initials}');
                     { identityId }";
 
                 using (SqlCommand cmd = new SqlCommand(query, db.connection))
@@ -66,8 +66,8 @@ namespace SgqSystem.Controllers
                     $@"insert into UserSgq 
                     (Name, Password, AddDate, Role, FullName, Email, Phone, ParCompany_Id, PasswordDate)
                     values
-                    ('{cfg.userSgqDto.Name}','{cfg.userSgqDto.Password}','{cfg.userSgqDto.AddDate}','admin','{cfg.userSgqDto.FullName}',
-'{cfg.userSgqDto.Email}','{cfg.userSgqDto.Phone}','{cfg.userSgqDto.ParCompany_Id}','{cfg.userSgqDto.AddDate}')
+                    ('{cfg.userSgqDto.Name}','{cfg.userSgqDto.Password}','{cfg.userSgqDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}','admin','{cfg.userSgqDto.FullName}',
+'{cfg.userSgqDto.Email}','{cfg.userSgqDto.Phone}','{cfg.userSgqDto.ParCompany_Id}','{cfg.userSgqDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}')
                     { identityId }";
 
                 using (SqlCommand cmd = new SqlCommand(query, db.connection))
@@ -2417,6 +2417,33 @@ INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [Alte
 INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (3, N'Intervalos', N'Intervalos', CAST(N'2017-03-03 07:48:52.8930000' AS DateTime2), NULL, 1, NULL)
 INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (4, N'Calculado', N'Calculado', CAST(N'2017-03-03 07:48:52.9100000' AS DateTime2), NULL, 1, NULL)
 INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (5, N'Texto', N'Texto', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (6, N'Binario Com Texto', N'Binario Com Texto', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (7, N'Intervalo em Minutos', N'Intervalo em Minutos', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+INSERT [dbo].[ParLevel3InputType] ([Id], [Name], [Description], [AddDate], [AlterDate], [IsActive], [Sampling]) VALUES (8, N'Escala Likert', N'Escala Likert', CAST(N'2017-03-23 23:24:43.9430000' AS DateTime2), NULL, 1, NULL)
+GO
+INSERT INTO [dbo].[ParCriticalLevel] ([Name], [AddDate], [IsActive]) VALUES ('Crítico',getdate(),1) 
+INSERT INTO [dbo].[ParCriticalLevel] ([Name], [AddDate], [IsActive]) VALUES ('Prioritário',getdate(),1) 
+INSERT INTO [dbo].[ParCriticalLevel] ([Name], [AddDate], [IsActive]) VALUES ('Controle',getdate(),1) 
+GO
+INSERT INTO ParNotConformityRule (Name, AddDate, IsActive) VALUES ('# NC',getdate(),1) 
+INSERT INTO ParNotConformityRule (Name, AddDate, IsActive) VALUES ('% NC',getdate(),1) 
+GO
+insert into screencomponent (hashkey,component,type) values ('COMP001',	'Botão de Sincronização',	NULL)
+insert into screencomponent (hashkey,component,type) values ('COMP002',	'Botão de Sincronização de Parametrização',	NULL)
+insert into screencomponent (hashkey,component,type) values ('COMP003',	'Botão de Log',	3)
+insert into screencomponent (hashkey,component,type) values ('COMP004',	'Botão Mostrar Banco de Dados',	1)
+insert into screencomponent (hashkey,component,type) values ('COMP005',	'Botão Limpar Banco de Dados',	1)
+insert into screencomponent (hashkey,component,type) values ('COMP006',	'Botão de Logout',	1)
+insert into screencomponent (hashkey,component,type) values ('COMP007',	'Botão Mostrar Contadores',	1)
+insert into screencomponent (hashkey,component,type) values ('COMP008',	'Botão de Data Retroativa',	2)
+GO
+insert into roleusersgq (Name, Adddate, isactive) values ('Admin'	  , getdate(), 1)
+insert into roleusersgq (Name, Adddate, isactive) values ('Backdate'  , getdate(), 1)
+insert into roleusersgq (Name, Adddate, isactive) values ('Slaughter' , getdate(), 1)
+insert into roleusersgq (Name, Adddate, isactive) values ('Technical' , getdate(), 1)
+GO
+insert into Shift (Description,AddDate, AlterTime) values ('Shift A',	getdate(),	getdate())
+insert into Shift (Description,AddDate,AlterTime) values ('Shift B',	getdate(),	getdate())
 ";
 
                 ServerConnection svrConnection = new ServerConnection(db.connection);

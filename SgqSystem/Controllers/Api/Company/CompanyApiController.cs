@@ -3,7 +3,9 @@ using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using SgqSystem.Handlres;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -13,15 +15,15 @@ namespace SgqSystem.Controllers.Api.Company
 {
     [RoutePrefix("api/Company")]
     [HandleApi()]
-    public class  CompanyApiController : ApiController
+    public class CompanyApiController : ApiController
     {
 
         #region Construtor para injeção de dependencia
 
         private ICompanyDomain _companyDomain;
         public IBaseDomain<ParCompany, ParCompanyDTO> _basedomain;
-        
-        public CompanyApiController(ICompanyDomain companyDomain, IBaseDomain<ParCompany,ParCompanyDTO> basedomain)
+
+        public CompanyApiController(ICompanyDomain companyDomain, IBaseDomain<ParCompany, ParCompanyDTO> basedomain)
         {
             _companyDomain = companyDomain;
             _basedomain = basedomain;
@@ -36,27 +38,52 @@ namespace SgqSystem.Controllers.Api.Company
         [Route("AddUpdateParCompany")]
         public HttpResponseMessage AddUpdateParCompany([FromBody] CompanyViewModel companyViewModel)
         {
-            ParCompany parCompanySalvar = Mapper.Map<ParCompany>(companyViewModel.parCompanyDTO);
-            List<ParCompanyCluster> parCompanyClusterSalvar = Mapper.Map<List<ParCompanyCluster>>(companyViewModel.parCompanyDTO.ListParCompanyCluster);
-            List<ParCompanyXStructure> parCompanyXStructureSalvar = Mapper.Map<List<ParCompanyXStructure>>(companyViewModel.parCompanyDTO.ListParCompanyXStructure);
+            ValidModelState(companyViewModel);
 
             var errors = new List<string>();
-
-            try
+            if (ModelState.IsValid)
             {
-                _companyDomain.SaveParCompany(parCompanySalvar);
-                _companyDomain.SaveParCompanyCluster(parCompanyClusterSalvar, parCompanySalvar);
-                _companyDomain.SaveParCompanyXStructure(parCompanyXStructureSalvar, parCompanySalvar);
+
+                ParCompany parCompanySalvar = Mapper.Map<ParCompany>(companyViewModel.parCompanyDTO);
+                List<ParCompanyCluster> parCompanyClusterSalvar = Mapper.Map<List<ParCompanyCluster>>(companyViewModel.parCompanyDTO.ListParCompanyCluster);
+                List<ParCompanyXStructure> parCompanyXStructureSalvar = Mapper.Map<List<ParCompanyXStructure>>(companyViewModel.parCompanyDTO.ListParCompanyXStructure);
+
+
+                try
+                {
+                    _companyDomain.SaveParCompany(parCompanySalvar);
+                    _companyDomain.SaveParCompanyCluster(parCompanyClusterSalvar, parCompanySalvar);
+                    _companyDomain.SaveParCompanyXStructure(parCompanyXStructureSalvar, parCompanySalvar);
+                }
+                catch (System.Exception e)
+                {
+                    errors.Add("Error: " + e.Message);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "", user = "" });
+
             }
-            catch (System.Exception e)
+            else
             {
-                errors.Add("Error: " + e.Message);
+                List<string> listaErros = null;
+
+                listaErros = Util.PreencherMensagem(ModelState);
+                return Request.CreateResponse(HttpStatusCode.OK, new { listaErros });
             }
+        }
 
-            if (errors.Count > 0)
-                return Request.CreateResponse(HttpStatusCode.OK, new { errors });
+        private void ValidModelState(CompanyViewModel companyViewModel)
+        {
+            ModelState.Clear();
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "", user = "" }); ;
+            if (string.IsNullOrEmpty(companyViewModel.parCompanyDTO.Name))
+                ModelState.AddModelError("parCompanyDTO.Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (string.IsNullOrEmpty(companyViewModel.parCompanyDTO.Description))
+                ModelState.AddModelError("parCompanyDTO.Description", Resources.Resource.required_field + " " + Resources.Resource.description);
+
+            if (companyViewModel.parCompanyDTO.AddDate == null)
+                ModelState.AddModelError("parCompanyDTO.Name", Resources.Resource.required_field + " " + Resources.Resource.add_date);
         }
 
         [HttpPost]

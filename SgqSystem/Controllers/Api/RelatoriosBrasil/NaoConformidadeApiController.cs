@@ -1408,7 +1408,7 @@ FROM (SELECT
                ,Indicador_Id
                ,IndicadorName
                ,IIF(SUM(avComPeso) IS NULL OR SUM(avComPeso) = 0, 0, SUM(ncComPeso) / SUM(avComPeso) * 100) AS [proc]
-               ,SUM(Meta) as Meta
+               ,AVG(Meta) as Meta
                ,SUM(NC) AS NC
                ,SUM(Av) AS Av
             FROM (SELECT
@@ -2033,8 +2033,8 @@ DROP TABLE #AMOSTRATIPO4 ";
             
             	IND.Id AS Indicador_id
                ,IND.Name AS IndicadorName
-               ,MON.Id AS Monitoramento_Id
-               ,MON.Name AS MonitoramentoName
+               --,MON.Id AS Monitoramento_Id
+               --,MON.Name AS MonitoramentoName
                ,R3.ParLevel3_Id AS Tarefa_Id
                ,R3.ParLevel3_Name AS TarefaName
                ,UNI.Name AS UnidadeName
@@ -2065,15 +2065,15 @@ DROP TABLE #AMOSTRATIPO4 ";
                 { whereCriticalLevel }
             GROUP BY IND.Id
             		,IND.Name
-            		,MON.Id
-            		,MON.Name
+            	--	,MON.Id
+            	--	,MON.Name
             		,R3.ParLevel3_Id
             		,R3.ParLevel3_Name
             		,UNI.Name
             		,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0
             AND SUM(R3.Defects) > 0
-            ORDER BY 9 DESC";
+            ORDER BY 7 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -2256,12 +2256,12 @@ DROP TABLE #AMOSTRATIPO4 ";
                         "\n 	AND UNI.Name = '" + form.unitName + "'" +
                         "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                         "\n GROUP BY " +
-                        "\n  IND.Id " +
-                        "\n ,IND.Name " +
-                        "\n ,R3.ParLevel3_Id " +
+                        "\n -- IND.Id " +
+                        "\n -- ,IND.Name " +
+                        "\n  R3.ParLevel3_Id " +
                         "\n ,R3.ParLevel3_Name " +
-                        "\n ,UNI.Name " +
-                        "\n ,UNI.Id " +
+                        "\n -- ,UNI.Name " +
+                        "\n -- ,UNI.Id " +
                         "\n HAVING (SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100) > 0" +
                         "\n ORDER BY 4 DESC";
 

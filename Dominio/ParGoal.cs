@@ -22,6 +22,7 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
         public Nullable<System.DateTime> EffectiveDate { get; set; }
+        public Nullable<System.DateTime> ValidoApartirDe { get; set; }
     
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }

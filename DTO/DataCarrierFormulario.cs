@@ -118,5 +118,7 @@ namespace DTO
         public string departmentName { get; set; }
 
         public string tipoCEP { get; set; }
+
+        public int GroupLevel1 { get; set; }
     }
 }
