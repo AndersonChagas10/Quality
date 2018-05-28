@@ -86,7 +86,7 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6 col-lg-12 col-sm-4">
+                <div style="white-space: nowrap; overflow: auto; max-height: 500px;" class="col-md-6 col-lg-12 col-sm-4">
                     @if (Model != null)
                     {
                         <table id="tabela" class="table table-striped">
@@ -99,21 +99,22 @@
                                     }
                                 </tr>
                             </thead>
-                            <tbody></tbody>
-                            @foreach (var produto in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        <label><input type="checkbox" checked></label>
-                                    </td>
-                                    @foreach (var titulo in produto)
-                                    {
-                                        <td class="dadosTabela" data-header="@titulo.Key">@titulo.Value</td>
+                            <tbody>
+                                @foreach (var produto in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <label><input type="checkbox" checked></label>
+                                        </td>
+                                        @foreach (var titulo in produto)
+                                        {
+                                            <td class="dadosTabela" data-header="@titulo.Key">@titulo.Value</td>
 
-                                    }
-                                </tr>
+                                        }
+                                    </tr>
 
-                            }
+                                }
+                            </tbody>
                         </table>
                     }
                 </div>
@@ -145,7 +146,7 @@
                     contentType: "application/json",
                     data: dados,
                     success: function (retorno) {
-                        $("#ModalInformacao").modal('show');                       
+                        $("#ModalInformacao").modal('show');
                     }
                 });
             })

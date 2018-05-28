@@ -17,8 +17,21 @@ namespace SgqSystem.Controllers.Api
         [Route("SalvarExcel")]
         public HttpStatusCode SalvarExcel([FromBody] List<JObject> dados)
         {
+            //ver com leo para subir a branche do gabriel( SyncServicee = insertJson nao esta funcionando)
+            try
+            {
+                foreach (var item in dados)
+                {
+                    var teste = item.Last.ToString();
+                    new SgqSystem.Services.SyncServices().InsertJson(item.ToString(), "5", "1", false);
 
-            return HttpStatusCode.OK;
+                }
+                return HttpStatusCode.OK;
+            }
+            catch (Exception)
+            {
+                return HttpStatusCode.InternalServerError;
+            }
         }
     }
 }
