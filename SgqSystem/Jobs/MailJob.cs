@@ -20,7 +20,7 @@ namespace Jobs
 
         public static void SendMailJobFunction(object stateInfo)
         {
-            Thread.Sleep(22222);
+            Thread.Sleep(5000);
             while (true)
             {
                 try
@@ -30,7 +30,7 @@ namespace Jobs
                         if (GlobalConfig.Brasil)
                         {
                             SimpleAsynchronous.CreateMailSgqAppDeviation();
-                            Thread.Sleep(22222);
+                            Thread.Sleep(5000);
                             SimpleAsynchronous.SendEmail();
                         }
                         else if (GlobalConfig.Eua)
@@ -43,7 +43,7 @@ namespace Jobs
                 {
                     new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
                 }
-                Thread.Sleep(22222);
+                Thread.Sleep(5000);
             }
         }
     }
