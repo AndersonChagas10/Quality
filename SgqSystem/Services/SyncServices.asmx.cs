@@ -5626,7 +5626,9 @@ $(document).ready(function(){
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                var painelLevel3HeaderListHtml = "";
+                //var painelLevel3HeaderListHtml = "";
+
+                
 
                 var tituloLabel = "Animais Avaliados";
 
@@ -5643,7 +5645,11 @@ $(document).ready(function(){
                                         style: "margin-bottom: 4px;"
                                         );
 
-                painelLevel3HeaderListHtml += html.div(
+                var painelLevel3HeaderListHtml = new StringBuilder(GetHeaderHtml(
+                   ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id));
+
+                var painelLevel3HeaderListHtml2 = "";
+                painelLevel3HeaderListHtml2 += html.div(
                                                 outerhtml: formGroupPecas,
                                                 classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
@@ -5653,7 +5659,8 @@ $(document).ready(function(){
                 painellevel3 = new StringBuilder(html.listgroupItem(
                                                      outerhtml: avaliacoes +
                                                                 amostras +
-                                                                painelLevel3HeaderListHtml,
+                                                                painelLevel3HeaderListHtml.ToString() +
+                                                                painelLevel3HeaderListHtml2,
 
                                         classe: "painel painelLevel03 row"));
                 painellevel3.Append(html.painelCounters(listCounter));
