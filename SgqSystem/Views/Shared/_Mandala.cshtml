@@ -4,7 +4,15 @@
 <script src="~/Scripts/PluginGRT/mandalaGRT.js"></script>
 
 <script>
+
+        function AtualizarPosicaoMandala() {
+            $('#mandala').css('top', localStorage.top + 'px');
+            $('#mandala').css('left', localStorage.left + 'px');
+        }
+
     $(document).ready(function () {
+     
+
         function GetUsuarioId() {
             return $.grep(getCookie('webControlCookie'), function (a, b) {
                 return a.indexOf('userId') != -1;
@@ -54,6 +62,7 @@
                         var empresa = $(this).attr('data-unidade');
                         MostrarIndicador(empresa);
                     });
+                    AtualizarPosicaoMandala();
                 }
             });
         }
@@ -68,6 +77,8 @@
                     mandalaGRT.Inicializar({
                         idElemento: "mandala",
                         listaDeDados: result,
+                        posicaoEsquerda: localStorage.left,
+                        posicaoTop: localStorage.top,
                         margemDoCentro: 80,
                         tamanhoDoElemento: 10,
                         posicaoNaTela: 'left bottom',
@@ -98,6 +109,7 @@
                     $('#mandalaVoltar').on('click', function () {
                         MostrarEmpresa();
                     });
+                    AtualizarPosicaoMandala();
                 }
             });
 
@@ -112,6 +124,8 @@
                 success: function (result) {
                     mandalaGRT.Inicializar({
                         idElemento: "mandala",
+                        posicaoEsquerda: localStorage.left,
+                        posicaoTop: localStorage.top,
                         listaDeDados: result,
                         margemDoCentro: 80,
                         tamanhoDoElemento: 10,
@@ -139,11 +153,21 @@
                     $('#mandalaVoltar').on('click', function () {
                         MostrarIndicador(empresa);
                     });
+                    AtualizarPosicaoMandala();
                 }
             });
         }
-
         MostrarEmpresa();
+
+
+        $('#mandala').draggable(
+            {
+                drag: function () {
+                    var offset = $(this).offset();
+                    localStorage.left = offset.left;
+                    localStorage.top = offset.top;
+                }
+            });
     })
 </script>
 
