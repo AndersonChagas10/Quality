@@ -20,7 +20,7 @@ namespace Jobs
 
         public static void SendMailJobFunction(object stateInfo)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
             while (true)
             {
                 try
@@ -43,7 +43,7 @@ namespace Jobs
                 {
                     new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
                 }
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }
         }
     }
