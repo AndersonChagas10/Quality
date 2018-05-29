@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="83">
+      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="97">
         <EntityTypeShape EntityType="SgqDbModel.BkpCollection" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionHtml" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionJson" Width="1.5" PointX="4.75" PointY="3.75" />
@@ -270,10 +270,9 @@
         <EntityTypeShape EntityType="SgqDbModel.ParModuleXModule" Width="1.5" PointX="11.25" PointY="73.625" />
         <AssociationConnector Association="SgqDbModel.FK_ParModuleXModule_ParModuleChild" />
         <AssociationConnector Association="SgqDbModel.FK_ParModuleXModule_ParModuleParent" />
-        <EntityTypeShape EntityType="SgqDbModel.ItemMenu" Width="1.5" PointX="22.375" PointY="22" />
-        <EntityTypeShape EntityType="SgqDbModel.RoleUserSgqXItemMenu" Width="1.5" PointX="24.625" PointY="22.125" />
-        <AssociationConnector Association="SgqDbModel.FK__RoleUserS__ItemM__417994D0" />
         <EntityTypeShape EntityType="SgqDbModel.RoleUserSgq" Width="1.5" PointX="15.375" PointY="15.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ItemMenu" Width="1.5" PointX="13.375" PointY="18.75" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleUserSgqXItemMenu" Width="1.5" PointX="20.375" PointY="8.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -16,12 +16,10 @@ namespace Dominio
     {
         public int Id { get; set; }
         public System.DateTime AddDate { get; set; }
-        public System.DateTime AlterDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
         public string Name { get; set; }
         public int ItemMenu_Id { get; set; }
         public int RoleUserSgq_Id { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-    
-        public virtual ItemMenu ItemMenu { get; set; }
+        public bool IsActive { get; set; }
     }
 }

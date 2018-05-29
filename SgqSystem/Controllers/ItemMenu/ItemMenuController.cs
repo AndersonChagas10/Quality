@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception e)
             {
                 return View();
             }
