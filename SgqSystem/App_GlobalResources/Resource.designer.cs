@@ -2716,6 +2716,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Icon.
+        /// </summary>
+        internal static string icon {
+            get {
+                return ResourceManager.GetString("icon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID.
         /// </summary>
         internal static string id {
@@ -3018,6 +3027,15 @@ namespace Resources {
         internal static string is_active {
             get {
                 return ResourceManager.GetString("is_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item of Menu.
+        /// </summary>
+        internal static string item_menu {
+            get {
+                return ResourceManager.GetString("item_menu", resourceCulture);
             }
         }
         
@@ -3900,6 +3918,15 @@ namespace Resources {
         internal static string name {
             get {
                 return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name can not be empty.
+        /// </summary>
+        internal static string name_can_not_be_empty {
+            get {
+                return ResourceManager.GetString("name_can_not_be_empty", resourceCulture);
             }
         }
         
@@ -5268,6 +5295,15 @@ namespace Resources {
         internal static string resgisters_page {
             get {
                 return ResourceManager.GetString("resgisters_page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resource.
+        /// </summary>
+        internal static string resource {
+            get {
+                return ResourceManager.GetString("resource", resourceCulture);
             }
         }
         
@@ -6888,6 +6924,15 @@ namespace Resources {
         internal static string updating_parameters {
             get {
                 return ResourceManager.GetString("updating_parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        internal static string url {
+            get {
+                return ResourceManager.GetString("url", resourceCulture);
             }
         }
         

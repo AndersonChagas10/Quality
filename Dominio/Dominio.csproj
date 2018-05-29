@@ -115,6 +115,9 @@
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
+    <Compile Include="ItemMenu.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="LeftControlRole.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -346,6 +349,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="RoleUserSgq.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleUserSgqXItemMenu.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ScreenComponent.cs">

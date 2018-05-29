@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Dominio.ItemMenu>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "ItemMenu")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.item_menu</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.item_menu</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayName("Menu Pai")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Data de Inserção")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Data de Alteração")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Nome")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Icone")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("URL")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Tradução")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Ativo")
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ItemMenu_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AddDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AlterDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Icon)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Url)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Resource)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

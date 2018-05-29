@@ -383,6 +383,7 @@
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
+    <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -1705,6 +1706,8 @@
     <Content Include="Views\Shared\_Mandala.cshtml" />
     <Content Include="Views\RoleUserSgq\Index.cshtml" />
     <Content Include="Views\RoleUserSgq\Create.cshtml" />
+    <Content Include="Views\ItemMenu\Index.cshtml" />
+    <Content Include="Views\ItemMenu\Create.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
