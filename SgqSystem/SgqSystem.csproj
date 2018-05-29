@@ -17,11 +17,11 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -444,7 +444,6 @@
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
-    <Compile Include="Jobs\DeviationJob.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
@@ -1703,6 +1702,7 @@
     <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
     <Content Include="Views\Shared\_Mandala.cshtml" />
     <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
+    <Content Include="Views\GlobalConfig\Jobs.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

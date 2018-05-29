@@ -23,27 +23,31 @@ namespace Jobs
             Thread.Sleep(5000);
             while (true)
             {
-                try
+                Task.Run(() =>
                 {
-                    if (ConfigurationManager.AppSettings["SendMailJob"] == "exec")
+                    try
                     {
-                        if (GlobalConfig.Brasil)
+                        if (ConfigurationManager.AppSettings["SendMailJob"] == "on")
                         {
-                            SimpleAsynchronous.CreateMailSgqAppDeviation();
-                            Thread.Sleep(5000);
-                            SimpleAsynchronous.SendEmail();
-                        }
-                        else if (GlobalConfig.Eua)
-                        {
-                            SimpleAsynchronousUSA.SendMailUSA();
+                            if (GlobalConfig.Brasil)
+                            {
+                                SimpleAsynchronous.CreateMailSgqAppDeviation();
+                                Task.Delay(3000);
+                                SimpleAsynchronous.SendEmail();
+                            }
+                            else if (GlobalConfig.Eua)
+                            {
+                                SimpleAsynchronousUSA.SendMailUSA();
+                            }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
-                }
-                Thread.Sleep(5000);
+                    catch (Exception ex)
+                    {
+                        new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
+                    }
+                });
+                GlobalConfig.UltimaExecucaoDoJob["SendMailJob"] = DateTime.Now;
+                Thread.Sleep(40000);
             }
         }
     }
