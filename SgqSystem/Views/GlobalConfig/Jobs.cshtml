@@ -13,29 +13,22 @@
         <h2>Jobs</h2>
 
         @if (ViewBag.UltimaExecucaoDoJob != null)
+        {
+            foreach (var job in ViewBag.UltimaExecucaoDoJob)
             {
-            <table class="table" id="tableAllUnitTelaTablete">
+                {
+                    var segundosAposUltimaExecucao = Math.Floor(DateTime.Now.Subtract(job.Value).TotalSeconds);
+                    <div class="col-xs-3">
+                        <div class="panel @((segundosAposUltimaExecucao <= 100)? "panel-primary" : ((segundosAposUltimaExecucao <= 200)? "panel-warning" : "panel-danger"))">
+                            <div class="panel-heading">@job.Key</div>
+                            <div class="panel-body">
+                                <strong>@Resource.date_time:</strong> @job.Value (@segundosAposUltimaExecucao s)
+                            </div>
+                        </div>
+                    </div>
+                }
 
-                <thead>
-                    <tr>
-                        <th>@Resource.name</th>
-                        <th>@Resource.final_date</th>
-                        <th>@Resource.minutes</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (var job in ViewBag.UltimaExecucaoDoJob)
-                    {
-                        <tr>
-                            <td>@job.Key</td>
-                            <td>@job.Value</td>
-                            <td>@Math.Floor(DateTime.Now.Subtract(job.Value).TotalMinutes)</td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
+            }
         }
     </div>
 </div>
