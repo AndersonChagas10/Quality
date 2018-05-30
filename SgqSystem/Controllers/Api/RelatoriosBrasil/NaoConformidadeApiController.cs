@@ -1234,7 +1234,16 @@ INSERT INTO #AMOSTRATIPO4
             ,[SHIFT]
             ,[PERIOD]
 --------------------------------                                                                                                                     
-                                                                                                                                                      
+
+
+    -- DROP TABLE #VOLUMES
+            
+    SELECT V.ParCompany_id,V.Data
+        , SUM(V.Quartos) AS VOLUMEPCC
+    INTO #VOLUMES
+    FROM VolumePcc1b V WITH (NOLOCK)
+    WHERE 1=1 
+    GROUP BY V.ParCompany_id,V.Data                                                                                                                                                      
                                                                                                                                                       
   DECLARE @NAPCC INT
 
@@ -1380,7 +1389,7 @@ FROM (SELECT
         {whereDepartment}
         {whereShift}
         {whereCriticalLevel}
-        AND IND.ParConsolidationType_id = 4
+        AND (IND.ParConsolidationType_id = 4 OR ISNULL(IND.hashKey,0) = 1)
         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
 		GROUP BY IND.ParConsolidationType_Id
 				,IND.HashKey
@@ -1452,7 +1461,12 @@ FROM (SELECT
             			   ,UNI.Id AS Unidade_Id
             			   ,UNI.Name AS Unidade
             			   ,CASE
-            					WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+            					WHEN IND.HashKey = 1 THEN ISNULL((SELECT top 1 SUM(VOLUMEPCC) From #VOLUMES V WITH (NOLOCK)
+            											WHERE 1=1 
+            											AND V.Data = cL2.ConsolidationDate
+            											AND V.ParCompany_id = cL2.UnitId
+            											) ,0)
+            											 - isnull(@NAPCC,0)
             					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation
             					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
             					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
@@ -1462,7 +1476,12 @@ FROM (SELECT
             					ELSE 0
             				END AS Av
             			   ,CASE
-            					WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+            					WHEN IND.HashKey = 1 THEN ISNULL((SELECT top 1 SUM(VOLUMEPCC) From #VOLUMES V WITH (NOLOCK)
+            											WHERE 1=1 
+            											AND V.Data = cL2.ConsolidationDate
+            											AND V.ParCompany_id = cL2.UnitId
+            											) ,0)
+            											 - isnull(@NAPCC,0)
             					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal
             					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation
             					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult
@@ -1524,6 +1543,7 @@ FROM (SELECT
             				ON IND.Id = CL1.ParLevel1_Id
                             AND ISNULL(IND.ShowScorecard,1) = 1
                             AND IND.IsActive = 1
+                            AND IND.ID != 42
                             AND IND.ID != 43
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
             				ON CL2.ConsolidationLevel1_id = CL1.Id
@@ -1533,15 +1553,19 @@ FROM (SELECT
             				ON L2.ParDepartment_Id = D.Id
             			INNER JOIN ParCompany UNI (NOLOCK)
             				ON UNI.Id = CL1.UnitId
-            			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
-            				ON A4.UNIDADE = UNI.Id
-            				AND A4.INDICADOR = IND.ID
+                		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
+                			ON A4.UNIDADE = UNI.Id
+                			AND A4.INDICADOR = IND.ID
+                            AND A4.DATA = CL1.ConsolidationDate
+                            AND A4.[SHIFT] = CL1.[SHIFT]
+                            AND A4.[PERIOD] = CL1.[PERIOD]
             			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
             			AND UNI.Name = '" + form.unitName + @"'
                         " + whereDepartment_Todos + @"
                         " + whereShift + @"
                         " + whereCriticalLevel + @"
-                        AND IND.ParConsolidationType_id <> 4
+                          AND IND.ParConsolidationType_id != 4 
+						  AND ISNULL(IND.hashKey,0) != 1
             		--AND D.Id = 2
             		) S1
             		GROUP BY Unidade
