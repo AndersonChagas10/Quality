@@ -3882,6 +3882,7 @@ FROM (SELECT
             	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
             		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
              		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             		AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL)
              		AND L1C.IsActive = 1
             
             	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4260,6 +4261,7 @@ FROM (SELECT
             	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
             		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
              		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             		AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL)
              		AND L1C.IsActive = 1
             
             	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4602,6 +4604,7 @@ FROM (SELECT
         	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
         		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
          		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             	AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL)
          		AND L1C.IsActive = 1
         
         	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
