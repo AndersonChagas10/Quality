@@ -1,0 +1,46 @@
+﻿@using DTO.DTO.Params
+@using Resources
+
+@{
+    ViewBag.Title = "Jobs";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content monitor-get-tela">
+
+        <h2>Jobs</h2>
+
+        @if (ViewBag.UltimaExecucaoDoJob != null)
+        {
+            foreach (var job in ViewBag.UltimaExecucaoDoJob)
+            {
+                {
+                    var segundosAposUltimaExecucao = Math.Floor(DateTime.Now.Subtract(job.Value).TotalSeconds);
+                    <div class="col-xs-3">
+                        <div class="panel @((segundosAposUltimaExecucao <= 100)? "panel-primary" : ((segundosAposUltimaExecucao <= 200)? "panel-warning" : "panel-danger"))">
+                            <div class="panel-heading">@job.Key</div>
+                            <div class="panel-body">
+                                <strong>@Resource.date_time:</strong> @job.Value (@segundosAposUltimaExecucao s)
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        closeLeftSidebar();
+
+    </script>
+}

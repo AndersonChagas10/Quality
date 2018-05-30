@@ -444,7 +444,6 @@
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
-    <Compile Include="Jobs\DeviationJob.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
@@ -1704,6 +1703,7 @@
     <Content Include="Views\Shared\_Mandala.cshtml" />
     <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiariosDomingo.cshtml" />
+    <Content Include="Views\GlobalConfig\Jobs.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
