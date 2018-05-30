@@ -52,6 +52,11 @@ namespace SgqSystem.Controllers
 
                 var ItemMenu = Mapper.Map<ItemMenu>(itemMenu);
 
+                if (ItemMenu.Id > 0)
+                {
+                    ItemMenu.AlterDate = DateTime.Now;
+                }
+
                 db.ItemMenu.AddOrUpdate(ItemMenu);
                 db.SaveChanges();
 
@@ -67,7 +72,7 @@ namespace SgqSystem.Controllers
         public ActionResult Edit(int id)
         {
 
-            var ItenMenu = db.ItemMenu.Find(id);
+            var ItenMenu = Mapper.Map<ItemMenuDTO>(db.ItemMenu.Find(id));
 
             return View("Create", ItenMenu);
         }

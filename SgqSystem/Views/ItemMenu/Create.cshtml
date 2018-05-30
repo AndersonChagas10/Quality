@@ -9,11 +9,11 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <a href="@Url.Action("Index", "ItemMenu")">Home</a>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="@Url.Action("Index", "RoleUserSgq")">@Resources.Resource.item_menu</a>
+                    <a href="@Url.Action("Index", "ItemMenu")">@Resources.Resource.item_menu</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -36,7 +36,7 @@
                         <div class="tab-content">
 
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm())
+                                @using (Html.BeginForm("Create","ItemMenu"))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -45,6 +45,7 @@
                                         @if (Model != null)
                                         {
                                             @Html.HiddenFor(model => model.Id)
+                                            @Html.HiddenFor(model => model.AddDate)
                                         }
 
                                         <div class="form-group">

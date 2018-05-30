@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Dominio.ItemMenu>
 
+@{
+    ViewBag.Title = Resources.Resource.item_menu;
+}
+
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="page-bar">
@@ -31,67 +35,70 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table">
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayName("Menu Pai")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("Data de Inserção")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("Data de Alteração")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("Nome")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("Icone")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("URL")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("Tradução")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName("Ativo")
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table tableIndex">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ItemMenu_Id)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AddDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AlterDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Icon)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Url)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Resource)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsActive)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                            </td>
+                                            <th>
+                                                @Html.DisplayName("Menu Pai")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.add_date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.alter_date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.name)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.icon)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.url)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.resource)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.is_active)
+                                            </th>
+                                            <th></th>
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ItemMenu_Id)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AddDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AlterDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Icon)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Url)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Resource)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -101,3 +108,16 @@
         </div>
     </div>
 </div>
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar15");
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+</script>

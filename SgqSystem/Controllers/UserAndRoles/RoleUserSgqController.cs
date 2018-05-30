@@ -43,14 +43,7 @@ namespace SgqSystem.Controllers.UserAndRoles
         {
             var roleToEdit = Mapper.Map<RoleUserSgqDTO>(db.RoleUserSgq.Find(id));
 
-            var roleUserSgqXItemMenu = db.RoleUserSgqXItemMenu.Where(r => r.RoleUserSgq_Id == roleToEdit.Id);
-
-            foreach (var item in roleUserSgqXItemMenu)
-            {
-                roleToEdit.RoleUserSgqXItemMenuDTO.Add(Mapper.Map<RoleUserSgqXItemMenuDTO>(item));
-            }
-
-            //ViewBag.listaItensMenu = db.ItemMenu.ToList();
+            roleToEdit.ItemMenuIDs = db.RoleUserSgqXItemMenu.Where(r => r.RoleUserSgq_Id == roleToEdit.Id && r.IsActive == true).Select(r => r.ItemMenu_Id).ToArray();
 
             return View("Create", roleToEdit);
         }
@@ -68,7 +61,7 @@ namespace SgqSystem.Controllers.UserAndRoles
 
                 var roleUserSgq = Mapper.Map<RoleUserSgq>(regra);
 
-                db.RoleUserSgq.Add(roleUserSgq);
+                db.RoleUserSgq.AddOrUpdate(roleUserSgq);
                 db.SaveChanges();
 
                 SaveRoleSgqXItemMenu(regra);
@@ -88,17 +81,6 @@ namespace SgqSystem.Controllers.UserAndRoles
         {
             try
             {
-                ValidaUserSgqDto(regra);
-
-                if (!ModelState.IsValid)
-                    return View("Create", regra);
-
-                var roleUserSgq = Mapper.Map<RoleUserSgq>(regra);
-
-                db.RoleUserSgq.AddOrUpdate(roleUserSgq);
-                db.SaveChanges();
-
-                SaveRoleSgqXItemMenu(regra);
 
                 return RedirectToAction("Index");
             }
@@ -120,7 +102,6 @@ namespace SgqSystem.Controllers.UserAndRoles
         {
             try
             {
-                // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
             }
@@ -137,21 +118,27 @@ namespace SgqSystem.Controllers.UserAndRoles
             foreach (var item in ListaModfy)
             {
                 item.IsActive = false;
+                item.AlterDate = DateTime.Now;
             }
 
             db.SaveChanges();
 
-            if (regra.RoleUserSgqXItemMenuDTO != null)
+            if (regra.ItemMenuIDs != null)
             {
-                foreach (var item in regra.RoleUserSgqXItemMenuDTO)
+                foreach (var ItemMenu_Id in regra.ItemMenuIDs)
                 {
-                    var RoleUserSgqXItemMenu = Mapper.Map<RoleUserSgqXItemMenu>(item);
+                    //var RoleUserSgqXItemMenu = Mapper.Map<RoleUserSgqXItemMenu>(item);
+                    var RoleUserSgqXItemMenu = new RoleUserSgqXItemMenu();
 
-                    item.IsActive = true;
-                    item.RoleUserSgq_Id = regra.Id;
+                    RoleUserSgqXItemMenu.IsActive = true;
+                    RoleUserSgqXItemMenu.RoleUserSgq_Id = regra.Id;
+                    RoleUserSgqXItemMenu.ItemMenu_Id = ItemMenu_Id;
+                    RoleUserSgqXItemMenu.AddDate = DateTime.Now;
 
                     db.RoleUserSgqXItemMenu.Add(RoleUserSgqXItemMenu);
                 }
+
+                db.SaveChanges();
             }
         }
 

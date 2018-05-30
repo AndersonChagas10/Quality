@@ -10,5 +10,6 @@ namespace DTO.DTO
         public bool IsActive { get; set; }
 
         public List<RoleUserSgqXItemMenuDTO> RoleUserSgqXItemMenuDTO { get;set; }
+        public IEnumerable<int> ItemMenuIDs { get; set; }
     }
 }

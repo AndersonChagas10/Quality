@@ -456,6 +456,7 @@
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
+    <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
@@ -507,6 +508,7 @@
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
     <Compile Include="Mappers\RoleMapperProfile.cs" />
     <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />

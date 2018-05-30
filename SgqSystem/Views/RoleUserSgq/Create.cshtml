@@ -28,14 +28,14 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.new_role</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.role</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
 
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm())
+                                @using (Html.BeginForm("Create","RoleUserSGQ"))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -59,9 +59,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label("Menus que Acessa", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.item_menu, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.RoleUserSgqXItemMenuDTO, new MultiSelectList(ViewBag.listaItensMenu, "Id", "Name"), new { @class = "form-control", @multiple = "multiple" })
+                                                @Html.ListBoxFor(model => model.ItemMenuIDs, new MultiSelectList(ViewBag.listaItensMenu, "Id", "Name"), new { @class = "form-control", @multiple = "multiple" })
                                             </div>
                                         </div>
 
@@ -110,35 +110,11 @@
         }
     }
 
-    $(document).on("click", "#btnSave", function () {
-
-        var valid = true;
-
-        if ($("#userSgqDto_FullName").val() == "") {
-            openMessageModal(Resources('fullname_required'), '');
-            return;
-        }
+    @*$(document).on("click", "#btnSave", function () {
 
         if ($("#userSgqDto_Name").val() == "") {
             openMessageModal(Resources('username_required'), '');
             return;
-        }
-
-        if ($("#userSgqDto_ListParCompany_Id").val().length == 0) {
-            openMessageModal(Resources('select_one_company'), '');
-            return;
-        }
-
-        if (!$('#passwordContainer').hasClass('hide')) {
-            if ($("#userSgqDto_Password").val() == "") {
-                openMessageModal(Resources('password_required'), '');
-                return;
-            }
-
-            if ($("#userSgqDto_Password").val() != $("#userSgqDto_ConfirmPassword").val()) {
-                openMessageModal(Resources('invalid_password'), '');
-                return;
-            }
         }
 
         $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function (data) {
@@ -148,9 +124,8 @@
             } else {
                 openMessageModal(Resources('repeated_username'), '');
             }
-
         })
-    });
+    });*@
 
     $(document).ready(function () {
 
@@ -159,7 +134,7 @@
         $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
         $("[type='checkbox']").bootstrapSwitch();
 
-        $("#RoleUserSgqXItemMenuDTO").select2();
+        $("#ItemMenuIDs").select2();
 
     });
 
