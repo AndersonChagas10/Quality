@@ -1200,9 +1200,10 @@
 
     function GerarGraficoHistoricoGeral(data) {
         var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
-        console.log(data);
-        var porc = [];
 
+     
+        var porc = [];
+        
         if (data.length > 0) {
 
             var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
@@ -1276,6 +1277,27 @@
                 $('#GraficoHistoricoGeral').removeClass('loader');
 
                 $('#GraficoHistoricoGeral').empty();
+
+                $("#semana").on('click', function () {
+                    var semana = 7;
+
+                    var dataHora = moment.duration(moment().diff(data['date'])).humanize();
+                
+                    //var porc = [];
+                    //var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+                    //var nc = MapeiaValorParaHC(data, "nc");
+                    //var porc = MapeiaValorParaHC(data, "procentagemNc");
+                    //var qtdAv = MapeiaValorParaHC(data, "av");
+                    //var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+                    //var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+                    //var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+                    //var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                    //var sumnc = nc.reduce(function (a, b) { return a + b; });
+                    //var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+                    //var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+                    //var porcPeriodo = sumncCP / sumavCP * 100;
+                }); 
 
                 chartHistoricoGeral = Highcharts.chart('GraficoHistoricoGeral', {
                     credits: {
