@@ -3521,7 +3521,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel1Filtrado.length;
-            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + "entre outros ...  <br/> " : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
+            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
         }
 
         // Subtitulo Level 2
@@ -3551,7 +3551,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel2Filtrado.length;
-            enviar.nivel2Filtrado =  tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + "entre outros ...  <br/>" : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
+            enviar.nivel2Filtrado = tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
         }
 
         // Subtitulo Level 3
@@ -3581,7 +3581,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel3Filtrado.length;
-            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + "entre outros ...  <br/>" : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
+            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
         }
 
         subtitleGeneral();

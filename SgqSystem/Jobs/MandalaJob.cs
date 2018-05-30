@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace SgqSystem.Jobs
@@ -29,12 +30,15 @@ namespace SgqSystem.Jobs
             {
                 if (ConfigurationManager.AppSettings["PreencherMandala"] == "on")
                 {
-                    PreencherListaUnidadeMandala(null);
-                    Thread.Sleep(10000);
-                    PreencherListaIndicadorMandala(null);
-                    Thread.Sleep(10000);
-                    PreencherListaMonitoramentoMandala(null);
-                    Thread.Sleep(10000);
+                    Task.Run(() =>
+                    {
+                        PreencherListaUnidadeMandala(null);
+                        Task.Delay(2000);
+                        PreencherListaIndicadorMandala(null);
+                        Task.Delay(2000);
+                        PreencherListaMonitoramentoMandala(null);
+                    });
+                    Thread.Sleep(60000);
                 }
                 else
                 {
@@ -43,6 +47,7 @@ namespace SgqSystem.Jobs
                     GlobalConfig.MandalaMonitoramento = null;
                     Thread.Sleep(3000000);
                 }
+                GlobalConfig.UltimaExecucaoDoJob["PreencherMandala"] = DateTime.Now;
             }
         }
 

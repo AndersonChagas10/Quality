@@ -27,7 +27,7 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int tamanhoDoPool = 2;
+        private static int tamanhoDoPool = 5;
         private static bool running { get; set; }
 
         #region SGQ Email

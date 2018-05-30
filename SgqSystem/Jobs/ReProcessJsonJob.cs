@@ -23,18 +23,22 @@ namespace Jobs
             Thread.Sleep(40000);
             while (true)
             {
-                if (ConfigurationManager.AppSettings["ResendProcessJsonJob"] == "exec")
+                if (ConfigurationManager.AppSettings["ResendProcessJsonJob"] == "on")
                 {
-                    try
+                    Task.Run(() =>
                     {
-                        SimpleAsynchronous.ResendProcessJson();
-                    }
-                    catch (Exception ex)
-                    {
-                        new CreateLog(new Exception("Erro no metodo [ReProcessJsonJobFunction]", ex));
-                    }
+                        try
+                        {
+                            SimpleAsynchronous.ResendProcessJson();
+                        }
+                        catch (Exception ex)
+                        {
+                            new CreateLog(new Exception("Erro no metodo [ReProcessJsonJobFunction]", ex));
+                        }
+                    });
                 }
-                Thread.Sleep(40000);
+                GlobalConfig.UltimaExecucaoDoJob["ResendProcessJsonJob"] = DateTime.Now;
+                Thread.Sleep(180000);
             }
         }
     }
