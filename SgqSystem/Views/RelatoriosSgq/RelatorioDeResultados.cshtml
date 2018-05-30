@@ -442,6 +442,7 @@
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         enviar2 = {};
+                        enviar2["auditorId"] = enviar["auditorId"];
                         enviar2["startDate"] = enviar["startDate"];
                         enviar2["endDate"] = enviar["endDate"];
                         enviar2["level1Id"] = data["Indicador"];
@@ -536,6 +537,7 @@
                         $('#DataTable2 tbody').on('click', 'button', function (data, a, b) {
                             var data = table.row($(this).parents('tr')).data();
                             enviar2 = {};
+                            enviar2["auditorId"] = enviar["auditorId"];
                             enviar2["startDate"] = enviar["startDate"];
                             enviar2["endDate"] = enviar["endDate"];
                             enviar2["level1Id"] = data["Indicador"];
