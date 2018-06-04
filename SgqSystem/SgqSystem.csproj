@@ -353,6 +353,7 @@
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
+    <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
@@ -1710,6 +1711,7 @@
     <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
     <Content Include="Views\Shared\_Mandala.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
     <Content Include="Views\ImportacaoExcel\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>

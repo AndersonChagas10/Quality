@@ -37,10 +37,11 @@
         , Table.PosicaoLabel.top
         , info: Resources.Resource.consolidation_type_popover
         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
-                    </tr>
 
-                    <tr class="row">
+                        <div style="display:none !important">
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                        </div>
+
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParScoreType_Id", Model.paramsDdl.DdlScoretype, htmlAttributes: new { @class = "form-control input-sm", @id = "selectScoreType" }), @Html.Label(Resources.Resource.scorecard_type), Table.PosicaoLabel.top, info: Resources.Resource.scorecard_type, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParScoreType_Id, null, new { @class = "text-danger" }))
                     </tr>
 
@@ -210,7 +211,7 @@
                                     @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.PointsDestiny, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.points_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.points_destiny)
                                 </tr>
                                 <!--19 - Indicador destino -->
-                                <tr class="row groupChildren padding-left" style="display:none">
+                                <tr class="row padding-left" style="display:none !important">
                                     @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Destiny_Id, Model.paramsDdl.DdlparLevel1Active, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Coloque seu texto aqui", null, 1)
                                 </tr>
                                 <!--20 - Foto  -->
@@ -735,14 +736,14 @@
                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                     @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
                                                                 {
-                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho - Ativado">
                                                         <span class="glyphicon glyphicon-duplicate"></span>
                                                     </button>
 
                                                                 }
                                                                 else
                                                                 {
-                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho - Inativado">
                                                         <span class="fa fa-copy"></span>
                                                     </button>
                                                                 }
@@ -854,6 +855,13 @@
             $('.groupCadastroEspecificoUnidade').fadeOut();
         }
     });
+
+    $("#DuplicarCabecalho").on('click', function () {
+        if ($('#DuplicarCabecalho').attr('title') == "Clonar Cabeçalho - Ativado") 
+            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Inativado")
+        else
+            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Ativado")
+    })
 
     $('#paramsDto_parLevel1Dto_IsChildren').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {

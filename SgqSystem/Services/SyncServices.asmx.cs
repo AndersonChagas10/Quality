@@ -4775,7 +4775,7 @@ $(document).ready(function(){
 
                 }
 
-                parClusters.Append("</div></div>");
+                parClusters.Append("</div></div></div>");
 
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
