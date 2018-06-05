@@ -44,8 +44,10 @@ namespace SgqSystem.Controllers.Api.Public
             string collectionDateMesDiaAno = date.Month.ToString().PadLeft(2, '0') + date.Day.ToString().PadLeft(2, '0') + date.Year.ToString(); 
             string parCompany_Id = db.ParCompany.FirstOrDefault(r => r.Initials == initials).Id.ToString();
 
-            av = parlevel1_id == "42" ? "1" : av;
-            
+            av = parlevel1_id == "42" ? av : av;
+
+            string sample = parlevel1_id == "42" ? av : "1";
+
 
             string collectionJson = "<level02>";
             collectionJson += cluster_id + "|" + parlevel1_id; //[0]
@@ -72,7 +74,7 @@ namespace SgqSystem.Controllers.Api.Public
             collectionJson += ";"; //SEPARADOR LEVEL2
             collectionJson += "1"; //[11]
             collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[12]
+            collectionJson += sample; //[12]
             collectionJson += ";"; //SEPARADOR LEVEL2
             collectionJson += ""; //[13]
             collectionJson += ";"; //SEPARADOR LEVEL2
@@ -96,41 +98,41 @@ namespace SgqSystem.Controllers.Api.Public
             // Início do Level03
 
             collectionJson += "<level03>";
-            collectionJson += parlevel3_id; //level3 1
+            collectionJson += parlevel3_id; //level3 0 ID LEVEL 3
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += collectionDate; //level3 2
+            collectionJson += collectionDate; //level3 1 DATA
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 2???
+            collectionJson += NC; //level3 2 VALUE
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "true"; //level3 3
+            collectionJson += "true"; //level3 3 CONFORME
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "1"; //level3 6
+            collectionJson += "1"; //level3 4 ??
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "null"; //level3 7
+            collectionJson += "null"; //level3 5
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "undefined"; //level3 8
+            collectionJson += "undefined"; //level3 6 VALUE TEXT
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "undefined"; //level3 9
+            collectionJson += "undefined"; //level3 7 ID
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 10
+            collectionJson += "1"; //level3 8 PESO
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += ""; //level3 11
+            collectionJson += ""; //level3 9 NAME
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 12
+            collectionJson += "0"; //level3 10 INTERVALO MINIMO
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 13
+            collectionJson += "0"; //level3 11 INTERVALO MAXIMO
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 14
+            collectionJson += "0"; //level3 12 ISNOTEVALUATE
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += av; //level3 15
+            collectionJson += "0"; //level3 13 PUNICAO
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += NC; //level3 16
+            collectionJson += NC; //level3 14 DEFECTS
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 17
+            collectionJson += av; //level3 15 WEIAV
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 17??
+            collectionJson += NC; //level3 16 WEIDF
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 17??
+            collectionJson += "false"; //level3 17 
             collectionJson += "</level03>";
 
             // Final do Level03
