@@ -346,6 +346,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
@@ -780,6 +781,7 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
+    <Content Include="Content\mindmap.css" />
     <Content Include="Content\PluginGRT\pivot.css" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.min.css" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.min.css" />
@@ -1024,6 +1026,7 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Scripts\mindmap.js" />
     <Content Include="WebConfig_Old.xml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
@@ -1710,6 +1713,7 @@
     <Content Include="Views\RoleUserSgq\Create.cshtml" />
     <Content Include="Views\ItemMenu\Index.cshtml" />
     <Content Include="Views\ItemMenu\Create.cshtml" />
+    <Content Include="Views\ItemMenu\EstruturaMenus.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

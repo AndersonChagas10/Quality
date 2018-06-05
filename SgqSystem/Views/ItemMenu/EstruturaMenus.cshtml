@@ -1,0 +1,664 @@
+﻿@{
+
+    ViewBag.Title = "Index";
+    var urlHome = Url.Action("Index", "Home");
+    var urlGetList = Url.Action("GetListItemMenu", "api/ItemMenu");
+    //var urlSaveList = Url.Action("SaveList", "LevelXLevel");
+    //var urlRedundancy = Url.Action("Redundancy", "LevelXLevel");
+
+}
+
+<style>
+
+    /*.node_root {
+        font-size: 11px;
+    }
+
+    .node {
+        text-align: center;
+        line-height: 40px;
+        font-size: 16px;
+        height: 40px;
+    }*/
+
+    .select2-container.select2-dropdown-open {
+        width: 170%;
+        margin-left: -70%;
+    }
+
+    .select2-container {
+        min-width: 230px !important;
+    }
+
+    /*.mindmap {
+        top: 90px;
+        margin: 90px;
+        padding: 8px;
+    }*/
+
+    #CustomPopover {
+        z-index: 1040;
+        border-width: 2px;
+        padding: 8px;
+        width: 250px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        position: absolute;
+        background: white;
+        top: 35%;
+        left: 70%;
+    }
+
+    /*.controls {
+        position: fixed;
+        top: 70px;
+        left: 20px;
+        z-index: 1020;
+    }
+
+        .controls .btn {
+            margin: 2px;
+        }*/
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 650px;">
+        <div id="CustomPopover" class="hide">
+            <div>
+                Indicador: <br>
+                <select class="select2single" id="select2parlevel"></select><br><br>
+            </div>
+            <hr />
+            <button class="btn btn-sm btn-default" id="btnClosePopover">Fechar</button>
+            <button class="btn btn-sm btn-danger" id="btnRemovePopover">Remover</button>
+            <button class="btn btn-sm btn-primary" id="btnSavePopover">Adicionar</button>
+        </div>
+
+        <div class="row controls">
+            <div class="col-xs-12">
+                <button class="btn btn-success" onclick="saveList()">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Salvar
+                </button>
+                <button class="btn btn-primary" onclick="prevItem()">
+                    <i class="fa fa-undo" aria-hidden="true"></i>
+                    Desfazer
+                </button>
+                <button class="btn btn-primary" onclick="nextItem()">
+                    <i class="fa fa-repeat" aria-hidden="true"></i>
+                    Refazer
+                </button>
+                <button class="btn btn-primary" onclick="copyItem()">
+                    <i class="fa fa-files-o" aria-hidden="true"></i>
+                    Copiar
+                </button>
+                <button class="btn btn-primary" onclick="pasteItem()">
+                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                    Colar
+                </button>
+                <div class="btn-group" role="group">
+                    <button id="btnZoomLess" class="btn btn-default" onclick="zoomLess()">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                    <button id="btnZoomStatus" class="btn btn-default disabled">100%</button>
+                    <button id="btnZoomMore" class="btn btn-default" onclick="zoomMore()">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mindmap col-xs-12" id="0"></div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/mindmap.css" rel="stylesheet" />
+
+<script src="~/Scripts/mindmap.js"></script>
+
+<script>
+
+    var listNodes = [];
+
+    var listMain = [];
+
+    var ativeNode;
+
+    var popoverMain;
+
+    var nodeTypes = {
+        root: function () {
+            return $('<div class="node node_root" id="0"><div class="node__text" data-popover-content="#CustomPopover">Menu</div></div>');
+        },
+        rightBranch: function () {
+            return $('<ol class="children children_rightbranch"></ol>');
+        },
+        children: function () {
+            return $('<ol class="children"></ol>');
+        },
+        //childrenItem: function (id, levelxlevel, parlevel_id, parent_id, name) {
+        //    return $('<li class="children__item" id="' + id + '" levelxlevel="' + levelxlevel + '" parlevel_id="' + parlevel_id + '" parent_id="' + parent_id + '"><div class="node"><div class="node__text">' + name + '</div></div></li>');
+        //}     
+        childrenItem: function (id, ItemMenu_Id, name) {
+            return $('<li class="children__item" id="' + id + '" itemMenu_id="' + ItemMenu_Id + '"><div class="node"><div class="node__text">' + name + '</div></div></li>');
+        }
+
+    };
+
+    @*//var urlSaveList = '@Html.Raw(urlSaveList)';
+
+    //var urlRedundancy = '@Html.Raw(urlRedundancy)';*@
+
+    var urlGetList = '@Html.Raw(@urlGetList)';
+
+    var listAllHeaderFields = [];
+    var listAllMultipleValues = [];
+
+    $(window).bind('beforeunload', function () {
+
+        return isSaved;
+
+    });
+
+    $(document).ready(function () {
+
+        //listAllParLevel= @Html.Raw(Json.Encode(ViewBag.ParLevel));
+
+        popoverMain = $('#CustomPopover').addClass('hide');
+
+        $('.mindmap').mindmap();
+
+        getNodeList();
+
+        $(".select2single").select2();
+
+    });
+
+    $(document).on('click', '#btnClosePopover', function () {
+        popoverMain.addClass('hide');
+    });
+
+    $(document).on('click', '#btnSavePopover', function () {
+        popoverMain.addClass('hide');
+        
+        var item = $(ativeNode).parent();
+
+        var id = $(item).attr('id');
+        //var id = $(item).attr('id') + '-' + $('#select2parlevel').val();
+
+        if ($('.children__item[id=' + $('#select2parlevel').val() + ']').length > 0) {
+            return;
+        }
+
+        $('.node').popover('hide');
+
+        var next = $(ativeNode).next();
+
+        if (next.length == 0) {
+            next = nodeTypes.children().clone();
+            $(ativeNode).after(next);
+        }
+
+        if ($(ativeNode).hasClass('node_root')) {
+            $(next).append(
+                nodeTypes.childrenItem(
+                    $('#select2parlevel').val(),
+                    id,
+                    $('#select2parlevel option:selected').text()
+                ).clone()
+            );
+        } else {
+            $(next).append(
+                nodeTypes.childrenItem(
+                    $('#select2parlevel').val(),
+                    id,
+                    $('#select2parlevel option:selected').text()
+                ).clone()
+            );
+        }
+
+        //addItem(listNodes);
+        //addItem(listNodes.slice(0));
+
+        //if ($(ativeNode).hasClass('node_root')) {
+        //    listNodes.push({
+        //        Id: parseInt($('#select2parlevel').val()),
+        //        LevelXLevel_Id: null,
+        //        Parent_Id: null,
+        //        ParLevel_Id: parseInt($('#select2parlevel').val())
+        //    });
+        //} else {
+        //    listNodes.push({
+        //        Id: hash,
+        //        LevelXLevel_Id: $(item).attr('id'),
+        //        Parent_Id: parseInt($(item).attr('parlevel_id')),
+        //        ParLevel_Id: parseInt($('#select2parlevel').val())
+        //    });
+        //}
+
+        //addItem(listNodes.slice(0), true);
+    });
+
+    $(document).on('click', '#btnRemovePopover', function () {
+
+        popoverMain.addClass('hide');
+
+        //addItem(listNodes.slice(0));
+
+        var c_i = $(ativeNode).parent();
+
+        var parent = $(c_i).parent();
+
+        $(c_i).remove();
+
+        if ($(parent).children().length == 0) {
+            $(parent).remove();
+        }
+
+        //var clone = listNodes.slice(0);
+        //var id = $(ativeNode).parent().attr('id');
+
+        //listNodes = $.grep(clone, function (n, i) {
+        //    if (n.Id.substring(0, id.length) != id) {
+        //        return n;
+        //    }
+        //});
+
+        //addItem(listNodes.slice(0), true);
+
+        $('.popover').remove();
+    });
+
+    $(document).on('click', '.select2', function (e) {
+        e.stopPropagation();
+    });
+
+    $(document).on('click', '#CustomPopover', function (e) {
+        e.stopPropagation();
+    });
+
+    $(document).on('click', '.node', function (e) {
+
+        e.stopPropagation();
+        ativeNode = $(this);
+
+        $('.node:not(".node_root")').css('background', 'white');
+        if (!ativeNode.hasClass('node_root')) {
+            $(this).css('background', 'gold');
+        }
+
+        setTimeout(function () {
+            popoverMain.find('#select2header').change();
+        }, 1);
+
+        popoverMain.removeClass('hide');
+
+        popoverMain.css("top", y);
+        popoverMain.css("left", x);
+
+        if (ativeNode.parent().attr('parfieldtype_id') != "1" && !!ativeNode.parent().attr('parfieldtype_id')) {
+            $('#btnSavePopover').addClass('hide');
+        } else {
+            $('#btnSavePopover').removeClass('hide');
+        }
+    });
+
+    $(document).on('click', function () {
+        popoverMain.addClass('hide');
+    });
+
+    $(document).on('click', '.mindmap', function () {
+        isSaved = false;
+    });
+
+    $(document).mousemove(function(e) {
+        window.x = e.pageX;
+        window.y = e.pageY;
+    });
+
+    function loadNodes(listObj) {
+
+        let list = listObj.slice(0);
+        let root = $(nodeTypes.root().clone());
+
+        let save = [];
+
+        let rightBranch = $(nodeTypes.rightBranch().clone());
+
+        list = $.grep(list, function (r) {
+            return r.ItemMenu_Id != null;
+        }); 
+
+        iniciarlizar(list, rightBranch);
+
+        if (list.length > 0) {
+
+            while (list.length > 0) {
+
+                let parent = $(rightBranch.find('.children__item[id=' + list[0].ItemMenu_Id + ']'));
+
+                if (parent.length > 0) {
+
+                    if (parent.children('.children').length == 0) {
+                        parent.append(nodeTypes.children());
+                    }
+
+                    parent.children('.children').append(
+                        nodeTypes.childrenItem().clone()
+                    );
+
+                    list.splice(0, 1);
+
+                } else {
+
+                    //Mandar o item do arr para o fim da lista
+                    list.move(0, list.length - 1);
+
+                }
+            }
+        }
+
+        $('.mindmap').empty().append(root).append(rightBranch);
+    }
+
+    function iniciarlizar(list, rightBranch) {
+        
+        let nodeInicial = $.grep(list, function (r) {
+            return r.ItemMenu_Id == 0;
+        });       
+
+        nodeInicial.forEach(function (item, index, object) {           
+
+            if (rightBranch.children() > 0) {
+                rightBranch.append(nodeTypes.children());
+            }
+
+            rightBranch.append(
+                nodeTypes.childrenItem(item.Id, null, item.Name).clone()
+            );
+
+            //object.splice(index, 1); //remove do Arr
+
+        });
+
+        if (nodeInicial.length > 0) {
+
+            for (var i = list.length - 1; i >= 0; i--) {
+                for (var j = 0; j < nodeInicial.length; j++) {
+                    if (list[i] && (list[i].Id === nodeInicial[j].Id)) {
+                        list.splice(i, 1);
+                    }
+                }
+            }
+
+        }
+
+        return rightBranch;
+    }
+
+    var isSaved = true;
+    function saveList() {
+
+        let listSave = []
+
+        $('.node__text').each(function (index) {
+
+            listSave.push({ Id: $(this).parent().parent().attr('id'), ItemMenu_Id: $(this).parent().parent().attr('itemMenu_id') })
+        });
+
+        console.log(listSave);
+
+        //$.post(urlSaveList, { ListItem : listSave },
+        //    function (r) {
+        //        toastr.success("Salvo com sucesso!");
+        //        isSaved = true;
+        //    }
+        //);
+    }
+
+    function redundancy(levelXLevel) {
+        $.post(urlRedundancy,
+            {
+                LevelXLevel: levelXLevel
+            }, function (r) {
+                getNodeList();
+            }
+        );
+    }
+
+    function getNodeList() {
+        $.post(
+            urlGetList,
+            function (obj, responseText, xhr) {
+                listNodes = obj;
+
+                var options = "";
+                for (var i = 0; i < listNodes.length; i++) {
+                    options += "<option value='" + listNodes[i].Id + "'>" + listNodes[i].Name + "</option>";
+                }
+
+                popoverMain.find("#select2parlevel").select2();
+                popoverMain.find('#select2parlevel').empty().append($(options));
+
+                loadNodes(listNodes);
+
+            });
+    }
+
+    //var list = [];
+    var index = 0;
+
+    var addItem = function (item, next) {
+
+        if (list[index-1] && list[index-1].item.length == item.length)
+            return;
+
+        if(next){
+            list[index] = {item};
+        }else{
+            list.splice(index);
+            list.push({
+                item
+            });
+            index++;
+        }
+    }
+
+    var prevItem = function(){
+     if(index > 0){
+         index--;
+         listNodes = list[index].item;
+         loadNodes(listNodes);
+     }
+    }
+
+    var nextItem = function(){
+        if(index >= 0 && index < list.length-1){
+            index++;
+            listNodes = list[index].item;
+            loadNodes(listNodes);
+        }
+    }
+
+    var listCopy = [];
+    var copyItem = function () {
+        listCopy = $.grep(listNodes.slice(0), function (n, i) {
+            if (n.Id.substring(0, $(ativeNode).parent().attr('id').length) == $(ativeNode).parent().attr('id')) {
+                return n;
+            }
+        });
+
+    }
+
+    var pasteItem = function () {
+
+        if (listCopy.length > 0) {
+            setTimeout(function(){
+                var primeiro = listCopy[0];
+                var oldHash = primeiro.Id.substring(0, primeiro.Id.lastIndexOf('-') + 1);
+                var newHash = $(ativeNode).parent().attr('id') + '-';
+
+                addItem(listNodes.slice(0));
+
+                $.grep(listCopy, function (o, i) {
+                    var n = {};
+
+                    if (i == 0) {
+                        oldHash = listCopy[0].Id + '-';
+                        n.Id = o.Id;
+                    } else {
+                        n.Id = o.Id.replace(oldHash, newHash);
+                        n.ParLevel_Id = o.ParLevel_Id;
+                        n.Parent_Id = o.Parent_Id;
+                        n.LevelXLevel_Id = o.LevelXLevel_Id.replace(oldHash, newHash);
+                        if (ativeNode.parent().attr('id') == n.Id.substring(0, n.Id.lastIndexOf('-'))) {
+                            n.LevelXLevel_Id = ativeNode.parent().attr('id');
+                            n.Parent_Id = parseInt(ativeNode.parent().attr('parlevel_id'));
+                        }
+                    }
+
+                    if ($('.children__item[id=' + n.Id + ']').length == 0) {
+                        listNodes.push(n);
+                    }
+                });
+
+                addItem(listNodes.slice(0), true);
+
+                loadNodes(listNodes);
+            },10);
+        }
+    }
+
+    $('body').on('click','h3',function(){
+        var parent = $(this).parent().parent();
+        addItem(parent, parent.html())
+        $(this).parent().remove();
+        addItem(parent, parent.html(),true)
+    });
+
+    $("body").keydown(function (e) {
+
+        if ( e.ctrlKey && e.keyCode == 90 ) {
+            e.preventDefault();
+            prevItem();
+        }
+        else if( e.ctrlKey && e.keyCode == 89 ) {
+            e.preventDefault();
+            nextItem();
+        }
+        else if (e.ctrlKey && e.keyCode == 83) {
+            e.preventDefault();
+            saveList();
+        }
+        else if (e.ctrlKey && e.keyCode == 67) {
+            e.preventDefault();
+            copyItem();
+        }
+        else if (e.ctrlKey && e.keyCode == 86) {
+            e.preventDefault();
+            pasteItem();
+        }
+    });
+
+    var listNodesCopy = [];
+
+    function validListNodes() {
+
+        $('.node:not(".node_root")').css('background', 'white');
+
+        var listNodesDuplicados = $.grep(listNodes, function(elem){
+            return elem.parfieldtype_id == 1;
+        });
+
+        var listNiveis = [];
+
+        $.grep(listNodesDuplicados, function(elem1, index1){
+            var size = elem1.id.split('-').length;
+
+            var l = $.grep(listNiveis, function(elem2, index2){
+                return elem2.size == size;
+            });
+
+            if(l.length > 0){
+                l[0].list.push(elem1);
+            }else{
+                var list = [];
+                list.push(elem1);
+                listNiveis.push({size: size, list: list});
+            }
+        });
+
+        var i = listNiveis.length - 1;
+
+        var valid = []
+        while(i > 0){
+
+            $.grep(listNiveis[i].list, function(elem1){
+                var j = i - 1;
+                while(j >= 0){
+                    if(listNiveis[j])
+                        $.grep(listNiveis[j].list, function(elem2){
+                            if(elem1.parheaderfield_id == elem2.parheaderfield_id){
+                                valid.push(elem1);
+
+                                $('.children__item[id='+elem1.id+']').children('.node').css('background', 'red');
+                                $('.children__item[id='+elem2.id+']').children('.node').css('background', 'red');
+                            }
+                        });
+
+                    j--;
+                }
+            });
+
+            i--;
+        }
+
+        if(valid.length > 0){
+            openMessageModal("Erro na estrutura", "Existem indicadores duplicados em um dos níveis da estrutura.");
+            return false;
+        }
+
+        console.log(valid);
+        return true;
+    }
+
+    function zoomMore(){
+        if((zoomValue - 0.1) < 1.5){
+            zoomValue = zoomValue + 0.1;
+            changeZoom();
+        }
+
+        if(parseFloat(zoomValue - 0.1) > 1.4){
+            $("#btnZoomMore").attr('disabled', true);
+        }
+    }
+
+    function zoomLess(){
+        if((zoomValue - 0.1) >= 0.5){
+            zoomValue = zoomValue - 0.1;
+            changeZoom();
+        }
+
+        if((zoomValue - 0.1) < 0.5){
+            $("#btnZoomLess").attr('disabled', true);
+        }
+    }
+
+    function changeZoom(){
+        $('.mindmap').css('zoom', (zoomValue * 100 )+'%');
+        $('#btnZoomStatus').text(parseInt((zoomValue * 100 ))+'%');
+        $("#btnZoomMore").removeAttr('disabled');
+        $("#btnZoomLess").removeAttr('disabled');
+    }
+
+    var zoomValue = .7;
+    changeZoom();
+
+
+    Array.prototype.move = function (from, to) {
+        this.splice(to, 0, this.splice(from, 1)[0]);
+    };
+
+</script>

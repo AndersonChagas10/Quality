@@ -20,8 +20,6 @@ namespace SgqSystem.Controllers.UserAndRoles
             ViewBag.listaItensMenu = db.ItemMenu.ToList();
         }
 
-        
-
         // GET: RoleUserSgq
         public ActionResult Index()
         {
@@ -61,6 +59,11 @@ namespace SgqSystem.Controllers.UserAndRoles
 
                 var roleUserSgq = Mapper.Map<RoleUserSgq>(regra);
 
+                if (roleUserSgq.Id > 0)
+                {
+                    roleUserSgq.AlterDate = DateTime.Now;
+                }
+
                 db.RoleUserSgq.AddOrUpdate(roleUserSgq);
                 db.SaveChanges();
 
@@ -69,43 +72,6 @@ namespace SgqSystem.Controllers.UserAndRoles
                 return RedirectToAction("Index");
             }
             catch (Exception e)
-            {
-                return View();
-            }
-        }
-
-
-        // POST: RoleUserSgq/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, RoleUserSgqDTO regra)
-        {
-            try
-            {
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RoleUserSgq/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: RoleUserSgq/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-
-                return RedirectToAction("Index");
-            }
-            catch
             {
                 return View();
             }

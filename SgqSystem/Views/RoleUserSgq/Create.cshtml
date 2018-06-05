@@ -95,20 +95,20 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar15");
 
-    $(document).on('switchChange.bootstrapSwitch', '#userSgqDto_UseActiveDirectory', function () {
-        $(this).is(":checked") ? $('#userSgqDto_UseActiveDirectory').val(true) : $('#userSgqDto_UseActiveDirectory').val(false)
-        setupAD();
-    });
+    //$(document).on('switchChange.bootstrapSwitch', '#userSgqDto_UseActiveDirectory', function () {
+    //    $(this).is(":checked") ? $('#userSgqDto_UseActiveDirectory').val(true) : $('#userSgqDto_UseActiveDirectory').val(false)
+    //    setupAD();
+    //});
 
-    function setupAD() {
-        if ($('#userSgqDto_UseActiveDirectory').length > 0) {
-            if ($('#userSgqDto_UseActiveDirectory').prop('checked')) {
-                $('#passwordContainer').addClass('hide');
-            } else {
-                $('#passwordContainer').removeClass('hide');
-            }
-        }
-    }
+    //function setupAD() {
+    //    if ($('#userSgqDto_UseActiveDirectory').length > 0) {
+    //        if ($('#userSgqDto_UseActiveDirectory').prop('checked')) {
+    //            $('#passwordContainer').addClass('hide');
+    //        } else {
+    //            $('#passwordContainer').removeClass('hide');
+    //        }
+    //    }
+    //}
 
     @*$(document).on("click", "#btnSave", function () {
 
@@ -138,14 +138,14 @@
 
     });
 
-</script>
-
-<script>
     $(document).ready(function () {
         closeLeftSidebar();
     });
+
 </script>
 
 @section Scripts {
+
     @Scripts.Render("~/bundles/jqueryval")
+
 }
