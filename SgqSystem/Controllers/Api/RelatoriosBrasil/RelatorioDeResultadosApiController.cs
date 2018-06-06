@@ -3882,6 +3882,7 @@ FROM (SELECT
             	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
             		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
              		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             		AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL AND Isactive = 1 ORDER BY ParLevel1_Id,ParCluster_Id,EffectiveDate,AddDate,AlterDate)
              		AND L1C.IsActive = 1
             
             	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4260,6 +4261,7 @@ FROM (SELECT
             	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
             		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
              		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             		AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL AND Isactive = 1 ORDER BY ParLevel1_Id,ParCluster_Id,EffectiveDate,AddDate,AlterDate)
              		AND L1C.IsActive = 1
             
             	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4602,6 +4604,7 @@ FROM (SELECT
         	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
         		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
          		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             	AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL AND Isactive = 1 ORDER BY ParLevel1_Id,ParCluster_Id,EffectiveDate,AddDate,AlterDate)
          		AND L1C.IsActive = 1
         
         	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4842,6 +4845,7 @@ FROM (SELECT
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
+            var whereGroupLevel1 = "";
             var whereLevel1 = "";
             var whereUnit = "";
             var WunidadeAcesso = GetUserUnits(form.auditorId);
@@ -4864,6 +4868,11 @@ FROM (SELECT
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                whereGroupLevel1 = $@" AND IND.Id IN(SELECT Distinct ParLevel1_Id FROM ParGroupParLevel1XParLevel1 WHERE 1=1 AND ParGroupParLevel1_Id in ({ string.Join(",", form.groupParLevel1IdArr) }))";
             }
 
             if (form.level1IdArr.Length > 0)
@@ -4916,6 +4925,7 @@ FROM (SELECT
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
+            { whereGroupLevel1 }
             { whereDepartment }
             { whereShift }            
             { whereCriticalLevel }

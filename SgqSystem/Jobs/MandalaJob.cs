@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace SgqSystem.Jobs
@@ -29,12 +30,15 @@ namespace SgqSystem.Jobs
             {
                 if (ConfigurationManager.AppSettings["PreencherMandala"] == "on")
                 {
-                    PreencherListaUnidadeMandala(null);
-                    Thread.Sleep(10000);
-                    PreencherListaIndicadorMandala(null);
-                    Thread.Sleep(10000);
-                    PreencherListaMonitoramentoMandala(null);
-                    Thread.Sleep(10000);
+                    Task.Run(() =>
+                    {
+                        PreencherListaUnidadeMandala(null);
+                        Task.Delay(2000);
+                        PreencherListaIndicadorMandala(null);
+                        Task.Delay(2000);
+                        PreencherListaMonitoramentoMandala(null);
+                    });
+                    Thread.Sleep(60000);
                 }
                 else
                 {
@@ -43,6 +47,7 @@ namespace SgqSystem.Jobs
                     GlobalConfig.MandalaMonitoramento = null;
                     Thread.Sleep(3000000);
                 }
+                GlobalConfig.UltimaExecucaoDoJob["PreencherMandala"] = DateTime.Now;
             }
         }
 
@@ -50,7 +55,6 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                var HoraTrabalhada = JornadaDeTrabalho - DateTime.Now.Hour;
 
                 var query = $@"               
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
@@ -332,11 +336,11 @@ namespace SgqSystem.Jobs
                 Group by
 
                     ParCompany_Name,
-	                ParCompany_id
-	                --ParLevel1_id,
-	                --ParLevel1_Name,
-	                --ParLevel2_id,
-	                --ParLevel2_Name
+	                ParCompany_id,
+	                ParLevel1_id,
+	                ParLevel1_Name,
+	                ParLevel2_id,
+	                ParLevel2_Name
                     --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -354,7 +358,7 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                var HoraTrabalhada = DateTime.Now.Hour;
+                
                 //Thread.Sleep(30000);
                 var query = $@"                
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
@@ -636,9 +640,9 @@ namespace SgqSystem.Jobs
                         Group by
 
                             ParCompany_Name,
-	                        ParCompany_id
-	                        --ParLevel1_id,
-	                        --ParLevel1_Name,
+	                        ParCompany_id,
+	                        ParLevel1_id,
+	                        ParLevel1_Name
 	                        --ParLevel2_id,
 	                        --ParLevel2_Name
                             --ORDER BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
@@ -659,7 +663,6 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                var HoraTrabalhada = DateTime.Now.Hour - Horainicio;
                 var query = $@"
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
  

@@ -1142,6 +1142,14 @@ namespace SgqSystem.Controllers
             {
                 tabela = GetTbl1(form);
             }
+            else if (form.Query.Equals("GetTblAllFuncoesPorAllUnidades"))
+            {
+                tabela = GetTblAllFuncoesPorAllUnidades(form);
+            }
+            else if (form.Query.Equals("GetTblAllInicadoresPorAllRegional"))
+            {
+                tabela = GetTblAllInicadoresPorAllRegional(form);
+            }
             else if (form.Query.Equals("GetTblFuncoesPorUnidade"))
             {
                 tabela = GetTblFuncoesPorUnidade(form);
@@ -2432,6 +2440,668 @@ namespace SgqSystem.Controllers
             return tabela;
         }
 
+        public TabelaDinamicaResultados GetTblAllFuncoesPorAllUnidades(DataCarrierFormulario form)
+        {
+            #region consultaPrincipal
+
+            /*
+             * neste score NAO devo considerar a regra dos 70 %
+             * 
+             */
+
+            var query = sqlBase(form);
+
+            #endregion
+
+            #region Queryes Trs Meio
+
+            var tabela = new TabelaDinamicaResultados();
+
+            var where = string.Empty;
+            where += "";
+
+            var whereClusterGroup = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var whereUnit = "";
+
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+            }
+
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@"AND C.ID IN (SELECT DISTINCT c.id FROM Parcompany c Left Join ParCompanyCluster PCC with (nolock) on c.id= pcc.ParCompany_Id WHERE PCC.ParCluster_Id = { form.clusterSelected_Id } and PCC.Active = 1)";
+            }
+
+            if (form.structureId > 0)
+            {
+                whereStructure = $@"AND reg.id = { form.structureId }";
+            }
+
+            if (form.unitId > 0)
+            {
+                whereUnit = $@"AND C.Id = { form.unitId }";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            //Nomes das colunas do corpo da tabela de dados central
+            var query0 =
+                             //"SELECT  distinct(C.Initials) name, 4 coolspan  " +
+                             //
+                             //"\n FROM ParStructure Reg " +
+                             //"\n  LEFT JOIN ParCompanyXStructure CS " +
+                             //"\n  ON CS.ParStructure_Id = Reg.Id " +
+                             //"\n  left join ParCompany C " +
+                             //"\n  on C.Id = CS.ParCompany_Id" +
+                             //"\n  left join ParLevel1 P1 " +
+                             //"\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+                             //
+                             //"\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                             //"\n  ON PP.ParLevel1_Id = P1.Id " +
+                             //"\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                             //"\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+                             //
+                             //"\n LEFT JOIN #SCORE S " +
+                             //"\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+                             //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                             // " " + whereClusterGroup +
+                             // " " + whereCluster +
+                             // " " + whereStructure +
+                             // " " + whereCriticalLevel +
+                             // " " + whereUnit +
+                             ////"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                             //
+                             //"\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
+                             //
+                             //"\n ORDER BY 1";
+
+                             @" SELECT companySigla as name, companyTitle as title,
+                                 4 coolspan
+                
+                              FROM " + sqlBaseGraficosVGA() +
+                             @" 
+                              
+                            where 1=1 
+                            AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+                               whereClusterGroup +
+                               whereCluster +
+                               whereStructure +
+                               whereCriticalLevel +
+
+                             @"
+                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
+                                AND C.IsActive = 1
+                
+                                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                
+                                ) AAA
+                
+                                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                                ) A
+                                RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
+                                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                                LEFT JOIN ParGroupParLevel1 PP1
+                                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+                                WHERE 1=1 AND PP1.Name IS NOT NULL AND companySigla IS NOT NULL
+                            GROUP BY companySigla, companyTitle";
+
+
+
+            // Total Direita
+            var query2 =
+            //    " SELECT 2 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+            //
+            //     "\n FROM ParStructure Reg " +
+            //      "\n  LEFT JOIN ParCompanyXStructure CS " +
+            //      "\n  ON CS.ParStructure_Id = Reg.Id " +
+            //      "\n  left join ParCompany C " +
+            //      "\n  on C.Id = CS.ParCompany_Id " +
+            //      "\n  left join ParLevel1 P1 " +
+            //      "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+            //
+            //      "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+            //      "\n  ON PP.ParLevel1_Id = P1.Id " +
+            //      "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+            //      "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+            //
+            //      "\n LEFT JOIN #SCORE S " +
+            //      "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+            //      "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+            //       " " + whereClusterGroup +
+            //       " " + whereCluster +
+            //       " " + whereStructure +
+            //       " " + whereCriticalLevel +
+            //       " " + whereUnit +
+            //      //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+            //
+            //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+            //
+            //    "\n GROUP BY PP1.Name " +
+            //    "\n --ORDER BY 1";
+
+
+            @" SELECT 2 AS QUERY,  PP1.Name as CLASSIFIC_NEGOCIO, NULL as MACROPROCESSO,
+                        case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                     case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                     case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                     case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+    
+                  FROM " + sqlBaseGraficosVGA() +
+             @" 
+                               where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+               whereClusterGroup +
+               whereCluster +
+               whereStructure +
+               whereCriticalLevel +
+
+             @"
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
+                    AND C.IsActive = 1
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+    
+                    ) AAA
+    
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    ) A
+                RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+                WHERE PP1.Name IS NOT NULL AND companySigla IS NOT NULL
+                GROUP BY PP1.Name ";
+
+
+            // Total Inferior Esquerda
+            var query3 =
+
+             //    @"SELECT 3,  NULL as CLASSIFIC_NEGOCIO, MACROPROCESSO, 
+             //         case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL,
+             //          case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end  as ORCADO, 
+             //          case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, 
+             //          case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end )) / 100 * " + getMetaScore().ToString() + @" end as decimal (10,1)),2) as varchar) end as DESVIOPERCENTUAL 
+             //          FROM(
+             //             SELECT 3 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO,
+             //             avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 OR avg(Pontos) IS NULL THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos) END < 0.7 THEN 0 ELSE AVG(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
+             //              LEFT JOIN ParCompanyXStructure CS
+             //              ON CS.ParStructure_Id = Reg.Id
+             //              left join ParCompany C
+             //              on C.Id = CS.ParCompany_Id
+             //              left join ParLevel1 P1
+             //              on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
+             //              LEFT JOIN ParGroupParLevel1XParLevel1 PP
+             //              ON PP.ParLevel1_Id = P1.Id
+             //              LEFT JOIN ParGroupParLevel1 PP1
+             //              ON PP.ParGroupParLevel1_Id = PP1.Id
+             //             LEFT JOIN #SCORE S 
+             //              on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id
+             //              WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+             //                                 " " + whereClusterGroup +
+             //                                 " " + whereCluster +
+             //                                 " " + whereStructure +
+             //                                 " " + whereCriticalLevel +
+             //                                 " " + whereUnit +
+             //                                //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+             //
+             //                                "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
+             //
+             //                              " GROUP BY PP1.Name, C.Initials " +
+             //             @") TOTALPOREMPRESA GROUP BY MACROPROCESSO";
+
+             @" SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, companySigla as MACROPROCESSO,
+                        case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                     case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                     case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                     case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+    
+                  FROM " + sqlBaseGraficosVGA() +
+             @" 
+                               where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+               whereClusterGroup +
+               whereCluster +
+               whereStructure +
+               whereCriticalLevel +
+
+             @"
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
+                    AND C.IsActive = 1
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+    
+                    ) AAA
+    
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    ) A
+                RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+                WHERE PP1.Name IS NOT NULL AND companySigla IS NOT NULL
+                GROUP BY companySigla, companyTitle ";
+
+
+
+            // Total Inferior Direita
+            var query4 =
+            //    " SELECT 4 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
+            //      "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+            //      "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+            //      "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+            //      "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+            //
+            //        "\n FROM ParStructure Reg " +
+            //        "\n  LEFT JOIN ParCompanyXStructure CS " +
+            //        "\n  ON CS.ParStructure_Id = Reg.Id " +
+            //        "\n  left join ParCompany C " +
+            //        "\n  on C.Id = CS.ParCompany_Id " +
+            //        "\n  left join ParLevel1 P1 " +
+            //        "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+            //
+            //        "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+            //        "\n  ON PP.ParLevel1_Id = P1.Id " +
+            //        "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+            //        "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+            //
+            //        "\n LEFT JOIN #SCORE S " +
+            //        "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+            //        "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+            //         " " + whereClusterGroup +
+            //         " " + whereCluster +
+            //         " " + whereStructure +
+            //         " " + whereCriticalLevel +
+            //         " " + whereUnit +
+            //        //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+            //
+            //        "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
+            //
+            //      "\n";
+
+            // Total Inferior Direita
+
+                        @" SELECT 4,  NULL as CLASSIFIC_NEGOCIO, NULL MACROPROCESSO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                 case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+
+              FROM " + sqlBaseGraficosVGA() +
+              @" 
+                where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+                whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+
+              @"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND C.IsActive = 1
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+
+                ) AAA
+
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                ) A";
+
+
+            //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
+            var query6 =
+                 // " SELECT 6 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
+                 // "\n FROM ParStructure Reg " +
+                 //        "\n  LEFT JOIN ParCompanyXStructure CS " +
+                 //        "\n  ON CS.ParStructure_Id = Reg.Id " +
+                 //        "\n  left join ParCompany C " +
+                 //        "\n  on C.Id = CS.ParCompany_Id " +
+                 //        "\n  left join ParLevel1 P1 " +
+                 //        "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+                 //
+                 //        "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                 //        "\n  ON PP.ParLevel1_Id = P1.Id " +
+                 //        "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                 //        "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+                 //
+                 //        "\n LEFT JOIN #SCORE S " +
+                 //        "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
+                 //        "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                 //         " " + whereClusterGroup +
+                 //         " " + whereCluster +
+                 //         " " + whereStructure +
+                 //         " " + whereCriticalLevel +
+                 //         " " + whereUnit +
+                 //        //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                 //
+                 //        "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
+                 //        "\n GROUP BY PP1.Name";
+
+                 @" SELECT 6 AS QUERY,  PP1.Name as CLASSIFIC_NEGOCIO, NULL as MACROPROCESSO,
+                     NULL as REAL,
+                     NULL as ORCADO, 
+                     NULL as DESVIO, 
+                     NULL as DESVIOPERCENTUAL
+    
+                  FROM " + sqlBaseGraficosVGA() +
+                 @" 
+                   WHERE 1=1 
+                   AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+                   whereClusterGroup +
+                   whereCluster +
+                   whereStructure +
+                   whereCriticalLevel +
+
+                 @"
+                    AND Reg.Active = 1 
+                    AND Reg.ParStructureGroup_Id = 2
+                    AND C.IsActive = 1
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+    
+                    ) AAA
+    
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    ) A
+                RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+                WHERE 1=1 AND PP1.Name IS NOT NULL AND companySigla IS NOT NULL
+
+                GROUP BY PP1.Name ";
+
+            //Dados das colunas do corpo da tabela de dados central
+            var query1 =
+            //        " SELECT 1 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
+            //        "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+            //        "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+            //        "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+            //        "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+            //
+            //         "\n FROM ParStructure Reg " +
+            //          "\n  LEFT JOIN ParCompanyXStructure CS " +
+            //          "\n  ON CS.ParStructure_Id = Reg.Id " +
+            //          "\n  left join ParCompany C " +
+            //          "\n  on C.Id = CS.ParCompany_Id " +
+            //          "\n  left join ParLevel1 P1 " +
+            //          "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+            //
+            //          "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+            //          "\n  ON PP.ParLevel1_Id = P1.Id " +
+            //          "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+            //          "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+            //
+            //          "\n LEFT JOIN #SCORE S " +
+            //          "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+            //          "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+            //           " " + whereClusterGroup +
+            //           " " + whereCluster +
+            //           " " + whereStructure +
+            //           " " + whereCriticalLevel +
+            //           " " + whereUnit +
+            //          //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+            //
+            //          "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+            //
+            //        "\n GROUP BY PP1.Name, C.Initials " +
+            //        "\n --ORDER BY 1, 2";
+
+            @" SELECT 1 AS QUERY, _CROSS.CLASSIFIC_NEGOCIO  as CLASSIFIC_NEGOCIO, _cross.MACROPROCESSO as MACROPROCESSO, 
+               case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+            
+             FROM " + sqlBaseGraficosVGA() +
+              @" 
+                               where 1=1 AND pC.IsActive = 1 " +
+              whereClusterGroup +
+              whereCluster +
+              whereStructure +
+              whereCriticalLevel +
+
+              $@"
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               ) A 
+                RIGHT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+               RIGHT JOIN 
+			   (SELECT distinct A.CLASSIFIC_NEGOCIO,C.MACROPROCESSO FROM ({query2}) A
+               CROSS JOIN 
+			    ({query3}) C 
+                WHERE 1=1  ) _CROSS
+                   ON _CROSS.CLASSIFIC_NEGOCIO = PP1.Name
+                   AND _CROSS.MACROPROCESSO = A.companySigla
+              WHERE  1=1
+               AND _CROSS.MACROPROCESSO IS NOT NULL
+				 GROUP BY _CROSS.CLASSIFIC_NEGOCIO,_CROSS.MACROPROCESSO ";
+
+
+
+            var orderby = "\n ORDER BY 1, 2, 3";
+
+            string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
+
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
+
+            var result1 = result.Where(r => r.QUERY == 1).ToList();
+            var result2 = result.Where(r => r.QUERY == 2).ToList();
+            var result3 = result.Where(r => r.QUERY == 3).ToList();
+            var result4 = result.Where(r => r.QUERY == 4).ToList();
+            var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
+
+            #endregion
+
+            #region Cabecalhos
+
+            /*1º*/
+            tabela.trsCabecalho1 = new List<Ths>();
+            //tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0] });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Indicadores por Unidades" });
+            tabela.trsCabecalho1.Add(new Ths() { name = "" });
+            /*Fim  1º*/
+
+            #region DESCRIÇÃO
+            /*2º CRIANDO CABECALHO DA SEGUNDA TABELA
+
+                  name   | coolspan
+                  ------------------
+                   Reg1   | 4 
+                   Reg2   | 4
+                   RegN   | 4
+
+                  coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
+               */
+            #endregion
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
+
+            var thsMeio = new List<Ths>();
+            thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "M", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "D", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "%", coolspan = 1 });
+
+            foreach (var i in tabela.trsCabecalho2)
+                i.tds = thsMeio; //ESTA PROPERTY DEVE CONTER OS ITENS AGRUPADOS (EX: OÇADO, REAL, DESVIO ETC....)
+
+            tabela.trsCabecalho3 = new List<Ths>();
+            tabela.trsCabecalho3.Add(new Ths() { name = "Total", coolspan = 4, tds = thsMeio });
+
+            /*Fim  2º*/
+            #endregion
+
+            #region Meio
+
+            tabela.trsMeio = new List<Trs>();
+
+            #region DESCRIÇÃO
+            /*tdsEsquerda e tdsDireita:
+
+                    LISTA DE TDS, cada row deve ser uma TD, por ex, 
+                    uma para REG 1 com os dados para 
+                    as Colunas: Real	Desvio %	Desvio $	Orçado, 
+                    devem estar em 1 ROW do resultado do SQL, a REG 2,
+                    na ROW consecutiva, até REG N.
+
+                   O Resultado Ficara (Query para LINHA Teste1): 
+
+                   Row     | TH   | Col       | valor | coolspan    > new List<Tds>();
+                   ----------------------------------------------
+                   Teste1  | REG1 | Orçado    | 1     | 1           > new Tds() { valor = 1, coolspan = 1 };
+                   Teste1  | REG1 | Real      | 2     | 1           > new Tds() { valor = 2, coolspan = 1 };
+                   Teste1  | REG1 | Desvio %  | 3     | 1           .   
+                   Teste1  | REG1 | Desvio $  | 4     | 1           .   
+                   ----------------------------------------------   .
+                   Teste1  | REG2 | Orçado    | 5     | 1
+                   Teste1  | REG2 | Real      | 6     | 1
+                   Teste1  | REG2 | Desvio %  | 7     | 1
+                   Teste1  | REG2 | Desvio $  | 8     | 1
+                   ----------------------------------------------
+                   Teste1  | REGN | Orçado    | -     | 1
+                   Teste1  | REGN | Real      | -    | 1
+                   Teste1  | REGN | Desvio %  | -    | 1
+                   Teste1  | REGN | Desvio $  | -    | 1
+                   ----------------------------------------------
+                   Teste2  | REG1 | Orçado    | 1     | 1        
+                   Teste2 | REG1 | Real      | 2     | 1        
+                   Teste2  | REG1 | Desvio %  | 3     | 1        
+                   Teste2  | REG1 | Desvio $  | 4     | 1        
+                   ----------------------------------------------
+                   Teste2  | REG2 | Orçado    | 5     | 1
+                   Teste2  | REG2 | Real      | 6     | 1
+                   Teste2  | REG2 | Desvio %  | 7     | 1
+                   Teste2  | REG2 | Desvio $  | 8     | 1
+                   ----------------------------------------------
+                   Teste2  | REGN | Orçado    | 9     | 1
+                   Teste2  | REGN | Real      | 10    | 1
+                   Teste2  | REGN | Desvio %  | 11    | 1
+                   Teste2  | REGN | Desvio $  | 12    | 1
+
+                   OBS: mesmo que a query retorne, para facilitar a coluna TH , col, ROW, o sistema só considera as colunas coolspan e valor.
+
+                   O mesmo para tdsDireita:
+
+                   Row     | TH    | Col        | valor | coolspan
+                   ----------------------------------------------
+                   Teste1  | TOTAL | Orçado    | 10    | 1
+                   Teste1  | TOTAL | Real      | 12    | 1
+                   Teste1  | TOTAL | Desvio %  | 14    | 1
+                   Teste1  | TOTAL | Desvio $  | 16    | 1
+
+                    */
+            //"; 
+            #endregion
+            foreach (var i in queryRowsBody)
+            {
+
+                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
+                var Tr = new Trs()
+                {
+                    name = i.CLASSIFIC_NEGOCIO,
+                    tdsEsquerda = new List<Tds>(),
+                    tdsDireita = new List<Tds>()
+                };
+
+                #region Result1 
+
+                /*Caso não exista MACROPROCESSO*/
+                //foreach (var x in tabela.trsCabecalho2)
+                //    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
+                //        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
+                filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
+                foreach (var ii in filtro)
+                {
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                #region Result2
+
+                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
+                foreach (var ii in filtro)
+                {
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                tabela.trsMeio.Add(Tr);
+            }
+
+            #endregion
+
+            #region Rodapé
+
+            var queryRowsFooter = new List<string>();// TOTAL por ex.
+            queryRowsFooter.Add("Total");
+            tabela.footer = new List<Trs>();
+            foreach (var i in queryRowsFooter)
+            {
+                //var filtro = result3.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                var Tr = new Trs()
+                {
+                    name = i,
+                    tdsEsquerda = new List<Tds>(),
+                    tdsDireita = new List<Tds>()
+                };
+
+                #region Result3
+
+                foreach (var ii in result3)
+                {
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                #region Result4
+
+                foreach (var ii in result4)
+                {
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                tabela.footer.Add(Tr);
+            }
+
+            #endregion
+
+            return tabela;
+        } // Botões Desdobramento
+
         public TabelaDinamicaResultados GetTblInicadoresPorRegional(DataCarrierFormulario form)
         {
             #region consultaPrincipal
@@ -3104,6 +3774,666 @@ namespace SgqSystem.Controllers
             return tabela;
         }
 
+        public TabelaDinamicaResultados GetTblAllInicadoresPorAllRegional(DataCarrierFormulario form)
+        {
+            #region consultaPrincipal
+
+            /*
+             * neste score NAO devo considerar a regra dos 70 %
+             * 
+             */
+
+            var query = sqlBase(form);
+
+            #endregion
+
+            #region Queryes Trs Meio
+
+            var tabela = new TabelaDinamicaResultados();
+
+            var where = string.Empty;
+            where += "";
+
+            var whereClusterGroup = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var whereUnit = "";
+
+            if (form.clusterGroupId > 0)
+            {
+                whereClusterGroup = $@"AND C.id IN (SELECT DISTINCT c.Id FROM Parcompany c LEFT JOIN ParCompanyCluster PCC WITH (NOLOCK) ON C.Id = PCC.ParCompany_Id LEFT JOIN ParCluster PC WITH (NOLOCK) ON PC.Id = PCC.ParCluster_Id LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id WHERE PCG.id = { form.clusterGroupId } AND PCC.Active = 1)";
+            }
+
+            if (form.clusterSelected_Id > 0)
+            {
+                whereCluster = $@"AND C.ID IN (SELECT DISTINCT c.id FROM Parcompany c Left Join ParCompanyCluster PCC with (nolock) on c.id= pcc.ParCompany_Id WHERE PCC.ParCluster_Id = { form.clusterSelected_Id } and PCC.Active = 1)";
+            }
+
+            if (form.structureId > 0)
+            {
+                whereStructure = $@"AND reg.id = { form.structureId }";
+            }
+
+            if (form.unitId > 0)
+            {
+                whereUnit = $@"AND C.Id = { form.unitId }";
+            }
+
+            if (form.criticalLevelId > 0)
+            {
+                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            //Nomes das colunas do corpo da tabela de dados central
+            var query0 =
+                    //      "SELECT  distinct(Reg.Name) name, 4 coolspan  " +
+                    //
+                    //      "\n FROM ParStructure Reg " +
+                    //      "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    //      "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    //      "\n  left join ParCompany C " +
+                    //      "\n  on C.Id = CS.ParCompany_Id" +
+                    //      "\n  left join ParLevel1 P1 " +
+                    //      "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+                    //
+                    //      "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    //      "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    //      "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    //      "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+                    //
+                    //      "\n LEFT JOIN #SCORE S " +
+                    //      "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+                    //      " "+   whereClusterGroup +
+                    //      " "+   whereCluster +
+                    //      " "+   whereStructure +
+                    //      " "+   whereCriticalLevel +
+                    //      " "+   whereUnit +
+                    //      //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    //
+                    //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1 " +
+                    //      "\n where Reg.ParStructureParent_Id = 1 " +
+                    //      "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                    //      "\n ORDER BY 1";
+
+                    @" SELECT RegName as name,
+                        4 coolspan
+                
+                    FROM " + sqlBaseGraficosVGA() +
+                    @" 
+                                where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+                    whereClusterGroup +
+                    whereCluster +
+                    whereStructure +
+                    whereCriticalLevel +
+
+                    $@"
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
+                    AND C.IsActive = 1
+                
+                    GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                
+                    ) AAA
+                
+                    GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                    ) A
+                LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+                WHERE 1=1
+                    AND PP1.Name IS NOT NULL 
+                GROUP BY RegName";
+
+
+
+
+
+            // Total Direita
+            var query2 =
+              //     " SELECT 2 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
+              //       "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+              //       "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+              //       "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+              //       "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+              //
+              //        "\n FROM ParStructure Reg " +
+              //         "\n  LEFT JOIN ParCompanyXStructure CS " +
+              //         "\n  ON CS.ParStructure_Id = Reg.Id " +
+              //         "\n  left join ParCompany C " +
+              //         "\n  on C.Id = CS.ParCompany_Id " +
+              //         "\n  left join ParLevel1 P1 " +
+              //         "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+              //
+              //         "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+              //         "\n  ON PP.ParLevel1_Id = P1.Id " +
+              //         "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+              //         "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+              //
+              //         "\n LEFT JOIN #SCORE S " +
+              //         "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+              //         "\n where Reg.ParStructureParent_Id = 1 " +
+              //         " " + whereClusterGroup +
+              //         " " + whereCluster +
+              //         " " + whereStructure +
+              //         " " + whereCriticalLevel +
+              //         " " + whereUnit +
+              //         //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+              //         "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+              //         "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+              //       "\n GROUP BY P1.Name " +
+              //       "\n --ORDER BY 1";
+
+              @" SELECT 2 AS QUERY, LEVEL1NAME COLLATE Latin1_General_CI_AS as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                 case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+
+              FROM " + sqlBaseGraficosVGA() +
+                @" 
+                where 1=1 
+                 AND pC.IsActive = 1 " +
+                whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+
+                $@"
+
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+
+                ) AAA
+
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                ) A
+                LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+            WHERE 1=1
+                AND PP1.Name IS NOT NULL 
+				 GROUP BY LEVEL1NAME";
+
+            // Total Inferior Esquerda
+
+            var query3 =
+
+                //    @"SELECT 3,  NULL as CLASSIFIC_NEGOCIO, MACROPROCESSO, 
+                //                     case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL,
+                //                      case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end  as ORCADO, 
+                //                      case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, 
+                //                      case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(Pontos),100) = 0 or isnull(avg(PontosAtingidos),100) = 0 then 0 else (ISNULL(avg(PontosAtingidos),100) / isnull(avg(Pontos),100))*100  end )) / 100 * " + getMetaScore().ToString() + @" end as decimal (10,1)),2) as varchar) end as DESVIOPERCENTUAL 
+                //                      FROM(
+                //  SELECT 3 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO,
+                //  avg(Pontos) Pontos, CASE WHEN CASE WHEN avg(Pontos) = 0 THEN 0 ELSE avg(PontosAtingidos) / avg(Pontos)  END < 0.7 THEN 0 ELSE  avg(PontosAtingidos) END PontosAtingidos, sum(av) av FROM ParStructure Reg
+                //   LEFT JOIN ParCompanyXStructure CS
+                //   ON CS.ParStructure_Id = Reg.Id
+                //   left join ParCompany C
+                //   on C.Id = CS.ParCompany_Id
+                //   left join ParLevel1 P1
+                //   on 1 = 1 AND ISNULL(P1.ShowScorecard, 1) = 1
+                //   LEFT JOIN ParGroupParLevel1XParLevel1 PP
+                //   ON PP.ParLevel1_Id = P1.Id
+                //   LEFT JOIN ParGroupParLevel1 PP1
+                //   ON PP.ParGroupParLevel1_Id = PP1.Id
+                //  LEFT JOIN #SCORE S 
+                //   on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id
+                //   where Reg.ParStructureParent_Id = 1 " +
+                //                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                //                     " " + whereClusterGroup +
+                //                     " " + whereCluster +
+                //                     " " + whereStructure +
+                //                     " " + whereCriticalLevel +
+                //                     " " + whereUnit +
+                //                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                //                     "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
+                //                   " GROUP BY P1.Name,Reg.Name, C.Initials " +
+                // @") TOTALPOREMPRESA GROUP BY MACROPROCESSO";
+
+                // ======>
+                @" SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, RegName as MACROPROCESSO,
+                    case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                 case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+
+              FROM " + sqlBaseGraficosVGA() +
+              @" 
+                where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+                whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+
+              $@"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2
+                AND C.IsActive = 1
+
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+
+                ) AAA
+
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                ) A
+                LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+            WHERE 1=1
+                AND PP1.Name IS NOT NULL 
+            GROUP BY RegName ";
+
+            // Total Inferior Direita
+            var query4 =
+                        // " SELECT 4 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
+                        //   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                        //   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                        //   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                        //   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+                        // 
+                        //     "\n FROM ParStructure Reg " +
+                        //     "\n  LEFT JOIN ParCompanyXStructure CS " +
+                        //     "\n  ON CS.ParStructure_Id = Reg.Id " +
+                        //     "\n  left join ParCompany C " +
+                        //     "\n  on C.Id = CS.ParCompany_Id " +
+                        //     "\n  left join ParLevel1 P1 " +
+                        //     "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+                        // 
+                        //     "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                        //     "\n  ON PP.ParLevel1_Id = P1.Id " +
+                        //     "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                        //     "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+                        // 
+                        //     "\n LEFT JOIN #SCORE S " +
+                        //     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+                        //     "\n where Reg.ParStructureParent_Id = 1 " +
+                        //     " " + whereClusterGroup +
+                        //     " " + whereCluster +
+                        //     " " + whereStructure +
+                        //     " " + whereCriticalLevel +
+                        //     " " + whereUnit +
+                        //     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                        // 
+                        //     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
+                        //     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+                        //   "\n";
+
+                        // ========>
+
+                        @" SELECT 4,  NULL as CLASSIFIC_NEGOCIO, NULL MACROPROCESSO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                 case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+
+              FROM " + sqlBaseGraficosVGA() +
+              @" 
+                where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)  " +
+                whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+
+              @"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND C.IsActive = 1
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+
+                ) AAA
+
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                ) A";
+
+            //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
+            var query6 =
+               //  " SELECT 6 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
+               //  "\n FROM ParStructure Reg " +
+               //  "\n  LEFT JOIN ParCompanyXStructure CS " +
+               //  "\n  ON CS.ParStructure_Id = Reg.Id " +
+               //  "\n  left join ParCompany C " +
+               //  "\n  on C.Id = CS.ParCompany_Id " +
+               //  "\n  left join ParLevel1 P1 " +
+               //  "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+               //
+               //  "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+               //  "\n  ON PP.ParLevel1_Id = P1.Id " +
+               //  "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+               //  "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+               //
+               //  "\n LEFT JOIN #SCORE S " +
+               //  "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
+               //  "\n where Reg.ParStructureParent_Id = 1 " +
+               //  " " + whereClusterGroup +
+               //  " " + whereCluster +
+               //  " " + whereStructure +
+               //  " " + whereCriticalLevel +
+               //  " " + whereUnit +
+               //  //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+               //
+               //  "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null   AND C.IsActive = 1" +
+               //  "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+               //  "\n GROUP BY P1.Name";
+
+
+               @" SELECT 6 AS QUERY, LEVEL1NAME COLLATE Latin1_General_CI_AS as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, 
+                NULL as REAL,
+                 NULL as ORCADO, 
+                 NULL as DESVIO, 
+                 NULL as DESVIOPERCENTUAL
+
+               FROM " + sqlBaseGraficosVGA() +
+                @" 
+                                where 1=1 AND pC.IsActive = 1 " +
+                whereClusterGroup +
+                whereCluster +
+                whereStructure +
+                whereCriticalLevel +
+
+                $@"
+
+                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+
+                ) AAA
+
+                GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                ) A
+                LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+                WHERE 1=1
+                    AND PP1.Name IS NOT NULL 
+				 GROUP BY LEVEL1NAME ";
+
+            //Dados das colunas do corpo da tabela de dados central
+            var query1 =
+            //    " SELECT 1 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+            //    "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
+            //
+            //     "\n FROM ParStructure Reg " +
+            //      "\n  LEFT JOIN ParCompanyXStructure CS " +
+            //      "\n  ON CS.ParStructure_Id = Reg.Id " +
+            //      "\n  left join ParCompany C " +
+            //      "\n  on C.Id = CS.ParCompany_Id " +
+            //      "\n  left join ParLevel1 P1 " +
+            //      "\n  on 1=1 AND ISNULL(P1.ShowScorecard, 1) = 1" +
+            //
+            //      "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+            //      "\n  ON PP.ParLevel1_Id = P1.Id " +
+            //      "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+            //      "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+            //
+            //      "\n LEFT JOIN #SCORE S " +
+            //      "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+            //      //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+            //
+            //      "\n where Reg.ParStructureParent_Id = 1 " +
+            //      " " + whereClusterGroup +
+            //      " " + whereCluster +
+            //      " " + whereStructure +
+            //      " " + whereCriticalLevel +
+            //      " " + whereUnit +
+            //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+            //      "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+            //    "\n GROUP BY P1.Name, Reg.Name " +
+            //    "\n --ORDER BY 1, 2";
+
+            @" SELECT 1 AS QUERY, _CROSS.CLASSIFIC_NEGOCIO  as CLASSIFIC_NEGOCIO, _cross.MACROPROCESSO as MACROPROCESSO, 
+               case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
+                case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + @"' end as ORCADO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else " + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end) end as decimal (10, 1)), 2) as varchar) end as DESVIO, 
+                case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100 end) > " + getMetaScore().ToString() + @" then 0 else (" + getMetaScore().ToString() + @" - (case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end)) / 100 * " + getMetaScore().ToString() + @" end as decimal (10, 1)),2) as varchar) end as DESVIOPERCENTUAL
+            
+             FROM " + sqlBaseGraficosVGA() +
+              @" 
+                               where 1=1 AND pC.IsActive = 1 " +
+              whereClusterGroup +
+              whereCluster +
+              whereStructure +
+              whereCriticalLevel +
+
+              $@"
+              
+               GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            
+               ) AAA
+            
+               GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+               ) A 
+                LEFT JOIN ParGroupParLevel1XParLevel1 PPP1
+                    ON PPP1.ParLevel1_Id = a.LEVEL1ID
+                LEFT JOIN ParGroupParLevel1 PP1
+                    ON PP1.ID = PPP1.ParGroupParLevel1_Id
+               RIGHT JOIN 
+			   (SELECT distinct A.CLASSIFIC_NEGOCIO,C.MACROPROCESSO FROM ({query2}
+                ) A
+               CROSS JOIN 
+			    ({query3}) C 
+                WHERE 1=1  ) _CROSS
+                   ON _CROSS.CLASSIFIC_NEGOCIO = A.LEVEL1NAME
+                   AND _CROSS.MACROPROCESSO = A.RegName
+             WHERE 1=1
+                    AND PP1.Name IS NOT NULL 
+				 GROUP BY _CROSS.CLASSIFIC_NEGOCIO,_CROSS.MACROPROCESSO ";
+
+            var orderby = "\n ORDER BY 1, 2, 3";
+
+            string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
+
+            var result = new List<ResultQuery1>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                result = factory.SearchQuery<ResultQuery1>(grandeQuery).ToList();
+            }
+
+
+            var result1 = result.Where(r => r.QUERY == 1).ToList();
+            var result2 = result.Where(r => r.QUERY == 2).ToList();
+            var result3 = result.Where(r => r.QUERY == 3).ToList();
+            var result4 = result.Where(r => r.QUERY == 4).ToList();
+            var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
+
+            #endregion
+
+            #region Cabecalhos
+            var pacote = Resources.Resource.package;
+            /*1º*/
+            tabela.trsCabecalho1 = new List<Ths>();
+            tabela.trsCabecalho1.Add(new Ths() { name = ""});
+            tabela.trsCabecalho1.Add(new Ths() { name = "" });
+            /*Fim  1º*/
+
+            #region DESCRIÇÃO
+            /*2º CRIANDO CABECALHO DA SEGUNDA TABELA
+
+                  name   | coolspan
+                  ------------------
+                   Reg1   | 4 
+                   Reg2   | 4
+                   RegN   | 4
+
+                  coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
+               */
+            #endregion
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                tabela.trsCabecalho2 = factory.SearchQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+            }
+
+            var thsMeio = new List<Ths>();
+            thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "M", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "D", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "%", coolspan = 1 });
+
+            foreach (var i in tabela.trsCabecalho2)
+                i.tds = thsMeio; //ESTA PROPERTY DEVE CONTER OS ITENS AGRUPADOS (EX: OÇADO, REAL, DESVIO ETC....)
+
+            tabela.trsCabecalho3 = new List<Ths>();
+            tabela.trsCabecalho3.Add(new Ths() { name = "Total", coolspan = 4, tds = thsMeio });
+
+            /*Fim  2º*/
+            #endregion
+
+            #region Meio
+
+            tabela.trsMeio = new List<Trs>();
+
+            #region DESCRIÇÃO
+            /*tdsEsquerda e tdsDireita:
+
+                    LISTA DE TDS, cada row deve ser uma TD, por ex, 
+                    uma para REG 1 com os dados para 
+                    as Colunas: Real	Desvio %	Desvio $	Orçado, 
+                    devem estar em 1 ROW do resultado do SQL, a REG 2,
+                    na ROW consecutiva, até REG N.
+
+                   O Resultado Ficara (Query para LINHA Teste1): 
+
+                   Row     | TH   | Col       | valor | coolspan    > new List<Tds>();
+                   ----------------------------------------------
+                   Teste1  | REG1 | Orçado    | 1     | 1           > new Tds() { valor = 1, coolspan = 1 };
+                   Teste1  | REG1 | Real      | 2     | 1           > new Tds() { valor = 2, coolspan = 1 };
+                   Teste1  | REG1 | Desvio %  | 3     | 1           .   
+                   Teste1  | REG1 | Desvio $  | 4     | 1           .   
+                   ----------------------------------------------   .
+                   Teste1  | REG2 | Orçado    | 5     | 1
+                   Teste1  | REG2 | Real      | 6     | 1
+                   Teste1  | REG2 | Desvio %  | 7     | 1
+                   Teste1  | REG2 | Desvio $  | 8     | 1
+                   ----------------------------------------------
+                   Teste1  | REGN | Orçado    | -     | 1
+                   Teste1  | REGN | Real      | -    | 1
+                   Teste1  | REGN | Desvio %  | -    | 1
+                   Teste1  | REGN | Desvio $  | -    | 1
+                   ----------------------------------------------
+                   Teste2  | REG1 | Orçado    | 1     | 1        
+                   Teste2 | REG1 | Real      | 2     | 1        
+                   Teste2  | REG1 | Desvio %  | 3     | 1        
+                   Teste2  | REG1 | Desvio $  | 4     | 1        
+                   ----------------------------------------------
+                   Teste2  | REG2 | Orçado    | 5     | 1
+                   Teste2  | REG2 | Real      | 6     | 1
+                   Teste2  | REG2 | Desvio %  | 7     | 1
+                   Teste2  | REG2 | Desvio $  | 8     | 1
+                   ----------------------------------------------
+                   Teste2  | REGN | Orçado    | 9     | 1
+                   Teste2  | REGN | Real      | 10    | 1
+                   Teste2  | REGN | Desvio %  | 11    | 1
+                   Teste2  | REGN | Desvio $  | 12    | 1
+
+                   OBS: mesmo que a query retorne, para facilitar a coluna TH , col, ROW, o sistema só considera as colunas coolspan e valor.
+
+                   O mesmo para tdsDireita:
+
+                   Row     | TH    | Col        | valor | coolspan
+                   ----------------------------------------------
+                   Teste1  | TOTAL | Orçado    | 10    | 1
+                   Teste1  | TOTAL | Real      | 12    | 1
+                   Teste1  | TOTAL | Desvio %  | 14    | 1
+                   Teste1  | TOTAL | Desvio $  | 16    | 1
+
+                    */
+            //"; 
+            #endregion
+            foreach (var i in queryRowsBody)
+            {
+
+                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
+                var Tr = new Trs()
+                {
+                    name = i.CLASSIFIC_NEGOCIO,
+                    tdsEsquerda = new List<Tds>(),
+                    tdsDireita = new List<Tds>()
+                };
+
+                #region Result1 
+
+                /*Caso não exista MACROPROCESSO*/
+                //foreach (var x in tabela.trsCabecalho2)
+                //    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
+                //        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
+                filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
+                foreach (var ii in filtro)
+                {
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                #region Result2
+
+                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
+                foreach (var ii in filtro)
+                {
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                tabela.trsMeio.Add(Tr);
+            }
+
+            #endregion
+
+            #region Rodapé
+
+            var queryRowsFooter = new List<string>();// TOTAL por ex.
+            queryRowsFooter.Add("Total");
+            tabela.footer = new List<Trs>();
+            foreach (var i in queryRowsFooter)
+            {
+                //var filtro = result3.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                var Tr = new Trs()
+                {
+                    name = i,
+                    tdsEsquerda = new List<Tds>(),
+                    tdsDireita = new List<Tds>()
+                };
+
+                #region Result3
+
+                foreach (var ii in result3)
+                {
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                #region Result4
+
+                foreach (var ii in result4)
+                {
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
+                }
+
+                #endregion
+
+                tabela.footer.Add(Tr);
+            }
+
+            #endregion
+
+            return tabela;
+        } // Botões Desdobramento
+
         public TabelaDinamicaResultados GetTblInicadoresPorUnidade(DataCarrierFormulario form)
         {
             #region consultaPrincipal
@@ -3205,7 +4535,7 @@ namespace SgqSystem.Controllers
 
                 GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                 ) A
-            WHERE companySigla, companyTitle IS NOT NULL
+            WHERE companySigla  IS NOT NULL AND companyTitle IS NOT NULL
             GROUP BY companySigla, companyTitle";
 
 
