@@ -15,7 +15,8 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("GetListItemMenu")]
-        public List<ItemMenu> GetListItemMenu(){
+        public List<ItemMenu> GetListItemMenu()
+        {
 
             var db = new SgqDbDevEntities();
 
@@ -24,5 +25,27 @@ namespace SgqSystem.Controllers.Api
             return itensDeMenu;
         }
 
+        [HttpPost]
+        [Route("UpdateItensMenu")]
+        public bool UpdateItensMenu([FromBody] List<ItemMenu> ItensMenu)
+        {
+
+            //Setar todos ItemMenu_Id para null antes de salvar
+
+            foreach (var itemMenu in ItensMenu)
+            {
+                if (itemMenu.Id > 0) //0 = Id_Root
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        db.ItemMenu.Attach(itemMenu);
+                        db.Entry(itemMenu).Property(x => x.ItemMenu_Id).IsModified = true;
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }
