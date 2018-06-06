@@ -317,6 +317,25 @@
         enviarGeral["unitId"] = undefined;
         enviarGeral["unitIdArr"] = undefined;
 
+
+        // 1=> Diario 2=> Semanal 3=> Quinzenal 4=> Mensal 5=> Trimestral
+        enviar["dimensaoData"] = 1;
+
+        $("#dia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#semana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#mes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
 
@@ -1208,7 +1227,14 @@
         
         if (data.length > 0) {
 
-            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
+            
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
