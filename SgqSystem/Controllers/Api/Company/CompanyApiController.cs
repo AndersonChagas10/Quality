@@ -96,10 +96,30 @@ namespace SgqSystem.Controllers.Api.Company
 
         [HttpPost]
         [HandleApi()]
+        [Route("AtivarOuDesativarParStructure")]
+        public bool AtivarOuDesativarParStructure([FromBody]ParStructureDTO parStructureDTO)
+        {
+            _companyDomain.AtivarOuDesativarParStructure(parStructureDTO);
+
+            return true;
+        }
+
+        [HttpPost]
+        [HandleApi()]
         [Route("AddUpdateParStructureGroup")]
         public void AddUpdateParStructureGroup([FromBody] CompanyViewModel companyViewModel)
         {
             _companyDomain.AddUpdateParStructureGroup(companyViewModel.parStructureGroupDTO);
+        }
+
+        [HttpPost]
+        [HandleApi()]
+        [Route("AtivarOuDesativarParStructureGroup")]
+        public bool AtivarOuDesativarParStructureGroup([FromBody]ParStructureGroupDTO parStructureGroupDTO)
+        {
+            _companyDomain.AtivarOuDesativarParStructureGroup(parStructureGroupDTO);
+
+            return true;
         }
 
         [HttpGet]

@@ -6,7 +6,9 @@
 
     var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
+    var urlStructureAtivarOuDesativar = Url.Action("AtivarOuDesativarParStructure", "api/Company");
     var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
+    var urlStructureGroupAtivarOuDesativar = Url.Action("AtivarOuDesativarParStructureGroup", "api/Company");
     var urlHome = Url.Action("Index", "Home");
 
 }
@@ -226,7 +228,9 @@
 
     var urlCompany = '@Html.Raw(@urlCompany)';
     var urlStructure = '@Html.Raw(@urlStructure)';
+    var urlStructureAtivarOuDesativar = '@Html.Raw(@urlStructureAtivarOuDesativar)';
     var urlStructureGroup = '@Html.Raw(@urlStructureGroup)';
+    var urlStructureGroupAtivarOuDesativar = '@Html.Raw(@urlStructureGroupAtivarOuDesativar)';
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
@@ -370,6 +374,26 @@
                 var obj = object[key];
                 $('#modalStructureObj #parStructureDTO_' + key).val(obj);
             }
+        },
+        AtivarOuDesativar: function (object) {
+            $('body').LoadingOverlay("show");
+            $.ajax({
+                type: "POST",
+                url: '@urlStructureAtivarOuDesativar',
+                dataType: "json",
+                data: '{ "Id": '+object.Id+' }',
+                contentType: "application/json",
+                success: function (data) {
+                    window.location.reload();
+                },
+                always: function (data) {
+                    $('body').LoadingOverlay("hide");
+                }
+            });
+            for (var key in object) {
+                var obj = object[key];
+                $('#parStructureDTO_' + key).val(obj);
+            }
         }
     }
 
@@ -421,6 +445,26 @@
                 var obj = object[key];
                 $('#modalStructureGroupObj #parStructureGroupDTO_' + key).val(obj);
             }
+        },
+        AtivarOuDesativar: function (object) {
+            $('body').LoadingOverlay("show");
+            $.ajax({
+                type: "POST",
+                url: '@urlStructureGroupAtivarOuDesativar',
+                dataType: "json",
+                data: '{ "Id": '+object.Id+' }',
+                contentType: "application/json",
+                success: function (data) {
+                    window.location.reload();
+                },
+                always: function (data) {
+                    $('body').LoadingOverlay("hide");
+                }
+            });
+            for (var key in object) {
+                var obj = object[key];
+                $('#parStructureDTO_' + key).val(obj);
+            }
         }
     }
 
@@ -458,7 +502,6 @@
 
         return mensagemErroCompleta;
     }
-
 
 </script>
 
