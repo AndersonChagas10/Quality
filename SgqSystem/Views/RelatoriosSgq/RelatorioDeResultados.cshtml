@@ -63,11 +63,15 @@
 
             <div id="loaderNCUnidade"></div>
             <div class="totalNC" id="NCUnidade" hidden>
+                <button id="Udia" class="btn btn-default">Dia</button>
+                <button id="Usemana" class="btn btn-default">Semana</button>
+                <button id="Umes" class="btn btn-default">Mês</button>
                 <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
                     <h1>0 %</h1>
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+
                 <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
             </div>
 
@@ -77,6 +81,9 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="Idia" class="btn btn-default">Dia</button>
+                <button id="Isemana" class="btn btn-default">Semana</button>
+                <button id="Imes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
             </div>
 
@@ -86,6 +93,9 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="Mdia" class="btn btn-default">Dia</button>
+                <button id="Msemana" class="btn btn-default">Semana</button>
+                <button id="Mmes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
             </div>
             <br />
@@ -244,7 +254,7 @@
 
 
         limpaDadosTela();
-
+        enviar["dimensaoData"] = 1;
         // Verificar se é mostrar tudo e aplicar vazio
         if ($('#clusterId').prev().find('a.actived').length > 0) {
             enviar['clusterIdArr'] = [];
@@ -278,6 +288,7 @@
         if (enviar.level3IdArr != undefined && enviar.level3IdArr[0] > 0) {
             enviar.level3Id = enviar.level3IdArr[0];
         }
+
 
         if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)))
                 retornaSubtitulos()
@@ -318,23 +329,6 @@
         enviarGeral["unitIdArr"] = undefined;
 
 
-        // 1=> Diario 2=> Semanal 3=> Quinzenal 4=> Mensal 5=> Trimestral
-        enviar["dimensaoData"] = 1;
-
-        $("#dia").on('click', function () {
-            enviar["dimensaoData"] = 1;
-            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-        });
-
-        $("#semana").on('click', function () {
-            enviar["dimensaoData"] = 2;
-            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-        });
-
-        $("#mes").on('click', function () {
-            enviar["dimensaoData"] = 4;
-            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
-        });
 
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
@@ -394,6 +388,7 @@
             }
 
         }
+        ativaDimensao();
 
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
@@ -546,7 +541,7 @@
                         },
                         { title: "% " + Resources("goal"), mData: "Meta" },
                         { title: "Status", mData: "Status" }
-                        
+
                     ],
                     numeroLinhasNaTabela: 13,
                     aplicarResponsividade: true,
@@ -1222,9 +1217,9 @@
     function GerarGraficoHistoricoGeral(data) {
         var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-     
+
         var porc = [];
-        
+
         if (data.length > 0) {
 
             if (enviar.dimensaoData == 1)
@@ -1234,7 +1229,7 @@
             if (enviar.dimensaoData == 4)
                 var dia = MapeiaValorParaHC(data, "mes");
 
-            
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1310,7 +1305,7 @@
                     var semana = 7;
 
                     var dataHora = moment.duration(moment().diff(data['date'])).humanize();
-                
+
                     //var porc = [];
                     //var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
                     //var nc = MapeiaValorParaHC(data, "nc");
@@ -1325,7 +1320,7 @@
                     //var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
                     //var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
                     //var porcPeriodo = sumncCP / sumavCP * 100;
-                }); 
+                });
 
                 chartHistoricoGeral = Highcharts.chart('GraficoHistoricoGeral', {
                     credits: {
@@ -1519,7 +1514,13 @@
 
             var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1819,7 +1820,13 @@
 
             var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -2094,7 +2101,13 @@
 
             var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -3678,6 +3691,96 @@
         enviar['endDate'] = end.format();
     }
 
+    function ativaDimensao() {
+        // 1=> Diario 2=> Semanal 3=> Quinzenal 4=> Mensal 5=> Trimestral
+
+        // Consolidado Geral
+        $("#dia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#semana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#mes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        // Consolidado Unidade
+        $("#Udia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        $("#Usemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        $("#Umes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        // Consolidado Indicador
+        $("#Idia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        $("#Isemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        $("#Imes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        // Consolidado Monitoramento
+        $("#Mdia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        $("#Msemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        $("#Mmes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+    }
     </script>
 
 }

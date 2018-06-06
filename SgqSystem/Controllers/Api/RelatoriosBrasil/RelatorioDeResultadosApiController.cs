@@ -2712,6 +2712,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -2763,7 +2764,7 @@ ORDER BY 7
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
                ,1 IsMonitoramento
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
@@ -2779,7 +2780,7 @@ ORDER BY 7
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -2898,6 +2899,7 @@ ORDER BY 3
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -2945,7 +2947,7 @@ ORDER BY 3
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
                ,1 IsIndicador
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
@@ -2960,7 +2962,7 @@ ORDER BY 3
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -4970,7 +4972,7 @@ FROM (SELECT
             }
             if (form.dimensaoData == 4)
             {
-                D.queryDimensao = $@" CONCAT(YEAR({nomeColuna}),'/',RIGHT(CONCAT(0,MONTH({nomeColuna})),2))  ";
+                D.queryDimensao = $@" CONVERT(VARCHAR(7),{nomeColuna},120) ";
                 D.nomeAlias = $@" AS [MES] ";
             }
 
