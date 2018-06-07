@@ -324,8 +324,8 @@
         }
         else
         {
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
-        }
+            @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
+    }
             </div>
         </li>
 
@@ -442,6 +442,18 @@
                     <option>@Resources.Resource.all</option>
                     <option value="1">@Resources.Resource.yes</option>
                     <option value="2">@Resources.Resource.no</option>
+                </select>
+            </div>
+        </li>
+
+        <li>
+            <div id="showDimensaoData" style="display:none">
+                <span class="redLabel">@Resources.Resource.period_type_chart</span>
+                <select id="createDimensaoData" class="form-control" style="width: 210px;">
+                    @*<option>@Resources.Resource.all</option>*@
+                    <option value="1">@Resources.Resource.per_day</option>
+                    <option value="2">@Resources.Resource.per_week</option>
+                    <option value="4">@Resources.Resource.a_month</option>
                 </select>
             </div>
         </li>
@@ -1256,6 +1268,10 @@
 
             showCreateActionPlane: function () {
                 $('#showCreateActionPlane').show();
+            },
+
+            showDimensaoData: function () {
+                $('#showDimensaoData').show();
             },
 
             showClustRegUnitCriticalLevel123: function(){

@@ -4960,20 +4960,21 @@ FROM (SELECT
             D.queryDimensao = $@"";
 
 
-            if (form.dimensaoData == 1)
-            {
-                D.queryDimensao = $@"{ nomeColuna } ";
-                D.nomeAlias = $@" AS [DATE] ";
-            }
+
             if (form.dimensaoData == 2)
             {
                 D.queryDimensao = $@" CONCAT(DATEPART(YEAR,{nomeColuna}),'/',RIGHT(CONCAT(0,DATEPART(WEEK,{nomeColuna})),2))  ";
                 D.nomeAlias = $@" AS [SEMANA] ";
             }
-            if (form.dimensaoData == 4)
+            else if (form.dimensaoData == 4)
             {
                 D.queryDimensao = $@" CONVERT(VARCHAR(7),{nomeColuna},120) ";
                 D.nomeAlias = $@" AS [MES] ";
+            }
+            else 
+            {
+                D.queryDimensao = $@"{ nomeColuna } ";
+                D.nomeAlias = $@" AS [DATE] ";
             }
 
 

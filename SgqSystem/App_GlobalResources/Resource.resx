@@ -2535,4 +2535,31 @@
   <data name="daily_apointments_sunday" xml:space="preserve">
     <value>Daily Apointments on Sunday</value>
   </data>
+  <data name="biweekly" xml:space="preserve">
+    <value>biweekly</value>
+  </data>
+  <data name="daily" xml:space="preserve">
+    <value>daily</value>
+  </data>
+  <data name="monthly" xml:space="preserve">
+    <value>monthly</value>
+  </data>
+  <data name="weekly" xml:space="preserve">
+    <value>weekly</value>
+  </data>
+  <data name="period_type_chart" xml:space="preserve">
+    <value>Tipo de Periodo Nos Gráficos</value>
+  </data>
+  <data name="a_month" xml:space="preserve">
+    <value>A Month</value>
+  </data>
+  <data name="per_day" xml:space="preserve">
+    <value>Per Day</value>
+  </data>
+  <data name="per_fortnight" xml:space="preserve">
+    <value>Per Fortnight</value>
+  </data>
+  <data name="per_week" xml:space="preserve">
+    <value>Per Week</value>
+  </data>
 </root>

@@ -131,6 +131,9 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">@Resources.Resource.history</h4>
                 </div>
+                <button id="Hdia" class="btn btn-default">Dia</button>
+                <button id="Hsemana" class="btn btn-default">Semana</button>
+                <button id="Hmes" class="btn btn-default">Mês</button>
                 <div class="modal-body">
                     <div class="" id="GraficoHistoricoModal"></div>
                 </div>
@@ -254,7 +257,7 @@
 
 
         limpaDadosTela();
-        enviar["dimensaoData"] = 1;
+        enviar["dimensaoData"] = $('#createDimensaoData').val()*1;
         // Verificar se é mostrar tudo e aplicar vazio
         if ($('#clusterId').prev().find('a.actived').length > 0) {
             enviar['clusterIdArr'] = [];
@@ -471,6 +474,7 @@
                         enviar2['QtdeAvaliado'] = data["Av"];
                         enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
                         enviar2["PercentualNCFTA"] = data["Pc"];
+                        enviar2["dimensaoData"] = enviar["dimensaoData"];
                         if ($(this).attr('data-target') == "#modalResultados")
                             EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
                         else {
@@ -1000,7 +1004,13 @@
         var subtitleAux = "";
         var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-        var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+        if (enviar.dimensaoData == 1)
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+        if (enviar.dimensaoData == 2)
+            var dia = MapeiaValorParaHC(data, "semana");
+        if (enviar.dimensaoData == 4)
+            var dia = MapeiaValorParaHC(data, "mes");
+
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
         //fazGambipraMenosCem(porc)
@@ -3081,6 +3091,7 @@
         formControl.showFullCallendar();
         formControl.showStatusIndicador();
         formControl.showCreateActionPlane();
+        formControl.showDimensaoData();
         formControl.showClustRegUnitCriticalLevel123();
 
         setTimeout(function () {
@@ -3779,6 +3790,37 @@
             enviar["dimensaoData"] = 4;
 
             EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        // Consolidado Historico
+        $("#Hdia").on('click', function () {
+
+            enviar2["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+
+        $("#Hsemana").on('click', function () {
+
+            enviar2["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+
+        $("#Hmes").on('click', function () {
+
+            enviar2["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
         });
     }
     </script>
