@@ -24,7 +24,20 @@ namespace SgqSystem.Controllers
         {
             var ItensMenu = db.ItemMenu.ToList();
 
-            return View(ItensMenu);
+            var ItensMenuDTO = new List<ItemMenuDTO>();
+
+            foreach (var item in ItensMenu)
+            {
+                ItensMenuDTO.Add(Mapper.Map<ItemMenuDTO>(item));
+            }
+
+            foreach (var item in ItensMenuDTO)
+            {
+                if (item.ItemMenu_Id > 0)
+                    item.MenuPredecessor = Mapper.Map<ItemMenuDTO>(db.ItemMenu.Find(item.ItemMenu_Id));
+            }
+
+            return View(ItensMenuDTO);
         }
 
         // GET: ItemMenu/Create

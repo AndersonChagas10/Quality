@@ -15,5 +15,7 @@ namespace DTO.DTO
         public string Url { get; set; }
         public string Resource { get; set; }
         public bool IsActive { get; set; }
+
+        public ItemMenuDTO MenuPredecessor { get; set; }
     }
 }

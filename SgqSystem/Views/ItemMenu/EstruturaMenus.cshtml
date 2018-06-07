@@ -80,22 +80,22 @@
                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <button class="btn btn-primary" onclick="prevItem()">
-                    <i class="fa fa-undo" aria-hidden="true"></i>
-                    Desfazer
-                </button>
-                <button class="btn btn-primary" onclick="nextItem()">
-                    <i class="fa fa-repeat" aria-hidden="true"></i>
-                    Refazer
-                </button>
-                <button class="btn btn-primary" onclick="copyItem()">
-                    <i class="fa fa-files-o" aria-hidden="true"></i>
-                    Copiar
-                </button>
-                <button class="btn btn-primary" onclick="pasteItem()">
-                    <i class="fa fa-clipboard" aria-hidden="true"></i>
-                    Colar
-                </button>
+                @*<button class="btn btn-primary" onclick="prevItem()">
+                        <i class="fa fa-undo" aria-hidden="true"></i>
+                        Desfazer
+                    </button>*@
+                @*<button class="btn btn-primary" onclick="nextItem()">
+                        <i class="fa fa-repeat" aria-hidden="true"></i>
+                        Refazer
+                    </button>*@
+                @*<button class="btn btn-primary" onclick="copyItem()">
+                        <i class="fa fa-files-o" aria-hidden="true"></i>
+                        Copiar
+                    </button>*@
+                @*<button class="btn btn-primary" onclick="pasteItem()">
+                        <i class="fa fa-clipboard" aria-hidden="true"></i>
+                        Colar
+                    </button>*@
                 <div class="btn-group" role="group">
                     <button id="btnZoomLess" class="btn btn-default" onclick="zoomLess()">
                         <i class="fa fa-minus" aria-hidden="true"></i>
@@ -140,7 +140,7 @@
         },
         //childrenItem: function (id, levelxlevel, parlevel_id, parent_id, name) {
         //    return $('<li class="children__item" id="' + id + '" levelxlevel="' + levelxlevel + '" parlevel_id="' + parlevel_id + '" parent_id="' + parent_id + '"><div class="node"><div class="node__text">' + name + '</div></div></li>');
-        //}     
+        //}
         childrenItem: function (id, ItemMenu_Id, name) {
             return $('<li class="children__item" id="' + id + '" itemMenu_id="' + ItemMenu_Id + '"><div class="node"><div class="node__text">' + name + '</div></div></li>');
         }
@@ -181,8 +181,9 @@
     });
 
     $(document).on('click', '#btnSavePopover', function () {
+
         popoverMain.addClass('hide');
-        
+
         var item = $(ativeNode).parent();
 
         var id = $(item).attr('id');
@@ -201,23 +202,8 @@
             $(ativeNode).after(next);
         }
 
-        if ($(ativeNode).hasClass('node_root')) {
-            $(next).append(
-                nodeTypes.childrenItem(
-                    $('#select2parlevel').val(),
-                    id,
-                    $('#select2parlevel option:selected').text()
-                ).clone()
-            );
-        } else {
-            $(next).append(
-                nodeTypes.childrenItem(
-                    $('#select2parlevel').val(),
-                    id,
-                    $('#select2parlevel option:selected').text()
-                ).clone()
-            );
-        }
+        $(next).append(nodeTypes.childrenItem($('#select2parlevel').val(), id, $('#select2parlevel option:selected').text()).clone());
+
     });
 
     $(document).on('click', '#btnRemovePopover', function () {
@@ -249,6 +235,12 @@
 
         e.stopPropagation();
         ativeNode = $(this);
+
+        $('#btnRemovePopover').show();
+
+        if ($(ativeNode).parent().attr('id') == 0) { //Esconde o botão "Remover" caso for o node Raiz
+            $('#btnRemovePopover').hide();
+        }
 
         $('.node:not(".node_root")').css('background', 'white');
         if (!ativeNode.hasClass('node_root')) {
@@ -295,11 +287,13 @@
 
         list = $.grep(list, function (r) {
             return r.ItemMenu_Id != null;
-        }); 
+        });
 
         iniciarlizar(list, rightBranch);
 
         if (list.length > 0) {
+
+            let verificados = 0;
 
             while (list.length > 0) {
 
@@ -312,16 +306,24 @@
                     }
 
                     parent.children('.children').append(
-                        nodeTypes.childrenItem().clone()
+                        nodeTypes.childrenItem(list[0].Id, list[0].ItemMenu_Id, list[0].Name).clone()
                     );
 
                     list.splice(0, 1);
+
+                    verificados = 0;
 
                 } else {
 
                     //Mandar o item do arr para o fim da lista
                     list.move(0, list.length - 1);
 
+                    verificados++
+
+                    if (verificados > list.length) {
+                        console.log("Erro ao montar arvore");
+                        return;
+                    }
                 }
             }
         }
@@ -330,19 +332,19 @@
     }
 
     function iniciarlizar(list, rightBranch) {
-        
+
         let nodeInicial = $.grep(list, function (r) {
             return r.ItemMenu_Id == 0;
-        });       
+        });
 
-        nodeInicial.forEach(function (item, index, object) {           
+        nodeInicial.forEach(function (item, index, object) {
 
             if (rightBranch.children() > 0) {
                 rightBranch.append(nodeTypes.children());
             }
 
             rightBranch.append(
-                nodeTypes.childrenItem(item.Id, null, item.Name).clone()
+                nodeTypes.childrenItem(item.Id, item.ItemMenu_Id, item.Name).clone()
             );
 
         });
@@ -371,16 +373,21 @@
             listSave.push({ Id: $(this).parent().parent().attr('id'), ItemMenu_Id: $(this).parent().parent().attr('itemMenu_id') })
         });
 
+        let ItensMenu = JSON.stringify({ 'ItensMenu': listSave });
+
         console.log(listSave);
 
-        let ItensMenu = { 'ItensMenu': listSave };
-
-        $.post(urlSaveList, ItensMenu,
-            function (r) {
+        $.ajax({
+            'type': 'POST',
+            'url': urlSaveList,
+            'contentType': 'application/json',
+            'data': ItensMenu,
+            'dataType': 'json',
+            'success': function (r) {
                 toastr.success("Salvo com sucesso!");
                 isSaved = true;
             }
-        );
+        });
     }
 
     function redundancy(levelXLevel) {
@@ -620,7 +627,6 @@
 
     var zoomValue = .7;
     changeZoom();
-
 
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dominio.ItemMenu>
+﻿@model IEnumerable<DTO.DTO.ItemMenuDTO>
 
 @{
     ViewBag.Title = Resources.Resource.item_menu;
@@ -39,7 +39,7 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayName("Menu Pai")
+                                                @Html.DisplayName("Menu Predecessor")
                                             </th>
                                             <th>
                                                 @Html.DisplayName(Resources.Resource.add_date)
@@ -70,7 +70,7 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ItemMenu_Id)
+                                                    @Html.DisplayFor(modelItem => item.MenuPredecessor.Name)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.AddDate)
