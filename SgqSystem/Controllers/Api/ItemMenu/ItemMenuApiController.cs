@@ -40,28 +40,23 @@ namespace SgqSystem.Controllers.Api
                 db.SaveChanges();
             }
 
-            foreach (var itemMenu in ItensMenu.ItensMenu)
+            using (var db = new SgqDbDevEntities())
             {
-                if (itemMenu.Id > 0) //0 = Id_Root
+                foreach (var itemMenu in ItensMenu.ItensMenu)
                 {
-                    using (var db = new SgqDbDevEntities())
+                    if (itemMenu.Id > 0) //0 = Id_Root
                     {
-                        try
-                        {
-                            itemMenu.AlterDate = DateTime.Now;
-                            itemMenu.Name = "Gambs"; //Gambzinha para não dizer que o "Name" é obrigatório, porém não será alterado
-                            db.ItemMenu.Attach(itemMenu);
-                            db.Entry(itemMenu).Property(x => x.ItemMenu_Id).IsModified = true;
-                            db.Entry(itemMenu).Property(x => x.AlterDate).IsModified = true;
-                            db.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw;
-                        }
 
+                        itemMenu.AlterDate = DateTime.Now;
+                        itemMenu.Name = "Gambs"; //Gambzinha para não dizer que o "Name" é obrigatório, porém não será alterado
+                        db.ItemMenu.Attach(itemMenu);
+                        db.Entry(itemMenu).Property(x => x.ItemMenu_Id).IsModified = true;
+                        db.Entry(itemMenu).Property(x => x.AlterDate).IsModified = true;
+                        
                     }
                 }
+
+                db.SaveChanges();
             }
 
             return true;

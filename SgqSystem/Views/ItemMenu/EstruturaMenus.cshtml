@@ -8,6 +8,8 @@
 
 }
 
+
+
 <style>
 
     /*.node_root {
@@ -62,7 +64,8 @@
 </style>
 
 <div class="page-content-wrapper">
-    <div class="page-content" style="min-height: 650px;">
+    <div class="page-content">
+
         <div id="CustomPopover" class="hide">
             <div>
                 Indicador: <br>
@@ -76,7 +79,7 @@
 
         <div class="row controls">
             <div class="col-xs-12">
-                <button class="btn btn-success" onclick="saveList()">
+                <button class="btn btn-success" id="btnSave" onclick="saveList()">
                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
                     Salvar
                 </button>
@@ -114,11 +117,15 @@
     </div>
 </div>
 
-<link href="~/Content/mindmap.css" rel="stylesheet" />
+@section Scripts {
 
-<script src="~/Scripts/mindmap.js"></script>
+    <script src="~/Scripts/mindmap.js"></script>
 
-<script>
+    <script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    closeLeftSidebar();
 
     var listNodes = [];
 
@@ -138,9 +145,6 @@
         children: function () {
             return $('<ol class="children"></ol>');
         },
-        //childrenItem: function (id, levelxlevel, parlevel_id, parent_id, name) {
-        //    return $('<li class="children__item" id="' + id + '" levelxlevel="' + levelxlevel + '" parlevel_id="' + parlevel_id + '" parent_id="' + parent_id + '"><div class="node"><div class="node__text">' + name + '</div></div></li>');
-        //}
         childrenItem: function (id, ItemMenu_Id, name) {
             return $('<li class="children__item" id="' + id + '" itemMenu_id="' + ItemMenu_Id + '"><div class="node"><div class="node__text">' + name + '</div></div></li>');
         }
@@ -375,7 +379,7 @@
 
         let ItensMenu = JSON.stringify({ 'ItensMenu': listSave });
 
-        console.log(listSave);
+        $('#btnSave').LoadingOverlay("show");
 
         $.ajax({
             'type': 'POST',
@@ -384,6 +388,9 @@
             'data': ItensMenu,
             'dataType': 'json',
             'success': function (r) {
+
+                $('#btnSave').LoadingOverlay("hide");
+
                 toastr.success("Salvo com sucesso!");
                 isSaved = true;
             }
@@ -455,53 +462,53 @@
     }
 
     var listCopy = [];
-    var copyItem = function () {
-        listCopy = $.grep(listNodes.slice(0), function (n, i) {
-            if (n.Id.substring(0, $(ativeNode).parent().attr('id').length) == $(ativeNode).parent().attr('id')) {
-                return n;
-            }
-        });
+    //var copyItem = function () {
+    //    listCopy = $.grep(listNodes.slice(0), function (n, i) {
+    //        if (n.Id.substring(0, $(ativeNode).parent().attr('id').length) == $(ativeNode).parent().attr('id')) {
+    //            return n;
+    //        }
+    //    });
 
-    }
+    //}
 
-    var pasteItem = function () {
+    //var pasteItem = function () {
 
-        if (listCopy.length > 0) {
-            setTimeout(function(){
-                var primeiro = listCopy[0];
-                var oldHash = primeiro.Id.substring(0, primeiro.Id.lastIndexOf('-') + 1);
-                var newHash = $(ativeNode).parent().attr('id') + '-';
+    //    if (listCopy.length > 0) {
+    //        setTimeout(function(){
+    //            var primeiro = listCopy[0];
+    //            var oldHash = primeiro.Id.substring(0, primeiro.Id.lastIndexOf('-') + 1);
+    //            var newHash = $(ativeNode).parent().attr('id') + '-';
 
-                addItem(listNodes.slice(0));
+    //            addItem(listNodes.slice(0));
 
-                $.grep(listCopy, function (o, i) {
-                    var n = {};
+    //            $.grep(listCopy, function (o, i) {
+    //                var n = {};
 
-                    if (i == 0) {
-                        oldHash = listCopy[0].Id + '-';
-                        n.Id = o.Id;
-                    } else {
-                        n.Id = o.Id.replace(oldHash, newHash);
-                        n.ParLevel_Id = o.ParLevel_Id;
-                        n.Parent_Id = o.Parent_Id;
-                        n.LevelXLevel_Id = o.LevelXLevel_Id.replace(oldHash, newHash);
-                        if (ativeNode.parent().attr('id') == n.Id.substring(0, n.Id.lastIndexOf('-'))) {
-                            n.LevelXLevel_Id = ativeNode.parent().attr('id');
-                            n.Parent_Id = parseInt(ativeNode.parent().attr('parlevel_id'));
-                        }
-                    }
+    //                if (i == 0) {
+    //                    oldHash = listCopy[0].Id + '-';
+    //                    n.Id = o.Id;
+    //                } else {
+    //                    n.Id = o.Id.replace(oldHash, newHash);
+    //                    n.ParLevel_Id = o.ParLevel_Id;
+    //                    n.Parent_Id = o.Parent_Id;
+    //                    n.LevelXLevel_Id = o.LevelXLevel_Id.replace(oldHash, newHash);
+    //                    if (ativeNode.parent().attr('id') == n.Id.substring(0, n.Id.lastIndexOf('-'))) {
+    //                        n.LevelXLevel_Id = ativeNode.parent().attr('id');
+    //                        n.Parent_Id = parseInt(ativeNode.parent().attr('parlevel_id'));
+    //                    }
+    //                }
 
-                    if ($('.children__item[id=' + n.Id + ']').length == 0) {
-                        listNodes.push(n);
-                    }
-                });
+    //                if ($('.children__item[id=' + n.Id + ']').length == 0) {
+    //                    listNodes.push(n);
+    //                }
+    //            });
 
-                addItem(listNodes.slice(0), true);
+    //            addItem(listNodes.slice(0), true);
 
-                loadNodes(listNodes);
-            },10);
-        }
-    }
+    //            loadNodes(listNodes);
+    //        },10);
+    //    }
+    //}
 
     $('body').on('click','h3',function(){
         var parent = $(this).parent().parent();
@@ -510,29 +517,29 @@
         addItem(parent, parent.html(),true)
     });
 
-    $("body").keydown(function (e) {
+    //$("body").keydown(function (e) {
 
-        if ( e.ctrlKey && e.keyCode == 90 ) {
-            e.preventDefault();
-            prevItem();
-        }
-        else if( e.ctrlKey && e.keyCode == 89 ) {
-            e.preventDefault();
-            nextItem();
-        }
-        else if (e.ctrlKey && e.keyCode == 83) {
-            e.preventDefault();
-            saveList();
-        }
-        else if (e.ctrlKey && e.keyCode == 67) {
-            e.preventDefault();
-            copyItem();
-        }
-        else if (e.ctrlKey && e.keyCode == 86) {
-            e.preventDefault();
-            pasteItem();
-        }
-    });
+    //    if ( e.ctrlKey && e.keyCode == 90 ) {
+    //        e.preventDefault();
+    //        prevItem();
+    //    }
+    //    else if( e.ctrlKey && e.keyCode == 89 ) {
+    //        e.preventDefault();
+    //        nextItem();
+    //    }
+    //    else if (e.ctrlKey && e.keyCode == 83) {
+    //        e.preventDefault();
+    //        saveList();
+    //    }
+    //    else if (e.ctrlKey && e.keyCode == 67) {
+    //        e.preventDefault();
+    //        copyItem();
+    //    }
+    //    else if (e.ctrlKey && e.keyCode == 86) {
+    //        e.preventDefault();
+    //        pasteItem();
+    //    }
+    //});
 
     var listNodesCopy = [];
 
@@ -625,11 +632,13 @@
         $("#btnZoomLess").removeAttr('disabled');
     }
 
-    var zoomValue = .7;
+    var zoomValue = 1;
     changeZoom();
 
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);
     };
 
-</script>
+    </script>
+
+}
