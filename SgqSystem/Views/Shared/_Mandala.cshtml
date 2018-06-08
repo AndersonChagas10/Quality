@@ -5,13 +5,13 @@
 
 <script>
 
-        function AtualizarPosicaoMandala() {
-            $('#mandala').css('top', localStorage.top + 'px');
-            $('#mandala').css('left', localStorage.left + 'px');
-        }
+    function AtualizarPosicaoMandala() {
+        $('#mandala').css('top', localStorage.top + 'px');
+        $('#mandala').css('left', localStorage.left + 'px');
+    }
 
     $(document).ready(function () {
-     
+
 
         function GetUsuarioId() {
             return $.grep(getCookie('webControlCookie'), function (a, b) {
@@ -19,7 +19,7 @@
             })[0].split('=')[1];
         };
 
-         function MostrarEmpresa() {
+        function MostrarEmpresa() {
             var enviar = {};
             enviar['auditorId'] = GetUsuarioId();
 
@@ -46,7 +46,7 @@
                     });
                     $('#' + mandalaGRT.idElemento + ' a').hover(function () {
                         $('#mandalaModal').find('.modal-title').text($(this).attr('data-unidade'));
-                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));                       
+                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
                         $('#mandalaModal').find('.cabecalhoAR').text("Amostras Realizadas:");
                         $('#mandalaModal').find('.dadosTabelaAR').text($(this).attr('data-AmostrasR'))
                         $('#mandalaModal').find('.cabecalhoAP').text(" Amostras Planejadas:");
@@ -89,7 +89,7 @@
 
                     $('#' + mandalaGRT.idElemento + ' a').hover(function () {
                         $('#mandalaModal').find('.modal-title').text($(this).attr('data-indicador') + " - " + $(this).attr('data-processo'));
-                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));                
+                        $('#mandalaModal').find('.modal-header').css('background-color', $(this).attr('data-cor'));
                         $('#mandalaModal').find('.cabecalhoAR').text("Amostras Realizadas:");
                         $('#mandalaModal').find('.dadosTabelaAR').text($(this).attr('data-AmostrasR'))
                         $('#mandalaModal').find('.cabecalhoAP').text(" Amostras Planejadas:");
@@ -157,7 +157,12 @@
                 }
             });
         }
-        MostrarEmpresa();
+
+        @if (System.Configuration.ConfigurationManager.AppSettings["PreencherMandala"] == "on") {
+            <text>
+                MostrarEmpresa();
+            </text>
+        }
 
 
         $('#mandala').draggable(

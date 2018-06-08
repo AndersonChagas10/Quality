@@ -3231,7 +3231,7 @@ namespace SgqSystem.Services
                           CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR),'.',','),'NULL') + '""
                           CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR),'.',','),'NULL') + '"" >
                           ' + @RESPOSTA + '
-                          </ div > '  AS retorno																																													  
+                          </div> '  AS retorno																																													  
 
 
 
