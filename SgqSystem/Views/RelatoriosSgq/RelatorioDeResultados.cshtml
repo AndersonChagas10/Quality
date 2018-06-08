@@ -2,7 +2,7 @@
 @using DTO
 @{
     ViewBag.Title = Resources.Resource.evolutional;
-
+    ViewBag.SubTitle = "";
 
     //Condições de dropdown que podem ser multiplos
     ViewBag.UnitIdArr = true;
@@ -1004,11 +1004,11 @@
         var subtitleAux = "";
         var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-        if (enviar.dimensaoData == 1)
+        if (enviar2.dimensaoData == 1)
             var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
-        if (enviar.dimensaoData == 2)
+        if (enviar2.dimensaoData == 2)
             var dia = MapeiaValorParaHC(data, "semana");
-        if (enviar.dimensaoData == 4)
+        if (enviar2.dimensaoData == 4)
             var dia = MapeiaValorParaHC(data, "mes");
 
         var nc = MapeiaValorParaHC(data, "nc");
