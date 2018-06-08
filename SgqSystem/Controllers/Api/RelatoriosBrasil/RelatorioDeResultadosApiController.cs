@@ -126,7 +126,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela2([FromBody] FormularioParaRelatorioViewModel form)
         {
             GetResultadosTarefa(form);
-         
+
             return retorno;
         }
 
@@ -2712,6 +2712,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -2763,7 +2764,7 @@ ORDER BY 7
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
                ,1 IsMonitoramento
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
@@ -2779,7 +2780,7 @@ ORDER BY 7
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -2898,6 +2899,7 @@ ORDER BY 3
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -2945,7 +2947,7 @@ ORDER BY 3
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
                ,1 IsIndicador
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
@@ -2960,7 +2962,7 @@ ORDER BY 3
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -3077,6 +3079,7 @@ ORDER BY 3
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -3123,7 +3126,7 @@ ORDER BY 3
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
 			   ,max(UnidadeName) UnidadeName
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -3136,7 +3139,7 @@ ORDER BY 3
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -4949,6 +4952,34 @@ FROM (SELECT
             return _list;
         }
 
+        private static DimensaoData getDimensaoData(FormularioParaRelatorioViewModel form, string nomeColuna)
+        {
+
+            DimensaoData D = new DimensaoData();
+
+            D.queryDimensao = $@"";
+
+
+
+            if (form.dimensaoData == 2)
+            {
+                D.queryDimensao = $@" CONCAT(DATEPART(YEAR,{nomeColuna}),'/',RIGHT(CONCAT(0,DATEPART(WEEK,{nomeColuna})),2))  ";
+                D.nomeAlias = $@" AS [SEMANA] ";
+            }
+            else if (form.dimensaoData == 4)
+            {
+                D.queryDimensao = $@" CONVERT(VARCHAR(7),{nomeColuna},120) ";
+                D.nomeAlias = $@" AS [MES] ";
+            }
+            else 
+            {
+                D.queryDimensao = $@"{ nomeColuna } ";
+                D.nomeAlias = $@" AS [DATE] ";
+            }
+
+
+            return D;
+        }
     }
 
     public class RelatorioResultadosPeriodo
@@ -4999,6 +5030,9 @@ FROM (SELECT
         public decimal? companyScorecard { get; set; }
         public string companySigla { get; set; }
         public DateTime? date { get; set; }
+        public string semana { get; set; }
+        public string quinzena { get; set; }
+        public string mes { get; set; }
         public int level1Id { get; set; }
         public string level1Name { get; set; }
         public int level2Id { get; set; }
@@ -5053,6 +5087,12 @@ FROM (SELECT
         public bool IsIndicador { get; set; }
         public bool IsMonitoramento { get; set; }
         public bool IsTarefa { get; set; }
+    }
+
+    public class DimensaoData
+    {
+        public string queryDimensao { get; set; }
+        public string nomeAlias { get; set; }
     }
 
     //public class RetornoSugestao
