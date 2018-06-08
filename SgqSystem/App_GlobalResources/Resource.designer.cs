@@ -1825,6 +1825,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do Audit.
+        /// </summary>
+        internal static string do_audit {
+            get {
+                return ResourceManager.GetString("do_audit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string do_not_change_password {

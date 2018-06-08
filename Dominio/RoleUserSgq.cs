@@ -20,5 +20,6 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
+        public bool FazColeta { get; set; }
     }
 }

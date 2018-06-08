@@ -1452,6 +1452,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.RoleType' does not have a primary
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="FazColeta" Type="bit" />
         </EntityType>
         <EntityType Name="RoleUserSgqXItemMenu">
           <Key>
@@ -4742,9 +4743,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParModule" EntitySet="ParModule" />
             <End Role="ParModuleXModule" EntitySet="ParModuleXModule" />
           </AssociationSet>
-          <EntitySet Name="RoleUserSgq" EntityType="SgqDbModel.RoleUserSgq" />
           <EntitySet Name="ItemMenu" EntityType="SgqDbModel.ItemMenu" />
           <EntitySet Name="RoleUserSgqXItemMenu" EntityType="SgqDbModel.RoleUserSgqXItemMenu" />
+          <EntitySet Name="RoleUserSgq" EntityType="SgqDbModel.RoleUserSgq" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -8480,17 +8481,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="RoleUserSgq">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="ItemMenu">
           <Key>
             <PropertyRef Name="Id" />
@@ -8516,6 +8506,18 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ItemMenu_Id" Type="Int32" Nullable="false" />
           <Property Name="RoleUserSgq_Id" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleUserSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="FazColeta" Type="Boolean" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10462,18 +10464,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RoleUserSgq">
-            <EntityTypeMapping TypeName="SgqDbModel.RoleUserSgq">
-              <MappingFragment StoreEntitySet="RoleUserSgq">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ItemMenu">
             <EntityTypeMapping TypeName="SgqDbModel.ItemMenu">
               <MappingFragment StoreEntitySet="ItemMenu">
@@ -10498,6 +10488,19 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleUserSgq">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleUserSgq">
+              <MappingFragment StoreEntitySet="RoleUserSgq">
+                <ScalarProperty Name="FazColeta" ColumnName="FazColeta" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
