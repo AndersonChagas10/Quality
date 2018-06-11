@@ -1265,7 +1265,12 @@ FROM (SELECT
 	AND IsNotEvaluate = 1
 	GROUP BY C2.ID) NA
 WHERE NA = 2
---------------------------------                                                                                                                    
+--------------------------------   
+set @VOLUMEPCC = (SELECT TOP 1 SUM(Quartos/2)
+FROM VolumePcc1b(nolock)
+WHERE ParCompany_id = @ParCompany_id
+AND Data  BETWEEN @DATAINICIAL AND @DATAFINAL ) 
+--------------------------------
 SELECT
 	CONVERT(VARCHAR(153), Unidade) AS UnidadeName
    ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
@@ -1295,7 +1300,7 @@ FROM (SELECT
 				WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)
 															FROM VolumePcc1b(nolock)
 															WHERE ParCompany_id = @ParCompany_id
-															AND Data  = CL1.ConsolidationDate) - isnull(@NAPCC,0)
+															AND Data  = cast(CL1.ConsolidationDate as Date)) - isnull(@NAPCC,0)
 				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiEvaluation)
 				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.WeiEvaluation)
 				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.EvaluatedResult)
@@ -1308,7 +1313,7 @@ FROM (SELECT
 				WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)
 															FROM VolumePcc1b(nolock)
 															WHERE ParCompany_id = @ParCompany_id
-															AND Data  = CL1.ConsolidationDate) - isnull(@NAPCC,0)
+															AND Data  = cast(CL1.ConsolidationDate as Date)) - isnull(@NAPCC,0)
 				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.EvaluateTotal)
 				WHEN IND.ParConsolidationType_Id = 2 THEN SUM(CL1.WeiEvaluation)
 				WHEN IND.ParConsolidationType_Id = 3 THEN SUM(CL1.EvaluatedResult)

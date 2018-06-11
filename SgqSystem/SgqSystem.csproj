@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -346,6 +345,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
@@ -1797,7 +1797,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
