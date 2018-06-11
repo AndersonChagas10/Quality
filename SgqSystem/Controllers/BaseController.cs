@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
         {
 
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
-
+            
             using (var db = new SgqDbDevEntities())
             {
 
@@ -32,8 +32,9 @@ namespace SgqSystem.Controllers
 
                 ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive == true));
 
-                ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true));
+                //HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
 
+                ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null));
             }
 
             var listaURLPA = GetWebConfigList("URL_PA");
@@ -137,6 +138,9 @@ namespace SgqSystem.Controllers
 
                 //Most important, write the cookie to client.
                 Response.Cookies.Add(myCookie);
+
+                SetItensMenu(isAuthorized);
+
             }
         }
 
@@ -174,6 +178,23 @@ namespace SgqSystem.Controllers
         public static string GetWebConfigSettings(string key)
         {
             return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
+
+        public void SetItensMenu(UserDTO userLogado)
+        {
+            var rolesNames = userLogado.Role.Split(',');
+
+            if (rolesNames.Length > 0)
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
+
+                    var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.Id).Distinct().ToList();
+
+                    ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));
+                }
+            }
         }
     }
 
