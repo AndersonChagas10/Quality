@@ -1570,14 +1570,14 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.LinkNumberEvaluetion AS LinkNumberEvaluetion, PH.IsRequired AS IsRequired, PH.duplicate, isnull(PL.HeaderFieldGroup,'-') as HeaderFieldGroup FROM ParLevel1XHeaderField PL (nolock)   " +
-                         "LEFT JOIN ParHeaderField PH (nolock)  ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
-                         "LEFT JOIN ParLevelDefiniton PD (nolock)  ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
-                         "LEFT JOIN ParFieldType PT (nolock)  ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
-                         "WHERE                                                                                                                                                                                          " +
-                         "PD.Id = 1 AND                                                                                                                                                                                  " +
-                         "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
-                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired, PH.Description, PH.LinkNumberEvaluetion, ph.duplicate, PL.HeaderFieldGroup                                                                                                                             ";
+                         "\n LEFT JOIN ParHeaderField PH (nolock)  ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
+                         "\n LEFT JOIN ParLevelDefiniton PD (nolock)  ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
+                         "\n LEFT JOIN ParFieldType PT (nolock)  ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
+                         "\n WHERE                                                                                                                                                                                          " +
+                         "\n PD.Id = 1 AND                                                                                                                                                                                  " +
+                         "\n PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
+                         "\n PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
+                         "\n GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired, PH.Description, PH.LinkNumberEvaluetion, ph.duplicate, PL.HeaderFieldGroup                                                                                                                             ";
             
             List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1593,14 +1593,14 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.LinkNumberEvaluetion AS LinkNumberEvaluetion, PH.IsRequired AS IsRequired, PH.duplicate, isnull(PL.HeaderFieldGroup,'-') as HeaderFieldGroup FROM ParLevel1XHeaderField PL  (nolock)  " +
-                         "LEFT JOIN ParHeaderField PH  (nolock) ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
-                         "LEFT JOIN ParLevelDefiniton PD  (nolock) ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
-                         "LEFT JOIN ParFieldType PT  (nolock) ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
-                         "WHERE                                                                                                                                                                                          " +
-                         "PD.Id = 2 AND                                                                                                                                                                                  " +
-                         "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
-                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.Description, PH.IsRequired, PH.LinkNumberEvaluetion, PH.duplicate, PL.HeaderFieldGroup;                                                                                                                             ";
+                         "\n LEFT JOIN ParHeaderField PH  (nolock) ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
+                         "\n LEFT JOIN ParLevelDefiniton PD  (nolock) ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
+                         "\n LEFT JOIN ParFieldType PT  (nolock) ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
+                         "\n WHERE                                                                                                                                                                                          " +
+                         "\n PD.Id = 2 AND                                                                                                                                                                                  " +
+                         "\n PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
+                         "\n PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
+                         "\n GROUP BY PH.Id, PH.Name, PT.Id, PH.Description, PH.IsRequired, PH.LinkNumberEvaluetion, PH.duplicate, PL.HeaderFieldGroup;                                                                                                                             ";
             
             List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1677,7 +1677,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             var valores = integracao.Split('|');
 
-            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais"  || valores[0] == "Setor")
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais"  || valores[0] == "Setor" || valores[0] == "Tipo de Corte" || valores[0] == "Setores BPF")
             {
                 var subtipo = "";
 

@@ -119,5 +119,7 @@ namespace DTO
         public int dimensaoData { get; set; }
 
         public string tipoCEP { get; set; }
+
+        public int GroupLevel1 { get; set; }
     }
 }

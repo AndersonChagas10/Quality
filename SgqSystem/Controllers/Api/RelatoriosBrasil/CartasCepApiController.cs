@@ -197,8 +197,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                    ,isnull(@MEDIAAM,0) AS 'AM LM'
                    ,isnull(@UCL,0) AS UCL
                    ,isnull(@LCL,0) AS LCL
-                   ,TB1.IntervalMax AS LSE
-                   ,TB1.IntervalMin AS LIE
+                   ,CASE WHEN TB1.IntervalMax > 9999999 THEN 0 ELSE TB1.IntervalMax END AS LSE
+                   ,CASE WHEN TB1.IntervalMin < -9999999 THEN 0 ELSE TB1.IntervalMin END AS LIE
                    ,isnull(@LSC,0) AS LSC
                 FROM (SELECT
                 		ROW_NUMBER() OVER (ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#
@@ -371,8 +371,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n @MEDIA AS[pbar],                                                                                                                        " +
                 "\n @LimiteSuperiorControle as UCL,                                                                                                         " +
                 "\n @LimiteInferiorControle as LCL,                                                                                                         " +
-                "\n @LimiteSuperiorEspecificacao as LSE,                                                                                                    " +
-                "\n @LimiteInferiorEspecificacao as LIE,                                                                                                    " +
+                "\n CASE WHEN @LimiteSuperiorEspecificacao > 999999 THEN 0 ELSE @LimiteSuperiorEspecificacao END as LSE,                                                                                                    " +
+                "\n CASE WHEN @LimiteInferiorEspecificacao < -999999 THEN 0 ELSE @LimiteInferiorEspecificacao END as LIE,                                                                                                    " +
                 "\n ISNULL(SUM(WeiDefects) / @N * 100, 0) AS VALOR                                                                                                   " +
                 "\n from CollectionLevel2                                                                                                                   " +
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
