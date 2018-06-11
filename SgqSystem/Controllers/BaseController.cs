@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
         {
 
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
-            
+
             using (var db = new SgqDbDevEntities())
             {
 
@@ -32,9 +32,7 @@ namespace SgqSystem.Controllers
 
                 ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive == true));
 
-                //HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
-
-                ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null));
+                //ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null));
             }
 
             var listaURLPA = GetWebConfigList("URL_PA");
@@ -88,6 +86,8 @@ namespace SgqSystem.Controllers
             {
             }
 
+            SetItensMenu();
+
             base.Initialize(requestContext);
         }
 
@@ -139,7 +139,7 @@ namespace SgqSystem.Controllers
                 //Most important, write the cookie to client.
                 Response.Cookies.Add(myCookie);
 
-                SetItensMenu(isAuthorized);
+                //SetItensMenu(isAuthorized);
 
             }
         }
@@ -180,19 +180,26 @@ namespace SgqSystem.Controllers
             return System.Configuration.ConfigurationManager.AppSettings[key];
         }
 
-        public void SetItensMenu(UserDTO userLogado)
+        protected void SetItensMenu()
         {
-            var rolesNames = userLogado.Role.Split(',');
+            var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
 
-            if (rolesNames.Length > 0)
+            if (webControlCookie != null)
             {
-                using (var db = new SgqDbDevEntities())
+                var UserId = webControlCookie.Values["userId"];
+
+                if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
                 {
-                    var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var rolesNames = db.UserSgq.Find(int.Parse(UserId)).Role.Split(',');
 
-                    var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.Id).Distinct().ToList();
+                        var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
 
-                    ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));
+                        var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.Id).Distinct().ToList();
+
+                        ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));
+                    }
                 }
             }
         }
