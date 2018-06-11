@@ -3,6 +3,8 @@
 @{
     Layout = null;
     var urlDataCollection = ViewBag.UrlDataCollect;
+
+    var ListItensMenu = ViewBag.ItensMenu;
 }
 
 &nbsp;
@@ -14,410 +16,7 @@
                     <span></span>icon-home
                 </div>
             </li>
-            @*<li class="nav-item" id="RoleLink1">
-                    <a href="@Url.Action("Index", "Home")" class="nav-link nav-toggle">
-                        <i class="fa fa-home"></i>
-                        <span class="title">@Resources.Resource.home</span>
-                    </a>
-                </li>*@
-            <li class="heading" style="margin-top:20px">
-                <h3 class="uppercase">@Resources.Resource.system</h3>
-            </li>
 
-            <li class="nav-item" id="RoleLink4">
-                <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
-                    <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
-                    <span class="title">@Resources.Resource.customization</span>
-                    <span class="selected"></span>
-                </a>
-            </li>
-
-            <li class="nav-item" id="RoleLink2">
-                <a href="@urlDataCollection" target="_blank" class="nav-link nav-toggle">
-                    <i class="fa fa-tablet"></i>
-                    <span class="title">@Resources.Resource.data_collection</span>
-                </a>
-            </li>
-
-            <li class="nav-item" id="RoleLink3">
-                <a href="javascript:;" class="nav-link nav-toggle">
-                    <i class="fa fa-pie-chart"></i>
-                    <span class="title">@Resources.Resource.management</span>
-                    <span class="arrow"></span>
-                </a>
-                <ul class="sub-menu">
-                    @*@if (GlobalConfig.Brasil)
-                        {*@
-
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.planning</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="@Url.Action("VisaoGeralDaArea", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    @*<a href="#" class="nav-link nav-toggle">*@
-                                    <span class="title">@Resources.Resource.general_view_of_the_area</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.data_collect_execution_and_action_plan</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.daily_apointments</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("ApontamentosDiariosDomingo", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.daily_apointments_sunday</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.result_evaluation_and_deviation_communication</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.scorecard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("RelatorioDeResultados","RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span>@Resources.Resource.evolutional</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.daily_report</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("NaoCumprimentoMeta", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.recidivism</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.defects_reports</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="javascript:;" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.statistical_report</span>
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
-                                            @*<a href="#" class="nav-link">*@
-                                            <span class="title">@Resources.Resource.control_charts</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                    @*<li class="nav-item">
-                            <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.scorecard</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("RelatorioDeResultados","RelatoriosSgq")" class="nav-link nav-toggle"><span>@Resources.Resource.evolutional</span></a>
-                        </li>*@
-                    @*<li class="nav-item">
-                            <a href="@Url.Action("VisaoGeralDaArea", "RelatoriosSgq")" class="nav-link nav-toggle">
-
-                                <span class="title">@Resources.Resource.general_view_of_the_area</span>
-                            </a>
-                        </li>*@
-                    @*<li class="nav-item">
-                            <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.daily_report</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("NaoCumprimentoMeta", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.recidivism</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.defects_reports</span>
-                            </a>
-                        </li>*@
-                    @*<li class="nav-item">
-                            <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.daily_apointments</span>
-                            </a>
-                        </li>*@
-
-                    @*}*@
-
-                    @if (GlobalConfig.Brasil)
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("VerificacaoTipificacao", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.tipification_verification</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="@Url.Action("Reprocesso", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">Reprocesso (BETA)</span>
-                            </a>
-                        </li>
-                    }
-
-
-                    @if (GlobalConfig.Eua)
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("CorrectiveActionReport", "Reports")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.corrective_action_reports</span>
-                            </a>
-                        </li>
-                        @*<li class="nav-item">
-                                <a href="@Url.Action("DataCollectionReport", "Reports")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.data_collection_reports</span>
-                                </a>
-                            </li>*@
-                    }
-
-                    @*<li class="nav-item">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.statistical_report</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
-
-                                        <span class="title">@Resources.Resource.control_charts</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>*@
-                </ul>
-            </li>
-
-            <li class="nav-item" id="RoleLink15">
-                <a href="@Url.Action("Index", "UpdateTelaTablet")" class="nav-link nav-toggle">
-                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
-                    <span class="title">@Resources.Resource.update_tablet</span>
-                    <span class="selected"></span>
-                </a>
-            </li>
-
-            @*<li class="nav-item" id="RoleLink5">
-                    <a href="@Url.Action("LeftControlRole", "Role")" class="nav-link nav-toggle">
-                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                        <span class="title">@Resources.Resource.left_menu_control</span>
-                        <span class="arrow"></span>
-                    </a>
-                </li>*@
-
-            @if (!GlobalConfig.Eua && !GlobalConfig.Ytoara)
-            {
-                <li class="heading">
-                    <h3 class="uppercase">@Resources.Resource.local_forms</h3>
-                </li>
-
-                <li class="nav-item" id="RoleLink6">
-                    <a href="@Url.Action("Index", "ParLevel2ControlCompany")" class="nav-link nav-toggle">
-                        <i class="fa fa-sliders"></i>
-                        <span class="title">@Resources.Resource.family</span>
-
-                    </a>
-                </li>
-
-
-                <li class="nav-item" id="RoleLink7">
-
-                    <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="fa fa-tasks"></i>
-                        <span class="title">@Resources.Resource.volume</span>
-                        <span class="arrow"></span>
-                    </a>
-
-                    <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.cep_desossa</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.cep_recortes</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.vacuo_grd</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "Pcc1b")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.pcc1b</span>
-                            </a>
-                        </li>
-                    </ul>
-
-                </li>
-
-                <li class="nav-item" id="RoleLink12">
-                    <a href="@Url.Action("Index", "Equipamentos")" class="nav-link nav-toggle">
-                        <i class="fa fa-cogs" aria-hidden="true"></i>
-                        <span class="title">Equipamentos</span>
-
-                    </a>
-                </li>
-            }
-
-            @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
-            {
-                if (HttpContext.Current.Request.Cookies["webControlCookie"].Values["roles"].ToString().ToLower().Contains("admin"))
-                {
-
-                    <li class="heading">
-                        <h3 class="uppercase">@Resources.Resource.generic_forms</h3>
-                    </li>
-
-                    <li class="nav-item" id="RoleLink7">
-
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="fa fa-pencil"></i>
-                            <span class="title">@Resources.Resource.generic_forms</span>
-                            <span class="arrow"></span>
-                        </a>
-
-                        <ul class="sub-menu">
-
-                            <li class="nav-item" id="RoleLink8">
-                                <a href="@Url.Action("Index2", "ParCompany")" class="nav-link nav-toggle">
-                                    <i class="fa fa-sitemap" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.company_structure</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink8">
-                                <a href="@Url.Action("Index", "ParClusterGroups")" class="nav-link nav-toggle">
-                                    <i class="fa fa-cube" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.cluster_group</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink9">
-                                <a href="@Url.Action("Index", "ParClusters")" class="nav-link nav-toggle">
-                                    <i class="fa fa-cubes" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.cluster</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink10">
-                                <a href="@Url.Action("Index", "ParCompany")" class="nav-link nav-toggle">
-                                    <i class="fa fa-industry" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.company</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink11">
-                                <a href="@Url.Action("Index", "ParDepartments")" class="nav-link nav-toggle">
-                                    <i class="fa fa-users" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.department</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink12">
-                                <a href="@Url.Action("Index", "ParMeasurementUnits")" class="nav-link nav-toggle">
-                                    <i class="fa fa-thermometer" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.measurement_unit</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink12">
-                                <a href="@Url.Action("Index", "ParModules")" class="nav-link nav-toggle">
-                                    <i class="fa fa-cubes" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.module</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink12">
-                                <a href="@Url.Action("Index", "ParClusterXModules")" class="nav-link nav-toggle">
-                                    <i class="fa fa-cubes" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.module X @Resources.Resource.clusters</span>
-
-                                </a>
-                            </li>
-
-                            @*<li class="nav-item" id="RoleLink13">
-                                    <a href="@Url.Action("Index", "Role")" class="nav-link nav-toggle">
-                                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                                        <span class="title">@Resources.Resource.profiles_and_roles</span>
-
-                                    </a>
-                                </li>*@
-                            <li class="nav-item" id="RoleLink15">
-                                <a href="@Url.Action("Index", "ParBinaryDataType")" class="nav-link nav-toggle">
-                                    <i class="fa fa-cog" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.binary_input_type</span>
-
-                                </a>
-                            </li>
-                            <li class="nav-item" id="RoleLink14">
-                                <a href="@Url.Action("Index", "UserSgq")" class="nav-link nav-toggle">
-                                    <i class="fa fa-users" aria-hidden="true"></i>
-                                    <span class="title">@Resources.Resource.users</span>
-
-                                </a>
-                            </li>
-
-
-                        </ul>
-                    </li>
-
-                    <li class="nav-item" id="RoleLink7">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="fa fa-cog"></i>
-                            <span class="title">Beta* Recravação</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index", "RecravacaoTipoLata")" class="nav-link nav-toggle">
-                                    <span class="title">Recravação Parametrização Lata</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index", "RecravacaoLinhas")" class="nav-link nav-toggle">
-                                    <span class="title">Recravação Parametrização Linhas</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index", "Recravacao")" class="nav-link nav-toggle">
-                                    <span class="title">Recravação Coleta</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                }
-            }
         </ul>
     </div>
 </div>
@@ -448,7 +47,6 @@
 </div>
 
 <script>
-
 
     var RequestRoleLink = {
         request: function (idDiv, action, controller) {
@@ -510,6 +108,7 @@
 
     var progress = new LoadingOverlayProgress();
     var acumulador = 0;
+
     function atualziarAllTablets() {
         bootbox.confirm(@Html.Raw(Json.Encode(Resources.Resource.update_all_tablet_message)), function (result) {
             if(result){
@@ -547,5 +146,92 @@
                 getTelaByTablet(progress, total, passo, unidadesIds);
         });
     }
+
+    Array.prototype.move = function (from, to) {
+        this.splice(to, 0, this.splice(from, 1)[0]);
+    };
+
+    let ItemMenu = {
+
+        menu: function (id, name, url, icon, id_Pai) {
+
+        return $(`<li class="nav-item" id="${id}" id_pai="${id_Pai}">
+            <a href="${!!url ? url : "javascript:;"}" class="nav-link nav-toggle">
+                <i class="${icon}" aria-hidden="true"></i>
+                <span class="title">${name}</span>
+                <span class="selected"></span>
+            </a>
+        </li>`);
+    },
+        subMenu: function () {
+        return $('<ul class="sub-menu"></ul>');
+    },
+        grupoMenu: function (id, name) {
+        return $(`<li class="heading">
+                <h3 class="uppercase">${name}</h3>
+            </li>`);
+        }
+
+    };
+
+    let ListItensMenu = @Html.Raw(Json.Encode(ListItensMenu));
+
+    ListItensMenu = InicializarMenus(ListItensMenu);
+
+    if (ListItensMenu.length > 0) {
+
+         let verificados = 0;
+
+         while (ListItensMenu.length > 0) {
+
+             let parent = $('li[id=' + ListItensMenu[0].ItemMenu_Id + ']');
+
+             if (parent.length > 0) {
+
+                 let item = ListItensMenu[0];
+
+                 if ($(parent).children('ul.sub-menu').length == 0) {
+                     $(parent).append(ItemMenu.subMenu().clone());
+                 }
+
+                 parent.children('ul.sub-menu').append(ItemMenu.menu(item.Id, item.Name, item.Url, item.Icon, item.ItemMenu_Id).clone());
+
+                 ListItensMenu.splice(0, 1);
+
+                 verificados = 0;
+
+             } else {
+
+                 //Mandar o item do arr para o fim da lista
+                 ListItensMenu.move(0, ListItensMenu.length - 1);
+
+                 verificados++
+
+                 if (verificados > ListItensMenu.length) {
+                     console.log("Erro ao montar menu");
+                     break;
+                 }
+             }
+         }
+     }
+
+    function InicializarMenus(ListItensMenu) {
+
+         let MenusIniciais = $.grep(ListItensMenu, function (item) {
+             return item.ItemMenu_Id == 0;
+         });
+
+         MenusIniciais.forEach(function (item) {
+
+             $('.page-sidebar-menu').append(ItemMenu.menu(item.Id, item.Name, item.Url, item.Icon, item.ItemMenu_Id).clone());
+
+         });
+
+         ListItensMenu = $.grep(ListItensMenu, function (item) {
+             return item.ItemMenu_Id != 0 && !!item.ItemMenu_Id;
+         });
+
+         return ListItensMenu;
+     }
 
 </script>

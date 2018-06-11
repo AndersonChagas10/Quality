@@ -27,6 +27,7 @@ namespace DTO
         public string MailSmtp { get; set; }
         public bool MockEmail { get; set; }
     }
+
     public class Mandala
     {
         public int ParLevel1_id { get; set; }
@@ -42,7 +43,7 @@ namespace DTO
         public string Amostras_Realizadas { get; set; }
     }
 
-        public class HtmlDoTablet
+    public class HtmlDoTablet
     {
         public string Html { get; set; }
         public DateTime? DataInicio { get; set; }

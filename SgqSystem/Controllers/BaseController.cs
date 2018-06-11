@@ -22,17 +22,18 @@ namespace SgqSystem.Controllers
 
         public BaseController()
         {
-           
+
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
 
             using (var db = new SgqDbDevEntities())
             {
-                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));        
-            }
 
-            using (var db = new SgqDbDevEntities())
-            {
+                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));
+
                 ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive == true));
+
+                ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true));
+
             }
 
             var listaURLPA = GetWebConfigList("URL_PA");
@@ -43,7 +44,9 @@ namespace SgqSystem.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
+
             HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
+
             if (languageCookie != null)
             {
                 if (languageCookie.Value == "en")
@@ -90,6 +93,7 @@ namespace SgqSystem.Controllers
         public void CreateCookieFromUserDTO(UserDTO isAuthorized)
         {
             HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+
             if (cookie != null)
             {
                 cookie.Expires = DateTime.Now.AddHours(48);
@@ -139,6 +143,7 @@ namespace SgqSystem.Controllers
         protected void ExpireCookie()
         {
             HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+
             if (currentUserCookie != null)
             {
                 Response.Cookies.Remove("webControlCookie");
