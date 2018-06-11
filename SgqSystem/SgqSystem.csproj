@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -1704,6 +1704,7 @@
     <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiariosDomingo.cshtml" />
     <Content Include="Views\GlobalConfig\Jobs.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoConformidadeDuplicada.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

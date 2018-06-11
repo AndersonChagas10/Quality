@@ -42,7 +42,21 @@ namespace DTO
         public string Amostras_Realizadas { get; set; }
     }
 
-        public class HtmlDoTablet
+
+    public class CorrectiveAct
+    {
+        public int Id { get; set; }
+        public string UnitId { get; set; }
+        public string Unidade { get; set; }
+        public string ParLevel1_Id { get; set; }
+        public string Indicador { get; set; }
+        public string ParLevel2_Id { get; set; }
+        public string Monitoramento { get; set; }
+        public string PreventativeMeasure { get; set; }
+    }
+
+
+    public class HtmlDoTablet
     {
         public string Html { get; set; }
         public DateTime? DataInicio { get; set; }
@@ -89,6 +103,8 @@ namespace DTO
         public static List<Mandala> MandalaUnidade { get; set; }
         public static List<Mandala> MandalaIndicador { get; set; }
         public static List<Mandala> MandalaMonitoramento { get; set; }
+        public static List<CorrectiveAct> CorrectiveAct { get; set; }
+        public static CorrectiveAct GetCorrectiveAct {get; set;}
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL

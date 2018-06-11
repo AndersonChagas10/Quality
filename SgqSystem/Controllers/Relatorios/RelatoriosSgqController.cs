@@ -167,6 +167,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult NaoConformidadeDuplicada()
+        {
+            return View();
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult NaoConformidade()
         {
             return View(form);
