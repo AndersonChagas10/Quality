@@ -116,6 +116,7 @@
             <br />
             <h3 id="TituloTabela2"></h3>
             <br />
+            <div id="DataTable2Loader"></div>
             <table id="DataTable2"></table>
 
         </div>
@@ -323,7 +324,7 @@
 
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
-        EasyAjax(UrlListaResultadosPeriodo2, enviar, GerarTabela2, "DataTable2", undefined);
+        EasyAjax(UrlListaResultadosPeriodo2, enviar, GerarTabela2, "DataTable2Loader", undefined);
 
 
         /*Colocando o grafico de histórunitIdArrico geral*/
@@ -428,7 +429,6 @@
             }
 
             var table = datatableGRT.Inicializar({
-
                 idTabela: "DataTable",
                 listaDeDados: retornoArray,
                 definicaoColuna: columnDefs,
@@ -525,7 +525,6 @@
                 }
 
                 var table = datatableGRT.Inicializar({
-
                     idTabela: "DataTable2",
                     listaDeDados: retornoArray,
                     definicaoColuna: columnDefs,
@@ -3001,6 +3000,7 @@
         $('#Titulo').html("");
         $('#TituloTabela').html("");
         $('#DataTable_wrapper').hide();
+        $('#DataTable2_wrapper').hide();
         $('#GraficoHistoricoGeral').empty();
         $('#GraficoTarefasAcumuladas').empty();
 
