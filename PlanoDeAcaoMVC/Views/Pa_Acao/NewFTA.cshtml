@@ -49,7 +49,7 @@
     }
 </style>
 
-
+<script src="~/Scripts/Print/printGRT.js"></script>
 <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
 
@@ -57,7 +57,7 @@
 @using (Html.BeginForm())
 {
     <div ng-app="App">
-        <div class="table-responsive" ng-controller="FTA">
+        <div class="table-responsive" ng-controller="FTA" id="tabelaFTA">
 
             <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
 
@@ -466,6 +466,9 @@
 
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
                     openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                    if (confirm("Deseja Imprimir?")) {
+                        printFTA();
+                    }
                     window.location.href = '@Url.Action("Index2", "Home2")';
 
                 }).fail(function (xhr, err) {
@@ -493,6 +496,9 @@
 
                     $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
                         openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                        if (confirm("Deseja Imprimir?")) {
+                            printFTA();
+                        }
                         window.location.href = '@Url.Action("Index2", "Home2")';
                     }).fail(function(xhr, err) {
                         var responseTitle= $(xhr.responseText).filter('title').get(0);
@@ -560,6 +566,38 @@
             } else {
                 $('#Salvar').attr('disabled', true);
             }
+        }
+
+        function printFTA() {
+
+            $.each($('input'), function (i, o) {
+                $(o).parents('td').html($(o).val());
+            });
+
+            $.each($('select'), function (i, o) {
+                $(o).parents('td').html($(o).find('option:selected').text());
+            });
+
+            $.each($('textarea'), function (i, o) {
+                $(o).parents('td').html($(o).val());
+            });
+
+            $.each($('button'), function (i, o) {
+                $(o).remove();
+            });
+
+            printGRT.Inicializar(
+            {
+                bodyHtml: document.getElementById("tabelaFTA").innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25px 25px 10px 25px",
+                pageMarginFooter: "10px 25px 25px 25px",
+                pageMarginBody: "0 25px 0 25px"
+            });
+
+            printGRT.Imprimir();
         }
 
     </script>
