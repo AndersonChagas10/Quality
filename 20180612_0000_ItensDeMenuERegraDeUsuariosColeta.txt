@@ -1,0 +1,36 @@
+-- 12 06 2018 - Renan (Adicionado os Itens de Menu e Coluna "FazColeta" na Regra de Usuário)
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180612_0000_ItensDeMenuERegraDeUsuariosColeta',GetDate())
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ItemMenu' AND xtype='U')
+create table ItemMenu (
+	Id int IDENTITY(1,1) primary key not null,
+	ItemMenu_Id int,
+	AddDate datetime2 not null,
+	AlterDate datetime2,
+	Name varchar(255) not null,
+	Icon varchar(255),
+	Url varchar(255),
+	Resource varchar(255),
+	IsActive bit
+)
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RoleUserSgqXItemMenu' AND xtype='U')
+create table RoleUserSgqXItemMenu (
+	Id int IDENTITY(1,1) primary key not null,
+	AddDate date not null,
+	AlterDate date,
+	Name varchar(255),
+	ItemMenu_Id int not null-- FOREIGN KEY REFERENCES ItemMenu(Id),
+	RoleUserSgq_Id int not null --FOREIGN KEY REFERENCES RoleUserSgq(Id), RoleUserSgq não tem PK
+	IsActive bit
+)
+
+IF COL_LENGTH('RoleUserSgq','FazColeta') IS NULL
+    BEGIN
+		ALTER TABLE RoleUserSgq
+		ADD FazColeta bit not null
+    END
+
+ALTER TABLE RoleUserSgq
+ADD PRIMARY KEY (ID)
