@@ -229,7 +229,7 @@
 
 
             <button id="AllLevelsAllRegions" class="btn btn-default"> Todos os Indicadores | Todas as Regionais ↧</button>
-            <button id="AllFunctionsAllUnits" class="btn btn-default"> Todos os Funções | Todas as Unidades ↦</button>
+            <button id="AllFunctionsAllUnits" class="btn btn-default"> Todos as Funções | Todas as Unidades ↦</button>
             <div id="tabela1div"></div>
 
             <div id="tblAllLevelsAllRegions"></div>
@@ -1355,12 +1355,12 @@
             enviar["unitId"] = "";
             $('#IndicadoresPorUnidadeReg').empty();
 
-        $('#grafico3').empty();
+        
         $('#grafico4').empty();
         $('#grafico5').empty();
         $('#tblAllFunctionsAllUnits').empty();
         $('#tblAllLevelsAllRegions').empty();
-
+        $('#inicadoresPorRegional').empty();
         enviar["CallBackTableTituloColunas"] = function () { };
         enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
         enviar["CallBackTableEsquerda"] = function () { };
@@ -1749,164 +1749,166 @@
         }
 
         function CallbackGrafico3(data) {
-            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
-            var nc = MapeiaValorParaHC(data, "nc");
-            var porc = MapeiaValorParaHC(data, "procentagemNc");
-            var qtdAv = MapeiaValorParaHC(data, "av");
-            //Para envio do PA
-            $('#grafico3').removeClass('loader');
+                var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-        $('#grafico3').empty().highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column',
-                zoomType: 'x,y'
-            },
-            title: {
-                text: enviar.unitName + ' - ' + enviar["ParametroTableRow"][1]  //data[1].level1Name
-            },
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+                var nc = MapeiaValorParaHC(data, "nc");
+                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "av");
+                //Para envio do PA
+                $('#grafico3').removeClass('loader');
 
-            subtitle: {
-                text: Resources("last_two_months_of_the_selected_period")
-            },
-            xAxis: {
-                categories: dia,
-                title: {
-                    text: Resources("data"),
-                },
-            },
-            yAxis: [
-                {
-                    min: 0,
-                    title: {
-                        text: Resources("quantity")
+                $('#grafico3').empty().highcharts({
+                    credits: {
+                        enabled: false
                     },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                }, {
-                    labels: {
-                        format: '{value} %',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x,y'
                     },
                     title: {
-                        text: "% " + Resources("nonconformity"),
+                        text: enviar.unitName + ' - ' + enviar["ParametroTableRow"][1]  //data[1].level1Name
                     },
-                    opposite: true
-                }],
-            legend: {
-                shadow: false
-            },
-            tooltip: {
-                shared: true
-            },
-            plotOptions: {
-                column: {
-                    grouping: false,
-                    shadow: false,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'NC',
-                color: 'rgba(77,143,189,1)',
-                data: nc,
-                yAxis: 0,
-                pointPadding: 0.2,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+
+                    subtitle: {
+                        text: Resources("last_two_months_of_the_selected_period")
+                    },
+                    xAxis: {
+                        categories: dia,
+                        title: {
+                            text: Resources("data"),
+                        },
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            title: {
+                                text: Resources("quantity")
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: "% " + Resources("nonconformity"),
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    formatter: function () {
-                        return Highcharts.numberFormat(this.y,2);
                     },
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' qtd'
-                }
-            }, {
-                name: '% NC',
-                color: 'rgba(240,124,0,1)',
-                data: porc,
-                yAxis: 1,
-                pointPadding: 0.4,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        pointPadding: 0.2,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y, 2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    formatter: function () {
-                        return Highcharts.numberFormat(this.y,2);
-                    },
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' %'
-                }
-            }, {
-                visible: false,
-                name: 'Avaliações',
-                data: qtdAv,
-                color: 'rgba(81,207,64,1)',
-                pointPadding: 0.3,
-                pointPlacement: 0.2,
-                yAxis: 0,
-                point: {
-                    events: {
-                        click: function () {
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                    }, {
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        pointPadding: 0.4,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y, 2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' %'
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    formatter: function () {
-                        return Highcharts.numberFormat(this.y,2);
-                    },
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' qtd'
-                }
-            }]
-        });
-    }
+                    }, {
+                        visible: false,
+                        name: 'Avaliações',
+                        data: qtdAv,
+                        color: 'rgba(81,207,64,1)',
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y, 2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
+                        }
+                    }]
+                });
+
+        }
 
     function Grafico4(paramCol, paramRow) {
 
