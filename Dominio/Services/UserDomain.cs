@@ -51,6 +51,17 @@ namespace Dominio.Services
                         return "Cannot log in, user must have at least one Company Active in database to have acess.";
                 }
             }
+
+            public static string usuarioSemPermissaoColeta
+            {
+                get
+                {
+                    if (GlobalConfig.LanguageBrasil)
+                        return "O Usuário não possui permissão para realizar coletas";
+                    else
+                        return "Cannot log in, the user does not have permission to audit";
+                }
+            }
         }
 
         private readonly IUserRepository _userRepo;
@@ -102,6 +113,8 @@ namespace Dominio.Services
             {
                 UserSgq userByName;
                 UserSgq isUser = null;
+                var PermiteColeta = false;
+
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
 
@@ -186,12 +199,32 @@ namespace Dominio.Services
 
                 }
 
+                /* Verifica se o usuário tem permissão para fazer coleta */
+                if (userDto.app)
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var RolesUserName = db.UserSgq.Find(userDto.Id).Role.Split(',');
+
+                        if (RolesUserName.Length > 0)
+                        {
+                            var RolesUserIds = db.RoleUserSgq.Where(r => RolesUserName.Contains(r.Name)).Select(r => r.Id).ToList();
+
+                            PermiteColeta = db.RoleUserSgq.Where(r => RolesUserIds.Contains(r.Id) && r.FazColeta == true).ToList().Count > 0;
+                        }
+                    }
+
+                    if (!PermiteColeta)
+                        throw new Exception(mensagens.usuarioSemPermissaoColeta);
+                }
+
+
                 return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(isUser));
             }
             catch (Exception e)
             {
                 new CreateLog(e);
-                return new GenericReturn<UserDTO>(e, e.Message);
+                return new GenericReturn<UserDTO>(e, "");
             }
 
         }
