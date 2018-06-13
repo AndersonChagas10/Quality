@@ -3266,7 +3266,8 @@
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toISOString().slice(0, 10) };
 
                     return valor;
                 } else {
@@ -3274,6 +3275,7 @@
                         valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
                     }
                 }
+
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
@@ -3292,7 +3294,8 @@
 
                     let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toISOString().slice(0, 10) };
 
                     return valor;
                 } else {
@@ -3300,7 +3303,6 @@
                         valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
                     }
                 }
-
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
