@@ -258,7 +258,6 @@ function MountDataTable(json) {
         "bLengthChange": true,
         "dom": 'Blfrtip',
         "buttons": [
-            //{
             {
                 extend: 'colvisGroup',
                 text: Resources("initial_view"),
@@ -1437,18 +1436,68 @@ function orderArray(array) {
 }
 //Desc pendente
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
+
     var filtroEixoX = [];
+
     if (id == 'panel5') {
-        if ($('#valor2Panel5 option:selected').text() == Resources("all"))
-            filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
-        else {
+
+        if ($('#valor2Panel5 option:selected').text() == Resources("all")) {
+
+            let categories = categoriesFilter.split('.');
+
+            let dados2 = $.grep(dados, function (r) {
+
+                if (categories.length == 2) {
+                    if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories[0]][categories[1]] == $('#valor1Panel5 option:selected').text();
+                    }
+                } else {
+                    if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories] == $('#valor1Panel5 option:selected').text();
+                    }
+                }
+            });
+            
+            filtroEixoX = MapeiaValorParaHC(dados2, seriesFilter).filter(onlyUnique);
+
+        }else {
+
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
+
     } else if (id == 'panel6') {
-        if ($('#valor2Panel6 option:selected').text() == Resources("all"))
-            filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
+
+        if ($('#valor2Panel6 option:selected').text() == Resources("all")) {
+
+            let categories = categoriesFilter.split('.');
+
+            let dados2 = $.grep(dados, function (r) {
+
+                if (categories.length == 2) {
+                    if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories[0]][categories[1]] == $('#valor1Panel6 option:selected').text();
+                    }
+                } else {
+                    if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories] == $('#valor1Panel6 option:selected').text();
+                    }
+                    
+                }
+            });
+
+            filtroEixoX = MapeiaValorParaHC(dados2, seriesFilter).filter(onlyUnique);
+        }
         else {
+
             filtroEixoX.push($('#valor2Panel6 option:selected').text());
 
         }
