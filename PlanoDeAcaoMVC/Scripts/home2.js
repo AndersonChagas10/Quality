@@ -17,7 +17,7 @@ var dadosPie2 = [];
 var ColvisarrayVisaoUsuario_show = [];
 var ColvisarrayVisaoUsuario_hide = [];
 
-function GetDataTable(campo, filtro) {
+function GetDataTable(campo, filtro, campo2, filtro2) {
 
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
@@ -36,17 +36,25 @@ function GetDataTable(campo, filtro) {
         }
 
         //fim https://grtsolucoes.atlassian.net/browse/JBS-110
+        //Regras para o primeiro filtro geral
         if (campo == "") {
             campo = "Todos";
             $("campo1FiltroPie2 select").val("Todos");
-
         }
-
 
         if (campo != "Todos" && filtro != "Todos") {
             dados = FiltraLinhas(dados, [campo], [filtro]);
         }
 
+        //Regras para o segundo filtro geral
+        if (campo2 == "") {
+            campo2 = "Todos";
+            $("campo1FiltroPie2 select").val("Todos");
+        }
+
+        if (campo2 != "Todos" && filtro2 != "Todos") {
+            dados = FiltraLinhas(dados, [campo2], [filtro2]);
+        }
 
         //gera o gráfico de Pizza
         geraData1();
@@ -101,7 +109,6 @@ function GetDataTable(campo, filtro) {
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
-
 
     });
 }
@@ -2537,7 +2544,10 @@ $('#btnTop').click(function () {
     FiltraLinhasComTodos(dados, "", "Todos");
     getDateRange($("input[name='daterange']").val());
 
-    GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+    GetDataTable($('#campo1Filtro option:selected').val(),
+        $('#valor1Filtro option:selected').text(),
+        $('#campo2Filtro option:selected').val(),
+        $('#valor2Filtro option:selected').text());
 
     //GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 })

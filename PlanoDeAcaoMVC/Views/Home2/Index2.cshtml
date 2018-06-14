@@ -510,6 +510,38 @@
                     <option>@Resources.Resource.all</option>
                 </select>
                 &nbsp;
+
+                <select style="font-size:xx-small;" id="campo2Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor2Filtro');">
+                    <option value="">@Resources.Resource.all</option>
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="UnidadeName">@Resources.Resource.unit</option>
+                    <option value="_Quem">@Resources.Resource.who</option>
+                    <option value="_StatusName">@Resources.Resource.status</option>
+                    <option value="Regional">@Resources.Resource.regional</option>
+                    <option value="Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+                &nbsp;
+
+                <select id="valor2Filtro">
+                    <option>@Resources.Resource.all</option>
+                </select>
+                &nbsp;
+
                 <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnTop"><span class="glyphicon glyphicon-filter"></span></button>
             </div>
 
