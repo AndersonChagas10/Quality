@@ -9,9 +9,12 @@ using PlanoAcaoCore.Acao;
 using PlanoAcaoCore.Enum;
 using PlanoDeAcaoMVC.Controllers.Api;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
@@ -467,6 +470,28 @@ namespace PlanoDeAcaoMVC.Controllers
                     novoPlanejamentoTatico = apiTmp.CreateGenericEstrategicoTaticoFta();
 
             return novoPlanejamentoTatico.Id;
+        }
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+            try
+            {
+
+                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+                ViewBag.Resources = resourceManager.GetResourceSet(
+                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            base.Initialize(requestContext);
         }
 
         #endregion
