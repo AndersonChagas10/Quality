@@ -4481,7 +4481,8 @@ FROM (SELECT
         " + Wtarefa + @"
         AND CL1.ParLevel1_Id != 43
         AND CL1.ParLevel1_Id != 42
-        
+        AND R3.IsNotEvaluate = 0      
+
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
