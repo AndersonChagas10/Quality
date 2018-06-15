@@ -4,9 +4,51 @@
     Layout = null;
     var urlDataCollection = ViewBag.UrlDataCollect;
 
-    var ListItensMenu = ViewBag.ItensMenu;
+    var ListItensMenu = (IEnumerable<DTO.DTO.ItemMenuDTO>)ViewBag.ItensMenu;
 }
 
+@functions{
+
+
+    string RetornaIcone(DTO.DTO.ItemMenuDTO item)
+    {
+        if (!string.IsNullOrEmpty(item.Icon))
+        {
+            return $"<i class='{item.Icon}'></i>";
+        }
+        return "";
+    }
+
+    string MontaSubItem(DTO.DTO.ItemMenuDTO item)
+    {
+        string html = "";
+        html += "<li class='nav-item'>";
+        if (item.ListaFilho.Count > 0)
+        {
+            html += $@"<a href = 'javascript:;' class='nav-link nav-toggle'>
+                {RetornaIcone(item)}
+                <span class='title'>{item.Name}</span>
+                <span class='arrow'></span>
+            </a>";
+            html += $@"<ul class='sub-menu'>";
+            foreach (var filho in item.ListaFilho)
+            {
+                html += MontaSubItem(filho);
+            }
+            html += "</ul>";
+        }
+        else
+        {
+            var url = ((item.Url != null) ? Html.Action(item.Url) : Html.Raw("javascript:;"));
+            html += $@"<a href = '{url}' class='nav-link nav-toggle'>
+                {RetornaIcone(item)}
+                <span class='title'>{item.Name}</span>
+            </a>";
+        }
+        html += "</li>";
+        return html;
+    }
+}
 &nbsp;
 <div class="page-sidebar-wrapper hide">
     <div class="page-sidebar navbar-collapse collapse zindex-control" style="height: 100% !important; z-index: 2000;">
@@ -16,7 +58,32 @@
                     <span></span>icon-home
                 </div>
             </li>
-            
+
+
+            @{
+                if (ListItensMenu != null)
+                {
+                    //Prepara as classes para a montagem do menu
+                    foreach (var item in ListItensMenu)
+                    {
+                        foreach (var filho in ListItensMenu)
+                        {
+                            if (item.Id == filho.ItemMenu_Id)
+                            {
+                                item.ListaFilho.Add(filho);
+                                filho.IsSubItem = true;
+                            }
+                        }
+                    }
+
+
+                    //Gera a visualização do menu
+                    foreach (var item in ListItensMenu.Where(i => !i.IsSubItem))
+                    {
+                        @Html.Raw(MontaSubItem(item))
+                    }
+                }
+            }
         </ul>
     </div>
 </div>
@@ -48,34 +115,6 @@
 
 <script>
 
-    var RequestRoleLink = {
-        request: function (idDiv, action, controller) {
-            @*$.post("@Url.Action("VerificarRoleLink", "role")", { controller: controller, action: action }, function (retorno) {
-                if (retorno != "True") {
-                    $("#" + idDiv).hide();
-                }
-            }).fail(function () {
-               //$("#" + idDiv).hide();
-            });*@
-        },
-    };
-
-    RequestRoleLink.request("RoleLink1", "Index", "Home");
-    RequestRoleLink.request("RoleLink2", "Index", "ColetaDados");
-    RequestRoleLink.request("RoleLink3", "Index", "Gestao");
-    RequestRoleLink.request("RoleLink4", "Index", "Params");
-    RequestRoleLink.request("RoleLink5", "LeftControlRole", "Role");
-    RequestRoleLink.request("RoleLink6", "Index", "ParLevel2ControlCompany");
-    RequestRoleLink.request("RoleLink7", "Index", "Valume");
-    RequestRoleLink.request("RoleLink8", "Index2", "ParCompany");
-    RequestRoleLink.request("RoleLink9", "Index", "ParClusters");
-    RequestRoleLink.request("RoleLink10", "Index", "ParCompany");
-    RequestRoleLink.request("RoleLink11", "Index", "ParDepartments");
-    RequestRoleLink.request("RoleLink12", "Index", "ParMeasurementUnits");
-    RequestRoleLink.request("RoleLink13", "Index", "Role");
-    RequestRoleLink.request("RoleLink14", "Index", "UserSgq");
-    RequestRoleLink.request("RoleLink15", "Index", "UpdateTelaTablet");
-
     function navbarSelect(id) {
         $('.nav-item').removeClass('active').removeClass('start').removeClass('open');
         $('#' + id).addClass('active').addClass('start').addClass('open');
@@ -83,9 +122,11 @@
 
     $('.nav-item a').click(function () {
         if ($(this).parent().hasClass('open')) {
+            $(this).children('span.arrow').removeClass('open')
             $(this).parent().children('.sub-menu').css("display", "none");
             $(this).parent().removeClass('open');
         } else {
+            $(this).children('span.arrow').addClass('open')
             $(this).parent().addClass('open');
             $(this).parent().children('.sub-menu').css("display", "block");
         }
@@ -93,145 +134,9 @@
 
     var root = @Html.Raw(Json.Encode(GlobalConfig.urlPreffixAppColleta));
 
-    function atualziarTablets() {
-        bootbox.confirm(
-            @Html.Raw(Json.Encode(Resources.Resource.update_tablet_message)), function (result) {
-                if(result){
-                    $.LoadingOverlay('show');
-                    var unidade = GetUnidadeUsuario();
-                    $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidade, { UnitId: unidade }, function (r) {
-                        $.LoadingOverlay('hide')
-                    });
-                }
-            });
-    }
-
     var progress = new LoadingOverlayProgress();
-    var acumulador = 0;
-
-    function atualziarAllTablets() {
-        bootbox.confirm(@Html.Raw(Json.Encode(Resources.Resource.update_all_tablet_message)), function (result) {
-            if(result){
-
-                // Initialize Progress and show LoadingOverlay
-                var progress = new LoadingOverlayProgress();
-                $.LoadingOverlay("show", {
-                    custom  : progress.Init()
-                });
-
-                $.get(root + '/api/AppParams/GetUnits', {}, function (unidadesIds) {
-                    var total = unidadesIds.length;
-                    var passo = 100/unidadesIds.length;
-                    acumulador = passo
-
-                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(0, total/3));
-                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3, total/3*2));
-                    getTelaByTablet(progress, total, passo,unidadesIds.slice().splice(total/3*2, unidadesIds.length-1));
-
-                });
-
-            }
-        });
-    }
-
-    function getTelaByTablet(progress, total, passo, unidadesIds){
-        $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidadesIds[0], {}, function (r) {
-            acumulador += parseInt(passo)
-            progress.Update(acumulador.toFixed(0));
-            if(acumulador > 99.99)
-                $.LoadingOverlay("hide");
-
-            unidadesIds.splice(0, 1);
-            if(unidadesIds.length > 0)
-                getTelaByTablet(progress, total, passo, unidadesIds);
-        });
-    }
-
-    Array.prototype.move = function (from, to) {
-        this.splice(to, 0, this.splice(from, 1)[0]);
-    };
-
-    let ItemMenu = {
-
-        menu: function (id, name, url, icon, id_Pai) {
-
-        return $(`<li class="nav-item" id="${id}" id_pai="${id_Pai}">
-            <a href="${!!url ? url : "javascript:;"}" class="nav-link nav-toggle">
-                <i class="${icon}" aria-hidden="true"></i>
-                <span class="title">${name}</span>
-                <span class="selected"></span>
-            </a>
-        </li>`);
-    },
-        subMenu: function () {
-        return $('<ul class="sub-menu"></ul>');
-    },
-        grupoMenu: function (id, name) {
-        return $(`<li class="heading">
-                <h3 class="uppercase">${name}</h3>
-            </li>`);
-        }
-
-    };
 
     let ListItensMenu = @Html.Raw(Json.Encode(ListItensMenu));
 
-    ListItensMenu = InicializarMenus(ListItensMenu);
-
-    if (ListItensMenu.length > 0) {
-
-         let verificados = 0;
-
-         while (ListItensMenu.length > 0) {
-
-             let parent = $('li[id=' + ListItensMenu[0].ItemMenu_Id + ']');
-
-             if (parent.length > 0) {
-
-                 let item = ListItensMenu[0];
-
-                 if ($(parent).children('ul.sub-menu').length == 0) {
-                     $(parent).append(ItemMenu.subMenu().clone());
-                 }
-
-                 parent.children('ul.sub-menu').append(ItemMenu.menu(item.Id, item.Name, item.Url, item.Icon, item.ItemMenu_Id).clone());
-
-                 ListItensMenu.splice(0, 1);
-
-                 verificados = 0;
-
-             } else {
-
-                 //Mandar o item do arr para o fim da lista
-                 ListItensMenu.move(0, ListItensMenu.length - 1);
-
-                 verificados++
-
-                 if (verificados > ListItensMenu.length) {
-                     console.log("Erro ao montar menu");
-                     break;
-                 }
-             }
-         }
-     }
-
-    function InicializarMenus(ListItensMenu) {
-
-         let MenusIniciais = $.grep(ListItensMenu, function (item) {
-             return item.ItemMenu_Id == 0;
-         });
-
-         MenusIniciais.forEach(function (item) {
-
-             $('.page-sidebar-menu').append(ItemMenu.menu(item.Id, item.Name, item.Url, item.Icon, item.ItemMenu_Id).clone());
-
-         });
-
-         ListItensMenu = $.grep(ListItensMenu, function (item) {
-             return item.ItemMenu_Id != 0 && !!item.ItemMenu_Id;
-         });
-
-         return ListItensMenu;
-     }
 
 </script>

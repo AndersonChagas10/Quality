@@ -16,6 +16,8 @@ namespace DTO.DTO
         public string Resource { get; set; }
         public bool IsActive { get; set; }
 
+        public bool IsSubItem { get; set; }
         public ItemMenuDTO MenuPredecessor { get; set; }
+        public List<ItemMenuDTO> ListaFilho { get; set; } = new List<ItemMenuDTO>();
     }
 }
