@@ -42,11 +42,24 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.GrupoCausa = Pa_GrupoCausa.Listar();
             ViewBag.ContramedidaGenerica = Pa_ContramedidaGenerica.Listar();
             ViewBag.Predecessora = Pa_Planejamento.Listar();
-            ViewBag.Status = Pa_Status.Listar();
+
+            var Status = Pa_Status.Listar();
+
+            ViewBag.Status = Status;
+            ViewBag.Status2 = GetStatusAcompanhamento(Status);
             ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
             ViewBag.Pa_Problema_Desvio = Pa_Problema_Desvio.Listar();
 
             ViewBag.UnidadeMedida = Pa_UnidadeMedida.Listar();
+        }
+
+        private static IEnumerable<Pa_Status> GetStatusAcompanhamento(IEnumerable<Pa_Status> Status)
+        {
+            int[] statusAcompanhamento = { (int)Enums.Status.Cancelado, (int)Enums.Status.Concluido, (int)Enums.Status.Aberto, (int)Enums.Status.Finalizada };
+
+            Status = Status.Where(r => statusAcompanhamento.Contains(r.Id));
+
+            return Status;
         }
 
         #region Ações
@@ -374,7 +387,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 {
                     PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
                 }
-                
+
 
                 if (fta.Level2Id.IsNotNull())
                 {
@@ -413,7 +426,7 @@ namespace PlanoDeAcaoMVC.Controllers
                     {
                         fta.ReincidenciaDesvioFTA = "0";
                     }
-                    
+
                 }
 
                 //fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
@@ -434,7 +447,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 else
                 {
                     fta.MetaFTA = "0";
-                }      
+                }
             }
         }
 

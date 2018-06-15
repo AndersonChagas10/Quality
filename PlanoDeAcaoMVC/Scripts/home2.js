@@ -398,6 +398,8 @@ function MountDataTable(json) {
                 } else if (data.Acao.Status == 4) {
                     bgColorPrazo = "rgb(126, 194, 253)";
                     bgColorStatus = "steelblue"
+                } else if (data.Acao.Status == 9) {
+                    bgColorStatus = "#E0EEEE";
                 }
 
                 //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
@@ -869,6 +871,7 @@ var canceladoColor = '#000000'
 var retornoColor = '#8B4513'
 var finalizadaColor = '#00008B'
 var finalizadaComAtrasoColor = '#FF4500'
+var naoIniciadoColor = '#E0EEEE'
 
 var dataInicio;
 var dataFim;
@@ -1615,6 +1618,8 @@ function pintaStatus(seriesFilter, serieArrFinal) {
                 c["color"] = finalizadaColor;
             } else if (c.name == Resources("finished_late")) {
                 c["color"] = finalizadaComAtrasoColor;
+            } else if (c.name == Resources("not_started")) {
+                c["color"] = naoIniciadoColor;
             }
         });
 
@@ -1917,6 +1922,10 @@ function geraData1() {
                 campo = Resources('finished_late');
                 cor = finalizadaComAtrasoColor;
                 break;
+            case 9:
+                campo = Resources('not_started');
+                cor = naoIniciadoColor;
+                break;
             default:
                 campo = Resources('status');
                 cor = 'black';
@@ -1988,6 +1997,10 @@ function geraData2(dadosFiltrados) {
             case 8:
                 campo = Resources('finished_late');
                 cor = finalizadaComAtrasoColor;
+                break;
+            case 9:
+                campo = Resources('not_started');
+                cor = naoIniciadoColor;
                 break;
             default:
                 campo = Resources('status');

@@ -1,0 +1,9 @@
+-- 15 06 2018 - Renan (Novo Status Não Iniciado e Aberto para o Acompanhamento) 
+-- Plano de Ação
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180615_0000_AdicionadoNovosStatus',GetDate())
+
+INSERT INTO pa_status (adddate, Name)
+	VALUES (GETDATE(), 'Não iniciado')
+
+INSERT INTO pa_status (adddate, Name)
+	VALUES (GETDATE(), 'Aberto')
