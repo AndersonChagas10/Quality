@@ -99,86 +99,96 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         public RetrocessoReturn Get(int ParCompany_Id)
         {
-            
 
-            SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();            
-
-            var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
-
-            Factory factorySgq = new Factory("DefaultConnection");
-
-            var userSQL = "UserGQualidade";
-            var passSQL = "grJsoluco3s";
-
-            if(AppSettingsWebConfig.GetValue("BuildEm") == "DesenvolvimentoDeployServidorGrtParaTeste")
+            try
             {
-                userSQL = "sa";
-                passSQL = "betsy1";
-            }
 
-            using (var db = new SgqDbDevEntities())
-            {
-                var log = new LogJson();
-                log.Device_Id = "Web";
-                log.callback = "Reprocesso";
-                log.AddDate = DateTime.Now;
-                log.log =
-                    "{ \"User\" : \"" + userSQL + "\", " +
-                    " \"Password\" : \"" + passSQL + "\" " +
-                    " \"IPServer\" : \"" + parCompany.IPServer + "\" " +
-                    " \"DBServer\" : \"" + parCompany.DBServer + "\"} ";
+                SgqDbDevEntities sgqDbDevEntities = new SgqDbDevEntities();
 
+                var parCompany = sgqDbDevEntities.ParCompany.FirstOrDefault(r => r.Id == ParCompany_Id);
 
-                log.result =
-                    "{ \"User\" : \"" + userSQL + "\", " +
-                    " \"Password\" : \"" + passSQL + "\" " +
-                    " \"IPServer\" : \"" + parCompany.IPServer + "\" " +
-                    " \"DBServer\" : \"" + parCompany.DBServer + "\"} ";
+                Factory factorySgq = new Factory("DefaultConnection");
 
-                db.LogJson.Add(log);
+                var userSQL = "UserGQualidade";
+                var passSQL = "grJsoluco3s";
 
-                db.LogJson.Add(log);
-                db.SaveChanges();
-            }
-
-
-            Factory factoryParReprocessoHeaderOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
-            Factory factoryParReprocessoCertificadosSaidaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
-            Factory factoryParReprocessoEntradaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
-            Factory factoryParReprocessoSaidaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
-
-            if (parCompany != null)
-            {
-                return new RetrocessoReturn
+                if (AppSettingsWebConfig.GetValue("BuildEm") == "DesenvolvimentoDeployServidorGrtParaTeste")
                 {
-                    parReprocessoHeaderOPs = factoryParReprocessoHeaderOP.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " " + parCompany.CompanyNumber),
-                    parReprocessoCertificadosSaidaOP = factoryParReprocessoCertificadosSaidaOP.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP") + " " + parCompany.CompanyNumber),
-                    parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber).Select(r =>
+                    userSQL = "sa";
+                    passSQL = "betsy1";
+                }
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    var log = new LogJson();
+                    log.Device_Id = "Web";
+                    log.callback = "Reprocesso";
+                    log.AddDate = DateTime.Now;
+                    log.log =
+                        "{ \"User\" : \"" + userSQL + "\", " +
+                        " \"Password\" : \"" + passSQL + "\" " +
+                        " \"IPServer\" : \"" + parCompany.IPServer + "\" " +
+                        " \"DBServer\" : \"" + parCompany.DBServer + "\"} ";
+
+
+                    log.result =
+                        "{ \"User\" : \"" + userSQL + "\", " +
+                        " \"Password\" : \"" + passSQL + "\" " +
+                        " \"IPServer\" : \"" + parCompany.IPServer + "\" " +
+                        " \"DBServer\" : \"" + parCompany.DBServer + "\"} ";
+
+                    db.LogJson.Add(log);
+
+                    db.LogJson.Add(log);
+                    db.SaveChanges();
+                }
+
+
+                Factory factoryParReprocessoHeaderOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+                Factory factoryParReprocessoCertificadosSaidaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+                Factory factoryParReprocessoEntradaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+                Factory factoryParReprocessoSaidaOP = new Factory(parCompany.IPServer, parCompany.DBServer, passSQL, userSQL);
+
+                if (parCompany != null)
+                {
+                    return new RetrocessoReturn
                     {
-                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto.ToString()).FirstOrDefault();
-                        if (r.produto != null)
+                        parReprocessoHeaderOPs = factoryParReprocessoHeaderOP.SearchQuery<ParReprocessoHeaderOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoHeaderOP") + " " + parCompany.CompanyNumber),
+                        parReprocessoCertificadosSaidaOP = factoryParReprocessoCertificadosSaidaOP.SearchQuery<ParReprocessoCertificadosSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoCertificadosSaidaOP") + " " + parCompany.CompanyNumber),
+                        parReprocessoSaidaOPs = factoryParReprocessoSaidaOP.SearchQuery<ParReprocessoSaidaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoSaidaOP") + " " + parCompany.CompanyNumber).Select(r =>
                         {
-                            r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
-                        }
-                        return r;
-                    }).ToList(),
-                    parReprocessoEntradaOPs =
-                    factoryParReprocessoEntradaOP.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " " + parCompany.CompanyNumber).Select(r =>
-                    {
-                        r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
-                        if (r.produto != null)
+                            r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto.ToString()).FirstOrDefault();
+                            if (r.produto != null)
+                            {
+                                r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
+                            }
+                            return r;
+                        }).ToList(),
+                        parReprocessoEntradaOPs =
+                        factoryParReprocessoEntradaOP.SearchQuery<ParReprocessoEntradaOP>("EXEC " + AppSettingsWebConfig.GetValue("PROC_ParReprocessoEntradaOP") + " " + parCompany.CompanyNumber).Select(r =>
                         {
-                            r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
-                        }
-                        return r;
-                    }).ToList(),
-                    headerFieldsEntrada = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoEntrada%'"),
-                    headerFieldsSaida = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoSaida%'")
-                };
+                            r.produto = factorySgq.SearchQuery<Produto>("SELECT * FROM Produto WHERE nCdProduto = " + r.nCdProduto).FirstOrDefault();
+                            if (r.produto != null)
+                            {
+                                r.produto.cNmProduto = r.produto.cNmProduto.Replace("\"", "");
+                            }
+                            return r;
+                        }).ToList(),
+                        headerFieldsEntrada = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoEntrada%'"),
+                        headerFieldsSaida = factorySgq.SearchQuery<Header>("SELECT 'cb'+ CAST(id AS VARCHAR(400)) AS Id FROM ParHeaderField WHERE Description like 'ReprocessoSaida%'")
+                    };
+
+                }
+
                 
             }
-
+            catch(Exception e)
+            {
+                
+            }
+            
             return null;
+           
 
         }
 

@@ -74,9 +74,19 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpGet]
+        [Route("GetListParMultipleValuesXParCompany/{unitId}/{level1_id}")]
+        public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, string level1_id, String Date)
+        {
+
+            return GetListParMultipleValuesXParCompany(UnitId, Date);
+
+        }
+
+        [HttpGet]
         [Route("GetListParMultipleValuesXParCompany/{unitId}")]
         public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, String Date)
         {
+
             var SelectQuery =
                 @"SELECT 
                 PP.ParCompany_Id, 
