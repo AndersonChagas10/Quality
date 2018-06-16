@@ -1,11 +1,6 @@
 ﻿var tablePlanejamento;
 var dadosPlanejamento = [];
 
-//function GetDataTablePlanejamento(campo, filtro) {
-//    //$.get(urlGetPlanejamentoRange, enviar, function (r) {
-//    //    MountDataTablePlanejamento(r);
-//    //});
-//}
 
 function GetDataTablePlanejamento(json) {
 
@@ -55,8 +50,8 @@ function objectToArr(myObj) {
 
 function MountDataTablePlanejamento(json) {
 
-    if (ColvisarrayVisaoAtual_show.length != 0) {
-        setArrayColvisAtual();
+    if (ColvisarrayProjVisaoAtual_show.length != 0) {
+        setArrayProjColvisAtual();
 
         setTimeout(function () {
             $('body > div.dt-button-background').click();
@@ -196,16 +191,25 @@ function MountDataTablePlanejamento(json) {
                     $('#btnTop').click();
                 },
             },
+            {
+                text: Resources("my_columns"),
+                extend: 'colvisGroup',
+                show: ColvisarrayProjVisaoUsuario_show,
+                hide: ColvisarrayProjVisaoUsuario_hide
+            },
+            {
+                text: Resources("save_columns"),
+                action: function (e, dt, node, config) {
+                    let Tabela = "Planejamento"
+                    SaveUserColVis(Tabela);
+                },
+            },
         ],
         fixedColumns: {
             leftColumns: 0,
             rightColumns: 2,
         },
         initComplete: function () {
-            //$('#TablePlanejamento_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').on("click", function () {
-            //    $('body > div.dt-button-collection.fixed.four-column > a:nth-child(40)').hide();
-            //    $('body > div.dt-button-collection.fixed.four-column > a:nth-child(41)').hide();
-            //});
 
         },
         "language": {
@@ -263,8 +267,8 @@ function MountDataTablePlanejamento(json) {
 
     tablePlanejamento.draw();
 
-    if (ColvisarrayVisaoAtual_show.length == 0) {
-        setArrayColvisAtual();
+    if (ColvisarrayProjVisaoAtual_show.length == 0) {
+        setArrayProjColvisAtual();
 
         setTimeout(function () {
             $('body > div.dt-button-background').click();
@@ -372,4 +376,8 @@ function SetFiltrosDeColunasTablePlanejamento() {
             });
         });
     }
+}
+
+function GetUserColvis() {
+
 }

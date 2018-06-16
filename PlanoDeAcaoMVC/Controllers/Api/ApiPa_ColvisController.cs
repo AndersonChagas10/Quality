@@ -38,24 +38,42 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             var UserColvis = Get(colvis);
 
-            var query = "";          
+            var query = "";
 
             if (UserColvis.Count > 0)
             {
                 dynamic colvisObj = UserColvis;
                 int Id = colvisObj[0].Id;
 
-                //Update   
-                query = $@"UPDATE [dbo].[Pa_Colvis]
+                //Update
+                if (colvis.Tabela == "Acao")
+                {
+                    query = $@"UPDATE [dbo].[Pa_Colvis]
                     SET [ColVisShow] = '{ colvis.ColVisShow }', [ColVisHide] = '{ colvis.ColVisHide }', [AlterDate] = '{ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") }'
                     WHERE Id = { Id }";
+                }
+                else if (colvis.Tabela == "Planejamento")
+                {
+                    query = $@"UPDATE [dbo].[Pa_Colvis]
+                    SET [ColVisProjShow] = '{ colvis.ColVisProjShow }', [ColVisProjHide] = '{ colvis.ColVisProjHide }', [AlterDate] = '{ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") }'
+                    WHERE Id = { Id }";
+                }
             }
             else
             {
                 //Insert
-                query = $@"INSERT INTO [dbo].[Pa_Colvis]
+                if (colvis.Tabela == "Acao")
+                {
+                    query = $@"INSERT INTO [dbo].[Pa_Colvis]
                     ([ColVisShow], [ColVisHide], [Pa_Quem_Id])
                     VALUES('{ colvis.ColVisShow }','{ colvis.ColVisHide }',{ colvis.Pa_Quem_Id })";
+                }
+                else if (colvis.Tabela == "Planejamento")
+                {
+                    query = $@"INSERT INTO [dbo].[Pa_Colvis]
+                    ([ColVisProjShow], [ColVisProjHide], [Pa_Quem_Id])
+                    VALUES('{ colvis.ColVisProjShow }','{ colvis.ColVisProjHide }',{ colvis.Pa_Quem_Id })";
+                }
             }
 
 
@@ -74,7 +92,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 throw;
             }
 
-            
+
 
         }
 
