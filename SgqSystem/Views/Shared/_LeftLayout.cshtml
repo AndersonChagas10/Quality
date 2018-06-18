@@ -121,12 +121,15 @@
     };
 
     $('.nav-item a').click(function () {
-        if ($(this).parent().hasClass('open')) {
+        var open = $(this).parent().hasClass('open');
+        $(this).parent().siblings('.open').find('a').click();
+        $(this).parent().find('.sub-menu').css("display", "none");
+        if (open) {
             $(this).children('span.arrow').removeClass('open')
-            $(this).parent().children('.sub-menu').css("display", "none");
             $(this).parent().removeClass('open');
         } else {
-            $(this).children('span.arrow').addClass('open')
+            $(this).parent().find('.open').removeClass('open');
+            $(this).children('span.arrow').addClass('open');
             $(this).parent().addClass('open');
             $(this).parent().children('.sub-menu').css("display", "block");
         }
