@@ -82,8 +82,28 @@ function MountDataTablePlanejamento(json) {
             { "mData": "ObjetivoGerencial" },
             { "mData": "_ValorDe" },
             { "mData": "_ValorPara" },
-            { "mData": "_DataInicio" },
-            { "mData": "_DataFim" },
+            {
+                //"mData": "_DataInicio",
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.DataInicio != "0001-01-01T00:00:00")
+                        html = "<span style='display:none'>" + data._DataInicio + "</span>" + new Date(data.DataInicio).toLocaleDateString();
+                    return html;
+
+                }
+            },
+            {
+                //"mData": "_DataFim",
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.DataFim != "0001-01-01T00:00:00")
+                        html = "<span style='display:none'>" + data._DataFim + "</span>" + new Date(data.DataFim).toLocaleDateString();
+                    return html;
+
+                }
+            },
             { "mData": "Responsavel_Projeto_Quem.Name" }, 
             { "mData": "IndicadoresDeProjeto" }, // VER INDICADOR OPERACIONAL*
             { "mData": "QtdeAcao" },

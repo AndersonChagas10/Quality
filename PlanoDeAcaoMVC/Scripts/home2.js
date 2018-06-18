@@ -160,7 +160,7 @@ Resources("theme_subject"),
 Resources("for_what"),
 Resources("how_much"),
 Resources("status"),
-    Resources("term")]);
+Resources("term")]);
 
 var enviar = {};
 var start = moment();
@@ -330,8 +330,30 @@ function MountDataTable(json) {
             { "mData": "ObjetivoGerencial" },
             { "mData": "_ValorDe" },
             { "mData": "_ValorPara" },
-            { "mData": "_DataInicio" },
-            { "mData": "_DataFim" },
+            {
+                //"mData": "_DataInicio",
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.DataInicio != "0001-01-01T00:00:00") 
+                        html = "<span style='display:none'>" + data._DataInicio + "</span>" + new Date(data.DataInicio).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
+            {
+                //"mData": "_DataFim"
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.DataFim != "0001-01-01T00:00:00") 
+                        html = "<span style='display:none'>" + data._DataFim + "</span>" + new Date(data.DataFim).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
             { "mData": "Responsavel_Projeto_Quem.Name" },
             { "mData": "Acao.Regional" },
             { "mData": "Acao.UnidadeName" },
@@ -346,8 +368,30 @@ function MountDataTable(json) {
             { "mData": "Acao.CausaEspecifica" },
             { "mData": "Acao.ContramedidaEspecifica" },
             { "mData": "Acao._Quem" },
-            { "mData": "Acao._QuandoInicio" },
-            { "mData": "Acao._QuandoFim" },
+            {
+                //"mData": "Acao._QuandoInicio"
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.Acao.QuandoInicio != "0001-01-01T00:00:00") 
+                        html = "<span style='display:none'>" + data.Acao._QuandoInicio + "</span>" + new Date(data.Acao.QuandoInicio).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
+            {
+                //"mData": "Acao._QuandoFim"
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.Acao.QuandoFim != "0001-01-01T00:00:00") 
+                        html = "<span style='display:none'>" + data.Acao._QuandoFim + "</span>" + new Date(data.Acao.QuandoFim).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
             { "mData": "Acao.ComoPontosimportantes" },
             { "mData": "Acao.PraQue" },
             { "mData": "Acao._QuantoCusta" },
@@ -1290,10 +1334,10 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                     }
                 }
             });
-            
+
             filtroEixoX = MapeiaValorParaHC(dados2, seriesFilter).filter(onlyUnique);
 
-        }else {
+        } else {
 
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
@@ -1319,7 +1363,7 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                     } else {
                         return r[categories] == $('#valor1Panel6 option:selected').text();
                     }
-                    
+
                 }
             });
 
@@ -2494,7 +2538,7 @@ function SaveUserColVis(tabela) {
         ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
         ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
 
-    } else if("Planejamento"){ //Tabela Projetos
+    } else if ("Planejamento") { //Tabela Projetos
 
         ColvisarrayProjVisaoAtual_show = $.grep(ColvisarrayProjVisaoAtual_show, function (arr) {
             return (arr != 21 && arr != 22);

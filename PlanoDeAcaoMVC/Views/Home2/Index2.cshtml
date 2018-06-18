@@ -3089,6 +3089,12 @@
 
         function getTablesModal() {
 
+            let renderFunction = function (data, type, row, meta) {
+                let html = "<span style='display:none'>" + data + "</span>" + new Date(data).toLocaleDateString();
+
+                return html;
+            }
+
             // Acão Em Andamento
             let AcoesEspecificas = [];
 
@@ -3172,7 +3178,7 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.start_date" }]
+            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.start_date", render: renderFunction }]
 
             var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3199,7 +3205,7 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.date_conclusion" }]
+            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.date_conclusion", render: renderFunction }]
 
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
