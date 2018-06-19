@@ -196,6 +196,25 @@ namespace Dominio.Services
             return parStructureDTO;
         }
 
+        public ParStructure AtivarOuDesativarParStructure(ParStructureDTO parStructureDTO)
+        {
+            var objReturno = _baseRepoParStructure.GetById(parStructureDTO.Id);
+
+            if(objReturno.Active == true)
+            {
+                objReturno.Active = false;
+            }
+            else
+            {
+                objReturno.Active = true;
+            }
+
+            _baseRepoParStructure.AddOrUpdateNotCommit(objReturno);
+            _baseRepoParStructure.Commit();
+          
+            return objReturno;
+        }
+
         public ParStructureGroupDTO AddUpdateParStructureGroup(ParStructureGroupDTO parStructureGroupDTO)
         {
             ParStructureGroup parStructureGroupSalvar = Mapper.Map<ParStructureGroup>(parStructureGroupDTO);
@@ -206,6 +225,24 @@ namespace Dominio.Services
             parStructureGroupDTO.Id = parStructureGroupSalvar.Id;
 
             return parStructureGroupDTO;
+        }
+
+        public ParStructureGroup AtivarOuDesativarParStructureGroup(ParStructureGroupDTO parStructureGroupDTO)
+        {
+            var retornoObj = _baseRepoParStructureGroup.GetById(parStructureGroupDTO.Id);
+
+            if (retornoObj.Active == true)
+            {
+                retornoObj.Active = false;
+            }
+            else
+            {
+                retornoObj.Active = true;
+            }
+            _baseRepoParStructureGroup.AddOrUpdateNotCommit(retornoObj);
+            _baseRepoParStructureGroup.Commit();
+
+            return retornoObj;
         }
 
         #endregion

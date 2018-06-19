@@ -73,7 +73,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                                         (
                                           SELECT
                                           mesData,
-                                          companySigla,
+                                          companySigla, companyTitle,
                                           LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, regId, regName,
                                           AVG(META) META,
                                           SUM(AV) AV,
@@ -131,7 +131,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                                           FROM(
 
                                           SELECT
-                                          C.Initials companySigla, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, S.mesData,
+                                          C.Initials companySigla, C.Name companyTitle, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, S.mesData,
                                           SUM(AV) AV,
                                           SUM(NC) NC,
                                           MAX(PontosIndicador) PontosIndicador,
@@ -153,7 +153,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                                         (
                                           SELECT
                                           
-                                          companySigla,
+                                          companySigla, companyTitle,
                                           LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, regId, regName,
                                           AVG(META) META,
                                           SUM(AV) AV,
@@ -211,7 +211,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                                           FROM(
 
                                           SELECT
-                                          C.Initials companySigla, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, 
+                                          C.Initials companySigla, C.Name companyTitle, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, MAX(S.META) META, Reg.Id RegId, Reg.Name RegName, 
                                           SUM(AV) AV,
                                           SUM(NC) NC,
                                           MAX(PontosIndicador) PontosIndicador,
@@ -1921,11 +1921,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             @"
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                 AND C.IsActive = 1        
-            GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
             ) AAA
         
-            GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+            GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
             ) A
         
         
@@ -1946,11 +1946,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             @"
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                 AND C.IsActive = 1
-            GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+            GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
             ) AAA
         
-            GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+            GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
             ) A
         
         GROUP BY RegId, RegName
@@ -2056,11 +2056,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                       @"
                         AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                         AND C.IsActive = 1
-                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                       ) AAA
 
-                      GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
 
                       SELECT
@@ -2076,14 +2076,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                       @"
                         AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                         AND C.IsActive = 1  
-                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                       ) AAA
 
-                      GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
 
-                      SELECT companySigla, 
+                      SELECT companySigla, companyTitle,
                        case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end AS companyScorecard,
                       @valorEmpresa as scorecardJbs, 
                       @valorRegional as scorecardJbsReg
@@ -2098,14 +2098,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                       @"
                         AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                         AND C.IsActive = 1  
-                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+                      GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
                       ) AAA
 
-                      GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+                      GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
-                      group by companySigla
-                      ORDER BY 2 DESC";
+                      group by companySigla, companyTitle
+                      ORDER BY 3 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {

@@ -23,6 +23,7 @@ namespace DTO.ResultSet
 
     public class Trs
     {
+        public string title { get; set; }
         public string name { get; set; }
         public int coolspan { get; set; }
 
@@ -39,6 +40,7 @@ namespace DTO.ResultSet
 
     public class Ths
     {
+        public string title { get; set; }
         public string name { get; set; }
         public int coolspan { get; set; }
         public List<Ths> tds { get; set; }

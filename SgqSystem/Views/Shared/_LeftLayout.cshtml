@@ -75,6 +75,11 @@
                                     <span class="title">@Resources.Resource.daily_apointments</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("ApontamentosDiariosDomingo", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.daily_apointments_sunday</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
@@ -107,6 +112,11 @@
                             <li class="nav-item">
                                 <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
                                     <span class="title">@Resources.Resource.defects_reports</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("NaoConformidadeDuplicada", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                    <span class="title">Nao Conformidade Duplicada</span>
                                 </a>
                             </li>
 
@@ -196,19 +206,19 @@
                     }
 
                     @*<li class="nav-item">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.statistical_report</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
-                                    
-                                    <span class="title">@Resources.Resource.control_charts</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>*@
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.statistical_report</span>
+                                <span class="arrow"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
+
+                                        <span class="title">@Resources.Resource.control_charts</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>*@
                 </ul>
             </li>
 

@@ -37,10 +37,11 @@
         , Table.PosicaoLabel.top
         , info: Resources.Resource.consolidation_type_popover
         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
-                    </tr>
 
-                    <tr class="row">
+                        <div style="display:none !important">
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                        </div>
+
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParScoreType_Id", Model.paramsDdl.DdlScoretype, htmlAttributes: new { @class = "form-control input-sm", @id = "selectScoreType" }), @Html.Label(Resources.Resource.scorecard_type), Table.PosicaoLabel.top, info: Resources.Resource.scorecard_type, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParScoreType_Id, null, new { @class = "text-danger" }))
                     </tr>
 
@@ -210,7 +211,7 @@
                                     @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.PointsDestiny, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.points_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.points_destiny)
                                 </tr>
                                 <!--19 - Indicador destino -->
-                                <tr class="row groupChildren padding-left" style="display:none">
+                                <tr class="row padding-left" style="display:none !important">
                                     @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Destiny_Id, Model.paramsDdl.DdlparLevel1Active, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Coloque seu texto aqui", null, 1)
                                 </tr>
                                 <!--20 - Foto  -->
@@ -316,91 +317,113 @@
                                         <tbody>
 
                                             @if (GlobalConfig.Brasil)
-                                                {
-                                            <tr class="row">
+    {
+                                        <tr class="row">
 
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
-                                                <td style="padding:5px;">
-                                                    Equipamento
-                                                </td>
-                                                <td style="padding:5px;">
-                                                    @Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })
-                                                </td>
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
+                                            <td style="padding:5px;">
+                                                Equipamento
+                                            </td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
-                                            </tr>
+                                        </tr>
 
-                                            <tr class="row">
+                                        <tr class="row">
 
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
-                                                <td style="padding:5px;">
-                                                    Câmara
-                                                </td>
-                                                <td style="padding:5px;">
-                                                    @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
-                                                </td>
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
+                                            <td style="padding:5px;">
+                                                Câmara
+                                            </td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
-                                            </tr>
+                                        </tr>
 
-                                                <tr class="row">
+                                        <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
-                                                    <td style="padding:5px;"> Ponto de Coleta</td>
-                                                    <td style="padding:5px;">
-                                                        @Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })
-                                                    </td>
-
-
-                                                </tr>
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
+                                            <td style="padding:5px;"> Ponto de Coleta</td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
 
-                                                    <tr class="row">
-
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
-                                                        <td style="padding:5px;"> Detector de Metais</td>
-                                                        <td style="padding:5px;">
-                                                            @Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })
-                                                        </td>
+                                        </tr>
 
 
-                                                    </tr>
+                                        <tr class="row">
 
-                                            <tr class="row">
-
-                                                <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetor" value="integracaoSetorValor"></td>
-                                                <td style="padding:5px;"> Setor</td>
-                                                <td style="padding:5px;">
-                                                    @Html.DropDownList("integracaoSetorList", Model.paramsDdl.DdlSetor, new { @class = "form-control input-sm equipamentos" })
-                                                </td>
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
+                                            <td style="padding:5px;"> Detector de Metais</td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
 
-                                            </tr>
+                                        </tr>
 
-                                                    <tr class="row">
+                                        <tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
-                                                        <td style="padding:5px;"> Família de Produtos</td>
-                                                        <td style="padding:5px;"></td>
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetor" value="integracaoSetorValor"></td>
+                                            <td style="padding:5px;"> Setor</td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoSetorList", Model.paramsDdl.DdlSetor, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
 
-                                                    </tr>
+                                        </tr>
+
+                                        <tr class="row">
+
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoTipoCorte" value="integracaoTipoCorteValor"></td>
+                                            <td style="padding:5px;"> Tipo de Corte</td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoTipoCorteList", Model.paramsDdl.DdlTipoCorte, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
 
-                                                    <tr class="row">
+                                        </tr>
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
-                                                        <td style="padding:5px;"> Reprocesso Entrada</td>
-                                                        <td style="padding:5px;"></td>
+                                        <tr class="row">
 
-                                                    </tr>
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetoresBPF" value="integracaoSetoresBPFValor"></td>
+                                            <td style="padding:5px;"> Setores BPF</td>
+                                            <td style="padding:5px;">
+                                                @Html.DropDownList("integracaoSetoresBPFList", Model.paramsDdl.DdlSetoresBPF, new { @class = "form-control input-sm equipamentos" })
+                                            </td>
 
-                                                    <tr class="row">
 
-                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
-                                                        <td style="padding:5px;"> Reprocesso Saída</td>
-                                                        <td style="padding:5px;"></td>
+                                        </tr>
 
-                                                    </tr>
-                                                }
+                                        <tr class="row">
+
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
+                                            <td style="padding:5px;"> Família de Produtos</td>
+                                            <td style="padding:5px;"></td>
+
+
+                                        </tr>
+
+
+                                        <tr class="row">
+
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
+                                            <td style="padding:5px;"> Reprocesso Entrada</td>
+                                            <td style="padding:5px;"></td>
+
+                                        </tr>
+
+                                        <tr class="row">
+
+                                            <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
+                                            <td style="padding:5px;"> Reprocesso Saída</td>
+                                            <td style="padding:5px;"></td>
+
+                                        </tr>
+}
 
                                             <tr class="row">
 
@@ -554,32 +577,38 @@
 
                                                     @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
 
-                                                                        switch (tipo)
-                                                                        {
-                                                                            case ("Equipamento|"):
-                                                                                tipo = "Equipamento";
-                                                                                break;
-                                                                            case ("Câmara|"):
-                                                                                tipo = "Câmara";
-                                                                                break;
-                                                                            case ("Ponto de Coleta|"):
-                                                                                tipo = "Ponto de Coleta de Água";
-                                                                                break;
-                                                                            case ("Detector de Metais|"):
-                                                                                tipo = "Detector de Metais";
-                                                                                break;
-                                                                            case ("Setor|"):
-                                                                                tipo = "Setor";
-                                                                                break;
-                                                                            case ("familiaProduto"):
-                                                                                tipo = "Família de Produtos";
-                                                                                break;
-                                                                            case ("Produto"):
-                                                                                tipo = Resources.Resource.products;
-                                                                                break;
-                                                                            default:
-                                                                                break;
-                                                                        }
+                                                        switch (tipo)
+                                                        {
+                                                            case ("Equipamento|"):
+                                                                tipo = "Equipamento";
+                                                                break;
+                                                            case ("Câmara|"):
+                                                                tipo = "Câmara";
+                                                                break;
+                                                            case ("Ponto de Coleta|"):
+                                                                tipo = "Ponto de Coleta de Água";
+                                                                break;
+                                                            case ("Detector de Metais|"):
+                                                                tipo = "Detector de Metais";
+                                                                break;
+                                                            case ("Setor|"):
+                                                                tipo = "Setor";
+                                                                break;
+                                                            case ("Tipo de Corte|"):
+                                                                tipo = "Tipo de Corte";
+                                                                break;
+                                                            case ("Setores BPF|"):
+                                                                tipo = "Setores BPF";
+                                                                break;
+                                                            case ("familiaProduto"):
+                                                                tipo = "Família de Produtos";
+                                                                break;
+                                                            case ("Produto"):
+                                                                tipo = Resources.Resource.products;
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
                                                     }
 
                                                     @tipo;
@@ -707,14 +736,14 @@
                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                     @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
                                                                 {
-                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho">
+                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho - Ativado">
                                                         <span class="glyphicon glyphicon-duplicate"></span>
                                                     </button>
 
                                                                 }
                                                                 else
                                                                 {
-                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho">
+                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho - Inativado">
                                                         <span class="fa fa-copy"></span>
                                                     </button>
                                                                 }
@@ -826,6 +855,13 @@
             $('.groupCadastroEspecificoUnidade').fadeOut();
         }
     });
+
+    $("#DuplicarCabecalho").on('click', function () {
+        if ($('#DuplicarCabecalho').attr('title') == "Clonar Cabeçalho - Ativado") 
+            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Inativado")
+        else
+            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Ativado")
+    })
 
     $('#paramsDto_parLevel1Dto_IsChildren').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
@@ -1624,6 +1660,12 @@
                 case "integracaoSetorValor":
                     description = $('#integracaoSetorList').val();
                     break;
+                case "integracaoTipoCorteValor":
+                    description = $('#integracaoTipoCorteList').val();
+                    break;
+                case "integracaoSetoresBPFValor":
+                    description = $('#integracaoSetoresBPFList').val();
+                    break;
                 case "integracaoProduto":
                     description = "Produto";
                     break;
@@ -1677,6 +1719,12 @@
                     break;
                 case "integracaoSetorValor":
                     tipo = "Setor";
+                    break;
+                case "integracaoTipoCorteValor":
+                    tipo = "Tipo de Corte";
+                    break;
+                case "integracaoSetoresBPFValor":
+                    tipo = "Setores BPF";
                     break;
                 case "integracaoFamiliaProduto":
                     tipo = "Família de Produtos";

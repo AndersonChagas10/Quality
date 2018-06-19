@@ -2464,7 +2464,7 @@
     <value>Nome Contador</value>
   </data>
   <data name="conclued_plan_action" xml:space="preserve">
-    <value>Plano de Ação Concluído.</value>
+    <value>Plano de Ação Concluído</value>
   </data>
   <data name="among_others" xml:space="preserve">
     <value>entre outros ...</value>
@@ -2522,5 +2522,38 @@
   </data>
   <data name="edition_binary_input_type" xml:space="preserve">
     <value>Edição - Tipo de Entrada Binária</value>
+  </data>
+  <data name="package" xml:space="preserve">
+    <value>Pacote</value>
+  </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Aponts. Diarios Domingo</value>
+  </data>
+  <data name="biweekly" xml:space="preserve">
+    <value>Quinzenal</value>
+  </data>
+  <data name="daily" xml:space="preserve">
+    <value>Diário</value>
+  </data>
+  <data name="monthly" xml:space="preserve">
+    <value>Mensal</value>
+  </data>
+  <data name="weekly" xml:space="preserve">
+    <value>Semanal</value>
+  </data>
+  <data name="period_type_chart" xml:space="preserve">
+    <value>Tipo de Periodo Nos Gráficos</value>
+  </data>
+  <data name="a_month" xml:space="preserve">
+    <value>Por Mês</value>
+  </data>
+  <data name="per_day" xml:space="preserve">
+    <value>Por Dia</value>
+  </data>
+  <data name="per_fortnight" xml:space="preserve">
+    <value>Por Quinzena</value>
+  </data>
+  <data name="per_week" xml:space="preserve">
+    <value>Por Semana</value>
   </data>
 </root>

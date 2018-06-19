@@ -2,7 +2,7 @@
 @using DTO
 @{
     ViewBag.Title = Resources.Resource.evolutional;
-
+    ViewBag.SubTitle = "";
 
     //Condições de dropdown que podem ser multiplos
     ViewBag.UnitIdArr = true;
@@ -55,16 +55,23 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="dia" class="btn btn-default">Dia</button>
+                <button id="semana" class="btn btn-default">Semana</button>
+                <button id="mes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
             </div>
 
             <div id="loaderNCUnidade"></div>
             <div class="totalNC" id="NCUnidade" hidden>
+                <button id="Udia" class="btn btn-default">Dia</button>
+                <button id="Usemana" class="btn btn-default">Semana</button>
+                <button id="Umes" class="btn btn-default">Mês</button>
                 <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
                     <h1>0 %</h1>
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+
                 <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
             </div>
 
@@ -74,6 +81,9 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="Idia" class="btn btn-default">Dia</button>
+                <button id="Isemana" class="btn btn-default">Semana</button>
+                <button id="Imes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
             </div>
 
@@ -83,6 +93,9 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="Mdia" class="btn btn-default">Dia</button>
+                <button id="Msemana" class="btn btn-default">Semana</button>
+                <button id="Mmes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
             </div>
             <br />
@@ -103,6 +116,7 @@
             <br />
             <h3 id="TituloTabela2"></h3>
             <br />
+            <div id="DataTable2Loader"></div>
             <table id="DataTable2"></table>
 
         </div>
@@ -118,6 +132,9 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">@Resources.Resource.history</h4>
                 </div>
+                <button id="Hdia" class="btn btn-default">Dia</button>
+                <button id="Hsemana" class="btn btn-default">Semana</button>
+                <button id="Hmes" class="btn btn-default">Mês</button>
                 <div class="modal-body">
                     <div class="" id="GraficoHistoricoModal"></div>
                 </div>
@@ -241,7 +258,7 @@
 
 
         limpaDadosTela();
-
+        enviar["dimensaoData"] = $('#createDimensaoData').val()*1;
         // Verificar se é mostrar tudo e aplicar vazio
         if ($('#clusterId').prev().find('a.actived').length > 0) {
             enviar['clusterIdArr'] = [];
@@ -276,6 +293,7 @@
             enviar.level3Id = enviar.level3IdArr[0];
         }
 
+
         if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)))
                 retornaSubtitulos()
 
@@ -306,13 +324,15 @@
 
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
-        EasyAjax(UrlListaResultadosPeriodo2, enviar, GerarTabela2, "DataTable2", undefined);
+        EasyAjax(UrlListaResultadosPeriodo2, enviar, GerarTabela2, "DataTable2Loader", undefined);
 
 
         /*Colocando o grafico de histórunitIdArrico geral*/
         var enviarGeral = Object.create(enviar);
         enviarGeral["unitId"] = undefined;
         enviarGeral["unitIdArr"] = undefined;
+
+
 
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
@@ -372,6 +392,7 @@
             }
 
         }
+        ativaDimensao();
 
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
@@ -408,7 +429,6 @@
             }
 
             var table = datatableGRT.Inicializar({
-
                 idTabela: "DataTable",
                 listaDeDados: retornoArray,
                 definicaoColuna: columnDefs,
@@ -442,6 +462,7 @@
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         enviar2 = {};
+                        enviar2["auditorId"] = enviar["auditorId"];
                         enviar2["startDate"] = enviar["startDate"];
                         enviar2["endDate"] = enviar["endDate"];
                         enviar2["level1Id"] = data["Indicador"];
@@ -453,6 +474,7 @@
                         enviar2['QtdeAvaliado'] = data["Av"];
                         enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
                         enviar2["PercentualNCFTA"] = data["Pc"];
+                        enviar2["dimensaoData"] = enviar["dimensaoData"];
                         if ($(this).attr('data-target') == "#modalResultados")
                             EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
                         else {
@@ -503,7 +525,6 @@
                 }
 
                 var table = datatableGRT.Inicializar({
-
                     idTabela: "DataTable2",
                     listaDeDados: retornoArray,
                     definicaoColuna: columnDefs,
@@ -523,7 +544,7 @@
                         },
                         { title: "% " + Resources("goal"), mData: "Meta" },
                         { title: "Status", mData: "Status" }
-                        
+
                     ],
                     numeroLinhasNaTabela: 13,
                     aplicarResponsividade: true,
@@ -536,6 +557,7 @@
                         $('#DataTable2 tbody').on('click', 'button', function (data, a, b) {
                             var data = table.row($(this).parents('tr')).data();
                             enviar2 = {};
+                            enviar2["auditorId"] = enviar["auditorId"];
                             enviar2["startDate"] = enviar["startDate"];
                             enviar2["endDate"] = enviar["endDate"];
                             enviar2["level1Id"] = data["Indicador"];
@@ -760,6 +782,7 @@
                             click: function () {
 
                                 enviar3 = {};
+                                enviar3["auditorId"] = enviar["auditorId"];
                                 enviar3["startDate"] = enviar["startDate"];
                                 enviar3["endDate"] = enviar["endDate"];
                                 enviar3['unitId'] = Unidade[this.x];
@@ -941,6 +964,7 @@
                                 //FTA2();
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 enviar3 = {};
+                                enviar3['auditorId'] = enviar["auditorId"];
                                 enviar3['level1Id'] = Indicador[this.x];
                                 enviar3['level2Id'] = Monitoramento[this.x];
                                 enviar3['level3Id'] = Tarefa[this.x];
@@ -977,7 +1001,15 @@
 
     function CallbackGraficoHistoricoModal(data) {
         var subtitleAux = "";
-        var dia = MapeiaValorParaHC(data, "_date");
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+        if (enviar2.dimensaoData == 1)
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+        if (enviar2.dimensaoData == 2)
+            var dia = MapeiaValorParaHC(data, "semana");
+        if (enviar2.dimensaoData == 4)
+            var dia = MapeiaValorParaHC(data, "mes");
+
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
         //fazGambipraMenosCem(porc)
@@ -1194,11 +1226,19 @@
     function GerarGraficoHistoricoGeral(data) {
         var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
+
         var porc = [];
 
         if (data.length > 0) {
 
-            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1269,6 +1309,27 @@
                 $('#GraficoHistoricoGeral').removeClass('loader');
 
                 $('#GraficoHistoricoGeral').empty();
+
+                $("#semana").on('click', function () {
+                    var semana = 7;
+
+                    var dataHora = moment.duration(moment().diff(data['date'])).humanize();
+
+                    //var porc = [];
+                    //var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+                    //var nc = MapeiaValorParaHC(data, "nc");
+                    //var porc = MapeiaValorParaHC(data, "procentagemNc");
+                    //var qtdAv = MapeiaValorParaHC(data, "av");
+                    //var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+                    //var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+                    //var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+                    //var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                    //var sumnc = nc.reduce(function (a, b) { return a + b; });
+                    //var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+                    //var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+                    //var porcPeriodo = sumncCP / sumavCP * 100;
+                });
 
                 chartHistoricoGeral = Highcharts.chart('GraficoHistoricoGeral', {
                     credits: {
@@ -1460,7 +1521,15 @@
 
 
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1758,7 +1827,15 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -2031,7 +2108,15 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -2323,6 +2408,7 @@
             //subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
             enviarAxI.isLevel = 1;
         }
+        enviarAxI['auditorId'] = enviar["auditorId"];
 
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
@@ -2466,7 +2552,7 @@
                             click: function () {
 
                                 enviarAI = {};
-
+                                enviarAI['auditorId'] = enviar["auditorId"];
                                 enviarAI['Data'] = date[this.x];
                                 enviarAI['level1Id'] = data[0].level1Id;
                                 enviarAI['level2Id'] = data[0].level2Id;
@@ -2513,7 +2599,7 @@
                             click: function () {
 
                                 enviarAI = {};
-
+                                enviarAI['auditorId'] = enviar["auditorId"];
                                 enviarAI['Data'] = date[this.x];
                                 enviarAI['level1Id'] = data[0].level1Id;
                                 enviarAI['level2Id'] = data[0].level2Id;
@@ -2914,6 +3000,7 @@
         $('#Titulo').html("");
         $('#TituloTabela').html("");
         $('#DataTable_wrapper').hide();
+        $('#DataTable2_wrapper').hide();
         $('#GraficoHistoricoGeral').empty();
         $('#GraficoTarefasAcumuladas').empty();
 
@@ -3004,6 +3091,7 @@
         formControl.showFullCallendar();
         formControl.showStatusIndicador();
         formControl.showCreateActionPlane();
+        formControl.showDimensaoData();
         formControl.showClustRegUnitCriticalLevel123();
 
         setTimeout(function () {
@@ -3085,7 +3173,7 @@
 
         $('#' + selector).empty().highcharts({
             credits: Chart.Credits(),
-            chart: Chart.Chart('column', 'xy'),
+            chart: Chart.Chart('column', 'xy', 500),
             title: Chart.Titulo(GraficoTarefasAcumuladasTit),
             subtitle: {
                 text: subtitle
@@ -3117,16 +3205,16 @@
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
-        } else {
-            $('#SemDados').show();
+            } else {
+                $('#SemDados').show();
+            }
         }
-    }
 
-    var Chart = {
-         criaTitulo: function (prefix, sufix) {
+        var Chart = {
+            criaTitulo: function (prefix, sufix) {
                 return prefix + sufix;
             },
-         curvaPareto: function (dados, dadosNC, axis, inverse) {
+            curvaPareto: function (dados, dadosNC, axis, inverse) {
 
                 var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
                 var porcentagemAcumuladaNC = 0;
@@ -3154,7 +3242,7 @@
                     }],
                 }
             },
-         serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
+            serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
 
                 var serieType = tipo == undefined ? 'line' : tipo;
                 var sufix = suffix == undefined ? '' : suffix
@@ -3194,12 +3282,12 @@
 
 
             },
-         CorTotalNc: function () { return '#F7BCB0' },
-         CorTotalAv: function () { return '#ccc' },
-         CorTotalPareto: function () { return '#900000' },
-         CorMeta: function () { return '#67D184' },
-         CorTotalProcNc: function () { return '#FF6347' },
-         Legend: function () {
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
                 return {
                     layout: 'horizontal',
                     align: 'center',
@@ -3207,14 +3295,14 @@
                     borderWidth: 0
                 };
             },
-         ToolTip: function (isShared, isCrosshairs) {
+            ToolTip: function (isShared, isCrosshairs) {
                 return {
                     valueDecimals: 2,
                     shared: isShared,
                     crosshairs: isCrosshairs
                 }
             },
-         Titulo: function (data, sufix) {
+            Titulo: function (data, sufix) {
 
                 if (!!sufix)
                     data = data + " | " + sufix;
@@ -3226,7 +3314,7 @@
                 };
 
             },
-         Subtitulo: function (data, sufix) {
+            Subtitulo: function (data, sufix) {
 
                 if (!!sufix)
                     data = data + ": " + sufix;
@@ -3238,26 +3326,28 @@
                 };
 
             },
-         Credits: function () {
+            Credits: function () {
                 return {
                     enabled: false
                 }
             },
-         Zones: function () {
+            Zones: function () {
                 return {
                     enabled: false
                 }
             },
-         Chart: function (tipo, zoon) {
+            Chart: function (tipo, zoon, height) {
                 return {
                     type: tipo,
-                    zoomType: (!!zoon) ? zoon : ''
+                    zoomType: (!!zoon) ? zoon : '',
+                    height: (!!height) ? height : null
                 }
             },
-         yAxisPadraoRelNc: function () {
+            yAxisPadraoRelNc: function () {
 
                 return [{
                     allowDecimals: false,
+
                     min: 0,
                     title: {
                         text: Resources('number_samplers')
@@ -3270,6 +3360,7 @@
                     },
                 }, {
                     allowDecimals: false,
+                    tickInterval: 50,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -3283,7 +3374,7 @@
                 }];
 
             },
-         Xaxis: function (dados) {
+            Xaxis: function (dados) {
                 return [{
                     categories: dados
                 }];
@@ -3324,7 +3415,7 @@
                     name: '% ' + Resources('nonconformity'),
                     color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
                     data: data,
-                    yAxis: 1,
+                    yAxis: 0,
                     tooltip: {
                         valueSuffix: ' %'
                     },
@@ -3508,7 +3599,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel1Filtrado.length;
-            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + "entre outros ...  <br/> " : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
+            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
         }
 
         // Subtitulo Level 2
@@ -3538,7 +3629,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel2Filtrado.length;
-            enviar.nivel2Filtrado =  tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + "entre outros ...  <br/>" : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
+            enviar.nivel2Filtrado = tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
         }
 
         // Subtitulo Level 3
@@ -3568,7 +3659,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel3Filtrado.length;
-            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + "entre outros ...  <br/>" : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
+            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
         }
 
         subtitleGeneral();
@@ -3614,6 +3705,127 @@
         enviar['endDate'] = end.format();
     }
 
+    function ativaDimensao() {
+        // 1=> Diario 2=> Semanal 3=> Quinzenal 4=> Mensal 5=> Trimestral
+
+        // Consolidado Geral
+        $("#dia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#semana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#mes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        // Consolidado Unidade
+        $("#Udia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        $("#Usemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        $("#Umes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        // Consolidado Indicador
+        $("#Idia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        $("#Isemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        $("#Imes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        // Consolidado Monitoramento
+        $("#Mdia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        $("#Msemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        $("#Mmes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        // Consolidado Historico
+        $("#Hdia").on('click', function () {
+
+            enviar2["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+
+        $("#Hsemana").on('click', function () {
+
+            enviar2["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+
+        $("#Hmes").on('click', function () {
+
+            enviar2["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+    }
     </script>
 
 }

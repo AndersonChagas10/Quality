@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using DTO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -19,6 +20,13 @@ namespace SgqSystem.Controllers
 
 
                 return View();
+        }
+
+        // GET: JobsMonitor
+        public ActionResult Jobs()
+        {
+            ViewBag.UltimaExecucaoDoJob = GlobalConfig.UltimaExecucaoDoJob;
+            return View();
         }
 
 

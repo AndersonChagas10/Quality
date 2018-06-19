@@ -31,6 +31,7 @@ namespace DTO
     {
         public int ParLevel1_id { get; set; }
         public string ParLevel1_name { get; set; }
+        public string ParLevel2_Name { get; set; }
         public int ParCompany_id { get; set; }
         public string ParCompany_Name { get; set; }
         public string Coletado { get; set; }
@@ -41,7 +42,21 @@ namespace DTO
         public string Amostras_Realizadas { get; set; }
     }
 
-        public class HtmlDoTablet
+
+    public class CorrectiveAct
+    {
+        public int Id { get; set; }
+        public string UnitId { get; set; }
+        public string Unidade { get; set; }
+        public string ParLevel1_Id { get; set; }
+        public string Indicador { get; set; }
+        public string ParLevel2_Id { get; set; }
+        public string Monitoramento { get; set; }
+        public string PreventativeMeasure { get; set; }
+    }
+
+
+    public class HtmlDoTablet
     {
         public string Html { get; set; }
         public DateTime? DataInicio { get; set; }
@@ -81,12 +96,15 @@ namespace DTO
         private static Semaphore _poolSemaphore;
         public static Semaphore PoolSemaphore { get { if (_poolSemaphore == null) _poolSemaphore = new Semaphore(5, 5); return _poolSemaphore; } }
         public static Dictionary<int, HtmlDoTablet> PaginaDoTablet { get; set; }
+        public static Dictionary<string, DateTime> UltimaExecucaoDoJob { get; set; } = new Dictionary<string, DateTime>();
         public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
         public static bool MockOn { get; set; }
         public static List<Mandala> MandalaUnidade { get; set; }
         public static List<Mandala> MandalaIndicador { get; set; }
         public static List<Mandala> MandalaMonitoramento { get; set; }
+        public static List<CorrectiveAct> CorrectiveAct { get; set; }
+        public static CorrectiveAct GetCorrectiveAct {get; set;}
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL

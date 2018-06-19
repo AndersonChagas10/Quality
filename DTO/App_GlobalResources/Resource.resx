@@ -2112,4 +2112,25 @@
   <data name="back_to_unit_of_measurement" xml:space="preserve">
     <value>Back to Units of Measurement</value>
   </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Daily Apointments on Sunday</value>
+  </data>
+  <data name="period_type_chart" xml:space="preserve">
+    <value>Period Type in Charts</value>
+  </data>
+  <data name="a_month" xml:space="preserve">
+    <value>A Month</value>
+  </data>
+  <data name="per_day" xml:space="preserve">
+    <value>Per Day</value>
+  </data>
+  <data name="per_fortnight" xml:space="preserve">
+    <value>Per Fortnight</value>
+  </data>
+  <data name="per_week" xml:space="preserve">
+    <value>Per Week</value>
+  </data>
 </root>

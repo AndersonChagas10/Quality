@@ -33,7 +33,7 @@ public class ScorecardResultSet
 
     public string TipoScore { get; set; }
 
-    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id) //Se tipo 0, tras pontos , se 1, tras tudo
+    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1) //Se tipo 0, tras pontos , se 1, tras tudo
     {
 
         /*
@@ -102,6 +102,30 @@ public class ScorecardResultSet
             SCORECARD_MENSAL: PONTOSATINGIDOS / PONTOSDISPUTADOS
 
             */
+
+        string listaUnidades = "";
+
+        switch (GroupLevel1)
+        {
+            case 1:
+                listaUnidades = "1,2,3,4,5";
+                break;
+            case 2:
+                listaUnidades = "6,7,8,9,10";
+                break;
+            case 3:
+                listaUnidades = "11,12,13,14,15";
+                break;
+        }
+
+        string listaUnidades2 = " where Level1Id in (" + listaUnidades + ") ";
+        string listaUnidades3 = " and L1.Id in (" + listaUnidades + ") ";
+
+        if (listaUnidades == "")
+        {
+            listaUnidades2 = "";
+            listaUnidades3 = "";
+        }
 
         string selectTipo = "SELECT * FROM ";
         string orderby = "ORDER BY 11, 10";
@@ -730,7 +754,7 @@ public class ScorecardResultSet
            "\n        ON SG.Id = S.ParStructureGroup_Id                                                                                                                                                                                                                            " +
            "\n LEFT JOIN ParCompanyCluster CCL   (nolock)                                                                                                                                                                                                                                    " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1     and CL1C.ParCluster_Id = ccl.parcluster_id                                                                                                                                                                                                                            " +
+           "\n        ON CCL.ParCompany_Id = C.Id  AND CCL.Active = 1     and CASE WHEN CL1C.ParCluster_Id IS NULL THEN @CLUSTER ELSE CL1C.ParCluster_Id END = ccl.parcluster_id                                                                                                                                                                                                                             " +
            "\n LEFT JOIN ParCluster CL       (nolock)                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CL.Id = CCL.ParCluster_Id                                                                                                                                                                                                                                 " +
@@ -764,8 +788,8 @@ public class ScorecardResultSet
            "\n     , L1.HashKey                                                                                                                                                                                                                                                    " +
            "\n     , C.Id                                                                                                                                                                                                                                                          " +
            "\n     , CCL.ParCluster_ID, CL1C.ParCluster_Id                                                                                                                                                                                                                                                               " +
-           "\n ) SCORECARD                                                                                                                                                                                                                                                         " +
-           "\n                                                                                                                                                                                                                                                                     " +
+           "\n ) SCORECARD  " +
+           listaUnidades2 +                                                                                                                                                                                                
            "\n ) FIM                                                                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n UNION ALL                                                                                                                                                                                                                                                           " +
@@ -898,7 +922,7 @@ public class ScorecardResultSet
 
            "\n         ORDER BY L1Ca.EffectiveDate  desc " +
             "\n	) = @CLUSTER" +
-
+           listaUnidades3 +
            "\n  ) SC                                                                                                                                                                                                                                                               " +
            "\n  " + where +
            "\n  " + orderby + "                                                                                                                                                                                                                                                    " +
@@ -909,11 +933,11 @@ public class ScorecardResultSet
 
 
 
-    public string SelectScorecardCompleto(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id) //Se 0, tras pontos , se 1, tras tudo
+    public string SelectScorecardCompleto(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1) //Se 0, tras pontos , se 1, tras tudo
     {
         string sql;
 
-        sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo, clusterSelected_Id); //Se 0, tras pontos , se 1, tras tudo
+        sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo, clusterSelected_Id, GroupLevel1); //Se 0, tras pontos , se 1, tras tudo
 
 
         return sql;

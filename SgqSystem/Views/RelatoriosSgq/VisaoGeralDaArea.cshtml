@@ -227,7 +227,14 @@
 
             <div id="grafico2" style="max-height:250px;"></div>
 
+
+            <button id="AllLevelsAllRegions" class="btn btn-default"> Todos os Indicadores | Todas as Regionais ↧</button>
+            <button id="AllFunctionsAllUnits" class="btn btn-default"> Todos as Funções | Todas as Unidades ↦</button>
             <div id="tabela1div"></div>
+
+            <div id="tblAllLevelsAllRegions"></div>
+
+            <div id="tblAllFunctionsAllUnits"></div>
 
             <div id="funcoesPorUnidade"></div>
 
@@ -254,11 +261,10 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var contadorAJAX = 0;
     var contadorAJAX_historico = 0;
-    var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var Chart = {
 
         /*
@@ -617,15 +623,16 @@
                     $('#grafico3').empty();
                     $('#grafico4').empty();
                     $('#grafico5').empty();
+                    $('#GraficoHistoricoGeral').empty();
+                    $('#showNCGeral').hide();
                     $('#tabela1div').empty();
                     $('#tabela2div').empty();
                     $('#funcoesPorUnidade').empty();
                     $('#IndicadoresPorUnidadeReg').empty();
                     $('#inicadoresPorRegional').empty();
                     $('#inicadoresPorUnidade').empty();
-                    $('#GraficoHistoricoGeral').empty();
-                    $('#showNCGeral').hide();
-
+                    $('#AllLevelsAllRegions').hide();
+                    $('#AllFunctionsAllUnits').hide();
                     $btn.button('loading');
 
                     if (!ValidaDadosParaEnvio()) {
@@ -648,6 +655,8 @@
 
                     EasyAjax(urlTabela1, enviar, function (r) {
                         $('#tabela1div').empty().append(r);
+                        $('#AllLevelsAllRegions').show();
+                        $('#AllFunctionsAllUnits').show();
                         var container = 'tabela1div';
                         heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
                         heatMap(container, 'footer2', 3, 3, 'DESC');
@@ -734,6 +743,144 @@
 
         //chamaEvolutivoRegional();
     };
+    function GetAllLevelsAllRegions() {
+        if (typeof (contadorAJAX) != "undefined") {
+            if (contadorAJAX > 0) {
+                console.log("Tem AJAX pendente! Aguarde!"); openMessageModal("Aguarde", "Já tem uma requisição aberta.");
+            } else {
+                $('#tblAllFunctionsAllUnits').empty();
+                $('#funcoesPorUnidade').empty();
+                $('#inicadoresPorRegional').empty();
+                $('#inicadoresPorUnidade').empty();
+                $('#tabela2div').empty();
+                $('#IndicadoresPorUnidadeReg').empty();
+
+                $('#grafico3').empty();
+                $('#grafico4').empty();
+                $('#grafico5').empty();
+
+                enviar["CallBackTableTituloColunas"] = function () { };
+                enviar["CallBackTableBody"] = "GetIndicadoresPorUnidade3($(this).attr('dado3'), $(this).attr('dado1'));";
+                enviar["CallBackTableEsquerda"] = function () { };
+                //enviar["Query"] = "GetTbl2SemGrupos";
+                enviar["Query"] = "GetTblAllInicadoresPorAllRegional";
+                enviar["Title"] = "@Resources.Resource.packages_unit";
+                enviar["CallBackTableX"] = "GetIndicadoresPorUnidadeReg()";
+
+                enviar["ParametroTableRow"] = [];
+                enviar["ParametroTableCol"] = [];
+
+                EasyAjax(urlTabela1, enviar, function (r) {
+                    $('#tblAllLevelsAllRegions').empty().append(r);
+                    var container = 'tblAllLevelsAllRegions';
+                    heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                    heatMap(container, 'footer2', 3, 3, 'DESC');
+                    heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                    scroolTable(container)
+                }, "tblAllLevelsAllRegions");
+            }
+        } else {
+                $('#tblAllFunctionsAllUnits').empty();
+                $('#funcoesPorUnidade').empty();
+                $('#inicadoresPorRegional').empty();
+                $('#inicadoresPorUnidade').empty();
+                $('#tabela2div').empty();
+                $('#IndicadoresPorUnidadeReg').empty();
+
+                $('#grafico3').empty();
+                $('#grafico4').empty();
+                $('#grafico5').empty();
+
+                enviar["CallBackTableTituloColunas"] = function () { };
+                enviar["CallBackTableBody"] = "GetIndicadoresPorUnidade3($(this).attr('dado3'), $(this).attr('dado1'));";
+                enviar["CallBackTableEsquerda"] = function () { };
+                //enviar["Query"] = "GetTbl2SemGrupos";
+                enviar["Query"] = "GetTblAllInicadoresPorAllRegional";
+                enviar["Title"] = "@Resources.Resource.packages_unit";
+                enviar["CallBackTableX"] = "GetIndicadoresPorUnidadeReg()";
+
+                enviar["ParametroTableRow"] = [];
+                enviar["ParametroTableCol"] = [];
+
+                EasyAjax(urlTabela1, enviar, function (r) {
+                    $('#tblAllLevelsAllRegions').empty().append(r);
+                    var container = 'tblAllLevelsAllRegions';
+                    heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                    heatMap(container, 'footer2', 3, 3, 'DESC');
+                    heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                    scroolTable(container)
+                }, "tblAllLevelsAllRegions");
+        }
+    }
+    function GetAllFunctionsAllUnits() {
+        if (typeof (contadorAJAX) != "undefined") {
+            if (contadorAJAX > 0) {
+                console.log("Tem AJAX pendente! Aguarde!"); openMessageModal("Aguarde", "Já tem uma requisição aberta.");
+            } else {
+                $('#tblAllLevelsAllRegions').empty();
+                $('#funcoesPorUnidade').empty();
+                $('#inicadoresPorRegional').empty();
+                $('#inicadoresPorUnidade').empty();
+                $('#tabela2div').empty();
+                $('#IndicadoresPorUnidadeReg').empty();
+
+                $('#grafico3').empty();
+                $('#grafico4').empty();
+                $('#grafico5').empty();
+
+                enviar["CallBackTableTituloColunas"] = function () { };
+                enviar["CallBackTableBody"] = "GetIndicadoresPorUnidade($(this).attr('dado3'), $(this).attr('dado1'));";
+                enviar["CallBackTableEsquerda"] = function () { };
+                //enviar["Query"] = "GetTbl2SemGrupos";
+                enviar["Query"] = "GetTblAllFuncoesPorAllUnidades";
+                enviar["Title"] = "@Resources.Resource.packages_unit";
+                enviar["CallBackTableX"] = "GetIndicadoresPorUnidadeReg()";
+
+                enviar["ParametroTableRow"] = [];
+                enviar["ParametroTableCol"] = [];
+
+                EasyAjax(urlTabela1, enviar, function (r) {
+                    $('#tblAllFunctionsAllUnits').empty().append(r);
+                    var container = 'tblAllFunctionsAllUnits';
+                    heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                    heatMap(container, 'footer2', 3, 3, 'DESC');
+                    heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                    scroolTable(container)
+                }, "tblAllFunctionsAllUnits");
+            }
+        } else {
+                $('#tblAllLevelsAllRegions').empty();
+                $('#funcoesPorUnidade').empty();
+                $('#inicadoresPorRegional').empty();
+                $('#inicadoresPorUnidade').empty();
+                $('#tabela2div').empty();
+                $('#IndicadoresPorUnidadeReg').empty();
+
+                $('#grafico3').empty();
+                $('#grafico4').empty();
+                $('#grafico5').empty();
+
+                enviar["CallBackTableTituloColunas"] = function () { };
+                enviar["CallBackTableBody"] = "GetIndicadoresPorUnidade($(this).attr('dado3'), $(this).attr('dado1'));";
+                enviar["CallBackTableEsquerda"] = function () { };
+                //enviar["Query"] = "GetTbl2SemGrupos";
+                enviar["Query"] = "GetTblAllFuncoesPorAllUnidades";
+                enviar["Title"] = "@Resources.Resource.packages_unit";
+                enviar["CallBackTableX"] = "GetIndicadoresPorUnidadeReg()";
+
+                enviar["ParametroTableRow"] = [];
+                enviar["ParametroTableCol"] = [];
+
+                EasyAjax(urlTabela1, enviar, function (r) {
+                    $('#tblAllFunctionsAllUnits').empty().append(r);
+                    var container = 'tblAllFunctionsAllUnits';
+                    heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                    heatMap(container, 'footer2', 3, 3, 'DESC');
+                    heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                    scroolTable(container)
+                }, "tblAllFunctionsAllUnits");
+        }
+    }
 
         function GetFuncoesPorUnidade(paramCol) {
 
@@ -746,7 +893,8 @@
                     $('#inicadoresPorUnidade').empty();
                     $('#tabela2div').empty();
                     $('#IndicadoresPorUnidadeReg').empty();
-
+                    $('#tblAllFunctionsAllUnits').empty();
+                    $('#tblAllLevelsAllRegions').empty();
                     $('#grafico3').empty();
                     $('#grafico4').empty();
                     $('#grafico5').empty();
@@ -899,7 +1047,8 @@
                     $('#inicadoresPorUnidade').empty();
                     $('#tabela2div').empty();
                     $('#IndicadoresPorUnidadeReg').empty();
-
+                    $('#tblAllFunctionsAllUnits').empty();
+                    $('#tblAllLevelsAllRegions').empty();
                     $('#grafico3').empty();
                     $('#grafico4').empty();
                     $('#grafico5').empty();
@@ -1206,10 +1355,12 @@
             enviar["unitId"] = "";
             $('#IndicadoresPorUnidadeReg').empty();
 
-        $('#grafico3').empty();
+        
         $('#grafico4').empty();
         $('#grafico5').empty();
-
+        $('#tblAllFunctionsAllUnits').empty();
+        $('#tblAllLevelsAllRegions').empty();
+        $('#inicadoresPorRegional').empty();
         enviar["CallBackTableTituloColunas"] = function () { };
         enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
         enviar["CallBackTableEsquerda"] = function () { };
@@ -1290,7 +1441,8 @@
         }
 
         function CallbackGrafico1(data) {
-       
+
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var meta = (isBrazil == true ? meta = "Meta 83%" : meta = "Goals 83%");
         var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
         var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
@@ -1597,162 +1749,166 @@
         }
 
         function CallbackGrafico3(data) {
-            var dia = MapeiaValorParaHC(data, "_date");
-            var nc = MapeiaValorParaHC(data, "nc");
-            var porc = MapeiaValorParaHC(data, "procentagemNc");
-            var qtdAv = MapeiaValorParaHC(data, "av");
-            //Para envio do PA
-            $('#grafico3').removeClass('loader');
 
-        $('#grafico3').empty().highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column',
-                zoomType: 'x,y'
-            },
-            title: {
-                text: enviar.unitName + ' - ' + enviar["ParametroTableRow"][1]  //data[1].level1Name
-            },
+                var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
 
-            subtitle: {
-                text: Resources("last_two_months_of_the_selected_period")
-            },
-            xAxis: {
-                categories: dia,
-                title: {
-                    text: Resources("data"),
-                },
-            },
-            yAxis: [
-                {
-                    min: 0,
-                    title: {
-                        text: Resources("quantity")
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+                var nc = MapeiaValorParaHC(data, "nc");
+                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "av");
+                //Para envio do PA
+                $('#grafico3').removeClass('loader');
+
+                $('#grafico3').empty().highcharts({
+                    credits: {
+                        enabled: false
                     },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                }, {
-                    labels: {
-                        format: '{value} %',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x,y'
                     },
                     title: {
-                        text: "% " + Resources("nonconformity"),
+                        text: enviar.unitName + ' - ' + enviar["ParametroTableRow"][1]  //data[1].level1Name
                     },
-                    opposite: true
-                }],
-            legend: {
-                shadow: false
-            },
-            tooltip: {
-                shared: true
-            },
-            plotOptions: {
-                column: {
-                    grouping: false,
-                    shadow: false,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'NC',
-                color: 'rgba(77,143,189,1)',
-                data: nc,
-                yAxis: 0,
-                pointPadding: 0.2,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+
+                    subtitle: {
+                        text: Resources("last_two_months_of_the_selected_period")
+                    },
+                    xAxis: {
+                        categories: dia,
+                        title: {
+                            text: Resources("data"),
+                        },
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            title: {
+                                text: Resources("quantity")
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: "% " + Resources("nonconformity"),
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    formatter: function () {
-                        return Highcharts.numberFormat(this.y,2);
                     },
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' qtd'
-                }
-            }, {
-                name: '% NC',
-                color: 'rgba(240,124,0,1)',
-                data: porc,
-                yAxis: 1,
-                pointPadding: 0.4,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        pointPadding: 0.2,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y, 2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    formatter: function () {
-                        return Highcharts.numberFormat(this.y,2);
-                    },
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' %'
-                }
-            }, {
-                visible: false,
-                name: 'Avaliações',
-                data: qtdAv,
-                color: 'rgba(81,207,64,1)',
-                pointPadding: 0.3,
-                pointPlacement: 0.2,
-                yAxis: 0,
-                point: {
-                    events: {
-                        click: function () {
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                    }, {
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        pointPadding: 0.4,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y, 2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' %'
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    formatter: function () {
-                        return Highcharts.numberFormat(this.y,2);
-                    },
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' qtd'
-                }
-            }]
-        });
-    }
+                    }, {
+                        visible: false,
+                        name: 'Avaliações',
+                        data: qtdAv,
+                        color: 'rgba(81,207,64,1)',
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y, 2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
+                        }
+                    }]
+                });
+
+        }
 
     function Grafico4(paramCol, paramRow) {
 
@@ -2329,7 +2485,8 @@
         }, 30);
 
 
-
+        $('#AllLevelsAllRegions').hide();
+        $('#AllFunctionsAllUnits').hide();
 
         $('.levels').hide();
 
@@ -2344,6 +2501,17 @@
         //formControl.showUnit();
 
         $('.sidebar-nav select').select2();
+
+        $('#AllLevelsAllRegions').on('click', function () {
+            GetAllLevelsAllRegions();
+            alert('Abrir todos os indicadores por Regional');
+        });
+
+        $('#AllFunctionsAllUnits').on('click', function () {
+            GetAllFunctionsAllUnits();
+            alert('Abrir todas as unidades por Função');
+
+        });
     });
 
     var ajaxCount = 0;
@@ -2935,6 +3103,6 @@
             $('#menu-toggle').click();
         }
 
-    </script>
+</script>
 
 }

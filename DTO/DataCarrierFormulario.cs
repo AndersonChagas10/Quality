@@ -116,7 +116,10 @@ namespace DTO
         public int clusterGroupId { get; set; }
         public int departmentId { get; set; }
         public string departmentName { get; set; }
+        public int dimensaoData { get; set; }
 
         public string tipoCEP { get; set; }
+
+        public int GroupLevel1 { get; set; }
     }
 }

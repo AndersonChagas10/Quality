@@ -126,7 +126,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela2([FromBody] FormularioParaRelatorioViewModel form)
         {
             GetResultadosTarefa(form);
-         
+
             return retorno;
         }
 
@@ -1395,10 +1395,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 @"
                   AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                   AND C.IsActive = 1
-                GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
+                GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
                 
                   ) AAA 
-                  GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
+                  GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName, mesData
                       ) A
               group by mesData";
 
@@ -1491,10 +1491,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                @"
                 AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
                 AND C.IsActive = 1
-               GROUP BY C.Initials, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
+               GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
              ) AAA 
-             GROUP BY companySigla, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
+             GROUP BY companySigla, companyTitle, LEVEL1ID, LEVEL1NAME, TIPOINDICADOR, RegId, RegName
                       ) A
                      ";
 
@@ -2712,6 +2712,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -2763,7 +2764,7 @@ ORDER BY 7
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
                ,1 IsMonitoramento
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
@@ -2779,7 +2780,7 @@ ORDER BY 7
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -2898,6 +2899,7 @@ ORDER BY 3
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -2945,7 +2947,7 @@ ORDER BY 3
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
                ,1 IsIndicador
 			   ,max(UnidadeName)UnidadeName
 			   ,max(IndicadorName) level1Name
@@ -2960,7 +2962,7 @@ ORDER BY 3
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -3077,6 +3079,7 @@ ORDER BY 3
             }
             #endregion
 
+            var D = getDimensaoData(form, "ConsolidationDate");
 
             if (tipoVisao == false) // 0: Listagem / 1: Evolutivo 
             { // Considero Dimensões
@@ -3123,7 +3126,7 @@ ORDER BY 3
             SELECT 
                '" + titulo + $@"' AS ChartTitle
                ,IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0))) AS procentagemNc
-               ,ConsolidationDate as [date]
+               ,{D.queryDimensao}{D.nomeAlias}
 			   ,max(UnidadeName) UnidadeName
 		       ,sum(ISNULL(AVComPeso,0)) AS AVComPeso
 		       ,sum(ISNULL(NCComPeso,0)) AS NCComPeso
@@ -3136,7 +3139,7 @@ ORDER BY 3
                 { Wregional }
                 { Wnivelcritico }
             GROUP BY 
-                ConsolidationDate
+               {D.queryDimensao}
 ORDER BY 3 
             ";
                 #endregion
@@ -3882,6 +3885,7 @@ FROM (SELECT
             	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
             		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
              		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             		AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL AND Isactive = 1 ORDER BY ParLevel1_Id,ParCluster_Id,EffectiveDate,AddDate,AlterDate)
              		AND L1C.IsActive = 1
             
             	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4260,6 +4264,7 @@ FROM (SELECT
             	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
             		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
              		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             		AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL AND Isactive = 1 ORDER BY ParLevel1_Id,ParCluster_Id,EffectiveDate,AddDate,AlterDate)
              		AND L1C.IsActive = 1
             
             	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4476,7 +4481,8 @@ FROM (SELECT
         " + Wtarefa + @"
         AND CL1.ParLevel1_Id != 43
         AND CL1.ParLevel1_Id != 42
-        
+        AND R3.IsNotEvaluate = 0      
+
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_Unitid ON #ConsolidationLevel (ConsolidationDate,UnitId); 
@@ -4602,6 +4608,7 @@ FROM (SELECT
         	INNER JOIN ParLevel1XCluster L1C WITH (NOLOCK)
         		ON CCL.ParCluster_ID = L1C.ParCluster_ID 
          		AND C1.ParLevel1_Id = L1C.ParLevel1_Id 
+             	AND L1C.Id = (select top 1 aaa.ID from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CCL.ParCluster_Id AND aaa.EffectiveDate <  @DATAFINAL AND Isactive = 1 ORDER BY ParLevel1_Id,ParCluster_Id,EffectiveDate,AddDate,AlterDate)
          		AND L1C.IsActive = 1
         
         	INNER JOIN ParCompanyXStructure CS WITH (NOLOCK)
@@ -4842,6 +4849,7 @@ FROM (SELECT
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
+            var whereGroupLevel1 = "";
             var whereLevel1 = "";
             var whereUnit = "";
             var WunidadeAcesso = GetUserUnits(form.auditorId);
@@ -4864,6 +4872,11 @@ FROM (SELECT
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.groupParLevel1IdArr.Length > 0)
+            {
+                whereGroupLevel1 = $@" AND IND.Id IN(SELECT Distinct ParLevel1_Id FROM ParGroupParLevel1XParLevel1 WHERE 1=1 AND ParGroupParLevel1_Id in ({ string.Join(",", form.groupParLevel1IdArr) }))";
             }
 
             if (form.level1IdArr.Length > 0)
@@ -4916,6 +4929,7 @@ FROM (SELECT
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
+            { whereGroupLevel1 }
             { whereDepartment }
             { whereShift }            
             { whereCriticalLevel }
@@ -4939,6 +4953,34 @@ FROM (SELECT
             return _list;
         }
 
+        private static DimensaoData getDimensaoData(FormularioParaRelatorioViewModel form, string nomeColuna)
+        {
+
+            DimensaoData D = new DimensaoData();
+
+            D.queryDimensao = $@"";
+
+
+
+            if (form.dimensaoData == 2)
+            {
+                D.queryDimensao = $@" CONCAT(DATEPART(YEAR,{nomeColuna}),'/',RIGHT(CONCAT(0,DATEPART(WEEK,{nomeColuna})),2))  ";
+                D.nomeAlias = $@" AS [SEMANA] ";
+            }
+            else if (form.dimensaoData == 4)
+            {
+                D.queryDimensao = $@" CONVERT(VARCHAR(7),{nomeColuna},120) ";
+                D.nomeAlias = $@" AS [MES] ";
+            }
+            else 
+            {
+                D.queryDimensao = $@"{ nomeColuna } ";
+                D.nomeAlias = $@" AS [DATE] ";
+            }
+
+
+            return D;
+        }
     }
 
     public class RelatorioResultadosPeriodo
@@ -4989,6 +5031,9 @@ FROM (SELECT
         public decimal? companyScorecard { get; set; }
         public string companySigla { get; set; }
         public DateTime? date { get; set; }
+        public string semana { get; set; }
+        public string quinzena { get; set; }
+        public string mes { get; set; }
         public int level1Id { get; set; }
         public string level1Name { get; set; }
         public int level2Id { get; set; }
@@ -5043,6 +5088,12 @@ FROM (SELECT
         public bool IsIndicador { get; set; }
         public bool IsMonitoramento { get; set; }
         public bool IsTarefa { get; set; }
+    }
+
+    public class DimensaoData
+    {
+        public string queryDimensao { get; set; }
+        public string nomeAlias { get; set; }
     }
 
     //public class RetornoSugestao

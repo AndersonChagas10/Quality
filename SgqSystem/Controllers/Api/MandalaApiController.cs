@@ -61,8 +61,6 @@ namespace SgqSystem.Controllers.Api
 
         private List<int> BuscarListaEmpresasDisponiveis(FormularioParaRelatorioViewModel form)
         {
-            var empresas = GetUserUnits(form.auditorId);
-
             var listaEmpresa = GetUserUnits(form.auditorId);
 
             return listaEmpresa;

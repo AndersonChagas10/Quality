@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -345,6 +345,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
@@ -441,6 +442,7 @@
     <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
+    <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
@@ -1699,6 +1701,10 @@
     <Content Include="Views\ParModuleXModules\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
     <Content Include="Views\Shared\_Mandala.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiariosDomingo.cshtml" />
+    <Content Include="Views\GlobalConfig\Jobs.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoConformidadeDuplicada.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1788,7 +1794,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
