@@ -335,7 +335,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.DataInicio != "0001-01-01T00:00:00") 
+                    if (data.DataInicio != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data._DataInicio + "</span>" + new Date(data.DataInicio).toLocaleDateString();
 
                     return html;
@@ -347,7 +347,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.DataFim != "0001-01-01T00:00:00") 
+                    if (data.DataFim != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data._DataFim + "</span>" + new Date(data.DataFim).toLocaleDateString();
 
                     return html;
@@ -373,7 +373,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.Acao.QuandoInicio != "0001-01-01T00:00:00") 
+                    if (data.Acao.QuandoInicio != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data.Acao._QuandoInicio + "</span>" + new Date(data.Acao.QuandoInicio).toLocaleDateString();
 
                     return html;
@@ -385,7 +385,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.Acao.QuandoFim != "0001-01-01T00:00:00") 
+                    if (data.Acao.QuandoFim != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data.Acao._QuandoFim + "</span>" + new Date(data.Acao.QuandoFim).toLocaleDateString();
 
                     return html;
@@ -1378,34 +1378,42 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
 
 
     let seriesAux = filtroEixoX;
-    let serieArrFinal = []
+    let serieArrFinal = [];
+
     seriesAux.forEach(function (o, c) {
-        var serieData = {};
+
+        let serieData = {};
+
         serieData["name"] = o;
         serieData["data"] = [];
+
         categoriesArr.forEach(function (oo, cc) {
-            serieData["data"].push($.grep(dados, function (e) {
 
-                var retornoSeries;
-                var retornoCategorias;
+            let QtdePorSerie = $.grep(dados, function (e) {
 
-                var propArrayS = seriesFilter.split('.');
+                let retornoSeries;
+                let retornoCategorias;
+
+                let propArrayS = seriesFilter.split('.');
+
                 if (propArrayS.length == 2) {
                     retornoSeries = e[propArrayS[0]][propArrayS[1]];
                 } else {
                     retornoSeries = e[seriesFilter];
                 }
 
-                var propArrayC = categoriesFilter.split('.');
+                let propArrayC = categoriesFilter.split('.');
+
                 if (propArrayC.length == 2) {
                     retornoCategorias = e[propArrayC[0]][propArrayC[1]];
-                    console.log(retornoCategorias);
                 } else {
                     retornoCategorias = e[categoriesFilter];
                 }
 
                 if (propArrayC[1] == "TipoIndicador") {
-                    var value = retornoCategorias;
+
+                    let value = retornoCategorias;
+
                     if (value == 0)
                         value = Resources("no_operational_planning");
                     else if (value == 1)
@@ -1416,22 +1424,37 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
-                    var value = retornoSeries;
+
+                    let value = retornoSeries;
+
                     if (value == 0)
                         value = Resources("no_operational_planning");
                     else if (value == 1)
                         value = Resources("guidelines");
                     else if (value == 2)
                         value = "Scorecard";
+
                     retornoSeries = value;
                 }
 
                 return retornoSeries == o && retornoCategorias == categoriesArr[cc];
-            }).length)
-        })
+
+            }).length
+
+            serieData["data"].push(QtdePorSerie);
+
+        });
 
         serieArrFinal.push(serieData);
     });
+
+    //remove as series que não possuem quantidade
+    serieArrFinal.forEach(function (o, i) {
+        if (o.data.reduce((a, b) => a + b, 0) == 0) {
+            serieArrFinal.splice(i, 1);
+        }
+    });
+
     if (verifyStatus)
         pintaStatus(seriesFilter, serieArrFinal)
     return serieArrFinal
