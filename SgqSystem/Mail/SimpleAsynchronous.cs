@@ -264,12 +264,12 @@ namespace SgqSystem.Mail
                         foreach (var m in Mails)
                         {
                             EmailContent newMail = GetMailByDeviation(db, m, m.AlertNumber);
-                            newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
-                            db.EmailContent.Add(newMail);
-                            db.SaveChanges();
+                                newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
+                                db.EmailContent.Add(newMail);
+                                db.SaveChanges();
 
-                            db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
-                            db.SaveChanges();
+                                db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
+                                db.SaveChanges();
                         }
 
                     }
@@ -297,21 +297,26 @@ namespace SgqSystem.Mail
         /// <returns></returns>
         private static EmailContent GetMailByDeviation(SgqDbDevEntities db, Deviation m, int alertNumber)
         {
-            var body = Uri.UnescapeDataString(m.DeviationMessage).ToString().Replace("O Supervisor da área será notificado Ok ", "").Replace("O Supervisor, o Gerente e o Diretor da área serão notificados Ok ", "").Replace("O Supervisor e o Gerente da área serão notificados. Ok", "").Replace(" Ok", "");
-            var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == m.ParLevel1_Id).Name;
-            var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == m.ParLevel2_Id).Name;
-            string company = string.Empty;
+                var body = Uri.UnescapeDataString(m.DeviationMessage)?.ToString()?.Replace("O Supervisor da área será notificado Ok ", "").Replace("O Supervisor, o Gerente e o Diretor da área serão notificados Ok ", "").Replace("O Supervisor e o Gerente da área serão notificados. Ok", "").Replace(" Ok", "");
 
-            if (m.ParCompany_Id > 0)
-                company = db.ParCompany.FirstOrDefault(r => r.Id == m.ParCompany_Id).Name;
-            else
-                company = "Corporativo";
+                var quebraProcesso = "98789";
+                m.ParLevel1_Id = m.ParLevel1_Id.ToString().Contains(quebraProcesso) ? Convert.ToInt32(m.ParLevel1_Id.ToString().Replace(quebraProcesso,"|").Split('|')[1]) : m.ParLevel1_Id;
+                var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == m.ParLevel1_Id).Name;
 
-            var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
+                m.ParLevel2_Id = m.ParLevel2_Id.ToString().Contains(quebraProcesso) ? Convert.ToInt32(m.ParLevel2_Id.ToString().Replace(quebraProcesso, "|").Split('|')[1]) : m.ParLevel2_Id;
+                var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == m.ParLevel2_Id).Name;
+                string company = string.Empty;
 
-            #region Captura ultimo body do email content enviado
-            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta1 =
-                $@"select top 1 ec.Body from deviation d
+                if (m.ParCompany_Id > 0)
+                    company = db.ParCompany.FirstOrDefault(r => r.Id == m.ParCompany_Id).Name;
+                else
+                    company = "Corporativo";
+
+                var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
+
+                #region Captura ultimo body do email content enviado
+                var sqlSelecionaUltimaCorrectiveActionReferenteAEsta1 =
+                    $@"select top 1 ec.Body from deviation d
                                 INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
                                 WHERE
                                 CAST(GETDATE() AS Date) = CAST(d.DeviationDate AS Date)    
@@ -321,8 +326,8 @@ namespace SgqSystem.Mail
                                 order by d.alertnumber desc";
 
 
-            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
-                $@"
+                var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
+                    $@"
                 SELECT  top 1 ca.id   FROM  CollectionLevel2 cl2                                                 
                 INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
                 INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND d.ParCompany_Id = cl2.UnitId AND d.ParLevel2_Id = cl2.ParLevel2_Id AND d.Evaluation = cl2.EvaluationNumber AND d.Sample = cl2.Sample AND d.DeviationDate = cl2.CollectionDate
@@ -334,42 +339,42 @@ namespace SgqSystem.Mail
                 AND ca.Id <= { m.Id }
                 order by ec.id desc";
 
-            var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
-            var valor2 = db.Database.SqlQuery<int>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
+                var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
+                var valor2 = db.Database.SqlQuery<int>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
 
-            //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
-            #endregion
+                //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
+                #endregion
 
-            var ultimoBodyEmailContent = "";
-            if (valor2 > 0)
-            {
-                var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
-                ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
-            }
-            ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
-            #endregion
+                var ultimoBodyEmailContent = "";
+                if (valor2 > 0)
+                {
+                    var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
+                    ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
+                }
+                ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
+                #endregion
 
-            var newMail = new EmailContent()
-            {
-                AddDate = DateTime.Now,
-                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
-                IsBodyHtml = true,
-                Subject = subject,
-                Project = "SGQApp"
-            };
+                var newMail = new EmailContent()
+                {
+                    AddDate = DateTime.Now,
+                    Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
+                    IsBodyHtml = true,
+                    Subject = subject,
+                    Project = "SGQApp"
+                };
 
-            //if (alertNumber > 1)
-            //{
-            //    var alerta = m.AlertNumber - 1;
-            //    var deviationAnterior = db.Deviation.Where(r => r.AlertNumber == alerta && r.ParCompany_Id == m.ParCompany_Id && r.ParLevel1_Id == m.ParLevel1_Id && r.DeviationMessage != null).OrderByDescending(r => r.DeviationDate).FirstOrDefault();
-            //    if (deviationAnterior != null)
-            //    {
-            //        newMail.Body += "<hr><br> Alerta Anterior: <br><br>";
-            //        newMail.Body += GetMailByDeviation(db, deviationAnterior, alerta).Body;
-            //    }
-            //}
+                //if (alertNumber > 1)
+                //{
+                //    var alerta = m.AlertNumber - 1;
+                //    var deviationAnterior = db.Deviation.Where(r => r.AlertNumber == alerta && r.ParCompany_Id == m.ParCompany_Id && r.ParLevel1_Id == m.ParLevel1_Id && r.DeviationMessage != null).OrderByDescending(r => r.DeviationDate).FirstOrDefault();
+                //    if (deviationAnterior != null)
+                //    {
+                //        newMail.Body += "<hr><br> Alerta Anterior: <br><br>";
+                //        newMail.Body += GetMailByDeviation(db, deviationAnterior, alerta).Body;
+                //    }
+                //}
 
-            return newMail;
+                return newMail;
         }
 
         /// <summary>
