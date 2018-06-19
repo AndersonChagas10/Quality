@@ -1434,6 +1434,7 @@ namespace SgqSystem.Services
                         else
                         {
                             //Caso ocorra algum erro, retorno zero
+                            int insertLog = insertLogJson(i.ToString(), "Erro", "Erro na InsertConsolidationLevel1XCluster", "Erro na InsertConsolidationLevel1XCluster", "InsertConsolidationLevel1XCluster");
                             return null;
                         }
                     }
@@ -1611,6 +1612,7 @@ namespace SgqSystem.Services
                         else
                         {
                             //Caso não ocorra a inserção, retorno zero
+                            int insertLog = insertLogJson(i.ToString(), "Erro", "Erro na InsertConsolidationLevel2XCluster", "Erro na InsertConsolidationLevel2XCluster", "InsertConsolidationLevel2XCluster");
                             return null;
                         }
                     }
@@ -1658,18 +1660,19 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                    if (connection.State == System.Data.ConnectionState.Open)
+                        connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel1XCluster");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel2XCluster");
                 throw ex;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel1XCluster");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel2XCluster");
                 throw ex;
             }
         }
@@ -1885,6 +1888,8 @@ namespace SgqSystem.Services
                         else
                         {
                             //Se o script não for executado corretamente, retorna zero
+
+                            int insertLog = insertLogJson(i.ToString(), "Não entrou na InsertCollectionLevel2XCluster" , "Não entrou na InsertCollectionLevel2XCluster", "Não entrou na InsertCollectionLevel2XCluster", "InsertCollectionLevel2XCluster");
                             return 0;
                         }
                     }
@@ -2087,6 +2092,7 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
+                int insertLog = insertLogJson(sql, ex.Message, "Erro na InsertCollectionLevel2XCluster", "Erro na InsertCollectionLevel2XCluster", "InsertCollectionLevel2XCluster");
                 throw ex;
             }
         }
