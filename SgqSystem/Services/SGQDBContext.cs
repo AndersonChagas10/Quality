@@ -376,7 +376,7 @@ namespace SGQDBContext
                     "\n                ON MON.Id = MONITORAMENTOS.ParLevel2_Id " +
                     "\n                INNER JOIN ParLevel3 TAR  (nolock) " +
                     "\n                ON TAR.Id = MONITORAMENTOS.ParLevel3_Id " +
-                    "\n                WHERE hashKey IS NULL " +
+                    "\n                WHERE (hashKey IS NULL or hashKey = 5) " +
                     "\n			) OUTROS " +
                     "\n/************************************************************************************************************************************************************************************/ " +
                     "\n		) RESULT " +
