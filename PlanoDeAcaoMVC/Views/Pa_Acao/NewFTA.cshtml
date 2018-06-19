@@ -60,77 +60,77 @@
         <div class="table-responsive" ng-controller="FTA" id="tabelaFTA">
 
             <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
+                <thead>
+                    <tr rowspan="2">
+                        <td colspan="6">
+                            <span class="tdLabel; centerThis" style="font-size: 20px;">@Resources.Resource.deviation_analysis_report</span>
+                        </td>
+                        <td colspan="4">
+                            <span class="tdLabels; centerThis">
+                                @Resources.Resource.initial_date_selected_period - @Model._DataInicioFTA
+                            </span>
+                            <hr />
+                            <span class="tdLabels; centerThis">@Resources.Resource.end_date_selected_period - @Model._DataFimFTA</span>
+                        </td>
+                    </tr>
 
-                <tr rowspan="2">
-                    <td colspan="6">
-                        <span class="tdLabel; centerThis" style="font-size: 20px;">@Resources.Resource.deviation_analysis_report</span>
-                    </td>
-                    <td colspan="4">
-                        <span class="tdLabels; centerThis">
-                            @Resources.Resource.initial_date_selected_period - @Model._DataInicioFTA
-                        </span>
-                        <hr />
-                        <span class="tdLabels; centerThis">@Resources.Resource.end_date_selected_period - @Model._DataFimFTA</span>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.indicators_devices</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.supervisor</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.unit</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.department</span></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="4"><span class="tdLabels">@Resources.Resource.indicators_devices</span></td>
-                    <td colspan="2"><span class="tdLabels">@Resources.Resource.supervisor</span></td>
-                    <td colspan="2"><span class="tdLabels">@Resources.Resource.unit</span></td>
-                    <td colspan="2"><span class="tdLabels">@Resources.Resource.department</span></td>
-                </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Model._Level1
+                            @Html.HiddenFor(r => r.Level1Id)
+                            @Html.HiddenFor(r => r.Level2Id)
+                            @Html.HiddenFor(r => r.Level3Id)
+                            @Html.HiddenFor(r => r.IsFTA)
+                        </td>
+                        <td colspan="2">
+                            @Model._Supervisor
+                            @Html.HiddenFor(r => r.Supervisor_Id)
+                        </td>
+                        <td colspan="2">
+                            @Model._Unidade
+                            @Html.HiddenFor(r => r.Unidade_Id)
+                        </td>
+                        <td colspan="2">
+                            @Model._Departamento
+                            @Html.HiddenFor(r => r.Departamento_Id)
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="4">
-                        @Model._Level1
-                        @Html.HiddenFor(r => r.Level1Id)
-                        @Html.HiddenFor(r => r.Level2Id)
-                        @Html.HiddenFor(r => r.Level3Id)
-                        @Html.HiddenFor(r => r.IsFTA)
-                    </td>
-                    <td colspan="2">
-                        @Model._Supervisor
-                        @Html.HiddenFor(r => r.Supervisor_Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Unidade
-                        @Html.HiddenFor(r => r.Unidade_Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Departamento
-                        @Html.HiddenFor(r => r.Departamento_Id)
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="5"><span class="tdLabels">@Resources.Resource.goal_indicator</span></td>
+                        <td colspan="5"><span class="tdLabels">@Resources.Resource.percentage_nc_tasks</span></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="5"><span class="tdLabels">@Resources.Resource.goal_indicator</span></td>
-                    <td colspan="5"><span class="tdLabels">@Resources.Resource.percentage_nc_tasks</span></td>
-                </tr>
+                    <tr>
+                        <td colspan="5">
+                            <k>@Model.MetaFTA</k>
+                            @Html.HiddenFor(r => r.MetaFTA)
+                        </td>
+                        <td colspan="5">
+                            <k>@Model.PercentualNCFTA</k>
+                            @Html.HiddenFor(r => r.PercentualNCFTA)
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="5">
-                        <k>@Model.MetaFTA</k>
-                        @Html.HiddenFor(r => r.MetaFTA)
-                    </td>
-                    <td colspan="5">
-                        <k>@Model.PercentualNCFTA</k>
-                        @Html.HiddenFor(r => r.PercentualNCFTA)
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="10"><span class="tdLabels">@Resources.Resource.recurrence_deviations_period</span></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="10"><span class="tdLabels">@Resources.Resource.recurrence_deviations_period</span></td>
-                </tr>
+                    <tr>
+                        <td colspan="10">
+                            <k>@Model.ReincidenciaDesvioFTA</k>
+                            @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="10">
-                        <k>@Model.ReincidenciaDesvioFTA</k>
-                        @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
-                    </td>
-                </tr>
-
-
+                </thead>
 
                 <tbody ng-repeat="item in items" my-repeat-directive id="FTA{{item}}">
 
@@ -341,21 +341,21 @@
 
     <script>
 
-        var user0 = {Status: false};
-        var user1 = {Status: false};
+        var user0 = { Status: false };
+        var user1 = { Status: false };
         function ValidaSenha(user, ddl) {
             /*Encriptar aqui!!!!*/
             var check = $('#passCheck').serializeObject();
 
 
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
-                if(user == 0){ user0.Status = !r.isInvalid; }
-                if(user == 1){ user1.Status = !r.isInvalid; }
+                if (user == 0) { user0.Status = !r.isInvalid; }
+                if (user == 1) { user1.Status = !r.isInvalid; }
                 openMessageModal(r.response, '');
                 HabilitaBotaoSalvar()
-                if(!user0.Status)
+                if (!user0.Status)
                     $('[id=Assinatura1]').val('').change();
-                if(!user1.Status)
+                if (!user1.Status)
                     $('[id=Assinatura2]').val('').change();
 
                 $('#modalPass').modal("hide");
@@ -372,7 +372,7 @@
         $('[id=Assinatura1]').off('change').on('change', function () {
             user0.Status = false;
             $('#passCheck').find('#name').val($('[id=Assinatura1] :selected').text());
-            $('#btnOk').off('click').on('click', function() { ValidaSenha(0); });
+            $('#btnOk').off('click').on('click', function () { ValidaSenha(0); });
             $('#modalPass').modal();
             $('#passCheck').find('[name=pass]').val('')
             HabilitaBotaoSalvar()
@@ -381,7 +381,7 @@
         $('[id=Assinatura2]').off('change').on('change', function () {
             user1.Status = false;
             $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
-            $('#btnOk').off('click').on('click', function() { ValidaSenha(1); });
+            $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
             $('#modalPass').modal();
             $('#passCheck').find('[name=pass]').val('')
             HabilitaBotaoSalvar()
@@ -453,7 +453,7 @@
 
             } else if (form["_QuandoFim"].length > 0) {
 
-                form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5,3) + "/" + form["_QuandoFim"].substring(2,0) + "/" + form["_QuandoFim"].substring(10,6));
+                form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5, 3) + "/" + form["_QuandoFim"].substring(2, 0) + "/" + form["_QuandoFim"].substring(10, 6));
                 if (form["_QuandoFim"] < new Date()) {
                     openMessageModal("@Resources.Resource.select_delivery_date_greater_today_date");
                     return;
@@ -473,12 +473,12 @@
 
                 }).fail(function (xhr, err) {
 
-                    var responseTitle= $(xhr.responseText).filter('title').get(0);
+                    var responseTitle = $(xhr.responseText).filter('title').get(0);
                     openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
 
                 });
             }
-            else{
+            else {
                 form.CausaGenerica_Id.forEach(function (o, c) {
                     var singleForm = $('form').serializeObject();
                     //singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
@@ -500,8 +500,8 @@
                             printFTA();
                         }
                         window.location.href = '@Url.Action("Index2", "Home2")';
-                    }).fail(function(xhr, err) {
-                        var responseTitle= $(xhr.responseText).filter('title').get(0);
+                    }).fail(function (xhr, err) {
+                        var responseTitle = $(xhr.responseText).filter('title').get(0);
                         openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
                     });
 
@@ -520,22 +520,24 @@
 
         var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
-        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado){
-            $('#ModalNovoApartirDeAlgo').find('h4').text("Vincular "+NomeDoQueSeraCriado);
-            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado) {
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Vincular " + NomeDoQueSeraCriado);
+            $.post(urlGetListPlanejamento + '/' + tipoQueSeraCriado, function (r) {
                 var col = r.columns;
-                col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" onclick="AbreModalDePlanejamento('+row.Id+')" class="btn btn-large btn-success">Vincular '+NomeDoQueSeraCriado+'</button>';
-                }});
+                col.unshift({
+                    "render": function (data, type, row) {
+                        return '<button data-id="' + row.Id + '" data-tipo="' + tipoQueSeraCriado + '" onclick="AbreModalDePlanejamento(' + row.Id + ')" class="btn btn-large btn-success">Vincular ' + NomeDoQueSeraCriado + '</button>';
+                    }
+                });
                 var tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",
                     listaDeDados: r.datas,
-                    colunaDosDados:r.columns,
-                    buttons: {buttons: []},
-                    initComplete: function(){
-                        $('#ModalNovoApartirDeAlgo table').off().on('click','button[data-id]',function(){
-                            $('#tabelaModalTaticoSelecionado').html('<tbody><tr>'+$(this).parents('tr').html()+'</tr></tbody>');
-                            $('#tabelaModalTaticoSelecionado').prepend('<thead>'+$(this).parents('.dataTables_scroll').find('.dataTables_scrollHead').find('thead').html()+'</thead>')
+                    colunaDosDados: r.columns,
+                    buttons: { buttons: [] },
+                    initComplete: function () {
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {
+                            $('#tabelaModalTaticoSelecionado').html('<tbody><tr>' + $(this).parents('tr').html() + '</tr></tbody>');
+                            $('#tabelaModalTaticoSelecionado').prepend('<thead>' + $(this).parents('.dataTables_scroll').find('.dataTables_scrollHead').find('thead').html() + '</thead>')
                             $('#tabelaModalTaticoSelecionado thead th:first-child').remove();
                             $('#tabelaModalTaticoSelecionado button').parent().remove();
                             $('input#Panejamento_Id').val($(this).attr('data-id'));
@@ -570,19 +572,19 @@
 
         function printFTA() {
 
-            $.each($('input'), function (i, o) {
+            $.each($('tbody input'), function (i, o) {
                 $(o).parents('td').html($(o).val());
             });
 
-            $.each($('select'), function (i, o) {
+            $.each($('tbody select'), function (i, o) {
                 $(o).parents('td').html($(o).find('option:selected').text());
             });
 
-            $.each($('textarea'), function (i, o) {
+            $.each($('tbody textarea'), function (i, o) {
                 $(o).parents('td').html($(o).val());
             });
 
-            $.each($('button'), function (i, o) {
+            $.each($('tbody button'), function (i, o) {
                 $(o).remove();
             });
 
