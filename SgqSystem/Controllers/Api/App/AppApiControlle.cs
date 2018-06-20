@@ -289,7 +289,7 @@ namespace SgqSystem.Controllers.Api.App
                 {
                     GlobalConfig.PaginaDoTablet[id].DataFim = DateTime.Now;
                     GlobalConfig.PaginaDoTablet[id].Status = HtmlDoTablet.StatusType.ERROR;
-                    GlobalConfig.PaginaDoTablet[id].StackTrace = ex.StackTrace;
+                    GlobalConfig.PaginaDoTablet[id].StackTrace = ex.Message + " -> " + ex.StackTrace;
 
                 }
             }

@@ -556,7 +556,7 @@ namespace Dominio.Services
                         throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
                     }
 
-                    foreach (var upe in usuarioPerfilEmpresaSgqBr)
+                    foreach (var upe in usuarioPerfilEmpresaSgqBr.ToList())
                     {
 
                         var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();

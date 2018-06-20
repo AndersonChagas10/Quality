@@ -2447,7 +2447,7 @@ insert into Shift (Description,AddDate,AlterTime) values ('Shift B',	getdate(),	
 ";
 
                 ServerConnection svrConnection = new ServerConnection(db.connection);
-                Server server = new Server(svrConnection);
+                Microsoft.SqlServer.Management.Smo.Server server = new Microsoft.SqlServer.Management.Smo.Server(svrConnection);
                 server.ConnectionContext.ExecuteNonQuery(query);
 
                 #endregion
@@ -2464,7 +2464,7 @@ insert into Shift (Description,AddDate,AlterTime) values ('Shift B',	getdate(),	
 
         public class FirstConfigDTO
         {
-            public SgqConfig SgqConfig { get; set; }
+            public DTO.SgqConfig SgqConfig { get; set; }
             /*Wizard Inicial*/
             public UserSgq userSgqDto { get; set; }
             public ParCompany parCompanyDto { get; set; }

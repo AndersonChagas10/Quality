@@ -27,6 +27,8 @@ namespace SgqSystem.Controllers.Api
             // _emailContent = emailContent;
         }
 
+        public static int Variavel = 1;
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult LogIn()
@@ -37,6 +39,8 @@ namespace SgqSystem.Controllers.Api
             {
                 return RedirectToAction("Index", "FirstConfig");
             }
+
+            Variavel = 2;
             #endregion
 
             HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];

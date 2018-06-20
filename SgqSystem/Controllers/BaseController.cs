@@ -20,6 +20,8 @@ namespace SgqSystem.Controllers
     public class BaseController : Controller
     {
 
+        public static int VariavelEstatica = 1;
+
         public BaseController()
         {
            

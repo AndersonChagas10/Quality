@@ -3409,7 +3409,7 @@ ORDER BY 3
 
         [HttpPost]
         [Route("GetAcoesIndicador")]
-        public List<Pa_Acao> GetAcoesIndicador(JObject filtro)
+        public List<Dominio.Pa_Acao> GetAcoesIndicador(JObject filtro)
         {
             try
             {
@@ -3418,7 +3418,7 @@ ORDER BY 3
                 //const BancoPA = "PlanoDeAcaoUSA2"; 
 
                 dynamic filtroDyn = filtro;
-                var retorno = new List<Pa_Acao>();
+                var retorno = new List<Dominio.Pa_Acao>();
                 DateTime dataConclusao = filtroDyn.Data;
                 int level = filtroDyn.isLevel;
                 //var dataConclusao = Guard.ParseDateToSqlV2(data, Guard.CultureCurrent.EUA).ToString("yyyyMMdd");
@@ -3494,14 +3494,14 @@ ORDER BY 3
 
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    retorno = factory.SearchQuery<Pa_Acao>(query).ToList();
+                    retorno = factory.SearchQuery<Dominio.Pa_Acao>(query).ToList();
                 }
 
                 return retorno;
             }
             catch (Exception)
             {
-                return new List<Pa_Acao>();
+                return new List<Dominio.Pa_Acao>();
             }
 
         }
