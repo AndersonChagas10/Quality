@@ -139,7 +139,7 @@
           <Property Name="Sequential" Type="int" />
           <Property Name="Side" Type="int" />
           <Property Name="WeiEvaluation" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="Defects" Type="decimal" Precision="30" Scale="8" />
+          <Property Name="Defects" Type="decimal" Precision="38" Scale="10" />
           <Property Name="WeiDefects" Type="decimal" Precision="15" Scale="5" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
           <Property Name="TotalLevel3Evaluation" Type="int" />
@@ -178,23 +178,22 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Evaluation" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="Evaluation" Type="decimal" Precision="32" Scale="8" />
           <Property Name="AtualAlert" Type="int" />
-          <Property Name="WeiEvaluation" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="EvaluateTotal" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="DefectsTotal" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="WeiDefects" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="WeiEvaluation" Type="decimal" Precision="32" Scale="8" />
+          <Property Name="EvaluateTotal" Type="decimal" Precision="32" Scale="8" />
+          <Property Name="DefectsTotal" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="decimal" Precision="30" Scale="8" />
           <Property Name="TotalLevel3Evaluation" Type="int" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
           <Property Name="LastEvaluationAlert" Type="int" />
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
           <Property Name="LastLevel2Alert" Type="int" />
-          <Property Name="Shift" Type="int" />
-          <Property Name="Period" Type="int" />
           <Property Name="ReauditIs" Type="int" />
           <Property Name="ReauditNumber" Type="int" />
-          <Property Name="ReauditLevel" Type="int" />
+          <Property Name="Shift" Type="int" />
+          <Property Name="Period" Type="int" />
         </EntityType>
         <EntityType Name="ConsolidationLevel2">
           <Key>
@@ -208,18 +207,18 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="AlertLevel" Type="int" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
-          <Property Name="WeiEvaluation" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="EvaluateTotal" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="DefectsTotal" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="WeiDefects" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="WeiEvaluation" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="EvaluateTotal" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="DefectsTotal" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="decimal" Precision="30" Scale="8" />
           <Property Name="TotalLevel3Evaluation" Type="int" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
           <Property Name="LastEvaluationAlert" Type="int" />
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
           <Property Name="LastLevel2Alert" Type="int" />
-          <Property Name="ReauditIs" Type="int" Nullable="false" />
-          <Property Name="ReauditNumber" Type="int" Nullable="false" />
+          <Property Name="ReauditIs" Type="int" />
+          <Property Name="ReauditNumber" Type="int" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -310,14 +309,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="To" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="To" Type="nvarchar" MaxLength="900" Nullable="false" />
           <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="SendStatus" Type="nvarchar(max)" />
+          <Property Name="SendStatus" Type="nvarchar" MaxLength="900" />
           <Property Name="SendDate" Type="datetime2" Precision="7" />
-          <Property Name="Project" Type="nvarchar(max)" />
+          <Property Name="Project" Type="nvarchar" MaxLength="15" />
           <Property Name="IsBodyHtml" Type="bit" />
-          <Property Name="From" Type="nvarchar(max)" />
-          <Property Name="Subject" Type="nvarchar(max)" />
+          <Property Name="From" Type="nvarchar" MaxLength="350" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="2900" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -444,7 +443,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="result" Type="text" Nullable="false" />
           <Property Name="log" Type="text" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -791,19 +790,6 @@
           <Property Name="duplicate" Type="bit" Nullable="false" />
           <Property Name="CheckBox" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="ParLataImagens">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Imagem" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ParRecravacao_TipoLata_Id" Type="int" Nullable="false" />
-          <Property Name="PathFile" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PontoIndex" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
             <PropertyRef Name="Id" />
@@ -836,22 +822,22 @@
           <Property Name="IsPartialSave" Type="bit" />
           <Property Name="HasCompleteEvaluation" Type="bit" />
           <Property Name="ParScoreType_Id" Type="int" />
-          <Property Name="ParGroupLevel1_Id" Type="int" />
           <Property Name="IsChildren" Type="bit" />
           <Property Name="ParLevel1Origin_Id" Type="int" />
           <Property Name="PointsDestiny" Type="bit" />
           <Property Name="ParLevel1Destiny_Id" Type="int" />
           <Property Name="EditLevel2" Type="bit" Nullable="false" />
+          <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
           <Property Name="AllowAddLevel3" Type="bit" />
           <Property Name="AllowEditPatternLevel3Task" Type="bit" />
           <Property Name="AllowEditWeightOnLevel3" Type="bit" />
-          <Property Name="ShowInTablet" Type="bit" />
-          <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
           <Property Name="IsRecravacao" Type="bit" />
+          <Property Name="ParGroupLevel1_Id" Type="int" />
+          <Property Name="ShowInTablet" Type="bit" />
           <Property Name="ShowScorecard" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade_Integracao.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel1VariableProduction">
           <Key>
             <PropertyRef Name="Id" />
@@ -865,7 +851,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProduction' does
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade_Integracao.dbo.ParLevel1VariableProductionXLevel1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel1VariableProductionXLevel1">
           <Key>
             <PropertyRef Name="Id" />
@@ -891,6 +877,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ParCriticalLevel_Id" Type="int" />
+          <Property Name="ValidoApartirDe" Type="date" />
           <Property Name="EffectiveDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ParLevel1XHeaderField">
@@ -1088,7 +1075,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1177,7 +1164,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="PunishmentValue" Type="decimal" Precision="10" Scale="4" Nullable="false" />
+          <Property Name="PunishmentValue" Type="decimal" Precision="38" Scale="10" Nullable="false" />
           <Property Name="Conformity" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -1202,7 +1189,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParNotConformityRule_Id" Type="int" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" />
-          <Property Name="Value" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="Value" Type="decimal" Precision="38" Scale="10" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" />
           <Property Name="ParLevel2_Id" Type="int" />
@@ -1318,25 +1305,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
         </EntityType>
-        <EntityType Name="RecravacaoJson">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserSgqId" Type="int" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
-          <Property Name="Linha_Id" Type="int" Nullable="false" />
-          <Property Name="ObjectRecravacaoJson" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" />
-          <Property Name="isValidated" Type="bit" />
-          <Property Name="ValidateLockDate" Type="datetime2" Precision="7" />
-          <Property Name="ParLevel1_Id" Type="int" />
-          <Property Name="SalvoParaInserirNovaColeta" Type="int" />
-          <Property Name="UserFinished_Id" Type="int" />
-          <Property Name="UserValidated_Id" Type="int" />
-        </EntityType>
         <EntityType Name="Regionais">
           <Key>
             <PropertyRef Name="Id" />
@@ -1366,7 +1334,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="WeiDefects" Type="decimal" Precision="30" Scale="8" />
           <Property Name="CT4Eva3" Type="decimal" Precision="10" Scale="5" />
           <Property Name="Sampling" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="HasPhoto" Type="bit" />
+          <Property Name="HasPhoto" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Result_Level3_Photos">
           <Key>
@@ -1380,7 +1348,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel
           <Property Name="Longitude" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ResultLevel2HeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade_Integracao.dbo.ResultLevel2HeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ResultLevel2HeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -1400,15 +1368,15 @@ warning 6002: The table/view 'dbGQualidade.dbo.ResultLevel2HeaderField' does not
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.RoleJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade_Integracao.dbo.RoleJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleJBS">
           <Key>
-            <PropertyRef Name="Id" />
             
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nchar" MaxLength="10" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="RoleSGQ">
           <Key>
@@ -1419,7 +1387,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.RoleJBS' does not have a primary 
           <Property Name="Role" Type="nchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.RoleType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade_Integracao.dbo.RoleType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1428,14 +1396,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.RoleType' does not have a primary
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.RoleUserSgq' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleUserSgq">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="AddDate" />
-            <PropertyRef Name="IsActive" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
@@ -1443,16 +1406,17 @@ warning 6002: The table/view 'dbGQualidade.dbo.RoleUserSgq' does not have a prim
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="FazColeta" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade_Integracao.dbo.ScreenComponent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ScreenComponent">
           <Key>
             <PropertyRef Name="Id" />
             
             
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="HashKey" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Component" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Type" Type="int" />
@@ -1594,6 +1558,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="PasswordDate" Type="datetime" />
           <Property Name="UseActiveDirectory" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -1862,7 +1827,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="cIdentificadorTipificacao" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="nCdCaracteristicaTipificacao" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Correctiv__Email__554B8353">
+        <Association Name="FK__Correctiv__Email__06B7F65E">
           <End Role="EmailContent" Type="Self.EmailContent" Multiplicity="0..1" />
           <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1874,7 +1839,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Deviation__Email__53633AE1">
+        <Association Name="FK__Deviation__Email__113584D1">
           <End Role="EmailContent" Type="Self.EmailContent" Multiplicity="0..1" />
           <End Role="Deviation" Type="Self.Deviation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1886,7 +1851,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParCo__28CDE297">
+        <Association Name="FK__ParLevel3__ParCo__69E6AD86">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1898,67 +1863,43 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParCo__2E86BBED">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
+        <Association Name="FK__ParLevel3__ParLe__6ADAD1BF">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ParCompany">
+            <Principal Role="ParLevel1">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParCompany_Id" />
+              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParCo__343F9543">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
+        <Association Name="FK__ParLevel3__ParLe__6BCEF5F8">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
           <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ParCompany">
+            <Principal Role="ParLevel2">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParCompany_Id" />
+              <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParCo__39F86E99">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
+        <Association Name="FK__ParLevel3__ParLe__6CC31A31">
+          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
           <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ParCompany">
+            <Principal Role="ParLevel3">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParCompany_Id" />
+              <PropertyRef Name="ParLevel3_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParCo__3FB147EF">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParCo__4C813328">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__0BA79404">
+        <Association Name="FK__ParLevel3__ParLe__74643BF9">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="ParLevel3Value" Type="Self.ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1970,7 +1911,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParLe__1EBA6878">
+        <Association Name="FK__ParLevel3__ParLe__75586032">
           <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
           <End Role="ParLevel3Value" Type="Self.ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1982,223 +1923,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ParLevel3__ParLe__29C206D0">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__2AB62B09">
-          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__2BAA4F42">
-          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__2F7AE026">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__306F045F">
-          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__31632898">
-          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__3533B97C">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__3627DDB5">
-          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__371C01EE">
-          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__3AEC92D2">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__3BE0B70B">
-          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__3CD4DB44">
-          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__40A56C28">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__41999061">
-          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__428DB49A">
-          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__4D755761">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__4E697B9A">
-          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParLevel3__ParLe__4F5D9FD3">
-          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
-          <End Role="ParLevel3EvaluationSample" Type="Self.ParLevel3EvaluationSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3EvaluationSample">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VolumeCep__ParCo__665613C4">
+        <Association Name="FK__VolumeCep__ParCo__3A02903A">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumeCepDesossa" Type="Self.VolumeCepDesossa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2210,7 +1935,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeCep__ParCo__683E5C36">
+        <Association Name="FK__VolumeCep__ParCo__3BEAD8AC">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumeCepRecortes" Type="Self.VolumeCepRecortes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2222,7 +1947,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeCep__ParLe__674A37FD">
+        <Association Name="FK__VolumeCep__ParLe__3AF6B473">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumeCepDesossa" Type="Self.VolumeCepDesossa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2234,7 +1959,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeCep__ParLe__6932806F">
+        <Association Name="FK__VolumeCep__ParLe__3CDEFCE5">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumeCepRecortes" Type="Self.VolumeCepRecortes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2246,7 +1971,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumePcc__ParCo__6A26A4A8">
+        <Association Name="FK__VolumePcc__ParCo__3DD3211E">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumePcc1b" Type="Self.VolumePcc1b" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2258,7 +1983,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumePcc__ParLe__6B1AC8E1">
+        <Association Name="FK__VolumePcc__ParLe__3EC74557">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumePcc1b" Type="Self.VolumePcc1b" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2270,7 +1995,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeVac__ParCo__6C0EED1A">
+        <Association Name="FK__VolumeVac__ParCo__4297D63B">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumeVacuoGRD" Type="Self.VolumeVacuoGRD" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2282,7 +2007,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeVac__ParLe__6D031153">
+        <Association Name="FK__VolumeVac__ParLe__438BFA74">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumeVacuoGRD" Type="Self.VolumeVacuoGRD" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2459,6 +2184,30 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq1">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="0..1" />
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="TechinicalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq2">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="0..1" />
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="SlaughterId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3518,30 +3267,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Unidades_Clusters">
-          <End Role="Clusters" Type="Self.Clusters" Multiplicity="0..1" />
-          <End Role="Unidades" Type="Self.Unidades" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Clusters">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Unidades">
-              <PropertyRef Name="Cluster" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Unidades_Regionais">
-          <End Role="Regionais" Type="Self.Regionais" Multiplicity="0..1" />
-          <End Role="Unidades" Type="Self.Unidades" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Regionais">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Unidades">
-              <PropertyRef Name="Regional" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UnitUser_Unit">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
@@ -3692,7 +3417,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParGoal" EntityType="Self.ParGoal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParGoalScorecard" EntityType="Self.ParGoalScorecard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParHeaderField" EntityType="Self.ParHeaderField" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParLataImagens" EntityType="Self.ParLataImagens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1" EntityType="Self.ParLevel1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XCluster" EntityType="Self.ParLevel1XCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="Self.ParLevel1XHeaderField" Schema="dbo" store:Type="Tables" />
@@ -3727,11 +3451,11 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Produtos" EntityType="Self.Produtos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RecravacaoJson" EntityType="Self.RecravacaoJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Regionais" EntityType="Self.Regionais" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3" EntityType="Self.Result_Level3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3_Photos" EntityType="Self.Result_Level3_Photos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleSGQ" EntityType="Self.RoleSGQ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleUserSgq" EntityType="Self.RoleUserSgq" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaAmostras" EntityType="Self.TarefaAmostras" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaAvaliacoes" EntityType="Self.TarefaAvaliacoes" Schema="dbo" store:Type="Tables" />
@@ -3791,9 +3515,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           </EntitySet>
           <EntitySet Name="RoleJBS" EntityType="Self.RoleJBS" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [RoleJBS].[Id] AS [Id], 
     [RoleJBS].[ScreenComponent_Id] AS [ScreenComponent_Id], 
-    [RoleJBS].[Role] AS [Role]
+    [RoleJBS].[Role] AS [Role], 
+    [RoleJBS].[Id] AS [Id]
     FROM [dbo].[RoleJBS] AS [RoleJBS]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="RoleType" EntityType="Self.RoleType" store:Type="Tables" store:Schema="dbo">
@@ -3801,16 +3525,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
     [RoleType].[Id] AS [Id], 
     [RoleType].[Type] AS [Type]
     FROM [dbo].[RoleType] AS [RoleType]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="RoleUserSgq" EntityType="Self.RoleUserSgq" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [RoleUserSgq].[Id] AS [Id], 
-    [RoleUserSgq].[Name] AS [Name], 
-    [RoleUserSgq].[Description] AS [Description], 
-    [RoleUserSgq].[AddDate] AS [AddDate], 
-    [RoleUserSgq].[AlterDate] AS [AlterDate], 
-    [RoleUserSgq].[IsActive] AS [IsActive]
-    FROM [dbo].[RoleUserSgq] AS [RoleUserSgq]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ScreenComponent" EntityType="Self.ScreenComponent" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3820,147 +3534,67 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
     [ScreenComponent].[Type] AS [Type]
     FROM [dbo].[ScreenComponent] AS [ScreenComponent]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__Correctiv__Email__554B8353" Association="Self.FK__Correctiv__Email__554B8353">
+          <AssociationSet Name="FK__Correctiv__Email__06B7F65E" Association="Self.FK__Correctiv__Email__06B7F65E">
             <End Role="EmailContent" EntitySet="EmailContent" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
-          <AssociationSet Name="FK__Deviation__Email__53633AE1" Association="Self.FK__Deviation__Email__53633AE1">
+          <AssociationSet Name="FK__Deviation__Email__113584D1" Association="Self.FK__Deviation__Email__113584D1">
             <End Role="EmailContent" EntitySet="EmailContent" />
             <End Role="Deviation" EntitySet="Deviation" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParCo__28CDE297" Association="Self.FK__ParLevel3__ParCo__28CDE297">
+          <AssociationSet Name="FK__ParLevel3__ParCo__69E6AD86" Association="Self.FK__ParLevel3__ParCo__69E6AD86">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParCo__2E86BBED" Association="Self.FK__ParLevel3__ParCo__2E86BBED">
-            <End Role="ParCompany" EntitySet="ParCompany" />
+          <AssociationSet Name="FK__ParLevel3__ParLe__6ADAD1BF" Association="Self.FK__ParLevel3__ParLe__6ADAD1BF">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParCo__343F9543" Association="Self.FK__ParLevel3__ParCo__343F9543">
-            <End Role="ParCompany" EntitySet="ParCompany" />
+          <AssociationSet Name="FK__ParLevel3__ParLe__6BCEF5F8" Association="Self.FK__ParLevel3__ParLe__6BCEF5F8">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParCo__39F86E99" Association="Self.FK__ParLevel3__ParCo__39F86E99">
-            <End Role="ParCompany" EntitySet="ParCompany" />
+          <AssociationSet Name="FK__ParLevel3__ParLe__6CC31A31" Association="Self.FK__ParLevel3__ParLe__6CC31A31">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
             <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParCo__3FB147EF" Association="Self.FK__ParLevel3__ParCo__3FB147EF">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParCo__4C813328" Association="Self.FK__ParLevel3__ParCo__4C813328">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__0BA79404" Association="Self.FK__ParLevel3__ParLe__0BA79404">
+          <AssociationSet Name="FK__ParLevel3__ParLe__74643BF9" Association="Self.FK__ParLevel3__ParLe__74643BF9">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__1EBA6878" Association="Self.FK__ParLevel3__ParLe__1EBA6878">
+          <AssociationSet Name="FK__ParLevel3__ParLe__75586032" Association="Self.FK__ParLevel3__ParLe__75586032">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
           </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__29C206D0" Association="Self.FK__ParLevel3__ParLe__29C206D0">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__2AB62B09" Association="Self.FK__ParLevel3__ParLe__2AB62B09">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__2BAA4F42" Association="Self.FK__ParLevel3__ParLe__2BAA4F42">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__2F7AE026" Association="Self.FK__ParLevel3__ParLe__2F7AE026">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__306F045F" Association="Self.FK__ParLevel3__ParLe__306F045F">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__31632898" Association="Self.FK__ParLevel3__ParLe__31632898">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__3533B97C" Association="Self.FK__ParLevel3__ParLe__3533B97C">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__3627DDB5" Association="Self.FK__ParLevel3__ParLe__3627DDB5">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__371C01EE" Association="Self.FK__ParLevel3__ParLe__371C01EE">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__3AEC92D2" Association="Self.FK__ParLevel3__ParLe__3AEC92D2">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__3BE0B70B" Association="Self.FK__ParLevel3__ParLe__3BE0B70B">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__3CD4DB44" Association="Self.FK__ParLevel3__ParLe__3CD4DB44">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__40A56C28" Association="Self.FK__ParLevel3__ParLe__40A56C28">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__41999061" Association="Self.FK__ParLevel3__ParLe__41999061">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__428DB49A" Association="Self.FK__ParLevel3__ParLe__428DB49A">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__4D755761" Association="Self.FK__ParLevel3__ParLe__4D755761">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__4E697B9A" Association="Self.FK__ParLevel3__ParLe__4E697B9A">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParLevel3__ParLe__4F5D9FD3" Association="Self.FK__ParLevel3__ParLe__4F5D9FD3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3EvaluationSample" EntitySet="ParLevel3EvaluationSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParCo__665613C4" Association="Self.FK__VolumeCep__ParCo__665613C4">
+          <AssociationSet Name="FK__VolumeCep__ParCo__3A02903A" Association="Self.FK__VolumeCep__ParCo__3A02903A">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumeCepDesossa" EntitySet="VolumeCepDesossa" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParCo__683E5C36" Association="Self.FK__VolumeCep__ParCo__683E5C36">
+          <AssociationSet Name="FK__VolumeCep__ParCo__3BEAD8AC" Association="Self.FK__VolumeCep__ParCo__3BEAD8AC">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParLe__674A37FD" Association="Self.FK__VolumeCep__ParLe__674A37FD">
+          <AssociationSet Name="FK__VolumeCep__ParLe__3AF6B473" Association="Self.FK__VolumeCep__ParLe__3AF6B473">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeCepDesossa" EntitySet="VolumeCepDesossa" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParLe__6932806F" Association="Self.FK__VolumeCep__ParLe__6932806F">
+          <AssociationSet Name="FK__VolumeCep__ParLe__3CDEFCE5" Association="Self.FK__VolumeCep__ParLe__3CDEFCE5">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumePcc__ParCo__6A26A4A8" Association="Self.FK__VolumePcc__ParCo__6A26A4A8">
+          <AssociationSet Name="FK__VolumePcc__ParCo__3DD3211E" Association="Self.FK__VolumePcc__ParCo__3DD3211E">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumePcc1b" EntitySet="VolumePcc1b" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumePcc__ParLe__6B1AC8E1" Association="Self.FK__VolumePcc__ParLe__6B1AC8E1">
+          <AssociationSet Name="FK__VolumePcc__ParLe__3EC74557" Association="Self.FK__VolumePcc__ParLe__3EC74557">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumePcc1b" EntitySet="VolumePcc1b" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeVac__ParCo__6C0EED1A" Association="Self.FK__VolumeVac__ParCo__6C0EED1A">
+          <AssociationSet Name="FK__VolumeVac__ParCo__4297D63B" Association="Self.FK__VolumeVac__ParCo__4297D63B">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeVac__ParLe__6D031153" Association="Self.FK__VolumeVac__ParLe__6D031153">
+          <AssociationSet Name="FK__VolumeVac__ParLe__438BFA74" Association="Self.FK__VolumeVac__ParLe__438BFA74">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
           </AssociationSet>
@@ -4017,6 +3651,14 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
           <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="Self.FK_CorrectiveAction_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq1" Association="Self.FK_CorrectiveAction_UserSgq1">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="Self.FK_CorrectiveAction_UserSgq2">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
@@ -4372,14 +4014,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="Produtos" EntitySet="Produtos" />
             <End Role="Tarefas" EntitySet="Tarefas" />
           </AssociationSet>
-          <AssociationSet Name="FK_Unidades_Clusters" Association="Self.FK_Unidades_Clusters">
-            <End Role="Clusters" EntitySet="Clusters" />
-            <End Role="Unidades" EntitySet="Unidades" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Unidades_Regionais" Association="Self.FK_Unidades_Regionais">
-            <End Role="Regionais" EntitySet="Regionais" />
-            <End Role="Unidades" EntitySet="Unidades" />
-          </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
@@ -4461,7 +4095,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
           <EntitySet Name="LogAlteracoes" EntityType="SgqDbModel.LogAlteracoes" />
-          <EntitySet Name="LogJson" EntityType="SgqDbModel.LogJson" />
           <EntitySet Name="LogSgq" EntityType="SgqDbModel.LogSgq" />
           <EntitySet Name="LogSgqGlobal" EntityType="SgqDbModel.LogSgqGlobal" />
           <EntitySet Name="NQA" EntityType="SgqDbModel.NQA" />
@@ -5113,6 +4746,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParModule" EntitySet="ParModule" />
             <End Role="ParModuleXModule" EntitySet="ParModuleXModule" />
           </AssociationSet>
+          <EntitySet Name="LogJson" EntityType="SgqDbModel.LogJson" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -5306,18 +4940,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Valor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UsuarioAlteracao" Type="Int32" Nullable="false" />
           <Property Name="DataAlteracao" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="LogJson">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="result" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="log" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="callback" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LogSgq">
           <Key>
@@ -5761,7 +5383,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PunishmentValue" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="PunishmentValue" Type="Decimal" Nullable="false" Precision="38" Scale="10" />
           <Property Name="Conformity" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
@@ -5788,7 +5410,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParNotConformityRule_Id" Type="Int32" Nullable="false" />
           <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="Value" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Value" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="Int32" />
           <Property Name="ParLevel2_Id" Type="Int32" />
@@ -6721,6 +6343,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel2" />
           <Property Name="UseActiveDirectory" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <Association Name="FK_CorrectiveAction_UserSgq">
           <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
@@ -6807,6 +6430,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="FazColeta" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParCounter">
           <Key>
@@ -6912,18 +6536,18 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="AlertLevel" Type="Int32" />
           <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="EvaluateTotal" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
           <Property Name="TotalLevel3Evaluation" Type="Int32" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
           <Property Name="LastEvaluationAlert" Type="Int32" />
           <Property Name="EvaluatedResult" Type="Int32" />
           <Property Name="DefectsResult" Type="Int32" />
           <Property Name="LastLevel2Alert" Type="Int32" />
-          <Property Name="ReauditIs" Type="Int32" Nullable="false" />
-          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
+          <Property Name="ReauditIs" Type="Int32" />
+          <Property Name="ReauditNumber" Type="Int32" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" FromRole="ConsolidationLevel2" ToRole="ParCompany" />
@@ -6976,7 +6600,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Sequential" Type="Int32" />
           <Property Name="Side" Type="Int32" />
           <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="Defects" Type="Decimal" Precision="30" Scale="8" />
+          <Property Name="Defects" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="WeiDefects" Type="Decimal" Precision="15" Scale="5" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
           <Property Name="TotalLevel3Evaluation" Type="Int32" />
@@ -7083,7 +6707,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Sampling" Type="Decimal" Precision="10" Scale="5" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="Result_Level3" ToRole="CollectionLevel2" />
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="Result_Level3" ToRole="ParLevel3" />
-          <Property Name="HasPhoto" Type="Boolean" />
+          <Property Name="HasPhoto" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Result_Level3_CollectionLevel2">
           <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
@@ -7116,14 +6740,14 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="To" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendStatus" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="SendDate" Type="DateTime" Precision="7" />
-          <Property Name="Project" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="IsBodyHtml" Type="Boolean" />
-          <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="From" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="2900" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK__Correctiv__Email__554B8353" FromRole="EmailContent" ToRole="CorrectiveAction" />
           <NavigationProperty Name="Deviation" Relationship="SgqDbModel.FK__Deviation__Email__53633AE1" FromRole="EmailContent" ToRole="Deviation" />
         </EntityType>
@@ -7162,12 +6786,12 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Evaluation" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="Evaluation" Type="Decimal" Precision="32" Scale="8" />
           <Property Name="AtualAlert" Type="Int32" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="32" Scale="8" />
+          <Property Name="EvaluateTotal" Type="Decimal" Precision="32" Scale="8" />
+          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
           <Property Name="TotalLevel3Evaluation" Type="Int32" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
           <Property Name="LastEvaluationAlert" Type="Int32" />
@@ -8649,6 +8273,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParLevel1XCluster" ToRole="ParCluster" />
           <NavigationProperty Name="ParCriticalLevel" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParLevel1XCluster" ToRole="ParCriticalLevel" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1XCluster" ToRole="ParLevel1" />
+          <Property Name="ValidoApartirDe" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_ParLevel1XCluster_ParCluster">
           <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
@@ -8862,6 +8487,18 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LogJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="result" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="log" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="callback" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9026,19 +8663,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Campo" ColumnName="Campo" />
                 <ScalarProperty Name="Registro" ColumnName="Registro" />
                 <ScalarProperty Name="Tabela" ColumnName="Tabela" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LogJson">
-            <EntityTypeMapping TypeName="SgqDbModel.LogJson">
-              <MappingFragment StoreEntitySet="LogJson">
-                <ScalarProperty Name="callback" ColumnName="callback" />
-                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
-                <ScalarProperty Name="Device_Id" ColumnName="Device_Id" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="log" ColumnName="log" />
-                <ScalarProperty Name="result" ColumnName="result" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -9806,6 +9430,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="UserSgq">
             <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
               <MappingFragment StoreEntitySet="UserSgq">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="UseActiveDirectory" ColumnName="UseActiveDirectory" />
                 <ScalarProperty Name="PasswordDate" ColumnName="PasswordDate" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
@@ -9837,6 +9462,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="RoleUserSgq">
             <EntityTypeMapping TypeName="SgqDbModel.RoleUserSgq">
               <MappingFragment StoreEntitySet="RoleUserSgq">
+                <ScalarProperty Name="FazColeta" ColumnName="FazColeta" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -10007,7 +9633,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ConsolidationLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
               <MappingFragment StoreEntitySet="ConsolidationLevel1">
-                <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Shift" ColumnName="Shift" />
                 <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
@@ -10704,6 +10329,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySetMapping Name="ParLevel1XCluster">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XCluster">
               <MappingFragment StoreEntitySet="ParLevel1XCluster">
+                <ScalarProperty Name="ValidoApartirDe" ColumnName="ValidoApartirDe" />
                 <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
                 <ScalarProperty Name="ParCriticalLevel_Id" ColumnName="ParCriticalLevel_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -10738,40 +10364,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RecravacaoJson">
-            <EntityTypeMapping TypeName="SgqDbModel.RecravacaoJson">
-              <MappingFragment StoreEntitySet="RecravacaoJson">
-                <ScalarProperty Name="UserValidated_Id" ColumnName="UserValidated_Id" />
-                <ScalarProperty Name="UserFinished_Id" ColumnName="UserFinished_Id" />
-                <ScalarProperty Name="SalvoParaInserirNovaColeta" ColumnName="SalvoParaInserirNovaColeta" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="ValidateLockDate" ColumnName="ValidateLockDate" />
-                <ScalarProperty Name="isValidated" ColumnName="isValidated" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ObjectRecravacaoJson" ColumnName="ObjectRecravacaoJson" />
-                <ScalarProperty Name="Linha_Id" ColumnName="Linha_Id" />
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="UserSgqId" ColumnName="UserSgqId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParLataImagens">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLataImagens">
-              <MappingFragment StoreEntitySet="ParLataImagens">
-                <ScalarProperty Name="PontoIndex" ColumnName="PontoIndex" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="PathFile" ColumnName="PathFile" />
-                <ScalarProperty Name="ParRecravacao_TipoLata_Id" ColumnName="ParRecravacao_TipoLata_Id" />
-                <ScalarProperty Name="Imagem" ColumnName="Imagem" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10815,6 +10407,19 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
               <MappingFragment StoreEntitySet="ParModuleXModule">
                 <ScalarProperty Name="ParModuleChild_Id" ColumnName="ParModuleChild_Id" />
                 <ScalarProperty Name="ParModuleParent_Id" ColumnName="ParModuleParent_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogJson">
+            <EntityTypeMapping TypeName="SgqDbModel.LogJson">
+              <MappingFragment StoreEntitySet="LogJson">
+                <ScalarProperty Name="callback" ColumnName="callback" />
+                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
+                <ScalarProperty Name="Device_Id" ColumnName="Device_Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="log" ColumnName="log" />
+                <ScalarProperty Name="result" ColumnName="result" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

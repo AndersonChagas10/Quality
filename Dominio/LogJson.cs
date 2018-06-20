@@ -14,7 +14,7 @@ namespace Dominio
     
     public partial class LogJson
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string result { get; set; }
         public string log { get; set; }
         public System.DateTime AddDate { get; set; }
