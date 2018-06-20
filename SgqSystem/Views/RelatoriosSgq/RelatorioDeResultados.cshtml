@@ -3173,7 +3173,7 @@
 
         $('#' + selector).empty().highcharts({
             credits: Chart.Credits(),
-            chart: Chart.Chart('column', 'xy'),
+            chart: Chart.Chart('column', 'xy', 500),
             title: Chart.Titulo(GraficoTarefasAcumuladasTit),
             subtitle: {
                 text: subtitle
@@ -3205,16 +3205,16 @@
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
-        } else {
-            $('#SemDados').show();
+            } else {
+                $('#SemDados').show();
+            }
         }
-    }
 
-    var Chart = {
-         criaTitulo: function (prefix, sufix) {
+        var Chart = {
+            criaTitulo: function (prefix, sufix) {
                 return prefix + sufix;
             },
-         curvaPareto: function (dados, dadosNC, axis, inverse) {
+            curvaPareto: function (dados, dadosNC, axis, inverse) {
 
                 var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
                 var porcentagemAcumuladaNC = 0;
@@ -3242,7 +3242,7 @@
                     }],
                 }
             },
-         serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
+            serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
 
                 var serieType = tipo == undefined ? 'line' : tipo;
                 var sufix = suffix == undefined ? '' : suffix
@@ -3282,12 +3282,12 @@
 
 
             },
-         CorTotalNc: function () { return '#F7BCB0' },
-         CorTotalAv: function () { return '#ccc' },
-         CorTotalPareto: function () { return '#900000' },
-         CorMeta: function () { return '#67D184' },
-         CorTotalProcNc: function () { return '#FF6347' },
-         Legend: function () {
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
                 return {
                     layout: 'horizontal',
                     align: 'center',
@@ -3295,14 +3295,14 @@
                     borderWidth: 0
                 };
             },
-         ToolTip: function (isShared, isCrosshairs) {
+            ToolTip: function (isShared, isCrosshairs) {
                 return {
                     valueDecimals: 2,
                     shared: isShared,
                     crosshairs: isCrosshairs
                 }
             },
-         Titulo: function (data, sufix) {
+            Titulo: function (data, sufix) {
 
                 if (!!sufix)
                     data = data + " | " + sufix;
@@ -3314,7 +3314,7 @@
                 };
 
             },
-         Subtitulo: function (data, sufix) {
+            Subtitulo: function (data, sufix) {
 
                 if (!!sufix)
                     data = data + ": " + sufix;
@@ -3326,26 +3326,28 @@
                 };
 
             },
-         Credits: function () {
+            Credits: function () {
                 return {
                     enabled: false
                 }
             },
-         Zones: function () {
+            Zones: function () {
                 return {
                     enabled: false
                 }
             },
-         Chart: function (tipo, zoon) {
+            Chart: function (tipo, zoon, height) {
                 return {
                     type: tipo,
-                    zoomType: (!!zoon) ? zoon : ''
+                    zoomType: (!!zoon) ? zoon : '',
+                    height: (!!height) ? height : null
                 }
             },
-         yAxisPadraoRelNc: function () {
+            yAxisPadraoRelNc: function () {
 
                 return [{
                     allowDecimals: false,
+
                     min: 0,
                     title: {
                         text: Resources('number_samplers')
@@ -3358,6 +3360,7 @@
                     },
                 }, {
                     allowDecimals: false,
+                    tickInterval: 50,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -3371,7 +3374,7 @@
                 }];
 
             },
-         Xaxis: function (dados) {
+            Xaxis: function (dados) {
                 return [{
                     categories: dados
                 }];
@@ -3412,7 +3415,7 @@
                     name: '% ' + Resources('nonconformity'),
                     color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
                     data: data,
-                    yAxis: 1,
+                    yAxis: 0,
                     tooltip: {
                         valueSuffix: ' %'
                     },
