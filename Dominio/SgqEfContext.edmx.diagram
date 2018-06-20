@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="64">
+      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="49">
         <EntityTypeShape EntityType="SgqDbModel.BkpCollection" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionHtml" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionJson" Width="1.5" PointX="4.75" PointY="3.75" />
@@ -15,6 +15,7 @@
         <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="12.75" PointY="13.125" />
         <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="17.25" PointY="22.625" />
         <EntityTypeShape EntityType="SgqDbModel.LogAlteracoes" Width="1.5" PointX="6.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SgqDbModel.LogJson" Width="1.5" PointX="0.75" PointY="7.75" />
         <EntityTypeShape EntityType="SgqDbModel.LogSgq" Width="1.5" PointX="6.75" PointY="7.75" />
         <EntityTypeShape EntityType="SgqDbModel.LogSgqGlobal" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="SgqDbModel.NQA" Width="1.5" PointX="8.75" PointY="4.75" />
@@ -176,8 +177,8 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" />
         <AssociationConnector Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField" />
         <AssociationConnector Association="SgqDbModel.FK__Correctiv__Email__554B8353" ManuallyRouted="true" >
-          <ConnectorPoint PointX="15.375" PointY="2.0538857187500597" />
-          <ConnectorPoint PointX="15.125" PointY="2.0538857187500597" />
+          <ConnectorPoint PointX="15.375" PointY="2.5093489583333328" />
+          <ConnectorPoint PointX="15.125" PointY="2.5093489583333328" />
           <ConnectorPoint PointX="15.125" PointY="26.125" />
           <ConnectorPoint PointX="15" PointY="26.125" />
           <ConnectorPoint PointX="15" PointY="26.5" />
@@ -270,7 +271,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParModuleXModule" Width="1.5" PointX="11.25" PointY="73.625" />
         <AssociationConnector Association="SgqDbModel.FK_ParModuleXModule_ParModuleChild" />
         <AssociationConnector Association="SgqDbModel.FK_ParModuleXModule_ParModuleParent" />
-        <EntityTypeShape EntityType="SgqDbModel.LogJson" Width="1.5" PointX="15.375" PointY="15.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
