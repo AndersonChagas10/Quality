@@ -32,7 +32,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 ViewBag.Unidade = Pa_Unidade.Listar();
 
             if (ViewBag.Quem == null)
-                ViewBag.Quem = Pa_Quem.Listar();
+                ViewBag.Quem = Pa_Quem.Listar().OrderBy(r => r.Name);
 
             ViewBag.Departamento = Pa_Departamento.Listar();
             ViewBag.CausaGenerica = Pa_CausaGenerica.Listar();
