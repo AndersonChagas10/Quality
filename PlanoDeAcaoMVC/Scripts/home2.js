@@ -1195,7 +1195,7 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
             //max: 30,
             allowDecimals: false,
             title: {
-                text: yAxisTitle,
+                text: GetPropertyRealName(yAxisTitle),
                 align: 'high',
                 style: {
                     fontSize: '8px',
@@ -2621,5 +2621,56 @@ function SetFiltrosDeColunas() {
                 }
             });
         });
+    }
+}
+
+function GetPropertyRealName(propertyName) {
+
+    switch (propertyName) {
+
+        case "Diretoria":
+            return Resources("directorship");
+        case "Dimensao":
+            return Resources("dimension");
+        case "Objetivo":
+            return Resources("guideline");
+        case "IndicadoresDiretriz":
+            return Resources("indicators_guideline");
+        case "TemaAssunto":
+            return Resources("theme_subject");
+        case "Gerencia":
+            return Resources("management");
+        case "Coordenacao":
+            return Resources("coordination");
+        case "TipoProjeto":
+            return Resources("type_of_project");
+        case "TemaProjeto":
+            return Resources("project_theme");
+        case "Iniciativa":
+            return Resources("project_initiative");
+        case "Acao._GrupoCausa":
+            return Resources("group_cause");
+        case "Acao._CausaGenerica":
+            return Resources("generic_cause");
+        case "Acao._ContramedidaGenerica":
+            return Resources("generic_action");
+        case "Acao.UnidadeName":
+            return Resources("unit");
+        case "Acao._Quem":
+            return Resources("who");
+        case "Acao._StatusName":
+            return Resources("status");
+        case "Acao.Regional":
+            return Resources("regional");
+        case "Acao.Level1Name":
+            return Resources("indicator");
+        case "Acao.Level2Name":
+            return Resources("monitoring");
+        case "Acao.Level3Name":
+            return Resources("task");
+        case "Acao.TipoIndicador":
+            return Resources("indicator_type");
+        default:
+            return "";
     }
 }

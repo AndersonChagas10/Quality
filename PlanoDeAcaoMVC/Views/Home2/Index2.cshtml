@@ -1191,17 +1191,17 @@
 
             let serieArrFinal = [{
                 type: 'column',
-                name: '@Resources.Resource.open',
+                name: '@Html.Raw(Resources.Resource.open)',
                 data: arrayAndamento,
                 color: andamentoColor
             }, {
                 type: 'column',
-                name: '@Resources.Resource.closed',
+                name: '@Html.Raw(Resources.Resource.closed)',
                 data: arrayFechadas,
                 color: concluidoColor
             }, {
                 type: 'spline',
-                name: '@Resources.Resource.stock',
+                name: '@Html.Raw(Resources.Resource.stock)',
                 data: arrayEstoque,
                 color: atrasadaColor,
                 marker: {
@@ -1218,40 +1218,40 @@
 
                 switch (categoriesArr[i].getMonth()) {
                     case 0:
-                        retorno = "@Resources.Resource.jan";
+                        retorno = '@Html.Raw(Resources.Resource.jan)';
                         break;
                     case 1:
-                        retorno = "@Resources.Resource.feb";
+                        retorno = '@Html.Raw(Resources.Resource.feb)';
                         break;
                     case 2:
-                        retorno = "@Resources.Resource.mar";
+                        retorno = '@Html.Raw(Resources.Resource.mar)';
                         break;
                     case 3:
-                        retorno = "@Resources.Resource.apr";
+                        retorno = '@Html.Raw(Resources.Resource.apr)';
                         break;
                     case 4:
-                        retorno = "@Resources.Resource.may";
+                        retorno = '@Html.Raw(Resources.Resource.may)';
                         break;
                     case 5:
-                        retorno = "@Resources.Resource.june";
+                        retorno = '@Html.Raw(Resources.Resource.june)';
                         break;
                     case 6:
-                        retorno = "@Resources.Resource.july";
+                        retorno = '@Html.Raw(Resources.Resource.july)';
                         break;
                     case 7:
-                        retorno = "@Resources.Resource.aug";
+                        retorno = '@Html.Raw(Resources.Resource.aug)';
                         break;
                     case 8:
-                        retorno = "@Resources.Resource.sept";
+                        retorno = '@Html.Raw(Resources.Resource.sept)';
                         break;
                     case 9:
-                        retorno = "@Resources.Resource.oct";
+                        retorno = '@Html.Raw(Resources.Resource.oct)';
                         break;
                     case 10:
-                        retorno = "@Resources.Resource.nov";
+                        retorno = '@Html.Raw(Resources.Resource.nov)';
                         break;
                     case 11:
-                        retorno = "@Resources.Resource.dec";
+                        retorno = '@Html.Raw(Resources.Resource.dec)';
                         break;
                 }
 
@@ -1434,7 +1434,7 @@
             if (title != undefined) {
                 $('#Header').html(title);
             } else {
-                $('#Header').html("@Resources.Resource.planning");
+                $('#Header').html(Html.Raw(@Resources.Resource.planning));
             }
 
             if (callback != undefined) {
@@ -1484,7 +1484,7 @@
         function NovoPlanejamento() {//Pos Modal2
 
             var title = $('#Header').html();
-            var title2 = " > @Resources.Resource._new"
+            var title2 = " > " + "@Html.Raw(Resources.Resource._new)"
 
             $('#Header').html(title + title2);
 
@@ -1547,7 +1547,7 @@
 
             let isValid = $('#Planejamento').find('.error').length == 0
             if (!isValid) {
-                alert("@Resources.Resource.required_fields");
+                alert('@Html.Raw(Resources.Resource.required_fields)');
                 return
             }
 
@@ -1558,12 +1558,12 @@
                 $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                     planejamentoCorrentId = parseInt(r.Id);
-                    openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
                     $('#modalLindo').modal('hide');
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
                 });
             }
 
@@ -1582,21 +1582,21 @@
 
             let isValid = ($(form).find('.error:visible').length == 0)
             if (!isValid) {
-                alert("@Resources.Resource.required_fields")
+                alert('@Html.Raw(Resources.Resource.required_fields)')
                 return
             }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                 planejamentoCorrentId = parseInt(r.Id);
-                openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
                 $('#modalLindo').modal('hide');
                 $('#btnTop').click();
 
 
             }).fail(function (e, h, x) {
 
-                openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
             });
 
         }
@@ -1607,7 +1607,7 @@
             var title = $('#Header').html();
             var title2 = " > Novo"
             if (isTaticoClicked) {
-                $('#Header').html("@Resources.Resource.tactical_planning");
+                $('#Header').html('@Html.Raw(Resources.Resource.tactical_planning)');
             } else {
                 $('#Header').html(title + title2);
             }
@@ -1812,10 +1812,10 @@
         function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
             let masterEl = $(idMaster)
             let masterElVal = $(idMaster).val()
-            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, '@Resources.Resource.select_a_predecessor_above', '');
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
             masterEl.off('change').on('change', function () {
                 let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
-                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, '@Resources.Resource.select_a_predecessor_above', '');
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
                 $.get(urlGETChildren, { id: seletedId }, function (response) {
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
@@ -1866,7 +1866,7 @@
 
                 header.find(".collapse").attr("id", collapseId);
                 header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
-                header.find("button[data-toggle='collapse']").html("@Resources.Resource.new_action")
+                header.find("button[data-toggle='collapse']").html('@Html.Raw(Resources.Resource.new_action)')
 
                 header.appendTo('#final');
                 header.show();
@@ -2035,7 +2035,7 @@
                 if (isOpenModal)
                     $('#modalLindo').modal();
 
-                $('#Header').html("@Resources.Resource.new_action");
+                $('#Header').html('@Html.Raw(Resources.Resource.new_action)');
 
                 $.get(urlNovaAcao, function (r) {
 
@@ -2074,7 +2074,7 @@
             var acao = data.Acao;
 
             $('#modalLindo').modal();
-            $('#Header').html("@Resources.Resource.edit_action");
+            $('#Header').html('@Html.Raw(Resources.Resource.edit_action)');
             $('#modalLindo').find('.modal-body').empty().append(html);
             $('#modalLindo').find('.modal-footer button').hide();
             myfunction();
@@ -2160,12 +2160,12 @@
 
                         jaLiberouCallback = true;
                         $('#modalLindo').modal('hide');
-                        openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                        openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
                         $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
 
-                        openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                     }).always(function () {
 
@@ -2173,11 +2173,11 @@
                 })
                     .fail(function (e, h, x) {
 
-                        openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                     });
             } else
-                alert("@Resources.Resource.required_fields");
+                alert('@Html.Raw(Resources.Resource.required_fields)');
 
         }
 
@@ -2196,7 +2196,7 @@
                 let DataFim = new Date(parts[2], parts[1], parts[0]);
 
                 if (DataInicio < DataFim) {
-                    alert("@Resources.Resource.start_date_must_be_less_than_end_date");
+                    alert('@Html.Raw(Resources.Resource.start_date_must_be_less_than_end_date)');
                     dataIsValid = false;
                     return;
                 }
@@ -2222,7 +2222,7 @@
 
             let isValid = $('.Acao').find('.error').length == 0;
             if (!isValid) {
-                alert("@Resources.Resource.required_fields")
+                alert('@Html.Raw(Resources.Resource.required_fields)')
                 return;
             }
 
@@ -2236,13 +2236,13 @@
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
                     $('.modal-backdrop').remove();
-                    openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
 
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
 
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                 }).always(function () {
 
@@ -2250,7 +2250,7 @@
             })
                 .fail(function (e, h, x) {
 
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                 });
 
@@ -2330,7 +2330,7 @@
             var label = $(btn).parents('tr').find('label').html();
             $('#modalNovo > div > div.modal-footer').hide();
             $('#modalNovo').modal();
-            $('#novoHeader').html("@Resources.Resource.to_manage " + label);
+            $('#novoHeader').html('@Html.Raw(Resources.Resource.to_manage) ' + label);
             $('#nomeItemNovo').html(label);
 
             if (encadeado != undefined) {
@@ -2417,46 +2417,46 @@
                     pageLength: 3,
                     "bInfo": false,
                     language: {
-                        "sEmptyTable": "@Resources.Resource.no_records_found",
-                        "sInfo": "@Resources.Resource.showing_start_to_end_of_total_records",
-                        "sInfoEmpty": "@Resources.Resource.showing_0_to_0_of_0_records",
-                        "sInfoFiltered": "@Resources.Resource.filtered_max_records",
+                        "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
+                        "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
+                        "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
+                        "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
                         "sInfoPostFix": "",
                         "sInfoThousands": ".",
-                        "sLengthMenu": "@Resources.Resource.menu_results_per_page",
-                        "sLoadingRecords": "@Resources.Resource.loading",
-                        "sProcessing": "@Resources.Resource.processing",
-                        "sZeroRecords": "@Resources.Resource.no_records_found",
-                        "sSearch": "@Resources.Resource.search",
+                        "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
+                        "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
+                        "sProcessing": "@Html.Raw(Resources.Resource.processing)",
+                        "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
+                        "sSearch": "@Html.Raw(Resources.Resource.search)",
                         "oPaginate": {
-                            "sNext": "@Resources.Resource.next",
-                            "sPrevious": "@Resources.Resource.back",
-                            "sFirst": "@Resources.Resource.first",
-                            "sLast": "@Resources.Resource.last"
+                            "sNext": "@Html.Raw(Resources.Resource.next)",
+                            "sPrevious": "@Html.Raw(Resources.Resource.back)",
+                            "sFirst": "@Html.Raw(Resources.Resource.first)",
+                            "sLast": "@Html.Raw(Resources.Resource.last)"
                         },
                         "oAria": {
-                            "sSortAscending": "@Resources.Resource.sort_columns_ascending",
-                            "sSortDescending": "@Resources.Resource.sort_columns_downward"
+                            "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
+                            "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
                         }
                     },
                     columns: [
                         { title: "ID" },
-                        { title: "@Resources.Resource.name" },
+                        { title: "@Html.Raw(Resources.Resource.name)" },
                         {
-                            title: "@Resources.Resource.active2",
+                            title: "@Html.Raw(Resources.Resource.active2)",
                             "data": null,
                             "render": function (data, type, full, meta) {
                                 if (data[2] == true) {
-                                    return "@Resources.Resource.active3";
+                                    return "@Html.Raw(Resources.Resource.active3)";
                                 }
-                                return "@Resources.Resource.inactive";
+                                return "@Html.Raw(Resources.Resource.inactive)";
                             }
                         },
                         {
                             "className": 'options',
                             "data": null,
                             "render": function (data, type, full, meta) {
-                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Resources.Resource.edit</span>';
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Html.Raw(Resources.Resource.edit)</span>';
                             }
                         }
                     ],
@@ -2597,11 +2597,11 @@
                 formReset();
 
                 $('#btnTop').click();
-                openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
 
             }).fail(function (e, h, x) {
 
-                  openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                  openMessageModal("@Html.Raw(Resources.Resource.could_not_save_record)", e.responseJSON.Message);
 
             });
         }
@@ -2619,14 +2619,14 @@
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 $('#modalLindo').modal();
-                $('#Header').html('@Resources.Resource.operational_planning_follow_up');
+                $('#Header').html('@Html.Raw(Resources.Resource.operational_planning_follow_up)');
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
 
                 $("#SaveAcompanhamento").on("click", function (event) {
                     var obj = $("#acompanhamento").serializeObject();
                     if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined || obj.MailTo == undefined || !(obj.Status_Id > 0))
-                        alert("@Resources.Resource.fields_must_be_completed")
+                        alert("@Html.Raw(Resources.Resource.fields_must_be_completed)")
                     else
                         SalvarAcompanhamento(obj);
                 });
@@ -2650,7 +2650,7 @@
                     }
 
                     $('#modalLindo').find('.modal-footer button').hide();
-                    $('#Header').html("@Resources.Resource.edit");
+                    $('#Header').html("@Html.Raw(Resources.Resource.edit)");
                     $('#modalLindo').modal();
                     $('#Fechar').show();
                 });
@@ -2788,7 +2788,7 @@
             $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
                 var acao = data.Acao;
 
-                $('#Header').html("@Resources.Resource.edit_action");
+                $('#Header').html("@Html.Raw(Resources.Resource.edit_action)");
 
                 $('#modalLindo').find('.modal-footer button').hide();
                 $('#modalLindo').find('.modal-body .content3').append(r);
@@ -3042,28 +3042,28 @@
                 columns: columnsSet,
                 destroy: true,
                 pageLength: 5,
-                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Resources.Resource.all"]],
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Html.Raw(Resources.Resource.all)"]],
                 language: {
-                    "sEmptyTable": "@Resources.Resource.no_records_found",
-                    "sInfo": "@Resources.Resource.showing_start_to_end_of_total_records",
-                    "sInfoEmpty": "@Resources.Resource.showing_0_to_0_of_0_records",
-                    "sInfoFiltered": "@Resources.Resource.filtered_max_records",
+                    "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
+                    "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
+                    "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
+                    "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
                     "sInfoPostFix": "",
                     "sInfoThousands": ".",
-                    "sLengthMenu": "@Resources.Resource.menu_results_per_page",
-                    "sLoadingRecords": "@Resources.Resource.loading",
-                    "sProcessing": "@Resources.Resource.processing",
-                    "sZeroRecords": "@Resources.Resource.no_records_found",
-                    "sSearch": "@Resources.Resource.search",
+                    "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
+                    "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
+                    "sProcessing": "@Html.Raw(Resources.Resource.processing)",
+                    "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
+                    "sSearch": "@Html.Raw(Resources.Resource.search)",
                     "oPaginate": {
-                        "sNext": "@Resources.Resource.next",
-                        "sPrevious": "@Resources.Resource.back",
-                        "sFirst": "@Resources.Resource.first",
-                        "sLast": "@Resources.Resource.last"
+                        "sNext": "@Html.Raw(Resources.Resource.next)",
+                        "sPrevious": "@Html.Raw(Resources.Resource.back)",
+                        "sFirst": "@Html.Raw(Resources.Resource.first)",
+                        "sLast": "@Html.Raw(Resources.Resource.last)"
                     },
                     "oAria": {
-                        "sSortAscending": "@Resources.Resource.sort_columns_ascending",
-                        "sSortDescending": "@Resources.Resource.sort_columns_downward"
+                        "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
+                        "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
                     }
                  }
             });
@@ -3106,7 +3106,7 @@
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor =  "@Resources.Resource.no_specific_action";
+                        valor =  "@Html.Raw(Resources.Resource.no_specific_action)";
                     }
                 }
 
@@ -3116,7 +3116,7 @@
                 AcoesEspecificas.push([i]);
             });
 
-            let TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }]
+            let TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }]
 
             var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3133,12 +3133,12 @@
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "@Resources.Resource.no_specific_action";
+                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "@Html.Raw(Resources.Resource.no_specific_action)";
 
                     return { 0:  valor, 1: String(diffDays - 1) + " Dias" };
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
                     }
                 }
 
@@ -3146,7 +3146,7 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.days_of_delay" }]
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.days_of_delay)" }]
 
             var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3170,7 +3170,7 @@
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
                     }
                 }
 
@@ -3178,7 +3178,7 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.start_date", render: renderFunction }]
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.start_date)", render: renderFunction }]
 
             var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3198,14 +3198,14 @@
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
                     }
                 }
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.date_conclusion", render: renderFunction }]
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.date_conclusion)", render: renderFunction }]
 
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
@@ -3331,7 +3331,7 @@
 
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">@Resources.Resource.select</button>';
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.select)</button>';
                 }});
                 datatableGRT.Inicializar({
                     idTabela: "tablePessego",
@@ -3343,7 +3343,7 @@
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
                                 $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
-                                    openMessageModal("@Resources.Resource.updated_link");
+                                    openMessageModal("@Html.Raw(Resources.Resource.updated_link)");
                                     location.reload();
                                 });
                             }
@@ -3384,7 +3384,7 @@
 
             $('#modalLindo').modal();
             $('#modalLindo').find('.modal-body').empty();
-            $('#Header').html("@Resources.Resource.operational_planning");
+            $('#Header').html("@Html.Raw(Resources.Resource.operational_planning)");
 
             $.get(PlanejamentoDetalhes, { id: id }, function (r) {
                 $('#NovaAcao').show();
@@ -3443,11 +3443,11 @@
         var tableModalNovoApartirDe={};
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
         function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
-            $('#ModalNovoApartirDeAlgo').find('h4').text("@Resources.Resource.create "+NomeDoQueSeraCriado+" @Resources.Resource.from "+NomeApartirDeQueSeraCriado);
+            $('#ModalNovoApartirDeAlgo').find('h4').text("@Html.Raw(Resources.Resource.create) "+NomeDoQueSeraCriado+" @Html.Raw(Resources.Resource.from) "+NomeApartirDeQueSeraCriado);
             $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">@Resources.Resource.create '+NomeDoQueSeraCriado+'</button>';
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.create) '+NomeDoQueSeraCriado+'</button>';
                 }});
                 tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",

@@ -54,7 +54,7 @@
 <!--Modal Recupera Senha-->
 <div class="container">
     <div class="modal fade" id="modalRecPassword" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
-        <div class="modal-dialog modal-sm"  role="document">
+        <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header modal-header-gray">
 
@@ -73,8 +73,10 @@
             </div>
         </div>
     </div>
-@section Scripts {
-    <script type="text/javascript">
+
+    @section Scripts {
+
+        <script type="text/javascript">
 
         HideMenuLayout();
 
@@ -120,7 +122,7 @@
                             openMessageModal("Alerta", e.responseJSON.Message);
                         } catch (e) {
                             closeLoader();
-                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                            openMessageModal("@Html.Raw(@Resources.Resource.warning)", "@Html.Raw(Resources.Resource.cannot_finish_action)");
                             console.log(e);
                         }
                     });
@@ -152,7 +154,7 @@
                             openMessageModal("Alerta", e.responseJSON.Message);
                         } catch (e) {
                             closeLoader();
-                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                            openMessageModal("@Html.Raw(Resources.Resource.warning)", "@Html.Raw(Resources.Resource.cannot_finish_action)");
                             console.log(e);
                         }
                     });
@@ -179,11 +181,5 @@
         //    });
         //});
 
-        $(document).ready(function () {
-
-
-
-        });
-
-    </script>
-}
+        </script>
+    }
