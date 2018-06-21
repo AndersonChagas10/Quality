@@ -1276,6 +1276,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not started.
+        /// </summary>
+        internal static string not_started {
+            get {
+                return ResourceManager.GetString("not_started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nov.
         /// </summary>
         internal static string nov {

@@ -10,6 +10,9 @@ namespace PlanoAcaoCore
     {
         public string ColVisShow { get; set; }
         public string ColVisHide { get; set; }
+        public string ColVisProjShow { get; set; }
+        public string ColVisProjHide { get; set; }
+        public string Tabela { get; set; }
         public int Pa_Quem_Id { get; set; }
     }
 }
