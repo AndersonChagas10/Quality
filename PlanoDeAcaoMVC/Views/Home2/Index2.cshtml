@@ -537,33 +537,6 @@
             <div class="defaultFilter">
                 <select style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
 
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
-                    <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
-                    <option value="Acao.Regional">@Resources.Resource.regional</option>
-                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
-                </select>
-
-                <select id="valor1Panel5"></select>
-
-                <select style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
-
                     <option value="Diretoria" selected>@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
                     <option value="Objetivo">@Resources.Resource.guideline</option>
@@ -580,6 +553,33 @@
                     <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
                     <option value="Acao._Quem">@Resources.Resource.who</option>
                     <option value="Acao._StatusName">@Resources.Resource.status</option>
+                    <option value="Acao.Regional">@Resources.Resource.regional</option>
+                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+
+                <select id="valor1Panel5"></select>
+
+                <select style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
+                    <option value="Acao._Quem">@Resources.Resource.who</option>
+                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
                     <option value="Acao.Regional">@Resources.Resource.regional</option>
                     <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
                     <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
@@ -615,7 +615,7 @@
                     <option value="Objetivo">@Resources.Resource.guideline</option>
                     <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
                     <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Gerencia" selected>@Resources.Resource.management</option>
                     <option value="Coordenacao">@Resources.Resource.coordination</option>
                     <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
                     <option value="TemaProjeto">@Resources.Resource.project_theme</option>
@@ -625,7 +625,7 @@
                     <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
                     <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
                     <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
+                    <option value="Acao._StatusName">@Resources.Resource.status</option>
                     <option value="Acao.Regional">@Resources.Resource.regional</option>
                     <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
                     <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
@@ -642,7 +642,7 @@
                     <option value="Objetivo">@Resources.Resource.guideline</option>
                     <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
                     <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia" selected>@Resources.Resource.management</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
                     <option value="Coordenacao">@Resources.Resource.coordination</option>
                     <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
                     <option value="TemaProjeto">@Resources.Resource.project_theme</option>
@@ -652,7 +652,7 @@
                     <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
                     <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
                     <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName">@Resources.Resource.status</option>
+                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
                     <option value="Acao.Regional">@Resources.Resource.regional</option>
                     <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
                     <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
