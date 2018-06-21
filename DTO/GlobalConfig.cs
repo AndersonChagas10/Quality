@@ -116,7 +116,7 @@ namespace DTO
 
 
         /*Resources manager*/
-        public static bool LanguageBrasil { get; set; }
+        public static bool LanguageBrasil { get; set; } = true;
         public static bool LanguageEUA { get; set; }
 
         /*DataMenber*/

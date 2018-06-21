@@ -16,7 +16,7 @@ namespace PlanoAcaoCore.Enum
 
         public enum Status
         {
-            Atrasado = 1, Cancelado, Concluido, ConcluidoComAtraso, EmAndamento, Retorno, Finalizada, FinalizadaComAtraso
+            Atrasado = 1, Cancelado, Concluido, ConcluidoComAtraso, EmAndamento, Retorno, Finalizada, FinalizadaComAtraso, NaoIniciado, Aberto
         };
     }
 }

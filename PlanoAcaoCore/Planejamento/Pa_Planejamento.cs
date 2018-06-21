@@ -553,7 +553,7 @@ LEFT JOIN Pa_Dimensao DIME
             var acoes = Pa_Acao.Listar();
             var remover = new List<int>();
 
-            var statusAberto = new int[] { 1, 5, 6 };
+            var statusAberto = new int[] { 1, 5, 6, 9 };
             var statusFechado = new int[] { 3, 4, 7, 8 };
 
             var dtInit = DTO.Helpers.Guard.ParseDateToSqlV2(dataInit, DTO.Helpers.Guard.CultureCurrent.BR);
