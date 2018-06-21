@@ -218,17 +218,18 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
-    $('#HorasTrabalhadasPorDia').on('input', function () {
+    $('#HorasTrabalhadasPorDia').on('blur, keyup', function () {
         $('#Avaliacoes').val($(this).val());
         $('#avaliacaoHidden').val($(this).val());
     });
 
-    $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('input', function () {
+    $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('blur, keyup', function () {
         $('#QtdadeMediaKgRecProdHora').val(Math.round(($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val())));
         $('#QtdadeMediaKgRecProdHoraHidden').val(Math.round(($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val())));
+        CalcularAmostras();
     });
 
-    $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
+    function CalcularAmostras() {
 
         $.get("../../api/NQA/getNQA/" + $('#NBR').val() + "/" + $('#QtdadeMediaKgRecProdHora').val() + "", function (r) {
             console.log(r);
@@ -244,6 +245,9 @@
             $('#amostraHidden').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
 
         });
+    }
+    $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
+        CalcularAmostras();
 
     });
 
@@ -253,7 +257,7 @@
     });
 
 
-    $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
+    $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('blur, keyup', function () {
         var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
