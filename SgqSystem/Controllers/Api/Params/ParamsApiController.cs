@@ -464,7 +464,7 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("GetListLevel2")]
         public List<ParLevel2DTO> GetListLevel2()
         {
-            return _baseParLevel2.GetAllNoLazyLoad().ToList();
+            return _baseParLevel2.GetAllNoLazyLoad().Where(P => P.IsActive).ToList();
 
         }
 
@@ -472,7 +472,7 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("GetListLevel3")]
         public List<ParLevel3DTO> GetListLevel3()
         {
-            return _baseParLevel3.GetAllNoLazyLoad().ToList();
+            return _baseParLevel3.GetAllNoLazyLoad().Where(P => P.IsActive).ToList();
         }
 
         [HttpPost]
