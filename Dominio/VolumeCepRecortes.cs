@@ -26,6 +26,9 @@ namespace Dominio
 
         public int? QtdadeMediaKgRecProdHora { get; set; }
 
+        [NotMapped()]
+        public int? QtdadeFamiliaProduto { get; set; }
+
         public int? NBR { get; set; }
 
         public int? TotalKgAvaliaHoraProd { get; set; }
