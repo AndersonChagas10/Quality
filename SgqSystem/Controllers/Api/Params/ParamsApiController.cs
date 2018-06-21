@@ -457,7 +457,7 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("GetListLevel1")]
         public List<ParLevel1DTO> GetListLevel1()
         {
-            return _baseParLevel1.GetAllNoLazyLoad().ToList();
+            return _baseParLevel1.GetAllNoLazyLoad().Where(P => P.IsActive).ToList();
         }
 
         [HttpPost]
