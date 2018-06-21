@@ -8,7 +8,9 @@ namespace Dominio.Interfaces.Services
 
         ParCompanyDTO AddUpdateParCompany(ParCompanyDTO parCompanyDTO);
         ParStructureDTO AddUpdateParStructure(ParStructureDTO parStructureDTO);
+        ParStructure AtivarOuDesativarParStructure(ParStructureDTO parStructureDTO);
         ParStructureGroupDTO AddUpdateParStructureGroup(ParStructureGroupDTO parStructureGroupDTO);
+        ParStructureGroup AtivarOuDesativarParStructureGroup(ParStructureGroupDTO parStructureGroupDTO);
         ParCompanyXStructureDTO AddUpdateParCompanyXStructureDTO(ParCompanyXStructureDTO parCompanyXStructureDTO);
 
         void SaveParCompany(ParCompany parCompany);

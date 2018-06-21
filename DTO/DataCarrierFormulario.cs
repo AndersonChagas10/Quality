@@ -93,6 +93,8 @@ namespace DTO
         public int createActionPlane { get; set; }
         public int criticalLevelId { get; set; }
         public int[] criticalLevelIdArr { get; set; } = new int[] { };
+        public int groupParLevel1id { get; set; }
+        public int[] groupParLevel1IdArr { get; set; } = new int[] { };
 
         public int MetaFTA { get; set; }
         public int PercentualNCFTA { get; set; }
@@ -114,7 +116,10 @@ namespace DTO
         public int clusterGroupId { get; set; }
         public int departmentId { get; set; }
         public string departmentName { get; set; }
+        public int dimensaoData { get; set; }
 
         public string tipoCEP { get; set; }
+
+        public int GroupLevel1 { get; set; }
     }
 }

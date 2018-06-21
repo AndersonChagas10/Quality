@@ -215,6 +215,21 @@
     <Folder Include="Views\UserAuthentication\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Resource.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.pt-br.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.pt-br.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MoneyMaskBundleConfig.cs" />
@@ -226,6 +241,8 @@
     <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="Controllers\Home2Controller.cs" />
+    <Compile Include="Jobs\Jobs.cs" />
+    <Compile Include="Helpers\Rodape.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
@@ -549,6 +566,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Scripts\DatePikerReady.js" />
     <Content Include="Scripts\daterangepicker.js" />
+    <Content Include="Scripts\DataTablePlanejamento.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />
@@ -705,6 +723,8 @@
     <Content Include="Scripts\pivottable-master\tests\boot.js" />
     <Content Include="Scripts\pivottable-master\tests\index.html" />
     <Content Include="Scripts\PluginGRT\datatableGRT.js" />
+    <Content Include="Scripts\Print\print.js" />
+    <Content Include="Scripts\Print\printGRT.js" />
     <Content Include="Scripts\Reports\Reports1.js" />
     <Content Include="Scripts\Reports\ReportsHC.js" />
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
@@ -984,6 +1004,7 @@
     <Content Include="Views\Shared\_Calendar.cshtml" />
     <Content Include="Views\Home2\Index2.cshtml" />
     <Content Include="Views\Centauro\Index.cshtml" />
+    <Content Include="Views\Shared\_Rodape.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
@@ -1017,6 +1038,18 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Resource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Resource.pt-br.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

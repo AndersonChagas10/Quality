@@ -1,7 +1,8 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
-@*@using DTO*@
+@using DTO
 @{
     ViewBag.Title = Resources.Resource.evolutional;
+    ViewBag.SubTitle = "";
 
     //Condições de dropdown que podem ser multiplos
     ViewBag.UnitIdArr = true;
@@ -11,6 +12,7 @@
     ViewBag.Level1IdArr = true;
     ViewBag.Level2IdArr = true;
     ViewBag.Level3IdArr = true;
+    ViewBag.groupParLevel1IdArr = true;
 }
 
 <style>
@@ -53,16 +55,23 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="dia" class="btn btn-default">Dia</button>
+                <button id="semana" class="btn btn-default">Semana</button>
+                <button id="mes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
             </div>
 
             <div id="loaderNCUnidade"></div>
             <div class="totalNC" id="NCUnidade" hidden>
+                <button id="Udia" class="btn btn-default">Dia</button>
+                <button id="Usemana" class="btn btn-default">Semana</button>
+                <button id="Umes" class="btn btn-default">Mês</button>
                 <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
                     <h1>0 %</h1>
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+
                 <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
             </div>
 
@@ -72,6 +81,9 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="Idia" class="btn btn-default">Dia</button>
+                <button id="Isemana" class="btn btn-default">Semana</button>
+                <button id="Imes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
             </div>
 
@@ -81,6 +93,9 @@
                     <br />
                     <span>@Resources.Resource.non_conformities_in_period</span>
                 </div>
+                <button id="Mdia" class="btn btn-default">Dia</button>
+                <button id="Msemana" class="btn btn-default">Semana</button>
+                <button id="Mmes" class="btn btn-default">Mês</button>
                 <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
             </div>
             <br />
@@ -98,6 +113,12 @@
             <br />
             <table id="DataTable"></table>
 
+            <br />
+            <h3 id="TituloTabela2"></h3>
+            <br />
+            <div id="DataTable2Loader"></div>
+            <table id="DataTable2"></table>
+
         </div>
     </div>
 
@@ -111,6 +132,9 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">@Resources.Resource.history</h4>
                 </div>
+                <button id="Hdia" class="btn btn-default">Dia</button>
+                <button id="Hsemana" class="btn btn-default">Semana</button>
+                <button id="Hmes" class="btn btn-default">Mês</button>
                 <div class="modal-body">
                     <div class="" id="GraficoHistoricoModal"></div>
                 </div>
@@ -192,9 +216,15 @@
 
     var Subtitle = "";
 
+    var indicador = @Html.Raw(Json.Encode(ViewBag.Level01));
+    var monitoramento = @Html.Raw(Json.Encode(ViewBag.Level02));
+    var tarefa = @Html.Raw(Json.Encode(ViewBag.Level03));
+    var unidade = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));
+
     //        var UrlListaSugestoes = '@Html.Raw(Url.Action("listaSugestoes", "api/RelatorioDeResultados"))';
     var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
+    var UrlListaResultadosPeriodo2 = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela2", "api/RelatorioDeResultados"))';
     var UrlGraficoHistorico = '@Html.Raw(Url.Action("GetGraficoHistoricoModal", "api/RelatorioDeResultados"))';
     var UrlGraficoHistoricoGeral = '@Html.Raw(Url.Action("GetGraficoHistoricoModalGeral", "api/RelatorioDeResultados"))';
     var UrlGraficoHistoricoModalUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoModalUnidade", "api/RelatorioDeResultados"))';
@@ -220,22 +250,31 @@
     exibeTodosLevels = false;
 
 
+
+
     function Send(toggle) {
 
-        limpaDadosTela();
+        //debugger;
 
+
+        limpaDadosTela();
+        enviar["dimensaoData"] = $('#createDimensaoData').val()*1;
         // Verificar se é mostrar tudo e aplicar vazio
         if ($('#clusterId').prev().find('a.actived').length > 0) {
             enviar['clusterIdArr'] = [];
             enviar['clusterSelected_Id'] = [];
         }
         if ($('#unitIdV').prev().find('a.actived').length > 0) {
-            enviar['unitId'] = 0;
-            enviar['unitIdArr'] = [];
+            enviar['unitId'] = unidade[0].Id;
+            if (enviar['unitIdArr'] == undefined)
+                unidade.forEach(function (o, c) {
+                    enviar['unitIdArr'].push(unidade[c].id);
+            })
         }
         if ($('#level1Idv').prev().find('a.actived').length > 0) {
             enviar['level1Id'] = 0;
             enviar['level1IdArr'] = [];
+
         }
         if ($('#level2Idv').prev().find('a.actived').length > 0) {
             enviar['level2Id'] = 0;
@@ -250,6 +289,15 @@
             enviar['criticalLevelIdArr'] = [];
         }
 
+        if (enviar.level3IdArr != undefined && enviar.level3IdArr[0] > 0) {
+            enviar.level3Id = enviar.level3IdArr[0];
+        }
+
+
+        if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)))
+                retornaSubtitulos()
+
+
         enviar['auditorId'] = GetUsuarioId();
 
         if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
@@ -257,7 +305,18 @@
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         }
 
-        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) || ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+
+            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        } else
+        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] == undefined) || (enviar['level1IdArr'].length == 0))) {
+
+                EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        } else
+
+        if (((enviar['unitIdArr'] == undefined) || (enviar['unitIdArr'].length == 0)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
 
             EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
@@ -265,10 +324,15 @@
 
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
+        EasyAjax(UrlListaResultadosPeriodo2, enviar, GerarTabela2, "DataTable2Loader", undefined);
+
+
         /*Colocando o grafico de histórunitIdArrico geral*/
         var enviarGeral = Object.create(enviar);
         enviarGeral["unitId"] = undefined;
         enviarGeral["unitIdArr"] = undefined;
+
+
 
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
@@ -328,6 +392,7 @@
             }
 
         }
+        ativaDimensao();
 
         //EasyAjax(UrlListaSugestoes, enviar, "", "", true);
 
@@ -338,9 +403,9 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">↓</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">↓</b></i></span>'
+                    retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">?</b></i></span>'
                 else
-                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">↑</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">↑</b></i></span>';
+                    retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">?</b></i></span>';
                 counter++;
             }
 
@@ -348,12 +413,12 @@
             if (retornoArray[0].IsIndicador) {
                 //table.column(2).visible(false);
                 //table.column(3).visible(false);
-                columnDefs.push({ "targets": [2], "visible": false });
                 columnDefs.push({ "targets": [3], "visible": false });
+                columnDefs.push({ "targets": [4], "visible": false });
             }
 
             if (retornoArray[0].IsMonitoramento) {
-                columnDefs.push({ "targets": [3], "visible": false });
+                columnDefs.push({ "targets": [4], "visible": false });
                 //table.column(7).visible(false);
                 //table.column(8).visible(false);
             }
@@ -368,14 +433,15 @@
                 listaDeDados: retornoArray,
                 definicaoColuna: columnDefs,
                 colunaDosDados: [
+                    { title: Resources("structure"), mData: "Regional" },
                     { title: Resources("unit"), mData: "UnidadeName" },
                     { title: Resources("level1"), mData: "IndicadorName" },
                     { title: Resources("level2"), mData: "MonitoramentoName" },
                     { title: Resources("level3"), mData: "TarefaName" },
-                    { title: "Av", mData: "Av" },
+                    { title: Resources("ev"), mData: "Av" },
                     { title: Resources("nonconformity"), mData: "Nc" },
-                    { title: "Av Com Peso", mData: "avComPeso" },
-                    { title: "Nc Com Peso", mData: "ncComPeso" },
+                    { title: Resources("ev_with_weight"), mData: "avComPeso" },
+                    { title: Resources("nc_with_weight"), mData: "ncComPeso" },
                     {
                         title: Resources("percentNon_conformities"), mData: "Pc",
                         render: $.fn.dataTable.render.number(',', '.', 2, '')
@@ -387,7 +453,7 @@
                 ],
                 numeroLinhasNaTabela: 13,
                 aplicarResponsividade: true,
-                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                tamanhosDoMenu: [[13, 25, 50, 100, -1], [13, 25, 50, 100, "-"]],
                 loadingRecords: true,
                 destroy: true,
                 info: true,
@@ -396,6 +462,7 @@
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         enviar2 = {};
+                        enviar2["auditorId"] = enviar["auditorId"];
                         enviar2["startDate"] = enviar["startDate"];
                         enviar2["endDate"] = enviar["endDate"];
                         enviar2["level1Id"] = data["Indicador"];
@@ -407,6 +474,7 @@
                         enviar2['QtdeAvaliado'] = data["Av"];
                         enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
                         enviar2["PercentualNCFTA"] = data["Pc"];
+                        enviar2["dimensaoData"] = enviar["dimensaoData"];
                         if ($(this).attr('data-target') == "#modalResultados")
                             EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
                         else {
@@ -424,7 +492,101 @@
                 createdRow: function (row, data, index) { }
             });
         }
-    }
+     }
+
+        function GerarTabela2(retornoArray) {
+            if (retornoArray.length > 0) {
+                var counter = 0;
+                while (counter < retornoArray.length) {
+                    if (retornoArray[counter]["Status"] == 1)
+                        retornoArray[counter]["Status"] = '<span style="color:green; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-down"><b style="color:white">?</b></i></span>'
+                    else
+                        retornoArray[counter]["Status"] = '<span style="color:red; font-size:15px;"><b style="color:white">?</b><i class="fa fa-fw fa-arrow-up"><b style="color:white">?</b></i></span>';
+                    counter++;
+                }
+
+                var columnDefs = [];
+                if (retornoArray[0].IsIndicador) {
+                    //table.column(2).visible(false);
+                    //table.column(3).visible(false);
+                    columnDefs.push({ "targets": [3], "visible": false });
+                    columnDefs.push({ "targets": [4], "visible": false });
+                }
+
+                if (retornoArray[0].IsMonitoramento) {
+                    columnDefs.push({ "targets": [4], "visible": false });
+                    //table.column(7).visible(false);
+                    //table.column(8).visible(false);
+                }
+
+                if (retornoArray[0].IsTarefa) { // Alteração
+                    //table.column(7).visible(false);
+                    //table.column(8).visible(false);
+                }
+
+                var table = datatableGRT.Inicializar({
+                    idTabela: "DataTable2",
+                    listaDeDados: retornoArray,
+                    definicaoColuna: columnDefs,
+                    colunaDosDados: [
+                        { title: Resources("structure"), mData: "Regional" },
+                        { title: Resources("unit"), mData: "UnidadeName" },
+                        { title: Resources("level1"), mData: "IndicadorName" },
+                        { title: Resources("level2"), mData: "MonitoramentoName" },
+                        { title: Resources("level3"), mData: "TarefaName" },
+                        { title: Resources("ev"), mData: "Av" },
+                        { title: Resources("nonconformity"), mData: "Nc" },
+                        { title: Resources("ev_with_weight"), mData: "avComPeso" },
+                        { title: Resources("nc_with_weight"), mData: "ncComPeso" },
+                        {
+                            title: Resources("percentNon_conformities"), mData: "Pc",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '')
+                        },
+                        { title: "% " + Resources("goal"), mData: "Meta" },
+                        { title: "Status", mData: "Status" }
+
+                    ],
+                    numeroLinhasNaTabela: 13,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[13, 25, 50, 100, -1], [13, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: function () {
+                        $("#DataTable2").addClass("table_GRT RLR_Table");
+                        $('#DataTable2 tbody').on('click', 'button', function (data, a, b) {
+                            var data = table.row($(this).parents('tr')).data();
+                            enviar2 = {};
+                            enviar2["auditorId"] = enviar["auditorId"];
+                            enviar2["startDate"] = enviar["startDate"];
+                            enviar2["endDate"] = enviar["endDate"];
+                            enviar2["level1Id"] = data["Indicador"];
+                            //enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                            enviar2["level2Id"] = data["Monitoramento"];
+                            enviar2["level3Id"] = data["Tarefa"];
+                            enviar2["UnitId"] = data["Unidade"];
+                            //enviar2["historico_id"] = data["Historico_Id"];
+                            enviar2['QtdeAvaliado'] = data["Av"];
+                            enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
+                            enviar2["PercentualNCFTA"] = data["Pc"];
+                            if ($(this).attr('data-target') == "#modalResultados")
+                                EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
+                            else {
+                                $('#GraficoHistoricoModal').empty();
+                                $('#modalHistorico').modal()
+
+                                EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                                    //console.log(r)
+                                    $('#GraficoHistoricoModal').empty()
+                                    CallbackGraficoHistoricoModal(r)
+                                }, "GraficoHistoricoModal")
+                            }
+                        });
+                    },
+                    createdRow: function (row, data, index) { }
+                });
+            }
+        }
 
     function GerarGrafico(data) {
 
@@ -459,26 +621,55 @@
             var SubtitleIndicador = "";
 
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+               // SubtitleIndicador += Resources("cluster") + " : " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                //SubtitleIndicador += Resources("structure") + " : " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                //SubtitleIndicador += Resources("unit") + " : " + $('#unitIdV :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
-                if (!$('#auditorId :selected').text() == "All")
-                    SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                if (!$('#auditorId :selected').text() == "All") {
+                    //SubtitleIndicador += Resources("auditor") + " : " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                    var array = [];
+                    $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
+                    SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                }
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                //SubtitleIndicador += Resources("department") + " : " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " | ";
+                //SubtitleIndicador += Resources("level1") + " : " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") + " | ";
+
+                var array = [];
+                $.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleIndicador += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+                //SubtitleIndicador += Resources("level2") + " : " + $('#level2Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
+
+                var array = [];
+                $.each($('#level2Idv').val(), function (i, o) { array.push($('#level2Idv option[value="' + o + '"]').text()) });
+                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
 
             SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
@@ -591,6 +782,7 @@
                             click: function () {
 
                                 enviar3 = {};
+                                enviar3["auditorId"] = enviar["auditorId"];
                                 enviar3["startDate"] = enviar["startDate"];
                                 enviar3["endDate"] = enviar["endDate"];
                                 enviar3['unitId'] = Unidade[this.x];
@@ -772,6 +964,7 @@
                                 //FTA2();
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                                 enviar3 = {};
+                                enviar3['auditorId'] = enviar["auditorId"];
                                 enviar3['level1Id'] = Indicador[this.x];
                                 enviar3['level2Id'] = Monitoramento[this.x];
                                 enviar3['level3Id'] = Tarefa[this.x];
@@ -808,7 +1001,15 @@
 
     function CallbackGraficoHistoricoModal(data) {
         var subtitleAux = "";
-        var dia = MapeiaValorParaHC(data, "_date");
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+        if (enviar2.dimensaoData == 1)
+            var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+        if (enviar2.dimensaoData == 2)
+            var dia = MapeiaValorParaHC(data, "semana");
+        if (enviar2.dimensaoData == 4)
+            var dia = MapeiaValorParaHC(data, "mes");
+
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
         //fazGambipraMenosCem(porc)
@@ -821,14 +1022,14 @@
 
         if (data[0].ChartTitle == "Histórico do Indicador") {
             TituloHistoricoModal += Resources("level1_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level1Name;
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
         } else
         if (data[0].ChartTitle == "Histórico do Monitoramento") {
             //TituloHistoricoModal += Resources("level1_history");
-            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";;
+            subtitleAux += Resources('level1') + ": " + data[0].level1Name + " | ";
 
             TituloHistoricoModal += Resources("level2_history");
-            subtitleAux += Resources('level2') + ": " + data[0].level2Name;
+            subtitleAux += Resources('level2') + ": " + data[0].level2Name + " | ";
         } else
         if (data[0].ChartTitle == "Histórico da Tarefa") {
             //TituloHistoricoModal += Resources("level1_history");
@@ -1023,15 +1224,21 @@
     }
 
     function GerarGraficoHistoricoGeral(data) {
+        var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
 
         var porc = [];
 
-
         if (data.length > 0) {
 
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
 
 
-            var dia = MapeiaValorParaHC(data, "_date");
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1102,6 +1309,27 @@
                 $('#GraficoHistoricoGeral').removeClass('loader');
 
                 $('#GraficoHistoricoGeral').empty();
+
+                $("#semana").on('click', function () {
+                    var semana = 7;
+
+                    var dataHora = moment.duration(moment().diff(data['date'])).humanize();
+
+                    //var porc = [];
+                    //var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+                    //var nc = MapeiaValorParaHC(data, "nc");
+                    //var porc = MapeiaValorParaHC(data, "procentagemNc");
+                    //var qtdAv = MapeiaValorParaHC(data, "av");
+                    //var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+                    //var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+                    //var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+                    //var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                    //var sumnc = nc.reduce(function (a, b) { return a + b; });
+                    //var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+                    //var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+                    //var porcPeriodo = sumncCP / sumavCP * 100;
+                });
 
                 chartHistoricoGeral = Highcharts.chart('GraficoHistoricoGeral', {
                     credits: {
@@ -1181,7 +1409,8 @@
                         point: {
                             events: {
                                 click: function () {
-
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1215,6 +1444,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1249,6 +1480,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1288,7 +1521,15 @@
 
 
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1362,23 +1603,38 @@
 
 
                 var SubtitleConsolidado = "";
-
                 if (enviar.unitId != null || enviar.unitId != "") {
-                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  "
+                    //SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others")  + " | <br/>  "
+
+                    var array = [];
+                    $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                    SubtitleConsolidado = array.join(', ') + ", " + " |   <br/> ";
                 };
 
                 SubtitleConsolidado = "";
                 if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                    SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
+                    //SubtitleConsolidado += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " | <br/>  ";
+
+                    var array = [];
+                    $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                    SubtitleConsolidado = array.join(', ') + ", " + " |   <br/> ";
                 }
                 if (enviar.structureId != '' && enviar.structureId != undefined) {
-                    SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
+                    //SubtitleConsolidado += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " | <br/>  ";
+
+                    var array = [];
+                    $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
+                    SubtitleConsolidado = array.join(', ') + ", " + " |   <br/> ";
                 }
                 if (enviar.unitId != '' && enviar.unitId != undefined) {
-                    SubtitleConsolidado += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " | <br/>  ";
+                    SubtitleConsolidado += Resources("unit") + ": " + enviar.unidadesFiltradas;
+
+                    //var array = [];
+                    //$.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
+                    //SubtitleConsolidado = enviar.unidadesFiltradas;
                 }
 
-                SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 2));
+                SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 1  ));
 
 
                 $('#GraficoHistoricoUnidade').removeClass('loader');
@@ -1463,7 +1719,8 @@
                         point: {
                             events: {
                                 click: function () {
-
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1497,6 +1754,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1531,6 +1790,8 @@
                         point: {
                             events: {
                                 click: function () {
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1566,7 +1827,15 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1574,6 +1843,8 @@
             var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
             var limInferior = MapeiaValorParaHC(data, "limiteInferior");
             //var Subtitle = "";
+
+            // FUNÇÃO => REVEZAR DATA
 
             var sumav = qtdAv.reduce(function (a, b) { return a + b; });
             var sumnc = nc.reduce(function (a, b) { return a + b; });
@@ -1596,28 +1867,55 @@
             var SubtitleIndicador = "";
 
             if (enviar.unitId != null || enviar.unitId != "") {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/> "
-            }
-            ;
+                //SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/> "
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
+            };
             SubtitleIndicador = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                //SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", "  : array.join(', ')) + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+               // SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+                var array = [];
+                $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleIndicador += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("unit") + ": " + enviar.unidadesFiltradas;
+
+                //var array = [];
+                //$.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
+                //SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
-            if (enviar.auditorId != '' && enviar.auditorId != undefined) {
-                if (!$('#auditorId :selected').text() == "All")
-                    SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
-            }
+            //if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+            //    if (!$('#auditorId :selected').text() == "All")
+            //        //SubtitleIndicador += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+            //    var array = [];
+            //    $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
+            //    SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
+            //}
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+                var array = [];
+                $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
+                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleIndicador += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  <br/>";
+                SubtitleIndicador += Resources("level1") + ": " + enviar.nivel1Filtrado;
+
+                //var array = [];
+                //$.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
+                //SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
 
@@ -1700,7 +1998,8 @@
                         point: {
                             events: {
                                 click: function () {
-
+                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                    Send(true);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -1735,6 +2034,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -1770,6 +2071,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -1805,7 +2108,15 @@
 
         if (data.length > 0) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
@@ -1834,26 +2145,26 @@
 
             SubtitleMonitoramento = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                SubtitleMonitoramento += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("unit") + ": " + enviar.unidadesFiltradas;
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All")
                     SubtitleMonitoramento += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                SubtitleMonitoramento += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                SubtitleMonitoramento += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+                SubtitleMonitoramento += Resources("level1") + ": " + enviar.nivel1Filtrado;;
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                SubtitleMonitoramento += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+                SubtitleMonitoramento += Resources("level2") + ": " + enviar.nivel2Filtrado;;
             }
 
             SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 0));
@@ -1936,7 +2247,8 @@
                     point: {
                         events: {
                             click: function () {
-
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -1970,6 +2282,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2004,6 +2318,8 @@
                     point: {
                         events: {
                             click: function () {
+                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
+                                Send(true);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2092,11 +2408,18 @@
             //subtitleAux = Resources('level1') + ": " + data[0].level1Name + " | ";
             enviarAxI.isLevel = 1;
         }
+        enviarAxI['auditorId'] = enviar["auditorId"];
 
         enviarAxI['level1Id'] = data[0].level1Id;
         enviarAxI['level2Id'] = data[0].level2Id;
         enviarAxI['level3Id'] = data[0].level3Id;
-        enviarAxI['unitId'] = enviar3.unitId;
+
+        enviarAxI['level1IdArr'] = [data[0].level1Id];
+        enviarAxI['level2IdArr'] = [data[0].level2Id];
+        enviarAxI['level3IdArr'] = [data[0].level3Id];
+
+        enviarAxI['unitId'] = data[0].UnidadeId;
+        enviarAxI['unitIdArr'] = [data[0].UnidadeId];
 
         //var ChartTitle = aux + " | " + Resources("unit") + ": " + data[0].UnidadeName;
         //subtitleAux += Resources("unit") + ": " + data[0].UnidadeName;
@@ -2229,7 +2552,7 @@
                             click: function () {
 
                                 enviarAI = {};
-
+                                enviarAI['auditorId'] = enviar["auditorId"];
                                 enviarAI['Data'] = date[this.x];
                                 enviarAI['level1Id'] = data[0].level1Id;
                                 enviarAI['level2Id'] = data[0].level2Id;
@@ -2276,7 +2599,7 @@
                             click: function () {
 
                                 enviarAI = {};
-
+                                enviarAI['auditorId'] = enviar["auditorId"];
                                 enviarAI['Data'] = date[this.x];
                                 enviarAI['level1Id'] = data[0].level1Id;
                                 enviarAI['level2Id'] = data[0].level2Id;
@@ -2457,6 +2780,7 @@
         $('#Titulo').html(Titulo);
         //$('#TituloGrafico').html(TituloGrafico);
         $('#TituloTabela').html(Resources("listOf") + " " + Titulo);
+        $('#TituloTabela2').html(Resources("listOf") + " " + "Resultados das Avaliações com Indicadores, Monitoramentos e Tarefas <h7><b>(Atenção: Esta tabela demora para carregar.)</b></h7>");
     }
 
     function fazGambipraMenosCem(arr) {
@@ -2562,7 +2886,8 @@
 
         $('#ftaModal').modal();
         $('#ftaModalSim').attr('href', preServer + str);
-    }
+
+    };
 
     function clickSemUnidade(categoria) {
 
@@ -2587,29 +2912,29 @@
 
         Subtitle = "";
         if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100)  +  Resources("among_others") + " |   <br/> ";
         }
         if (enviar.structureId != '' && enviar.structureId != undefined) {
-            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " |   <br/> ";
         }
         if (enviar.unitId != '' && enviar.unitId != undefined) {
-            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
         }
         if (enviar.auditorId != '' && enviar.auditorId != undefined) {
             if (!$('#auditorId :selected').text() == "All")
-                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
         }
         if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
         }
         if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+            Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
         }
         if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." + " |  ";
+            Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
         }
         if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
-            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + " entre outros ..." + " |   ";
+            Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + Resources("among_others") + " |   ";
         }
         Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
@@ -2675,6 +3000,7 @@
         $('#Titulo').html("");
         $('#TituloTabela').html("");
         $('#DataTable_wrapper').hide();
+        $('#DataTable2_wrapper').hide();
         $('#GraficoHistoricoGeral').empty();
         $('#GraficoTarefasAcumuladas').empty();
 
@@ -2696,32 +3022,60 @@
             // Botão desabilita até retorno
 
             $('#btnSend').prop("disabled", true);
-
+            //colocar espaços entre as palavras
             Subtitle = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
-                Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
+                //Subtitle += Resources("cluster") + " : " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ')+ ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
-                Subtitle += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
+                //Subtitle += Resources("structure") + " : " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") +  " |   <br/> ";
+
+                var array = [];
+                $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ') + ", " + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
-                Subtitle += Resources("unit") + ": " + $('#unitIdV :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
+                //Subtitle += Resources("unit") + " : " + $('#unitIdV :selected').text().substring(0, 100) + Resources("among_others") +  " |   <br/> ";
+
+                var array = [];
+                $.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
-                if (!$('#auditorId :selected').text() == "All")
-                    Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
+                if (!$('#auditorId :selected').text() == "All") {
+                    //Subtitle += Resources("auditor") + " : " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") +  " |   <br/> ";
+                    var array = [];
+                    $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
+                    Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                }
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + " entre outros ..." +  " |   <br/> ";
+                //Subtitle += Resources("department") + " : " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") +  " |   <br/> ";
+                var array = [];
+                $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
-                Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
+                //Subtitle += Resources("level1") + " : " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") +  " | ";
+                var array = [];
+                $.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
-                Subtitle += Resources("level2") + ": " + $('#level2Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
+                //Subtitle += Resources("level2") + " : " + $('#level2Idv :selected').text().substring(0, 100) + Resources("among_others") +  " | ";
+                var array = [];
+                $.each($('#level2Idv').val(), function (i, o) { array.push($('#level2Idv option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
-                Subtitle += Resources("level3") + ": " + $('#level3Idv :selected').text().substring(0, 100) + " entre outros ..." +  " | ";
+                //Subtitle += Resources("level3") + " : " + $('#level3Idv :selected').text().substring(0, 100) + Resources("among_others") +  " | ";
+                var array = [];
+                $.each($('#level3Idv').val(), function (i, o) { array.push($('#level3Idv option[value="' + o + '"]').text()) });
+                Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
@@ -2737,6 +3091,7 @@
         formControl.showFullCallendar();
         formControl.showStatusIndicador();
         formControl.showCreateActionPlane();
+        formControl.showDimensaoData();
         formControl.showClustRegUnitCriticalLevel123();
 
         setTimeout(function () {
@@ -2778,6 +3133,7 @@
     var GraficoTarefasAcumuladasTit ='@Resources.Resource.derivations_per_defects';
 
     function GerarGraficoTarefasAcumuladas(data) {
+        if (data.length > 0) {
 
         var Proc = MapeiaValorParaHC(data, "Proc");
         //var nc = MapeiaValorParaHC(data, "Nc");
@@ -2789,7 +3145,23 @@
 
         //enviar.isLevel = 2;
 
-        subtitle = Resources('unit') + ": " + $('#unitIdV :selected').text();
+
+     // Quando ambos estão filtrados
+
+        if ((enviar.unitIdArr != undefined && enviar.unitIdArr.length > 0) && (enviar.level1IdArr != undefined && enviar.level1IdArr.length > 0)) {
+            subtitle = Resources('unit') + ": " + enviar.unidadesFiltradas;
+            subtitle += Resources('level1') + ": " + enviar.nivel1Filtrado
+        }
+
+     // Quando unidade está filtrada
+        else if (enviar.unitIdArr != undefined && enviar.unitIdArr.length > 0) {
+            subtitle = Resources('unit') + ": " + enviar.unidadesFiltradas;
+        }
+
+    // Quando indicador está filtrado
+        else if (enviar.level1IdArr != undefined && enviar.level1IdArr.length > 0) {
+            subtitle = Resources('level1') + ": " + enviar.nivel1Filtrado;
+        }
 
         //if (pathDirect == 1)
         //    subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
@@ -2801,7 +3173,7 @@
 
         $('#' + selector).empty().highcharts({
             credits: Chart.Credits(),
-            chart: Chart.Chart('column', 'xy'),
+            chart: Chart.Chart('column', 'xy', 500),
             title: Chart.Titulo(GraficoTarefasAcumuladasTit),
             subtitle: {
                 text: subtitle
@@ -2833,14 +3205,16 @@
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
+            } else {
+                $('#SemDados').show();
+            }
+        }
 
-    }
-
-    var Chart = {
-         criaTitulo: function (prefix, sufix) {
+        var Chart = {
+            criaTitulo: function (prefix, sufix) {
                 return prefix + sufix;
             },
-         curvaPareto: function (dados, dadosNC, axis, inverse) {
+            curvaPareto: function (dados, dadosNC, axis, inverse) {
 
                 var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
                 var porcentagemAcumuladaNC = 0;
@@ -2868,7 +3242,7 @@
                     }],
                 }
             },
-         serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
+            serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc, nome, id) {
 
                 var serieType = tipo == undefined ? 'line' : tipo;
                 var sufix = suffix == undefined ? '' : suffix
@@ -2908,12 +3282,12 @@
 
 
             },
-         CorTotalNc: function () { return '#F7BCB0' },
-         CorTotalAv: function () { return '#ccc' },
-         CorTotalPareto: function () { return '#900000' },
-         CorMeta: function () { return '#67D184' },
-         CorTotalProcNc: function () { return '#FF6347' },
-         Legend: function () {
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
                 return {
                     layout: 'horizontal',
                     align: 'center',
@@ -2921,14 +3295,14 @@
                     borderWidth: 0
                 };
             },
-         ToolTip: function (isShared, isCrosshairs) {
+            ToolTip: function (isShared, isCrosshairs) {
                 return {
                     valueDecimals: 2,
                     shared: isShared,
                     crosshairs: isCrosshairs
                 }
             },
-         Titulo: function (data, sufix) {
+            Titulo: function (data, sufix) {
 
                 if (!!sufix)
                     data = data + " | " + sufix;
@@ -2940,7 +3314,7 @@
                 };
 
             },
-         Subtitulo: function (data, sufix) {
+            Subtitulo: function (data, sufix) {
 
                 if (!!sufix)
                     data = data + ": " + sufix;
@@ -2952,26 +3326,28 @@
                 };
 
             },
-         Credits: function () {
+            Credits: function () {
                 return {
                     enabled: false
                 }
             },
-         Zones: function () {
+            Zones: function () {
                 return {
                     enabled: false
                 }
             },
-         Chart: function (tipo, zoon) {
+            Chart: function (tipo, zoon, height) {
                 return {
                     type: tipo,
-                    zoomType: (!!zoon) ? zoon : ''
+                    zoomType: (!!zoon) ? zoon : '',
+                    height: (!!height) ? height : null
                 }
             },
-         yAxisPadraoRelNc: function () {
+            yAxisPadraoRelNc: function () {
 
                 return [{
                     allowDecimals: false,
+
                     min: 0,
                     title: {
                         text: Resources('number_samplers')
@@ -2984,6 +3360,7 @@
                     },
                 }, {
                     allowDecimals: false,
+                    tickInterval: 50,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -2997,7 +3374,7 @@
                 }];
 
             },
-         Xaxis: function (dados) {
+            Xaxis: function (dados) {
                 return [{
                     categories: dados
                 }];
@@ -3038,7 +3415,7 @@
                     name: '% ' + Resources('nonconformity'),
                     color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
                     data: data,
-                    yAxis: 1,
+                    yAxis: 0,
                     tooltip: {
                         valueSuffix: ' %'
                     },
@@ -3136,38 +3513,319 @@
             },
         }
 
-        function FTATarefasAcumuladas(that, dados) {
+    function FTATarefasAcumuladas(that, dados) {
 
-            debugger
+        let Levels3 = MapeiaValorParaHC(dados, "Tarefa_Id");
+        let Unidades = MapeiaValorParaHC(dados, "Unidade_Id");
+        let ncs = MapeiaValorParaHC(dados, "Proc");
 
-            let Levels3 = MapeiaValorParaHC(dados, "Tarefa_Id");
-            let Unidades = MapeiaValorParaHC(dados, "Unidade_Id");
-            let ncs = MapeiaValorParaHC(dados, "Proc");
-
-            var enviarFTA = {};
-            enviarFTA['_DataInicioFTA'] = enviar.startDate;
-            enviarFTA['_DataFimFTA'] = enviar.endDate;
-            enviarFTA['Supervisor_Id'] = GetUsuarioId();
-            enviarFTA['Unidade_Id'] = Unidades[that.x] == null ? 0 : Unidades[that.x];
-            enviarFTA['PercentualNCFTA'] = ncs[that.x] == null ? 0 : ncs[that.x]
-            enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
+        var enviarFTA = {};
+        enviarFTA['_DataInicioFTA'] = enviar.startDate;
+        enviarFTA['_DataFimFTA'] = enviar.endDate;
+        enviarFTA['Supervisor_Id'] = GetUsuarioId();
+        enviarFTA['Unidade_Id'] = enviar.unitId == null || enviar.unitId == "" ? 0 : enviar.unitId;
+        enviarFTA['PercentualNCFTA'] = ncs[that.x] == null ? 0 : ncs[that.x]
+        enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
 
 
-            if (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length == 1) {
-                enviarFTA['level1Id'] == enviar.level1IdArr[0];
-            }
+        if (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length == 1) {
+            enviarFTA['level1Id'] = enviar.level1IdArr[0];
+        }
 
-            let params = enviarFTA;
-            let str = jQuery.param(params);
-            let preServer = GetUrlFTA();
-            preServer = preServer.substr(0, (preServer.length - 1));
-            preServer += "2?"
+        let params = enviarFTA;
+        let str = jQuery.param(params);
+        let preServer = GetUrlFTA();
+        preServer = preServer.substr(0, (preServer.length - 1));
+        preServer += "2?"
 
-            $('#ftaModal').modal();
-            $('#ftaModalSim').attr('href', preServer + str);
+        $('#ftaModal').modal();
+        $('#ftaModalSim').attr('href', preServer + str);
+
+    }
+
+    function retornaSubtitulos() {
+
+        // Subtitulo Unidades
+
+
+        if (enviar.unitId > 0) {
+
+
+            // Cria array de Sigla de Unidades
+            var sigla = [];
+            enviar['unitInitials'] = [];
+            enviar.unitIdArr.forEach(function (o, c) {
+                sigla = unidade.filter(function (obj) { return obj.Id == o; });
+                enviar['unitInitials'].push(sigla[0].Initials);
+                return enviar['unitInitials'];
+            })
+
+            //Transforma em Subtitle
+            enviar['unidadesFiltradas'] = "";
+
+            enviar.unitInitials.forEach(function (o, c) {
+                enviar.unidadesFiltradas += " " + o + " ";
+                if (enviar.unitInitials.length-1 != c) {
+                    enviar.unidadesFiltradas += "|";
+                }
+            })
+
+            enviar.unidadesFiltradas = enviar.unidadesFiltradas + "  <br/> ";
+        }
+        // Subtitulo Level 1
+        if (enviar.level1Id > 0) {
+
+            // Cria array de Sigla de Unidades
+
+            var name = [];
+            enviar['level1Name'] = [];
+            enviar.level1IdArr.forEach(function (o, c) {
+                name = indicador.filter(function (obj) { return obj.Id == o; });
+                enviar['level1Name'].push(name[0].Name);
+                return enviar['level1Name'];
+            })
+
+            //Transforma em Subtitle
+            enviar['nivel1Filtrado'] = "";
+            enviar.level1Name.forEach(function (o, c) {
+
+                tam = enviar.nivel1Filtrado.length;
+
+                if (tam <= 100) {
+                    enviar.nivel1Filtrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.nivel1Filtrado.length;
+            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
+        }
+
+        // Subtitulo Level 2
+        if (enviar.level2Id > 0) {
+
+            // Cria array de Sigla de Monitoramento
+
+            var name = [];
+            enviar['level2Name'] = [];
+            enviar.level2IdArr.forEach(function (o, c) {
+                name = monitoramento.filter(function (obj) { return obj.Id == o; });
+                enviar['level2Name'].push(name[0].Name);
+                return enviar['level2Name'];
+            })
+
+            //Transforma em Subtitle
+            enviar['nivel2Filtrado'] = "";
+            enviar.level2Name.forEach(function (o, c) {
+
+                tam = enviar.nivel2Filtrado.length;
+
+                if (tam <= 100) {
+                    enviar.nivel2Filtrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.nivel2Filtrado.length;
+            enviar.nivel2Filtrado = tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
+        }
+
+        // Subtitulo Level 3
+        if (enviar.level3Id > 0) {
+
+            // Cria array de Sigla de Monitoramento
+
+            var name = [];
+            enviar['level3Name'] = [];
+            enviar.level3IdArr.forEach(function (o, c) {
+                name = tarefa.filter(function (obj) { return obj.Id == o; });
+                enviar['level3Name'].push(name[0].Name);
+                return enviar['level3Name'];
+            })
+
+            //Transforma em Subtitle
+            enviar['nivel3Filtrado'] = "";
+            enviar.level3Name.forEach(function (o, c) {
+
+                tam = enviar.nivel3Filtrado.length;
+
+                if (tam <= 100) {
+                    enviar.nivel3Filtrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.nivel3Filtrado.length;
+            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
+        }
+
+        subtitleGeneral();
+
+    }
+
+    function subtitleGeneral() {
+
+        Subtitle = "";
+        if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+            Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
+        }
+        if (enviar.structureId != '' && enviar.structureId != undefined) {
+            Subtitle += Resources("structure") + ": " + $('#structureId :selected').text() + " |  <br/> ";
+        }
+        if (enviar.unitId != '' && enviar.unitId != undefined) {
+            Subtitle += Resources("unit") + ": " + enviar.unidadesFiltradas + "  <br/> ";
+        }
+        if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+            if (!$('#auditorId :selected').text() == "All")
+                Subtitle += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + " entre outros ..." + " |   <br/> ";
+        }
+        if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+            Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text() + " | <br/> ";
+        }
+        if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+            Subtitle += Resources("level1") + ": " + enviar.nivel1Filtrado;
+        }
+        if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
+            Subtitle += Resources("level2") + ": " + enviar.nivel2Filtrado;
+        }
+        if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
+            Subtitle += Resources("level3") + ": " + enviar.nivel3Filtrado;
+        }
+        Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
+
 
         }
 
+    function cb(start, end) {
+        $('#reportrange span').html(start.format() + ' - ' + end.format());
+        enviar['startDate'] = start.format();
+        enviar['endDate'] = end.format();
+    }
+
+    function ativaDimensao() {
+        // 1=> Diario 2=> Semanal 3=> Quinzenal 4=> Mensal 5=> Trimestral
+
+        // Consolidado Geral
+        $("#dia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#semana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        $("#mes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
+        });
+
+        // Consolidado Unidade
+        $("#Udia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        $("#Usemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        $("#Umes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
+        });
+
+        // Consolidado Indicador
+        $("#Idia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        $("#Isemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        $("#Imes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            var enviarComIndicador = Object.create(enviar);
+
+            enviarComIndicador['level2Id'] = undefined;
+
+            enviarComIndicador['level2IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComIndicador, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+        });
+
+        // Consolidado Monitoramento
+        $("#Mdia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        $("#Msemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        $("#Mmes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+        });
+
+        // Consolidado Historico
+        $("#Hdia").on('click', function () {
+
+            enviar2["dimensaoData"] = 1;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+
+        $("#Hsemana").on('click', function () {
+
+            enviar2["dimensaoData"] = 2;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+
+        $("#Hmes").on('click', function () {
+
+            enviar2["dimensaoData"] = 4;
+            EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                //console.log(r)
+                $('#GraficoHistoricoModal').empty()
+                CallbackGraficoHistoricoModal(r)
+            }, "GraficoHistoricoModal")
+        });
+    }
     </script>
 
 }

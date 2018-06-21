@@ -1,0 +1,245 @@
+05 09 2017 - CG EUA (nao inclusa no EF, não derruba build mais impacta em funcionalidade)
+
+ALTER TABLE UserSgq ADD IsActive BIT DEFAULT (0)
+UPDATE UserSgq SET IsActive = 1 
+
+
+
+11 09 2017 - CG JBS BRASIL (nao inclusa no EF, não derruba build mais impacta em funcionalidade)
+
+alter table parlevel1 add AllowAddLevel3 bit default 0
+alter table parlevel1 add AllowEditPatternLevel3Task bit default 0
+alter table parlevel1 add AllowEditWeightOnLevel3 bit default 0
+UPDATE PARLEVEL1 SET AllowAddLevel3 = 0
+UPDATE PARLEVEL1 SET AllowEditPatternLevel3Task = 0
+UPDATE PARLEVEL1 SET AllowEditWeightOnLevel3 = 0
+
+29 09 2017 - JB JBS BRASIL 
+
+ALTER TABLE ParLevel1 ADD HasTakePhoto BIT NOT NULL DEFAULT 0;
+ALTER TABLE ParLevel2 ADD HasTakePhoto BIT NOT NULL DEFAULT 0;
+ALTER TABLE ParLevel3 ADD HasTakePhoto BIT NOT NULL DEFAULT 0;
+
+CREATE TABLE Result_Level3_Photos (
+	ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Result_Level3_Id int,
+	Photo_Thumbnaills text,
+	Photo text,
+	Latitude float,
+	Longitude float
+)
+
+CREATE NONCLUSTERED INDEX [CollectionLevel2Photos]
+ON [dbo].[CollectionLevel2] ([ParLevel1_Id],[ParLevel2_Id],[EvaluationNumber],[Sample],[CollectionDate])
+
+--------------------------------------------------------------------------------------09 11 2017 - LETICIA  ------------------------------------- Status Down
+
+IF COL_LENGTH('ParLevel1','IsRecravacao') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1 add IsRecravacao bit default (0)
+    EXEC ('update ParLevel1 set IsRecravacao = 0')
+    END
+
+IF COL_LENGTH('ParLevel1','ShowScorecard') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1 add ShowScorecard bit default (0)
+    EXEC ('update ParLevel1 set ShowScorecard = 0')
+    END
+
+IF COL_LENGTH('ParLevel3','IsPointLess') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel3 add IsPointLess bit default (0)
+    EXEC ('update ParLevel3 set IsPointLess = 0')
+    END
+
+IF COL_LENGTH('ParLevel3','OrderColumn') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel3 add OrderColumn bit default (0)
+    EXEC ('update ParLevel3 set OrderColumn = 0')
+    END
+
+IF COL_LENGTH('ParLevel3','AllowNA') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel3 add AllowNA bit default (0)
+    EXEC ('update ParLevel3 set AllowNA = 0')
+    END
+
+IF COL_LENGTH('CollectionLevel2XParHeaderField','Evaluation') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CollectionLevel2XParHeaderField add Evaluation int default (null)
+    EXEC ('update CollectionLevel2XParHeaderField set Evaluation = null')
+    END
+
+IF COL_LENGTH('CollectionLevel2XParHeaderField','Sample') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CollectionLevel2XParHeaderField add Sample int default (null)
+    EXEC ('update CollectionLevel2XParHeaderField set Sample = null')
+    END
+
+14 11 2017 - Para o Filtro de Shift no Relatorio de NC funcionar (USA)
+
+SET IDENTITY_INSERT Shift ON
+insert into [Shift](Id, Description, AddDate, AlterTime) values (1, 'Shift A', GETDATE(), GETDATE()), (2, 'Shift B', GETDATE(), GETDATE())
+delete [Shift] where id in (3, 4)
+SET IDENTITY_INSERT [Shift] OFF
+
+24 11 2017 - Incluido coluna 'IsActive' nas tabelas abaixo (Plano de Ação)
+
+alter table Pa_TemaAssunto add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_Objetivo add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_Indicadores add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_ObjetivoGeral add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_IndicadoresDeProjeto add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_IndicadoresDiretriz add IsActive BIT NOT NULL DEFAULT 1;
+alter table Pa_Iniciativa add IsActive BIT NOT NULL DEFAULT 1;
+
+
+---------------------------------------------------------------------- 14 11 2017 - CELSO GEA JIRA https://grtsolucoes.atlassian.net/browse/JBS-82
+
+IF COL_LENGTH('PA_COORDENACAO','GERENCIA_ID') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table PA_COORDENACAO add GERENCIA_ID int default (null)
+    EXEC ('update PA_COORDENACAO set GERENCIA_ID = null')
+    END
+
+-------------------------------------------------------------------- 04 12 2017 - JELSAFA https://grtsolucoes.atlassian.net/browse/GRT-26
+
+ALTER TABLE UserSgq ADD UseActiveDirectory BIT NOT NULL DEFAULT 0
+
+ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+
+-------------------------------------------------------------------- 03 01 2017 - LEO https://grtsolucoes.atlassian.net/browse/GRT-37
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XCollectionJson' AND xtype='U')
+    CREATE TABLE CollectionLevel2XCollectionJson (
+		ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+		CollectionLevel2_Id int not null
+		FOREIGN KEY REFERENCES CollectionLevel2(Id),
+		CollectionJson_Id int not null
+		FOREIGN KEY REFERENCES CollectionJson(Id)
+	)
+GO
+
+----------------------------------------------------------------- 06-01-2017 - Renan //Adicionado Tipo de Projeto e Tema do Projeto no PA
+
+create table Pa_TemaProjeto(	
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[Order] [int] NULL DEFAULT ((0)),
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+
+create table Pa_TipoProjeto(	
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[Order] [int] NULL DEFAULT ((0)),
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+
+insert into Pa_TipoProjeto(name) values ('Manutenção')
+insert into Pa_TipoProjeto(name) values ('Melhoria')
+insert into Pa_TipoProjeto(name) values ('Implantação')
+
+alter table Pa_Planejamento add TemaProjeto_Id int null
+
+alter table Pa_Planejamento add TipoProjeto_Id int null
+
+----------------------------------------------------------------------- 16-01-2018 - Renan Adicionar tabela Pa_Colvis (Colunas visíveis do Usuário)
+
+create table Pa_Colvis(
+	[Id] [int] IDENTITY(1,1) NOT NULL primary key,
+	[AddDate] [datetime2](7) NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	ColVisShow varchar(255) null,
+	ColVisHide varchar(255) null,
+	Pa_Quem_Id int not null,
+);
+
+----------------------------------------------------------------------- 22-01-2018 - Leo Adicionado duas colunas ParLevel3Value
+
+ALTER TABLE ParLevel3Value ADD ParLevel1_Id INT NULL  References ParLevel1(Id) DEFAULT NULL
+
+ALTER TABLE ParLevel3Value ADD ParLevel2_Id INT NULL  References ParLevel2(Id) DEFAULT NULL
+
+----------------------------------------------------------------------- 24-01-2018 - Leo Criação tabela para permitir configuração de avaliação/amostra por tarefa
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3EvaluationSample' AND xtype='U')
+    CREATE TABLE ParLevel3EvaluationSample (
+		Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+		ParCompany_Id int null
+		FOREIGN KEY REFERENCES ParCompany(Id),
+		ParLevel1_Id int null
+		FOREIGN KEY REFERENCES ParLevel1(Id),
+		ParLevel2_Id int null
+		FOREIGN KEY REFERENCES ParLevel2(Id),
+		ParLevel3_Id int not null
+		FOREIGN KEY REFERENCES ParLevel3(Id),
+		SampleNumber Decimal null,
+		EvaluationNumber Decimal null,
+		EvaluationInterval varchar(30) null,
+		AddDate Datetime not null,
+		AlterDate Datetime null,
+		IsActive bit null,
+	)
+GO
+
+ALTER TABLE [dbo].[ParHeaderField]
+
+add	[CheckBox] [bit] NOT NULL DEFAULT ((0))
+
+----------------------------------------------------------------------- 10-02-2018 - Leo Criação coluna 'EffectiveDate' para registrar historico parametrização
+
+IF COL_LENGTH('ParLevel1XCluster','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParLevel1XCluster add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParLevel1XCluster set EffectiveDate = 2000-01-01')
+    END
+
+IF COL_LENGTH('ParGoal','EffectiveDate') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table ParGoal add EffectiveDate datetime default '2000-01-01'
+    EXEC ('update ParGoal set EffectiveDate = 2000-01-01')
+    END
+
+-------------------------------------------------------------------- 19 02 2018 - LEO https://grtsolucoes.atlassian.net/browse/GRT-30
+
+IF COL_LENGTH('Deviation','EmailContent_Id') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table Deviation add EmailContent_Id int default (null)
+    Alter table Deviation ADD FOREIGN KEY (EmailContent_Id) REFERENCES EmailContent(Id);
+    EXEC ('update Deviation set EmailContent_Id = null')
+    END
+
+IF COL_LENGTH('CorrectiveAction','EmailContent_Id') IS NULL
+    BEGIN
+    /*Column does not exist or caller does not have permission to view the object*/
+    Alter table CorrectiveAction add EmailContent_Id int default (null)
+    Alter table CorrectiveAction ADD FOREIGN KEY (EmailContent_Id) REFERENCES EmailContent(Id);
+    EXEC ('update CorrectiveAction set EmailContent_Id = null')
+    END
+ALTER TABLE ParHeaderField ADD duplicate bit NOT NULL DEFAULT 0
+    END
+
+------------------------------------------------------------------ 20/03/2018 - PA Renan
+
+ALTER table Pa_Acao add UnidadeDeMedida_Id int
+
+insert into Pa_UnidadeMedida (AddDate,Name) VALUES (GETDATE(), 'Absoluto');

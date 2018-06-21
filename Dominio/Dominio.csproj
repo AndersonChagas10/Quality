@@ -55,22 +55,10 @@
     <Compile Include="CollectionJson.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CollectionLevel02.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CollectionLevel03.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="CollectionLevel2.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CollectionLevel2XParHeaderField.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConsolidationLevel01.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConsolidationLevel02.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ConsolidationLevel1.cs">
@@ -89,9 +77,6 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Departamentos.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Department.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Deviation.cs">
@@ -120,18 +105,14 @@
     </Compile>
     <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />
     <Compile Include="Interfaces\Repositories\IParamsRepository.cs" />
     <Compile Include="Interfaces\Repositories\IParLevel3Repository.cs" />
-    <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISaveCollectionRepo.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
     <Compile Include="Interfaces\Services\IDefectDomain.cs" />
     <Compile Include="Interfaces\Services\ICompanyDomain.cs" />
     <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
-    <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="LeftControlRole.cs">
@@ -228,6 +209,9 @@
     <Compile Include="ParHeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLataImagens.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevel1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -282,6 +266,9 @@
     <Compile Include="ParLevel3Value.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLevel3Value_Outer.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevelDefiniton.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -292,6 +279,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParModule.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParModuleXModule.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParMultipleValues.cs">
@@ -331,10 +321,10 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Regionais.cs">
+    <Compile Include="RecravacaoJson.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Resultados.cs">
+    <Compile Include="Regionais.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ResultLevel2HeaderField.cs">
@@ -365,7 +355,6 @@
     <Compile Include="Services\CompanyDomain.cs" />
     <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\ParamsDomain.cs" />
-    <Compile Include="Services\RelatorioColetaDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqEfContext.Context.cs">
@@ -503,6 +492,7 @@
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
@@ -512,6 +502,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
+      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
+      <Name>ADOFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
       <Name>DTO</Name>

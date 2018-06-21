@@ -41,7 +41,7 @@ namespace SgqSystem.Controllers.Api.App
                         "\n CASE WHEN SUM(WeiDefects) > 0 THEN 1 ELSE 0 END as WeiDefects," +
                         "\n [Period], [Shift]" +
                         "\n from CollectionLevel2" +
-                        "\n where UnitId = " + ParCompany_Id + " and ParLevel1_Id = "+ level1Id + " and CollectionDate <= '"+dataInicio+ " 23:59:00' and CollectionDate >= '" + dataFim + " 00:00:00' and WeiDefects > 0" +
+                        "\n where UnitId = " + ParCompany_Id + " and ParLevel1_Id = "+ level1Id + " and CollectionDate <= '"+dataInicio+ " 23:59:59' and CollectionDate >= '" + dataFim + " 00:00:00' and WeiDefects > 0" +
                         "\n group by EvaluationNumber, [Sample], [Period], [Shift]";
 
             List<DefeitosPorAmostra> results = new List<DefeitosPorAmostra>();
@@ -143,9 +143,8 @@ namespace SgqSystem.Controllers.Api.App
 
     public class RetornoLucas
     {
-        internal int sample;
-        internal int? evaluation;
-        public int IdLevel1 { get; set; }
+           
+        //public int IdLevel1 { get; set; }
         public decimal SidesWithDefects { get; set; }
         public decimal Defects { get; set; }
     }

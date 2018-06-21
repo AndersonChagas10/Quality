@@ -1,0 +1,222 @@
+﻿
+@{
+    ViewBag.Title = "NaoConformidadeDuplicada";
+}
+
+@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
+@{
+    var url = Url.Action("Index", "Home");
+    var UrlCorrectiveAct = Url.Action("GetTableCorrectiveAction", "api/CorrectiveAction");
+    var UrlGetCorrectiveAct = Url.Action("GetCorrectiveAct", "api/CorrectiveAction");
+    var UrlSaveCorrectiveAct = Url.Action("SaveCorrectiveAct", "api/CorrectiveAction");
+}
+
+<style>
+    /*Não quebra a linha nos campos de cabeçalho*/
+    #example > tbody > tr:last-child > td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+            <div id="load"></div>
+            <div id="divTable">
+                <table id="acaoCorretiva" class="table table-striped" style="width:100%"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg printable" id="editModal" role="dialog">
+
+    <div id="printThis">
+        @*This should BE printed!*@
+        <div class="modifyMe"></div>
+
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width:895px!important">
+
+                <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                    <h4 class="modal-title">Editar</h4>
+                    <div class="unitCode"><span id="estName"></span></div>
+                </div>
+
+                <div class="modal-body">
+                    <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                        <span id="Level3Name" class="levelName" name="" style=""></span>
+                        <label>Unidade:</label><br />
+                        <input type='text' name='UnidadeName' id='UnitName'>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default non-printable" id="fechar" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" id="save" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        var $btn = $('#btnSend');      
+        var UrlCorrectiveAct = @Html.Raw(Json.Encode(UrlCorrectiveAct));
+        var UrlGetCorrectiveAct = @Html.Raw(Json.Encode(UrlGetCorrectiveAct));
+        var UrlSaveCorrectiveAct = @Html.Raw(Json.Encode(UrlSaveCorrectiveAct));
+
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            $("#btnSend").click(function (e) {
+                Send(true);
+            });
+
+            $('.levels').hide();
+
+            formControl.showFullCallendar();
+            formControl.showShift();
+            formControl.showClustRegUnitCriticalLevel123();
+
+            //setTimeout(function () {
+            $("#clusterGroupId").find("option").eq(0).remove();
+            $("#clusterGroupId").val(8).change();
+            if ($("#clusterGroupId").val() == null) {
+                $("#clusterGroupId").val(2).change();
+            }
+            //}, 3);
+
+            popoverMain = $('#CustomPopover').addClass('hide');
+
+            $('.sidebar-nav select').select2();
+        });
+
+        function Send(toggle) {
+
+            $btn.button('loading');
+            $('#results').empty();
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            $("#PanelFull0").hide();
+
+            ShiftSelected = $('#shift :selected').val();
+
+            enviar["departmentName"] = $('#criticalLevelId :selected').val();
+
+            enviar["shift"] = ShiftSelected;
+
+            $('#unitIdV').change();
+
+            popoverMain.addClass('hide');
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            enviar["auditorId"] = GetUsuarioId();
+            console.log(enviar);
+            EasyAjax(UrlCorrectiveAct, enviar, TableAcaoCorretiva, "CorrectiveAct", toggle);//AJAX
+
+        };
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        function TableAcaoCorretiva(data) {
+       
+            if (!(data.length > 0)) {
+                GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
+                return;
+   
+            } else {
+                datatableGRT.Inicializar({
+                    idTabela: "acaoCorretiva",
+                    listaDeDados: data,
+                    colunaDosDados: [
+                        { title: "Unidade", mData: "Unidade" },
+                        { title: "IdGeral", mData: "Id", visible: false},
+                        { title: Resources("level1"), mData: "Indicador" },
+                        { title: Resources("level2"), mData: "Monitoramento" },
+                        { title: "Medida Tomada", mData: "PreventativeMeasure" },
+                        { title: "Editar", mRender: function (data, type, row) { return "<button class='btn btn-link custom-button' data-toggle='modal' data-click='btnEditarDataTable' data-id=" + row.Id +" data-target='#editModal'>Editar</button>" } },
+                    ],
+                    numeroLinhasNaTabela: 20
+                });          
+            }
+        }
+        $('#acaoCorretiva').on('click', 'button[data-click="btnEditarDataTable"]', function () {
+           var editar = ($(this).attr('data-id'));
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: UrlGetCorrectiveAct,
+                data: {
+                    editar: editar
+                },
+                error: function () {
+                   alert('Erro!')
+                },               
+                success: function (retorno) {
+                    
+                },                
+            });
+        });
+
+        function retorno(data) {
+
+        }
+
+        $('#editModal').on('click', '#save', function () {
+            debugger
+            var save = ($(this).attr(''));
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: UrlSaveCorrectiveAct,
+                data: {
+                    save: save
+                },
+                error: function () {
+                    alert('Erro!')
+                },
+                success: function (retorno) {
+                    console.log(data)
+                },
+            });
+        });
+      
+    </script>
+
+}
+

@@ -683,8 +683,6 @@
 
         function DdlChangeEstrategico(v1, v2, v3, edit ) {
 
-
-
             var change1 = v1 != undefined ? v1 : "";
             var change2 = v2 != undefined ? v2 : "";
 
@@ -770,7 +768,8 @@
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
                             //$('#ObjetivoGerencial_Id').remove();
 
-                            $('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                            //$('#ObjetivoGerencial_Id').addClass(' required tatico ');
+                            $('#ObjetivoGerencial_Id').addClass(' tatico ');
 
                             try {
                                 $('#modalLindo span.select2').prev('select').select2('destroy');
@@ -2130,7 +2129,9 @@
                                                  $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
                                                  //$('#ObjetivoGerencial_Id').remove();
 
-                                                 $('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+                                                 //$('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
+                                                 $('#formEditTatico #ObjetivoGerencial_Id').addClass(' tatico ');
+
 
                                                  try {
                                                      $('#formEditTatico #modalLindo span.select2').prev('select').select2('destroy');

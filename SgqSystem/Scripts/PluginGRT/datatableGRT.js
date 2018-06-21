@@ -4,15 +4,8 @@
     listaDeDados: [],
     definicaoColuna: [],
     colunaDosDados: [],
-    linguagem: {
-        "search": 'Buscar',
-        "lengthMenu": "_MENU_",
-        "zeroRecords": 'Sem dados',
-        "paginate": {
-            "previous": 'Anterior',
-            "next": 'Proximo',
-        }
-    },
+    linguagem: {},
+    ordenacao: [],
     numeroLinhasNaTabela: 25,
     aplicarResponsividade: true,
     tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
@@ -26,6 +19,16 @@
         if ($.fn.DataTable.isDataTable('#' + config.idTabela) && $('#' + config.idTabela).html().length > 0) {
             $('#' + config.idTabela).DataTable().destroy();
         }
+
+        this.linguagem = {
+            "search": Resources('search'),
+            "lengthMenu": "_MENU_",
+            "zeroRecords": Resources('no_data_to_show'),
+            "paginate": {
+                "previous": Resources('previous'),
+                "next": Resources('next'),
+            }
+        };
 
         if (config.idTabela != undefined)
             this.idTabela = config.idTabela;
@@ -43,6 +46,9 @@
             this.tamanhosDoMenu = config.tamanhosDoMenu;
         if (config.definicaoColuna != undefined)
             this.definicaoColuna = config.definicaoColuna;
+        if (config.ordenacao != undefined) {
+            this.ordenacao = config.ordenacao;
+        }
 
         if ($.inArray(this.numeroLinhasNaTabela, this.tamanhosDoMenu[0]) < 0) {
             this.tamanhosDoMenu[0].push(this.numeroLinhasNaTabela);
@@ -63,6 +69,7 @@
             "language": this.linguagem,
             initComplete: this.initComplete,
             dom: 'Blfrtip',
+            order: this.ordenacao,
             buttons: {
                 buttons: [{
                     extend: 'excel',

@@ -1,8 +1,6 @@
 ﻿@model PlanoAcaoCore.Acao.FTA
 @{
 
-
-
 }
 <style>
     /*td span {
@@ -51,86 +49,88 @@
     }
 </style>
 
+<script src="~/Scripts/Print/printGRT.js"></script>
+<script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
 
 
 @using (Html.BeginForm())
 {
     <div ng-app="App">
-        <div class="table-responsive" ng-controller="FTA">
+        <div class="table-responsive" ng-controller="FTA" id="tabelaFTA">
 
             <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
+                <thead>
+                    <tr rowspan="2">
+                        <td colspan="6">
+                            <span class="tdLabel; centerThis" style="font-size: 20px;">@Resources.Resource.deviation_analysis_report</span>
+                        </td>
+                        <td colspan="4">
+                            <span class="tdLabels; centerThis">
+                                @Resources.Resource.initial_date_selected_period - @Model._DataInicioFTA
+                            </span>
+                            <hr />
+                            <span class="tdLabels; centerThis">@Resources.Resource.end_date_selected_period - @Model._DataFimFTA</span>
+                        </td>
+                    </tr>
 
-                <tr rowspan="2">
-                    <td colspan="6">
-                        <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
-                    </td>
-                    <td colspan="4">
-                        <span class="tdLabels; centerThis">
-                            Data Inicial do período selecionado - @Model._DataInicioFTA
-                        </span>
-                        <hr />
-                        <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.indicators_devices</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.supervisor</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.unit</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.department</span></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
-                    <td colspan="2"><span class="tdLabels">Supervisor</span></td>
-                    <td colspan="2"><span class="tdLabels">Unidade</span></td>
-                    <td colspan="2"><span class="tdLabels">Departamento</span></td>
-                </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Model._Level1
+                            @Html.HiddenFor(r => r.Level1Id)
+                            @Html.HiddenFor(r => r.Level2Id)
+                            @Html.HiddenFor(r => r.Level3Id)
+                            @Html.HiddenFor(r => r.IsFTA)
+                        </td>
+                        <td colspan="2">
+                            @Model._Supervisor
+                            @Html.HiddenFor(r => r.Supervisor_Id)
+                        </td>
+                        <td colspan="2">
+                            @Model._Unidade
+                            @Html.HiddenFor(r => r.Unidade_Id)
+                        </td>
+                        <td colspan="2">
+                            @Model._Departamento
+                            @Html.HiddenFor(r => r.Departamento_Id)
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="4">
-                        @Model._Level1
-                        @Html.HiddenFor(r => r.Level1Id)
-                        @Html.HiddenFor(r => r.Level2Id)
-                        @Html.HiddenFor(r => r.Level3Id)
-                        @Html.HiddenFor(r => r.IsFTA)
-                    </td>
-                    <td colspan="2">
-                        @Model._Supervisor
-                        @Html.HiddenFor(r => r.Supervisor_Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Unidade
-                        @Html.HiddenFor(r => r.Unidade_Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Departamento
-                        @Html.HiddenFor(r => r.Departamento_Id)
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="5"><span class="tdLabels">@Resources.Resource.goal_indicator</span></td>
+                        <td colspan="5"><span class="tdLabels">@Resources.Resource.percentage_nc_tasks</span></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
-                    <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
-                </tr>
+                    <tr>
+                        <td colspan="5">
+                            <k>@Model.MetaFTA</k>
+                            @Html.HiddenFor(r => r.MetaFTA)
+                        </td>
+                        <td colspan="5">
+                            <k>@Model.PercentualNCFTA</k>
+                            @Html.HiddenFor(r => r.PercentualNCFTA)
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="5">
-                        <k>@Model.MetaFTA</k>
-                        @Html.HiddenFor(r => r.MetaFTA)
-                    </td>
-                    <td colspan="5">
-                        <k>@Model.PercentualNCFTA</k>
-                        @Html.HiddenFor(r => r.PercentualNCFTA)
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="10"><span class="tdLabels">@Resources.Resource.recurrence_deviations_period</span></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
-                </tr>
+                    <tr>
+                        <td colspan="10">
+                            <k>@Model.ReincidenciaDesvioFTA</k>
+                            @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="10">
-                        <k>@Model.ReincidenciaDesvioFTA</k>
-                        @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
-                    </td>
-                </tr>
-
-
+                </thead>
 
                 <tbody ng-repeat="item in items" my-repeat-directive id="FTA{{item}}">
 
@@ -139,26 +139,26 @@
 
                             <button ng-show="items.length > 1" ng-click="RemoverFTA(item)" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
                                 <span title="Remover" style="cursor:pointer" class="glyphicon glyphicon-trash"></span>
-                                &nbsp Remover
+                                &nbsp @Resources.Resource.remove
                             </button>
                             &nbsp;
                             <button ng-click="myFunc()" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
                                 <span title="Adicionar" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>
-                                &nbsp Adicionar
+                                &nbsp @Resources.Resource.add
                             </button>
 
                         </td>
                     </tr>
 
                     <tr>
-                        <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
-                        <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
-                        <td colspan="4"><span class="tdLabels">AÇÃO GENÉRICA</span> </td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.generic_action2</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.group_cause2</span></td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.generic_action2</span> </td>
                     </tr>
 
                     <tr>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                             @*<select data-ng-model="FTABody.CausaGenerica_Id"
                                         data-ng-options="s.Id as s.Name for s in CausaGenericas | orderBy:'Name'"
                                         data-ng-change="ChangeCausaGenericas()" class="form-control" style="width:210px">
@@ -166,20 +166,20 @@
                                 </select>*@
                         </td>
                         <td colspan="2">
-                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                     </tr>
 
                     <tr>
                         <td colspan="4">
-                            <span class="tdLabels">CAUSA ESPECÍFICA</span>
+                            <span class="tdLabels">@Resources.Resource.specific_cause</span>
                         </td>
                         <td colspan="2" style="border-bottom:0;"></td>
                         <td colspan="4">
-                            <span class="tdLabels">AÇÃO ESPECÍFICA</span>
+                            <span class="tdLabels">@Resources.Resource.specific_action2</span>
                         </td>
                     </tr>
 
@@ -196,9 +196,9 @@
 
                     <tr>
                         @*<td colspan="3">Contramedida</td>*@
-                        <td colspan="4"><span class="tdLabels">Quem</span></td>
-                        <td colspan="2"><span class="tdLabels">Entrega</span></td>
-                        <td colspan="4"><span class="tdLabels">Como</span></td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.who</span></td>
+                        <td colspan="2"><span class="tdLabels">@Resources.Resource.delivery</span></td>
+                        <td colspan="4"><span class="tdLabels">@Resources.Resource.how</span></td>
                     </tr>
 
                     <tr>
@@ -206,7 +206,7 @@
                                 @Html.EditorFor(r => r.ContramedidaEspecifica)
                             </td>*@
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="2">
                             @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
@@ -219,20 +219,20 @@
                 </tbody>
 
                 <tr>
-                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
+                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@Resources.Resource.seen</span></td>
                 </tr>
 
                 <tr>
-                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
-                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
+                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@Resources.Resource.signature1<span style="color:red">*</span></strong></span></td>
+                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@Resources.Resource.signature2<span style="color:red">*</span></strong></span></td>
                 </tr>
 
                 <tr>
                     <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                     </td>
                     <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
                     </td>
                 </tr>
                 <tr style="display:none">
@@ -247,29 +247,41 @@
                     <td width="10%"></td>
                     <td width="10%"></td>
                 </tr>
+
+                @*<tr>
+                        <td colspan="10">
+                            <button type="button" class="btn btn-success" id="AbrirModalNovoApartirDeAlgoTático" onclick="AbrirModalNovoApartirDeAlgo('acao', 'Tático', '');" style=""><strong>Vincular Tático <span style="color:red">*</span></strong></button>
+                        </td>
+                    </tr>*@
+                <tr>
+                    <td colspan="10">
+                        <input id="Panejamento_Id" name="Panejamento_Id" type="hidden">
+                        <table id="tabelaModalTaticoSelecionado" class="table table-bordered"></table>
+                    </td>
+                </tr>
             </table>
-            <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
+            <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">@Resources.Resource.save</button>
         </div>
     </div>
     <script>
         var app = angular.module("App", []);
-        app.controller('FTA', ['$scope', function($scope) {
+        app.controller('FTA', ['$scope', function ($scope) {
             $scope.count = 0;
             $scope.items = [0];
 
-            $scope.myFunc = function() {
+            $scope.myFunc = function () {
                 $scope.count++;
                 $scope.items.push($scope.count);
             };
 
-            $scope.RemoverFTA = function(item) {
+            $scope.RemoverFTA = function (item) {
                 var index = $scope.items.indexOf(item);
                 $scope.items.splice(index, 1);
             };
         }]);
 
-        app.directive('myRepeatDirective', function() {
-            return function(scope, element, attrs) {
+        app.directive('myRepeatDirective', function () {
+            return function (scope, element, attrs) {
 
                 //console.log('scope');
                 //console.log('element');
@@ -305,10 +317,10 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
                 <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
-                <h4 class="modal-title" id="novoHeader">Digite a Senha</h4>
+                <h4 class="modal-title" id="novoHeader">@Resources.Resource.type_password</h4>
             </div>
             <div class="modal-body" id="novoBody">
-                <form id="passCheck">
+                <form id="passCheck" onsubmit="return false">
                     <div class="form-group">
                         <div>
                             <input type="password" class="form-control" id="" name="pass">
@@ -318,7 +330,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.cancel</button>
                 <button type="button" class="btn btn-primary" id="btnOk">Ok</button>
             </div>
         </div>
@@ -329,21 +341,21 @@
 
     <script>
 
-        var user0 = {Status: false};
-        var user1 = {Status: false};
+        var user0 = { Status: false };
+        var user1 = { Status: false };
         function ValidaSenha(user, ddl) {
             /*Encriptar aqui!!!!*/
             var check = $('#passCheck').serializeObject();
 
 
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
-                if(user == 0){ user0.Status = !r.isInvalid; }
-                if(user == 1){ user1.Status = !r.isInvalid; }
+                if (user == 0) { user0.Status = !r.isInvalid; }
+                if (user == 1) { user1.Status = !r.isInvalid; }
                 openMessageModal(r.response, '');
-                if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
-                if(!user0.Status)
+                HabilitaBotaoSalvar()
+                if (!user0.Status)
                     $('[id=Assinatura1]').val('').change();
-                if(!user1.Status)
+                if (!user1.Status)
                     $('[id=Assinatura2]').val('').change();
 
                 $('#modalPass').modal("hide");
@@ -360,19 +372,19 @@
         $('[id=Assinatura1]').off('change').on('change', function () {
             user0.Status = false;
             $('#passCheck').find('#name').val($('[id=Assinatura1] :selected').text());
-            $('#btnOk').off('click').on('click', function() { ValidaSenha(0); });
+            $('#btnOk').off('click').on('click', function () { ValidaSenha(0); });
             $('#modalPass').modal();
             $('#passCheck').find('[name=pass]').val('')
-            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+            HabilitaBotaoSalvar()
         });
 
         $('[id=Assinatura2]').off('change').on('change', function () {
             user1.Status = false;
             $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
-            $('#btnOk').off('click').on('click', function() { ValidaSenha(1); });
+            $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
             $('#modalPass').modal();
             $('#passCheck').find('[name=pass]').val('')
-            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+            HabilitaBotaoSalvar()
         });
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
@@ -416,25 +428,61 @@
 
         function save() {
 
+            //const Panejamento_Id = 12; //Mock do ID Tático Genérico que vinculas as Ações
+
             var form = $('form').serializeObject();
-            form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+            //form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+            //form["Panejamento_Id"] = $('input#Panejamento_Id').val();
+            //form["Panejamento_Id"] = Panejamento_Id;
             form["TipoIndicador"] = 2; //Para Indicador SGQ
             var index = 0;
             var arr = [];
 
-            if(typeof(form.CausaGenerica_Id) == "string"){
+            if (Array.isArray(form["_QuandoFim"])) {
+
+                form["_QuandoFim"].forEach(function (o, e) {
+                    o = new Date(o.substring(5, 3) + "/" + o.substring(2, 0) + "/" + o.substring(10, 6));
+
+                    if (o < new Date()) {
+                        openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
+                        return;
+                    }
+
+                    o = moment(o).format("DD/MM/YYYY");
+                });
+
+            } else if (form["_QuandoFim"].length > 0) {
+
+                form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5, 3) + "/" + form["_QuandoFim"].substring(2, 0) + "/" + form["_QuandoFim"].substring(10, 6));
+                if (form["_QuandoFim"] < new Date()) {
+                    openMessageModal("@Resources.Resource.select_delivery_date_greater_today_date");
+                    return;
+                }
+
+                form["_QuandoFim"] = moment(form["_QuandoFim"]).format("DD/MM/YYYY");
+            }
+
+            if (typeof (form.CausaGenerica_Id) == "string") {
+
                 $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
-                    openMessageModal('Registro salvo com sucesso!', '');
-                    window.location.href = '@Url.Action("Index", "PaPlanejamentoAcao")';
-                }).fail(function(xhr, err) {
-                    var responseTitle= $(xhr.responseText).filter('title').get(0);
+                    openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                    if (confirm("Deseja Imprimir?")) {
+                        printFTA();
+                    }
+                    window.location.href = '@Url.Action("Index2", "Home2")';
+
+                }).fail(function (xhr, err) {
+
+                    var responseTitle = $(xhr.responseText).filter('title').get(0);
                     openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
+
                 });
             }
-            else{
-                form.CausaGenerica_Id.forEach(function(o,c) {
+            else {
+                form.CausaGenerica_Id.forEach(function (o, c) {
                     var singleForm = $('form').serializeObject();
-                    singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+                    //singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+                    singleForm["Panejamento_Id"] = $('input#Panejamento_Id').val();
                     singleForm["TipoIndicador"] = 2; //Para Indicador SGQ
                     singleForm.CausaEspecifica = form.CausaEspecifica[c];
                     singleForm.CausaGenerica_Id = form.CausaGenerica_Id[c];
@@ -447,10 +495,13 @@
                     arr.push(singleForm);
 
                     $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
-                        openMessageModal('Registro salvo com sucesso!', '');
-                        window.location.href = '@Url.Action("Index", "PaPlanejamentoAcao")';
-                    }).fail(function(xhr, err) {
-                        var responseTitle= $(xhr.responseText).filter('title').get(0);
+                        openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                        if (confirm("Deseja Imprimir?")) {
+                            printFTA();
+                        }
+                        window.location.href = '@Url.Action("Index2", "Home2")';
+                    }).fail(function (xhr, err) {
+                        var responseTitle = $(xhr.responseText).filter('title').get(0);
                         openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
                     });
 
@@ -461,13 +512,117 @@
 
         $().ready(function () {
             InitDatePiker();
-            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
-            $('#Assinatura1').select2();
-            $('#Assinatura2').select2();
+            HabilitaBotaoSalvar();
+            //$('#Assinatura1').select2();
+            //$('#Assinatura2').select2();
+            $('select').select2();
         });
+
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado) {
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Vincular " + NomeDoQueSeraCriado);
+            $.post(urlGetListPlanejamento + '/' + tipoQueSeraCriado, function (r) {
+                var col = r.columns;
+                col.unshift({
+                    "render": function (data, type, row) {
+                        return '<button data-id="' + row.Id + '" data-tipo="' + tipoQueSeraCriado + '" onclick="AbreModalDePlanejamento(' + row.Id + ')" class="btn btn-large btn-success">Vincular ' + NomeDoQueSeraCriado + '</button>';
+                    }
+                });
+                var tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados: r.columns,
+                    buttons: { buttons: [] },
+                    initComplete: function () {
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {
+                            $('#tabelaModalTaticoSelecionado').html('<tbody><tr>' + $(this).parents('tr').html() + '</tr></tbody>');
+                            $('#tabelaModalTaticoSelecionado').prepend('<thead>' + $(this).parents('.dataTables_scroll').find('.dataTables_scrollHead').find('thead').html() + '</thead>')
+                            $('#tabelaModalTaticoSelecionado thead th:first-child').remove();
+                            $('#tabelaModalTaticoSelecionado button').parent().remove();
+                            $('input#Panejamento_Id').val($(this).attr('data-id'));
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                            HabilitaBotaoSalvar();
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+
+                        setTimeout(function (e) {
+                            tableModalNovoApartirDe.draw();
+                        }, 500);
+                    }
+                });
+            });
+        }
+
+        function HabilitaBotaoSalvar() {
+
+            //if (user0.Status && user1.Status && $('#tabelaModalTaticoSelecionado tbody').length > 0) {
+            //    $('#Salvar').attr('disabled', false);
+            //} else {
+            //    $('#Salvar').attr('disabled', true);
+            //}
+
+            if (user0.Status && user1.Status) {
+                $('#Salvar').attr('disabled', false);
+            } else {
+                $('#Salvar').attr('disabled', true);
+            }
+        }
+
+        function printFTA() {
+
+            $.each($('tbody input'), function (i, o) {
+                $(o).parents('td').html($(o).val());
+            });
+
+            $.each($('tbody select'), function (i, o) {
+                $(o).parents('td').html($(o).find('option:selected').text());
+            });
+
+            $.each($('tbody textarea'), function (i, o) {
+                $(o).parents('td').html($(o).val());
+            });
+
+            $.each($('tbody button'), function (i, o) {
+                $(o).remove();
+            });
+
+            printGRT.Inicializar(
+            {
+                bodyHtml: document.getElementById("tabelaFTA").innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25px 25px 10px 25px",
+                pageMarginFooter: "10px 25px 25px 25px",
+                pageMarginBody: "0 25px 0 25px"
+            });
+
+            printGRT.Imprimir();
+        }
 
     </script>
 
 }
+
+<!-- Modal -->
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog" style="width:1150px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 

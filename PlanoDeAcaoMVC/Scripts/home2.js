@@ -1,17 +1,16 @@
-﻿
-
-//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
+﻿//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
 var ColvisarrayVisaoAtual_show = [];
 var ColvisarrayVisaoAtual_hide = [];
 var table;
-var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
-var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
-var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
-var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
-var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Editar Planejamento</button>';
+var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp' + Resources('details') + '</button> ';
+var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp' + Resources('new_tactic') + '</button>';
+var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp' + Resources('new_action') + '</button> ';
+var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('accompaniment') + '</button> ';
+var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('edit_planning') + '</button> ';
+var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('edit_planning') + '</button>';
 var dados = [];
 var dadosfilter = [];
 var dadosPie2 = [];
@@ -92,11 +91,12 @@ function GetDataTable(campo, filtro) {
 
                 //Monta a tabela
                 MountDataTable(json);
+                //MountDataTablePlanejamento(json);
 
             });
         }
 
-        $('#spanSubTable').text('TODAS AS TAREFAS PARA FILTRAR');
+        $('#spanSubTable').text(Resources("all_tasks_filter"));
 
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
@@ -115,6 +115,8 @@ function objectToArr(myObj) {
 }
 
 function MountDataTable(json) {
+
+    GetDataTablePlanejamento(Object.assign([], json));
 
     if (ColvisarrayVisaoAtual_show.length != 0) {
         setArrayColvisAtual();
@@ -181,7 +183,11 @@ function MountDataTable(json) {
                     var html = "";
 
                     if (!!(parseInt(data.Id) && parseInt(data.Id) > 0 || parseInt(data.Tatico_Id) && parseInt(data.Tatico_Id)) && (!parseInt(data.Acao.Id) && !parseInt(data.Acao.Id))) {
-                        html += "<br>" + btnEditarPlanejamento
+                        if (!IsAdmin && !parseInt(data.Tatico_Id) && !parseInt(data.Tatico_Id) > 0) {
+                            html += "<br>" + btnEditarPlanejamentoDisabled;
+                        } else {
+                            html += "<br>" + btnEditarPlanejamento;
+                        }
                     }
 
                     if (!!parseInt(data.Id) && parseInt(data.Id) > 0) // Possui plan Estrat
@@ -196,58 +202,56 @@ function MountDataTable(json) {
                     return html;
                 }
             }
-
-
         ],
         'aoColumnDefs': [
-            { "sTitle": "Diretoria", "aTargets": [0], "width": "100px" },
-            { "sTitle": "Missão", "aTargets": [1], "width": "200px" },
-            { "sTitle": "Visão", "aTargets": [2], "width": "200px" },
-            { "sTitle": "Dimensão", "aTargets": [3], "width": "50px" },
-            { "sTitle": "Diretrizes", "aTargets": [4], "width": "200px" }, // ver diretriz
-            { "sTitle": "Indicadores Diretriz", "aTargets": [5], "width": "300px" },
-            { "sTitle": "Responsável pela Diretriz", "aTargets": [6], "width": "50px" },
-            { "sTitle": "Tema | Assunto", "aTargets": [7], "width": "100px" },
-            { "sTitle": "Gerência", "aTargets": [8], "width": "100px" },
-            { "sTitle": "Coordenação", "aTargets": [9], "width": "100px" },
-            { "sTitle": "Tipo de Projeto", "aTargets": [10], "width": "100px" },
-            { "sTitle": "Tema do Projeto", "aTargets": [11], "width": "100px" },
-            { "sTitle": "Projeto | Iniciativa", "aTargets": [12], "width": "200px" },
-            { "sTitle": "Indicadores de Projeto/Iniciativa", "aTargets": [13], "width": "100px" },
-            { "sTitle": "Objetivo Gerencial", "aTargets": [14], "width": "100px" },
-            { "sTitle": "Valor de", "aTargets": [15], "width": "50px" },
-            { "sTitle": "Valor para", "aTargets": [16], "width": "50px" },
-            { "sTitle": "Data Início", "aTargets": [17], "width": "50px" },
-            { "sTitle": "Data Fim", "aTargets": [18], "width": "50px" },
-            { "sTitle": "Responsável pelo Projeto/Iniciativa", "aTargets": [19], "width": "50px" },
-            { "sTitle": "Regional", "aTargets": [20], "width": "50px" },
-            { "sTitle": "Unidade", "aTargets": [21], "width": "50px" },
-            { "sTitle": "Tipo de Indicador", "aTargets": [22], "width": "50px" },
-            { "sTitle": "Indicador SGQ", "aTargets": [23], "width": "100px" },
-            { "sTitle": "Monitoramento SGQ", "aTargets": [24], "width": "100px" },
-            { "sTitle": "Tarefa SGQ", "aTargets": [25], "width": "100px" },
-            { "sTitle": "Indicadores Operacional", "aTargets": [26], "width": "100px" }, // ver indicador operacional*
-            { "sTitle": "Causa Genérica", "aTargets": [27], "width": "200px" },
-            { "sTitle": "Grupo Causa", "aTargets": [28], "width": "200px" },
-            { "sTitle": "Ação Genérica", "aTargets": [29], "width": "100px" },
-            { "sTitle": "Causa Específica", "aTargets": [30], "width": "100px" },
-            { "sTitle": "Ação Específica", "aTargets": [31], "width": "100px" },
-            { "sTitle": "Quem", "aTargets": [32], "width": "200px" },
-            { "sTitle": "Quando (Início)", "aTargets": [33], "width": "50px" },
-            { "sTitle": "Quando (Fim)", "aTargets": [34], "width": "50px" },
-            { "sTitle": "Como Pontos Importantes", "aTargets": [35], "width": "200px" },
-            { "sTitle": "Pra que", "aTargets": [36], "width": "200px" },
-            { "sTitle": "Quanto custa", "aTargets": [37], "width": "50px" },
-            { "sTitle": "Status", "aTargets": [38], "width": "50px" },
-            { "sTitle": "Prazo", "aTargets": [39], "width": "50px" },
-            { "sTitle": "Ação" },
+            { "sTitle": Resources("directorship"), "aTargets": [0], "width": "100px" },
+            { "sTitle": Resources("mission"), "aTargets": [1], "width": "200px" },
+            { "sTitle": Resources("view"), "aTargets": [2], "width": "200px" },
+            { "sTitle": Resources("dimension"), "aTargets": [3], "width": "50px" },
+            { "sTitle": Resources("guidelines"), "aTargets": [4], "width": "200px" }, // ver diretriz
+            { "sTitle": Resources("indicators_guidelines"), "aTargets": [5], "width": "300px" },
+            { "sTitle": Resources("responsible_guideline"), "aTargets": [6], "width": "50px" },
+            { "sTitle": Resources("theme_subject"), "aTargets": [7], "width": "100px" },
+            { "sTitle": Resources("management"), "aTargets": [8], "width": "100px" },
+            { "sTitle": Resources("coordination"), "aTargets": [9], "width": "100px" },
+            { "sTitle": Resources("type_of_project"), "aTargets": [10], "width": "100px" },
+            { "sTitle": Resources("project_theme"), "aTargets": [11], "width": "100px" },
+            { "sTitle": Resources("project_initiative"), "aTargets": [12], "width": "200px" },
+            { "sTitle": Resources("indicators_project_initiative"), "aTargets": [13], "width": "100px" },
+            { "sTitle": Resources("management_objective"), "aTargets": [14], "width": "100px" },
+            { "sTitle": Resources("value_of"), "aTargets": [15], "width": "50px" },
+            { "sTitle": Resources("value_for"), "aTargets": [16], "width": "50px" },
+            { "sTitle": Resources("start_date"), "aTargets": [17], "width": "50px" },
+            { "sTitle": Resources("end_date"), "aTargets": [18], "width": "50px" },
+            { "sTitle": Resources("responsible_project_initiative"), "aTargets": [19], "width": "50px" },
+            { "sTitle": Resources("regional"), "aTargets": [20], "width": "50px" },
+            { "sTitle": Resources("unit"), "aTargets": [21], "width": "50px" },
+            { "sTitle": Resources("indicator_type"), "aTargets": [22], "width": "50px" },
+            { "sTitle": Resources("indicator_sgq"), "aTargets": [23], "width": "100px" },
+            { "sTitle": Resources("monitoring_sgq"), "aTargets": [24], "width": "100px" },
+            { "sTitle": Resources("task_sgq"), "aTargets": [25], "width": "100px" },
+            { "sTitle": Resources("operational_indicators"), "aTargets": [26], "width": "100px" }, // ver indicador operacional*
+            { "sTitle": Resources("generic_cause"), "aTargets": [27], "width": "200px" },
+            { "sTitle": Resources("group_cause"), "aTargets": [28], "width": "200px" },
+            { "sTitle": Resources("generic_action"), "aTargets": [29], "width": "100px" },
+            { "sTitle": Resources("specific_cause2"), "aTargets": [30], "width": "100px" },
+            { "sTitle": Resources("specific_action"), "aTargets": [31], "width": "100px" },
+            { "sTitle": Resources("who"), "aTargets": [32], "width": "200px" },
+            { "sTitle": Resources("when_start"), "aTargets": [33], "width": "50px" },
+            { "sTitle": Resources("when_end"), "aTargets": [34], "width": "50px" },
+            { "sTitle": Resources("as_important_points"), "aTargets": [35], "width": "200px" },
+            { "sTitle": Resources("for_what"), "aTargets": [36], "width": "200px" },
+            { "sTitle": Resources("how_much"), "aTargets": [37], "width": "50px" },
+            { "sTitle": Resources("status"), "aTargets": [38], "width": "50px" },
+            { "sTitle": Resources("term"), "aTargets": [39], "width": "50px" },
+            { "sTitle": Resources("action") },
 
         ],
         "responsive": true,
         "bSearchable": true,
         "bFilter": true,
         "paging": true,
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "Todos"]],
+        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, Resources("all")]],
         "info": true,
         "scrollY": 370,
         "scrollX": 500,
@@ -257,36 +261,36 @@ function MountDataTable(json) {
             //{
             {
                 extend: 'colvisGroup',
-                text: 'Visão Inicial',
+                text: Resources("initial_view"),
                 show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
                 hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Planejamento Estratégico',
+                text: Resources("strategic_planning"),
                 show: [0, 1, 2, 3, 4, 5, 6, 35, 39, 40],
                 hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Planejamento Tático',
+                text: Resources("tactical_planning"),
                 show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
                 hide: [0, 1, 2, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Planejamento Operacional',
+                text: Resources("operational_planning"),
                 show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
                 hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
             {
                 extend: 'colvisGroup',
-                text: 'Mostrar Todos',
+                text: Resources("show_all"),
                 show: ':hidden'
             },
             {
                 extend: 'colvisGroup',
-                text: 'Visão atual',
+                text: Resources("current_view"),
                 show: ColvisarrayVisaoAtual_show,
                 hide: ColvisarrayVisaoAtual_hide
             },
@@ -312,26 +316,26 @@ function MountDataTable(json) {
             },
             {
                 extend: 'colvis',
-                text: 'Colunas Visíveis',
+                text: Resources("visible_columns"),
                 collectionLayout: 'fixed four-column',
                 exportOptions: {
                     columns: ':visible',
                 }
             },
             {
-                text: 'Atualizar',
+                text: Resources("update"),
                 action: function (e, dt, node, config) {
                     $('#btnTop').click();
                 },
             },
             {
-                text: 'Minhas Colunas',
+                text: Resources("my_columns"),
                 extend: 'colvisGroup',
                 show: ColvisarrayVisaoUsuario_show,
                 hide: ColvisarrayVisaoUsuario_hide
             },
             {
-                text: 'Salvar Colunas',
+                text: Resources("save_columns"),
                 action: function (e, dt, node, config) {
                     SaveUserColVis();
                 },
@@ -457,26 +461,26 @@ function MountDataTable(json) {
 
         },
         "language": {
-            "sEmptyTable": "Nenhum registro encontrado",
-            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sEmptyTable": Resources("no_records_found"),
+            "sInfo": Resources("showing_start_to_end_of_total_records"),
+            "sInfoEmpty": Resources("showing_0_to_0_of_0_records"),
+            "sInfoFiltered": Resources("filtered_max_records"),
             "sInfoPostFix": "",
             "sInfoThousands": ".",
-            "sLengthMenu": "_MENU_ resultados por página",
-            "sLoadingRecords": "Carregando...",
-            "sProcessing": "Processando...",
-            "sZeroRecords": "Nenhum registro encontrado",
-            "sSearch": "Pesquisar",
+            "sLengthMenu": Resources("menu_results_per_page"),
+            "sLoadingRecords": Resources("loading"),
+            "sProcessing": Resources("processing"),
+            "sZeroRecords": Resources("no_records_found"),
+            "sSearch": Resources("search"),
             "oPaginate": {
-                "sNext": "Próximo",
-                "sPrevious": "Anterior",
-                "sFirst": "Primeiro",
-                "sLast": "Último"
+                "sNext": Resources("next"),
+                "sPrevious": Resources("back"),
+                "sFirst": Resources("first"),
+                "sLast": Resources("last")
             },
             "oAria": {
-                "sSortAscending": ": Ordenar colunas de forma ascendente",
-                "sSortDescending": ": Ordenar colunas de forma descendente"
+                "sSortAscending": Resources("sort_columns_ascending"),
+                "sSortDescending": Resources("sort_columns_downward")
             }
         }
 
@@ -520,7 +524,11 @@ function MountDataTable(json) {
             .column($(this).data('index'))
             .search(this.value)
             .draw();
+
+        GetFiltrosDeColunas();
     });
+
+    SetFiltrosDeColunas();
 
     table.draw();
 
@@ -533,8 +541,6 @@ function MountDataTable(json) {
         }, 5);
     }
 
-
-
     //deixa escondido o botão que mantem as colunas atuais
     $('#example_wrapper > div.dt-buttons > a:nth-child(6)').hide();
 
@@ -545,11 +551,31 @@ function MountDataTable(json) {
 
     }
 
-
     $('#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr > th:nth-child(2) > input[type="text"]').hide();
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(2)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(3)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(4)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(4)', function () {
+        tableDraw();
+    });
+
+    $('#example_wrapper > div.dt-buttons').on('click', 'a:nth-child(5)', function () {
+        tableDraw();
+    });
+
 }
 
-$('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
     var data = table.row($(this).parents('tr')).data();
     //console.log(data);
 
@@ -558,14 +584,14 @@ $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
         id: data.Id
     }, function (r) {
         //EditarPlanejamento(r)
-        ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () {
+        ModalOpcoesEstrategico(Resources("new_tactical_planning_linked"), 0, function () {
             EditarPlanejamento(r)
         });
     });
 
 });
 
-$('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
     var data = table.row($(this).parents('tr')).data();
     //console.log(data);
     planejamentoCorrentId = data.Tatico_Id;
@@ -573,19 +599,21 @@ $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
 
     $('#modalLindo').modal();
     $('#modalLindo').find('.modal-body').empty();
-    $('#Header').html("Planejamento Operacional");
+    $('#Header').html(Resources("operational_planning"));
 
     $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
 
-        $('#modalLindo').find('.modal-body').empty().append(r);
         $('#NovaAcao').show();
         $('#NovaAcao').click();
+        $('#modalLindo').find('.modal-body').empty().prepend(r);
+
+        InitDatePiker();
 
     });
 
 });
 
-$('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
     selecionado = data;
@@ -597,8 +625,7 @@ $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
 });
 
-
-$('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
     //var data = selecionado
 
@@ -627,10 +654,16 @@ $('table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
     //}
 
     $('#modalLindo').find('.modal-footer button').hide();
-    $('#Header').html("Editar");
+    $('#Header').html(Resources("edit"));
     $('#modalLindo').modal();
-
+    $('#Fechar').show();
 });
+
+function tableDraw() {
+    setTimeout(function () {
+        table.draw();
+    }, 50);
+}
 
 /**
  *
@@ -843,53 +876,53 @@ var data1 = [
 var categories2 = ['Camila', 'Miriã', 'Ana', 'Adão', 'Diego'];
 
 var data2 = [{
-    name: 'Concluídas',
+    name: Resources("completed"),
     data: [5, 3, 4, 7, 2],
     color: concluidoColor
 }, {
-    name: 'Atrasadas',
+    name: Resources("late"),
     data: [2, 2, 3, 2, 1],
     color: atrasadaColor
 }, {
-    name: 'Em Andamento',
+    name: Resources("in_progress"),
     data: [3, 4, 4, 2, 5],
     color: andamentoColor
 }];
 
 var data3 = [{
     id: 'A',
-    name: 'Atrasadas',
+    name: Resources("late"),
     color: atrasadaColor
 }, {
     id: 'B',
-    name: 'Concluídas',
+    name: Resources("completed"),
     color: concluidoColor
 }, {
     id: 'O',
-    name: 'Em Andamento',
+    name: Resources("in_progress"),
     color: andamentoColor
 }, {
-    name: 'Qualidade',
+    name: Resources("quality"),
     parent: 'A',
     value: 5
 }, {
-    name: 'Operação',
+    name: Resources("operation"),
     parent: 'A',
     value: 3
 }, {
-    name: 'Qualidade',
+    name: Resources("quality"),
     parent: 'B',
     value: 4
 }, {
-    name: 'Operação',
+    name: Resources("operation"),
     parent: 'B',
     value: 10
 }, {
-    name: 'Qualidade',
+    name: Resources("quality"),
     parent: 'O',
     value: 1
 }, {
-    name: 'Operação',
+    name: Resources("operation"),
     parent: 'O',
     value: 3
 }];
@@ -898,17 +931,17 @@ var categories4 = [];
 
 var data4 = [{
     type: 'column',
-    name: 'Abertas',
+    name: Resources("open"),
     data: [],
     color: andamentoColor
 }, {
     type: 'column',
-    name: 'Fechada',
+    name: Resources("closed"),
     data: [],
     color: concluidoColor
 }, {
     type: 'spline',
-    name: 'Estoque',
+    name: Resources("stock"),
     data: [],
     color: atrasadaColor,
     marker: {
@@ -952,42 +985,42 @@ var data6 = [];
 //    color: andamentoColor
 //}];
 
-var json = FiltraColunas(dados, ["Diretoria",
-    "Missao",
-    "Visao",
-    "Dimensao",
-    "Objetivo",
-    "IndicadoresDiretriz",
-    "Responsavel_Diretriz_Quem.Name",
-    "Gerencia",
-    "Coordenacao",
-    "Iniciativa",
-    "IndicadoresDeProjeto",
-    "ObjetivoGerencial",
-    "_ValorDe",
-    "ValorPara",
-    "_DataInicio",
-    "_DataFim",
-    "Responsavel_Projeto_Quem.Name",
-    "Acao.Regional",
-    "Acao.UnidadeName",
-    "Acao.Level1Name",
-    "Acao.Level2Name",
-    "Acao.Level3Name",
-    "IndicadoresDeProjeto",
-    "Acao._CausaGenerica",
-    "Acao._GrupoCausa",
-    "Acao._ContramedidaGenerica",
-    "Acao.ContramedidaEspecifica",
-    "Acao.CausaEspecifica",
-    "Acao._Quem",
-    "Acao._QuandoInicio",
-    "Acao._QuandoFim",
-    "TemaAssunto",
-    "Acao.PraQue",
-    "Acao.QuantoCusta",
-    "Acao._StatusName",
-    "Acao._Prazo"]);
+var json = FiltraColunas(dados, [Resources("directorship"),
+Resources("mission"),
+Resources("view"),
+Resources("dimension"),
+Resources("guidelines"),
+Resources("indicators_guidelines"),
+Resources("responsible_guideline"),
+Resources("management"),
+Resources("coordination"),
+Resources("initiative"),
+Resources("project_initiative"),
+Resources("management_objective"),
+Resources("value_of"),
+Resources("value_for"),
+Resources("start_date"),
+Resources("end_date"),
+Resources("responsible_project_initiative"),
+Resources("regional"),
+Resources("unit"),
+Resources("indicator"),
+Resources("monitoring"),
+Resources("task"),
+Resources("indicators_project_initiative"),
+Resources("generic_cause"),
+Resources("group_cause"),
+Resources("generic_action"),
+Resources("specific_action"),
+Resources("specific_cause2"),
+Resources("who"),
+Resources("when_start"),
+Resources("when_end"),
+Resources("theme_subject"),
+Resources("for_what"),
+Resources("how_much"),
+Resources("status"),
+Resources("term")]);
 
 
 
@@ -1132,12 +1165,12 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
     if (hasFilter) {
         var categoriesArr = [];
         if (id == 'panel5') {
-            if ($('#valor1Panel5 option:selected').text() == "Todos")
+            if ($('#valor1Panel5 option:selected').text() == Resources("all"))
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel5 option:selected').text());
         } else if (id == 'panel6') {
-            if ($('#valor1Panel6 option:selected').text() == "Todos")
+            if ($('#valor1Panel6 option:selected').text() == Resources("all"))
                 categoriesArr = MapeiaValorParaHC(dados, categoriesFilterVal).filter(onlyUnique);
             else
                 categoriesArr.push($('#valor1Panel6 option:selected').text());
@@ -1209,13 +1242,13 @@ function agrupaPorMes() {
 //Busca no arr de dados registros concluídos, filtro = return
 function getRegistrosConcluidos(arr) {
     return _.filter(arr, function (o) {
-        return o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0;
+        return o.Acao._StatusName && (o.Acao._StatusName.indexOf(Resources('completed')) >= 0 || o.Acao._StatusName.indexOf(Resources('finished'))) >= 0;
     });
 }
 //Busca no arr de dados registros não concluídos, filtro = return
 function getRegistrosNaoConcluidos(arr) {
     return _.filter(arr, function (o) {
-        return !(o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0 && o.Acao._StatusName.indexOf('Cancelada') < 0);
+        return !(o.Acao._StatusName && (o.Acao._StatusName.indexOf(Resources('completed')) >= 0 || o.Acao._StatusName.indexOf(Resources('finished'))) >= 0 && o.Acao._StatusName.indexOf(Resources('cancel')) < 0);
     });
 }
 //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
@@ -1368,9 +1401,9 @@ function MapeiaValorParaHC(array, prop, isInteger) {
             if (propArray[1] == "TipoIndicador") {
                 var value = o[propArray[0]][propArray[1]];
                 if (value == 0)
-                    value = "Sem planejamento operacional";
+                    value = Resources("no_operational_planning");
                 else if (value == 1)
-                    value = "Diretrizes";
+                    value = Resources("guidelines");
                 else if (value == 2)
                     value = "Scorecard";
                 return value;
@@ -1404,14 +1437,14 @@ function orderArray(array) {
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
     var filtroEixoX = [];
     if (id == 'panel5') {
-        if ($('#valor2Panel5 option:selected').text() == "Todos")
+        if ($('#valor2Panel5 option:selected').text() == Resources("all"))
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
     } else if (id == 'panel6') {
-        if ($('#valor2Panel6 option:selected').text() == "Todos")
+        if ($('#valor2Panel6 option:selected').text() == Resources("all"))
             filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
         else {
             filtroEixoX.push($('#valor2Panel6 option:selected').text());
@@ -1450,9 +1483,9 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (propArrayC[1] == "TipoIndicador") {
                     var value = retornoCategorias;
                     if (value == 0)
-                        value = "Sem planejamento operacional";
+                        value = Resources("no_operational_planning");
                     else if (value == 1)
-                        value = "Diretrizes";
+                        value = Resources("guidelines");
                     else if (value == 2)
                         value = "Scorecard";
                     retornoCategorias = value;
@@ -1461,9 +1494,9 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (propArrayS[1] == "TipoIndicador") {
                     var value = retornoSeries;
                     if (value == 0)
-                        value = "Sem planejamento operacional";
+                        value = Resources("no_operational_planning");
                     else if (value == 1)
-                        value = "Diretrizes";
+                        value = Resources("guidelines");
                     else if (value == 2)
                         value = "Scorecard";
                     retornoSeries = value;
@@ -1508,21 +1541,21 @@ function pintaStatus(seriesFilter, serieArrFinal) {
     } else {
 
         serieArrFinal.forEach(function (c, o) {
-            if (c.name == "Atrasado") {
+            if (c.name == Resources("late")) {
                 c["color"] = atrasadaColor;
-            } else if (c.name == "Concluído") {
+            } else if (c.name == Resources("completed")) {
                 c["color"] = concluidoColor;
-            } else if (c.name == "Concluído com atraso") {
+            } else if (c.name == Resources("completed_late")) {
                 c["color"] = concluidoAtrasoColor;
-            } else if (c.name == "Em Andamento") {
+            } else if (c.name == Resources("in_progress")) {
                 c["color"] = andamentoColor;
-            } else if (c.name == "Cancelado") {
+            } else if (c.name == Resources("canceled")) {
                 c["color"] = canceladoColor;
-            } else if (c.name == "Retorno") {
+            } else if (c.name == Resources("_return")) {
                 c["color"] = retornoColor;
-            } else if (c.name == "Finalizada") {
+            } else if (c.name == Resources("finished")) {
                 c["color"] = finalizadaColor;
-            } else if (c.name == "Finalizada com atraso") {
+            } else if (c.name == Resources("finished_late")) {
                 c["color"] = finalizadaComAtrasoColor;
             }
         });
@@ -1537,7 +1570,7 @@ function pintaStatus(seriesFilter, serieArrFinal) {
 
 //GLOBAL
 var enviar = {};
-var start = moment().add('month', -1);
+var start = moment();
 var end = moment();
 
 //DatePicker Config / Instance
@@ -1558,34 +1591,34 @@ $(function () {
     $.fn.daterangepicker('locale', {
         "format": "DD/MM/YYYY",
         "separator": " - ",
-        "applyLabel": "Aplicar",
-        "cancelLabel": "Cancelar",
-        "fromLabel": "de",
-        "toLabel": "até",
-        "customRangeLabel": "Customizado",
+        "applyLabel": Resources("apply"),
+        "cancelLabel": Resources("cancel"),
+        "fromLabel": Resources("of"),
+        "toLabel": Resources("until"),
+        "customRangeLabel": Resources("customized"),
         "weekLabel": "W",
         "daysOfWeek": [
-            "Dom",
-            "Seg",
-            "Ter",
-            "Qua",
-            "Qui",
-            "Sex",
-            "Sab"
+            Resources("sun"),
+            Resources("mon"),
+            Resources("tue"),
+            Resources("wed"),
+            Resources("thur"),
+            Resources("fri"),
+            Resources("sat")
         ],
         "monthNames": [
-            "Janeiro",
-            "Fevereiro",
-            "Março",
-            "Abril",
-            "Maio",
-            "Junho",
-            "Julho",
-            "Agosto",
-            "Setembro",
-            "Outubro",
-            "Novembro",
-            "Dezembro"
+            Resources("jan2"),
+            Resources("feb2"),
+            Resources("mar2"),
+            Resources("apr2"),
+            Resources("may2"),
+            Resources("june2"),
+            Resources("july2"),
+            Resources("aug2"),
+            Resources("sept2"),
+            Resources("oct2"),
+            Resources("nov2"),
+            Resources("dec2")
         ],
         //"firstDay": 0
     });
@@ -1612,9 +1645,9 @@ $(function () {
             locale: {
                 "format": "DD/MM/YYYY",
                 "separator": " - ",
-                "applyLabel": "Aplicar",
-                "cancelLabel": "Cancelar",
-                "customRangeLabel": "Seleção",
+                "applyLabel": Resources("apply"),
+                "cancelLabel": Resources("cancel"),
+                "customRangeLabel": Resources("selection"),
             },
             alwaysShowCalendars: true,
             showDropdowns: true,
@@ -1686,10 +1719,10 @@ function btnOrder(campo1, campo2, painel, btn) {
     switch (btnOrderFilter) {
         case "":
             classSpan = "glyphicon glyphicon-sort-by-attributes-alt";
-            titleSpan = "Ordem por Valor";
+            titleSpan = Resources("order_by_value");
             break;
         case "Asc":
-            titleSpan = "Ordem Alfabética";
+            titleSpan = Resources("alphabetical_order");
             classSpan = "glyphicon glyphicon-sort-by-alphabet";
             break;
     }
@@ -1731,7 +1764,7 @@ function distinctFilter(lista, filtro, selectId) {
 
     $('#' + selectId).children('option').remove();
 
-    $('#' + selectId).append($("<option></option>").attr("value", 0).text("Todos"));
+    $('#' + selectId).append($("<option></option>").attr("value", 0).text(Resources("all")));
 
     //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
     //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todos"));
@@ -1749,9 +1782,9 @@ function distinctFilter(lista, filtro, selectId) {
             $('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador"
         ) {
             if (value == 0)
-                value = "Sem planejamento operacional";
+                value = Resources("no_operational_planning");
             else if (value == 1)
-                value = "Diretrizes";
+                value = Resources("guidelines");
             else if (value == 2)
                 value = "Scorecard";
         }
@@ -1791,43 +1824,43 @@ function geraData1() {
 
         switch (dados[i].Acao.Status) {
             case 0:
-                campo = 'Sem Status';
+                campo = Resources('without_status');
                 cor = '#fdffb2';
                 break;
             case 1:
-                campo = 'Atrasado';
+                campo = Resources('late');
                 cor = atrasadaColor;
                 break;
             case 2:
-                campo = 'Cancelado';
+                campo = Resources('cancel');
                 cor = canceladoColor;
                 break;
             case 3:
-                campo = 'Concluído';
+                campo = Resources('completed');
                 cor = concluidoColor;
                 break;
             case 4:
-                campo = 'Concluído com atraso';
+                campo = Resources('completed_late');
                 cor = concluidoAtrasoColor;
                 break;
             case 5:
-                campo = 'Em Andamento';
+                campo = Resources('in_progress');
                 cor = andamentoColor;
                 break;
             case 6:
-                campo = 'Retorno';
+                campo = Resources('_return');
                 cor = retornoColor;
                 break;
             case 7:
-                campo = 'Finalizada';
+                campo = Resources('finished');
                 cor = finalizadaColor;
                 break;
             case 8:
-                campo = 'Finalizada com atraso';
+                campo = Resources('finished_late');
                 cor = finalizadaComAtrasoColor;
                 break;
             default:
-                campo = 'Status';
+                campo = Resources('status');
                 cor = 'black';
                 break;
 
@@ -1863,43 +1896,43 @@ function geraData2(dadosFiltrados) {
 
         switch (dadosFiltrados[i].Acao.Status) {
             case 0:
-                campo = 'Sem Status';
+                campo = Resources('without_status');
                 cor = '#fdffb2';
                 break;
             case 1:
-                campo = 'Atrasado';
+                campo = Resources('late');
                 cor = atrasadaColor;
                 break;
             case 2:
-                campo = 'Cancelado';
+                campo = Resources('cancel');
                 cor = canceladoColor;
                 break;
             case 3:
-                campo = 'Concluído';
+                campo = Resources('completed');
                 cor = concluidoColor;
                 break;
             case 4:
-                campo = 'Concluído com atraso';
+                campo = Resources('completed_late');
                 cor = concluidoAtrasoColor;
                 break;
             case 5:
-                campo = 'Em Andamento';
+                campo = Resources('in_progress');
                 cor = andamentoColor;
                 break;
             case 6:
-                campo = 'Retorno';
+                campo = Resources('_return');
                 cor = retornoColor;
                 break;
             case 7:
-                campo = 'Finalizada';
+                campo = Resources('finished');
                 cor = finalizadaColor;
                 break;
             case 8:
-                campo = 'Finalizada com atraso';
+                campo = Resources('finished_late');
                 cor = finalizadaComAtrasoColor;
                 break;
             default:
-                campo = 'Status';
+                campo = Resources('status');
                 cor = 'black';
                 break;
 
@@ -2123,9 +2156,9 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
 
                 if (categoryX == "TipoIndicador") {
 
-                    if (name == "Sem planejamento operacional")
+                    if (name == Resources("no_operational_planning"))
                         name = 0;
-                    else if (name == "Diretrizes")
+                    else if (name == Resources("guidelines"))
                         name = 1;
                     else if (name == "Scorecard")
                         name = 2;
@@ -2143,9 +2176,9 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "Sem planejamento operacional";
+                                valueY = Resources("no_operational_planning");
                             else if (valueY == 1)
-                                valueY = "Diretrizes";
+                                valueY = Resources("guidelines");
                             else if (valueY == 2)
                                 valueY = "Scorecard";
                         }
@@ -2174,9 +2207,9 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         if (categoryY == "TipoIndicador") {
 
                             if (valueY == 0)
-                                valueY = "Sem planejamento operacional";
+                                valueY = Resources("no_operational_planning");
                             else if (valueY == 1)
-                                valueY = "Diretrizes";
+                                valueY = Resources("guidelines");
                             else if (valueY == 2)
                                 valueY = "Scorecard";
                         }
@@ -2304,7 +2337,7 @@ Highcharts.chart('panel5', {
     yAxis: {
         min: 0,
         title: {
-            text: 'Número de Ações',
+            text: Resources('number_action'),
             align: 'high',
             style: {
                 fontSize: '8px',
@@ -2389,7 +2422,7 @@ Highcharts.chart('panel6', {
     yAxis: {
         min: 0,
         title: {
-            text: 'Número de Ações',
+            text: Resources('number_action'),
             align: 'high',
             style: {
                 fontSize: '8px',
@@ -2454,6 +2487,8 @@ $('#btnTop').click(function () {
     getDateRange($("input[name='daterange']").val());
 
     GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+
+    //GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 })
 
 $('#btnFiltroPie2').click(function () {
@@ -2470,8 +2505,6 @@ $('#btnFiltroPie2').click(function () {
     geraData2(dadosPie2);
     $('#spanPie2').html($('#campo1FiltroPie2 option:selected').text());
 })
-
-
 
 //Celso
 $('#btnpanel5').off('click').on('click', function () {
@@ -2501,7 +2534,7 @@ function setArrayColvisAtual() {
         var ss = [];
 
         $('#example_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
-        
+
         $('body > div.dt-button-collection.fixed.four-column').hide();
         ss = $('.buttons-columnVisibility');
         ss.each(function (i, o) {
@@ -2567,12 +2600,41 @@ function SaveUserColVis() {
         $('body > div.dt-button-background').click();
         console.log(r);
         if (r == "") {
-            openMessageModal("Colunas salvas!", "As Colunas foram salvas com sucesso!");
+            openMessageModal("Colunas salvas!", Resources("columns_saved_successfully"));
         } else {
-            openMessageModal("Erro ao salvar!");
+            openMessageModal(Resources("error_saving"));
         }
-    })
+    });
+}
 
+var filtrosDeColunas = [];
+
+function GetFiltrosDeColunas() {
+
+    filtrosDeColunas = [];
+
+    $('#example_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input[type="text"]').each(function (a) {
+        if ($(this).val() != "") {
+            filtrosDeColunas.push({ Key: $(this).parent().text(), Val: $(this).val() });
+        }
+    });
+}
+
+function SetFiltrosDeColunas() {
+
+    if (filtrosDeColunas.length > 0) {
+
+        filtrosDeColunas.forEach(function (o, c) {
+
+            $('#example_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input').each(function (a) {
+
+                if ($(this).parent().text() == o.Key) {
+                    $(this).val(o.Val);
+                    table.column(a).search(o.Val).draw();
+                }
+            });
+        });
+    }
 }
 
 

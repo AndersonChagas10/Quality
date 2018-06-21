@@ -35,7 +35,7 @@
                                  @Table.GerarColunaButton(CommonData.ParLocalList(@Html, "parLocal", Model.paramsDdl.DdlParLocal_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
                             , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                              }
-                            
+                           
                         </tr>
                     </tbody>
                 </table>
@@ -43,7 +43,7 @@
                 <table id="tableContadores" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Contador:">
                     <thead>
                         <tr>
-                            <th>Nome do contador</th>
+                            <th>@Resources.Resource.counter_name</th>
                             <th>Level</th>
                             <th class="options"></th>
                         </tr>

@@ -1,5 +1,9 @@
 ﻿@model Dominio.ParLevel3BoolTrue
 
+@{
+    ViewBag.Title = Resources.Resource.edition_binary_input_type;
+}
+
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
@@ -10,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParBinaryDataType")">@Resources.Resource.measurement_units</a>
+                    <a href="@Url.Action("Index", "ParBinaryDataType")">@Resources.Resource.binary_input_type</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Edição</span>
+                    <span>@Resources.Resource.edit</span>
                 </li>
             </ul>
             <div class="page-toolbar">

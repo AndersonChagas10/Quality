@@ -45,8 +45,6 @@ namespace SgqSystem.Controllers.Api
         public _PCC1B Next(_Receive receive)
         {
 
-            string connectionString = "SgqDbDevEntities";
-
             ParCompany company;
             var retorno = new _PCC1B();
             retorno.Side = 1;
@@ -116,18 +114,27 @@ namespace SgqSystem.Controllers.Api
         public IEnumerable<CollectionLevel2PCC1B> TotalNC(_Receive receive, int parLevel2IdDianteiro, int parLevel2Id2Traseiro)
         {
             ParLevel1 parLevel1 = new ParLevel1();
+
+            string novoparLevel2IdDianteiro = parLevel2IdDianteiro.ToString().Replace(Services.SyncServices.quebraProcesso, "-");
+            string clusterDianteiro = novoparLevel2IdDianteiro.Split('-')[0];
+            parLevel2IdDianteiro = Convert.ToInt32(novoparLevel2IdDianteiro.Split('-')[1]);
+
+            string novoparLevel2Id2Traseiro = parLevel2Id2Traseiro.ToString().Replace(Services.SyncServices.quebraProcesso, "-");
+            string clusterTraseiro = novoparLevel2Id2Traseiro.Split('-')[1];
+            parLevel2Id2Traseiro = Convert.ToInt32(novoparLevel2Id2Traseiro.Split('-')[1]);
+
             using (var db = new SgqDbDevEntities())
             {
                 parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == 3);
             }
                                                                                                                     
             var query =
-                "SELECT FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, ParLevel1_Id, ParLevel2_Id, UnitId,  " +
+                "SELECT FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, cast(" + clusterDianteiro +" as varchar) + cast(" + Services.SyncServices.quebraProcesso + " as varchar) + CAST(ParLevel1_Id AS VARCHAR) ParLevel1_Id , cast(" + clusterDianteiro +" as varchar) + cast(" + Services.SyncServices.quebraProcesso + " as varchar) + CAST(ParLevel2_Id AS VARCHAR) ParLevel2_Id, UnitId,  " +
                 "Sequential, Side, DefectsResult, [Key]  FROM CollectionLevel2                                     " +
                 "WHERE parlevel1_Id = "+ parLevel1.Id + "                                                          " +
                 "and ParLevel2_Id in ("+ parLevel2IdDianteiro + ", "+ parLevel2Id2Traseiro + ")                    " +   
                 "and UnitId = "+receive.Unit+"                                                                     " +
-                "and CollectionDate Between('"+ receive.Data+ " 00:00:00.0000000') and('" + receive.Data +         " 23:59:59.0000000')   ";
+                "and CollectionDate Between('"+ receive.Data+ " 00:00:00.0000000') and('" + receive.Data +         " 23:59:59')   ";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {

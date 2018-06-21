@@ -27,7 +27,7 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int tamanhoDoPool = 1000;
+        private static int tamanhoDoPool = 5;
         private static bool running { get; set; }
 
         #region SGQ Email
@@ -42,14 +42,14 @@ namespace SgqSystem.Mail
                 using (var client = new HttpClient())
                 {
                     var url = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR"];
-                    
+
                     client.Timeout = TimeSpan.FromMinutes(10);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                
+
             }
         }
 
@@ -67,9 +67,58 @@ namespace SgqSystem.Mail
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
+            }
+        }
+
+        public static void HandleErrorMethod(string error, int emailId)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var emailContent = db.EmailContent.Find(emailId);
+                if (emailContent != null)
+                {
+                    emailContent.SendStatus = "Erro: " + error.Substring(0, error.Length > 500 ? 500 : error.Length);
+                    emailContent.AlterDate = DateTime.Now;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Controle de chamadas para envio de email SGQ utilizando os email que estão na tabela EmailContent: (r => r.SendStatus == null && r.Project == "SGQApp"),
+        /// utiliza callback e configs da tabela SgqConfig
+        /// </summary>
+        public static void SendEmail()
+        {
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    var listDeviation = db.Deviation.Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(200).Select(r => r.EmailContent_Id).ToList();
+
+                    ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp" && listDeviation.Contains(r.Id)).Take(tamanhoDoPool).ToList();
+                    
+
+                    MailSender.HandleError HandleErrorDelegate = HandleErrorMethod;
+                    if (ListaDeMail != null && ListaDeMail.Count() > 0)
+                        foreach (var i in ListaDeMail.Distinct().ToList())
+                        {
+                            Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true, HandleErrorDelegate));
+                            //var emailContent = db.EmailContent.Find(i.Id);
+                            i.SendStatus = "Tentando Enviar";
+                            i.AlterDate = DateTime.Now;
+                        }
+
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(new Exception("Erro no metodo [SendEmail]", ex));
+                //throw ex;
             }
         }
 
@@ -82,18 +131,28 @@ namespace SgqSystem.Mail
             try
             {
                 CreateMailSgqAppDeviation();
-                //CreateMailSgqAppCorrectiveAction();
-                using (var db = new SgqDbDevEntities())
-                    ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 
-                if (ListaDeMail != null && ListaDeMail.Count() > 0)                   
-                    foreach (var i in ListaDeMail.Distinct().ToList())
-                        Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
+                using (var db = new SgqDbDevEntities())
+                {
+                    ListaDeMail = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp").ToList();
+
+                    MailSender.HandleError HandleErrorDelegate = HandleErrorMethod;
+                    if (ListaDeMail != null && ListaDeMail.Count() > 0)
+                        foreach (var i in ListaDeMail.Distinct().ToList())
+                        {
+                            Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true, HandleErrorDelegate));
+                            //var emailContent = db.EmailContent.Find(i.Id);
+                            i.SendStatus = "Tentando Enviar";
+                            i.AlterDate = DateTime.Now;
+                        }
+
+                    db.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
                 new CreateLog(new Exception("Erro no metodo [SendMailFromDeviationSgqApp]", ex));
-                throw ex;
+                //throw ex;
             }
         }
 
@@ -119,15 +178,16 @@ namespace SgqSystem.Mail
 
                     var emailContent = db.EmailContent.FirstOrDefault(r => r.Id == id);
 
-                    if (e.Cancelled)
-                    {
-                        //Console.WriteLine("[{0}] Send canceled.", token);
-                        emailContent.SendStatus = string.Format("Send canceled: [{0}].", token);
-                    }
                     if (e.Error != null)
                     {
                         //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
                         emailContent.SendStatus = string.Format("Error sending: [{0}] {1}", token, e.Error.ToString());
+                    }
+                    else
+                    if (e.Cancelled)
+                    {
+                        //Console.WriteLine("[{0}] Send canceled.", token);
+                        emailContent.SendStatus = string.Format("Send canceled: [{0}].", token);
                     }
                     else
                     {
@@ -138,7 +198,7 @@ namespace SgqSystem.Mail
                     emailContent.AlterDate = DateTime.Now;
                     emailContent.SendDate = DateTime.Now;
 
-                    if (emailContent.SendStatus.Length > 889)
+                    if (emailContent.SendStatus?.Length > 889)
                         emailContent.SendStatus = emailContent.SendStatus.Substring(0, 889);
 
                     /*Atualiza email enviados no emailContent DB*/
@@ -191,23 +251,25 @@ namespace SgqSystem.Mail
             {
                 try
                 {
-                    db.Configuration.ValidateOnSaveEnabled = false;
+                    //db.Configuration.ValidateOnSaveEnabled = false;
                     db.Configuration.LazyLoadingEnabled = false;
 
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
+                    DateTime dateLimit = DateTime.Now.AddHours(-24);
+                    DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).OrderBy(r=> r.AddDate).Take(tamanhoDoPool).ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {
                         foreach (var m in Mails)
                         {
                             EmailContent newMail = GetMailByDeviation(db, m, m.AlertNumber);
-                            newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
-                            db.EmailContent.Add(newMail);
-                            db.SaveChanges();
+                                newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
+                                db.EmailContent.Add(newMail);
+                                db.SaveChanges();
 
-                            db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
-                            db.SaveChanges();
+                                db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
+                                db.SaveChanges();
                         }
 
                     }
@@ -235,21 +297,26 @@ namespace SgqSystem.Mail
         /// <returns></returns>
         private static EmailContent GetMailByDeviation(SgqDbDevEntities db, Deviation m, int alertNumber)
         {
-            var body = Uri.UnescapeDataString(m.DeviationMessage).ToString().Replace("O Supervisor da área será notificado Ok ", "").Replace("O Supervisor, o Gerente e o Diretor da área serão notificados Ok ", "").Replace("O Supervisor e o Gerente da área serão notificados. Ok", "").Replace(" Ok", "");
-            var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == m.ParLevel1_Id).Name;
-            var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == m.ParLevel2_Id).Name;
-            string company = string.Empty;
+                var body = Uri.UnescapeDataString(m.DeviationMessage)?.ToString()?.Replace("O Supervisor da área será notificado Ok ", "").Replace("O Supervisor, o Gerente e o Diretor da área serão notificados Ok ", "").Replace("O Supervisor e o Gerente da área serão notificados. Ok", "").Replace(" Ok", "");
 
-            if (m.ParCompany_Id > 0)
-                company = db.ParCompany.FirstOrDefault(r => r.Id == m.ParCompany_Id).Name;
-            else
-                company = "Corporativo";
+                var quebraProcesso = "98789";
+                m.ParLevel1_Id = m.ParLevel1_Id.ToString().Contains(quebraProcesso) ? Convert.ToInt32(m.ParLevel1_Id.ToString().Replace(quebraProcesso,"|").Split('|')[1]) : m.ParLevel1_Id;
+                var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == m.ParLevel1_Id).Name;
 
-            var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
+                m.ParLevel2_Id = m.ParLevel2_Id.ToString().Contains(quebraProcesso) ? Convert.ToInt32(m.ParLevel2_Id.ToString().Replace(quebraProcesso, "|").Split('|')[1]) : m.ParLevel2_Id;
+                var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == m.ParLevel2_Id).Name;
+                string company = string.Empty;
 
-            #region Captura ultimo body do email content enviado
-            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta1 =
-                $@"select top 1 ec.Body from deviation d
+                if (m.ParCompany_Id > 0)
+                    company = db.ParCompany.FirstOrDefault(r => r.Id == m.ParCompany_Id).Name;
+                else
+                    company = "Corporativo";
+
+                var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
+
+                #region Captura ultimo body do email content enviado
+                var sqlSelecionaUltimaCorrectiveActionReferenteAEsta1 =
+                    $@"select top 1 ec.Body from deviation d
                                 INNER JOIN EmailContent ec ON ec.Id = d.EmailContent_Id   
                                 WHERE
                                 CAST(GETDATE() AS Date) = CAST(d.DeviationDate AS Date)    
@@ -258,9 +325,9 @@ namespace SgqSystem.Mail
                                 and d.alertnumber > 0
                                 order by d.alertnumber desc";
 
-            
-            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
-                $@"
+
+                var sqlSelecionaUltimaCorrectiveActionReferenteAEsta2 =
+                    $@"
                 SELECT  top 1 ca.id   FROM  CollectionLevel2 cl2                                                 
                 INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
                 INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND d.ParCompany_Id = cl2.UnitId AND d.ParLevel2_Id = cl2.ParLevel2_Id AND d.Evaluation = cl2.EvaluationNumber AND d.Sample = cl2.Sample AND d.DeviationDate = cl2.CollectionDate
@@ -272,42 +339,42 @@ namespace SgqSystem.Mail
                 AND ca.Id <= { m.Id }
                 order by ec.id desc";
 
-            var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
-            var valor2 = db.Database.SqlQuery<int>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
+                var valor1 = db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta1).FirstOrDefault();
+                var valor2 = db.Database.SqlQuery<int>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta2).FirstOrDefault();
 
-            //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
-            #endregion
+                //var ultimoBodyEmailContent = "<div style='color:red'>" + db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault() + "</div>";
+                #endregion
 
-            var ultimoBodyEmailContent = "";
-            if (valor2 > 0)
-            {
-                var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
-                ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
-            }
-            ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
-            #endregion
+                var ultimoBodyEmailContent = "";
+                if (valor2 > 0)
+                {
+                    var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
+                    ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
+                }
+                ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
+                #endregion
 
-            var newMail = new EmailContent()
-            {
-                AddDate = DateTime.Now,
-                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
-                IsBodyHtml = true,
-                Subject = subject,
-                Project = "SGQApp"
-            };
+                var newMail = new EmailContent()
+                {
+                    AddDate = DateTime.Now,
+                    Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
+                    IsBodyHtml = true,
+                    Subject = subject,
+                    Project = "SGQApp"
+                };
 
-            //if (alertNumber > 1)
-            //{
-            //    var alerta = m.AlertNumber - 1;
-            //    var deviationAnterior = db.Deviation.Where(r => r.AlertNumber == alerta && r.ParCompany_Id == m.ParCompany_Id && r.ParLevel1_Id == m.ParLevel1_Id && r.DeviationMessage != null).OrderByDescending(r => r.DeviationDate).FirstOrDefault();
-            //    if (deviationAnterior != null)
-            //    {
-            //        newMail.Body += "<hr><br> Alerta Anterior: <br><br>";
-            //        newMail.Body += GetMailByDeviation(db, deviationAnterior, alerta).Body;
-            //    }
-            //}
+                //if (alertNumber > 1)
+                //{
+                //    var alerta = m.AlertNumber - 1;
+                //    var deviationAnterior = db.Deviation.Where(r => r.AlertNumber == alerta && r.ParCompany_Id == m.ParCompany_Id && r.ParLevel1_Id == m.ParLevel1_Id && r.DeviationMessage != null).OrderByDescending(r => r.DeviationDate).FirstOrDefault();
+                //    if (deviationAnterior != null)
+                //    {
+                //        newMail.Body += "<hr><br> Alerta Anterior: <br><br>";
+                //        newMail.Body += GetMailByDeviation(db, deviationAnterior, alerta).Body;
+                //    }
+                //}
 
-            return newMail;
+                return newMail;
         }
 
         /// <summary>
@@ -358,9 +425,10 @@ namespace SgqSystem.Mail
                             ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
                             AND U.Id NOT IN (543,546,511)"; //Tirar Célia e Mariana da JBS
 
-                var listaEmails = dbLegado.Database.SqlQuery<string>(query);
+                var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
                 if (listaEmails != null && listaEmails.Count() > 0)
                 {
+                    listaEmails = listaEmails.Distinct().ToList();
                     return string.Join(",", listaEmails.ToArray());
                 }
                 else
@@ -393,7 +461,7 @@ namespace SgqSystem.Mail
                             listaCorrectiveActionDb = factory.SearchQuery<CorrectiveAction>("SELECT * FROM CorrectiveAction WHERE MailProcessed = 0");
                         }
 
-                            foreach (var ca in listaCorrectiveActionDb)
+                        foreach (var ca in listaCorrectiveActionDb)
                         {
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
                             var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel1_Id).Name;
@@ -440,12 +508,6 @@ namespace SgqSystem.Mail
         /// <param name="deviation"></param>
         public static void SendMailFromDeviationSgqAppTesteBR(string mailTo, bool deviation)
         {
-            var emailFrom = "celsogea@hotmail.com";
-            var emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-            var emailSmtp = "smtp.live.com";
-            var emailPort = 587;
-            var emailSSL = true;
-
 
             CreateMailSgqAppDeviation();
             CreateMailSgqAppCorrectiveAction();
@@ -462,7 +524,7 @@ namespace SgqSystem.Mail
                 }
         }
 
-      
+
 
         #region ResendProcessJson
 
@@ -482,7 +544,7 @@ namespace SgqSystem.Mail
                         {
                             service.ProcessJson("", i, false);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             //new CreateLog(e);
                         }
@@ -512,12 +574,12 @@ namespace SgqSystem.Mail
             }
             catch (Exception e)
             {
-                new CreateLog(e);
+                //new CreateLog(e);
                 return deviationMessage;
             }
         }
 
         #endregion
-       
+
     }
 }

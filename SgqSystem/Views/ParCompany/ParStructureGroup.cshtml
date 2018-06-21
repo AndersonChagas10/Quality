@@ -11,18 +11,19 @@
                         @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Id", new { @id = "parStructureGroupDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Name", new { htmlAttributes = new { @id = "parStructureGroupDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Description", new { htmlAttributes = new { @id = "parStructureGroupDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top) 
-                        @Table.GerarColunaButton(@Html.DropDownList("parStructureGroupDTO.ParStructureGroupParent_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureGroupDTO_ParStructureGroupParent_Id",  @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='"+Resources.Resource.saving+ "' id='btnSaveCompany' onclick='indexParStructureGroup.enviarDadosParaApi()' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> " + Resources.Resource.save+"</button>")
+                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Name", new { htmlAttributes = new { @id = "parStructureGroupDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Description", new { htmlAttributes = new { @id = "parStructureGroupDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
+                        @Table.GerarColunaButton(@Html.DropDownList("parStructureGroupDTO.ParStructureGroupParent_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureGroupDTO_ParStructureGroupParent_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='indexParStructureGroup.enviarDadosParaApi()' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> " + Resources.Resource.save + "</button>")
                     </tr>
 
                 </tbody>
-            </table>   
+            </table>
             <table class="table-erp table table-condensed table-bordered table-margin">
                 <thead>
                     <tr>
                         <th>@Resources.Resource.name</th>
                         <th>@Resources.Resource.description</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,11 +32,15 @@
                         <tr>
                             <td>@o.Name</td>
                             <td>@o.Description</td>
-                            <td><button type="button" class="btn btn-success btn-sm" onclick='indexParStructureGroup.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-sm" onclick='indexParStructureGroup.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button>
+                                @Html.Raw(o.Active ? "<button type='button' class = 'btn btn-success btn-sm' value='Ativo' onclick='indexParStructureGroup.AtivarOuDesativar(" + Json.Encode(o) + ");'> Ativo</button>  " : "<button class = 'btn btn-danger btn-sm' value='Inativo' onclick='indexParStructureGroup.AtivarOuDesativar(" + Json.Encode(o) + ");'> Inativo</button>")
+                            </td>
+                            @*<td><input type="checkbox" @Html.Raw(o.Active ? "checked" : "") id="myCheck" onclick='indexParStructureGroup.IsActive(@Html.Raw(Json.Encode(o)));'></td>*@
                         </tr>
                     }
                 </tbody>
-            </table> 
+            </table>
         </div>
     </div>
 }

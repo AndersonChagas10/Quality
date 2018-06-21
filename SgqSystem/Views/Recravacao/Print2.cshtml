@@ -1,0 +1,1576 @@
+﻿@{
+    Layout = null;
+}
+
+
+<style type="text/css">
+    a.active {
+        background-color: rgba(128, 128, 128, 0.17);
+    }
+
+    .bgRed {
+        background-color: rgba(248, 2, 2, 0.29);
+        ;
+    }
+
+    .bgGreen {
+        background-color: rgba(0, 128, 0, 0.23);
+        ;
+    }
+
+    .bgYellow {
+        background-color: rgba(233, 248, 2, 0.29);
+        ;
+    }
+
+    .bgWhite {
+        background-color: white;
+        ;
+    }
+
+    .floatinBottonButton {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9996;
+        display: block;
+        visibility: visible;
+        margin-top: 70px;
+    }
+
+    td {
+        position: relative;
+        text-align: center;
+        font-size: 7px;
+    }
+
+        td > span.label {
+            position: absolute;
+            top: 1px;
+            bottom: 1px;
+            left: 1px;
+            right: 1px;
+            color: black;
+        }
+
+            td > span.label:after {
+                content: '';
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                color: black;
+            }
+
+    .redDot {
+        color: red;
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        text-align: center;
+    }
+
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 7px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 7px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg .tg-s6z2 {
+            text-align: center;
+        }
+
+        .tg .tg-baqh {
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .tg .tg-yw4l {
+            vertical-align: top;
+        }
+
+    .recravacao {
+        margin-bottom: 0;
+    }
+
+    #rcorners2 {
+        border-radius: 25px;
+        border: 2px solid #000000;
+        padding: 10px;
+        width: 100%;
+        height: 190px;
+        display: inline-block;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 6pt Georgia, "Times New Roman", Times, serif !important;
+        line-height: 1.3;
+    }
+
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20mm;
+        margin: 10mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .subpage {
+        padding: 1cm;
+        border: 5px red solid;
+        height: 257mm;
+        outline: 2cm #FFEAEA solid;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    li {
+        content: "» ";
+    }
+
+
+    body {
+        background: rgb(204,204,204);
+    }
+
+    page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+
+        page[size="A4"] {
+            width: 21cm;
+            height: 29.7cm;
+            margin: 0;
+        }
+
+            page[size="A4"][layout="portrait"] {
+                width: 29.7cm;
+                height: 21cm;
+            }
+
+        page[size="A3"] {
+            width: 29.7cm;
+            height: 42cm;
+        }
+
+            page[size="A3"][layout="portrait"] {
+                width: 42cm;
+                height: 29.7cm;
+            }
+
+        page[size="A5"] {
+            width: 14.8cm;
+            height: 21cm;
+        }
+
+            page[size="A5"][layout="portrait"] {
+                width: 21cm;
+                height: 14.8cm;
+            }
+
+    @@media print {
+        body, page {
+            margin: 0;
+            box-shadow: 0;
+        }
+
+
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20mm;
+        margin: 10mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Print Recravação</title>
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    <script src="~/Scripts/inputmask/jquery.inputmask.bundle.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/loadingoverlay.min.js"></script>
+</head>
+<body ng-app="sgqSystem">
+    <div ng-controller="reencravationCtrl as r">
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav">
+                <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
+                    <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
+                        <span class="" aria-hidden="true"></span> {{indicador.Name}}
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'">
+                    <a href="#" ng-class="{active: seletedLinha.Name == item.Name}">
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
+                        <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+                        <span ng-if="item.IsStoped" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <section size="A4">
+
+
+            <table class="tg" style="undefined;table-layout: fixed; width: 100%">
+                <colgroup>
+                    <col style="width: 41px">
+                    <col style="width: 41px">
+                    <col style="width: 646px">
+                    <col style="width: 88px">
+                </colgroup>
+                <tr>
+                    <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /></th>
+                    <th class="tg-s6z2" rowspan="2"><strong>PCC <p class="recravacao">3B Recravação</p></strong></th>
+                    <th class="tg-baqh" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td class="tg-031e"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
+                </tr>
+                <tr>
+                    <td class="tg-yw4l"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
+                </tr>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Produto</td>
+                        <td>{{seletedLinha.form.Produto}}</td>
+                        <td>Hora do início da Produção</td>
+                        <td>{{seletedLinha.form.HoraInicioProducao}}</td>
+                        <td>Hora do final da Produção</td>
+                        <td>{{seletedLinha.form.HoraFimProducao}}</td>
+                    </tr>
+                    <tr>
+                        <td>Código do produto</td>
+                        <td>{{seletedLinha.form.CodProduto}}</td>
+                        <td>Data do recebimento das latas</td>
+                        <td>{{seletedLinha.form.DataRecebimentoLatas}}</td>
+                        <td>Fornecedor da Lata</td>
+                        <td>@*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorLata track by item.Id">{{item.Name}}</span>*@</td>
+                    </tr>
+                    <tr>
+                        <td>Data do recebimento das tampas/fundos das latas</td>
+                        <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas}}</td>
+                        <td>Fornecedor das tampas/fundos das latas</td>
+                        <td>@*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorTampaFundoLata track by item.Id">{{item.Name}}</span>*@</td>
+                        <td>Tipo da Lata</td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div ng-show="false" class="col-lg-3 col-md-3 col-sm-3">
+                <form role="form" class="ng-pristine ng-valid">
+                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                        <label for="" class="">Produto: {{seletedLinha.form.Produto}}</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.Produto}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                        <label for="">Hora do início da Produção: {{seletedLinha.form.HoraInicioProducao}}</label>
+                        <br />
+                        <span for="" class=""></span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                        <label for="">Hora do final da Produção: @*{{seletedLinha.form.HoraFimProducao | date: "DD/MM/YYYY"}}*@</label>
+                        <br />
+                        <span for="" class=""></span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                        <label for="" class="">Código do produto</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.CodProduto}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Data do recebimento das latas</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.DataRecebimentoLatas}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Fornecedor da Lata</label>
+                        <br />
+                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorLata track by item.Id">{{item.Name}}</span>*@
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Data do recebimento das tampas/fundos das latas</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.DataRecebimentoTampasFundosLatas}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Fornecedor das tampas/fundos das latas</label>
+                        <br />
+                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorTampaFundoLata track by item.Id">{{item.Name}}</span>*@
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Tipo da Lata</label>
+                        <br />
+                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.TipoDeLata track by item.Id">{{item.Name}}</span>*@
+                    </div>
+
+                    <div ng-show="false" class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+
+                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                            </button>
+                            <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
+                            &nbsp;
+                            <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
+                        </div>
+
+                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="seletedLinha.finalizado">
+                            <button ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                            </button>
+                            <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
+                            &nbsp;
+                            <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12"
+                 @*ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}"*@
+                 ng-init="seletedLinha.IsStoped = false">
+                <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index" tables>
+                    <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata}}</span></div>
+
+                    <div ng-show="false" style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
+
+                        <button id="correctiveActionBtn"
+                                type="button" class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#modalCorrectiveAction"
+                                title="Gerar Ação Corretiva para {{item.Name}}"
+                                ng-show="item.showCorrectiveAction"
+                                ng-click="selectLata($index, selectedLata.haveErrors);  newCorrectiveAction()">
+                            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        </button>
+                        <button title="Modo Somente Visualização"
+                                type="button"
+                                class="btn btn-info btn-sm"
+                                data-toggle="modal"
+                                data-target="#myModal"
+                                ng-show="item.finalizado">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                title="Editar {{item.Name}}"
+                                ng-show="!item.finalizado"
+                                ng-click="executeDocReady(); selectLata($index)"
+                                data-target="#editModal">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" title="Remover {{item.Name}}"
+                                ng-show="!item.finalizado"
+                                ng-click="deleteLata(seletedLinha, $index)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                        <button class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#modalAssinaturaFinalizaLata"
+                                title="Assinar {{item.Name}}"
+                                type="button"
+                                ng-show="item.liberaAssinaturaLata && !item.finalizado"
+                                ng-click="selectLata($index)">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <table name="visualizacao" style="width: 100%">
+                        <tbody>
+
+                            <tr>
+                                <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                            </tr>
+
+                            <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
+                                <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
+                                    ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                                    ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                    colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+
+                                    @*1 Binário ok
+                                        2   Número de defeitos ok
+                                        3   Intervalos ok
+                                        4   Calculado
+                                        5   Texto
+                                        99  NOVO CALCULADO POR OUTRO*@
+
+                                    @*1 Binário*@
+                                    <span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                          ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
+                                        <span>
+                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
+                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                            </span>
+                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
+                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                            </span>
+                                        </span>
+                                    </span>
+                                    @*2 Número de defeitos*@
+                                    <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                        <span>{{item.ResultValue[ParLevel3.Name][($index +1)] || "0"}}</span>
+                                    </span>
+                                    @*3 Intervalos*@
+                                    <span class="label validate"
+                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')"
+                                          ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                        <span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
+                                    </span>
+                                    @*4 Calculado*@
+                                    @*<span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                                            <span>
+                                                <span class="validate">
+                                                    {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
+                                                </span>
+                                                <span ng-if="ParLevel3.ResultValue[('Ponto' + ($index +1)] > 0">
+                                                    x10^
+                                                </span>
+                                                <span class="validate">
+                                                    {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
+                                                </span>
+                                            </span>
+                                        </span>*@
+                                    @*5 Texto*@
+                                    <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                        @*<span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>*@
+                                        {{item.ResultValue[ParLevel3.Name][($index +1)]}}
+                                    </label>
+                                    @*99 NOVO CALCULADO POR OUTRO*@
+                                    <span class="label validate"
+                                          ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                          ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                        <span>{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div style="text-align: left; padding-top: 5px; height:40px;">
+                        <div style="float:left;">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{item.userValidacao.Name}}
+                        </div>
+                        <div style="float:right;">
+                            <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{item.dataUserValidacao}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div ng-show="false">
+                    <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" type="button" ng-click="newLata(seletedLinha); executeDocReady(true)" style="margin: 35px;" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
+                    </button>
+                    <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
+                        Atualizar Parametrização / Nova Coleta
+                    </button>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <div id="rcorners2">
+                <p><label>Espaço Livre</label></p><br />
+                <p><label>Escareação</label></p><br />
+                <p><label>Altura</label></p><br />
+                <p><label>Gancho Corpo</label></p><br />
+                <p><label>Gancho Tampa</label></p><br />
+                <p><label>Junção</label></p><br />
+                <p><label>Teste de ar</label></p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+
+
+<script src="~/Scripts/toastr.min.js"></script>
+<script src="~/Scripts/Math/math.js"></script>
+
+<script>
+
+    var app = angular.module('sgqSystem', []);
+    function GetUsuarioId() {
+        return $.grep(getCookie('webControlCookie'), function (a, b) {
+            return a.indexOf('userId') != -1;
+        })[0].split('=')[1];
+    }
+
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift().split('&');
+    }
+
+    function GetUnidadeUsuario() {
+        return $.grep(getCookie('webControlCookie'), function (a, b) {
+            return a.indexOf('CompanyId') != -1;
+        })[0].split('=')[1];
+    }
+    (function () {
+        'use strict';
+
+        app.factory('timestampMarker', [function (vm) {
+            var timestampMarker = {
+                request: function (config) {
+                    config.requestTimestamp = new Date().getTime();
+                    return config;
+                },
+                response: function (response) {
+                    response.config.responseTimestamp = new Date().getTime();
+                    console.log('The request took ' + ((response.config.responseTimestamp - response.config.requestTimestamp) / 1000) + ' seconds.');
+                    return response;
+                }
+            };
+            return timestampMarker;
+        }]);
+
+        app.factory('loadingOverlay', [function () {
+            var loadingOverlay = {
+                request: function (config) {
+                    //console.log(config)
+                    if (config.showLoader)
+                        $.LoadingOverlay("show");
+                    if (config.showLoader == undefined)
+                        $.LoadingOverlay("show");
+                    return config;
+                },
+                response: function (response) {
+                    $.LoadingOverlay("hide");
+                    return response;
+                }
+            }
+            return loadingOverlay;
+        }]);
+
+        app.config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('timestampMarker');
+            $httpProvider.interceptors.push('loadingOverlay');
+        }]);
+
+        /*
+        START ANGULAR MODULE
+        */
+        app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
+            function ($scope, $http, $timeout) {
+                let vm = $scope
+
+                //$scope.timerRunning = true;
+
+                //$scope.startTimer = function () {
+                //    $scope.$broadcast('timer-start');
+                //    $scope.timerRunning = true;
+                //};
+
+                //$scope.stopTimer = function () {
+                //    $scope.$broadcast('timer-stop');
+                //    $scope.timerRunning = false;
+                //};
+
+                //$scope.$on('timer-stopped', function (event, data) {
+                //    console.log('Timer Stopped - data = ', data);
+                //});
+
+                vm.linhas = [{}]
+                vm.produtos = [{}]
+                vm.fornecedorLata = [{}]
+                vm.fornecedorTampaLata = [{}]
+                vm.seletedLinha = { Id: 0 }
+                vm.selectedLata = {}
+                vm.activeInLine = 0
+                vm.getUser = function () {
+                    return {
+                        Id: GetUsuarioId(),
+                        Name: $.grep(getCookie('webControlCookie'), function (a, b) {
+                            return a.indexOf('userName') != -1;
+                        })[0].split('=')[1],
+                        LoadPageTime: moment().format("DD/MM/YYYY HH:mm")
+
+                    }
+                }
+                vm.userAuditor = vm.getUser()
+                vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
+
+                $scope.sorterFunc = function (item) {
+                    //return parseInt(item['Description']);
+                    return item['OrderColumn']
+                };
+
+                vm.company = GetUnidadeUsuario()
+
+                vm.findWithAttr = function (array, attr, value) {
+                    for (var i = 0; i < array.length; i += 1) {
+                        if (array[i][attr] === value) {
+                            return i
+                        }
+                    }
+                    return -1
+                }
+
+                vm.carregaIndicadores = function (showMensagem) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0" })
+                          .then(function (r) {
+                              if (r.data.errors) {
+                                  r.data.errors.forEach(function (o) {
+                                      toastr.error(o)
+                                  })
+                              } else {
+                                  if (showMensagem)
+                                      toastr.success('Indicadores carregados')
+                                  vm.indicadores = r.data.model
+                              }
+                          });
+                }
+
+
+                vm.selectIndicador = function (item) {
+                    vm.indicadorSelecionado = item
+                    vm.seletedLinha = {}
+                    vm.getParametrizacaoLinhas(item.Id)
+                }
+
+                //vm.company = GetUnidadeUsuario()
+                vm.getAllLinha = function (index, needFindIndex, showMensagem) {
+                    //vm.seletedLinha = vm.linhas[index]
+                    //vm.activeInLine = vm.seletedLinha.Id
+                    //if (needFindIndex)
+                    //    index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+                    vm.linhas.forEach(function (o, c) {
+                        $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: o })
+                           .then(function (r) {
+                               if (r.data.errors) {
+                                   r.data.errors.forEach(function (o) {
+                                       toastr.error(o)
+                                   })
+                               } else {
+                                   //toastr.success(r.data.resposta)
+                                   //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                   if (showMensagem)
+                                       toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                                   vm.linhas[c] = r.data.model[0]
+                                   vm.linhas[c]["latas"] = []
+                                   vm.activeInLine = vm.linhas[c].Id
+                                   //vm.executeDocReady(true)
+                                   //vm.seletedLinha = { Id: 0 }
+                                   //vm.getState()
+                               }
+                           });
+                    })
+
+                    //vm.executeDocReady(true)
+                    //vm.$apply()
+                }
+
+                vm.insertPreventiveAction = function () {
+                    let lata = vm.selectedLata
+                    if (lata["listPreventiveAction"] == undefined) {
+                        lata["listPreventiveAction"] = []
+                    }
+                    if (lata.preventiveAction.length) {
+                        lata["listPreventiveAction"].push({ AddDate: moment().format("DD/MM/YYYY HH:mm"), Content: lata.preventiveAction })
+                        lata.preventiveAction = ''
+                        vm.selectedLata = lata
+                        vm.saveState()
+                    }
+                }
+
+                vm.getParansLinha = function (index, needFindIndex, showMensagem, novaLinha) {
+                    //vm.seletedLinha = vm.linhas[index]
+                    //vm.activeInLine = vm.seletedLinha.Id
+                    //if (needFindIndex)
+                    index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
+                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.seletedLinha })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                //toastr.success(r.data.resposta)
+                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                if (showMensagem)
+                                    toastr.success('Recuperada linha parametrizada \n da base de dados')
+                                vm.linhas[index] = r.data.model[0]
+                                vm.linhas[index]["latas"] = []
+                                vm.seletedLinha = vm.linhas[index]
+                                vm.activeInLine = vm.seletedLinha.Id
+                                vm.saveState(undefined, undefined, novaLinha)
+                                //vm.executeDocReady(true)
+                                //vm.seletedLinha = { Id: 0 }
+                                //vm.getState()
+                            }
+                        });
+
+                    //vm.$apply()
+                }
+
+                vm.getLinha = function (index, needFindIndex, showMensagem) {
+                    //$.LoadingOverlay("show");
+                    if (needFindIndex)
+                        index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+
+                    vm.seletedLinha = vm.linhas[index]
+                    vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
+                    vm.activeInLine = vm.seletedLinha.Id
+
+                    //vm.executeDocReady(true)
+                    vm.getState()
+
+                    //vm.$apply()
+                }
+
+                vm.selectLata = function (index, haveErr) {
+                    vm.selectedLata = vm.seletedLinha.latas[index]
+                    if (haveErr)
+                        vm.selectedLata.haveErrors = haveErr
+                    else
+                        vm.selectedLata.haveErrors = false
+                }
+
+                vm.range = function (n) {
+                    if (n)
+                        return new Array(parseInt(n)) //return new Array(parseInt(n) + 1)
+                    else
+                        return new Array()
+                }
+
+                vm.newLata = function (linha) {
+                    for (let i = 0; i < linha.NumberOfHeads; i++) {
+                        if (linha["counterDeLatas"] == undefined)
+                            linha["counterDeLatas"] = 1
+                        linha.latas.push({
+                            Name: 'Lata - ' + (linha["counterDeLatas"]),
+                            finalizado: false,
+                            haveErrors: false,
+                            ListParlevel3: JSON.parse(JSON.stringify(linha.ListParlevel3)),
+                            StartAuditTime: moment().format("DD/MM/YYYY HH:mm"),
+                        })
+                        linha.counterDeLatas++
+                    }
+                }
+                vm.cloneLataALot = function (linha, index, repeat) {
+
+                    $.LoadingOverlay("show");
+                    for (let i = 0; i < repeat; i++) {
+                        vm.cloneLata(linha, index)
+                    }
+                    $.LoadingOverlay("hide", true);
+
+                }
+                vm.cloneLata = function (linha, index) {
+                    let cloned = JSON.parse(JSON.stringify(linha.latas[index]))
+                    cloned.Name = 'Lata - ' + (linha["counterDeLatas"])
+                    linha.latas.push(cloned)
+                    linha.counterDeLatas++
+                }
+                vm.deleteLata = function (linha, index, trashBin) {
+                    //if (trashBin)
+                    //    linha.latasBin.push(linha.latas[index])
+                    linha.latas.splice(index, 1)
+                }
+
+                vm.saveStateUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
+                vm.saveState = function (notShowLabel, notShowLoader, salvoParaInserirNovaLinha) {
+                    let model = vm.linhas.filter(function (s) {
+                        return s.Id == vm.activeInLine
+                    })[0]
+                    if (salvoParaInserirNovaLinha)
+                        model['SalvoParaInserirColeta'] = true
+
+                    model['User'] = vm.userAuditor
+
+                    $http({ method: 'POST', url: vm.saveStateUrl, data: model, showLoader: notShowLoader ? false : true })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                if (!notShowLabel)
+                                    toastr.success(r.data.resposta)
+                            }
+                        });
+                }
+
+                //*Carrega DDLs
+
+                vm.getProdutos = function () {
+                    //MOCK
+                    vm.produtos = []
+                    vm.produtos.push({
+                        Name: 'Picanha',
+                        Id: 1
+                    })
+                    vm.produtos.push({
+                        Name: 'Contra-filé',
+                        Id: 2
+                    })
+                    vm.produtos.push({
+                        Name: 'Filé Mignon',
+                        Id: 3
+                    })
+                }
+                vm.getFornecedorLata = function () {
+                    //MOCK
+                    vm.fornecedorLata = []
+                    vm.fornecedorLata.push({
+                        Name: 'JBS Lins',
+                        Id: 1
+                    })
+                    vm.fornecedorLata.push({
+                        Name: 'Outros',
+                        Id: 2
+                    })
+                }
+                vm.tipoLata = function () {
+                    //MOCK
+                    vm.tipoLataLista = []
+                    vm.tipoLataLista.push({
+                        Name: 'Litografada',
+                        Id: 1
+                    })
+                    vm.tipoLataLista.push({
+                        Name: 'Lata Branca',
+                        Id: 2
+                    })
+                }
+                vm.getFornecedorTampaLata = function () {
+                    //MOCK
+                    vm.fornecedorTampaLata = []
+                    vm.fornecedorTampaLata.push({
+                        Name: 'JBS Lins',
+                        Id: 1
+                    })
+                    vm.fornecedorTampaLata.push({
+                        Name: 'Outros',
+                        Id: 2
+                    })
+                }
+                //vm.padroesAcaoCorretiva = function () {
+                //    //MOCK
+                //    vm.padroesAcaoCorretivaList = []
+                //    vm.padroesAcaoCorretivaList.push({
+                //        Name: 'JBS Lins',
+                //        Id: 1
+                //    })
+                //    vm.padroesAcaoCorretivaList.push({
+                //        Name: 'Outros',
+                //        Id: 2
+                //    })
+                //}
+
+                vm.getFornecedorLata()
+                vm.getFornecedorTampaLata()
+                vm.getProdutos()
+                vm.tipoLata()
+                //vm.padroesAcaoCorretiva()
+
+                /*GET Todas as linhas cadastradas*/
+
+                vm.getParametrizacaoLinhas = function (idLevel1) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                toastr.success(r.data.resposta)
+                                //toastr.success('Recuperada coleta persistida \n na Base de Dados')
+                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                vm.linhas = r.data.model
+                                vm.linhas.forEach(function (o, c) {
+                                    o["latas"] = []
+                                })
+                                //vm.executeDocReady(true)
+                                vm.getAllLinha()
+                                //vm.getState()
+                            }
+                        });
+                }
+
+                /*GET os Dados das linhas cadastradas*/
+                vm.getState = function () {
+                    $http({ method: 'GET', url: vm.saveStateUrl + "?Company=" + vm.company })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                toastr.success(r.data.resposta)
+                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                let novaLinha = []
+                                //vm.linhas.forEach(function (o, c) {
+                                let o = vm.seletedLinha
+
+                                /*Recebe objeto salvo no banco de dados compara se é ativo na parametrização e subistiu caso seja ativo.*/
+                                var objetoSalvo = linhasSalvas.filter(function (objArr) {
+                                    let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
+                                    if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
+                                        s.IsActive = "True"
+                                    else if (s.Id == o.Id && (o.IsActive == "False" || o.IsActive == false) && (s.IsActive == "True" || s.IsActive == true))
+                                        s.IsActive = "False"
+
+                                    return s.Id == o.Id
+                                });
+                                if (objetoSalvo.length)
+                                    novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
+                                else
+                                    novaLinha.push(JSON.parse(JSON.stringify(o)))
+                                //})
+
+                                /**/
+
+                                vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
+
+                                if (vm.seletedLinha.form) {
+                                    if (vm.seletedLinha.form.HoraInicioProducao)
+                                        vm.seletedLinha.form.HoraInicioProducao = new Date(vm.seletedLinha.form.HoraInicioProducao)
+
+                                    if (vm.seletedLinha.form.HoraFimProducao)
+                                        vm.seletedLinha.form.HoraFimProducao = new Date(vm.seletedLinha.form.HoraFimProducao)
+
+                                    if (vm.seletedLinha.form.DataRecebimentoLatas)
+                                        vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
+
+                                    if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
+                                        vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
+                                }
+
+                                let index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
+                                vm.linhas[index] = vm.seletedLinha
+
+                                vm.seletedLinha = vm.linhas[index]
+                                vm.activeInLine = vm.seletedLinha.Id
+
+                                $.LoadingOverlay("hide", true);
+                                vm.executeDocReady()
+                            }
+                        });
+                }
+
+                //Não utilizado ainda
+                vm.getFormula = function (expressaoArr) {
+                    let expressaoFinal = ''
+                    //expressaoArr.forEach(function(o, c){
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            expressaoFinal += `(${o.OuterLevel3_Text}) `
+                        } else {
+                            expressaoFinal += `${o.Operator} `
+                        }
+                    }
+                    //})
+                    return expressaoFinal
+                }
+
+                //REAL TIME NA INSERÇÃO DE DADOS
+
+                //OTIMIZAR
+                vm.geraIdCalc = function (ind, expressaoArr, lataIndex, parlevel3Name) {
+                    let expressaoFinal = ''
+                    let expressaoCompleta = ''
+                    var teste = []
+                    let indexMaisUm = ind + 1
+                    if (expressaoArr.length == 0)
+                        return;
+
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            let id = `#${o.OuterLevel3_Text}${indexMaisUm}`.replace(/ /g, '').replace('.', '')
+                            let valor = parseFloat($(id).val())
+                            if (isNaN(parseFloat(valor))) {
+                                return ""
+                            }
+                            expressaoFinal += valor
+                        } else {
+                            //expressaoCompleta += `${o.Operator}`
+                            expressaoFinal += `${o.Operator}`
+                        }
+                    }
+
+                    let result = math.eval(expressaoFinal.replace(/\s/g, '').replace('=', ''))
+
+                    if (isNaN(result)) {
+                        return ""
+                    } else {
+                        let floatValue = parseFloat(result.toFixed(2))
+
+                        if (vm.selectedLata.ResultValue[parlevel3Name] == undefined)
+                            vm.selectedLata.ResultValue[parlevel3Name] = {}
+
+                        vm.selectedLata.ResultValue[parlevel3Name][(indexMaisUm)] = floatValue
+
+                        return floatValue
+                    }
+                }
+                //FIM REAL TIME NA INSERÇÃO DE DADOS
+
+                vm.resultObj = {}
+                vm.SetResult = function (result, data, index) {
+                    let key = "ParLevel3_Id" + data.ParLevel3_Id.toString() + "ParLevel3Value_Id" + data.Id.toString() + "PontoIndex" + (index + 1)
+                    vm.resultObj[key] = { valor: result, ParLEvel3_Id: data.ParLevel3_Id, ParLevel3Value_Id: data.Id }
+                }
+
+                //OTIMIZAR
+                vm.checkTableBgRed = function ($event) {
+                    //console.log($event)
+                    vm.selectedLata.haveErrors = $($event.currentTarget).parents('.modal').find('table').find('.bgRed').length ? true : false
+                    console.log(vm.selectedLata)
+                    console.log(vm.selectedLata.haveErrors)
+                }
+
+                //DEPRECIADO
+                vm.saveAndClose = function (item, remove) {
+                    //console.log(item)
+                    //item["liberaAssinaturaLata"] = false
+                    let vmItem = item
+                    let index = vm.seletedLinha.latas.indexOf(item)
+                    let numeroDePontos = vm.seletedLinha.TipoDeLata.NumberOfPoints
+
+                    vm.saveState()
+                    return true
+
+                    //for (var i = 0; i < vmItem.ListParlevel3.length; i++) {
+                    //    if (vmItem.ListParlevel3[i].ResultValue) {
+                    //        //existe
+                    //        let pontosPreenchidos = $.map(vmItem.ListParlevel3[i].ResultValue, function (obj) { return obj })
+                    //        if (!vmItem.ListParlevel3[i].IsPointLess) {
+                    //            if (typeof (pontosPreenchidos[0]) === "string") {
+                    //            } else if (isNaN(pontosPreenchidos[0])) {
+                    //                vmItem["liberaAssinaturaLata"] = false
+                    //                vm.saveState()
+                    //                return false
+                    //            }
+                    //            if (pontosPreenchidos[0].length) {
+                    //                vmItem["liberaAssinaturaLata"] = true
+                    //            } else {
+                    //                vmItem["liberaAssinaturaLata"] = false
+                    //                vm.saveState()
+                    //                return false
+                    //            }
+                    //        } else if (vmItem.ListParlevel3[i].IsPointLess) {
+                    //            for (var j = 0; j < pontosPreenchidos.length; j++) {
+                    //                if (typeof (pontosPreenchidos[j]) === "string") {
+                    //                } else if (isNaN(pontosPreenchidos[j])) {
+                    //                    vmItem["liberaAssinaturaLata"] = false
+                    //                    vm.saveState()
+                    //                    return false
+                    //                }
+                    //            }
+                    //            if ((/*(numeroDePontos + 1)*/ (numeroDePontos) <= pontosPreenchidos.length)) {
+                    //                vmItem["liberaAssinaturaLata"] = true
+                    //            } else {
+                    //                vmItem["liberaAssinaturaLata"] = false
+                    //                vm.saveState()
+                    //                return false
+                    //            }
+                    //        }
+                    //    }
+                    //}
+
+                    item = vmItem
+                    vm.saveState()
+                    return true
+                }
+
+                vm.validateUserUrl = '@Url.Action("AuthenticationLogin", "api/User")'//"http://localhost:57506/api/User/AuthenticationLogin"
+                //vm.user = { Name: "camilaprata-mtz", Password: "sgq345", Obs: "" }
+                vm.user = { Name: "", Password: "" }
+                vm.validateUserLata = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.selectedLata.userValidacao = r.data.Retorno
+                                vm.selectedLata.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.selectedLata.finalizado = !vm.selectedLata.finalizado
+                                $('.modal').modal('hide')
+                                vm.saveState()
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+                        });
+                }
+
+                vm.validateLine = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.seletedLinha.userValidacao = r.data.Retorno
+                                vm.seletedLinha.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.seletedLinha.isValidated = true
+                                vm.seletedLinha.obs = vm.user.Obs
+                                $('.modal').modal('hide')
+                                let naoFinalizados = vm.seletedLinha.latas.filter(r=> { return !r.finalizado })
+                                naoFinalizados.forEach(function (o, c) {
+                                    vm.deleteLata(vm.seletedLinha, vm.seletedLinha.latas.indexOf(o))
+                                })
+                                vm.saveState()
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+                        });
+                }
+
+                vm.finsihLine = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.seletedLinha.userFinish = r.data.Retorno
+                                vm.seletedLinha.dataUserFinish = moment().format("DD/MM/YYYY HH:mm")
+                                vm.seletedLinha.finalizado = true
+                                vm.seletedLinha.obs = vm.user.Obs
+                                $('.modal').modal('hide')
+                                vm.saveState()
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+
+                        });
+                }
+
+                //vm.getParametrizacaoLinhas()
+                vm.carregaIndicadores(true)
+
+                vm.executeDocReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
+                    setTimeout(function () { vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) }, 325)
+                }
+
+                vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
+                    $('select').select2({ allowClear: true })
+                    $('.decimal').each(function (index) {
+                        $(this).inputmask("decimal", {
+                            rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                            oncomplete: function (e) {
+                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                if (currVal.length == 4) {
+                                    //$(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
+                            }
+                        });
+                    })
+
+                    $('.percentage').each(function (index) {
+                        $(this).val($(this).val().replace(',', '.'));
+                        $(this).inputmask('Regex', {
+                            regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
+                            oncomplete: function (e) {
+                                //var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                //if (currVal <= 100currVal.length == 2) {
+                                //    //$(this).next('.inputs').focus().select();
+                                //    $(this).closest('td').next().find('input').focus().select();
+                                //}else if (currVal.length == 3)
+                                //    $(this).closest('td').next().find('input').focus().select();
+                            }
+                        });
+                    })
+
+                    $(".time").inputmask({
+                        alias: 'hh:mm t',
+                        showMaskOnHover: false,
+                        showMaskOnFocus: false,
+                        //oncomplete: function(){  },
+                    })
+
+                    if (executaVerificacaoParaAcao) {
+                        vm.seletedLinha.HaveCorrectiveAction = false
+                        /*PELO AMOR DE TUDO QUE É MAIS SAGRADO!!!! REMOVER ESTA FUNCIONALIDADE DAQUI E FAZER DE FORMA DESCENTE! CELSO GEA, OBS FUI EU QUE FIZ ISTO.....*/
+                        for (let i = 0; i < $('[name=visualizacao]').length; i++) {
+                            let table = $('[name=visualizacao]')[i]
+
+                            if ($(table).find('.bgRed:not(.bgWhite, .bgYellow)').length) {
+                                vm.seletedLinha.latas[i].showCorrectiveAction = true
+                                vm.seletedLinha.HaveCorrectiveAction = true
+                            }
+                            else
+                                vm.seletedLinha.latas[i].showCorrectiveAction = false //$(table).parent().find('#correctiveActionBtn').addClass('ng-hide')
+
+                            vm.seletedLinha.latas[i].liberaAssinaturaLata = ($.grep($(table).find('.validate:visible'), function (o, c) {
+                                return $(o).text().length == 0
+                            }).length == 0)
+                        }
+                    }
+
+                    var keyCodes = {
+                        'up': 38,
+                        'down': 40,
+                        'left': 37,
+                        'rigth': 39
+                    };
+
+                    $(document).ready(function () {
+                        $('input').off('keyup').on('keyup', function (e) {
+                            if (e.which == keyCodes.rigth)
+                                $(this).closest('td').next().find('input').focus().select();
+                            else if (e.which == keyCodes.left)
+                                $(this).closest('td').prev().find('input').focus().select();
+                            else if (e.which == keyCodes.down) {
+                                var nextTr = $(this).closest('tr').next()
+                                if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0) {
+                                    while (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0 && nextTr.length != 0) {
+                                        nextTr = nextTr.closest('tr').next()
+                                        if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 1) {
+                                            if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input:visible').length) {
+                                                nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                                return
+                                            }
+                                            else {
+                                                nextTr.find('input').focus().select();
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                }
+                            }
+                            else if (e.which == keyCodes.up) {
+                                var prevTr = $(this).closest('tr').prev()
+                                if (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0) {
+                                    while (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0 && prevTr.length != 0) {
+                                        prevTr = prevTr.closest('tr').prev()
+                                        if (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 1) {
+                                            if (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input:visible').length) {
+                                                prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                                return
+                                            }
+                                            else {
+                                                prevTr.find('input').focus().select();
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                }
+                            }
+                            //$(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                        });
+                    });
+
+                    if (save)
+                        vm.saveState(notShowLabel, notShowLoader)
+                }
+
+                vm.newCorrectiveAction = function () {
+                    if (vm.selectedLata.correctiveAction == undefined)
+                        vm.selectedLata.correctiveAction = {
+                            AddDate: moment().format("DD/MM/YYYY HH:mm"),
+                            userAuditor: vm.getUser()
+                        }
+                }
+
+                vm.AssinaCorrectiveAction1 = function (item) {
+                    //vm.selectedLata.correctiveAction.Assinatura1.IsAssinada
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.selectedLata.correctiveAction.Assinatura1 })
+                       .then(function (r) {
+                           if (r.data.Retorno) {
+                               vm.user = { Name: "", Password: "" }
+                               toastr.success("Usuário validado com sucesso!")
+                               r.data.Retorno.ParCompanyXUserSgq = []
+                               vm.selectedLata.correctiveAction.IsAssinada = true
+                               vm.saveState()
+                               $('.modal').modal('hide')
+                               vm.seletedLinha.IsStoped = true;
+                               vm.TimerOn(false, vm.saveState(true, true))
+
+                           }
+                           else {
+                               vm.selectedLata.correctiveAction.IsAssinada = false
+                               toastr.error("Usuário ou Senha Inválidos")
+                               console.log(r.Mensagem)
+                               console.log(r.MensagemExcecao)
+                               vm.saveState(true, true)
+                           }
+                       });
+                }
+
+                vm.TimerOn = function (isLoadData, cb) {
+                    if (isLoadData) {
+                        vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                    } else if (vm.seletedLinha.IsStoped) {
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+                        vm.seletedLinha.StartParadaDeLinha = moment();
+                        vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                    }
+                    if (cb)
+                        cb()
+                }
+
+                vm.TimerOff = function () {
+                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
+                    let duration = moment.duration(diffTime);
+                    let //years = duration.years(),
+                        days = duration.days(),
+                        hrs = duration.hours(),
+                      mins = duration.minutes(),
+                      secs = duration.seconds();
+                    vm.seletedLinha.TempoDeLinhaParada = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    $timeout.cancel(vm.seletedLinha.mytimeout);
+                }
+
+                $scope.onTimeout = function () {
+                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
+                    let duration = moment.duration(diffTime);
+                    let //years = duration.years(),
+                        days = duration.days(),
+                        hrs = duration.hours(),
+                      mins = duration.minutes(),
+                      secs = duration.seconds();
+
+                    //if (hrs > 1)
+                    //    vm.seletedLinha.ExcedidoTempoLimite = true
+
+                    //SEM MOCK
+                    if (hrs > 1 || days > 0)
+                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    else
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+
+                    //MOCK PARA Testes
+                    if (secs > 10)
+                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    else
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+
+                    vm.seletedLinha.LinhaParadaTimer = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                    vm.seletedLinha.mytimeout = $timeout($scope.onTimeout, 1000);
+                }
+
+                vm.generateIdParaOutroCalculado = function (ParLevel3, index) {
+                    return ((ParLevel3.Id + " - " + ParLevel3.Name + (index + 1)).replace(/ /g, '').replace('.', ''))
+                }
+
+                vm.saveLogParada = function () {
+                    if (vm.seletedLinha.logParada == undefined)
+                        vm.seletedLinha.logParada = []
+
+                    vm.seletedLinha.logParada.push(vm.copyObj(vm.seletedLinha.RegistroParada))
+                    vm.seletedLinha.RegistroParada = {}
+                    vm.TimerOff()
+                    vm.saveState()
+                }
+
+                vm.copyObj = function (obj) {
+                    return JSON.parse(JSON.stringify(obj))
+                }
+
+                vm.parseDate = function (date) {
+                    return new Date(date);
+                }
+
+                vm.parseDateV2 = function (date) {
+                    date = new Date(date);
+                }
+
+                /*Não utilizado*/
+                vm.$on('$viewContentLoaded', function () {
+                    //Here your view content is fully loaded !!
+                    //vm.executeDocReady()
+                });
+
+                vm.$watch('$viewContentLoaded',
+                    function () {
+                        setTimeout(function () {
+                            //do something
+                            //vm.executeDocReady()
+                        }, 0);
+                    });
+
+                //vm.getParametrizacaoZeraColeta = function () {
+                //    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
+                //        .then(function (r) {
+                //            if (r.data.errors) {
+                //                r.data.errors.forEach(function (o) {
+                //                    toastr.error(o)
+                //                })
+                //            } else {
+                //                //toastr.success(r.data.resposta)
+                //                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                //                toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                //                vm.linhas = r.data.model
+                //                vm.linhas.forEach(function (o, c) {
+                //                    o["latas"] = []
+                //                })
+                //                setTimeout(function () { $('select').select2() }, 200)
+                //                vm.seletedLinha = { Id: 0 }
+                //                //vm.getState()
+                //            }
+                //        });
+                //}
+
+                /*Não utilizado FIM*/
+
+            }])
+            .filter('mathPow', function () {
+                return function (base, exponent) {
+                    return Math.pow(10, exponent);
+                }
+            })
+            .filter('mathPowRev', function () { // Implementar!!!
+                return function (base, exponent) {
+                    return Math.pow(10, exponent);
+                }
+            })
+            .filter('calculadoPorOutro', function () { // Implementar!!!
+                return function (expressaoArr, index, lataIndex, resultNaLata) {
+                    let expressaoFinal = ''
+                    var teste = []
+                    let indexMaisUm = index + 1
+                    //expressaoArr.forEach(function (o, c) {
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            let id = `#ParLevel3_Id${o.OuterLevel3_Id}ParLevel3Value_Id${o.OuterLevel3Value_Id}PontoIndex${indexMaisUm}LataIndex${lataIndex}`
+                            let valor = parseFloat($(id).val())
+                            if (isNaN(parseFloat(valor))) {
+                                return ""
+                            }
+                            expressaoFinal += valor
+                        } else {
+                            expressaoFinal += `${o.Operator}`
+                        }
+                    }
+                    //})
+
+                    let result = math.eval(expressaoFinal.replace(/\s/g, '').replace('=', ''))
+                    return isNaN(result) ? "" : parseFloat(result.toFixed(2))
+                    //return vm.addbits(expressaoFinal.replace(/\s/g, ''))
+                }
+            })
+            .filter('reverseAnything', function () {
+                return function (items) {
+                    if (typeof items === 'undefined') { return; }
+                    return angular.isArray(items) ?
+                      items.slice().reverse() : // If it is an array, split and reverse it
+                      (items + '').split('').reverse().join(''); // else make it a string (if it isn't already), and reverse it
+                };
+            })
+            .directive('tables', ['$timeout', function ($timeout) {
+                return function (scope, element, attrs) {
+                    if (scope.$last) {
+                        //window.alert("im the last!");
+                        //$timeout(scope.$emit(scope.executeDocReady(true)), 200);
+                    }
+                };
+            }])
+
+    })();
+</script>
+

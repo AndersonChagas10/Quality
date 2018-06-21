@@ -61,11 +61,124 @@
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>", style: "", classTd: "col-sm-6")
                         @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
                     </tr>
+
+                    <tr class="row ParResultado" style="display: none;">
+                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.DynamicValue", Model.paramsDto.parLevel3Value.DynamicValue, new { @Id = "parLevel3Value_DynamicValue", @class = "form-control input-sm" }), @Html.Label("Equação"), Table.PosicaoLabel.top, classTd: "col-sm-12", colspan: 2)
+                    </tr>
+
                 </table>
                 <table class="table-erp">
                     <tr class="row" id="companyValueL3">
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
                                             , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                    </tr>
+                </table>
+                <table class="table-erp">
+
+                    <tr class="row reencravacaoL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacao", @onchange = "getLevel3ReencravacaoInputCalcOutro($('#empresaRecravacao option:selected').val())" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(1)' class='btnCalc btn btn-sm'>
+                                1
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(2)' class='btnCalc btn btn-sm'>
+                                2
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(3)' class='btnCalc btn btn-sm'>
+                                3
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("+")' class='btnCalc btn btn-sm'>
+                                +
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("/")' class='btnCalc btn btn-sm'>
+                                /
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("undo")' class='btnCalc btn btn-sm'>
+                                <i class="fa fa-undo" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(4)' class='btnCalc btn btn-sm'>
+                                4
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(5)' class='btnCalc btn btn-sm'>
+                                5
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(6)' class='btnCalc btn btn-sm'>
+                                6
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("-")' class='btnCalc btn btn-sm'>
+                                -
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("(")' class='btnCalc btn btn-sm'>
+                                (
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(7)' class='btnCalc btn btn-sm'>
+                                7
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(8)' class='btnCalc btn btn-sm'>
+                                8
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(9)' class='btnCalc btn btn-sm'>
+                                9
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("*")' class='btnCalc btn btn-sm'>
+                                *
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(")")' class='btnCalc btn btn-sm'>
+                                )
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type='button' id='' onclick='clickSinal(".")' class='btnCalc btn btn-sm'>
+                                .
+                            </button>
+                            <button type='button' id='' onclick='clickSinal(0)' class='btnCalc btn btn-sm'>
+                                0
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("=")' class='btnCalc btn btn-sm'>
+                                =
+                            </button>
+                            <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
+                                Dados Selecionados
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp"><label>Expressão final</label></td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp"></td>
+                    </tr>
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp"><label id="expFinal"></label></td>
+                    </tr>
+
+                    <tr class="row reencravacaoL3">
+                        <td class="td-erp" id="sinais">
+                            <button type="button" id="btnSaveCounter" onclick="saveLogExpression(); " class="btn btn-primary btn-sm">
+                                <i class="fa fa-plus" aria-hidden="true">Incluir</i>
+                            </button>
+                        </td>
                     </tr>
                 </table>
 
@@ -94,6 +207,19 @@
 </div>
 
 <script>
+
+    var eTipoDado_Binario = 1;
+    var eTipoDado_NumeroDefeitos = 2;
+    var eTipoDado_Intervalos = 3;
+    var eTipoDado_Calculado = 4;
+    var eTipoDado_Texto = 5;
+    var eTipoDado_BinarioComTexto = 6;
+    var eTipoDado_IntervaloMinutos = 7;
+    var eTipoDado_EscalaLikert = 8;
+    var eTipoDado_IntervalosTexto = 9;
+    var eTipoDado_Resultado = 10;
+    var eTipoDado_Recravacao = 99;
+
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
 
     var level3Value = {
@@ -134,6 +260,7 @@
             var parIntervalosType = $('#' + preseletor + ' #parIntervalosType :selected').val();
             var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
             var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
+            var parLevel3Value_DynamicValue = $('#' + preseletor + ' #parLevel3Value_DynamicValue').val(); //Limite Superior
 
             if (parLevel1Id == -1) {
                 parLevel1Id = null;
@@ -150,23 +277,71 @@
                 companyName = "@Resources.Resource.all";
             }
 
-            if (selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5) {
+            if (selectTipoInput == eTipoDado_NumeroDefeitos || selectTipoInput == eTipoDado_Intervalos || selectTipoInput == eTipoDado_IntervalosTexto || selectTipoInput == eTipoDado_Calculado || selectTipoInput == eTipoDado_Texto) {
+                debugger
                 selectConformeName = "";
                 selectNaoConformeName = "";
+                parLevel3Value_DynamicValue = "";
             }
 
-            if (selectTipoInput == 1) {
+            if (selectTipoInput == eTipoDado_Binario || selectTipoInput == eTipoDado_BinarioComTexto) {
                 selectUnidadeDeMedidasName = "";
                 parLevel3Value_IntervalMin = "";
                 parLevel3Value_IntervalMax = "";
                 parIntervalosTypeName = "";
+                selectUnidadeDeMedidas = "";
+                parLevel3Value_DynamicValue = "";
             }
 
-            if (selectTipoInput == 5) {
+            if (selectTipoInput == eTipoDado_Texto) {
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
                 selectUnidadeDeMedidas = "";
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_EscalaLikert) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "";
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_IntervaloMinutos) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_IntervaloMinutos) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_Resultado) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectConformeName = "";
+                selectNaoConformeName = "";
+                selectUnidadeDeMedidas = "";
+                parIntervalosTypeName = "";
             }
 
             if (isEdit != undefined) {
@@ -190,6 +365,8 @@
                 obj.AcceptableValueBetween = parseInt(parIntervalosType) ? true : false;
                 obj.IntervalMin = parLevel3Value_IntervalMin;
                 obj.IntervalMax = parLevel3Value_IntervalMax;
+
+                obj.DynamicValue = parLevel3Value_DynamicValue;
 
                 //obj.ParLevel1_Id =                      parLevel1Id;
                 //obj.ParLevel1_Name =                    parLevel1Name;
@@ -221,6 +398,7 @@
                     AcceptableValueBetween: parseInt(parIntervalosType) ? true : false,
                     IntervalMin: parLevel3Value_IntervalMin,
                     IntervalMax: parLevel3Value_IntervalMax,
+                    DynamicValue: parLevel3Value_DynamicValue,
                     IsActive: true,
 
                     ParLevel1_Id: parLevel1Id,
@@ -234,7 +412,7 @@
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
 
-            if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == 1) { // Binario
+            if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Binario || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_BinarioComTexto) { // Binario
                 if ($('#' + seletorTato + ' #selectConforme :selected').val() <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_positive_value_for_binary_field'));
                     return false;
@@ -243,9 +421,25 @@
                     return false;
                 }
             } // Intervalo ou Calculado.
-            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3 || $('#' + seletorTato + ' #selectTipoInput :selected').val() == 4) {
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Intervalos || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervalosTexto || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Calculado) {
                 if ($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
+                    return false;
+                }
+            } // Escala Likert - Intervalo Minutos
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervaloMinutos) {
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val().length <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('min_interval'));
+                    return false;
+                }
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMax').val().length <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('max_interval'));
+                    return false;
+                }
+            } // Resultado
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Resultado) {
+                if ($('#' + seletorTato + ' #parLevel3Value_DynamicValue').val().length <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('dynamic_value'));
                     return false;
                 }
             }
@@ -257,8 +451,8 @@
             var level1Selected = $(' #parLevel1Select2TipoDadosEntrada :selected').val();//
             var displayLevel1Selected = $(' #parLevel1Select2TipoDadosEntrada :selected').text();//
 
-            var level2Selected = $(' #parLevel2Select2 :selected').val();//
-            var displayLevel2Selected = $(' #parLevel2Select2 :selected').text();//
+            var level2Selected = $(' #parLevel2Select2TipoDadosEntrada :selected').val();//
+            var displayLevel2Selected = $(' #parLevel2Select2TipoDadosEntrada :selected').text();//
 
             function verify(data) {
                 return (data == 0 || data == -1 || data == null) ? 1 : 0;
@@ -329,6 +523,7 @@
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].DynamicValue"] = o.DynamicValue;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
                 //
             });
@@ -360,19 +555,19 @@
                     console.log(o["ParLevel2_Name"]);
                     console.log(o["ParLevel1_Name"]);
 
-                    if (o.ParLevel3InputType_Id == 1) {
+                    if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto) {
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
                         o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
                         o["ParMeasurementUnit_Name"] = "";
                         o["AcceptableValueBetween_Name"] = "";
                         o["IntervalMin"] = "";
                         o["IntervalMax"] = "";
-                    } else if (o.ParLevel3InputType_Id == 2) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_NumeroDefeitos) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    } else if (o.ParLevel3InputType_Id == 3) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Intervalos || o.ParLevel3InputType_Id == eTipoDado_IntervalosTexto) {
                         o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
@@ -382,7 +577,7 @@
                             (o.IntervalMax == null ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
                             (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
 
-                    } else if (o.ParLevel3InputType_Id == 4) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Calculado) {
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -391,7 +586,7 @@
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;
-                    } else if (o.ParLevel3InputType_Id == 5) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -400,8 +595,28 @@
                         o["IntervalMinCalculado"] = "";
                         o["IntervalMax"] = "";
                         o["IntervalMaxCalculado"] = "";
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
+                        o["IntervalMin"] = o.IntervalMin == null ? 0 : o.IntervalMin;
+                        o["IntervalMax"] = o.IntervalMax == null ? 0 : o.IntervalMax;
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = "";
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_IntervaloMinutos) {
+                        o["IntervalMin"] = o.IntervalMin == null ? 0 : o.IntervalMin;
+                        o["IntervalMax"] = o.IntervalMax == null ? 0 : o.IntervalMax;
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax;
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Resultado) {
+                        o["IntervalMin"] = "";
+                        o["IntervalMax"] = "";
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = o.DynamicValue;
                     }
-                    //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
 
                     if ((o.ParLevel1_Id == null
                         || o.ParLevel1_Id == "-1"
@@ -427,6 +642,11 @@
         adiciona: function (e) {
             if (level3Value.veifyAdd()) {
                 var object = level3Value.getObjAdd();
+
+                if(object.DynamicValue != null){
+                    object.AcceptableValueBetween_Name = object.DynamicValue;
+                }
+
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
 
                 $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
@@ -435,13 +655,14 @@
                 $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
                 $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
                 $("#avAmCompany").val($("#avAmCompany option:first").val());
-                
+
                 $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
                 $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());
                 $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
                 $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
                 $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
-                
+                $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
+
             }
         },
     };
@@ -481,6 +702,9 @@
     }
 
     function parIntervalosTypeCreate() {
+
+        if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#selectTipoInput :selected').val()  == eTipoDado_IntervaloMinutos)
+            return;
 
         var value = "";
         if($('#selectUnidadeDeMedidas :selected').val() > 0)
@@ -538,6 +762,9 @@
 
     function parIntervalosTypeCreateEdit() {
 
+        if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#crudNxNEdit #selectTipoInput :selected').val()==eTipoDado_IntervaloMinutos)
+            return;
+
         var value = "";
         if($('#crudNxNEdit #selectUnidadeDeMedidas :selected').val() > 0)
             value = $('#crudNxNEdit #selectUnidadeDeMedidas :selected').text();
@@ -593,8 +820,12 @@
     }
 
     $('#selectTipoInput').change(function () {
+        var tipoSelecionado = $("#selectTipoInput option:selected").val();
 
-        if ($("#selectTipoInput option:selected").val() == "-1") {
+        $('.reencravacaoL3').hide();
+        $('.ParResultado').hide();
+
+        if (tipoSelecionado == "-1") {
 
             $('#selectNaoConforme').val(-1)
             $('#selectConforme').val(-1)
@@ -609,7 +840,7 @@
         }
 
         //Binários
-        if ($("#selectTipoInput option:selected").val() == "1") {
+        if (tipoSelecionado == eTipoDado_Binario || tipoSelecionado == eTipoDado_BinarioComTexto) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -620,7 +851,7 @@
         }
 
         //Numero de defeitos
-        if ($("#selectTipoInput option:selected").val() == "2") {
+        if (tipoSelecionado == eTipoDado_NumeroDefeitos) {
             resetaParIntervalos();
             resetaParDefeitos();
             resetaParBinarios();
@@ -646,7 +877,7 @@
         }
 
         //Intervalos
-        if ($("#selectTipoInput option:selected").val() == "3") {
+        if (tipoSelecionado == eTipoDado_Intervalos || tipoSelecionado == eTipoDado_IntervalosTexto) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -672,7 +903,8 @@
             $('.ParIntervalos').fadeIn();
         }
 
-        if ($("#selectTipoInput option:selected").val() == "4") {
+        //Calculado
+        if (tipoSelecionado == eTipoDado_Calculado) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -682,7 +914,8 @@
             $('.ParIntervalos').fadeIn();
         }
 
-        if ($("#selectTipoInput option:selected").val() == "5") {
+        //Texto
+        if (tipoSelecionado == eTipoDado_Texto) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -692,6 +925,87 @@
             $('.ParIntervalos').hide();
             $('#companyValueL3').show();
             $('.VinculoParLevel').show();
+        }
+
+        //Escala Likert
+        if (tipoSelecionado == eTipoDado_EscalaLikert || tipoSelecionado == eTipoDado_IntervaloMinutos) {
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').fadeIn();
+            $('.ParIntervalos').find('td:nth-child(1)').addClass('hide');
+        }
+
+        //Recravacao
+        if (tipoSelecionado == eTipoDado_Recravacao) {
+
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').hide();
+            $('#companyValueL3').hide();
+            $('.reencravacaoL3').fadeIn();
+
+            let vinculados = $('#parLevel3Select2 option:selected').closest('optgroup')[0].children
+            let companyesVinculadas = $('#tablePeso > tbody > tr > td:nth-child(1)')
+
+            $('#parlevel3Recravacao option').hide()
+            $(vinculados).each(function (c, o) {
+                let value = $(o).val()
+                $('#parlevel3Recravacao option[value="'+value+'"]').show()
+            })
+            $('#parlevel3Recravacao option[value="-1"]').show()
+
+            $('#empresaRecravacao option').hide()
+            companyesVinculadas.each(function(c,o){
+                if($(o).text() == 'Todas'){
+                }
+                else{
+                    $('#empresaRecravacao option').filter(function () { return $(this).html() == $(o).text() }).show()
+                }
+            })
+            $('#empresaRecravacao option[value="-1"]').show()
+            $('#empresaRecravacao').parents('td').hide()
+
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            //$('.reencravacaoL3').hide();
+            $('.ParIntervalos').fadeIn();
+            $('#companyValueL3 > td').hide()
+        }
+        
+        //Resultado
+        if (tipoSelecionado == eTipoDado_Resultado) {
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').fadeIn();
+            $('.ParIntervalos').find('td:nth-child(1)').addClass('hide');
+            $('#companyValueL3').show();
+            $('.ParResultado').show();
         }
 
         CorrigirLarguraColunas();
@@ -710,6 +1024,7 @@
         $('#parLevel3Value_IntervalMin').val("");
         $('#parLevel3Value_IntervalMax').val("");
         $('#parIntervalosType').empty().parents('td').hide();
+        $('.ParIntervalos').find('td:nth-child(1)').removeClass('hide');
     }
 
     function resetaParBinarios(){

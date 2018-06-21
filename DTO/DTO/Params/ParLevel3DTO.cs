@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Resources;
+using System.Linq;
+using System;
 
 namespace DTO.DTO.Params
 {
@@ -23,12 +25,14 @@ namespace DTO.DTO.Params
         public string Description { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public bool IsPointLess { get; set; } = true;
         public bool hasVinculo { get; set; }
         public bool HasTakePhoto { get; set; } = false;
         public decimal pesoDoVinculo { get; set; }
         public virtual List<ParLevel3ValueDTO> ParLevel3Value { get; set; }
         public List<ParLevel3GroupDTO> listGroupsLevel2 { get; set; }
         public int? groupLevel2Selected;
+        public Nullable<int> OrderColumn { get; set; }
 
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
         public List<int> removeReincidencia { get; set; }
@@ -36,5 +40,8 @@ namespace DTO.DTO.Params
         public List<ParLevel3Level2DTO> listLevel3Level2 { get; set; }
         public List<ParLevel3EvaluationSampleDTO> listParLevel3EvaluationSample { get; set; }
 
+        public List<ParLevel3Value_OuterListDTO> ParLevel3Value_OuterList { get; set; }
+        public IEnumerable<IGrouping<int, ParLevel3Value_OuterListDTO>> ParLevel3Value_OuterListGrouped { get; set; }
+        public bool AllowNA { get; set; }
     }
 }

@@ -324,8 +324,16 @@
         }
         else
         {
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
-        }
+            @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
+    }
+            </div>
+        </li>
+
+
+        <li>
+            <div id="showGroupLevel1" style="display:none">
+                <span class="redLabel">Liderança</span>
+                @Html.DropDownList("GroupLevel1", new SelectList(ViewBag.GroupLevel1, "Id", "Name"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
@@ -437,11 +445,23 @@
 
         <li>
             <div id="showCreateActionPlane" style="display:none">
-                <span class="redLabel">Plano de Ação Concluído</span>
+                <span class="redLabel">@Resources.Resource.conclued_plan_action</span>
                 <select id="createActionPlane" class="form-control" style="width: 210px;">
                     <option>@Resources.Resource.all</option>
                     <option value="1">@Resources.Resource.yes</option>
                     <option value="2">@Resources.Resource.no</option>
+                </select>
+            </div>
+        </li>
+
+        <li>
+            <div id="showDimensaoData" style="display:none">
+                <span class="redLabel">@Resources.Resource.period_type_chart</span>
+                <select id="createDimensaoData" class="form-control" style="width: 210px;">
+                    @*<option>@Resources.Resource.all</option>*@
+                    <option value="1">@Resources.Resource.per_day</option>
+                    <option value="2">@Resources.Resource.per_week</option>
+                    <option value="4">@Resources.Resource.a_month</option>
                 </select>
             </div>
         </li>
@@ -790,7 +810,7 @@
 
     <!-- Menu Toggle Script -->
 
-    <script>
+<script>
 
 
         var enviar = {};
@@ -895,6 +915,7 @@
             });
 
             $('#structureId').on('change',function(e){
+                enviar['structureIdArr'] = $('#structureId').val();
                 enviar['structureId'] = $('#structureId option:selected').val();
             });
 
@@ -903,8 +924,25 @@
                 enviar['unitId'] = $('#unitIdV option:selected').val();
             });
 
+            $('#GroupLevel1').on('change', function (e) {
+                enviar['GroupLevel1'] = $('#GroupLevel1').val();
+            });
+
             $('#criticalLevelId').on('change',function(e){
                 enviar['criticalLevelId'] = $('#criticalLevelId option:selected').val();
+            });
+
+            $('#level1Groupv').on('change', function (e) {
+                @if(ViewBag.Level3IdArr == null){
+                    <text>
+                enviar['groupParLevel1IdArr'] = parseInt($('#level1Groupv').val().replace(/\D/g, ''), 10);
+                    </text>
+                }else{
+                    <text>
+                enviar['groupParLevel1IdArr'] = RetornaArrayInteiro($('#level1Groupv').val());
+                    </text>
+                }
+                $('#level1Idv').change();
             });
 
             $('#level1Idv').on('change', function (e) {
@@ -1108,11 +1146,11 @@
             });
 
             $('#unitId').select2();
-            
+
             //Se não for multiplo força um change para selecionar o valor (motivo: ele remove o primeiro item 'todos' e não aplicava o evento change)
-            if(!$('#unitId').attr('multiple')) 
+            if(!$('#unitId').attr('multiple'))
                 setTimeout(function(){$('#unitId').trigger('change');},500);
-            
+
 
         });
 
@@ -1135,6 +1173,9 @@
             showUnit: function () {
                 $('#showUnit').show();
             },
+            showGroupLevel1: function () {
+                $('#showGroupLevel1').show();
+            },  
             showTipoCEP: function () {
                 $('#showTipoCEP').show();
             },
@@ -1243,6 +1284,10 @@
             showCreateActionPlane: function () {
                 $('#showCreateActionPlane').show();
             },
+    
+            showDimensaoData: function () {
+                $('#showDimensaoData').show();
+            },
 
             showClustRegUnitCriticalLevel123: function(){
                 $('#showClustRegUnitCriticalLevel123').show();
@@ -1302,4 +1347,4 @@
             expand();
         }
 
-    </script>
+</script>

@@ -6,7 +6,9 @@
 
     var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
+    var urlStructureAtivarOuDesativar = Url.Action("AtivarOuDesativarParStructure", "api/Company");
     var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
+    var urlStructureGroupAtivarOuDesativar = Url.Action("AtivarOuDesativarParStructureGroup", "api/Company");
     var urlHome = Url.Action("Index", "Home");
 
 }
@@ -35,9 +37,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
 
@@ -94,8 +96,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>                               
-                                
+                                </div>
+
                             </div>
 
                         </div>
@@ -186,8 +188,8 @@
                                         @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parStructureDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                     </tr>
                                     <tr class="row">
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
                                         @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureDTO_ParStructureGroup_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
                                     </tr>
                                 </tbody>
@@ -226,7 +228,9 @@
 
     var urlCompany = '@Html.Raw(@urlCompany)';
     var urlStructure = '@Html.Raw(@urlStructure)';
+    var urlStructureAtivarOuDesativar = '@Html.Raw(@urlStructureAtivarOuDesativar)';
     var urlStructureGroup = '@Html.Raw(@urlStructureGroup)';
+    var urlStructureGroupAtivarOuDesativar = '@Html.Raw(@urlStructureGroupAtivarOuDesativar)';
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
@@ -298,16 +302,13 @@
             }
 
             $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                console.log(objetoReturn);
-                console.log(statusmessage);
-                console.log(respostaCompleta);
 
                 $.get("GetParCompany", function (data) {
                     $('#formParCompany').replaceWith(data);
                 });
             }).fail(function (e, h, x) {
                 console.log(e);
-            });
+                });
         },
         editar: function (object) {
             $('#modalCompany .modal-dialog').addClass('modal-xl');
@@ -325,22 +326,42 @@
 
     var indexParStructure = {
         enviarDadosParaApi: function (result) {
+            var name = '';
+            var description = '';
+            var groupId = '';
 
-            var dados = $('#formParStructure').serializeObject();
-            if(result)
-                dados = result;
+            if (result == undefined || result == null) {
+                 name = $("#parStructureDTO_Name").val();
+                 description = $("#parStructureDTO_Description").val();
+                 groupId = $("#parStructureDTO_ParStructureGroup_Id option:selected").val();
+            } else {
+                 name = result["parStructureDTO.Name"];
+                 description = result["parStructureDTO.Description"];
+                 groupId = result["parStructureDTO.ParStructureGroup_Id"];
+            }
+            var mensagemErroCompleta = "";
 
-            $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                console.log(objetoReturn);
-                console.log(statusmessage);
-                console.log(respostaCompleta);
+            var retorno = ValidaFormulario(name, description, groupId, mensagemErroCompleta);
 
-                $.get("GetParStructure", function (data) {
-                    $('#formParStructure').replaceWith(data);
+            if (retorno.length > 0) {
+                openMessageModal("@Resources.Resource.warning", retorno);
+            }
+            else{
+                var dados = $('#formParStructure').serializeObject();
+                if (result)
+                    dados = result;
+                openMessageModal("@Resources.Resource.success", retorno);
+                closeCompanyModal();
+                window.location.reload();
+                $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+
+                    $.get("GetParStructure", function (data) {
+                        $('#formParStructure').replaceWith(data);
+                    });
+                }).fail(function (e, h, x) {
+                    console.log(e);
                 });
-            }).fail(function (e, h, x) {
-                console.log(e);
-            });
+            }
         },
         editar: function (object) {
             $('#modalCompany .modal-dialog').removeClass('modal-xl');
@@ -353,27 +374,65 @@
                 var obj = object[key];
                 $('#modalStructureObj #parStructureDTO_' + key).val(obj);
             }
+        },
+        AtivarOuDesativar: function (object) {
+            $('body').LoadingOverlay("show");
+            $.ajax({
+                type: "POST",
+                url: '@urlStructureAtivarOuDesativar',
+                dataType: "json",
+                data: '{ "Id": '+object.Id+' }',
+                contentType: "application/json",
+                success: function (data) {
+                    window.location.reload();
+                },
+                always: function (data) {
+                    $('body').LoadingOverlay("hide");
+                }
+            });
+            for (var key in object) {
+                var obj = object[key];
+                $('#parStructureDTO_' + key).val(obj);
+            }
         }
     }
 
     var indexParStructureGroup = {
         enviarDadosParaApi: function (result) {
-            
-            var dados = $('#formParStructureGroup').serializeObject();
-            if (result)
-                dados = result;
+            var name = '';
+            var description = '';
+            var groupId = '';
 
-            $.post(urlStructureGroup, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                console.log(objetoReturn);
-                console.log(statusmessage);
-                console.log(respostaCompleta);
+            if (result == undefined || result == null) {
+                 name = $("#parStructureGroupDTO_Name").val();
+                 description = $("#parStructureGroupDTO_Description").val();
+                 groupId = $("#parStructureGroupDTO_ParStructureGroupParent_Id option:selected").val();
+            } else {
+                 name = result["parStructureGroupDTO.Name"];
+                 description = result["parStructureGroupDTO.Description"];
+                 groupId = result["parStructureGroupDTO.ParStructureGroupParent_Id"];
+            }
+            var mensagemErroCompleta = "";
+            var retorno = ValidaFormulario(name, description, groupId, mensagemErroCompleta);
 
-                $.get("GetParStructureGroup", function (data) {
-                    $('#formParStructureGroup').replaceWith(data);
+            if (retorno.length > 0) {
+                openMessageModal("@Resources.Resource.warning", retorno);
+            } else {
+                var dados = $('#formParStructureGroup').serializeObject();
+                if (result)
+                    dados = result;
+                openMessageModal("@Resources.Resource.success", retorno);
+                closeCompanyModal();
+                window.location.reload();
+                $.post(urlStructureGroup, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+
+                    $.get("GetParStructureGroup", function (data) {
+                        $('#formParStructureGroup').replaceWith(data);
+                    });
+                }).fail(function (e, h, x) {
+                    console.log(e);
                 });
-            }).fail(function (e, h, x) {
-                console.log(e);
-            });
+            }
         },
         editar: function (object) {
             $('#modalCompany .modal-dialog').removeClass('modal-xl');
@@ -385,6 +444,26 @@
             for (var key in object) {
                 var obj = object[key];
                 $('#modalStructureGroupObj #parStructureGroupDTO_' + key).val(obj);
+            }
+        },
+        AtivarOuDesativar: function (object) {
+            $('body').LoadingOverlay("show");
+            $.ajax({
+                type: "POST",
+                url: '@urlStructureGroupAtivarOuDesativar',
+                dataType: "json",
+                data: '{ "Id": '+object.Id+' }',
+                contentType: "application/json",
+                success: function (data) {
+                    window.location.reload();
+                },
+                always: function (data) {
+                    $('body').LoadingOverlay("hide");
+                }
+            });
+            for (var key in object) {
+                var obj = object[key];
+                $('#parStructureDTO_' + key).val(obj);
             }
         }
     }
@@ -400,8 +479,6 @@
         else if (!$('#modalStructureGroupObj').hasClass('hide')) {
             indexParStructureGroup.enviarDadosParaApi($('#modalStructureGroupObj form').serializeObject());
         }
-
-        closeCompanyModal();
     });
 
     function closeCompanyModal() {
@@ -412,6 +489,19 @@
         $('#modalCompany').modal('hide');
     }
 
+    function ValidaFormulario(name, description, groupId, mensagemErroCompleta) {
+        if (name.length <= 0) {
+                mensagemErroCompleta = ("Campo nome é obrigatório!".replace("!", "<br />"));
+        }
+        if (description.length <= 0) {
+            mensagemErroCompleta += ("Campo descrição é obrigatório!".replace("!", "<br />"));
+        }
+        if (groupId.length <= 0) {
+            mensagemErroCompleta += ("Campo grupo é obrigatório!");
+        }
+
+        return mensagemErroCompleta;
+    }
 
 </script>
 

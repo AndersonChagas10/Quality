@@ -196,7 +196,8 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
+            ViewBag.PlanejamentosComFTA = fta.Panejamento_Id;
+            //ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq(fta);
             fta.IsFTA = true;
@@ -238,10 +239,10 @@ namespace PlanoDeAcaoMVC.Controllers
                 var dtEnd = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToString("yyyyMMdd");
 
                 var metaQuery = "SELECT ROUND(CASE" +
-    "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
-    "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, AddDate DESC)" +
+    "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
+    "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)" +
     "\n     ELSE    " +
-    "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)  " +
+    "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)  " +
     "\n  END,2) " +
     "\n  AS META";
 
@@ -288,7 +289,7 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA2(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
+            ViewBag.PlanejamentosComFTA = fta.Panejamento_Id;//GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq2(fta);
             fta.IsFTA = true;
@@ -348,14 +349,14 @@ namespace PlanoDeAcaoMVC.Controllers
                 var dtEnd = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToString("yyyyMMdd");
 
 
-                if (level1.IsNotNull())
+                if (level1.IsNotNull() && level1.Id > 0)
                 {
-                    metaQuery = "SELECT ROUND(CASE" +
-"\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
-"\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, AddDate DESC)" +
+                    metaQuery = "SELECT ISNULL(ROUND(CASE" +
+"\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
+"\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)" +
 "\n     ELSE    " +
-"\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)  " +
-"\n  END,2) " +
+"\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)  " +
+"\n  END,2),0) " +
 "\n  AS META";
 
                 }
@@ -364,7 +365,13 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta._Departamento = parDepartment.Name;
                 fta.Departamento_Id = parDepartment.Id;
 
-                var PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
+                string PercentualNCFTA2f = null;
+
+                if (fta.PercentualNCFTA != null)
+                {
+                    PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
+                }
+                
 
                 if (fta.Level2Id.IsNotNull())
                 {
@@ -390,8 +397,20 @@ namespace PlanoDeAcaoMVC.Controllers
                 }
                 else
                 {
-                    fta.PercentualNCFTA = aux + ": " + PercentualNCFTA2f + " %";
-                    fta.ReincidenciaDesvioFTA = aux + ": " + fta.ReincidenciaDesvioFTA;
+                    if (PercentualNCFTA2f != null)
+                    {
+                        fta.PercentualNCFTA = aux + ": " + PercentualNCFTA2f + " %";
+                    }
+
+                    if (fta.ReincidenciaDesvioFTA != null)
+                    {
+                        fta.ReincidenciaDesvioFTA = aux + ": " + fta.ReincidenciaDesvioFTA;
+                    }
+                    else
+                    {
+                        fta.ReincidenciaDesvioFTA = "0";
+                    }
+                    
                 }
 
                 //fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
@@ -405,7 +424,14 @@ namespace PlanoDeAcaoMVC.Controllers
                     fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
                 }
 
-                fta.MetaFTA += " %";
+                if (fta.MetaFTA != null)
+                {
+                    fta.MetaFTA += " %";
+                }
+                else
+                {
+                    fta.MetaFTA = "0";
+                }      
             }
         }
 

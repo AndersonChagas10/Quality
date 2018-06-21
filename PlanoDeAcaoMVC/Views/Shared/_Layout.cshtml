@@ -94,20 +94,20 @@
 
                 <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="@Url.Content("~/Imagens/Logo.png")" style="height:45px;" /> </div>
 
-                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
+                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">@Resources.Resource.action_plan</a></div>
 
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active">
-                        <a href="#">By GRJ Soluções</a>
+                        <a href="#">@Resources.Resource.by_grj_solutions</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="@Url.Action("LogOut", "Home")">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> @Resources.Resource.log_off
                         </a>
                     </li>
                 </ul>
@@ -118,17 +118,17 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="@Url.Action("Index","Home")">Relatórios</a>
+                        <a href="@Url.Action("Index","Home")">@Resources.Resource.reports</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="@Url.Action("Index","PaPlanejamentoAcao")">Gerenciar</a>
+                        <a href="@Url.Action("Index","PaPlanejamentoAcao")">@Resources.Resource.manage</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="@Url.Action("Index2","Home2")">Dashboard</a>
+                        <a href="@Url.Action("Index2","Home2")">@Resources.Resource.dashboard</a>
                     </li>
                 </ul>
 
@@ -143,9 +143,6 @@
 
         @RenderBody()
         <hr />
-        @*<footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>*@
     </div>
 
     <div id="overlay" class="overlay" style="display:none"></div>
@@ -156,6 +153,7 @@
             <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
         </div>
     </div>
+       @Html.Partial("~/Views/Shared/_Rodape.cshtml")
 
 
 
@@ -221,14 +219,19 @@
             https://uxsolutions.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=0&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=linked&clearBtn=false&language=pt-BR&orientation=auto&multidate=false&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on#sandbox
         */
         function InitDatePiker() {
+
+            //$('.datepicker').datepicker("destroy");
+
             $('.datepicker').datepicker({
                 startDate: 0,
                 todayBtn: "linked",
                 language: "pt-BR",
                 multidate: false,
+                autoclose: true,
                 todayHighlight: true
             });
         }
+
         $(document).ready(function () {
             InitDatePiker();
             MoneyMask();
@@ -261,6 +264,7 @@
         });
 
         $.fn.serializeObject = function () {
+
             var isValid = true
 
             var tipo = "";
@@ -279,7 +283,7 @@
 
             $(this).find('.error').removeClass('error')
             $(this).find('select.required:visible' + tipo).each(function (c, o) {
-                if ($(o).find('option:selected').val().length == 0) {
+                if ($(o).find('option:selected').val() == undefined || $(o).find('option:selected').val().length == 0) {
                     $(o).addClass('error')
                     $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
                 }

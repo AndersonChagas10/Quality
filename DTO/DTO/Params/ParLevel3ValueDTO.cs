@@ -24,7 +24,8 @@ namespace DTO.DTO.Params
         public string IntervalMinCalculado { get; set; }
         public string IntervalMaxCalculado { get; set; }
 
-
+        public string DynamicValue { get; set; }
+        
         public bool IsActive { get; set; } = true;
 
         //public ParCompanyDTO parCompany { get; set; }
@@ -39,7 +40,8 @@ namespace DTO.DTO.Params
 
         public void preparaParaInsertEmBanco()
         {
-            if (ParLevel3InputType_Id == 3 || ParLevel3InputType_Id == 4 || ParLevel3InputType_Id == 2)
+
+            if (ParLevel3InputType_Id == 3 || ParLevel3InputType_Id == 4 || ParLevel3InputType_Id == 2 || ParLevel3InputType_Id == 9)
             {
                 ParLevel3BoolFalse_Id = null;
                 ParLevel3BoolTrue_Id = null;

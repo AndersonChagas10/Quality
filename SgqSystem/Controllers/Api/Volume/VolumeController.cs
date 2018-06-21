@@ -37,6 +37,7 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n order by 2 desc                                                                                         " +
                 "\n                                                                                                         " +
                 "\n ) fam                                                                                                   ";
+
             var result = db.Database.SqlQuery<int>(query).FirstOrDefault();
             return result;
         }

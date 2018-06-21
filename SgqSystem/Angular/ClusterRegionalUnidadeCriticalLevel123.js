@@ -36,6 +36,14 @@
 
             $http({
                 method: 'POST',
+                url: GetParLevel1Group
+            }).
+                then(function (r) {
+                    $scope.level1Group = r.data;
+                });
+
+            $http({
+                method: 'POST',
                 url: GetListLevel1
             }).
                 then(function (r) {
@@ -82,9 +90,14 @@
 
                 // Desabilita Nivel Critico se processo não selecionado
                 if ($('#clusterId').val().length > 0) {
-                    $('#criticalLevelId').prop("disabled", false);
+                    $('#criticalLevelId').attr('disabled', false);
                 } else {
-                    $('#criticalLevelId').prop("disabled", true);
+                    $('#criticalLevelId').attr('disabled', true);
+                    $scope.criticalLevelValue = null;
+
+                    setTimeout(function () {
+                        $('#criticalLevelId').trigger('change')
+                    }, 1);
                 }
 
                 if ($scope.clusterValue) {
@@ -136,10 +149,13 @@
                             if (!$scope.structureValue) {
                                 $scope.unit = UnitList;
                             }
+
                         });
 
                     $scope.criticalLevel = [];
                 }
+
+                //AtribuiCriticalLevel();
             }
 
             $scope.GetListUnitVinculadoStructure = function () {
@@ -203,6 +219,25 @@
                         method: 'POST',
                         url: GetListLevel1VinculadoCriticalLevel,
                         data: JSON.stringify({ "ClusterArr": $scope.clusterValue, "CriticalLevelArr": $scope.criticalLevelValue })
+                    }).
+                        then(function (r) {
+                            $scope.level1 = r.data;
+                        });
+                }
+            }
+
+            $scope.GetLevel1ByLevel1Group = function () {
+
+                enviar['groupParLevel1Id'] = document.getElementById('level1Groupv').value;
+                enviar['groupParLevel1IdArr'] = $('#level1Groupv').val();
+                enviar['level1Id'] = parseInt(document.getElementById('level1Idv').value);
+                enviar['level1IdArr'] = $('#level1Idv').val();
+
+                if ($scope.level1GroupValue) {
+                    $http({
+                        method: 'POST',
+                        url: GetListLevel1VinculadoLevel1Group,
+                        data: JSON.stringify({ "ClusterArr": $scope.clusterValue, "groupParLevel1IdArr": $scope.level1GroupValue })
                     }).
                         then(function (r) {
                             $scope.level1 = r.data;
@@ -352,4 +387,23 @@ function AtribuiLevel2() {
     setTimeout(function () {
         enviar['level2Id'] = document.getElementById('level2Idv').value;
     }, 1);
+}
+
+function AtribuiCriticalLevel() {
+    // Desabilita Nivel Critico se processo não selecionado
+    if ($('#clusterId').val().length > 0) {
+        $('#criticalLevelId').attr('disabled', false);
+    } else {
+        //$('#criticalLevelId').prop("value", '').trigger('change');
+        $('#criticalLevelId').attr('disabled', true);
+        $scope.criticalLevelValue = null;
+            //$('#criticalLevelId').attr('value', '');
+
+        setTimeout(function () {
+
+            $('#criticalLevelId').trigger('change')
+
+
+        }, 200);
+    }
 }
