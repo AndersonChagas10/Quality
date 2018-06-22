@@ -3136,7 +3136,12 @@
         if (data.length > 0) {
 
         var Proc = MapeiaValorParaHC(data, "Proc");
-        //var nc = MapeiaValorParaHC(data, "Nc");
+        var nc = MapeiaValorParaHC(data, "Nc");
+        var av = MapeiaValorParaHC(data, "Av");
+        var indicador = MapeiaValorParaHC(data, "Indicador_Id");
+        var indicadorNome = MapeiaValorParaHC(data, "IndicadorName");
+        var monitoramento = MapeiaValorParaHC(data, "Monitoramento_Id");
+        var monitoramentoNome = MapeiaValorParaHC(data, "MonitoramentoName");
         var nome = MapeiaValorParaHC(data, "TarefaName");
         var selector = "GraficoTarefasAcumuladas";
         var sentido = 'desc';
@@ -3202,6 +3207,8 @@
             },
             series: [
                 Chart.ProcNc(Proc, FTATarefasAcumuladas, null, null, null, "", data),
+                Chart.NC(nc, FTATarefasAcumuladas, null, null, null, "", data),
+                Chart.Av(av, FTATarefasAcumuladas, null, null, null, "", data),
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
@@ -3381,6 +3388,7 @@
             },
          NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
                 return {
+                    visible: false,
                     name: Resources('nonconformity'),
                     color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
                     data: data,
@@ -3478,13 +3486,15 @@
                     point: {
                         events: {
                             click: function () {
-                                if (!!func)
-                                    if (!!arr2) {
-                                        func(arr[this.x], grafico, arr2[this.x]);
-                                    } else {
-                                        func(arr[this.x], grafico);
-                                    }
+                            //    if (!!func)
+                            //        if (!!arr2) {
+                            //            func(arr[this.x], grafico, arr2[this.x]);
+                            //        } else {
+                            //            func(arr[this.x], grafico);
+                            //        }
+                            func(this, arr);
                             }
+
                         }
                     },
                     tooltip: {
