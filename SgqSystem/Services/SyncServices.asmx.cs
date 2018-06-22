@@ -194,7 +194,7 @@ namespace SgqSystem.Services
 
 
 
-                        var i = Convert.ToInt32(command.ExecuteNonQuery());
+                        var i = 1; // Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
                         {
                             return i;
@@ -2875,419 +2875,419 @@ namespace SgqSystem.Services
             using (Factory factory = new Factory("DefaultConnection"))
             {
 
-                string sql = "EXEC grtSP_getConsolidation '" + dataIni + "', " + ParCompany_Id;
+                //string sql = "EXEC grtSP_getConsolidation '" + dataIni + "', " + ParCompany_Id;
 
-                //string sql = @"
+                string sql = @"
 
-                //          declare @data date = '" + dataIni + @"' 
-                //          declare @unidade int = " + ParCompany_Id + @"
-                //          declare @datainicio date  								  
-                //          declare @datafim date  								  
-                //          declare @datadiario date  								  
-                //          declare @datasemanal date 																																												  
-                //          declare @dataquinzenal date 																																											  
-                //          declare @datamensal date 																																												  
+                          declare @data date = '" + dataIni + @"' 
+                          declare @unidade int = " + ParCompany_Id + @"
+                          declare @datainicio date  								  
+                          declare @datafim date  								  
+                          declare @datadiario date  								  
+                          declare @datasemanal date 																																												  
+                          declare @dataquinzenal date 																																											  
+                          declare @datamensal date 																																												  
 																																																		  
-                //          set @datainicio =  @data  																																												  
-                //          set @datafim =  @data 																																													  
+                          set @datainicio =  @data  																																												  
+                          set @datafim =  @data 																																													  
   																																																		  
-                //          set @datadiario = @data  --1,2,3 																																									  
-                //          set @datasemanal = DATEADD(DAY,-(DATEPART(WEEKDAY,@data)-1),@data) --4 																																  
-                //          set @dataquinzenal = CASE WHEN DAY(@data) < 16 THEN dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0)) ELSE DATEADD(DAY,15,dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))) END--5
-                //          set @datamensal = dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))--6 																													  
+                          set @datadiario = @data  --1,2,3 																																									  
+                          set @datasemanal = DATEADD(DAY,-(DATEPART(WEEKDAY,@data)-1),@data) --4 																																  
+                          set @dataquinzenal = CASE WHEN DAY(@data) < 16 THEN dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0)) ELSE DATEADD(DAY,15,dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))) END--5
+                          set @datamensal = dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))--6 																													  
   																																																		  
-                //          set @datainicio =  @data  								  
-                //          set @datafim =  @data  																																												  
+                          set @datainicio =  @data  								  
+                          set @datafim =  @data  																																												  
  																																																		  
-                //          CREATE TABLE #COLETASLEVEL3 (																																											  
-                //          ROW INT NULL,																																															  
-                //          COLUNA VARCHAR(153) NULL																																												  
-                //          )																																																		  
+                          CREATE TABLE #COLETASLEVEL3 (																																											  
+                          ROW INT NULL,																																															  
+                          COLUNA VARCHAR(153) NULL																																												  
+                          )																																																		  
  																																																		  
-                //          INSERT INTO #COLETASLEVEL3 																																												  
+                          INSERT INTO #COLETASLEVEL3 																																												  
  																																																		  
-                //          SELECT  								  
-                //          --L1.Id parLevel1_Id,  								  
-                //          --C2.ParLevel2_Id parLevel2_Id, 								  
-                //          ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id ) AS ROW,  							  
-                //          '<div id=' + cast(R3.ParLevel3_Id as varchar) + 'class=""r3l2""></div>' COLUNA  								  
+                          SELECT  								  
+                          --L1.Id parLevel1_Id,  								  
+                          --C2.ParLevel2_Id parLevel2_Id, 								  
+                          ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id ) AS ROW,  							  
+                          '<div id=' + cast(R3.ParLevel3_Id as varchar) + 'class=""r3l2""></div>' COLUNA  								  
 
 
-                //          FROM CollectionLevel2 C2(nolock)
-                //          INNER JOIN ParLevel1 L1(nolock)
-                //          ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1
-                //          INNER JOIN ParLevel2 L2(nolock)
-                //          ON C2.ParLevel2_Id = L2.Id
-                //          INNER JOIN Result_Level3 R3(nolock)
-                //          ON R3.CollectionLevel2_Id = C2.Id
-                //          WHERE C2.UnitId = @unidade
-                //          --AND L1.Id =
-                //          --AND C2.ParLevel2_Id = ''
+                          FROM CollectionLevel2 C2(nolock)
+                          INNER JOIN ParLevel1 L1(nolock)
+                          ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1
+                          INNER JOIN ParLevel2 L2(nolock)
+                          ON C2.ParLevel2_Id = L2.Id
+                          INNER JOIN Result_Level3 R3(nolock)
+                          ON R3.CollectionLevel2_Id = C2.Id
+                          WHERE C2.UnitId = @unidade
+                          --AND L1.Id =
+                          --AND C2.ParLevel2_Id = ''
 
 
-                //          AND cast(C2.CollectionDate as Date) BETWEEN
-                //          CASE
-                //          WHEN(L2.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario
-                //          WHEN(L2.ParFrequency_Id) IN(4) THEN @datasemanal
-                //          WHEN(L2.ParFrequency_Id) IN(5) THEN @dataquinzenal
-                //          WHEN(L2.ParFrequency_Id) IN(6) THEN @datamensal
-                //          ELSE @datadiario END and @datafim
+                          AND cast(C2.CollectionDate as Date) BETWEEN
+                          CASE
+                          WHEN(L2.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario
+                          WHEN(L2.ParFrequency_Id) IN(4) THEN @datasemanal
+                          WHEN(L2.ParFrequency_Id) IN(5) THEN @dataquinzenal
+                          WHEN(L2.ParFrequency_Id) IN(6) THEN @datamensal
+                          ELSE @datadiario END and @datafim
 
-                //          DECLARE @HOMENSFORBRUNO INT = (SELECT COUNT(1) FROM #COLETASLEVEL3); 								  
+                          DECLARE @HOMENSFORBRUNO INT = (SELECT COUNT(1) FROM #COLETASLEVEL3); 								  
  								  
  								  
  								  
  								  
  								  
  								  
-                //          DECLARE @I INT = 1;
-                //                        DECLARE @RESPOSTA VARCHAR(153) = '';
+                          DECLARE @I INT = 1;
+                                        DECLARE @RESPOSTA VARCHAR(153) = '';
 
-                //                        WHILE @I<@HOMENSFORBRUNO
+                                        WHILE @I<@HOMENSFORBRUNO
                 
 
-                //                          BEGIN
+                                          BEGIN
 
-                //                        SELECT @RESPOSTA = @RESPOSTA + COLUNA FROM(
-                //                        SELECT* FROM #COLETASLEVEL3 								  
+                                        SELECT @RESPOSTA = @RESPOSTA + COLUNA FROM(
+                                        SELECT* FROM #COLETASLEVEL3 								  
  								  
-                //        ) consulta
-                //                        WHERE ROW = @I
+                        ) consulta
+                                        WHERE ROW = @I
                 
 
 
-                //                        SET @I = @I + 1;
+                                        SET @I = @I + 1;
 
 
 
 
-                //                        END
+                                        END
 
-                //                        --SELECT @RESPOSTA
+                                        --SELECT @RESPOSTA
 
 
-                //         CREATE TABLE #COLETA(																																													  
- 	              //          ParLevel1_Id varchar(255) null,																																												  
- 	              //          ParLevel2_Id varchar(255) null,																																												  
- 	              //          UnitId int null,																																													  
- 	              //          Shift int null,																																														  
- 	              //          Period int null,																																													  
- 	              //          CollectionDate Date null,																																											  
- 	              //          EvaluateLast int null,																																												  
- 	              //          ConsolidationLevel2_Id int null,																																									  
- 	              //          SampleLast int null,																																												  
+                         CREATE TABLE #COLETA(																																													  
+ 	                        ParLevel1_Id varchar(255) null,																																												  
+ 	                        ParLevel2_Id varchar(255) null,																																												  
+ 	                        UnitId int null,																																													  
+ 	                        Shift int null,																																														  
+ 	                        Period int null,																																													  
+ 	                        CollectionDate Date null,																																											  
+ 	                        EvaluateLast int null,																																												  
+ 	                        ConsolidationLevel2_Id int null,																																									  
+ 	                        SampleLast int null,																																												  
  																																																		  
- 	              //          Phase int null,																																														  
- 	              //          StartPhaseEvaluation int null,																																										  
- 	              //          haveCorrectiveAction int null,																																										  
- 	              //          haveReaudit int null,																																												  
- 	              //          ReauditLevel int null,																																												  
- 	              //          Sequential int null,																																												  
- 	              //          Side int null,				  																																								  
- 	              //          Id int null
-                //         )																																																		  
-                //         /*coletas diárias */																																													  
-                //         INSERT INTO #COLETA																																														  
+ 	                        Phase int null,																																														  
+ 	                        StartPhaseEvaluation int null,																																										  
+ 	                        haveCorrectiveAction int null,																																										  
+ 	                        haveReaudit int null,																																												  
+ 	                        ReauditLevel int null,																																												  
+ 	                        Sequential int null,																																												  
+ 	                        Side int null,				  																																								  
+ 	                        Id int null
+                         )																																																		  
+                         /*coletas diárias */																																													  
+                         INSERT INTO #COLETA																																														  
  																																																		  
-                //         select
+                         select
 
 
-                //          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                //          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
-                //          UnitId AS Unit_Id,--unidade
-                //          Shift, --shift
-                //          Period,--periodo
-                //          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
-                //          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
-                //         ConsolidationLevel2_Id,  --id da consolidaçao level2
-                //         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
+                          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                          UnitId AS Unit_Id,--unidade
+                          Shift, --shift
+                          Period,--periodo
+                          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
+                          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
+                         ConsolidationLevel2_Id,  --id da consolidaçao level2
+                         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
  																																																		  
- 	              //          MAX(Phase) AS Phase,
-                //             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
-                //             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
- 	              //          MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
- 	              //          MAX(ReauditLevel) ReauditLevel,																																										  
- 	              //          MAX(Sequential) Sequential,				  																																						  
- 	              //          MAX(Side) Side,				  																																						  
- 	              //          MIN(CL2.Id) AS ID
+ 	                        MAX(Phase) AS Phase,
+                             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
+                             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
+ 	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
+ 	                        MAX(ReauditLevel) ReauditLevel,																																										  
+ 	                        MAX(Sequential) Sequential,				  																																						  
+ 	                        MAX(Side) Side,				  																																						  
+ 	                        MIN(CL2.Id) AS ID
 
 
-                //         from CollectionLevel2 CL2   WITH(NOLOCK)
+                         from CollectionLevel2 CL2   WITH(NOLOCK)
 
 
-                //         left join CollectionLevel2XCluster CL2C
-                //         on CL2C.CollectionLevel2_Id = CL2.Id
+                         left join CollectionLevel2XCluster CL2C
+                         on CL2C.CollectionLevel2_Id = CL2.Id
 
 
-                //         inner join parlevel2 p2     WITH(NOLOCK)
-                //         on p2.id = CL2.ParLevel2_Id
+                         inner join parlevel2 p2     WITH(NOLOCK)
+                         on p2.id = CL2.ParLevel2_Id
 
 
-                //         where unitid = @unidade
-                //         and p2.ParFrequency_Id in (1, 2, 3)
-                //         and CAST(CollectionDate AS DATE) between @datadiario and @data
+                         where unitid = @unidade
+                         and p2.ParFrequency_Id in (1, 2, 3)
+                         and CAST(CollectionDate AS DATE) between @datadiario and @data
 
 
-                //         GROUP BY
-                //         ParLevel1_Id, 																																															  
-                //         ParLevel2_Id, 																																															  
-                //         UnitId,																																																	  
-                //         Shift,  																																															  
-                //         Period, 																																															  
-                //         CAST(CollectionDate AS DATE),																																											  
-                //         ConsolidationLevel2_Id
+                         GROUP BY
+                         ParLevel1_Id, 																																															  
+                         ParLevel2_Id, 																																															  
+                         UnitId,																																																	  
+                         Shift,  																																															  
+                         Period, 																																															  
+                         CAST(CollectionDate AS DATE),																																											  
+                         ConsolidationLevel2_Id
 
-                //         /*coletas semanal */
-                //         INSERT INTO #COLETA																																														  
+                         /*coletas semanal */
+                         INSERT INTO #COLETA																																														  
  																																																		  
-                //         select
+                         select
 
 
-                //        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                //        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
-                //          UnitId AS Unit_Id,--unidade
-                //          Shift, --shift
-                //          Period,--periodo
-                //          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
-                //          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
-                //         ConsolidationLevel2_Id,  --id da consolidaçao level2
-                //         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
+                        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                          UnitId AS Unit_Id,--unidade
+                          Shift, --shift
+                          Period,--periodo
+                          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
+                          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
+                         ConsolidationLevel2_Id,  --id da consolidaçao level2
+                         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
  																																																		  
- 	              //          MAX(Phase) AS Phase,
-                //             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
-                //             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
- 	              //          MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
- 	              //          MAX(ReauditLevel) ReauditLevel,																																										  
- 	              //          MAX(Sequential) Sequential,																																										
- 	              //          MAX(Side) Side,  																																										  
- 	              //          MIN(CL2.Id) AS ID
+ 	                        MAX(Phase) AS Phase,
+                             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
+                             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
+ 	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
+ 	                        MAX(ReauditLevel) ReauditLevel,																																										  
+ 	                        MAX(Sequential) Sequential,																																										
+ 	                        MAX(Side) Side,  																																										  
+ 	                        MIN(CL2.Id) AS ID
 
 
-                //         from CollectionLevel2 CL2   WITH(NOLOCK)
+                         from CollectionLevel2 CL2   WITH(NOLOCK)
 
 
-                //         left join CollectionLevel2XCluster CL2C
-                //         on CL2C.CollectionLevel2_Id = CL2.Id
+                         left join CollectionLevel2XCluster CL2C
+                         on CL2C.CollectionLevel2_Id = CL2.Id
 
 
-                //         inner join parlevel2 p2     WITH(NOLOCK)
-                //         on p2.id = CL2.ParLevel2_Id
+                         inner join parlevel2 p2     WITH(NOLOCK)
+                         on p2.id = CL2.ParLevel2_Id
 
 
-                //         where unitid = @unidade
-                //         and p2.ParFrequency_Id in (4)
-                //         and CAST(CollectionDate AS DATE) between @datasemanal and @data
+                         where unitid = @unidade
+                         and p2.ParFrequency_Id in (4)
+                         and CAST(CollectionDate AS DATE) between @datasemanal and @data
 
 
-                //         GROUP BY
-                //         ParLevel1_Id, 																																															  
-                //         ParLevel2_Id, 																																															  
-                //         UnitId,																																																	  
-                //         Shift,  																																															  
-                //         Period, 																																															  
-                //         CAST(CollectionDate AS DATE),																																											  
-                //         ConsolidationLevel2_Id
+                         GROUP BY
+                         ParLevel1_Id, 																																															  
+                         ParLevel2_Id, 																																															  
+                         UnitId,																																																	  
+                         Shift,  																																															  
+                         Period, 																																															  
+                         CAST(CollectionDate AS DATE),																																											  
+                         ConsolidationLevel2_Id
 
-                //         /*coletas quinzenal */
-                //         INSERT INTO #COLETA																																														  
+                         /*coletas quinzenal */
+                         INSERT INTO #COLETA																																														  
  																																																		  
-                //         select
+                         select
 
 
-                //          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                //          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
-                //          UnitId AS Unit_Id,--unidade
-                //          Shift, --shift
-                //          Period,--periodo
-                //          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
-                //          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
-                //         ConsolidationLevel2_Id,  --id da consolidaçao level2
-                //         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
+                          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                          CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                          UnitId AS Unit_Id,--unidade
+                          Shift, --shift
+                          Period,--periodo
+                          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
+                          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
+                         ConsolidationLevel2_Id,  --id da consolidaçao level2
+                         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
  																																																		  
- 	              //          MAX(Phase) AS Phase,
-                //             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
-                //             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
- 	              //          MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
- 	              //          MAX(ReauditLevel) ReauditLevel,																																										  
- 	              //          MAX(Sequential) Sequential,		 																																					  
- 	              //          MAX(Side) Side,																																										  
- 	              //          MIN(CL2.Id) AS ID
+ 	                        MAX(Phase) AS Phase,
+                             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
+                             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
+ 	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
+ 	                        MAX(ReauditLevel) ReauditLevel,																																										  
+ 	                        MAX(Sequential) Sequential,		 																																					  
+ 	                        MAX(Side) Side,																																										  
+ 	                        MIN(CL2.Id) AS ID
 
 
-                //         from CollectionLevel2 CL2 WITH(NOLOCK)
+                         from CollectionLevel2 CL2 WITH(NOLOCK)
 
 
-                //         left join CollectionLevel2XCluster CL2C
-                //         on CL2C.CollectionLevel2_Id = CL2.Id
+                         left join CollectionLevel2XCluster CL2C
+                         on CL2C.CollectionLevel2_Id = CL2.Id
 
 
-                //         inner join parlevel2 p2     WITH(NOLOCK)
-                //         on p2.id = CL2.ParLevel2_Id
+                         inner join parlevel2 p2     WITH(NOLOCK)
+                         on p2.id = CL2.ParLevel2_Id
 
 
-                //         where unitid = @unidade
-                //         and p2.ParFrequency_Id in (5)
-                //         and CAST(CollectionDate AS DATE) between @dataquinzenal and @data
+                         where unitid = @unidade
+                         and p2.ParFrequency_Id in (5)
+                         and CAST(CollectionDate AS DATE) between @dataquinzenal and @data
 
 
-                //         GROUP BY
-                //         ParLevel1_Id, 																																															  
-                //         ParLevel2_Id, 																																															  
-                //         UnitId,																																																	  
-                //         Shift,  																																															  
-                //         Period, 																																															  
-                //         CAST(CollectionDate AS DATE),																																											  
-                //         ConsolidationLevel2_Id
+                         GROUP BY
+                         ParLevel1_Id, 																																															  
+                         ParLevel2_Id, 																																															  
+                         UnitId,																																																	  
+                         Shift,  																																															  
+                         Period, 																																															  
+                         CAST(CollectionDate AS DATE),																																											  
+                         ConsolidationLevel2_Id
 
-                //         /*coletas mensal */
-                //         INSERT INTO #COLETA																																														  
+                         /*coletas mensal */
+                         INSERT INTO #COLETA																																														  
  																																																		  
-                //         select
+                         select
 
 
-                //        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                //        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
-                //          UnitId AS Unit_Id,--unidade
-                //          Shift, --shift
-                //          Period,--periodo
-                //          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
-                //          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
-                //         ConsolidationLevel2_Id,  --id da consolidaçao level2
-                //         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
+                        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                        CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                          UnitId AS Unit_Id,--unidade
+                          Shift, --shift
+                          Period,--periodo
+                          CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
+                          MAX(EvaluationNumber)AS EvaluateLast,--maior avaliacao
+                         ConsolidationLevel2_Id,  --id da consolidaçao level2
+                         (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
  																																																		  
- 	              //          MAX(Phase) AS Phase,
-                //             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
-                //             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
- 	              //          MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
- 	              //          MAX(ReauditLevel) ReauditLevel,																																										  
- 	              //          MAX(Sequential) Sequential,																																							  
- 	              //          MAX(Side) Side,																																										  
- 	              //          MIN(CL2.Id) AS ID
+ 	                        MAX(Phase) AS Phase,
+                             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
+                             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
+ 	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
+ 	                        MAX(ReauditLevel) ReauditLevel,																																										  
+ 	                        MAX(Sequential) Sequential,																																							  
+ 	                        MAX(Side) Side,																																										  
+ 	                        MIN(CL2.Id) AS ID
 
 
-                //         from CollectionLevel2 CL2 WITH(NOLOCK)
+                         from CollectionLevel2 CL2 WITH(NOLOCK)
 
 
-                //         left join CollectionLevel2XCluster CL2C
-                //         on CL2C.CollectionLevel2_Id = CL2.Id
+                         left join CollectionLevel2XCluster CL2C
+                         on CL2C.CollectionLevel2_Id = CL2.Id
 
 
-                //         inner join parlevel2 p2     WITH(NOLOCK)
-                //         on p2.id = CL2.ParLevel2_Id
+                         inner join parlevel2 p2     WITH(NOLOCK)
+                         on p2.id = CL2.ParLevel2_Id
 
 
-                //         where unitid = @unidade
-                //         and p2.ParFrequency_Id in (6)
-                //         and CAST(CollectionDate AS DATE) between @datamensal and @data
+                         where unitid = @unidade
+                         and p2.ParFrequency_Id in (6)
+                         and CAST(CollectionDate AS DATE) between @datamensal and @data
 
 
-                //         GROUP BY
-                //         ParLevel1_Id, 																																															  
-                //         ParLevel2_Id, 																																															  
-                //         UnitId,																																																	  
-                //         Shift,  																																															  
-                //         Period, 																																															  
-                //         CAST(CollectionDate AS DATE),																																											  
-                //         ConsolidationLevel2_Id
+                         GROUP BY
+                         ParLevel1_Id, 																																															  
+                         ParLevel2_Id, 																																															  
+                         UnitId,																																																	  
+                         Shift,  																																															  
+                         Period, 																																															  
+                         CAST(CollectionDate AS DATE),																																											  
+                         ConsolidationLevel2_Id
 
-                //         SELECT
-
-
-
-                //         '<div class=""Resultlevel2""																																												  
-                //          AlertLevelL1 = ""' + ISNULL(REPLACE(CAST(CDL1.AtualAlert AS VARCHAR),'.',','),'NULL') + '""
-                //          WeiEvaluationL1 = ""' + ISNULL(REPLACE(CAST(CDL1.WeiEvaluation AS VARCHAR),'.',','),'NULL') + '""
-                //          EvaluateTotalL1 = ""' + ISNULL(REPLACE(CAST(CDL1.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '""
-                //          DefectsTotalL1 = ""' + ISNULL(REPLACE(CAST(CDL1.WeiDefects AS VARCHAR),'.',','),'NULL') + '""
-                //          WeiDefectsL1 = ""' + ISNULL(REPLACE(CAST(CDL1.WeiDefects AS VARCHAR),'.',','),'NULL') + '""
-                //          TotalLevel3EvaluationL1 = ""' + ISNULL(REPLACE(CAST(CDL1.TotalLevel3Evaluation AS VARCHAR),'.',','),'NULL') + '""
-                //          TotalLevel3WithDefectsL1 = ""' + ISNULL(REPLACE(CAST(CDL1.TotalLevel3WithDefects AS VARCHAR),'.',','),'NULL') + '""
-                //          LastEvaluationAlertL1 = ""' + ISNULL(REPLACE(CAST(CDL1.LastEvaluationAlert AS VARCHAR),'.',','),'NULL') + '""
-                //          LastLevel2AlertL1 = ""' + ISNULL(REPLACE(CAST(CDL1.LastLevel2Alert AS VARCHAR),'.',','),'NULL') + '""
-                //          EvaluatedResultL1 = ""' + ISNULL(REPLACE(CAST(CDL1.EvaluatedResult AS VARCHAR),'.',','),'NULL') + '""
-                //          DefectsResultL1 = ""' + ISNULL(REPLACE(CAST(CDL1.DefectsResult AS VARCHAR),'.',','),'NULL') + '""
-                //          EvaluateTotalL2 = ""' + ISNULL(REPLACE(CAST(CDL2.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '""
-                //          DefectsTotalL2 = ""' + ISNULL(REPLACE(CAST(CDL2.DefectsTotal AS VARCHAR),'.',','),'NULL') + '""
-                //          WeiEvaluationL2 = ""' + ISNULL(REPLACE(CAST(CDL2.WeiEvaluation AS VARCHAR),'.',','),'NULL') + '""
-                //          DefectsL2 = ""' + ISNULL(REPLACE(CAST(CDL2.DefectsTotal AS VARCHAR),'.',','),'NULL') + '""
-                //          WeiDefectsL2 = ""' + ISNULL(REPLACE(CAST(CDL2.WeiDefects AS VARCHAR),'.',','),'NULL') + '""
-                //          TotalLevel3WithDefectsL2 = ""' + ISNULL(REPLACE(CAST(CDL2.TotalLevel3WithDefects AS VARCHAR),'.',','),'NULL') + '""
-                //          TotalLevel3EvaluationL2 = ""' + ISNULL(REPLACE(CAST(CDL2.TotalLevel3Evaluation AS VARCHAR),'.',','),'NULL') + '""
-                //          EvaluatedResultL2 = ""' + ISNULL(REPLACE(CAST(CDL2.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '""
-                //          DefectsResultL2 = ""' + ISNULL(REPLACE(CAST(CDL2.DefectsResult AS VARCHAR),'.',','),'NULL') + '""
-                //          Level1Id = ""' + ISNULL(REPLACE(CAST(Level2Result.ParLevel1_Id AS VARCHAR),'.',','),'NULL') + '""
-                //          Level2Id = ""' + ISNULL(REPLACE(CAST(Level2Result.ParLevel2_Id AS VARCHAR),'.',','),'NULL') + '""
-                //          UnitId = ""' + ISNULL(REPLACE(CAST(Level2Result.UnitId AS VARCHAR),'.',','),'NULL') + '""
-                //          Shift = ""' + ISNULL(REPLACE(CAST(Level2Result.Shift AS VARCHAR),'.',','),'NULL') + '""
-                //          Period = ""' + ISNULL(REPLACE(CAST(Level2Result.Period AS VARCHAR),'.',','),'NULL') + '""
-                //          CollectionDate = ""' + ISNULL(FORMAT(Level2Result.CollectionDate, 'MMddyyyy'),'NULL') +'""
-                //          Evaluation = ""' + ISNULL(REPLACE(CAST(Level2Result.EvaluateLast AS VARCHAR),'.',','),'NULL') + '""
-                //          Sample = ""' + ISNULL(REPLACE(CAST(Level2Result.SampleLast AS VARCHAR),'.',','),'NULL') + '""
-                //          Phase = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Phase) AS VARCHAR),'.',','),'NULL') + '""
-                //          StartPhaseDate = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') +'""
-                //          StartPhaseEvaluation = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') + '""
-                //          havecorrectiveaction = ""' + ISNULL(REPLACE(CAST(Max(CAST(Level2Result.haveCorrectiveAction as Int)) AS VARCHAR),'1','true'),'NULL') + '""
-                //          Sequential = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '""
-                //          Side = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '""
-                //          havereaudit = ""' + ISNULL(REPLACE(CAST(Max(cast(Level2Result.haveReaudit as int)) AS VARCHAR),'1','true'),'NULL') + '""
-                //          reauditlevel = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.ReauditLevel) AS VARCHAR),'.',','),'NULL') + '""
-                //          reauditnumber = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '""
-                //          isreaudit = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '""
-                //          more3defectsEvaluate = ""0""
-                //          CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR),'.',','),'NULL') + '""
-                //          CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR),'.',','),'NULL') + '"" >
-                //          ' + @RESPOSTA + '
-                //          </div> '  AS retorno																																													  
+                         SELECT
 
 
 
-                //         FROM #COLETA Level2Result																																												  
-                //         INNER JOIN ConsolidationLevel2 CDL2 WITH(NOLOCK)
-                //         ON Level2Result.ConsolidationLevel2_Id = CDL2.Id
-                //         INNER JOIN ConsolidationLevel1 CDL1         WITH(NOLOCK)
-                //         ON CDL2.ConsolidationLevel1_Id = CDL1.Id
+                         '<div class=""Resultlevel2""																																												  
+                          AlertLevelL1 = ""' + ISNULL(REPLACE(CAST(CDL1.AtualAlert AS VARCHAR),'.',','),'NULL') + '""
+                          WeiEvaluationL1 = ""' + ISNULL(REPLACE(CAST(CDL1.WeiEvaluation AS VARCHAR),'.',','),'NULL') + '""
+                          EvaluateTotalL1 = ""' + ISNULL(REPLACE(CAST(CDL1.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '""
+                          DefectsTotalL1 = ""' + ISNULL(REPLACE(CAST(CDL1.WeiDefects AS VARCHAR),'.',','),'NULL') + '""
+                          WeiDefectsL1 = ""' + ISNULL(REPLACE(CAST(CDL1.WeiDefects AS VARCHAR),'.',','),'NULL') + '""
+                          TotalLevel3EvaluationL1 = ""' + ISNULL(REPLACE(CAST(CDL1.TotalLevel3Evaluation AS VARCHAR),'.',','),'NULL') + '""
+                          TotalLevel3WithDefectsL1 = ""' + ISNULL(REPLACE(CAST(CDL1.TotalLevel3WithDefects AS VARCHAR),'.',','),'NULL') + '""
+                          LastEvaluationAlertL1 = ""' + ISNULL(REPLACE(CAST(CDL1.LastEvaluationAlert AS VARCHAR),'.',','),'NULL') + '""
+                          LastLevel2AlertL1 = ""' + ISNULL(REPLACE(CAST(CDL1.LastLevel2Alert AS VARCHAR),'.',','),'NULL') + '""
+                          EvaluatedResultL1 = ""' + ISNULL(REPLACE(CAST(CDL1.EvaluatedResult AS VARCHAR),'.',','),'NULL') + '""
+                          DefectsResultL1 = ""' + ISNULL(REPLACE(CAST(CDL1.DefectsResult AS VARCHAR),'.',','),'NULL') + '""
+                          EvaluateTotalL2 = ""' + ISNULL(REPLACE(CAST(CDL2.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '""
+                          DefectsTotalL2 = ""' + ISNULL(REPLACE(CAST(CDL2.DefectsTotal AS VARCHAR),'.',','),'NULL') + '""
+                          WeiEvaluationL2 = ""' + ISNULL(REPLACE(CAST(CDL2.WeiEvaluation AS VARCHAR),'.',','),'NULL') + '""
+                          DefectsL2 = ""' + ISNULL(REPLACE(CAST(CDL2.DefectsTotal AS VARCHAR),'.',','),'NULL') + '""
+                          WeiDefectsL2 = ""' + ISNULL(REPLACE(CAST(CDL2.WeiDefects AS VARCHAR),'.',','),'NULL') + '""
+                          TotalLevel3WithDefectsL2 = ""' + ISNULL(REPLACE(CAST(CDL2.TotalLevel3WithDefects AS VARCHAR),'.',','),'NULL') + '""
+                          TotalLevel3EvaluationL2 = ""' + ISNULL(REPLACE(CAST(CDL2.TotalLevel3Evaluation AS VARCHAR),'.',','),'NULL') + '""
+                          EvaluatedResultL2 = ""' + ISNULL(REPLACE(CAST(CDL2.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '""
+                          DefectsResultL2 = ""' + ISNULL(REPLACE(CAST(CDL2.DefectsResult AS VARCHAR),'.',','),'NULL') + '""
+                          Level1Id = ""' + ISNULL(REPLACE(CAST(Level2Result.ParLevel1_Id AS VARCHAR),'.',','),'NULL') + '""
+                          Level2Id = ""' + ISNULL(REPLACE(CAST(Level2Result.ParLevel2_Id AS VARCHAR),'.',','),'NULL') + '""
+                          UnitId = ""' + ISNULL(REPLACE(CAST(Level2Result.UnitId AS VARCHAR),'.',','),'NULL') + '""
+                          Shift = ""' + ISNULL(REPLACE(CAST(Level2Result.Shift AS VARCHAR),'.',','),'NULL') + '""
+                          Period = ""' + ISNULL(REPLACE(CAST(Level2Result.Period AS VARCHAR),'.',','),'NULL') + '""
+                          CollectionDate = ""' + ISNULL(FORMAT(Level2Result.CollectionDate, 'MMddyyyy'),'NULL') +'""
+                          Evaluation = ""' + ISNULL(REPLACE(CAST(Level2Result.EvaluateLast AS VARCHAR),'.',','),'NULL') + '""
+                          Sample = ""' + ISNULL(REPLACE(CAST(Level2Result.SampleLast AS VARCHAR),'.',','),'NULL') + '""
+                          Phase = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Phase) AS VARCHAR),'.',','),'NULL') + '""
+                          StartPhaseDate = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') +'""
+                          StartPhaseEvaluation = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') + '""
+                          havecorrectiveaction = ""' + ISNULL(REPLACE(CAST(Max(CAST(Level2Result.haveCorrectiveAction as Int)) AS VARCHAR),'1','true'),'NULL') + '""
+                          Sequential = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '""
+                          Side = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '""
+                          havereaudit = ""' + ISNULL(REPLACE(CAST(Max(cast(Level2Result.haveReaudit as int)) AS VARCHAR),'1','true'),'NULL') + '""
+                          reauditlevel = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.ReauditLevel) AS VARCHAR),'.',','),'NULL') + '""
+                          reauditnumber = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '""
+                          isreaudit = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '""
+                          more3defectsEvaluate = ""0""
+                          CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR),'.',','),'NULL') + '""
+                          CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR),'.',','),'NULL') + '"" >
+                          ' + @RESPOSTA + '
+                          </div> '  AS retorno																																													  
 
 
-                //         GROUP BY
-                //         CDL1.WeiEvaluation,																																														  
-                //         CDL1.EvaluateTotal,																																														  
-                //         CDL1.WeiDefects,																																														  
-                //         CDL1.WeiDefects,																																														  
-                //         CDL1.TotalLevel3Evaluation,																																												  
-                //         CDL1.TotalLevel3WithDefects,																																											  
-                //         CDL1.LastEvaluationAlert,																																												  
-                //         CDL1.LastLevel2Alert,																																													  
-                //         CDL1.EvaluatedResult,																																													  
-                //         CDL1.DefectsResult,																																														  
-                //         CDL2.EvaluateTotal,																																														  
-                //         CDL2.DefectsTotal,																																														  
-                //         CDL2.WeiEvaluation,																																														  
-                //         CDL2.DefectsTotal,																																														  
-                //         CDL2.WeiDefects,																																														  
-                //         CDL2.TotalLevel3WithDefects,																																											  
-                //         CDL2.TotalLevel3Evaluation,																																												  
-                //         CDL2.EvaluateTotal,																																														  
-                //         CDL2.DefectsResult,																																														  
-                //         Level2Result.ParLevel1_Id,																																												  
-                //         Level2Result.ParLevel2_Id,																																												  
-                //         Level2Result.UnitId,																																													  
-                //         Level2Result.Shift,																																														  
-                //         Level2Result.Period,																																													  
-                //         Level2Result.CollectionDate,																																											  
-                //         Level2Result.EvaluateLast,																																												  
-                //         Level2Result.SampleLast,																																												  
-                //         Level2Result.Sequential,																																												  
-                //         Level2Result.Side,																																												  
-                //         CDL2.ReauditNumber,																																														  
-                //         CDL2.ReauditIs,
-                //         CDL1.AtualAlert
-                //         order by Level2Result.CollectionDate asc, Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc
+
+                         FROM #COLETA Level2Result																																												  
+                         INNER JOIN ConsolidationLevel2 CDL2 WITH(NOLOCK)
+                         ON Level2Result.ConsolidationLevel2_Id = CDL2.Id
+                         INNER JOIN ConsolidationLevel1 CDL1         WITH(NOLOCK)
+                         ON CDL2.ConsolidationLevel1_Id = CDL1.Id
 
 
-                //         DROP TABLE #COLETASLEVEL3 																																												  
-                //         DROP TABLE #COLETA		
+                         GROUP BY
+                         CDL1.WeiEvaluation,																																														  
+                         CDL1.EvaluateTotal,																																														  
+                         CDL1.WeiDefects,																																														  
+                         CDL1.WeiDefects,																																														  
+                         CDL1.TotalLevel3Evaluation,																																												  
+                         CDL1.TotalLevel3WithDefects,																																											  
+                         CDL1.LastEvaluationAlert,																																												  
+                         CDL1.LastLevel2Alert,																																													  
+                         CDL1.EvaluatedResult,																																													  
+                         CDL1.DefectsResult,																																														  
+                         CDL2.EvaluateTotal,																																														  
+                         CDL2.DefectsTotal,																																														  
+                         CDL2.WeiEvaluation,																																														  
+                         CDL2.DefectsTotal,																																														  
+                         CDL2.WeiDefects,																																														  
+                         CDL2.TotalLevel3WithDefects,																																											  
+                         CDL2.TotalLevel3Evaluation,																																												  
+                         CDL2.EvaluateTotal,																																														  
+                         CDL2.DefectsResult,																																														  
+                         Level2Result.ParLevel1_Id,																																												  
+                         Level2Result.ParLevel2_Id,																																												  
+                         Level2Result.UnitId,																																													  
+                         Level2Result.Shift,																																														  
+                         Level2Result.Period,																																													  
+                         Level2Result.CollectionDate,																																											  
+                         Level2Result.EvaluateLast,																																												  
+                         Level2Result.SampleLast,																																												  
+                         Level2Result.Sequential,																																												  
+                         Level2Result.Side,																																												  
+                         CDL2.ReauditNumber,																																														  
+                         CDL2.ReauditIs,
+                         CDL1.AtualAlert
+                         order by Level2Result.CollectionDate asc, Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc
 
-                //";
+
+                         DROP TABLE #COLETASLEVEL3 																																												  
+                         DROP TABLE #COLETA		
+
+                ";
 
                 var list = factory.SearchQuery<ResultadoUmaColuna>(sql).ToList();
 
