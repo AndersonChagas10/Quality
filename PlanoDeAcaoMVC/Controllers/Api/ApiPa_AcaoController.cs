@@ -3,6 +3,7 @@ using AutoMapper;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
+using PlanoAcaoCore.Enum;
 using PlanoDeAcaoMVC.PaMail;
 using PlanoDeAcaoMVC.SgqIntegracao;
 using System;
@@ -56,10 +57,15 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
         {
             var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
+
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
-                SalvarAcompanhamento(db, acompanhamento);
                 var acao = db.Pa_Acao.FirstOrDefault(r => r.Id == acompanhamento.Acao_Id);
+
+                var statusDaAcao = GetStatusAcao(acompanhamento, acao);
+
+                SalvarAcompanhamento(db, acompanhamento, statusDaAcao);
+
                 foreach (var i in obj.MailTo)
                 {
                     Pa_AcompanhamentoXQuemVM obj2 = new Pa_AcompanhamentoXQuemVM();
@@ -70,7 +76,46 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Conn.TitileMailAcompanhamento, true);
                 }
             }
+
             return obj;
+        }
+
+       
+        private int GetStatusAcao(PlanoAcaoEF.Pa_Acompanhamento acompanhamento, PlanoAcaoEF.Pa_Acao acao)
+        {
+            switch (acompanhamento.Status_Id)
+            {
+                case (int)Enums.Status.Concluido:
+
+                    if (DateTime.Now.Date > acao.QuandoFim)
+                    {
+                        return (int)Enums.Status.ConcluidoComAtraso;
+                    }
+
+                    return acompanhamento.Status_Id;
+
+                case (int)Enums.Status.Aberto:
+
+                    if (DateTime.Now.Date >= acao.QuandoInicio && DateTime.Now.Date <= acao.QuandoFim)
+                    {
+                        return (int)Enums.Status.EmAndamento;           
+                    }
+                    else if (DateTime.Now.Date > acao.QuandoFim)
+                    {
+                        return (int)Enums.Status.Atrasado;
+                    }
+                    else if (DateTime.Now.Date < acao.QuandoInicio)
+                    {
+                        return (int)Enums.Status.NaoIniciado;
+                    }
+
+                    return acompanhamento.Status_Id;
+
+                default:
+
+                    return acompanhamento.Status_Id;
+
+            }
         }
 
         [HttpPost]
@@ -176,7 +221,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
+        private void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom, int statusDaAcao)
         {
             if (acom.Id > 0)
             {
@@ -185,14 +230,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 var entry = db.Entry(acom);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + acom.Status_Id + " where Id = " + acom.Acao_Id);
+                db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + statusDaAcao + " where Id = " + acom.Acao_Id);
             }
             else
             {
                 acom.AddDate = DateTime.Now;
                 db.Pa_Acompanhamento.Add(acom);
                 db.SaveChanges();
-                db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + acom.Status_Id + " where Id = " + acom.Acao_Id);
+                db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + statusDaAcao + " where Id = " + acom.Acao_Id);
             }
         }
 

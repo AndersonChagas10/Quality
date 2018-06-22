@@ -194,7 +194,7 @@ namespace SgqSystem.Services
 
 
 
-                        var i = Convert.ToInt32(command.ExecuteNonQuery());
+                        var i = 1; // Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
                         {
                             return i;

@@ -296,7 +296,7 @@ namespace SgqSystem.Controllers.Api
                                 "\n                                                                                                                                                           " +
                                 "\n     '0;' + --monitoraemntoUltimo Alerta                                                                                                                   " +
                                 "\n                                                                                                                                                           " +
-                                "\n     'undefined'                                                                                                                                           " +
+                                "\n     'undefined;0;;3'                                                                                                                                           " +
                                 "\n                                                                                                                                                           " +
                                 "\n                                                                                                                                                           " +
                                 "\n     from VerificacaoTipificacaoV2                                                                                                                         " +
