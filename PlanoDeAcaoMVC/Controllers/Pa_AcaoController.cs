@@ -9,9 +9,12 @@ using PlanoAcaoCore.Acao;
 using PlanoAcaoCore.Enum;
 using PlanoDeAcaoMVC.Controllers.Api;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
@@ -32,18 +35,31 @@ namespace PlanoDeAcaoMVC.Controllers
                 ViewBag.Unidade = Pa_Unidade.Listar();
 
             if (ViewBag.Quem == null)
-                ViewBag.Quem = Pa_Quem.Listar();
+                ViewBag.Quem = Pa_Quem.Listar().OrderBy(r => r.Name);
 
             ViewBag.Departamento = Pa_Departamento.Listar();
             ViewBag.CausaGenerica = Pa_CausaGenerica.Listar();
             ViewBag.GrupoCausa = Pa_GrupoCausa.Listar();
             ViewBag.ContramedidaGenerica = Pa_ContramedidaGenerica.Listar();
             ViewBag.Predecessora = Pa_Planejamento.Listar();
-            ViewBag.Status = Pa_Status.Listar();
+
+            var Status = Pa_Status.Listar();
+
+            ViewBag.Status = Status;
+            ViewBag.Status2 = GetStatusAcompanhamento(Status);
             ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
             ViewBag.Pa_Problema_Desvio = Pa_Problema_Desvio.Listar();
 
             ViewBag.UnidadeMedida = Pa_UnidadeMedida.Listar();
+        }
+
+        private static IEnumerable<Pa_Status> GetStatusAcompanhamento(IEnumerable<Pa_Status> Status)
+        {
+            int[] statusAcompanhamento = { (int)Enums.Status.Cancelado, (int)Enums.Status.Concluido, (int)Enums.Status.Aberto, (int)Enums.Status.Finalizada };
+
+            Status = Status.Where(r => statusAcompanhamento.Contains(r.Id));
+
+            return Status;
         }
 
         #region Ações
@@ -371,7 +387,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 {
                     PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
                 }
-                
+
 
                 if (fta.Level2Id.IsNotNull())
                 {
@@ -410,7 +426,7 @@ namespace PlanoDeAcaoMVC.Controllers
                     {
                         fta.ReincidenciaDesvioFTA = "0";
                     }
-                    
+
                 }
 
                 //fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
@@ -431,7 +447,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 else
                 {
                     fta.MetaFTA = "0";
-                }      
+                }
             }
         }
 
@@ -467,6 +483,28 @@ namespace PlanoDeAcaoMVC.Controllers
                     novoPlanejamentoTatico = apiTmp.CreateGenericEstrategicoTaticoFta();
 
             return novoPlanejamentoTatico.Id;
+        }
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+            try
+            {
+
+                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+                ViewBag.Resources = resourceManager.GetResourceSet(
+                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            base.Initialize(requestContext);
         }
 
         #endregion

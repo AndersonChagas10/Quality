@@ -4896,8 +4896,8 @@ FROM (SELECT
                --,IND.Name AS IndicadorName
                --,MON.Id AS Monitoramento_Id
                --,MON.Name AS MonitoramentoName
-                R3.ParLevel3_Id AS Tarefa_Id
-               ,R3.ParLevel3_Name AS TarefaName
+                TAR.ID AS Tarefa_Id
+               ,TAR.NAME AS TarefaName
                -- ,UNI.Name AS UnidadeName
                -- ,UNI.Id AS Unidade_Id
                ,CASE 
@@ -4921,13 +4921,17 @@ FROM (SELECT
             	ON IND.Id = CL1.ParLevel1_Id
             INNER JOIN ParLevel2 MON (NOLOCK)
             	ON MON.Id = CL2.ParLevel2_Id
+            INNER JOIN ParLevel3 TAR (NOLOCK)
+            	ON TAR.Id = R3.ParLevel3_Id
             WHERE 1 = 1 
             { whereLevel1 }
             { whereUnit }
-            /* and MON.Id = 1 */
             AND CL2.UnitId in ({WunidadeAcesso}) 
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
+			AND IND.IsActive = 1
+			AND MON.IsActive = 1
+			AND TAR.IsActive = 1
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
             { whereGroupLevel1 }
             { whereDepartment }
@@ -4937,8 +4941,8 @@ FROM (SELECT
             		--,IND.Name
             		--,MON.Id
             		--,MON.Name
-            		 R3.ParLevel3_Id
-            		,R3.ParLevel3_Name
+            		 TAR.ID
+            		,TAR.NAME
             		--,UNI.Name
             		--,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0

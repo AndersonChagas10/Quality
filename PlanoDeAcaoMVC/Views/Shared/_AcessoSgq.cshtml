@@ -140,15 +140,15 @@
             $.post(urlMaster, user, function (r) {
                 $.LoadingOverlay('hide')
                 if (r.MensagemExcecao) {
-                    $('#formLogin #resultado').text('@Resources.Resource.username_password_invalid').fadeIn().fadeOut(intervalLabels, "swing");
+                    $('#formLogin #resultado').text('@Html.Raw(Resources.Resource.username_password_invalid)').fadeIn().fadeOut(intervalLabels, "swing");
                 }
                 else if (r.errors) {
                     //console.log(r);
-                    $('#formLogin #resultado').text('@Resources.Resource.username_password_invalid').fadeIn().fadeOut(intervalLabels, "swing");
+                    $('#formLogin #resultado').text('@Html.Raw(Resources.Resource.username_password_invalid)').fadeIn().fadeOut(intervalLabels, "swing");
                     console.log(r);
                 } else {
                     removeBlur();
-                    clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
+                    clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DE VOLTA
                     modalLogin.modal("hide");
                     createUpdateCookie(r.Retorno);
                     //window.location.href = '/';

@@ -2,8 +2,6 @@
 //var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 //var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
 
-var ColvisarrayVisaoAtual_show = [];
-var ColvisarrayVisaoAtual_hide = [];
 var table;
 var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp' + Resources('details') + '</button> ';
 var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp' + Resources('new_tactic') + '</button>';
@@ -14,10 +12,166 @@ var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEd
 var dados = [];
 var dadosfilter = [];
 var dadosPie2 = [];
+
+//Colunas Visiveis do Usuário na Tabela de Ações
 var ColvisarrayVisaoUsuario_show = [];
 var ColvisarrayVisaoUsuario_hide = [];
+var ColvisarrayVisaoAtual_show = [];
+var ColvisarrayVisaoAtual_hide = [];
 
-function GetDataTable(campo, filtro) {
+//Colunas Visiveis do Usuário na Tabela de Projetos
+var ColvisarrayProjVisaoUsuario_show = [];
+var ColvisarrayProjVisaoUsuario_hide = [];
+var ColvisarrayProjVisaoAtual_show = [];
+var ColvisarrayProjVisaoAtual_hide = [];
+
+//Cores dos Status
+var atrasadaColor = '#FF0000';
+var concluidoColor = '#0000FF';
+var andamentoColor = '#008000';
+var concluidoAtrasoColor = '#FFA500'
+var canceladoColor = '#000000'
+var retornoColor = '#8B4513'
+var finalizadaColor = '#00008B'
+var finalizadaComAtrasoColor = '#FF4500'
+var naoIniciadoColor = '#E0EEEE'
+
+var dataInicio;
+var dataFim;
+
+var categories2 = ['Camila', 'Miriã', 'Ana', 'Adão', 'Diego'];
+
+var data2 = [{
+    name: Resources("completed"),
+    data: [5, 3, 4, 7, 2],
+    color: concluidoColor
+}, {
+    name: Resources("late"),
+    data: [2, 2, 3, 2, 1],
+    color: atrasadaColor
+}, {
+    name: Resources("in_progress"),
+    data: [3, 4, 4, 2, 5],
+    color: andamentoColor
+}];
+
+var data3 = [{
+    id: 'A',
+    name: Resources("late"),
+    color: atrasadaColor
+}, {
+    id: 'B',
+    name: Resources("completed"),
+    color: concluidoColor
+}, {
+    id: 'O',
+    name: Resources("in_progress"),
+    color: andamentoColor
+}, {
+    name: Resources("quality"),
+    parent: 'A',
+    value: 5
+}, {
+    name: Resources("operation"),
+    parent: 'A',
+    value: 3
+}, {
+    name: Resources("quality"),
+    parent: 'B',
+    value: 4
+}, {
+    name: Resources("operation"),
+    parent: 'B',
+    value: 10
+}, {
+    name: Resources("quality"),
+    parent: 'O',
+    value: 1
+}, {
+    name: Resources("operation"),
+    parent: 'O',
+    value: 3
+}];
+
+var categories4 = [];
+
+var data4 = [{
+    type: 'column',
+    name: Resources("open"),
+    data: [],
+    color: andamentoColor
+}, {
+    type: 'column',
+    name: Resources("closed"),
+    data: [],
+    color: concluidoColor
+}, {
+    type: 'spline',
+    name: Resources("stock"),
+    data: [],
+    color: atrasadaColor,
+    marker: {
+        lineWidth: 2,
+        lineColor: atrasadaColor,
+        fillColor: atrasadaColor
+    }
+}];
+
+var categories5 = []; //['Qualidade', 'Operação', 'Industria'];
+
+var data5 = [];
+
+var categories6 = []; //categories2
+
+var data6 = [];
+
+var json = FiltraColunas(dados, [Resources("directorship"),
+Resources("mission"),
+Resources("view"),
+Resources("dimension"),
+Resources("guidelines"),
+Resources("indicators_guidelines"),
+Resources("responsible_guideline"),
+Resources("management"),
+Resources("coordination"),
+Resources("initiative"),
+Resources("project_initiative"),
+Resources("management_objective"),
+Resources("value_of"),
+Resources("value_for"),
+Resources("start_date"),
+Resources("end_date"),
+Resources("responsible_project_initiative"),
+Resources("regional"),
+Resources("unit"),
+Resources("indicator"),
+Resources("monitoring"),
+Resources("task"),
+Resources("indicators_project_initiative"),
+Resources("generic_cause"),
+Resources("group_cause"),
+Resources("generic_action"),
+Resources("specific_action"),
+Resources("specific_cause2"),
+Resources("who"),
+Resources("when_start"),
+Resources("when_end"),
+Resources("theme_subject"),
+Resources("for_what"),
+Resources("how_much"),
+Resources("status"),
+Resources("term")]);
+
+var enviar = {};
+var start = moment();
+var end = moment();
+var btnOrderFilter = "";
+var option = "";
+var campo1Panel5Selected = "";
+
+var filtrosDeColunas = [];
+
+function GetDataTable(campo, filtro, campo2, filtro2) {
 
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
@@ -36,17 +190,25 @@ function GetDataTable(campo, filtro) {
         }
 
         //fim https://grtsolucoes.atlassian.net/browse/JBS-110
+        //Regras para o primeiro filtro geral
         if (campo == "") {
             campo = "Todos";
             $("campo1FiltroPie2 select").val("Todos");
-
         }
-
 
         if (campo != "Todos" && filtro != "Todos") {
             dados = FiltraLinhas(dados, [campo], [filtro]);
         }
 
+        //Regras para o segundo filtro geral
+        if (campo2 == "") {
+            campo2 = "Todos";
+            $("campo1FiltroPie2 select").val("Todos");
+        }
+
+        if (campo2 != "Todos" && filtro2 != "Todos") {
+            dados = FiltraLinhas(dados, [campo2], [filtro2]);
+        }
 
         //gera o gráfico de Pizza
         geraData1();
@@ -79,12 +241,27 @@ function GetDataTable(campo, filtro) {
 
                 if (r.length > 0) {
 
-                    ColvisarrayVisaoAtual_show = objectToArr(r[0].ColVisShow.split(","));
-                    ColvisarrayVisaoAtual_hide = objectToArr(r[0].ColVisHide.split(","));
+                    //Colunas da Tabela de Ações
+                    if (!!r[0].ColVisShow && !!r[0].ColVisHide) {
 
-                    if (ColvisarrayVisaoAtual_hide.length > 0) {
-                        ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
-                        ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
+                        ColvisarrayVisaoAtual_show = objectToArr(r[0].ColVisShow.split(","));
+                        ColvisarrayVisaoAtual_hide = objectToArr(r[0].ColVisHide.split(","));
+
+                        if (ColvisarrayVisaoAtual_hide.length > 0) {
+                            ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
+                            ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
+                        }
+                    }
+
+                    if (!!r[0].ColVisProjShow && !!r[0].ColVisProjHide) {
+                        //Colunas da Tabela de Planejamento
+                        ColvisarrayProjVisaoAtual_show = objectToArr(r[0].ColVisProjShow.split(","));
+                        ColvisarrayProjVisaoAtual_hide = objectToArr(r[0].ColVisProjHide.split(","));
+
+                        if (ColvisarrayProjVisaoAtual_hide.length > 0) {
+                            ColvisarrayProjVisaoUsuario_show = ColvisarrayProjVisaoAtual_show;
+                            ColvisarrayProjVisaoUsuario_hide = ColvisarrayProjVisaoAtual_hide;
+                        }
                     }
 
                 }
@@ -101,7 +278,6 @@ function GetDataTable(campo, filtro) {
         //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
-
 
     });
 }
@@ -154,8 +330,30 @@ function MountDataTable(json) {
             { "mData": "ObjetivoGerencial" },
             { "mData": "_ValorDe" },
             { "mData": "_ValorPara" },
-            { "mData": "_DataInicio" },
-            { "mData": "_DataFim" },
+            {
+                //"mData": "_DataInicio",
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.DataInicio != "0001-01-01T00:00:00")
+                        html = "<span style='display:none'>" + data._DataInicio + "</span>" + new Date(data.DataInicio).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
+            {
+                //"mData": "_DataFim"
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.DataFim != "0001-01-01T00:00:00")
+                        html = "<span style='display:none'>" + data._DataFim + "</span>" + new Date(data.DataFim).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
             { "mData": "Responsavel_Projeto_Quem.Name" },
             { "mData": "Acao.Regional" },
             { "mData": "Acao.UnidadeName" },
@@ -170,8 +368,30 @@ function MountDataTable(json) {
             { "mData": "Acao.CausaEspecifica" },
             { "mData": "Acao.ContramedidaEspecifica" },
             { "mData": "Acao._Quem" },
-            { "mData": "Acao._QuandoInicio" },
-            { "mData": "Acao._QuandoFim" },
+            {
+                //"mData": "Acao._QuandoInicio"
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.Acao.QuandoInicio != "0001-01-01T00:00:00")
+                        html = "<span style='display:none'>" + data.Acao._QuandoInicio + "</span>" + new Date(data.Acao.QuandoInicio).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
+            {
+                //"mData": "Acao._QuandoFim"
+                "mData": null,
+                "render": function (data, type, row, meta) {
+                    let html = "";
+                    if (data.Acao.QuandoFim != "0001-01-01T00:00:00")
+                        html = "<span style='display:none'>" + data.Acao._QuandoFim + "</span>" + new Date(data.Acao.QuandoFim).toLocaleDateString();
+
+                    return html;
+
+                }
+            },
             { "mData": "Acao.ComoPontosimportantes" },
             { "mData": "Acao.PraQue" },
             { "mData": "Acao._QuantoCusta" },
@@ -258,12 +478,13 @@ function MountDataTable(json) {
         "bLengthChange": true,
         "dom": 'Blfrtip',
         "buttons": [
-            //{
             {
                 extend: 'colvisGroup',
                 text: Resources("initial_view"),
-                show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
-                hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
+                //show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
+                //hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]                
+                show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+                hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
             {
                 extend: 'colvisGroup',
@@ -294,19 +515,6 @@ function MountDataTable(json) {
                 show: ColvisarrayVisaoAtual_show,
                 hide: ColvisarrayVisaoAtual_hide
             },
-
-            //print: {
-            //    extend: 'print',
-            //    text: 'Imprimir',
-            //    customize: function (win) {
-            //        $(win.document.body).find('table')
-            //            .addClass('compact')
-            //            .css('font-size', 'inherit');
-            //    },
-            //    exportOptions: {
-            //        columns: ':visible'
-            //    }
-            //},
             {
                 extend: 'excel',
                 text: 'Excel',
@@ -337,7 +545,8 @@ function MountDataTable(json) {
             {
                 text: Resources("save_columns"),
                 action: function (e, dt, node, config) {
-                    SaveUserColVis();
+                    let Tabela = "Acao"
+                    SaveUserColVis(Tabela);
                 },
             },
             //novaAcao: {
@@ -390,6 +599,8 @@ function MountDataTable(json) {
                 } else if (data.Acao.Status == 4) {
                     bgColorPrazo = "rgb(126, 194, 253)";
                     bgColorStatus = "steelblue"
+                } else if (data.Acao.Status == 9) {
+                    bgColorStatus = "#E0EEEE";
                 }
 
                 //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
@@ -500,7 +711,6 @@ function MountDataTable(json) {
 
     }, 1100);
 
-
     $('#virtualBody').css('width', '100%');
 
     //Filtros por coluna
@@ -512,11 +722,6 @@ function MountDataTable(json) {
     });
 
     $('.dataTable thead th').css('text-align', 'center');
-
-    //$('.dataTables_filter').hide();
-
-    // DataTable
-    //var table = $('.dataTable:not(.DTFC_Cloned)').DataTable();
 
     // Filter event handler
     $(table.table().container()).on('keyup', 'thead input', function () {
@@ -576,25 +781,27 @@ function MountDataTable(json) {
 }
 
 $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+
     var data = table.row($(this).parents('tr')).data();
-    //console.log(data);
 
     Clicked(true, false, true);
-    $.get(urlGetPlanejamento, {
-        id: data.Id
-    }, function (r) {
-        //EditarPlanejamento(r)
+
+    $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
+
         ModalOpcoesEstrategico(Resources("new_tactical_planning_linked"), 0, function () {
             EditarPlanejamento(r)
         });
+
     });
 
 });
 
 $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+
     var data = table.row($(this).parents('tr')).data();
-    //console.log(data);
+
     planejamentoCorrentId = data.Tatico_Id;
+
     Clicked(isTaticoClicked, isNovaAcao);
 
     $('#modalLindo').modal();
@@ -616,10 +823,10 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', funct
 $('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
+
     selecionado = data;
-    //console.log(data);
+
     acaoCorrentId = data.Acao.Id;
-    //Clicked(isTaticoClicked, isNovaAcao);
 
     getAcompanhamento(acaoCorrentId);
 
@@ -627,13 +834,9 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', functi
 
 $('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
-    //var data = selecionado
-
     $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
 
     var data = table.row($(this).parents('tr')).data();
-
-    console.log(data);
 
     if (data.Id > 0) {
 
@@ -642,16 +845,6 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', fu
         getPlanOp(data, a, b);
 
     }
-    //else if (data.Estrategico_Id > 0) {
-
-    //    isClickedTaticoVinculado = true;
-
-    //    getPlanEstrat(data, a, b);
-    //}
-    //} else if (data.Acao.Id > 0) {
-
-    //    getAcao(data, a, b);
-    //}
 
     $('#modalLindo').find('.modal-footer button').hide();
     $('#Header').html(Resources("edit"));
@@ -665,11 +858,6 @@ function tableDraw() {
     }, 50);
 }
 
-/**
- *
- * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
- * ['Nome','Idade'] arrColuna
- */
 function FiltraColunas(array, arrFiltro) {
 
     let novoArr = [];
@@ -697,12 +885,6 @@ function FiltraColunas(array, arrFiltro) {
     return novoArr;
 }
 
-/**
- *
- * [{Nome: 'Renan', Idade: 25}, {Nome: 'Leonardo', Idade: 23}, {Nome: 'Lucas', Idade: 25}] array
- * ['Nome','Idade'] arrColuna
- * ['Renan',25] arrValue
- */
 function FiltraLinhas(array, arrColuna, arrValue) {
 
     let novoArr = []
@@ -710,8 +892,6 @@ function FiltraLinhas(array, arrColuna, arrValue) {
     array.forEach(function (o, c) {
 
         var flag = true;
-
-        ///////////
 
         if (arrColuna == "_Quem" || arrColuna == "_GrupoCausa" || arrColuna == "_CausaGenerica" || arrColuna == "_ContramedidaGenerica"
             || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
@@ -849,307 +1029,6 @@ function getDateUSA(campo) { //$("input[name='daterange']").val()
     }
 }
 
-//var atrasadaColor = '#ff6666';
-//var concluidoColor = 'lightgreen';
-//var andamentoColor = 'lightblue';
-
-var atrasadaColor = '#FF0000';
-var concluidoColor = '#0000FF';
-var andamentoColor = '#008000';
-var concluidoAtrasoColor = '#FFA500'
-var canceladoColor = '#000000'
-var retornoColor = '#8B4513'
-var finalizadaColor = '#00008B'
-var finalizadaComAtrasoColor = '#FF4500'
-
-var dataInicio;
-var dataFim;
-
-/*
-var data1 = [
-    { name: 'Concluídas', y: 22, color: concluidoColor },
-    { name: 'Atrasadas', y: 10, color: atrasadaColor },
-    { name: 'Em Andamento', y: 18, color: andamentoColor },
-];
-*/
-
-var categories2 = ['Camila', 'Miriã', 'Ana', 'Adão', 'Diego'];
-
-var data2 = [{
-    name: Resources("completed"),
-    data: [5, 3, 4, 7, 2],
-    color: concluidoColor
-}, {
-    name: Resources("late"),
-    data: [2, 2, 3, 2, 1],
-    color: atrasadaColor
-}, {
-    name: Resources("in_progress"),
-    data: [3, 4, 4, 2, 5],
-    color: andamentoColor
-}];
-
-var data3 = [{
-    id: 'A',
-    name: Resources("late"),
-    color: atrasadaColor
-}, {
-    id: 'B',
-    name: Resources("completed"),
-    color: concluidoColor
-}, {
-    id: 'O',
-    name: Resources("in_progress"),
-    color: andamentoColor
-}, {
-    name: Resources("quality"),
-    parent: 'A',
-    value: 5
-}, {
-    name: Resources("operation"),
-    parent: 'A',
-    value: 3
-}, {
-    name: Resources("quality"),
-    parent: 'B',
-    value: 4
-}, {
-    name: Resources("operation"),
-    parent: 'B',
-    value: 10
-}, {
-    name: Resources("quality"),
-    parent: 'O',
-    value: 1
-}, {
-    name: Resources("operation"),
-    parent: 'O',
-    value: 3
-}];
-
-var categories4 = [];
-
-var data4 = [{
-    type: 'column',
-    name: Resources("open"),
-    data: [],
-    color: andamentoColor
-}, {
-    type: 'column',
-    name: Resources("closed"),
-    data: [],
-    color: concluidoColor
-}, {
-    type: 'spline',
-    name: Resources("stock"),
-    data: [],
-    color: atrasadaColor,
-    marker: {
-        lineWidth: 2,
-        lineColor: atrasadaColor,
-        fillColor: atrasadaColor
-    }
-}];
-
-var categories5 = []; //['Qualidade', 'Operação', 'Industria'];
-
-var data5 = [];
-//    [{
-//    name: 'Atrasado',
-//    data: [4, 2, 6],
-//    color: atrasadaColor
-//}, {
-//    name: 'Concluido',
-//    data: [5, 4, 1],
-//    color: concluidoColor
-//}, {
-//    name: 'Em Andamento',
-//    data: [6, 2, 4],
-//    color: andamentoColor
-//}];
-
-var categories6 = []; //categories2
-
-var data6 = [];
-//[{
-//    name: 'Atrasado',
-//    data: [4, 2, 6.2, 2],
-//    color: atrasadaColor
-//}, {
-//    name: 'Concluido',
-//    data: [5, 4, 1, 4, 2],
-//    color: concluidoColor
-//}, {
-//    name: 'Em Andamento',
-//    data: [6, 2, 4, 1, 0],
-//    color: andamentoColor
-//}];
-
-var json = FiltraColunas(dados, [Resources("directorship"),
-Resources("mission"),
-Resources("view"),
-Resources("dimension"),
-Resources("guidelines"),
-Resources("indicators_guidelines"),
-Resources("responsible_guideline"),
-Resources("management"),
-Resources("coordination"),
-Resources("initiative"),
-Resources("project_initiative"),
-Resources("management_objective"),
-Resources("value_of"),
-Resources("value_for"),
-Resources("start_date"),
-Resources("end_date"),
-Resources("responsible_project_initiative"),
-Resources("regional"),
-Resources("unit"),
-Resources("indicator"),
-Resources("monitoring"),
-Resources("task"),
-Resources("indicators_project_initiative"),
-Resources("generic_cause"),
-Resources("group_cause"),
-Resources("generic_action"),
-Resources("specific_action"),
-Resources("specific_cause2"),
-Resources("who"),
-Resources("when_start"),
-Resources("when_end"),
-Resources("theme_subject"),
-Resources("for_what"),
-Resources("how_much"),
-Resources("status"),
-Resources("term")]);
-
-
-
-//    //Graficos Instancia
-
-//    //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
-//function graficoEstoque() {
-
-
-//    dadosEstoque = [];
-
-//    jQuery.each(dados, function (i, val) {
-//        if (dados[i].Acao.AddDate)
-//            dadosEstoque.push(dados[i]);
-//    });
-//        //MOCK Acompanhamento
-//        dadosEstoque.forEach(function (o, c) {
-//            //if (c < 5)
-//            //    o.Acao['Acompanhamento'] = { AddDate: "2017-11-08T14:43:19.3044096" }
-//            //else if (c > 5 && c < 8)
-//            //    o.Acao['Acompanhamento'] = { AddDate: "2017-10-08T14:43:19.3044096" }
-//            //else
-//            //    o.Acao['Acompanhamento'] = { AddDate: "2017-09-08T14:43:19.3044096" }
-
-//            //o.Acao['Acompanhamento'] = { AddDate: '' + o.Acao.AddDate.substring(0, 4) + '-' + o.Acao.AddDate.substring(8, 10) + '-' + o.Acao.AddDate.substring(5, 7) + '' };
-
-//            o.Acao['Acompanhamento'] = { AddDate: o.Acao.AddDate };
-
-//            console.log(o.Acao['Acompanhamento']);
-
-//        })
-//        //FIM MOCK Acompanhamento
-
-//        let groups = _.groupBy(dadosEstoque, function (o) {
-//            return moment(o.Acao.Acompanhamento.AddDate.substring(0, 7) + '-01' + o.Acao.Acompanhamento.AddDate.substring(10, 25)).startOf('mounth').format();
-//        });
-
-//        let categoriesArr = _.map(groups, function (group, day) {
-
-//            switch (day.substring(3, 5)) {
-//                case '01':
-//                    retorno = "Jan";
-//                    break;
-//                case '02':
-//                    retorno = "Fev";
-//                    break;
-//                case '03':
-//                    retorno = "Mar";
-//                    break;
-//                case '04':
-//                    retorno =  "Abr";
-//                    break;
-//                case '05':
-//                    retorno =  "Mai";
-//                    break;
-//                case '06':
-//                    retorno =  "Jun";
-//                    break;
-//                case '07':
-//                    retorno =  "Jul";
-//                    break;
-//                case '08':
-//                    retorno =  "Ago";
-//                    break;
-//                case '09':
-//                    retorno =  "Set";
-//                    break;
-//                case '10':
-//                    retorno =  "Out";
-//                    break;
-//                case '11':
-//                    retorno =  "Nov";
-//                    break;
-//                case '12':
-//                    retorno =  "Dez";
-//                    break;
-//            }
-
-//            return retorno + '-' + day.substring(6, 10);
-//        })
-
-//        let serieArrFinal = [{
-//            type: 'column',
-//            name: 'Abertas',
-//            data: _.map(groups, function (group, day) {
-//                return getRegistrosNaoConcluidos(group).length
-//            }),
-//            color: andamentoColor
-//        }, {
-//            type: 'column',
-//            name: 'Fechada',
-//            data: _.map(groups, function (group, day) {
-//                return getRegistrosConcluidos(group).length
-//            }),
-//            color: concluidoColor
-//        }, {
-//            type: 'spline',
-//            name: 'Estoque',
-//            data: _.map(groups, function (group, day) {
-//                return getRegistrosNaoConcluidos(group).length - getRegistrosConcluidos(group).length
-//            }),
-//            color: atrasadaColor,
-//            marker: {
-//                lineWidth: 2,
-//                lineColor: atrasadaColor,
-//                fillColor: atrasadaColor
-//            }
-//        }];
-
-//        makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
-//            //plotOptions: {
-//            //    series: {
-//            //        //stacking: 'normal',
-//            //        events: {
-//            //            click: function (event) {
-//            //                filterBar1ForDataTable(event.point.name, event.point.category)
-//            //            }
-//            //        }
-//            //    },
-//            //    bar: {
-//            //        dataLabels: {
-//            //            enabled: false
-//            //        }
-//            //    }
-//            //},
-//        })
-
-//    }
-
 function sortFunction(a, b) {
     if (a[0] === b[0]) {
         return 0;
@@ -1227,11 +1106,6 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
     } else
         makeChart(id, categoriesArr, serieArrFinal, 'bar', categoriesFilterVal)
 }
-
-//FIM Graficos Instancia
-
-//Aux
-
 //Agrupa o arr dados por mes, devolve um Objeto, se mapped = true devolve um array
 function agrupaPorMes() {
     var groups = _.groupBy(dados, function (o) {
@@ -1321,7 +1195,7 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
             //max: 30,
             allowDecimals: false,
             title: {
-                text: yAxisTitle,
+                text: GetPropertyRealName(yAxisTitle),
                 align: 'high',
                 style: {
                     fontSize: '8px',
@@ -1435,18 +1309,68 @@ function orderArray(array) {
 }
 //Desc pendente
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
+
     var filtroEixoX = [];
+
     if (id == 'panel5') {
-        if ($('#valor2Panel5 option:selected').text() == Resources("all"))
-            filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
-        else {
+
+        if ($('#valor2Panel5 option:selected').text() == Resources("all")) {
+
+            let categories = categoriesFilter.split('.');
+
+            let dados2 = $.grep(dados, function (r) {
+
+                if (categories.length == 2) {
+                    if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories[0]][categories[1]] == $('#valor1Panel5 option:selected').text();
+                    }
+                } else {
+                    if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories] == $('#valor1Panel5 option:selected').text();
+                    }
+                }
+            });
+
+            filtroEixoX = MapeiaValorParaHC(dados2, seriesFilter).filter(onlyUnique);
+
+        } else {
+
             filtroEixoX.push($('#valor2Panel5 option:selected').text());
 
         }
+
     } else if (id == 'panel6') {
-        if ($('#valor2Panel6 option:selected').text() == Resources("all"))
-            filtroEixoX = MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique);
+
+        if ($('#valor2Panel6 option:selected').text() == Resources("all")) {
+
+            let categories = categoriesFilter.split('.');
+
+            let dados2 = $.grep(dados, function (r) {
+
+                if (categories.length == 2) {
+                    if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories[0]][categories[1]] == $('#valor1Panel6 option:selected').text();
+                    }
+                } else {
+                    if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
+                        return r;
+                    } else {
+                        return r[categories] == $('#valor1Panel6 option:selected').text();
+                    }
+
+                }
+            });
+
+            filtroEixoX = MapeiaValorParaHC(dados2, seriesFilter).filter(onlyUnique);
+        }
         else {
+
             filtroEixoX.push($('#valor2Panel6 option:selected').text());
 
         }
@@ -1454,34 +1378,42 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
 
 
     let seriesAux = filtroEixoX;
-    let serieArrFinal = []
+    let serieArrFinal = [];
+
     seriesAux.forEach(function (o, c) {
-        var serieData = {};
+
+        let serieData = {};
+
         serieData["name"] = o;
         serieData["data"] = [];
+
         categoriesArr.forEach(function (oo, cc) {
-            serieData["data"].push($.grep(dados, function (e) {
 
-                var retornoSeries;
-                var retornoCategorias;
+            let QtdePorSerie = $.grep(dados, function (e) {
 
-                var propArrayS = seriesFilter.split('.');
+                let retornoSeries;
+                let retornoCategorias;
+
+                let propArrayS = seriesFilter.split('.');
+
                 if (propArrayS.length == 2) {
                     retornoSeries = e[propArrayS[0]][propArrayS[1]];
                 } else {
                     retornoSeries = e[seriesFilter];
                 }
 
-                var propArrayC = categoriesFilter.split('.');
+                let propArrayC = categoriesFilter.split('.');
+
                 if (propArrayC.length == 2) {
                     retornoCategorias = e[propArrayC[0]][propArrayC[1]];
-                    console.log(retornoCategorias);
                 } else {
                     retornoCategorias = e[categoriesFilter];
                 }
 
                 if (propArrayC[1] == "TipoIndicador") {
-                    var value = retornoCategorias;
+
+                    let value = retornoCategorias;
+
                     if (value == 0)
                         value = Resources("no_operational_planning");
                     else if (value == 1)
@@ -1492,22 +1424,37 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 }
 
                 if (propArrayS[1] == "TipoIndicador") {
-                    var value = retornoSeries;
+
+                    let value = retornoSeries;
+
                     if (value == 0)
                         value = Resources("no_operational_planning");
                     else if (value == 1)
                         value = Resources("guidelines");
                     else if (value == 2)
                         value = "Scorecard";
+
                     retornoSeries = value;
                 }
 
                 return retornoSeries == o && retornoCategorias == categoriesArr[cc];
-            }).length)
-        })
+
+            }).length
+
+            serieData["data"].push(QtdePorSerie);
+
+        });
 
         serieArrFinal.push(serieData);
     });
+
+    //remove as series que não possuem quantidade
+    serieArrFinal.forEach(function (o, i) {
+        if (o.data.reduce((a, b) => a + b, 0) == 0) {
+            serieArrFinal.splice(i, 1);
+        }
+    });
+
     if (verifyStatus)
         pintaStatus(seriesFilter, serieArrFinal)
     return serieArrFinal
@@ -1557,6 +1504,8 @@ function pintaStatus(seriesFilter, serieArrFinal) {
                 c["color"] = finalizadaColor;
             } else if (c.name == Resources("finished_late")) {
                 c["color"] = finalizadaComAtrasoColor;
+            } else if (c.name == Resources("not_started")) {
+                c["color"] = naoIniciadoColor;
             }
         });
 
@@ -1564,16 +1513,6 @@ function pintaStatus(seriesFilter, serieArrFinal) {
     }
 }
 
-//Fim Aux
-
-//DATEPICKER
-
-//GLOBAL
-var enviar = {};
-var start = moment();
-var end = moment();
-
-//DatePicker Config / Instance
 $(function () {
 
     var rangesBR = {
@@ -1679,10 +1618,6 @@ $(function () {
     //$('input[name="daterange"]').daterangepicker();
 
 });
-
-var btnOrderFilter = "";
-var option = "";
-var campo1Panel5Selected = "";
 
 function filterEixoY(selectId) {
 
@@ -1859,6 +1794,10 @@ function geraData1() {
                 campo = Resources('finished_late');
                 cor = finalizadaComAtrasoColor;
                 break;
+            case 9:
+                campo = Resources('not_started');
+                cor = naoIniciadoColor;
+                break;
             default:
                 campo = Resources('status');
                 cor = 'black';
@@ -1930,6 +1869,10 @@ function geraData2(dadosFiltrados) {
             case 8:
                 campo = Resources('finished_late');
                 cor = finalizadaComAtrasoColor;
+                break;
+            case 9:
+                campo = Resources('not_started');
+                cor = naoIniciadoColor;
                 break;
             default:
                 campo = Resources('status');
@@ -2486,7 +2429,10 @@ $('#btnTop').click(function () {
     FiltraLinhasComTodos(dados, "", "Todos");
     getDateRange($("input[name='daterange']").val());
 
-    GetDataTable($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
+    GetDataTable($('#campo1Filtro option:selected').val(),
+        $('#valor1Filtro option:selected').text(),
+        $('#campo2Filtro option:selected').val(),
+        $('#valor2Filtro option:selected').text());
 
     //GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
 })
@@ -2506,7 +2452,6 @@ $('#btnFiltroPie2').click(function () {
     $('#spanPie2').html($('#campo1FiltroPie2 option:selected').text());
 })
 
-//Celso
 $('#btnpanel5').off('click').on('click', function () {
 
     var nameY = [];
@@ -2531,12 +2476,12 @@ function setArrayColvisAtual() {
 
         ColvisarrayVisaoAtual_show = [];
         ColvisarrayVisaoAtual_hide = [];
-        var ss = [];
+        let ss = [];
 
         $('#example_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
 
         $('body > div.dt-button-collection.fixed.four-column').hide();
-        ss = $('.buttons-columnVisibility');
+        ss = $('.dt-button-collection:eq(0) .buttons-columnVisibility');
         ss.each(function (i, o) {
             if ($(o).hasClass('active')) {
                 ColvisarrayVisaoAtual_show.push(i);
@@ -2545,16 +2490,35 @@ function setArrayColvisAtual() {
             }
         }).promise().done(function () {
             $('body > div.dt-button-background').click();
-            //$('body > div.dt-button-collection.fixed.four-column').show();
         });
     }
 }
 
+function setArrayProjColvisAtual() {
+
+    if (tablePlanejamento) {
+
+        ColvisarrayProjVisaoAtual_show = [];
+        ColvisarrayProjVisaoAtual_hide = [];
+        let ss = [];
+
+        $('#TablePlanejamento_wrapper > div.dt-buttons > a.dt-button.buttons-collection.buttons-colvis').click();
+
+        $('body > div.dt-button-collection.fixed.four-column').hide();
+        ss = $('.dt-button-collection:eq(1) .buttons-columnVisibility');
+        ss.each(function (i, o) {
+            if ($(o).hasClass('active')) {
+                ColvisarrayProjVisaoAtual_show.push(i);
+            } else {
+                ColvisarrayProjVisaoAtual_hide.push(i);
+            }
+        }).promise().done(function () {
+            $('body > div.dt-button-background').click();
+        });
+    }
+}
 
 $(document).ready(function () {
-
-    //console.log("ready!");
-    //GetDataTable();
 
     $('.defaultFilter').css('color', '#000000');
 
@@ -2566,39 +2530,64 @@ $(document).ready(function () {
 
 });
 
-function SaveUserColVis() {
+function SaveUserColVis(tabela) {
 
     setArrayColvisAtual();
+    setArrayProjColvisAtual();
 
     Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
 
-    ColvisarrayVisaoAtual_show = $.grep(ColvisarrayVisaoAtual_show, function (arr) {
-        return (arr != 39 && arr != 40);
-    });
+    let objColvis = {};
 
-    ColvisarrayVisaoAtual_hide = $.grep(ColvisarrayVisaoAtual_hide, function (arr) {
-        return (arr != 39 && arr != 40);
-    });
+    if (tabela == "Acao") {
 
-    ColvisarrayVisaoAtual_show.push(39);
-    ColvisarrayVisaoAtual_show.push(40);
+        ColvisarrayVisaoAtual_show = $.grep(ColvisarrayVisaoAtual_show, function (arr) {
+            return (arr != 39 && arr != 40);
+        });
+        ColvisarrayVisaoAtual_hide = $.grep(ColvisarrayVisaoAtual_hide, function (arr) {
+            return (arr != 39 && arr != 40);
+        });
 
-    ColvisarrayVisaoAtual_hide
+        ColvisarrayVisaoAtual_show.push(39);
+        ColvisarrayVisaoAtual_show.push(40);
 
-    let objColvis = {
-        "ColVisShow": ColvisarrayVisaoAtual_show.toString(),
-        "ColVisHide": ColvisarrayVisaoAtual_hide.toString(),
-        "Pa_Quem_Id": Pa_Quem_Id
+        objColvis = {
+            "ColVisShow": ColvisarrayVisaoAtual_show.toString(),
+            "ColVisHide": ColvisarrayVisaoAtual_hide.toString(),
+            "Pa_Quem_Id": Pa_Quem_Id,
+            "Tabela": tabela
+        }
+
+        ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
+        ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
+
+    } else if ("Planejamento") { //Tabela Projetos
+
+        ColvisarrayProjVisaoAtual_show = $.grep(ColvisarrayProjVisaoAtual_show, function (arr) {
+            return (arr != 21 && arr != 22);
+        });
+        ColvisarrayProjVisaoAtual_hide = $.grep(ColvisarrayProjVisaoAtual_hide, function (arr) {
+            return (arr != 21 && arr != 22);
+        });
+
+        ColvisarrayProjVisaoAtual_show.push(21);
+        ColvisarrayProjVisaoAtual_show.push(22);
+
+        objColvis = {
+            "ColVisProjShow": ColvisarrayProjVisaoAtual_show.toString(),
+            "ColVisProjHide": ColvisarrayProjVisaoAtual_hide.toString(),
+            "Pa_Quem_Id": Pa_Quem_Id,
+            "Tabela": tabela
+        }
+
+        ColvisarrayProjVisaoUsuario_show = ColvisarrayProjVisaoAtual_show;
+        ColvisarrayProjVisaoUsuario_hide = ColvisarrayProjVisaoAtual_hide;
     }
-
-
-    ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
-    ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
 
     $.post(urlSaveUserColvis, objColvis, function (r) {
 
         $('body > div.dt-button-background').click();
-        console.log(r);
+
         if (r == "") {
             openMessageModal("Colunas salvas!", Resources("columns_saved_successfully"));
         } else {
@@ -2606,8 +2595,6 @@ function SaveUserColVis() {
         }
     });
 }
-
-var filtrosDeColunas = [];
 
 function GetFiltrosDeColunas() {
 
@@ -2637,4 +2624,53 @@ function SetFiltrosDeColunas() {
     }
 }
 
+function GetPropertyRealName(propertyName) {
 
+    switch (propertyName) {
+
+        case "Diretoria":
+            return Resources("directorship");
+        case "Dimensao":
+            return Resources("dimension");
+        case "Objetivo":
+            return Resources("guideline");
+        case "IndicadoresDiretriz":
+            return Resources("indicators_guideline");
+        case "TemaAssunto":
+            return Resources("theme_subject");
+        case "Gerencia":
+            return Resources("management");
+        case "Coordenacao":
+            return Resources("coordination");
+        case "TipoProjeto":
+            return Resources("type_of_project");
+        case "TemaProjeto":
+            return Resources("project_theme");
+        case "Iniciativa":
+            return Resources("project_initiative");
+        case "Acao._GrupoCausa":
+            return Resources("group_cause");
+        case "Acao._CausaGenerica":
+            return Resources("generic_cause");
+        case "Acao._ContramedidaGenerica":
+            return Resources("generic_action");
+        case "Acao.UnidadeName":
+            return Resources("unit");
+        case "Acao._Quem":
+            return Resources("who");
+        case "Acao._StatusName":
+            return Resources("status");
+        case "Acao.Regional":
+            return Resources("regional");
+        case "Acao.Level1Name":
+            return Resources("indicator");
+        case "Acao.Level2Name":
+            return Resources("monitoring");
+        case "Acao.Level3Name":
+            return Resources("task");
+        case "Acao.TipoIndicador":
+            return Resources("indicator_type");
+        default:
+            return "";
+    }
+}

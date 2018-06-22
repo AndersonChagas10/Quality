@@ -38,33 +38,9 @@ namespace PlanoDeAcaoMVC.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-            HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
-            if (languageCookie != null)
-            {
-                if (languageCookie.Value == "en")
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-                }
-                else
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo(languageCookie.Value);
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCookie.Value);
-                }
-            }
-            else
-            {
-                if (GlobalConfig.LanguageBrasil)
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-                }
-                else if (GlobalConfig.LanguageEUA)
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-                }
-            }
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 
             try
             {
@@ -81,6 +57,7 @@ namespace PlanoDeAcaoMVC.Controllers
 
             base.Initialize(requestContext);
         }
+
         //protected void UpdateStatus()
         //{
         //    using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
