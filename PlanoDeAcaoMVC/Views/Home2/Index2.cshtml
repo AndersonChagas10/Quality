@@ -3090,7 +3090,12 @@
         function getTablesModal() {
 
             let renderFunction = function (data, type, row, meta) {
-                let html = "<span style='display:none'>" + data + "</span>" + new Date(data).toLocaleDateString();
+
+                //Gambzinha porque quando converte a data, ela fica com um dia a menos, então tive que somar mais um dia - Renan 22/06/2018
+                let dataFormatada = new Date(data);               
+                dataFormatada.setDate(dataFormatada.getDate() + 1);
+
+                let html = "<span style='display:none'>" + data + "</span>" + dataFormatada.toLocaleDateString();
 
                 return html;
             }
