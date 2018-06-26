@@ -335,7 +335,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.DataInicio != "0001-01-01T00:00:00")
+                    if (data.DataInicio != null && data.DataInicio != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data._DataInicio + "</span>" + new Date(data.DataInicio).toLocaleDateString();
 
                     return html;
@@ -347,7 +347,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.DataFim != "0001-01-01T00:00:00")
+                    if (data.DataInicio != null && data.DataFim != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data._DataFim + "</span>" + new Date(data.DataFim).toLocaleDateString();
 
                     return html;
@@ -373,7 +373,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.Acao.QuandoInicio != "0001-01-01T00:00:00")
+                    if (data.DataInicio != null && data.Acao.QuandoInicio != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data.Acao._QuandoInicio + "</span>" + new Date(data.Acao.QuandoInicio).toLocaleDateString();
 
                     return html;
@@ -385,7 +385,7 @@ function MountDataTable(json) {
                 "mData": null,
                 "render": function (data, type, row, meta) {
                     let html = "";
-                    if (data.Acao.QuandoFim != "0001-01-01T00:00:00")
+                    if (data.DataInicio != null && data.Acao.QuandoFim != "0001-01-01T00:00:00")
                         html = "<span style='display:none'>" + data.Acao._QuandoFim + "</span>" + new Date(data.Acao.QuandoFim).toLocaleDateString();
 
                     return html;
