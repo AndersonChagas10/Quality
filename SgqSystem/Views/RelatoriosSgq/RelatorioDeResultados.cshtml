@@ -3136,7 +3136,12 @@
         if (data.length > 0) {
 
         var Proc = MapeiaValorParaHC(data, "Proc");
-        //var nc = MapeiaValorParaHC(data, "Nc");
+        var nc = MapeiaValorParaHC(data, "Nc");
+        var av = MapeiaValorParaHC(data, "Av");
+        var indicador = MapeiaValorParaHC(data, "Indicador_Id");
+        var indicadorNome = MapeiaValorParaHC(data, "IndicadorName");
+        var monitoramento = MapeiaValorParaHC(data, "Monitoramento_Id");
+        var monitoramentoNome = MapeiaValorParaHC(data, "MonitoramentoName");
         var nome = MapeiaValorParaHC(data, "TarefaName");
         var selector = "GraficoTarefasAcumuladas";
         var sentido = 'desc';
@@ -3202,6 +3207,8 @@
             },
             series: [
                 Chart.ProcNc(Proc, FTATarefasAcumuladas, null, null, null, "", data),
+                Chart.NC(nc, FTATarefasAcumuladas, null, null, null, "", data),
+                Chart.Av(av, FTATarefasAcumuladas, null, null, null, "", data),
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
         });
@@ -3381,6 +3388,7 @@
             },
          NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
                 return {
+                    visible: false,
                     name: Resources('nonconformity'),
                     color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
                     data: data,
@@ -3391,11 +3399,12 @@
                     point: {
                         events: {
                             click: function () {
-                                //if (!!arr2) {
-                                //    func(arr[this.x], grafico, arr2[this.x]);
-                                //} else {
-                                //    func(arr[this.x], grafico);
-                                //}
+                                //    if (!!func)
+                                //        if (!!arr2) {
+                                //            func(arr[this.x], grafico, arr2[this.x]);
+                                //        } else {
+                                //            func(arr[this.x], grafico);
+                                //        }
                                 func(this, arr);
                             }
                         }
@@ -3425,11 +3434,12 @@
                     point: {
                         events: {
                             click: function () {
-                                //if (!!arr2) {
-                                //    func(arr[this.x], grafico, arr2[this.x]);
-                                //} else {
-                                //    func(arr[this.x], grafico);
-                                //}
+                                //    if (!!func)
+                                //        if (!!arr2) {
+                                //            func(arr[this.x], grafico, arr2[this.x]);
+                                //        } else {
+                                //            func(arr[this.x], grafico);
+                                //        }
                                 func(this, arr);
                             }
                         }
@@ -3455,8 +3465,13 @@
                     point: {
                         events: {
                             click: function () {
-                                if (!!func)
-                                    func(this.category);
+                                //    if (!!func)
+                                //        if (!!arr2) {
+                                //            func(arr[this.x], grafico, arr2[this.x]);
+                                //        } else {
+                                //            func(arr[this.x], grafico);
+                                //        }
+                                func(this, arr);
                             }
                         }
                     },
@@ -3478,13 +3493,15 @@
                     point: {
                         events: {
                             click: function () {
-                                if (!!func)
-                                    if (!!arr2) {
-                                        func(arr[this.x], grafico, arr2[this.x]);
-                                    } else {
-                                        func(arr[this.x], grafico);
-                                    }
+                            //    if (!!func)
+                            //        if (!!arr2) {
+                            //            func(arr[this.x], grafico, arr2[this.x]);
+                            //        } else {
+                            //            func(arr[this.x], grafico);
+                            //        }
+                            func(this, arr);
                             }
+
                         }
                     },
                     tooltip: {
@@ -3516,6 +3533,8 @@
     function FTATarefasAcumuladas(that, dados) {
 
         let Levels3 = MapeiaValorParaHC(dados, "Tarefa_Id");
+        let Levels2 = MapeiaValorParaHC(dados, "Monitoramento_Id");
+        let Levels1 = MapeiaValorParaHC(dados, "Indicador_Id");
         let Unidades = MapeiaValorParaHC(dados, "Unidade_Id");
         let ncs = MapeiaValorParaHC(dados, "Proc");
 
@@ -3523,13 +3542,48 @@
         enviarFTA['_DataInicioFTA'] = enviar.startDate;
         enviarFTA['_DataFimFTA'] = enviar.endDate;
         enviarFTA['Supervisor_Id'] = GetUsuarioId();
-        enviarFTA['Unidade_Id'] = enviar.unitId == null || enviar.unitId == "" ? 0 : enviar.unitId;
+        //enviarFTA['Unidade_Id'] = enviar.unitId == null || enviar.unitId == "" ? 0 : enviar.unitId;
         enviarFTA['PercentualNCFTA'] = ncs[that.x] == null ? 0 : ncs[that.x]
-        enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
+        //enviarFTA['level3Id'] = Levels3[that.x] == null ? 0 : Levels3[that.x];
 
+        // Unidade
+        if (Unidades[that.x] != null) {
+            enviarFTA['Unidade_Id'] = Unidades[that.x];
+        } // Se filtrado
+        else if (enviar['unitIdArr'] != undefined && enviar['unitIdArr'].length == 1) {
+            enviarFTA['Unidade_Id'] = enviar.unitIdArr[0];
+        } else { // Caso não exista
+            enviarFTA['Unidade_Id'] = 0;
+        }
 
-        if (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length == 1) {
+        // Indicador
+        if (Levels1[that.x] != null) {
+            enviarFTA['level1Id'] = Levels1[that.x];
+        } // Se filtrado
+        else if (enviar['level1IdArr'] != undefined && enviar['level1IdArr'].length == 1) {
             enviarFTA['level1Id'] = enviar.level1IdArr[0];
+        } else { // Caso não exista
+            enviarFTA['level1Id'] = 0;
+        }
+
+        // Monitoramento
+        if (Levels2[that.x] != null) {
+            enviarFTA['level2Id'] = Levels2[that.x];
+        } // Se Filtrado
+        else if (enviar['level2IdArr'] != undefined && enviar['level2IdArr'].length == 1) {
+            enviarFTA['level2Id'] = enviar.level2IdArr[0];
+        } else { // Caso não exista
+            enviarFTA['level2Id'] = 0;
+        }
+
+        // Tarefa
+        if (Levels3[that.x] != null) {
+            enviarFTA['level3Id'] = Levels3[that.x];
+        } // Se Filtrado
+        else if (enviar['level3IdArr'] != undefined && enviar['level3IdArr'].length == 1) {
+            enviarFTA['level3Id'] = enviar.level3IdArr[0];
+        } else { // Caso não exista
+            enviarFTA['level3Id'] = 0;
         }
 
         let params = enviarFTA;
