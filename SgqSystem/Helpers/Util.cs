@@ -20,5 +20,11 @@ namespace SgqSystem.Helpers
             return lista;
 
         }
+        
+        public static System.Web.Mvc.MvcHtmlString InformationPopover(this System.Web.Mvc.HtmlHelper html, string text)
+        {
+            string response = $@"<i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='{text}' aria-hidden='true' data-original-title='' title='' data-toggle='popover'></i>";
+            return new System.Web.Mvc.MvcHtmlString(response);
+        }
     }
 }
