@@ -21,7 +21,7 @@ namespace SgqSystem.Jobs
 
         public void Execute(IJobExecutionContext context)
         {
-            PreencherListaMandala(null);
+            // PreencherListaMandala(null);
         }
 
         public static void PreencherListaMandala(object stateInfo)
