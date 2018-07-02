@@ -244,6 +244,13 @@ namespace SGQDBContext
 
             string sql = "DECLARE @PARLEVEL1 INT = " + ParLevel1_Id + " ";
 
+            sql = sql + @" create table #pcc(
+
+                            hashKey int, id int, indicador int, av int, am int, peso float
+                        )
+
+                        insert into #pcc select 1, 3, 3, 1, 1, 1";
+
             sql = sql + "\n SELECT " +
                     "\n cast(SUM((VolumeAlerta * (Meta/100))) as varchar)		AS nivel3    " +
                     "\n ,SUM((VolumeAlerta * (Meta / 100)) / 3 * 2)   AS nivel2 " +
@@ -268,10 +275,19 @@ namespace SGQDBContext
                     "\n                FROM " +
                     "\n         ( " +
                     "\n             /*****PCC1b**************************************************************************************************************************************************************************/ " +
+                    "\n             SELECT TOP 1 * FROM ( " +
+                    "\n " +
+                    "\n             SELECT* FROM #PCC " +
+                    "\n             UNION ALL " +
+
+
                     "\n             SELECT * FROM " +
                     "\n             (SELECT TOP 1 1 AS \"hashKey\" " +
                     "\n             , (SELECT Id FROM ParLevel1  (nolock) WHERE hashKey = 1) AS ID " +
                     "\n             , 'PCC1b' AS INDICADOR, 1 AS AV, COALESCE(Amostras, 0) * 2 AS AM, 1 AS PESO FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) = CONVERT(DATE, '" + _DataCollect + "')) PCC " +
+                    
+                    "\n             ) PCC1b " +                    
+                    
                     "\n               /************************************************************************************************************************************************************************************/ " +
                     "\n               UNION ALL " +
                     "\n            /*****CEP VÁCUO GRD******************************************************************************************************************************************************************/ " +
