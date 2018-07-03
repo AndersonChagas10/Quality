@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt = 20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt
 		20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt = 20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt
 		20180615_0000_AdicionadoNovosStatus.txt = 20180615_0000_AdicionadoNovosStatus.txt
+		20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt = 20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
 EndProject
@@ -124,6 +125,6 @@ Global
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D} = {EA53B2C1-DA5F-46EC-B4AC-4B4D63AE84E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E58E5328-EFAF-4D6E-9DBC-144C7C9E42C3}
+		SolutionGuid = {C7D0A1A9-F2A2-4A1F-A45E-16387BDF6813}
 	EndGlobalSection
 EndGlobal
