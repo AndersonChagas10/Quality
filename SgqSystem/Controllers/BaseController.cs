@@ -187,6 +187,7 @@ namespace SgqSystem.Controllers
             if (webControlCookie != null)
             {
                 var UserId = webControlCookie.Values["userId"];
+                ViewBag.UserRoles = webControlCookie.Values["roles"];
 
                 if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
                 {

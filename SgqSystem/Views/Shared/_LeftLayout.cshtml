@@ -19,13 +19,35 @@
         return "";
     }
 
+    System.Web.IHtmlString MontaURL(string url, ref string target)
+    {
+        string urlRetorno = "javascript:;";
+        target = "";
+        if (url != null)
+        {
+            if (url.Contains("~"))
+            {
+                urlRetorno = Url.Content(url);
+            }
+            else
+            {
+                urlRetorno = url;
+                target = "_blank";
+            }
+        }
+
+        return Html.Raw(urlRetorno);
+    }
+
     string MontaSubItem(DTO.DTO.ItemMenuDTO item)
     {
         string html = "";
+        string target = "";
+        var url = MontaURL(item.Url,ref target);
         html += "<li class='nav-item'>";
         if (item.ListaFilho.Count > 0)
         {
-            html += $@"<a href = 'javascript:;' class='nav-link nav-toggle'>
+            html += $@"<a href = '{url}' target='{target}' class='nav-link nav-toggle'>
                 {RetornaIcone(item)}
                 <span class='title'>{item.Name}</span>
                 <span class='arrow'></span>
@@ -39,8 +61,7 @@
         }
         else
         {
-            var url = ((item.Url != null) ? Html.Action(item.Url) : Html.Raw("javascript:;"));
-            html += $@"<a href = '{url}' class='nav-link nav-toggle'>
+            html += $@"<a href = '{url}' target='{target}' class='nav-link nav-toggle'>
                 {RetornaIcone(item)}
                 <span class='title'>{item.Name}</span>
             </a>";
@@ -83,6 +104,33 @@
                         @Html.Raw(MontaSubItem(item))
                     }
                 }
+            }
+
+            @if (ViewBag.UserRoles != null && ViewBag.UserRoles.Contains("Admin"))
+            {
+                <li class="nav-item">
+                    <a href="javascript:;" target="" class="nav-link nav-toggle">
+                        <i class="fa fa-tasks"></i>
+                        <span class="title">Regras e Acessos</span>
+                        <span class="arrow"></span>
+                    </a><ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="@Html.Raw(Url.Action("Index", "ItemMenu"))" target="" class="nav-link nav-toggle">
+                                    <span class="title">Menus</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Html.Raw(Url.Action("EstruturaMenus", "ItemMenu"))" target="" class="nav-link nav-toggle">
+                                    <span class="title">Estrutura Menus</span>
+                                </a>
+                            </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "RoleUserSgq"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Regras</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             }
         </ul>
     </div>
