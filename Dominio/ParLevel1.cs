@@ -18,7 +18,6 @@ namespace Dominio
             ParGoal = new HashSet<ParGoal>();
             ParLevel3EvaluationSample = new HashSet<ParLevel3EvaluationSample>();
             ParLevel3Value = new HashSet<ParLevel3Value>();
-            ParMultipleValuesXParCompany = new HashSet<ParMultipleValuesXParCompany>();
             VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
             VolumePcc1b = new HashSet<VolumePcc1b>();
@@ -143,9 +142,6 @@ namespace Dominio
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Value> ParLevel3Value { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParMultipleValuesXParCompany> ParMultipleValuesXParCompany { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VolumeCepDesossa> VolumeCepDesossa { get; set; }

@@ -11,8 +11,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParMultipleValues()
         {
-            ParMultipleValuesXParCompany = new HashSet<ParMultipleValuesXParCompany>();
-            ParMultipleValuesXParCompany1 = new HashSet<ParMultipleValuesXParCompany>();
         }
 
         public int Id { get; set; }
@@ -41,11 +39,5 @@ namespace Dominio
         public bool? IsDefaultOption { get; set; }
 
         public virtual ParHeaderField ParHeaderField { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParMultipleValuesXParCompany> ParMultipleValuesXParCompany { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParMultipleValuesXParCompany> ParMultipleValuesXParCompany1 { get; set; }
     }
 }

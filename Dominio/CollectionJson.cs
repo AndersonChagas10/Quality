@@ -12,7 +12,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CollectionJson()
         {
-            CollectionLevel2XCollectionJson = new HashSet<CollectionLevel2XCollectionJson>();
         }
 
         public int Id { get; set; }
@@ -81,7 +80,5 @@ namespace Dominio
 
         public int? ReauditLevel { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2XCollectionJson> CollectionLevel2XCollectionJson { get; set; }
     }
 }

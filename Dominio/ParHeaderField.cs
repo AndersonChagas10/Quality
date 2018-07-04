@@ -13,7 +13,6 @@ namespace Dominio
         public ParHeaderField()
         {
             CollectionLevel2XParHeaderField = new HashSet<CollectionLevel2XParHeaderField>();
-            ParMultipleValuesXParCompany = new HashSet<ParMultipleValuesXParCompany>();
             ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
             ParMultipleValues = new HashSet<ParMultipleValues>();
         }
@@ -51,9 +50,6 @@ namespace Dominio
         public virtual ICollection<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
 
         public virtual ParFieldType ParFieldType { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParMultipleValuesXParCompany> ParMultipleValuesXParCompany { get; set; }
 
         public virtual ParLevelDefiniton ParLevelDefiniton { get; set; }
 

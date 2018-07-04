@@ -64,7 +64,7 @@
                     <i class="fa fa-square-o"></i>
                 </a>
             </span>
-            <select id="criticalLevelId" data-ng-model="criticalLevelValue"
+            <select id="criticalLevelId" disabled="disabled" data-ng-model="criticalLevelValue"
                     @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "multiple='multiple'" : "")
                     data-ng-change="GetLevel1ByCriticalLevel()" class="form-control" style="width:210px">
                 @Html.Raw(ViewBag.CriticalLevelIdArr != null ? "" : $"<option value=''>{Resources.Resource.select}</option>")

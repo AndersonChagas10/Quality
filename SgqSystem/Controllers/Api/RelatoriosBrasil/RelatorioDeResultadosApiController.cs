@@ -4896,10 +4896,14 @@ FROM (SELECT
                --,IND.Name AS IndicadorName
                --,MON.Id AS Monitoramento_Id
                --,MON.Name AS MonitoramentoName
-                R3.ParLevel3_Id AS Tarefa_Id
-               ,R3.ParLevel3_Name AS TarefaName
-               -- ,UNI.Name AS UnidadeName
-               -- ,UNI.Id AS Unidade_Id
+                TAR.ID AS Tarefa_Id
+               ,TAR.NAME AS TarefaName
+			   ,IIF(count(distinct C2.UnitId) = 1,MAX(C2.UnitId),0) Unidade_Id
+			   ,(SELECT TOP 1 Name FROM ParLevel1 WHERE ID = IIF(count(distinct C2.UnitId) = 1,MAX(C2.UnitId),0)) UnidadeName
+			   ,IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel1_Id),0) Indicador_id
+			   ,(SELECT TOP 1 Name FROM ParLevel1 WHERE id = IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel1_Id),0)) IndicadorName
+			   ,IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel2_Id),0) Monitoramento_Id
+			   ,(SELECT TOP 1 Name FROM ParLevel1 WHERE id = IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel2_Id),0)) MonitoramentoName
                ,CASE 
 						WHEN CAST(SUM(R3.WeiDefects) AS INT) = 0 OR CAST(SUM(R3.WeiEvaluation) AS INT) = 0 
 						THEN 0 
@@ -4907,6 +4911,10 @@ FROM (SELECT
 						THEN 100
 						ELSE ISNULL(NULLIF(SUM(R3.WeiDefects),0) / NULLIF(SUM(R3.WeiEvaluation),0),0) * 100 
 				END  AS [PROC]
+        	,SUM(R3.WeiEvaluation)
+        	 AS [AV]
+        	, SUM(R3.WeiDefects)
+        	 AS [NC]
 
             FROM Result_Level3 R3 (NOLOCK)
             INNER JOIN CollectionLevel2 C2 (NOLOCK)
@@ -4921,13 +4929,17 @@ FROM (SELECT
             	ON IND.Id = CL1.ParLevel1_Id
             INNER JOIN ParLevel2 MON (NOLOCK)
             	ON MON.Id = CL2.ParLevel2_Id
+            INNER JOIN ParLevel3 TAR (NOLOCK)
+            	ON TAR.Id = R3.ParLevel3_Id
             WHERE 1 = 1 
             { whereLevel1 }
             { whereUnit }
-            /* and MON.Id = 1 */
             AND CL2.UnitId in ({WunidadeAcesso}) 
             AND C2.ParLevel1_Id != 43
             AND C2.ParLevel1_Id != 42
+			AND IND.IsActive = 1
+			AND MON.IsActive = 1
+			AND TAR.IsActive = 1
             AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
             { whereGroupLevel1 }
             { whereDepartment }
@@ -4937,13 +4949,13 @@ FROM (SELECT
             		--,IND.Name
             		--,MON.Id
             		--,MON.Name
-            		 R3.ParLevel3_Id
-            		,R3.ParLevel3_Name
+            		 TAR.ID
+            		,TAR.NAME
             		--,UNI.Name
             		--,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0
             AND SUM(R3.Defects) > 0
-            ORDER BY 3 DESC";
+            ORDER BY 9 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -4964,7 +4976,9 @@ FROM (SELECT
 
             if (form.dimensaoData == 2)
             {
-                D.queryDimensao = $@" CONCAT(DATEPART(YEAR,{nomeColuna}),'/',RIGHT(CONCAT(0,DATEPART(WEEK,{nomeColuna})),2))  ";
+                D.queryDimensao = $@" CONCAT(
+                                      RIGHT(CONCAT(0,DATEPART(day,DATEADD(dd, -(DATEPART(dw, {nomeColuna}) - 1), {nomeColuna}))),2),'/',RIGHT(CONCAT(0,DATEPART(MONTH,{nomeColuna})),2),'/',DATEPART(YEAR,{nomeColuna}),' - '
+                                     ,RIGHT(CONCAT(0,DATEPART(day,DATEADD(dd, 7-(DATEPART(dw, {nomeColuna})), {nomeColuna}))),2),'/',RIGHT(CONCAT(0,DATEPART(MONTH,{nomeColuna})),2),'/',DATEPART(YEAR,{nomeColuna}))";
                 D.nomeAlias = $@" AS [SEMANA] ";
             }
             else if (form.dimensaoData == 4)

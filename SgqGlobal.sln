@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{777D8E88-0D52-446A-BC77-2F50A7D936E5}"
 EndProject
@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt = 20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt
 		20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt = 20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt
 		20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt = 20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt
+		20180615_0000_AdicionadoNovosStatus.txt = 20180615_0000_AdicionadoNovosStatus.txt
+		20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt = 20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
 EndProject
@@ -121,5 +123,8 @@ Global
 		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A} = {716C9494-D29A-4CB7-AC2A-D6303127A795}
 		{02CFB056-37CE-40F2-8790-0D47BC6D2B59} = {C1002FDC-28A0-4D38-B2AD-1F3E1D580629}
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D} = {EA53B2C1-DA5F-46EC-B4AC-4B4D63AE84E5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7D0A1A9-F2A2-4A1F-A45E-16387BDF6813}
 	EndGlobalSection
 EndGlobal

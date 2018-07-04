@@ -63,8 +63,6 @@ namespace Dominio
 
         public int? Period { get; set; }
 
-        public virtual Department Department { get; set; }
-
         public virtual ParLevel1 ParLevel1 { get; set; }
 
         public virtual ParCompany ParCompany { get; set; }

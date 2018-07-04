@@ -12,14 +12,12 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserSgq()
         {
-            CollectionLevel02 = new HashSet<CollectionLevel02>();
             CollectionLevel2 = new HashSet<CollectionLevel2>();
             CorrectiveAction = new HashSet<CorrectiveAction>();
             CorrectiveAction1 = new HashSet<CorrectiveAction>();
             CorrectiveAction2 = new HashSet<CorrectiveAction>();
             ParCompanyXUserSgq = new HashSet<ParCompanyXUserSgq>();
             UnitUser = new HashSet<UnitUser>();
-            UserXRoles = new HashSet<UserXRoles>();
         }
 
         public int Id { get; set; }
@@ -54,9 +52,6 @@ namespace Dominio
         public bool? IsActive { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -73,8 +68,5 @@ namespace Dominio
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UnitUser> UnitUser { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserXRoles> UserXRoles { get; set; }
     }
 }

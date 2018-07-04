@@ -11,7 +11,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Clusters()
         {
-            Pontos = new HashSet<Pontos>();
         }
 
         public int Id { get; set; }
@@ -29,8 +28,5 @@ namespace Dominio
         public int? UsuarioAlteracao { get; set; }
 
         public DateTime? DataAlteracao { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pontos> Pontos { get; set; }
     }
 }

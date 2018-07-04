@@ -12,7 +12,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CaracteristicaTipificacao()
         {
-            CaracteristicaTipificacaoSequencial = new HashSet<CaracteristicaTipificacaoSequencial>();
         }
 
         [Key]
@@ -33,8 +32,5 @@ namespace Dominio
         [Required]
         [StringLength(30)]
         public string cIdentificador { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }
     }
 }

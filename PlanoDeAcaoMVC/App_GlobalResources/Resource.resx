@@ -891,4 +891,7 @@
   <data name="username_password_invalid" xml:space="preserve">
     <value>Username or password is invalid.</value>
   </data>
+  <data name="not_started" xml:space="preserve">
+    <value>Not started</value>
+  </data>
 </root>

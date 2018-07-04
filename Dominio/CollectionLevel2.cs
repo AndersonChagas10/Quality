@@ -11,7 +11,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CollectionLevel2()
         {
-            CollectionLevel2XCollectionJson = new HashSet<CollectionLevel2XCollectionJson>();
             CollectionLevel2XParHeaderField = new HashSet<CollectionLevel2XParHeaderField>();
             CorrectiveAction = new HashSet<CorrectiveAction>();
             Result_Level3 = new HashSet<Result_Level3>();
@@ -109,9 +108,6 @@ namespace Dominio
         public int? CounterDonePhase { get; set; }
 
         public int? EndPhaseEvaluation { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2XCollectionJson> CollectionLevel2XCollectionJson { get; set; }
 
         public virtual CollectionLevel2 CollectionLevel21 { get; set; }
 

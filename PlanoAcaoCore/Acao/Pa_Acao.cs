@@ -5,6 +5,7 @@ using PlanoAcaoCore.Acao;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 
 namespace PlanoAcaoCore
@@ -216,71 +217,38 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
+            Pa_Status status;
+
+            var dataInicio = this._QuandoInicio == null ? DateTime.Now : DateTime.ParseExact(this._QuandoInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             if (Id <= 0)
             {
-                Pa_Status status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+                
+                if (dataInicio.Date > DateTime.Now.Date)
+                {
+                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
+                }
+                else
+                {
+                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+                }
 
                 Status = status.Id;
-                //StatusName = status.Name;
             }
             else
             {
+
+                if (dataInicio.Date > DateTime.Now.Date)
+                {
+                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
+
+                    Status = status.Id;
+                }
+
                 var old = Pa_Acao.Get(Id);
                 Panejamento_Id = old.Panejamento_Id;
 
             }
-
-            //if (Pa_IndicadorSgqAcao_Id <= 0)
-            //    message += "\n Indicador Operacional,";
-
-            //if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
-            //    message += "\n Problema ou Desvio,";
-
-            //if (AcaoXQuem != null)
-            //{
-            //    foreach (var i in AcaoXQuem)
-            //        if (i.Quem_Id <= 0)
-            //            message = "\n Quem,";
-            //}
-            //else
-            //    message = "\n Quem,";
-
-            //if (CausaMedidasXAcao == null)
-            //    CausaMedidasXAcao = new Pa_CausaMedidasXAcao();
-
-            //if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
-            //    message += "\n Causa generica,";
-
-            //if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
-            //    message += "\n Grupo causa,";
-
-            //if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
-            //    message += "\n Contramedida generica,";
-
-            //if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
-            //    message += "\n Causa Específica,";
-
-            //if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
-            //    message += "\n Contramedida Específica,";
-
-            //if (string.IsNullOrEmpty(_QuandoInicio))
-            //    message += "\n Quando início,";
-
-            //if (string.IsNullOrEmpty(_QuandoFim))
-            //    message += "\n Quando fim,";
-
-            //if (string.IsNullOrEmpty(ComoPontosimportantes))
-            //    message += "\n Como pontos importantes,";
-
-            //if (string.IsNullOrEmpty(PraQue))
-            //    message += "\n Pra que,";
-
-            //if (string.IsNullOrEmpty(_QuantoCusta))
-            //    message += "\n Quanto custa,";
-
-            //if (Status <= 0)
-            //    message += "\n Status,";
 
             VerificaMensagemCamposObrigatorios(message);
 

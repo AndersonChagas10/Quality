@@ -12,7 +12,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Unit()
         {
-            ConsolidationLevel01 = new HashSet<ConsolidationLevel01>();
             UnitUser = new HashSet<UnitUser>();
         }
 
@@ -30,9 +29,6 @@ namespace Dominio
         public string Code { get; set; }
 
         public string Ip { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UnitUser> UnitUser { get; set; }

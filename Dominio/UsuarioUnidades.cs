@@ -24,6 +24,5 @@ namespace Dominio
 
         public virtual Unidades Unidades { get; set; }
 
-        public virtual Usuarios Usuarios { get; set; }
     }
 }

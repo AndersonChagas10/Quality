@@ -1,0 +1,162 @@
+﻿@model DTO.DTO.RoleUserSgqDTO
+@{
+    ViewBag.Title = Resources.Resource.new_role;
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "RoleUserSgq")">@Resources.Resource.roles</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource._novo</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.role</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="setup_tab">
+                                @using (Html.BeginForm("Create", "RoleUserSGQ"))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @if (Model != null)
+                                        {
+                                            @Html.HiddenFor(model => model.Id)
+                                            @Html.HiddenFor(model => model.AddDate)
+                                        }
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.item_menu, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.ListBoxFor(model => model.ItemMenuIDs, new MultiSelectList(ViewBag.listaItensMenu, "Id", "Name"), new { @class = "form-control", @multiple = "multiple" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.do_audit, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.FazColeta, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back, "Index", null, new { @class = "btn btn-default" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar15");
+
+    //$(document).on('switchChange.bootstrapSwitch', '#userSgqDto_UseActiveDirectory', function () {
+    //    $(this).is(":checked") ? $('#userSgqDto_UseActiveDirectory').val(true) : $('#userSgqDto_UseActiveDirectory').val(false)
+    //    setupAD();
+    //});
+
+    //function setupAD() {
+    //    if ($('#userSgqDto_UseActiveDirectory').length > 0) {
+    //        if ($('#userSgqDto_UseActiveDirectory').prop('checked')) {
+    //            $('#passwordContainer').addClass('hide');
+    //        } else {
+    //            $('#passwordContainer').removeClass('hide');
+    //        }
+    //    }
+    //}
+
+    @*$(document).on("click", "#btnSave", function () {
+
+        if ($("#userSgqDto_Name").val() == "") {
+            openMessageModal(Resources('username_required'), '');
+            return;
+        }
+
+        $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function (data) {
+
+            if (data == "True") {
+                openMessageModal(Resources('user_save_success'), '');
+            } else {
+                openMessageModal(Resources('repeated_username'), '');
+            }
+        })
+    });*@
+
+    $(document).ready(function () {
+
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $("[type='checkbox']").bootstrapSwitch();
+
+        $("#ItemMenuIDs").select2();
+
+    });
+
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

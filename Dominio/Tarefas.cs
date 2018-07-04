@@ -11,13 +11,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Tarefas()
         {
-            AcoesCorretivas = new HashSet<AcoesCorretivas>();
-            Alertas = new HashSet<Alertas>();
-            MonitoramentosConcorrentes = new HashSet<MonitoramentosConcorrentes>();
-            ObservacoesPadroes = new HashSet<ObservacoesPadroes>();
             TarefaAmostras = new HashSet<TarefaAmostras>();
             TarefaAvaliacoes = new HashSet<TarefaAvaliacoes>();
-            TarefaCategorias = new HashSet<TarefaCategorias>();
             TarefaMonitoramentos = new HashSet<TarefaMonitoramentos>();
         }
 
@@ -64,19 +59,7 @@ namespace Dominio
 
         public bool? InformarPesagem { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AcoesCorretivas> AcoesCorretivas { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Alertas> Alertas { get; set; }
-
         public virtual Departamentos Departamentos { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MonitoramentosConcorrentes> MonitoramentosConcorrentes { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ObservacoesPadroes> ObservacoesPadroes { get; set; }
 
         public virtual Operacoes Operacoes { get; set; }
 
@@ -87,9 +70,6 @@ namespace Dominio
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TarefaCategorias> TarefaCategorias { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }

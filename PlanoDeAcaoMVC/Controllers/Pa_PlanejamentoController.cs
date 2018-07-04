@@ -1,6 +1,10 @@
 ﻿using PlanoAcaoCore;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
@@ -235,7 +239,31 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Ddl = new SelectList(results, "Id", "Name");
 
             return PartialView("_DdlGenerica");
-        } 
+        }
+
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+            try
+            {
+
+                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+                ViewBag.Resources = resourceManager.GetResourceSet(
+                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            base.Initialize(requestContext);
+        }
+
         #endregion
     }
 }

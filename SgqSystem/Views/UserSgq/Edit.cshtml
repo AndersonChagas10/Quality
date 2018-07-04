@@ -118,7 +118,7 @@
                                             </div>
                                         </div>
 
-                                        @if (@DTO.GlobalConfig.Eua)
+                                        @if (ViewBag.UserRoles != null && ViewBag.UserRoles.Contains("Admin"))
                                         {
                                             <div class="form-group">
                                                 @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -262,10 +262,10 @@
 
     $(document).ready(function () {
 
-        $.fn.bootstrapSwitch.defaults.size = 'small';
+        @*$.fn.bootstrapSwitch.defaults.size = 'small';
         $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
         $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $("[type='checkbox']").bootstrapSwitch();
+        $("[type='checkbox']").bootstrapSwitch();*@
 
         $.get("@Url.Action("Get", "api/UserSgq")", { 'Id': @Id }, function (object) {
             for (var key in object) {

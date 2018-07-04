@@ -9,18 +9,6 @@
         body {
             padding-top: 86px !important;
         }
-        /*table {
-
-            table-layout: fixed;
-            word-wrap: break-word;
-        }*/
-
-
-        /*table {
-            table-layout: fixed;
-            width: 100%;
-            *margin-left: -100px;
-        }*/
 
         .fix {
             position: absolute;
@@ -81,7 +69,6 @@
 
         .defaultGroupTitle {
             float: left;
-            /*width: 100%;*/
         }
 
         .defaultTitle {
@@ -124,10 +111,6 @@
             width: 150px;
         }
 
-        /*tbody > tr > td {
-            word-break: break-all;
-        }*/
-
         button[data-id=valor1Filtro] {
             width: 200px !important;
         }
@@ -146,10 +129,6 @@
             background-color: #fff;
         }
 
-        /*#example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightBodyWrapper {
-            top: -12px !important;
-        }*/
-
         .semDados {
             position: absolute;
             z-index: 10;
@@ -165,48 +144,17 @@
                 margin-left: 40px;
             }
 
-        /*#body {
-            overflow: auto;
-        }*/
-
         .dataTables_scroll table {
             width: 100% !important;
         }
-    </style>
 
-    <style>
         span.select2 {
             min-width: 120px !important;
-        }
-
-        .select2-container {
-            /*width: 278px;*/
-        }
-
-        select {
-            /*min-width: 278px;*/
         }
 
         .hideEmail {
             display: block !important;
         }
-        /*.dataTable td {
-            max-width: 15ch;
-            height: 125px !important;
-            max-height: 125px !important;
-            overflow: hidden;
-            text-overflow: clip;
-            white-space: nowrap;
-
-            padding: 10px;
-
-
-        }
-
-        .dataTable td:hover {
-            overflow: visible;
-            white-space: normal;
-        }*/
 
         * {
             margin: 0;
@@ -219,40 +167,9 @@
             color: #333;
         }
 
-
-        /*table {
-            text-align: left;
-            border-radius: .25rem;
-        }*/
-
         table.borderedNinja {
             border: 2px solid #c1c1c1;
         }
-
-        /*thead tr:first-child {
-            background: #ffffff;
-            border: none;
-            height: 60px;
-        }
-
-        th:first-child,
-        td:first-child {
-            padding: 0 15px 0 20px;
-        }
-
-        tbody tr:hover {
-            background-color: rgba(170, 170, 170, 0.20);
-            cursor: default;
-        }
-
-        tbody tr:last-child td {
-            border: none;
-        }
-
-        td:last-child {
-            text-align: right;
-            padding-right: 10px;
-        }*/
 
         .button {
             color: #aaa;
@@ -408,7 +325,6 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div id="modalVisaoGeralProjetos" class="modal fade modal-lg" role="dialog">
     <div class="modal-dialog">
 
@@ -510,6 +426,38 @@
                     <option>@Resources.Resource.all</option>
                 </select>
                 &nbsp;
+
+                <select style="font-size:xx-small;" id="campo2Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor2Filtro');">
+                    <option value="">@Resources.Resource.all</option>
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="UnidadeName">@Resources.Resource.unit</option>
+                    <option value="_Quem">@Resources.Resource.who</option>
+                    <option value="_StatusName">@Resources.Resource.status</option>
+                    <option value="Regional">@Resources.Resource.regional</option>
+                    <option value="Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+                &nbsp;
+
+                <select id="valor2Filtro">
+                    <option>@Resources.Resource.all</option>
+                </select>
+                &nbsp;
+
                 <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnTop"><span class="glyphicon glyphicon-filter"></span></button>
             </div>
 
@@ -589,7 +537,7 @@
             <div class="defaultFilter">
                 <select style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
 
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Diretoria" selected>@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
                     <option value="Objetivo">@Resources.Resource.guideline</option>
                     <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
@@ -631,7 +579,7 @@
                     <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
                     <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
                     <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName">@Resources.Resource.status</option>
+                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
                     <option value="Acao.Regional">@Resources.Resource.regional</option>
                     <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
                     <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
@@ -667,7 +615,7 @@
                     <option value="Objetivo">@Resources.Resource.guideline</option>
                     <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
                     <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Gerencia" selected>@Resources.Resource.management</option>
                     <option value="Coordenacao">@Resources.Resource.coordination</option>
                     <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
                     <option value="TemaProjeto">@Resources.Resource.project_theme</option>
@@ -704,7 +652,7 @@
                     <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
                     <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
                     <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName">@Resources.Resource.status</option>
+                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
                     <option value="Acao.Regional">@Resources.Resource.regional</option>
                     <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
                     <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
@@ -1054,11 +1002,29 @@
     </div>
 </div>
 
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="minmaxCon"></div>
 
-<script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
-
 @section Scripts {
+
+    <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
 
     <script type="text/javascript">
 
@@ -1225,17 +1191,17 @@
 
             let serieArrFinal = [{
                 type: 'column',
-                name: '@Resources.Resource.open',
+                name: '@Html.Raw(Resources.Resource.open)',
                 data: arrayAndamento,
                 color: andamentoColor
             }, {
                 type: 'column',
-                name: '@Resources.Resource.closed',
+                name: '@Html.Raw(Resources.Resource.closed)',
                 data: arrayFechadas,
                 color: concluidoColor
             }, {
                 type: 'spline',
-                name: '@Resources.Resource.stock',
+                name: '@Html.Raw(Resources.Resource.stock)',
                 data: arrayEstoque,
                 color: atrasadaColor,
                 marker: {
@@ -1252,47 +1218,46 @@
 
                 switch (categoriesArr[i].getMonth()) {
                     case 0:
-                        retorno = "@Resources.Resource.jan";
+                        retorno = '@Html.Raw(Resources.Resource.jan)';
                         break;
                     case 1:
-                        retorno = "@Resources.Resource.feb";
+                        retorno = '@Html.Raw(Resources.Resource.feb)';
                         break;
                     case 2:
-                        retorno = "@Resources.Resource.mar";
+                        retorno = '@Html.Raw(Resources.Resource.mar)';
                         break;
                     case 3:
-                        retorno = "@Resources.Resource.apr";
+                        retorno = '@Html.Raw(Resources.Resource.apr)';
                         break;
                     case 4:
-                        retorno = "@Resources.Resource.may";
+                        retorno = '@Html.Raw(Resources.Resource.may)';
                         break;
                     case 5:
-                        retorno = "@Resources.Resource.june";
+                        retorno = '@Html.Raw(Resources.Resource.june)';
                         break;
                     case 6:
-                        retorno = "@Resources.Resource.july";
+                        retorno = '@Html.Raw(Resources.Resource.july)';
                         break;
                     case 7:
-                        retorno = "@Resources.Resource.aug";
+                        retorno = '@Html.Raw(Resources.Resource.aug)';
                         break;
                     case 8:
-                        retorno = "@Resources.Resource.sept";
+                        retorno = '@Html.Raw(Resources.Resource.sept)';
                         break;
                     case 9:
-                        retorno = "@Resources.Resource.oct";
+                        retorno = '@Html.Raw(Resources.Resource.oct)';
                         break;
                     case 10:
-                        retorno = "@Resources.Resource.nov";
+                        retorno = '@Html.Raw(Resources.Resource.nov)';
                         break;
                     case 11:
-                        retorno = "@Resources.Resource.dec";
+                        retorno = '@Html.Raw(Resources.Resource.dec)';
                         break;
                 }
 
                 categoriesArr[i] = retorno + '-' + categoriesArr[i].getFullYear();
 
             }
-
 
             makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
             })
@@ -1310,6 +1275,7 @@
         }
 
         $(document).ready(function () {
+
             var zero = 0;
 
             $("input[name='daterange']").css('width', '140px');
@@ -1459,7 +1425,6 @@
 
         /*Planejamento*/
         function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
-            //console.log(ModalOpcoesEstrategico);
 
             IdBotaoClicado = IdParaNovaAcao;
 
@@ -1469,7 +1434,7 @@
             if (title != undefined) {
                 $('#Header').html(title);
             } else {
-                $('#Header').html("@Resources.Resource.planning");
+                $('#Header').html(Html.Raw(@Resources.Resource.planning));
             }
 
             if (callback != undefined) {
@@ -1517,9 +1482,9 @@
         }
 
         function NovoPlanejamento() {//Pos Modal2
-            //console.log(NovoPlanejamento);
+
             var title = $('#Header').html();
-            var title2 = " > @Resources.Resource._new"
+            var title2 = " > " + "@Html.Raw(Resources.Resource._new)"
 
             $('#Header').html(title + title2);
 
@@ -1527,22 +1492,6 @@
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
                     $('.novoItem ').hide();
-
-                    if (isClickedTaticoVinculado) {
-                        //$('#Planejamento > table > tbody > tr:nth-child(1)').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(4)').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(5)').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(6)').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(7)').attr('disabled', true);
-                        //$('#Planejamento > table > tbody > tr:nth-child(8)').attr('disabled', true);
-                    } else {
-                        //$('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                        //$('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-                        //$('#Planejamento > table > tbody > tr:nth-child(5)').hide();
-                        //$('#Planejamento > table > tbody > tr:nth-child(6)').hide();
-                        //$('#Planejamento > table > tbody > tr:nth-child(7)').hide();
-                        //$('#Planejamento > table > tbody > tr:nth-child(8)').hide();
-                    }
 
                     DdlChangeTatico();
 
@@ -1584,7 +1533,6 @@
 
             $('#Salvar').off('click').on('click', SalvarPlanejamento);
 
-            //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
         }
 
@@ -1599,7 +1547,7 @@
 
             let isValid = $('#Planejamento').find('.error').length == 0
             if (!isValid) {
-                alert("@Resources.Resource.required_fields");
+                alert('@Html.Raw(Resources.Resource.required_fields)');
                 return
             }
 
@@ -1610,12 +1558,12 @@
                 $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                     planejamentoCorrentId = parseInt(r.Id);
-                    openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
                     $('#modalLindo').modal('hide');
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
                 });
             }
 
@@ -1634,32 +1582,32 @@
 
             let isValid = ($(form).find('.error:visible').length == 0)
             if (!isValid) {
-                alert("@Resources.Resource.required_fields")
+                alert('@Html.Raw(Resources.Resource.required_fields)')
                 return
             }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                 planejamentoCorrentId = parseInt(r.Id);
-                openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
                 $('#modalLindo').modal('hide');
                 $('#btnTop').click();
 
 
             }).fail(function (e, h, x) {
 
-                openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
             });
 
         }
 
         //Verificando
         function EditarPlanejamento(model) {
-            //console.log(EditarPlanejamento);
+
             var title = $('#Header').html();
             var title2 = " > Novo"
             if (isTaticoClicked) {
-                $('#Header').html("@Resources.Resource.tactical_planning");
+                $('#Header').html('@Html.Raw(Resources.Resource.tactical_planning)');
             } else {
                 $('#Header').html(title + title2);
             }
@@ -1751,7 +1699,6 @@
             $('#Fechar').show();
             $('#Salvar').show();
             $('#Salvar').off('click').on('click', SalvarPlanejamento);
-            //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
         }
 
@@ -1804,20 +1751,19 @@
                 }
             });
 
-            //if(edit == undefined){
             $('#Dimensao_Id').val(change1).change();
-            //$.LoadingOverlay('show')
+
             if (v2 != undefined) {
                 setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
             } else {
-                //$('#Objetivo_Id').val(change2).change();
+
                 setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
             }
 
             if (v3 != undefined) {
                 setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
             }
-            //}
+
         }
 
         function DdlChangeTatico(model) {
@@ -1841,8 +1787,6 @@
                         $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                             $('#ObjetivoGerencial_Id').parent().html('').append(r);
-
-                            //$('#ObjetivoGerencial_Id').addClass(' required tatico ');
                             $('#ObjetivoGerencial_Id').addClass('tatico');
 
                             try {
@@ -1868,10 +1812,10 @@
         function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
             let masterEl = $(idMaster)
             let masterElVal = $(idMaster).val()
-            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, '@Resources.Resource.select_a_predecessor_above', '');
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
             masterEl.off('change').on('change', function () {
                 let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
-                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, '@Resources.Resource.select_a_predecessor_above', '');
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
                 $.get(urlGETChildren, { id: seletedId }, function (response) {
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
@@ -1922,7 +1866,7 @@
 
                 header.find(".collapse").attr("id", collapseId);
                 header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
-                header.find("button[data-toggle='collapse']").html("@Resources.Resource.new_action")
+                header.find("button[data-toggle='collapse']").html('@Html.Raw(Resources.Resource.new_action)')
 
                 header.appendTo('#final');
                 header.show();
@@ -1940,13 +1884,6 @@
                 }, 1);
 
                 myfunction();
-
-                //MoneyMask('R$ ');
-
-                //$('.money').each(function () {
-                //    $(this).maskMoney('mask', $(this).val());
-                //});
-
                 InitDatePiker();
             };
 
@@ -1972,7 +1909,6 @@
             } else {
 
                 $(inputQuantoCusta).maskMoney('destroy');
-                //$(inputQuantoCusta).get(0).type = 'number';
 
                 if (valor != "" && valor != NaN)
                     $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
@@ -2005,9 +1941,6 @@
 
             if (unidadeMedida == 1) {
 
-                //$(inputValorDe).get(0).type = 'text';
-                //$(inputValorPara).get(0).type = 'text';
-
                 let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
 
                 $(inputValorDe).maskMoney(config);
@@ -2031,16 +1964,14 @@
             {
 
                 $(inputValorDe).maskMoney('destroy');
-                //$(inputValorDe).get(0).type = 'number';
 
                 if (valorDe != "" && valorDe != NaN)
                     $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
                 else
                     $(inputValorDe).val(valorDe);
 
-
                 $(inputValorPara).maskMoney('destroy');
-                //$(inputValorPara).get(0).type = 'number';
+
                 if (valorPara != "" && valorPara != NaN)
                     $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
                 else
@@ -2104,7 +2035,7 @@
                 if (isOpenModal)
                     $('#modalLindo').modal();
 
-                $('#Header').html("@Resources.Resource.new_action");
+                $('#Header').html('@Html.Raw(Resources.Resource.new_action)');
 
                 $.get(urlNovaAcao, function (r) {
 
@@ -2140,11 +2071,10 @@
 
         //Verificando
         function EditarAcao(html, data) {
-            //console.log(EditarAcao);
             var acao = data.Acao;
 
             $('#modalLindo').modal();
-            $('#Header').html("@Resources.Resource.edit_action");
+            $('#Header').html('@Html.Raw(Resources.Resource.edit_action)');
             $('#modalLindo').find('.modal-body').empty().append(html);
             $('#modalLindo').find('.modal-footer button').hide();
             myfunction();
@@ -2230,12 +2160,12 @@
 
                         jaLiberouCallback = true;
                         $('#modalLindo').modal('hide');
-                        openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                        openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
                         $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
 
-                        openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                     }).always(function () {
 
@@ -2243,11 +2173,11 @@
                 })
                     .fail(function (e, h, x) {
 
-                        openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                     });
             } else
-                alert("@Resources.Resource.required_fields");
+                alert('@Html.Raw(Resources.Resource.required_fields)');
 
         }
 
@@ -2266,7 +2196,7 @@
                 let DataFim = new Date(parts[2], parts[1], parts[0]);
 
                 if (DataInicio < DataFim) {
-                    alert("@Resources.Resource.start_date_must_be_less_than_end_date");
+                    alert('@Html.Raw(Resources.Resource.start_date_must_be_less_than_end_date)');
                     dataIsValid = false;
                     return;
                 }
@@ -2290,9 +2220,9 @@
 
             });
 
-            let isValid = $('.Acao').find('.error').length == 0
+            let isValid = $('.Acao').find('.error').length == 0;
             if (!isValid) {
-                alert("@Resources.Resource.required_fields")
+                alert('@Html.Raw(Resources.Resource.required_fields)')
                 return;
             }
 
@@ -2306,13 +2236,13 @@
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
                     $('.modal-backdrop').remove();
-                    openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
 
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
 
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                 }).always(function () {
 
@@ -2320,7 +2250,7 @@
             })
                 .fail(function (e, h, x) {
 
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
 
                 });
 
@@ -2400,7 +2330,7 @@
             var label = $(btn).parents('tr').find('label').html();
             $('#modalNovo > div > div.modal-footer').hide();
             $('#modalNovo').modal();
-            $('#novoHeader').html("@Resources.Resource.to_manage " + label);
+            $('#novoHeader').html('@Html.Raw(Resources.Resource.to_manage) ' + label);
             $('#nomeItemNovo').html(label);
 
             if (encadeado != undefined) {
@@ -2487,46 +2417,46 @@
                     pageLength: 3,
                     "bInfo": false,
                     language: {
-                        "sEmptyTable": "@Resources.Resource.no_records_found",
-                        "sInfo": "@Resources.Resource.showing_start_to_end_of_total_records",
-                        "sInfoEmpty": "@Resources.Resource.showing_0_to_0_of_0_records",
-                        "sInfoFiltered": "@Resources.Resource.filtered_max_records",
+                        "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
+                        "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
+                        "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
+                        "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
                         "sInfoPostFix": "",
                         "sInfoThousands": ".",
-                        "sLengthMenu": "@Resources.Resource.menu_results_per_page",
-                        "sLoadingRecords": "@Resources.Resource.loading",
-                        "sProcessing": "@Resources.Resource.processing",
-                        "sZeroRecords": "@Resources.Resource.no_records_found",
-                        "sSearch": "@Resources.Resource.search",
+                        "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
+                        "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
+                        "sProcessing": "@Html.Raw(Resources.Resource.processing)",
+                        "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
+                        "sSearch": "@Html.Raw(Resources.Resource.search)",
                         "oPaginate": {
-                            "sNext": "@Resources.Resource.next",
-                            "sPrevious": "@Resources.Resource.back",
-                            "sFirst": "@Resources.Resource.first",
-                            "sLast": "@Resources.Resource.last"
+                            "sNext": "@Html.Raw(Resources.Resource.next)",
+                            "sPrevious": "@Html.Raw(Resources.Resource.back)",
+                            "sFirst": "@Html.Raw(Resources.Resource.first)",
+                            "sLast": "@Html.Raw(Resources.Resource.last)"
                         },
                         "oAria": {
-                            "sSortAscending": "@Resources.Resource.sort_columns_ascending",
-                            "sSortDescending": "@Resources.Resource.sort_columns_downward"
+                            "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
+                            "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
                         }
                     },
                     columns: [
                         { title: "ID" },
-                        { title: "@Resources.Resource.name" },
+                        { title: "@Html.Raw(Resources.Resource.name)" },
                         {
-                            title: "@Resources.Resource.active2",
+                            title: "@Html.Raw(Resources.Resource.active2)",
                             "data": null,
                             "render": function (data, type, full, meta) {
                                 if (data[2] == true) {
-                                    return "@Resources.Resource.active3";
+                                    return "@Html.Raw(Resources.Resource.active3)";
                                 }
-                                return "@Resources.Resource.inactive";
+                                return "@Html.Raw(Resources.Resource.inactive)";
                             }
                         },
                         {
                             "className": 'options',
                             "data": null,
                             "render": function (data, type, full, meta) {
-                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Resources.Resource.edit</span>';
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Html.Raw(Resources.Resource.edit)</span>';
                             }
                         }
                     ],
@@ -2602,14 +2532,12 @@
                 myfunction();
 
             } else {
-                //if (tipo == 'Estrategico') {
-                //$('#Id').val(model.Id);
+
                 form.find('#Estrategico_Id').remove();
                 form.find('#IsTatico').val(false).change();
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
                 form.find('table > tbody > tr:nth-child(3)').hide();
-                //form.find('table > tbody > tr:nth-child(10)').hide();
                 form.find('table > tbody > tr:nth-child(11)').hide();
                 form.find('table > tbody > tr:nth-child(12)').hide();
                 form.find('table > tbody > tr:nth-child(13)').hide();
@@ -2628,7 +2556,6 @@
                     if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
-                        //console.log(before)
                         let after = `Novo(this, 'formEditEstrategy #${before}`
                         $(c).attr('onclick', after)
                     }
@@ -2648,16 +2575,6 @@
 
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
-                //}
-
-                //else {
-                //    $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                //    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-                //    $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
-                //    $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
-                //    $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
-                //    $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
-                //}
             }
 
             InitDatePiker();
@@ -2677,18 +2594,16 @@
             $('#modalLindo').modal('hide');
             $.post(urlSalvarAcompanhamento, obj, function (r) {
 
-                //Colocar o retorno no modal
                 formReset();
-                //getAcompanhamento(obj.Acao_Id);
+
                 $('#btnTop').click();
-                openMessageModal('@Resources.Resource.registry_successfully_saved', '');
+                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
 
-            })
-                .fail(function (e, h, x) {
+            }).fail(function (e, h, x) {
 
-                    openMessageModal("@Resources.Resource.could_not_save_record", e.responseJSON.Message);
+                  openMessageModal("@Html.Raw(Resources.Resource.could_not_save_record)", e.responseJSON.Message);
 
-                });
+            });
         }
 
         function formReset() {
@@ -2704,14 +2619,14 @@
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 $('#modalLindo').modal();
-                $('#Header').html('@Resources.Resource.operational_planning_follow_up');
+                $('#Header').html('@Html.Raw(Resources.Resource.operational_planning_follow_up)');
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
 
                 $("#SaveAcompanhamento").on("click", function (event) {
                     var obj = $("#acompanhamento").serializeObject();
                     if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined || obj.MailTo == undefined || !(obj.Status_Id > 0))
-                        alert("@Resources.Resource.fields_must_be_completed")
+                        alert("@Html.Raw(Resources.Resource.fields_must_be_completed)")
                     else
                         SalvarAcompanhamento(obj);
                 });
@@ -2735,7 +2650,7 @@
                     }
 
                     $('#modalLindo').find('.modal-footer button').hide();
-                    $('#Header').html("@Resources.Resource.edit");
+                    $('#Header').html("@Html.Raw(Resources.Resource.edit)");
                     $('#modalLindo').modal();
                     $('#Fechar').show();
                 });
@@ -2755,8 +2670,6 @@
         $(document).ajaxStop(function () {
             $.LoadingOverlay("hide", true);
             counter--;
-
-            //HideForOperacional();
         });
 
         $(document).ajaxError(function (e, h, x) {
@@ -2769,8 +2682,6 @@
 
         $(function () {
             GetDataTable();
-
-            //GetDataTablePlanejamento();
 
             $('#modalNovo').on('hidden.bs.modal', function () {
                 if (selectPredecessor != undefined) {
@@ -2788,7 +2699,6 @@
                     $("#newItem").val('');
                     $('#btnSalvarNovo').removeClass('hide');
                     $('#btnEditarNovo').addClass('hide');
-                    //$('#btnDeletarNovo').addClass('hide');
                     $('#btnCancelarNovo').addClass('hide');
                     $('#divIsActive').addClass('hide');
 
@@ -2826,8 +2736,6 @@
 
                 changeIndicadoresProjetos();
 
-                //HideForOperacional();
-
                 $('.UnidadeDeMedidaTatico').change();
 
                 if (data.Acao && data.Acao.Id > 0) {
@@ -2845,17 +2753,9 @@
 
                 manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
 
-                //if (Iniciativa_Id <= 0) {
-                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", true);
-                //} else {
-                //    $('button[title="Gerenciar Indicadores do Projeto / Iniciativa"]').prop("disabled", false);
-                //}
-
                 $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
 
                     $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
-
-                    //changeIndicadoresProjetos();
 
                     $('#formEditTatico #IndicadoresDeProjeto_Id').select2();
 
@@ -2872,17 +2772,10 @@
 
                 manageButton(Objetivo_Id, 'formEditTatico #ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
 
-                //if (Objetivo_Id <= 0) {
-                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
-                //} else {
-                //    $('button[title="Gerenciar Objetivo Gerencial"]').prop("disabled", true);
-                //}
-
                 $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
 
                     $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
 
-                    //$('#formEditTatico #ObjetivoGerencial_Id').addClass(' required tatico ');
                     $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
 
                     $('#formEditTatico #ObjetivoGerencial_Id').select2();
@@ -2895,8 +2788,8 @@
             $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
                 var acao = data.Acao;
 
-                $('#Header').html("@Resources.Resource.edit_action");
-                //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
+                $('#Header').html("@Html.Raw(Resources.Resource.edit_action)");
+
                 $('#modalLindo').find('.modal-footer button').hide();
                 $('#modalLindo').find('.modal-body .content3').append(r);
 
@@ -2983,7 +2876,7 @@
                 Highcharts.chart('graficoPorGerencia', {
 
                     title: {
-                        text: '@Resources.Resource.percent_completed_area'
+                        text: '@Html.Raw(Resources.Resource.percent_completed_area)'
                     },
                     chart: {
                         height: 230
@@ -2996,7 +2889,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: '@Resources.Resource.percent_conclusion'
+                            text: '@Html.Raw(Resources.Resource.percent_conclusion)'
                         }
                     },
                     plotOptions: {
@@ -3004,12 +2897,11 @@
                             dataLabels: {
                                 enabled: true,
                                 format: '{point.y:.0f} %',
-                                //distance: -10,
                                 style: {
                                     color: 'black',
                                     fontSize: '10px',
                                 },
-                                //connectorColor: 'silver'
+
                             },
                             point: {
                                 events: {
@@ -3065,7 +2957,7 @@
                 Highcharts.chart('graficoPorDiretriz', {
 
                     title: {
-                        text: '@Resources.Resource.percent_completed_area'
+                        text: '@Html.Raw(Resources.Resource.percent_completed_area)'
                     },
                     chart: {
                         height: 230
@@ -3078,7 +2970,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: '@Resources.Resource.percent_conclusion'
+                            text: '@Html.Raw(Resources.Resource.percent_conclusion)'
                         }
                     },
                     plotOptions: {
@@ -3150,28 +3042,28 @@
                 columns: columnsSet,
                 destroy: true,
                 pageLength: 5,
-                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Resources.Resource.all"]],
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Html.Raw(Resources.Resource.all)"]],
                 language: {
-                    "sEmptyTable": "@Resources.Resource.no_records_found",
-                    "sInfo": "@Resources.Resource.showing_start_to_end_of_total_records",
-                    "sInfoEmpty": "@Resources.Resource.showing_0_to_0_of_0_records",
-                    "sInfoFiltered": "@Resources.Resource.filtered_max_records",
+                    "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
+                    "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
+                    "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
+                    "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
                     "sInfoPostFix": "",
                     "sInfoThousands": ".",
-                    "sLengthMenu": "@Resources.Resource.menu_results_per_page",
-                    "sLoadingRecords": "@Resources.Resource.loading",
-                    "sProcessing": "@Resources.Resource.processing",
-                    "sZeroRecords": "@Resources.Resource.no_records_found",
-                    "sSearch": "@Resources.Resource.search",
+                    "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
+                    "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
+                    "sProcessing": "@Html.Raw(Resources.Resource.processing)",
+                    "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
+                    "sSearch": "@Html.Raw(Resources.Resource.search)",
                     "oPaginate": {
-                        "sNext": "@Resources.Resource.next",
-                        "sPrevious": "@Resources.Resource.back",
-                        "sFirst": "@Resources.Resource.first",
-                        "sLast": "@Resources.Resource.last"
+                        "sNext": "@Html.Raw(Resources.Resource.next)",
+                        "sPrevious": "@Html.Raw(Resources.Resource.back)",
+                        "sFirst": "@Html.Raw(Resources.Resource.first)",
+                        "sLast": "@Html.Raw(Resources.Resource.last)"
                     },
                     "oAria": {
-                        "sSortAscending": "@Resources.Resource.sort_columns_ascending",
-                        "sSortDescending": "@Resources.Resource.sort_columns_downward"
+                        "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
+                        "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
                     }
                  }
             });
@@ -3197,6 +3089,17 @@
 
         function getTablesModal() {
 
+            let renderFunction = function (data, type, row, meta) {
+
+                //Gambzinha porque quando converte a data, ela fica com um dia a menos, então tive que somar mais um dia - Renan 22/06/2018
+                let dataFormatada = new Date(data);               
+                dataFormatada.setDate(dataFormatada.getDate() + 1);
+
+                let html = "<span style='display:none'>" + data + "</span>" + dataFormatada.toLocaleDateString();
+
+                return html;
+            }
+
             // Acão Em Andamento
             let AcoesEspecificas = [];
 
@@ -3208,7 +3111,7 @@
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor =  "@Resources.Resource.no_specific_action";
+                        valor =  "@Html.Raw(Resources.Resource.no_specific_action)";
                     }
                 }
 
@@ -3218,7 +3121,7 @@
                 AcoesEspecificas.push([i]);
             });
 
-            let TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }]
+            let TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }]
 
             var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3235,12 +3138,12 @@
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "@Resources.Resource.no_specific_action";
+                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "@Html.Raw(Resources.Resource.no_specific_action)";
 
                     return { 0:  valor, 1: String(diffDays - 1) + " Dias" };
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
                     }
                 }
 
@@ -3248,7 +3151,7 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.days_of_delay" }]
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.days_of_delay)" }]
 
             var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3266,19 +3169,21 @@
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toISOString().slice(0, 10) };
 
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
                     }
                 }
+
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.start_date" }]
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.start_date)", render: renderFunction }]
 
             var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
 
@@ -3292,20 +3197,20 @@
 
                     let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
 
-                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toISOString().slice(0, 10) };
 
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Resources.Resource.no_specific_action", 1: "" };
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
                     }
                 }
-
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Resources.Resource.specific_action" }, { title: "@Resources.Resource.date_conclusion" }]
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.date_conclusion)", render: renderFunction }]
 
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
@@ -3371,7 +3276,7 @@
             Highcharts.chart('graficoPorProjetos', {
 
                 title: {
-                    text: '@Resources.Resource.percent_completed_demands'
+                    text: '@Html.Raw(Resources.Resource.percent_completed_demands)'
                 },
                 credits: {
                     enabled: false
@@ -3381,7 +3286,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: '@Resources.Resource.percent_conclusion'
+                        text: '@Html.Raw(Resources.Resource.percent_conclusion)'
                     }
                 },
                 xAxis: {
@@ -3431,7 +3336,7 @@
 
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">@Resources.Resource.select</button>';
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.select)</button>';
                 }});
                 datatableGRT.Inicializar({
                     idTabela: "tablePessego",
@@ -3442,10 +3347,8 @@
                             if(confirm("Deseja alterar o vinculo!?")){
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
-                                //alert("Id: "+id+" Tipo: "+ tipo +" Id="+$(this).attr("data-id"));
                                 $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
-                                    //alert("Atualizou o rolê!");
-                                    openMessageModal("@Resources.Resource.updated_link");
+                                    openMessageModal("@Html.Raw(Resources.Resource.updated_link)");
                                     location.reload();
                                 });
                             }
@@ -3486,7 +3389,7 @@
 
             $('#modalLindo').modal();
             $('#modalLindo').find('.modal-body').empty();
-            $('#Header').html("@Resources.Resource.operational_planning");
+            $('#Header').html("@Html.Raw(Resources.Resource.operational_planning)");
 
             $.get(PlanejamentoDetalhes, { id: id }, function (r) {
                 $('#NovaAcao').show();
@@ -3545,11 +3448,11 @@
         var tableModalNovoApartirDe={};
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
         function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
-            $('#ModalNovoApartirDeAlgo').find('h4').text("@Resources.Resource.create "+NomeDoQueSeraCriado+" @Resources.Resource.from "+NomeApartirDeQueSeraCriado);
+            $('#ModalNovoApartirDeAlgo').find('h4').text("@Html.Raw(Resources.Resource.create) "+NomeDoQueSeraCriado+" @Html.Raw(Resources.Resource.from) "+NomeApartirDeQueSeraCriado);
             $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">@Resources.Resource.create '+NomeDoQueSeraCriado+'</button>';
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.create) '+NomeDoQueSeraCriado+'</button>';
                 }});
                 tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",
@@ -3580,22 +3483,3 @@
     </script>
 
 }
-
-<!-- Modal -->
-<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped"></table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-            </div>
-        </div>
-    </div>
-</div>
