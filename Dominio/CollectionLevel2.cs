@@ -109,10 +109,6 @@ namespace Dominio
 
         public int? EndPhaseEvaluation { get; set; }
 
-        public virtual CollectionLevel2 CollectionLevel21 { get; set; }
-
-        public virtual CollectionLevel2 CollectionLevel22 { get; set; }
-
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
 
         public virtual ParLevel1 ParLevel1 { get; set; }

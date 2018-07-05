@@ -210,10 +210,6 @@ namespace Dominio
                 .HasPrecision(15, 5);
 
             modelBuilder.Entity<CollectionLevel2>()
-                .HasOptional(e => e.CollectionLevel21)
-                .WithRequired(e => e.CollectionLevel22);
-
-            modelBuilder.Entity<CollectionLevel2>()
                 .HasMany(e => e.CollectionLevel2XParHeaderField)
                 .WithRequired(e => e.CollectionLevel2)
                 .HasForeignKey(e => e.CollectionLevel2_Id)
