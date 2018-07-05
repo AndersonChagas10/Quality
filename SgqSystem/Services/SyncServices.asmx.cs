@@ -302,6 +302,11 @@ namespace SgqSystem.Services
 
                         r1.Add(parCluster_Id);
 
+                        int insertLog = 0;
+
+                        if (parCluster_Id == "0")
+                            insertLog = insertLogJson(objObjResultJSonPuro, "Gravou cluster 0", deviceId, versaoApp, "Cluster 0");
+
                         result = r1.ToArray();
 
 

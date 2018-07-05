@@ -60,17 +60,17 @@ public class ApontamentosDiariosResultSet
 
         if (form.unitId > 0)
         {
-            sqlUnidade = "\n AND UN.Id = " + form.unitId;
+            sqlUnidade = "\n AND UnitId = " + form.unitId;
         }
 
         if (form.level1Id > 0)
         {
-            sqlLevel1 = "\n AND L1.Id = " + form.level1Id;
+            sqlLevel1 = "\n AND ParLevel1_id = " + form.level1Id;
         }
 
         if (form.level2Id > 0)
         {
-            sqlLevel2 = "\n AND C2.ParLevel2_Id = " + form.level2Id;
+            sqlLevel2 = "\n AND ParLevel2_Id = " + form.level2Id;
         }
 
         if (form.level3Id > 0)
@@ -109,7 +109,11 @@ public class ApontamentosDiariosResultSet
 	                    ,AlterDate 
                     INTO #CollectionLevel2
                     FROM collectionlevel2 CL2
-                        WHERE CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
+                        WHERE 1=1
+                         AND CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
+                         { sqlUnidade } 
+                         { sqlLevel1 } 
+                         { sqlLevel2 }
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
                     CREATE INDEX IDX_CollectionLevel2_UnitId ON #CollectionLevel2(UnitId);
@@ -205,7 +209,7 @@ public class ApontamentosDiariosResultSet
 				 ON PC.Id = C2XC.ParCluster_Id
                  WHERE 1=1 
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
-                  {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";
+                  { sqlLevel3 } ";
 
         return query;
     }
