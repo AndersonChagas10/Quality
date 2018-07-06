@@ -93,6 +93,29 @@ namespace SgqSystem.Controllers
             base.Initialize(requestContext);
         }
 
+        protected override void EndExecute(IAsyncResult asyncResult)
+        {
+            var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var currentRoute = this.ControllerContext.RouteData.Values.Values.ToList();
+                var controller = currentRoute[0].ToString();
+                var action = currentRoute[1].ToString();
+
+                if (db.ItemMenu.Any(r => r.IsActive == true && r.Url.Contains(controller) && r.Url.Contains(action)))
+
+                    if (webControlCookie != null && webControlCookie.Values["userId"] != null)
+                    {
+                        var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.ItensMenu;
+                        if (!itensMenu.Any(i => i.Url != null && i.Url.Contains(controller + "/" + action)))
+                            throw new Exception("Acesso Negado!");
+                    }
+            }
+
+            base.EndExecute(asyncResult);
+        }
+
         public void CreateCookieFromUserDTO(UserDTO isAuthorized)
         {
             HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
