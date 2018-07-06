@@ -67,6 +67,7 @@ namespace SgqSystem.Controllers.UserAndRoles
                 db.RoleUserSgq.AddOrUpdate(roleUserSgq);
                 db.SaveChanges();
 
+                regra.Id = roleUserSgq.Id;
                 SaveRoleSgqXItemMenu(regra);
 
                 return RedirectToAction("Index");
