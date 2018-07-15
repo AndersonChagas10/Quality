@@ -27,6 +27,7 @@ namespace DTO
         public string MailSmtp { get; set; }
         public bool MockEmail { get; set; }
     }
+
     public class Mandala
     {
         public int ParLevel1_id { get; set; }

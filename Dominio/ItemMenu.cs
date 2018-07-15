@@ -12,14 +12,16 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class RoleUserSgq
+    public partial class ItemMenu
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public Nullable<int> ItemMenu_Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Url { get; set; }
+        public string Resource { get; set; }
         public bool IsActive { get; set; }
-        public bool FazColeta { get; set; }
     }
 }

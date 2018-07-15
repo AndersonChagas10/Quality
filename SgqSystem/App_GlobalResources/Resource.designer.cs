@@ -1853,6 +1853,16 @@ namespace Resources {
         
         /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Cancel.
+        ///   Looks up a localized string similar to Do Audit.
+        /// </summary>
+        internal static string do_audit {
+            get {
+                return ResourceManager.GetString("do_audit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string do_not_change_password {
             get {
@@ -2743,7 +2753,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a ID.
+        ///   Looks up a localized string similar to Icon.
+        /// </summary>
+        internal static string icon {
+            get {
+                return ResourceManager.GetString("icon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID.
         /// </summary>
         internal static string id {
             get {
@@ -3049,7 +3068,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a January.
+        ///   Looks up a localized string similar to Item of Menu.
+        /// </summary>
+        internal static string item_menu {
+            get {
+                return ResourceManager.GetString("item_menu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to January.
         /// </summary>
         internal static string january {
             get {
@@ -3940,7 +3968,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Name has to be between 3 and 10 characters.
+        ///   Looks up a localized string similar to Name can not be empty.
+        /// </summary>
+        internal static string name_can_not_be_empty {
+            get {
+                return ResourceManager.GetString("name_can_not_be_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name has to be between 3 and 10 characters.
         /// </summary>
         internal static string name_has_between_3_and_10 {
             get {
@@ -5344,7 +5381,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a en_us.
+        ///   Looks up a localized string similar to Resource.
+        /// </summary>
+        internal static string resource {
+            get {
+                return ResourceManager.GetString("resource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to en_us.
         /// </summary>
         internal static string resource_id {
             get {
@@ -6964,7 +7010,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Username.
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        internal static string url {
+            get {
+                return ResourceManager.GetString("url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
         /// </summary>
         internal static string username {
             get {

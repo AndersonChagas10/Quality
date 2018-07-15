@@ -75,6 +75,10 @@ namespace SgqSystem
                     "~/Scripts/daterangepicker.js",
                     "~/Scripts/DatePikerReady.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/mindmap").Include(
+                    "~/Scripts/mindmap.js")
+            );
+
             #endregion
 
             #region Styles
@@ -114,10 +118,16 @@ namespace SgqSystem
 
             //bundles.Add(new StyleBundle("~/Content/Hc").Include(
             //      "~/Content/daterangepicker.css"));
+
+            bundles.Add(new StyleBundle("~/Content/MindMap").Include(
+                "~/Content/mindmap.css"
+            ));
+
             #endregion
 
 
             #region Privates
+
             bundles.Add(new StyleBundle("~/bundles/RecravacaoPrintCss").Include(
                 "~/Content/bootstrap.min.css"
                 //, "~/Content/toastr.min.css"
@@ -125,17 +135,16 @@ namespace SgqSystem
                 //, "~/Content/bootstrap-select.min.css"
                 ));
 
-           bundles.Add(new ScriptBundle("~/bundles/RecravacaoPrintJs").Include(
-                "~/Scripts/jquery-3.1.0.min.js"
-                //, "~/Scripts/inputmask/jquery.inputmask.bundle.js"
-                , "~/Scripts/angular.min.js"
-                , "~/Scripts/bootstrap.min.js"
-                //, "~/Scripts/select2.min.js"
-                , "~/Scripts/moment-with-locales.min.js"
-                //, "~/Scripts/toastr.min.js"
-                , "~/Scripts/loadingoverlay.min.js"
-                ));
-
+            bundles.Add(new ScriptBundle("~/bundles/RecravacaoPrintJs").Include(
+                 "~/Scripts/jquery-3.1.0.min.js"
+                 //, "~/Scripts/inputmask/jquery.inputmask.bundle.js"
+                 , "~/Scripts/angular.min.js"
+                 , "~/Scripts/bootstrap.min.js"
+                 //, "~/Scripts/select2.min.js"
+                 , "~/Scripts/moment-with-locales.min.js"
+                 //, "~/Scripts/toastr.min.js"
+                 , "~/Scripts/loadingoverlay.min.js"
+                 ));
 
             #endregion
 
