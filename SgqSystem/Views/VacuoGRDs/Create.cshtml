@@ -197,7 +197,7 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
-    $('#HorasTrabalhadasPorDia').on('input', function () {
+    $('#HorasTrabalhadasPorDia').on('blur, keyup', function () {
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#avaliacaoHidden').val($(this).val());
         applyMath();

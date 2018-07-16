@@ -219,12 +219,12 @@ namespace PlanoAcaoCore
         {
             Pa_Status status;
 
-            var dataInicio = DateTime.ParseExact(this._QuandoInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var dataInicio = this._QuandoInicio == null ? DateTime.Now : DateTime.ParseExact(this._QuandoInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             if (Id <= 0)
             {
                 
-                if (dataInicio > DateTime.Now.Date)
+                if (dataInicio.Date > DateTime.Now.Date)
                 {
                     status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
                 }
@@ -238,7 +238,7 @@ namespace PlanoAcaoCore
             else
             {
 
-                if (dataInicio > DateTime.Now.Date)
+                if (dataInicio.Date > DateTime.Now.Date)
                 {
                     status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
 

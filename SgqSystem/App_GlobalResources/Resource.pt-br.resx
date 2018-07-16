@@ -2556,4 +2556,22 @@
   <data name="per_week" xml:space="preserve">
     <value>Por Semana</value>
   </data>
+  <data name="name_can_not_be_empty" xml:space="preserve">
+    <value>O campo nome não pode ser vazio</value>
+  </data>
+  <data name="item_menu" xml:space="preserve">
+    <value>Item de Menu</value>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>Icone</value>
+  </data>
+  <data name="resource" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="url" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="do_audit" xml:space="preserve">
+    <value>Faz Coleta</value>
+  </data>
 </root>

@@ -22,17 +22,17 @@ namespace SgqSystem.Controllers
 
         public BaseController()
         {
-           
+
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
 
             using (var db = new SgqDbDevEntities())
             {
-                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));        
-            }
 
-            using (var db = new SgqDbDevEntities())
-            {
+                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));
+
                 ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive == true));
+
+                //ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null));
             }
 
             var listaURLPA = GetWebConfigList("URL_PA");
@@ -43,7 +43,9 @@ namespace SgqSystem.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
+
             HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
+
             if (languageCookie != null)
             {
                 if (languageCookie.Value == "en")
@@ -84,12 +86,15 @@ namespace SgqSystem.Controllers
             {
             }
 
+            SetItensMenu();
+
             base.Initialize(requestContext);
         }
 
         public void CreateCookieFromUserDTO(UserDTO isAuthorized)
         {
             HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+
             if (cookie != null)
             {
                 cookie.Expires = DateTime.Now.AddHours(48);
@@ -133,12 +138,16 @@ namespace SgqSystem.Controllers
 
                 //Most important, write the cookie to client.
                 Response.Cookies.Add(myCookie);
+
+                //SetItensMenu(isAuthorized);
+
             }
         }
 
         protected void ExpireCookie()
         {
             HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+
             if (currentUserCookie != null)
             {
                 Response.Cookies.Remove("webControlCookie");
@@ -169,6 +178,31 @@ namespace SgqSystem.Controllers
         public static string GetWebConfigSettings(string key)
         {
             return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
+
+        protected void SetItensMenu()
+        {
+            var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
+
+            if (webControlCookie != null)
+            {
+                var UserId = webControlCookie.Values["userId"];
+                ViewBag.UserRoles = webControlCookie.Values["roles"];
+
+                if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var rolesNames = db.UserSgq.Find(int.Parse(UserId)).Role.Split(',');
+
+                        var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
+
+                        var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
+
+                        ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));
+                    }
+                }
+            }
         }
     }
 

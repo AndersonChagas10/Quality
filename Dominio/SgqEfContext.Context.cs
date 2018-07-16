@@ -24,10 +24,10 @@ namespace Dominio
     
     this.Database.CommandTimeout = 9600;
     this.Database.Log = s => System.Diagnostics.Debug.Write(s);
-
-
+    
+    
         }
-        
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -101,7 +101,6 @@ namespace Dominio
         public virtual DbSet<LeftControlRole> LeftControlRole { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<ParScoreType> ParScoreType { get; set; }
-        public virtual DbSet<RoleUserSgq> RoleUserSgq { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual DbSet<ParLocal> ParLocal { get; set; }
@@ -159,6 +158,9 @@ namespace Dominio
         public virtual DbSet<ParLataImagens> ParLataImagens { get; set; }
         public virtual DbSet<ParLevel3Value_Outer> ParLevel3Value_Outer { get; set; }
         public virtual DbSet<ParModuleXModule> ParModuleXModule { get; set; }
+        public virtual DbSet<ItemMenu> ItemMenu { get; set; }
+        public virtual DbSet<RoleUserSgqXItemMenu> RoleUserSgqXItemMenu { get; set; }
+        public virtual DbSet<RoleUserSgq> RoleUserSgq { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

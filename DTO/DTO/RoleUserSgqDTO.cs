@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using System.Collections.Generic;
 
 namespace DTO.DTO
 {
@@ -7,5 +8,9 @@ namespace DTO.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+        public bool FazColeta { get; set; }
+
+        public List<RoleUserSgqXItemMenuDTO> RoleUserSgqXItemMenuDTO { get;set; }
+        public IEnumerable<int> ItemMenuIDs { get; set; }
     }
 }

@@ -99,8 +99,11 @@ namespace SgqSystem.Mappers
 
                 x.AddProfile<RoleUserSgqMapperProfile>();
 
-               
 
+                /*ItemMenu*/
+                x.AddProfile<ItemMenuMapperProfile>();
+
+                x.AddProfile<RoleUserSgqXItemMenuMapperProfile>();
 
 
                 ///*PA............*/

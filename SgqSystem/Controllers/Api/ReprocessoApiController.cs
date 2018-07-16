@@ -180,12 +180,15 @@ namespace SgqSystem.Controllers.Api
 
                 }
 
-                return null;
-
-            }catch(Exception ex)
-            {
-                throw;
+                
             }
+            catch(Exception e)
+            {
+                
+            }
+            
+            return null;
+           
 
         }
 
