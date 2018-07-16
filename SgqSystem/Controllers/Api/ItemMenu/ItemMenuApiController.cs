@@ -20,7 +20,7 @@ namespace SgqSystem.Controllers.Api
 
             var db = new SgqDbDevEntities();
 
-            var itensDeMenu = db.ItemMenu.Where(r => r.IsActive == true).OrderBy(r => r.Name).ToList();
+            var itensDeMenu = db.ItemMenu/*.Where(r => r.IsActive == true)*/.OrderBy(r => r.Name).ToList();
 
             return itensDeMenu;
         }

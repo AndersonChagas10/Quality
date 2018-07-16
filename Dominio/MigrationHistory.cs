@@ -6,16 +6,16 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class VTVerificacaoTipificacaoResultados
+    [Table("MigrationHistory")]
+    public partial class MigrationHistory
     {
         public int Id { get; set; }
 
-        public int TarefaId { get; set; }
+        [Required]
+        [StringLength(155)]
+        public string Name { get; set; }
 
-        public int? CaracteristicaTipificacaoId { get; set; }
-
-        public string Chave { get; set; }
-
-        public int? AreasParticipantesId { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime AddDate { get; set; }
     }
 }
