@@ -1,0 +1,9 @@
+-- Leo (Adicionar a coluna isActive na tabela UserSgq) 
+-- Plano de Ação
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180716__1400_AdicionarIsActiveUserSGQ',GetDate())
+
+IF COL_LENGTH('UserSgq','IsActive') IS NULL
+    BEGIN
+		ALTER TABLE ParLevel3Value
+		ADD IsActive varchar(100) null
+    END
