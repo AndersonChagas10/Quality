@@ -389,8 +389,7 @@ namespace SgqSystem.Services
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
 
                                  "         <input type=\"text\" value=\"\" class=\"form-control text-center levelValue interval\"  style=\"width:30%;\" >     " +
-                                 "         <input type=\"text\" class=\"form-control text-center levelValueNotes naoValidarInput\" style=\"width:70%;\" placeholder=\"" + Resources.Resource.notes + "\">  " +
-
+                                 "         <textarea class=\"form-control text-center levelValueNotes naoValidarInput\" style=\"width:70%;\" placeholder=\"" + Resources.Resource.notes + "\"></textarea>  " +
                                  "                                                                                                     " +
                                  "</div>   ";
 
