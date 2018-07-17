@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2005
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{777D8E88-0D52-446A-BC77-2F50A7D936E5}"
 EndProject
@@ -47,8 +47,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt = 20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt
 		20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt = 20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt
 		20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt = 20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt
-		20180615_0000_AdicionadoNovosStatus.txt = 20180615_0000_AdicionadoNovosStatus.txt
 		20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt = 20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt
+		20180615_0000_AdicionadoNovosStatus.txt = 20180615_0000_AdicionadoNovosStatus.txt
+		20180716__1400_AdicionarIsActiveUserSGQ.txt = 20180716__1400_AdicionarIsActiveUserSGQ.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
 EndProject

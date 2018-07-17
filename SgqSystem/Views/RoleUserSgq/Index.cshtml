@@ -35,7 +35,7 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table tableIndex">
+                                <table class="table tableIndex table-striped">
                                     <thead>
                                         <tr>
                                             <th>
@@ -64,10 +64,10 @@
                                                     @Html.DisplayFor(modelItem => item.Description)
                                                 </td>                                                
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.FazColeta)
+                                                    @Html.Raw((item.FazColeta == true) ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                    @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
