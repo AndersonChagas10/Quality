@@ -1,0 +1,58 @@
+﻿@model Dominio.ImportFormatItem
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ImportFormatItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Key)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Key)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlterDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlterDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImportFormat_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImportFormat_Id)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

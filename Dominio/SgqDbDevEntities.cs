@@ -142,8 +142,8 @@ namespace Dominio
         public virtual DbSet<RoleJBS> RoleJBS { get; set; }
         public virtual DbSet<RoleType> RoleType { get; set; }
         public virtual DbSet<ScreenComponent> ScreenComponent { get; set; }
-        public virtual DbSet<FormatoLayoutImportacao> FormatoLayoutImportacao { get; set; }
-        public virtual DbSet<FormatoLayoutImportacaoItem> FormatoLayoutImportacaoItem { get; set; }
+        public virtual DbSet<ImportFormat> ImportFormat { get; set; }
+        public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

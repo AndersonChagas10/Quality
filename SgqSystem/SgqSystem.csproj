@@ -384,6 +384,8 @@
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
+    <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
+    <Compile Include="Controllers\ImportFormat\ImportFormatsController.cs" />
     <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
@@ -1718,6 +1720,16 @@
     <Content Include="Views\ItemMenu\Index.cshtml" />
     <Content Include="Views\ItemMenu\Create.cshtml" />
     <Content Include="Views\ItemMenu\EstruturaMenus.cshtml" />
+    <Content Include="Views\ImportFormats\Create.cshtml" />
+    <Content Include="Views\ImportFormats\Delete.cshtml" />
+    <Content Include="Views\ImportFormats\Details.cshtml" />
+    <Content Include="Views\ImportFormats\Edit.cshtml" />
+    <Content Include="Views\ImportFormats\Index.cshtml" />
+    <Content Include="Views\ImportFormatItems\Create.cshtml" />
+    <Content Include="Views\ImportFormatItems\Delete.cshtml" />
+    <Content Include="Views\ImportFormatItems\Details.cshtml" />
+    <Content Include="Views\ImportFormatItems\Edit.cshtml" />
+    <Content Include="Views\ImportFormatItems\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

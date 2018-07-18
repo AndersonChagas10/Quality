@@ -1,0 +1,64 @@
+﻿@model Dominio.ImportFormatItem
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ImportFormatItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Key)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Key)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlterDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlterDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImportFormat_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImportFormat_Id)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
