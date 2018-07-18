@@ -52,6 +52,8 @@
     <Compile Include="Equipamentos.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="FamiliaProdutos.cs" />
+    <Compile Include="FormatoLayoutImportacao.cs" />
+    <Compile Include="FormatoLayoutImportacaoItem.cs" />
     <Compile Include="Horarios.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
