@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers.ImportFormat
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
+            Dominio.ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
             if (importFormat == null)
             {
                 return HttpNotFound();
@@ -47,7 +47,7 @@ namespace SgqSystem.Controllers.ImportFormat
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,AddDate,AlterDate,IsActive")] ImportFormat importFormat)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Title,AddDate,AlterDate,IsActive")] Dominio.ImportFormat importFormat)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers.ImportFormat
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
+            Dominio.ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
             if (importFormat == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace SgqSystem.Controllers.ImportFormat
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,AddDate,AlterDate,IsActive")] ImportFormat importFormat)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,AddDate,AlterDate,IsActive")] Dominio.ImportFormat importFormat)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace SgqSystem.Controllers.ImportFormat
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
+            Dominio.ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
             if (importFormat == null)
             {
                 return HttpNotFound();
@@ -110,7 +110,7 @@ namespace SgqSystem.Controllers.ImportFormat
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
+            Dominio.ImportFormat importFormat = await db.ImportFormat.FindAsync(id);
             db.ImportFormat.Remove(importFormat);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

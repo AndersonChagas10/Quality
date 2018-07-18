@@ -5,13 +5,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
+    [Table("ImportFormats")]
     public partial class ImportFormat
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public DateTime Title { get; set; }
+        public string Title { get; set; }
 
         public DateTime AddDate { get; set; }
 
