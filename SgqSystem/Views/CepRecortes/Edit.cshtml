@@ -53,6 +53,9 @@
 
                                 <div class="form-horizontal">
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Id)
+                                    @Html.HiddenFor(model => model.AddDate)
+
 
                                     @{ Html.EnableClientValidation(false); }
                                     <div class="form-group">
@@ -67,8 +70,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.ParCompany_id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
-                                            @Html.DropDownListFor(model => model.ParCompany_id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"),@*Resources.Resource.select + "...",*@                                                                                                                                                                      /**/
-                                                                                                                                                                                  new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.ParCompany_id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"),@*Resources.Resource.select + "...",*@new { @class = "form-control" })
                                             @Html.ValidationMessageFor(model => model.ParCompany_id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>

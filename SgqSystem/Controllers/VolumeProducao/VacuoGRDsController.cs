@@ -3,6 +3,7 @@ using DTO.Helpers;
 using Helper;
 using SgqSystem.Helpers;
 using SgqSystem.Secirity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -105,7 +106,7 @@ namespace SgqSystem.Controllers
                 //Verifica se já existe uma coleta no mesmo dia
                 if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
                 {
-
+                    vacuoGRD.AddDate = DateTime.Now;
                     db.VolumeVacuoGRD.Add(vacuoGRD);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -182,6 +183,7 @@ namespace SgqSystem.Controllers
             {
                 if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
                 {
+                    vacuoGRD.AlterDate = DateTime.Now;
                     db.Entry(vacuoGRD).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -195,6 +197,7 @@ namespace SgqSystem.Controllers
                     {
                         using (var db2 = new SgqDbDevEntities())
                         {
+                            vacuoGRD.AlterDate = DateTime.Now;
                             db2.Entry(vacuoGRD).State = EntityState.Modified;
                             db2.SaveChanges();
                             return RedirectToAction("Index");

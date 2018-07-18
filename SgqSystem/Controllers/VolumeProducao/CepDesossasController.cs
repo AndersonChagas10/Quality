@@ -7,6 +7,7 @@ using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.Helpers;
 using Helper;
+using System;
 
 namespace SgqSystem.Controllers
 {
@@ -107,6 +108,7 @@ namespace SgqSystem.Controllers
                 //Verifica se já existe uma coleta no mesmo dia
                 if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
                 {
+                    cepDesossa.AddDate = DateTime.Now;
                     db.VolumeCepDesossa.Add(cepDesossa);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -191,6 +193,7 @@ namespace SgqSystem.Controllers
             {
                 if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
                 {
+                    cepDesossa.AlterDate = DateTime.Now;
                     db.Entry(cepDesossa).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -204,6 +207,7 @@ namespace SgqSystem.Controllers
                     {
                         using (var db2 = new SgqDbDevEntities())
                         {
+                            cepDesossa.AlterDate = DateTime.Now;
                             db2.Entry(cepDesossa).State = EntityState.Modified;
                             db2.SaveChanges();
                             return RedirectToAction("Index");
