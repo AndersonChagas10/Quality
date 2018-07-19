@@ -2196,6 +2196,16 @@ namespace Resources {
         
         /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Failure Description.
+        ///   Looks up a localized string similar to Excel File.
+        /// </summary>
+        internal static string excel_file {
+            get {
+                return ResourceManager.GetString("excel_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure Description.
         /// </summary>
         internal static string failure_description {
             get {
@@ -2258,6 +2268,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Format not Supported.
+        /// </summary>
+        internal static string file_format_not_supported {
+            get {
+                return ResourceManager.GetString("file_format_not_supported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill out the required header fields  .
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Fill out the required header fields  .
         /// </summary>
         internal static string fill_header_fields {
@@ -2789,6 +2809,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Excel.
+        /// </summary>
+        internal static string import_excel {
+            get {
+                return ResourceManager.GetString("import_excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is not possible refresh the result.
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a It is not possible refresh the result.
         /// </summary>
         internal static string impossible_refresh_result {
@@ -4373,6 +4403,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No file selected.
+        /// </summary>
+        internal static string no_file_selected {
+            get {
+                return ResourceManager.GetString("no_file_selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There&apos;s no volumn on this level..
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a There&apos;s no volumn on this level..
         /// </summary>
         internal static string no_volumn_level {
