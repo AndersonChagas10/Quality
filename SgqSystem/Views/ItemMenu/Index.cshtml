@@ -82,7 +82,7 @@
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Icon)
+                                                    <i class="@Html.Raw(item.Icon)"></i>
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Url)
@@ -91,7 +91,7 @@
                                                     @Html.DisplayFor(modelItem => item.Resource)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                    @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
