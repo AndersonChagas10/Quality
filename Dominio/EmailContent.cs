@@ -25,12 +25,10 @@ namespace Dominio
         public DateTime? AlterDate { get; set; }
 
         [Required]
-        [StringLength(900)]
         public string To { get; set; }
 
         public string Body { get; set; }
-
-        [StringLength(900)]
+        
         public string SendStatus { get; set; }
 
         [Column(TypeName = "datetime2")]

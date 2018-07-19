@@ -80,6 +80,8 @@ namespace SgqSystem.Mail
                 var emailContent = db.EmailContent.Find(emailId);
                 if (emailContent != null)
                 {
+                    if (string.IsNullOrEmpty(emailContent.To))
+                        emailContent.To = "-";
                     emailContent.SendStatus = "Erro: " + error.Substring(0, error.Length > 500 ? 500 : error.Length);
                     emailContent.AlterDate = DateTime.Now;
                     db.SaveChanges();
@@ -274,6 +276,16 @@ namespace SgqSystem.Mail
 
                     }
                 }
+                catch (DbEntityValidationException e)
+                {
+                    var erro = "";
+                    foreach (var error in e.EntityValidationErrors.FirstOrDefault().ValidationErrors)
+                    {
+                        erro += error.PropertyName + ": " + error.ErrorMessage + " ";
+                    }
+                    
+                    new CreateLog(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviation] --- {erro} ---" , e));
+                }
                 catch (Exception e)
                 {
                     new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
@@ -423,7 +435,7 @@ namespace SgqSystem.Mail
                                 WHEN U.ID = 1872 THEN 2
 
                             ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
-                            AND U.Id NOT IN (543,546,511)"; //Tirar Célia e Mariana da JBS
+                            AND U.Id NOT IN ("+System.Configuration.ConfigurationManager.AppSettings["UsuariosComEmailBloqueado"] + ")"; //Tirar Célia e Mariana da JBS
 
                 var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
                 if (listaEmails != null && listaEmails.Count() > 0)
