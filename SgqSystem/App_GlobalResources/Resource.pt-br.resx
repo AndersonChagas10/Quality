@@ -2517,6 +2517,18 @@
   <data name="notes" xml:space="preserve">
     <value>Observações</value>
   </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>Formato do Arquivo não Suportado</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>Nenhum arquivo selecionado.</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Importar Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Arquivo Excel</value>
+  </data>
   <data name="delete_binary_input_type" xml:space="preserve">
     <value>Deletar - Tipo de Entrada Binária</value>
   </data>

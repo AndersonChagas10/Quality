@@ -319,6 +319,7 @@
                 $.post('@Url.Action("GetVolumeRecortes", "api/Volume")' + "/" + $('#ParCompany_id').val(), {}, function (r) {
                     $('#QtdadeFamiliaProduto').val(r);
                     applyMath();
+                    CalcularAmostras();
                 });
             } else {
                 $('#QtdadeFamiliaProduto').val("");
