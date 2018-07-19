@@ -24,6 +24,7 @@
         [Column("ImportFormat_Id")]
         public int ImportFormat_Id { get; set; }
 
+        [ForeignKey("ImportFormat_Id")]
         public virtual ImportFormat ImportFormat { get; set; }
     }
 }
