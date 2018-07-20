@@ -2238,11 +2238,30 @@ DROP TABLE #AMOSTRATIPO4 ";
 
         [HttpPost]
         [Route("PivotTable")]
-        public dynamic PivotTable()
+        public dynamic PivotTable([FromBody] FormularioParaRelatorioViewModel form)
         {
+
+            var whereShift = "";
+
+            if (form.shift != 0)
+            {
+                whereShift = "" + form.shift + " ";
+            }
+
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
-                return QueryNinja(dbSgq, "select top 1000 parlevel3_id, weight, parlevel3_name from Result_Level3");
+
+                var parLevel1_Id = dbSgq.ParLevel1.Where(r => r.Name == form.level1Name).Select(r => r.Id).FirstOrDefault();
+
+                var parLevel2_Id = dbSgq.ParLevel2.Where(r => r.Name == form.level2Name).Select(r => r.Id).FirstOrDefault();
+
+                var unit_Id = dbSgq.ParCompany.Where(r => r.Name == form.unitName).Select(r => r.Id).FirstOrDefault();
+
+                var sql = $@"";
+
+                return QueryNinja(dbSgq, sql);
+
+                //return QueryNinja(dbSgq, "select top 1000 parlevel3_id, weight, parlevel3_name from Result_Level3");
             }
         }
 
