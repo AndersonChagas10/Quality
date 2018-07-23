@@ -1,0 +1,9 @@
+-- Leo (Adicionar a coluna showAllUnits na tabela UserSgq) 
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180723_1600_AdicionarShowAllUnits',GetDate())
+
+IF COL_LENGTH('UserSgq','ShowAllUnits') IS NULL
+    BEGIN
+		ALTER TABLE UserSgq
+		ADD ShowAllUnits bit null
+    END

@@ -49,7 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt = 20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt
 		20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt = 20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt
 		20180615_0000_AdicionadoNovosStatus.txt = 20180615_0000_AdicionadoNovosStatus.txt
-		20180716__1400_AdicionarIsActiveUserSGQ.txt = 20180716__1400_AdicionarIsActiveUserSGQ.txt
+		20180716_1400_AdicionarIsActiveUserSGQ.txt = 20180716_1400_AdicionarIsActiveUserSGQ.txt
+		20180723_1600_AdicionarShowAllUnits.txt = 20180723_1600_AdicionarShowAllUnits.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 	EndProjectSection
 EndProject
