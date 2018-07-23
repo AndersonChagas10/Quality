@@ -5,9 +5,14 @@
 }
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <div class="row">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
             <div class="col-xs-12">
                 <div class="portlet light bordered">
                     <div class="portlet-title tabbable-line">
@@ -27,6 +32,73 @@
                 </div>
             </div>
         </div>
+        <!-- END CONTENT BODY -->
     </div>
-    <!-- END CONTENT BODY -->
 </div>
+
+<script>
+
+    var $btn = $('#btnSend');
+    $('button').button({ loadingText: '@Resources.Resource.loading...' });
+    var urlGet = '@Html.Raw(Url.Action("Get", "api/SIFReports"))';
+
+    $(document).ready(function () {
+
+        closeLeftSidebar();
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+        formControl.showSimpleDate();
+        formControl.showLevel1();
+        formControl.showShift();
+        formControl.showUnit();
+
+        $('#showLevel1 > div:nth-child(2)').hide();
+        $('#showLevel1 > div:nth-child(3)').hide();
+
+        $("#btnSend").click(function (e) {
+
+            Send(true);
+
+        });
+
+    });
+
+
+    function Send(toggle) {
+
+        if (formIsValid()) {
+
+            $btn.button('loading');
+
+            EasyAjax(urlGet, enviar, Leo, "load", toggle);
+        }
+
+    };
+
+    function Leo() {
+
+    }
+
+    function formIsValid() {
+
+        GuardJs.esconderMensagem();
+
+        if (enviar['endDate'] == null || enviar['endDate'] == undefined || enviar['endDate'] == "") {
+            GuardJs.exibirMensagemAlerta(Resources("select_the_period_first"));
+            return false;
+
+        } else if (enviar['level1Id'] == null || enviar['level1Id'] == undefined || enviar['level1Id'] == "" || enviar['level1Id'] <= 0) {
+            GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
+            return false;
+
+        } else if (enviar['unitId'] == null || enviar['unitId'] == undefined || enviar['unitId'] == "" || enviar['unitId'] <= 0) {
+            GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+</script>

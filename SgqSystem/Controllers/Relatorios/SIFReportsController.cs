@@ -10,7 +10,7 @@ namespace SgqSystem.Controllers.Relatorios
 {
     [CustomAuthorize]
     [OutputCache(Duration = 20, VaryByParam = "none")]
-    public class SIFReportsController : Controller
+    public class SIFReportsController : BaseController
     {
         // GET: SIFReports
         [FormularioPesquisa(filtraUnidadeDoUsuario = true)]

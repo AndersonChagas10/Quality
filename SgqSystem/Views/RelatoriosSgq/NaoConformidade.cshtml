@@ -86,12 +86,12 @@
                     <div id="RGTarefasGrafico"></div>
 
                     <div id="RGTarefasPivotTable"></div>
-                    
+
                 </div>
             </div>
         </div>
     </div>
-    
+
     @* ADICIONA PIVOTTABLE *@
     @Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
 
@@ -150,21 +150,26 @@
             $('.levels').hide();
 
             formControl.showFullCallendar();
-            formControl.showShift();
+
+            if (@Json.Encode(GlobalConfig.Eua)) {
+                formControl.showShift();
+            }
+
             formControl.showClustRegUnitCriticalLevel123();
 
             //setTimeout(function () {
             $("#clusterGroupId").find("option").eq(0).remove();
             $("#clusterGroupId").val(8).change();
+
             if ($("#clusterGroupId").val() == null) {
                 $("#clusterGroupId").val(2).change();
             }
-            //}, 3);
+                //}, 3);
 
             popoverMain = $('#CustomPopover').addClass('hide');
 
             $('.sidebar-nav select').select2();
-        });
+            });
 
         function Send(toggle) {
 
