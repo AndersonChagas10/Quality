@@ -136,6 +136,12 @@ namespace SgqSystem.Controllers
                 myCookie.Values.Add("userName", isAuthorized.Name);
                 myCookie.Values.Add("CompanyId", isAuthorized.ParCompany_Id.GetValueOrDefault().ToString());
 
+                using (var db = new SgqDbDevEntities())
+                {
+                    var linkedComapnyIds = db.ParCompanyXUserSgq.Where(c => c.UserSgq_Id == isAuthorized.Id).Select(c => c.ParCompany_Id).ToList();
+                    myCookie.Values.Add("LinkedCompanyIds", System.Web.Helpers.Json.Encode(linkedComapnyIds));
+                }
+
                 if (isAuthorized.AlterDate != null)
                 {
                     myCookie.Values.Add("alterDate", isAuthorized.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
