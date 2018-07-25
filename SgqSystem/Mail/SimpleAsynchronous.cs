@@ -80,8 +80,12 @@ namespace SgqSystem.Mail
                 var emailContent = db.EmailContent.Find(emailId);
                 if (emailContent != null)
                 {
+
                     if (string.IsNullOrEmpty(emailContent.To))
+                    {
                         emailContent.To = "-";
+                    }
+
                     emailContent.SendStatus = "Erro: " + error.Substring(0, error.Length > 500 ? 500 : error.Length);
                     emailContent.AlterDate = DateTime.Now;
                     db.SaveChanges();

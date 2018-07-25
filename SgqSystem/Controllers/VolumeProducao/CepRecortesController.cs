@@ -201,6 +201,7 @@ namespace SgqSystem.Controllers
             {
                 if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id).ToList().Count() == 0)
                 {
+                    cepRecortes.AlterDate = DateTime.Now;
                     db.Entry(cepRecortes).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -214,6 +215,7 @@ namespace SgqSystem.Controllers
                     {
                         using (var db2 = new SgqDbDevEntities())
                         {
+                            cepRecortes.AlterDate = DateTime.Now;
                             db2.Entry(cepRecortes).State = EntityState.Modified;
                             db2.SaveChanges();
                             return RedirectToAction("Index");
