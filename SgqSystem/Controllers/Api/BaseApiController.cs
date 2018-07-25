@@ -69,6 +69,7 @@ namespace SgqSystem.Controllers.Api
             db.Database.Connection.Open();
             var cmd = db.Database.Connection.CreateCommand();
             cmd.CommandText = query;
+            cmd.CommandTimeout = 300;
             var reader = cmd.ExecuteReader();
             List<JObject> items = new List<JObject>();
             while (reader.Read())
