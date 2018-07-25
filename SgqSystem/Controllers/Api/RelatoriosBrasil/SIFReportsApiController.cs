@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using Dominio;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,38 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("Get")]
         public dynamic Get([FromBody] FormularioParaRelatorioViewModel form)
         {
-            var query = "select name from parlevel1";
+            var query = $@"SELECT
+	em_coluna.Sequential AS Numero
+   ,CASE
+		WHEN 1 > 0 THEN 1
+		ELSE 0
+	END AS 'Esquerdo'
+   ,CASE
+		WHEN 2 > 0 THEN 1
+		ELSE 0
+	END AS 'Direito'
+FROM (SELECT
+		Sequential
+	   ,Side
+	   ,Defects
+	FROM CollectionLevel2
+	WHERE 1 = 1
+	AND ParLevel2_Id IN (SELECT
+			ParLevel2_Id
+		FROM ParLevel2Level1
+		WHERE ParLevel1_Id = {form.level1Id})
+	--AND ParLevel2_Id = {form.level2Id} -- Dianteiro 66 ou 97 Traseiro
+	--AND UnitId = {form.unitId} 
+	--and Shift = {form.shift}
+	--AND CAST(CollectionDate AS DATE) = CAST(GETDATE() AS DATE)
+    ) em_linha
+PIVOT (SUM(Defects) FOR Side IN ([1], [2])) em_coluna
+order by em_coluna.Sequential";
 
-            using (Factory factory = new Factory("DefaultConnection"))
+            using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
-
-                return factory.SearchQuery<String>(query).ToList();
-
+                return QueryNinja(dbSgq, query);
             }
         }
-
     }
 }
