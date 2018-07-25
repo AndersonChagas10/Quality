@@ -105,6 +105,7 @@
     <Compile Include="ParLevel1VariableProductionXLevel1.cs" />
     <Compile Include="ParLevel1XCluster.cs" />
     <Compile Include="ParLevel1XHeaderField.cs" />
+    <Compile Include="ParLevel1XModule.cs" />
     <Compile Include="ParLevel2.cs" />
     <Compile Include="ParLevel2ControlCompany.cs" />
     <Compile Include="ParLevel2Level1.cs" />

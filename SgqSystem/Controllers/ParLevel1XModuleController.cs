@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using Dominio;
+
+namespace SgqSystem.Controllers
+{
+    public class ParLevel1XModuleController : Controller
+    {
+        private SgqDbDevEntities db = new SgqDbDevEntities();
+
+        // GET: ParLevel1XModule
+        public async Task<ActionResult> Index()
+        {
+            return View(await db.ParLevel1XModule.ToListAsync());
+        }
+
+        // GET: ParLevel1XModule/Details/5
+        public async Task<ActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ParLevel1XModule parLevel1XModule = await db.ParLevel1XModule.FindAsync(id);
+            if (parLevel1XModule == null)
+            {
+                return HttpNotFound();
+            }
+            return View(parLevel1XModule);
+        }
+
+        // GET: ParLevel1XModule/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: ParLevel1XModule/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        {
+            if (ModelState.IsValid)
+            {
+                db.ParLevel1XModule.Add(parLevel1XModule);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            return View(parLevel1XModule);
+        }
+
+        // GET: ParLevel1XModule/Edit/5
+        public async Task<ActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ParLevel1XModule parLevel1XModule = await db.ParLevel1XModule.FindAsync(id);
+            if (parLevel1XModule == null)
+            {
+                return HttpNotFound();
+            }
+            return View(parLevel1XModule);
+        }
+
+        // POST: ParLevel1XModule/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,AddDate,AlterDate,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(parLevel1XModule).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(parLevel1XModule);
+        }
+
+        // GET: ParLevel1XModule/Delete/5
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ParLevel1XModule parLevel1XModule = await db.ParLevel1XModule.FindAsync(id);
+            if (parLevel1XModule == null)
+            {
+                return HttpNotFound();
+            }
+            return View(parLevel1XModule);
+        }
+
+        // POST: ParLevel1XModule/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            ParLevel1XModule parLevel1XModule = await db.ParLevel1XModule.FindAsync(id);
+            db.ParLevel1XModule.Remove(parLevel1XModule);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}
