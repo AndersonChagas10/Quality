@@ -104,9 +104,9 @@ namespace Dominio.Services
                     Guard.DecryptStringAES(GetAppSettings("BuildPermission")), "dd/MM/yyyy");
                 if (PermissionDate != null)
                 {
-                    if(PermissionDate.CompareTo(DateTime.Now) <= 0)
+                    if (PermissionDate.CompareTo(DateTime.Now) <= 0)
                         throw new ExceptionHelper("The access is expired.");
-                }                
+                }
             }
 
             try
@@ -137,23 +137,37 @@ namespace Dominio.Services
                     try
                     {
                         var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id && r.Role == "366");
-                        if (isProfile366)
-                            using (var db = new SgqDbDevEntities())
+
+                        using (var db = new SgqDbDevEntities())
+                        {
+                            var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
+                            db.UserSgq.Attach(atualizarUsuario);
+
+                            if (isProfile366)
                             {
-                                var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
-                                db.UserSgq.Attach(atualizarUsuario);
                                 if (atualizarUsuario.Role == null || !atualizarUsuario.Role.Contains("backdate"))
                                 {
                                     if (!string.IsNullOrEmpty(atualizarUsuario.Role))
                                         atualizarUsuario.Role += ",";
                                     else
                                         atualizarUsuario.Role = string.Empty;
-                                    atualizarUsuario.Role += "backdate";
 
-                                    db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
-                                    db.SaveChanges();
+                                    atualizarUsuario.Role += "backdate";
                                 }
                             }
+                            else
+                            {
+                                if (atualizarUsuario.Role == null)
+                                {
+                                    atualizarUsuario.Role += "Monitor GQ";
+                                }
+                            }
+
+
+                            db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+
+                        }
                     }
                     catch (Exception)
                     { }
@@ -351,7 +365,7 @@ namespace Dominio.Services
                 if (!IsActive)
                     throw new Exception("User disabled.");
             }
-                        
+
             if (userByName == null || userByName.UseActiveDirectory)
             {
                 /*1*/
@@ -383,7 +397,7 @@ namespace Dominio.Services
                 UserSgq userDev = CheckUserAndPassDataBase(userDto);
                 return userDev;
             }
-            
+
             return null;
         }
 
