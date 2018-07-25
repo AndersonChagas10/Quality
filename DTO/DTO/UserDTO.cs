@@ -96,5 +96,6 @@ namespace DTO.DTO
         public IEnumerable<string> ListRole { get; set; }
         public bool IsActive { get; set; }
         public bool UseActiveDirectory { get; set; }
+        public bool ShowAllUnits { get; set; }
     }
 }
