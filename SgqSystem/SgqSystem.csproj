@@ -1729,6 +1729,7 @@
     <Content Include="Views\ItemMenu\Index.cshtml" />
     <Content Include="Views\ItemMenu\Create.cshtml" />
     <Content Include="Views\ItemMenu\EstruturaMenus.cshtml" />
+    <Content Include="Views\Shared\_MensagemAtualizarTablets.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

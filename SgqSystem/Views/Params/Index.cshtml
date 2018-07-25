@@ -60,13 +60,16 @@
                 </li>
             </ul>
             @*<div class="page-toolbar">
-                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>
-                </div>*@
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>*@
         </div>
         <!-- END PAGE BAR -->
+
+        @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
+
         <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
@@ -83,7 +86,7 @@
                                 <div class="row">
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                                         @*@if (!GlobalConfig.Eua)
-                                            {*@
+                                        {*@
                                         <button class="btn btn-primary btn-block" id="btnNewLevel1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                         @*}*@
                                     </div>
@@ -104,7 +107,7 @@
                                                 <div id="ParLevel1">
 
                                                     @*@if (!GlobalConfig.Eua)
-                                                        {*@
+                                                    {*@
                                                     @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
                                                     @*}*@
 
