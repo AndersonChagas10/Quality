@@ -227,6 +227,15 @@
 
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
+    var linkedUnitIds = @Html.Raw(ViewBag.LinkedCompanyIds);
+
+    function MostrarUnidadesAtivas(select){
+        $(select).each(function( i, o ) {
+            if($(o).val() != "-1" && !linkedUnitIds.includes(parseInt($(o).val()))){
+                $(o).remove();
+            }
+        });
+    }
 
     $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -1228,10 +1237,17 @@
                 $('#btnSaveNewLevel2').attr('disabled', false);
                 /*Libera os campos para AV AM*/
                 $('#level2_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+
+                $(linkedUnitIds).each(function( i, o ) {
+                    $('#avAmCompany').find('option[value="'+ o + '"]').remove();
+                });
+
+                MostrarUnidadesAtivas('#avAmCompany option');
+
                 //Libera campos
                 $('#level3_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                $('#level3_AvAmostra_accordion #avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+
+                MostrarUnidadesAtivas('#level3_AvAmostra_accordion #avAmCompany option');
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
