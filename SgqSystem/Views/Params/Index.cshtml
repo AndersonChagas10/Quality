@@ -1238,11 +1238,7 @@
                 /*Libera os campos para AV AM*/
                 $('#level2_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
 
-                $(linkedUnitIds).each(function( i, o ) {
-                    $('#avAmCompany').find('option[value="'+ o + '"]').remove();
-                });
-
-                MostrarUnidadesAtivas('#avAmCompany option');
+                MostrarUnidadesAtivas('#level2_AvAmostra_accordion #avAmCompany option');
 
                 //Libera campos
                 $('#level3_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
@@ -1251,7 +1247,7 @@
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
-                    if($(this).data().companyId != unitId)
+                    if(!linkedUnitIds.includes($(this).data().companyId))
                         $(this).find('input, select, button').attr("disabled", true);
                 });
             }else{
@@ -1288,9 +1284,11 @@
 
             if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
-
-                $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
-                $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
+                
+                MostrarUnidadesAtivas('#pesoCompany option');
+                MostrarUnidadesAtivas('#selectUnidadeParL3Value option');
+                //$('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+                //$('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
                 $('#level3_data_type_accordion').find('button').attr("disabled", true);
 
@@ -1311,7 +1309,7 @@
 
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
+                        if(!linkedUnitIds.includes($(this).data().companyId) || !($(this).data().ParCompany_Id > 0)){
                             $(this).find('input, select, button').attr("disabled", true);
                             $(this).remove();
                         }
@@ -1332,7 +1330,7 @@
                     /*Bloqueia Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
                         $(this).find('input, select, button').attr("disabled", true);
-                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
+                        if(!linkedUnitIds.includes($(this).data().companyId) || !($(this).data().ParCompany_Id > 0)){
                             $(this).remove();
                         }
                     });
@@ -1345,7 +1343,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*Habilita Exclusão do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id == unitId){
+                        if(linkedUnitIds.includes($(this).data().companyId)){
                             $(this).find('button.btn-danger').attr("disabled", false);
                         }else{
                             $(this).find('button.btn-danger').attr("disabled", true);
@@ -1364,7 +1362,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*habilita Edicao do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id == unitId){
+                        if(linkedUnitIds.includes($(this).data().companyId)){
                             $(this).find('input, select, button.btn-success').attr("disabled", false);
                         }else{
                             $(this).find('input, select, button.btn-success').attr("disabled", true);
