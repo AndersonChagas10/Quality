@@ -81,10 +81,8 @@ namespace SgqSystem.Controllers.Api
                     var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
 
                     var resultQuery = new List<ResultadosSequencialBanda>();
-                    using (Factory factory = new Factory("DefaultConnection"))
-                    {
-                        resultQuery = factory.SearchQuery<ResultadosSequencialBanda>(query).ToList();
-                    }
+                    
+                    resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
 
                     if (resultQuery != null && resultQuery.Count() > 0)
                     {

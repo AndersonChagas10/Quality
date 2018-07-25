@@ -3751,6 +3751,20 @@ namespace SgqSystem.Services
 
                                   var countHeaderFieldGroup = 0;
 
+function preenchePCC1b(){
+    //debugger
+    if(_level1.id.replace('98789','|').split('|')[1] == 3){
+        $('#DescriptionFailure').val('Foi encontrado fezes e/ou ingesta no quarto.');
+        $('#ImmediateCorrectiveAction').val('A nória foi paralizada e fez-se a remoção da porção contaminada.');
+        $('#ProductDisposition').val('Verificou-se a carcaça novamente e ela foi liberada.');
+        $('#PreventativeMeasure').val('Será analisado junto com o supervisor');
+    }
+}
+
+$(document).on('click','#btnMessageOk', function(e){
+    preenchePCC1b(); 
+});
+
                                 function clonarHF(a){ 
                                   var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
                                   countHeaderFieldGroup++;
