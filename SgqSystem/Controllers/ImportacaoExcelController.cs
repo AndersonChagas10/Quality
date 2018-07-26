@@ -1,4 +1,5 @@
-﻿using ExcelDataReader;
+﻿using Dominio;
+using ExcelDataReader;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,16 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class ImportacaoExcelController : Controller
+    public class ImportacaoExcelController : BaseController
     {
+
+        public SgqDbDevEntities db = new SgqDbDevEntities();
+
         // GET: ImportacaoExcel
         public ActionResult Index()
         {
+            var listaDeFormatos = db.ImportFormat.Where(x => x.IsActive).ToList();
+            ViewBag.Formatos = new SelectList(listaDeFormatos, "Id", "Title");
             return View();
         }
         public class Produto
@@ -58,6 +64,8 @@ namespace SgqSystem.Controllers
                     dicionarioDados.Add(dicionarioDadosCorpo);
                 }
             }
+            var listaDeFormatos = db.ImportFormat.Where(x => x.IsActive).ToList();
+            ViewBag.Formatos = new SelectList(listaDeFormatos, "Id", "Title");
             return View("Index", dicionarioDados);
 
         }

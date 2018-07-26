@@ -17,7 +17,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.module</span>
+                    <span>@Resources.Resource.import_format</span>
                 </li>
             </ul>
         </div>
@@ -29,7 +29,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.import_format</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -42,16 +42,16 @@
                                 <table class="table">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Title)
+                                            @Html.DisplayName(Resources.Resource.title)
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.AddDate)
+                                            @Html.DisplayName(Resources.Resource.add_date)
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.AlterDate)
+                                            @Html.DisplayName(Resources.Resource.alter_date)
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.IsActive)
+                                            @Html.DisplayName(Resources.Resource.is_active)
                                         </th>
                                         <th></th>
                                     </tr>
@@ -70,11 +70,11 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.IsActive)
+                                            @*@Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)*@
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                            @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                            @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                                         </td>
                                     </tr>
                                     }

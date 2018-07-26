@@ -5,8 +5,6 @@
     var urlExcel = Url.Action("SalvarExcel", "api/ImportacaoExcel");
 }
 
-
-
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="page-bar">
@@ -58,9 +56,14 @@
             </div>
         </div>
 
+        <div class="form-group" style="float:right">
+            <div class="col-md-12">
+                @Html.ActionLink(Resources.Resource.new_format, "Index", "ImportFormats", null, new { @class = "btn btn-info" })
+            </div>
+        </div>
 
         <div class="container-fluid">
-            <div class="row  form-group">
+            <div class="row">
                 <div class="col-md-6 col-xs-12 form-group">
                     @using (Html.BeginForm("Importar", "ImportacaoExcel", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
@@ -89,6 +92,13 @@
                 <div style="white-space: nowrap; overflow: auto; max-height: 500px;" class="col-md-6 col-lg-12 col-sm-4">
                     @if (Model != null)
                     {
+                        <div class="form-group">
+                            @Html.Label("Formatos de Importação", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("Formatos de Importação", (SelectList)ViewBag.Formatos, Resources.Resource.select + "...", new { @class = "form-control", @id = "formato" })
+                            </div>
+                        </div>
+                        <br /> <br />
                         <table id="tabela" class="table table-striped">
                             <thead>
                                 <tr>
@@ -136,18 +146,23 @@
                 if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
                     dadosPreenchidos = PreencherDadosArquivo();
                 }
-
+                var formatoId = $("#formato").val();
                 var dados = JSON.stringify(dadosPreenchidos);
 
                 $.ajax({
                     type: "Post",
-                    url: urlExcel,
+                    url: urlExcel + "?formatoId=" + formatoId,
                     dataType: "json",
                     contentType: "application/json",
                     data: dados,
                     success: function (retorno) {
                         $("#ModalInformacao").modal('show');
-                    }
+                    },
+                    error: function (retorno) {
+                        debugger;
+                        console.log(retorno.responseJSON.Message);
+                        alert(retorno.responseJSON.Message);
+                    },
                 });
             })
 

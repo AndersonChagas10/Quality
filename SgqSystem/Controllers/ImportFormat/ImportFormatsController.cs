@@ -11,7 +11,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers.ImportFormat
 {
-    public class ImportFormatsController : Controller
+    public class ImportFormatsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

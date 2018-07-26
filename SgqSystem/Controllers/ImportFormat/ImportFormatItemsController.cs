@@ -8,10 +8,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dominio;
+using SgqSystem.Controllers.Api;
 
 namespace SgqSystem.Controllers.ImportFormat
 {
-    public class ImportFormatItemsController : Controller
+    public class ImportFormatItemsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
@@ -36,10 +37,14 @@ namespace SgqSystem.Controllers.ImportFormat
             return View(importFormatItem);
         }
 
-        // GET: ImportFormatItems/Create
-        public ActionResult Create()
+        // GET: ImportFormatItems/Create/Id
+        public ActionResult Create(int id)
         {
-            return View();
+            ImportFormatItem importFormatItem = new ImportFormatItem();
+            importFormatItem.ImportFormat_Id = id;
+            var itens = ImportacaoExcelApiController.CriaDicionarioPadrao();
+            ViewBag.ItensDisponiveis = new SelectList(itens, "Key", "Key");
+            return View(importFormatItem);
         }
 
         // POST: ImportFormatItems/Create
@@ -53,7 +58,7 @@ namespace SgqSystem.Controllers.ImportFormat
             {
                 db.ImportFormatItem.Add(importFormatItem);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ImportFormats", new { id = importFormatItem.ImportFormat_Id });
             }
 
             return View(importFormatItem);
@@ -85,7 +90,7 @@ namespace SgqSystem.Controllers.ImportFormat
             {
                 db.Entry(importFormatItem).State = EntityState.Modified;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ImportFormats", new { id = importFormatItem.ImportFormat_Id });
             }
             return View(importFormatItem);
         }
@@ -113,7 +118,7 @@ namespace SgqSystem.Controllers.ImportFormat
             ImportFormatItem importFormatItem = await db.ImportFormatItem.FindAsync(id);
             db.ImportFormatItem.Remove(importFormatItem);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "ImportFormats", new { id = importFormatItem.ImportFormat_Id });
         }
 
         protected override void Dispose(bool disposing)

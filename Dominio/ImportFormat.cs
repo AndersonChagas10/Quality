@@ -18,7 +18,7 @@
 
         public DateTime? AlterDate { get; set; }
 
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual ICollection<ImportFormatItem> ImportFormatItems { get; set; }
     }
