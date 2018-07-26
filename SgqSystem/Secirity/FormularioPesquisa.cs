@@ -139,7 +139,7 @@ namespace SgqSystem.Secirity
                     {
                         if (userId > 0) {
                             var user = db.UserSgq.Find(userId);
-                            if (user != null && !user.ShowAllUnits.Value)
+                            if (user != null && user.ShowAllUnits == true)
                             {
                                 if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"])) /*Se user possuir mais de uma unidade*/
                                 {

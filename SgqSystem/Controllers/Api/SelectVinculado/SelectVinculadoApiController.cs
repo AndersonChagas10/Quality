@@ -425,6 +425,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         {
             using (var db = new SgqDbDevEntities())
             {
+                var user = db.UserSgq.Find(User);
+                if(user.ShowAllUnits == true)
+                {
+                    return string.Join(",", db.ParCompanyXUserSgq.Select(r => r.ParCompany_Id).ToList());
+                }
                 return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
             }
         }
