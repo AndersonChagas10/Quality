@@ -13,7 +13,6 @@
     #contentBody .table > tbody > tr > th {
         font-size: 10px;
     }
-
 </style>
 
 <div class="page-content-wrapper">
@@ -70,27 +69,104 @@
                         </div>
 
                         <div id="contentBody">
+                            <div style="width:100%;" id="data"></div>
 
-                            <table id="tabela1" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <br />
 
-                            <table id="tabela2" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <div style="width:100%;" id="horaInicioMonitoramento"></div>
+                            <br />
 
-                            <table id="tabela3" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <div style="width:100%;">
+                                <div style="width:50%;float:left;">Visto: _____________</div>
+                                <div style="width:50%;float:right;font-weight:bold;" id="dianteiroOuTraseiro"></div>
+                            </div>
 
-                            <table id="tabela4" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <br />
+                            <br />
 
-                            <table id="tabela5" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <table id="tabela1" border="1" class="table table-striped" style="width:11.11111111111111%;float:left"></table>
 
-                            <table id="tabela6" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <table id="tabela2" border="1" class="table table-striped" style="width:11.11111111111111%;1%;float:left"></table>
 
-                            <table id="tabela7" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <table id="tabela3" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
 
-                            <table id="tabela8" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <table id="tabela4" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
 
-                            <table id="tabela9" border="1" class="table table-striped" style="width:10%;float:left"></table>
+                            <table id="tabela5" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
+
+                            <table id="tabela6" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
+
+                            <table id="tabela7" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
+
+                            <table id="tabela8" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
+
+                            <table id="tabela9" border="1" class="table table-striped" style="width:11.11111111111111%;%;float:left"></table>
 
                             <div style="clear:both"></div>
 
+                            <div style="display: table; border: 2px solid; font-size:10px; width:100%">
+                                <div style="background-color: #a2a2a2;width: 60%;float: left;padding: 10px; border-right: 2px solid;">
+                                    OBS: O registro deve conter o horário e as assinaturas ou vistos dos funcionários responsáveis tanto no início quanto no término das atividades de monitoramento efetuadas.
+                                </div>
+                                <div style="width:40%;float:right;padding: 10px;">
+                                    <div id="horaFimMonitoramento"></div>
+                                    <div id="">Visto: _____________</div>
+                                </div>
+                            </div>
+                            <br />
+                            <div style="font-size:10px;">
+                                Legenda:
+                                <ul>
+                                    <li>E - Banda esquerda ; D - Banda direita</li>
+                                    <li>0 - Ausência (zero) de contaminal fecal e/ou ingesta</li>
+                                    <li>1 - Presença de contaminação fecal e/ou ingesta</li>
+                                    <li><span style="font-size: 25px;"> &#8718;</span> Carcaças desviadas para a câmara de seqüestro e reinspecionadas quanto à contaminação no D.I.F ou destinadas a graxaria</li>
+                                </ul>
+
+                                <hr />
+
+                                Número das carcaças enviadas para a câmara de seqüestro: __________________________________________________________________________
+
+                                <hr />
+
+                                Número das carcaças destinadas para a graxaria:____________________________________________________________________________________
+                            </div>
+                            <hr />
+                            <br />
+                            <table style="font-size:10px;" border="2">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%;text-align:center"><strong>Limite crítico:</strong></th>
+                                        <th style="width: 70%;text-align:center"><strong>Ações corretivas:</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;"> - Ausência (zero) de contaminação fecal e/ou ingesta.</td>
+                                        <td style="text-align: justify; padding: 10px;">
+                                            <strong>Ações corretivas adotadas conforme CRF 9 Part 417.3 </strong><br>
+                                            <strong>1. Identificar o desvio e eliminá-lo: </strong> parando a nórea, identificando a localização da contaminação na carcaça e solicitando a remoção da porção contaminada pelo operador;<br>
+                                            <strong>2. Assegurar que o PCC estará sob controle após a ação corretiva: </strong> verificar a eficácia da ação corretiva adotada e definindo liberação ou necessidade de nova ação corretiva;<br>
+                                            <strong>3. Estabelecer medidas para prevenir recorrência: </strong> informando o desvio ao responsável pelo processo;<br>
+                                            <strong>4. Assegurar que qualquer carcaça eventualmente contaminada como resultado do desvio não seja liberada para a etapa seguinte: </strong> Realizar novo monitoramento no quarto (dianteiro ou traseiro) após retirada da contaminação, antes de fazer a sua liberação.<br>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table border="2" style="width:100%">
+                                <tr><th style="text-align: center;"><strong>Observações:</strong></th></tr>
+                                <tr><td>&nbsp;</td></tr>
+                                <tr><td>&nbsp;</td></tr>
+                                <tr><td>&nbsp;</td></tr>
+                                <tr><td>&nbsp;</td></tr>
+                                <tr><td>&nbsp;</td></tr>
+                                <tr><td>&nbsp;</td></tr>
+                            </table>
+
+                            <div style="font-size:10px;">
+                                OBS - UTILIZAR PLANILHA AVULSA DE TRATAMENTO DE NÃO CONFORMIDADE (RGQ-00-GQC-126), QUANDO APLICÁVEL.
+                            </div>
                             <div class="height-fix avoid-break-page">
                                 <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
                                     <tbody>
@@ -148,6 +224,7 @@
         var $btn = $('#btnSend');
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
         var urlGet = '@Html.Raw(Url.Action("Get", "api/SIFReports"))';
+        var siglaUnidade = "";
 
         $(document).ready(function () {
 
@@ -163,7 +240,7 @@
             formControl.showShift();
             formControl.showUnit();
 
-            $('#showLevel1 > div:nth-child(2)').hide();
+            //$('#showLevel1 > div:nth-child(2)').hide();
             $('#showLevel1 > div:nth-child(3)').hide();
 
             $("#btnSend").click(function (e) {
@@ -181,49 +258,55 @@
 
                 $btn.button('loading');
 
-                //EasyAjax(urlGet, enviar, Leo, "load", toggle);
+                EasyAjax(urlGet, enviar, Leo, "load", toggle);
 
-                var renan = [];
+                //var renan = [];
 
-                for (var i = 0; i < 1000; i++) {
-                    renan.push({ Numero: (i + 1) , Esquerdo: 0, Direito: 0 })
-                }
+                //for (var i = 0; i < 200; i++) {
+                //    renan.push({ Numero: (i + 1) , Esquerdo: 0, Direito: 0 })
+                //}
 
-                Leo(renan);
+                //Leo(renan);                
             }
 
         };
 
-        function Leo(arr) {
+        function Leo(obj) {
 
-            if (arr.length <= 0) {
+            if (obj.Dados.length <= 0) {
 
                 GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
 
             } else {
 
+                cleanData();
+
+                setData(obj);
+
+                siglaUnidade = obj.Dados[0].Initials;
+
                 var table = "";
 
                 var fontSize = 'style="font-size: 8px !important;"';
 
-                var dividir = Math.round(arr.length / 9);
+                var dividir = Math.ceil(obj.Dados.length / 9);
 
                 for (var i = 0; i < 9; i++) {
 
                     table = `<thead>"
                             <tr>
-                                <th `+ fontSize +`>Nº</th>
-                                <th `+ fontSize +`>E</th>
-                                <th `+ fontSize +`>D</th>
+                                <th `+ fontSize +`><strong>Nº</strong></th>
+                                <th `+ fontSize +`><strong>E</strong></th>
+                                <th `+ fontSize +`><strong>D</strong></th>
                             </tr>;
                         "<thead>`
 
                     table += "<tfoot>";
                     table += "</tfoot>";
 
-                    arr2 = JSON.parse(JSON.stringify(arr));
+                    arr2 = JSON.parse(JSON.stringify(obj.Dados));
 
-                    arr2.splice(dividir, arr.length);
+                    arr2.splice(dividir, obj.Dados.length);
 
                     arr2.forEach(function (item) {
 
@@ -237,7 +320,7 @@
 
                     });
 
-                    arr.splice(0, dividir);
+                    obj.Dados.splice(0, dividir);
 
                     $('#tabela' + (i + 1)).append(table);
 
@@ -253,8 +336,12 @@
                 GuardJs.exibirMensagemAlerta(Resources("select_the_period_first"));
                 return false;
 
-            } else if (enviar['level1Id'] == null || enviar['level1Id'] == undefined || enviar['level1Id'] == "" || enviar['level1Id'] <= 0) {
+            } else if (enviar['level1Id'] == null || enviar['level1Id'] == undefined || enviar['level1Id'] == "" || enviar['level1Id'] <= 0 || enviar['level1Id'] == NaN) {
                 GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
+                return false;
+
+            } else if (enviar['level2Id'] == null || enviar['level2Id'] == undefined || enviar['level2Id'] == "" || enviar['level2Id'] <= 0 || enviar['level2Id'] == NaN) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
                 return false;
 
             } else if (enviar['unitId'] == null || enviar['unitId'] == undefined || enviar['unitId'] == "" || enviar['unitId'] <= 0) {
@@ -273,10 +360,10 @@
 
         $('body').on('click', '#btnPrint', function () {
             PrepararImpressao(
-                'Relatório de status das Unidades',
-                "Leonardo Matheus Trench",
-                "Gabriel Nunes",
-                "Relatório geradado: <u>22/02/2018 16:33</u>",
+                'PCC 1B - MONITORAMENTO DE CONTAMINAÇÃO FECAL E/OU INDIGESTA',
+                "Leonardo Matheus Trench" + " - " + "GQU/" + siglaUnidade,
+                "Gabriel Nunes" + " - " + "GQU/" + siglaUnidade,
+                "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
                 'contentBody',
                 "../Imagens/logo-jbs.png",
                 "../Imagens/logo-gq.png");
@@ -305,6 +392,36 @@
 
             printGRT.Imprimir();
         }
+
+        function cleanData() {
+            $('#data').empty();
+            $('#horaInicioMonitoramento').empty();
+            $('#dianteiroOuTraseiro').empty();
+            $('#horaFimMonitoramento').empty();
+            $('#tabela1').empty();
+            $('#tabela2').empty();
+            $('#tabela3').empty();
+            $('#tabela4').empty();
+            $('#tabela5').empty();
+            $('#tabela6').empty();
+            $('#tabela7').empty();
+            $('#tabela8').empty();
+            $('#tabela9').empty();
+        }
+
+        function setData(item) {
+
+            $('#data').append("Data: " + enviar.startDate);
+
+            $('#horaInicioMonitoramento').append("Início do Monitoramento: " + new Date(item.InitialTime).toLocaleTimeString());
+
+            $('#dianteiroOuTraseiro').append($('#level2Id :selected').text().toUpperCase());
+
+            $('#horaFimMonitoramento').append("Horário de Fim do Monitoramento: " + new Date(item.FinalTime).toLocaleTimeString());
+
+            horaFimMonitoramento
+        }
+
 
     </script>
 }

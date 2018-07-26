@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers.Relatorios
     public class SIFReportsController : BaseController
     {
         // GET: SIFReports
-        [FormularioPesquisa(filtraUnidadeDoUsuario = true)]
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
             return View();
