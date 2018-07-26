@@ -2606,10 +2606,20 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
-			SELECT * 
-				FROM #CUBO C
-				LEFT JOIN #HeaderField H
-					ON C.ID = H.CollectionLevel2_Id
+			SELECT 
+                Indicador as Indicador,
+                MonitoramentoName as Monitoramento,
+                TarefaName as Tarefa,
+                ''Acesso - 1'' as Acesso,
+                Meta as Meta,
+                AVComPeso as ''AV com Peso'',
+                nCComPeso as ''NC com Peso'',
+                UnidadeName as Unidade,
+                AV as AV,
+                NC as NC
+			FROM #CUBO C
+			LEFT JOIN #HeaderField H
+				ON C.ID = H.CollectionLevel2_Id
 
 
 	
