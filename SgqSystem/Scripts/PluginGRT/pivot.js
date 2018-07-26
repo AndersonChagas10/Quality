@@ -1321,9 +1321,9 @@
           unusedAttrsVerticalAutoOverride = attrLength > unusedAttrsVerticalAutoCutoff;
         }
         if (opts.unusedAttrsVertical === true || unusedAttrsVerticalAutoOverride) {
-            unused.addClass('pvtVertList').css('overflow-y', 'auto').css('display', 'block').css('max-height', '400px');
+            unused.addClass('pvtVertList').css('overflow-y', 'auto').css('display', 'block').css('max-height', '600px');
         } else {
-            unused.addClass('pvtHorizList').css('overflow-x', 'auto').css('display', 'block').css('max-width', '700px').css('height', '32px');
+            unused.addClass('pvtHorizList').css('overflow-x', 'auto').css('display', 'block').css('min-width', '700px').css('max-width', '1000px').css('height', '32px');
         }
         fn1 = function(attr) {
           var attrElem, checkContainer, closeFilterBox, controls, filterItem, filterItemExcluded, finalButtons, hasExcludedItem, len2, n, placeholder, ref1, sorter, triangleLink, v, value, valueCount, valueList, values;
@@ -1507,10 +1507,10 @@
           return refresh();
         });
         $("<td>").addClass('pvtVals').addClass('col-lg-2 col-xs-4').appendTo(tr1).append(aggregator).append(rowOrderArrow).append(colOrderArrow).append($("<br>"));
-        $("<td>").addClass('pvtAxisContainer pvtHorizList pvtCols').css('overflow-x', 'auto').css('display', 'block').css('max-width', '700px').css('height','45.6px').appendTo(tr1);
+        $("<td>").addClass('pvtAxisContainer pvtHorizList pvtCols').css('overflow-x', 'auto').css('display', 'block').css('min-width', '700px').css('max-width', '1000px').css('height', '45.6px').appendTo(tr1);
         tr2 = $("<tr>").appendTo(uiTable);
         tr2.append($("<td>").addClass('pvtAxisContainer pvtRows').attr("valign", "top"));
-        pivotTable = $("<td>").attr("valign", "top").addClass('pvtRendererArea').css('overflow', 'auto').css('display', 'block').css('max-width', '700px').css('max-height', '400px').appendTo(tr2);
+        pivotTable = $("<td>").attr("valign", "top").addClass('pvtRendererArea').css('overflow', 'auto').css('display', 'block').css('min-width', '700px').css('max-width', '1000px').css('max-height', '600px').appendTo(tr2);
         if (opts.unusedAttrsVertical === true || unusedAttrsVerticalAutoOverride) {
           uiTable.find('tr:nth-child(1)').prepend(rendererControl);
           uiTable.find('tr:nth-child(2)').prepend(unused);
