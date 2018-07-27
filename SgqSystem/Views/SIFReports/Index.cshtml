@@ -26,13 +26,13 @@
 
             <div class="col-xs-12">
                 <div class="portlet light bordered">
-                    <div class="portlet-title tabbable-line">
+                    @*<div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
                             <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
                         </div>
-                    </div>
-                    <div class="portlet-body">
+                    </div>*@
+                    <div class="portlet-body" hidden>
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
@@ -154,7 +154,7 @@
                                 </tbody>
                             </table>
 
-                            <table border="2" style="width:100%">
+                            <table border="2" style="width:100%" class="avoid-break-page">
                                 <tr><th style="text-align: center;"><strong>Observações:</strong></th></tr>
                                 <tr><td>&nbsp;</td></tr>
                                 <tr><td>&nbsp;</td></tr>
@@ -225,6 +225,7 @@
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
         var urlGet = '@Html.Raw(Url.Action("Get", "api/SIFReports"))';
         var siglaUnidade = "";
+        exibeTodosLevels = false; //Variavel global para não exibir os monitoramentos sem que selecione o indicador
 
         $(document).ready(function () {
 
@@ -237,7 +238,7 @@
 
             formControl.showSimpleDate();
             formControl.showLevel1();
-            formControl.showShift();
+            //formControl.showShift();
             formControl.showUnit();
 
             //$('#showLevel1 > div:nth-child(2)').hide();
@@ -249,6 +250,8 @@
 
             });
 
+            $('.portlet-body').hide();
+
         });
 
 
@@ -258,7 +261,7 @@
 
                 $btn.button('loading');
 
-                EasyAjax(urlGet, enviar, Leo, "load", toggle);
+                EasyAjax(urlGet, enviar, GeraRelatorio, "load", toggle);
 
                 //var renan = [];
 
@@ -271,13 +274,17 @@
 
         };
 
-        function Leo(obj) {
+        function GeraRelatorio(obj) {            
+
+            $('.portlet-body').hide();
 
             if (obj.Dados.length <= 0) {
 
                 GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
 
             } else {
+
+                $('.portlet-body').show();
 
                 cleanData();
 

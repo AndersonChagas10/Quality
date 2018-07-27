@@ -18,16 +18,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("Get")]
-        public Fdp Get([FromBody] FormularioParaRelatorioViewModel form)
+        public Retorno Get([FromBody] FormularioParaRelatorioViewModel form)
         {
             var query = $@"SELECT
 	em_coluna.Sequential AS Numero
    ,CASE
-		WHEN 1 > 0 THEN 1
+		WHEN [1] > 0 THEN 1
 		ELSE 0
 	END AS 'Esquerdo'
    ,CASE
-		WHEN 2 > 0 THEN 1
+		WHEN [2] > 0 THEN 1
 		ELSE 0
 	END AS 'Direito'
    ,em_coluna.Initials
@@ -40,19 +40,16 @@ FROM (SELECT
 	LEFT JOIN ParCompany pc
 		ON pc.Id = C2.UnitId
 	WHERE 1 = 1
-	AND ParLevel2_Id IN (SELECT
-			ParLevel2_Id
-		FROM ParLevel2Level1
-		WHERE ParLevel1_Id = {form.level1Id})
+	AND C2.ParLevel1_Id = {form.level1Id}
 	AND C2.ParLevel2_Id = {form.level2Id}
-	AND C2.UnitId = 14 -- {form.unitId} 
+	AND C2.UnitId = {form.unitId} 
 --and Shift = 1
---AND CAST(CollectionDate AS DATE) = CAST(GETDATE() AS DATE) -- {form._dataInicioSQL}
+AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)
 ) em_linha
 PIVOT (SUM(Defects) FOR Side IN ([1], [2])) em_coluna
 ORDER BY em_coluna.Sequential";
 
-            var retorno = new Fdp();
+            var retorno = new Retorno();
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
@@ -78,13 +75,10 @@ ORDER BY em_coluna.Sequential";
 	MIN(CollectionDate)
 FROM CollectionLevel2
 WHERE 1 = 1
-AND UnitId = 14 -- { form.unitId }
-AND ParLevel2_Id IN (SELECT
-		ParLevel2_Id
-	FROM ParLevel2Level1
-	WHERE ParLevel1_Id = { form.level1Id })
+AND UnitId = { form.unitId }
+AND ParLevel1_Id = { form.level1Id }
 AND ParLevel2_Id = { form.level2Id }
--- AND CAST(CollectionDate AS DATE) = CAST(GETDATE() AS DATE)";
+AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
             return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
@@ -97,20 +91,17 @@ AND ParLevel2_Id = { form.level2Id }
 	MAX(CollectionDate)
 FROM CollectionLevel2
 WHERE 1 = 1
-AND UnitId = 14 --{ form.unitId }
-AND ParLevel2_Id IN (SELECT
-		ParLevel2_Id
-	FROM ParLevel2Level1
-	WHERE ParLevel1_Id = { form.level1Id })
+AND UnitId = { form.unitId }
+AND ParLevel1_Id = { form.level1Id }
 AND ParLevel2_Id = { form.level2Id }
--- AND CAST(CollectionDate AS DATE) = CAST(GETDATE() AS DATE)";
+AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
             return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
         }
     }
 
-    public class Fdp
+    public class Retorno
     {
         public dynamic Dados { get; set; }
         public DateTime InitialTime { get; set; }
