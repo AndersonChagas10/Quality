@@ -364,6 +364,7 @@
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\SIFReportsApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
@@ -415,6 +416,7 @@
     <Compile Include="Controllers\Recravacao\RecravacaoTipoLataController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
@@ -1742,6 +1744,7 @@
     <Content Include="Views\ImportFormatItems\Details.cshtml" />
     <Content Include="Views\ImportFormatItems\Edit.cshtml" />
     <Content Include="Views\ImportFormatItems\Index.cshtml" />
+    <Content Include="Views\SIFReports\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

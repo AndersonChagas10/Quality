@@ -256,14 +256,14 @@
         </li>
 
         @if (ViewBag.Anos != null)
-    {
-        <li>
-            <div class="dropdown" id="showYearManutencao" style="display:none">
-                <span class="redLabel">Ano</span>
-                @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>
-}
+        {
+            <li>
+                <div class="dropdown" id="showYearManutencao" style="display:none">
+                    <span class="redLabel">Ano</span>
+                    @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
 
         <li>
             <div class="dropdown" id="showMonthManutencao" style="display:none">
@@ -287,45 +287,45 @@
         </li>
 
         @if (ViewBag.Regionais != null)
-    {
-        <li>
-            <div class="dropdown" id="showRegionaisManutencao" style="display:none">
-                <span class="redLabel">Regional</span>
-                @Html.DropDownList("RegionalId", new SelectList(ViewBag.Regionais, "Nome", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>
-}
+        {
+            <li>
+                <div class="dropdown" id="showRegionaisManutencao" style="display:none">
+                    <span class="redLabel">Regional</span>
+                    @Html.DropDownList("RegionalId", new SelectList(ViewBag.Regionais, "Nome", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
         @if (ViewBag.SubRegionais != null)
-    {
-        <li>
-            <div class="dropdown" id="showSubRegionaisManutencao" style="display:none">
-                <span class="redLabel">Sub Regional</span>
-                @Html.DropDownList("SubRegionalId", new SelectList(ViewBag.SubRegionais, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>
-}
+        {
+            <li>
+                <div class="dropdown" id="showSubRegionaisManutencao" style="display:none">
+                    <span class="redLabel">Sub Regional</span>
+                    @Html.DropDownList("SubRegionalId", new SelectList(ViewBag.SubRegionais, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
         @if (ViewBag.Unidades != null)
-    {
-        <li>
-            <div class="dropdown" id="showUnidadesManutencao" style="display:none">
-                <span class="redLabel">Unidades</span>
-                @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>
-}
+        {
+            <li>
+                <div class="dropdown" id="showUnidadesManutencao" style="display:none">
+                    <span class="redLabel">Unidades</span>
+                    @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
 
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
 
                 @if (ViewBag.UnitArr == null)
-            {
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
-        }
-        else
-        {
-            @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
-    }
+                {
+                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                }
+                else
+                {
+                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px", @multiple = "multiple" })
+                }
             </div>
         </li>
 
@@ -338,15 +338,15 @@
         </li>
 
         @if (ViewBag.ListaCEP != null)
-    {
-        <li>
-            <div id="showTipoCEP" style="display:none">
-                <span class="redLabel">@Resources.Resource.letters_cep</span>
+        {
+            <li>
+                <div id="showTipoCEP" style="display:none">
+                    <span class="redLabel">@Resources.Resource.letters_cep</span>
 
-                @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
-            </div>
-        </li>
-}
+                    @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                </div>
+            </li>
+        }
 
         <li>
             <div id="showModulo" style="display:none">
@@ -366,55 +366,52 @@
             </div>
         </li>
 
-        @if (GlobalConfig.Eua)
-    {
         <li>
             <div id="showShift" style="display:none">
                 <span class="redLabel">@Resources.Resource.shift</span>
-                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
-}
 
         @if (ViewBag.Department != null)
-    {
-        <li>
-            <div id="showDepartment" style="display:none">
-                <span class="redLabel">Teste@*@Resources.Resource.department*@</span>
+        {
+            <li>
+                <div id="showDepartment" style="display:none">
+                    <span class="redLabel">Teste@*@Resources.Resource.department*@</span>
 
-                @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
-            </div>
-        </li>
-}
+                    @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                </div>
+            </li>
+        }
 
 
-    @*@Html.Partial("~/Views/Shared/_SelectVinculado.cshtml")*@
+        @*@Html.Partial("~/Views/Shared/_SelectVinculado.cshtml")*@
 
-    @*<li>
-        <div id="showOnlyUnit" style="display:none">
-            <span class="redLabel">Unidade</span>
+        @*<li>
+                <div id="showOnlyUnit" style="display:none">
+                    <span class="redLabel">Unidade</span>
 
-            @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-        </div>
-    </li>*@
+                    @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>*@
 
         @Html.Partial("~/Views/Shared/_ClusterRegionalUnidadeCriticalLevel123.cshtml")
 
         @Html.Partial("~/Views/Shared/_Level321Chain.cshtml")
 
         @*<li>
-            <div id="showLevel2" style="display:none">
-                <span class="redLabel">@Resources.Resource.level2</span>
-                @Html.DropDownList("level2Id", new SelectList(ViewBag.Level2, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
-            </div>
-        </li>
+                <div id="showLevel2" style="display:none">
+                    <span class="redLabel">@Resources.Resource.level2</span>
+                    @Html.DropDownList("level2Id", new SelectList(ViewBag.Level2, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
+                </div>
+            </li>
 
-        <li>
-            <div id="showLevel3" style="display:none">
-                <span class="redLabel">@Resources.Resource.level3</span>
-                @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
-            </div>
-        </li>*@
+            <li>
+                <div id="showLevel3" style="display:none">
+                    <span class="redLabel">@Resources.Resource.level3</span>
+                    @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
+                </div>
+            </li>*@
 
         <li>
             <div id="showPeriod" style="display:none">
@@ -568,7 +565,7 @@
                     </tr>
                     <tr>
                         @*<td title="Acompanhe a quantidade de Sebo Flotado no período neste Local!">         <input type="radio" name="optradio" value="Sebo Flotado">Sebo Flotado</td>
-                        <td title="Acompanhe o Rendimento do Sebo + Farinha no período neste Local!">       <input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend. (S+F)%</td>*@
+                            <td title="Acompanhe o Rendimento do Sebo + Farinha no período neste Local!">       <input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend. (S+F)%</td>*@
                     </tr>
                     <tr class="tituloIndicadores">
                         <td title="Custos & Indicadores Técnicos" colspan="2">Custos & Indicadores Técnicos</td>
@@ -589,12 +586,12 @@
                         <td title="Acompanhe o Custo Fixo de Manutenção Predial no período neste Local!" colspan="2">        <input type="radio" name="optradio" value="Custo Fixo Manutenção">:: Custo Fixo Manutenção R$</td>
                     </tr>
                     @*<tr>
-                        <td title="Acompanhe o Custo Fixo de Utilidades no período neste Local!" colspan="2">                <input type="radio" name="optradio" value="Custo Fixo Utilidades">:: Custo Fixo Utilidades R$</td>
-                    </tr>*@
+                            <td title="Acompanhe o Custo Fixo de Utilidades no período neste Local!" colspan="2">                <input type="radio" name="optradio" value="Custo Fixo Utilidades">:: Custo Fixo Utilidades R$</td>
+                        </tr>*@
                     @*<tr>
-                        <td title="Acompanhe o Custo com Energia Fixa no período neste Local!">             <input type="radio" name="optradio" value="Energia R$ (Fixo)">Energia R$ (Fixo)</td>
-                        <td title="Acompanhe o Custo com Energia Variável no período neste Local!">         <input type="radio" name="optradio" value="Energia R$ (Variável)">Energia R$ (Variável)</td>
-                    </tr>*@
+                            <td title="Acompanhe o Custo com Energia Fixa no período neste Local!">             <input type="radio" name="optradio" value="Energia R$ (Fixo)">Energia R$ (Fixo)</td>
+                            <td title="Acompanhe o Custo com Energia Variável no período neste Local!">         <input type="radio" name="optradio" value="Energia R$ (Variável)">Energia R$ (Variável)</td>
+                        </tr>*@
                     <tr>
                         <td colspan="2">
                             <b>
@@ -632,11 +629,11 @@
                     </tr>
 
                     @*<tr>
-                        <td title="Acompanhe os M³ de Lenha no período neste Local!" colspan="2">                       <input type="radio" name="optradio" value="M³ de Lenha">:: M³ de Lenha</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe os Kg de Lenha no período neste Local!" colspan="2">                       <input type="radio" name="optradio" value="Kg Lenha (Cavaco)">:: Kg Lenha (Cavaco)</td>
-                    </tr>*@
+                            <td title="Acompanhe os M³ de Lenha no período neste Local!" colspan="2">                       <input type="radio" name="optradio" value="M³ de Lenha">:: M³ de Lenha</td>
+                        </tr>
+                        <tr>
+                            <td title="Acompanhe os Kg de Lenha no período neste Local!" colspan="2">                       <input type="radio" name="optradio" value="Kg Lenha (Cavaco)">:: Kg Lenha (Cavaco)</td>
+                        </tr>*@
                     <tr>
                         <td title="Acompanhe o Mcal no período neste Local!" colspan="2">                               <input type="radio" name="optradio" value="Mcal">:: Combustível para Caldeira (MCal)</td>
                     </tr>
@@ -657,22 +654,22 @@
                         <td title="Acompanhe o Consumo de M³ de Água no período neste Local!" colspan="2">              <input type="radio" name="optradio" value="Consumo Agua m³">:: Consumo Água (m³)</td>
                     </tr>
                     @*<tr>
-                        <td><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</td>
-                        <td><input type="radio" name="optradio" value="R$ Manut Comb.">R$ Manut Comb.</td>
-                    </tr>*@
+                            <td><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</td>
+                            <td><input type="radio" name="optradio" value="R$ Manut Comb.">R$ Manut Comb.</td>
+                        </tr>*@
                     @*<tr>
-                        <td><input type="radio" name="optradio" value="Total Vendas R$">Total Vendas R$</td>
-                        <td><input type="radio" name="optradio" value="Total Devolvido R$">Total Devolvido R$</td>
-                    </tr>*@
+                            <td><input type="radio" name="optradio" value="Total Vendas R$">Total Vendas R$</td>
+                            <td><input type="radio" name="optradio" value="Total Devolvido R$">Total Devolvido R$</td>
+                        </tr>*@
                     @*<tr>
-                        <td><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</td>
-                        <td><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</td>
-                    </tr>*@
+                            <td><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</td>
+                            <td><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</td>
+                        </tr>*@
 
 
                     @*<tr>
-                        <td title="Acompanhe os Litros de Sebo no período neste Local!">                    <input type="radio" name="optradio" value="Litros de Sebo">:: Litros de Sebo</td>
-                    </tr>*@
+                            <td title="Acompanhe os Litros de Sebo no período neste Local!">                    <input type="radio" name="optradio" value="Litros de Sebo">:: Litros de Sebo</td>
+                        </tr>*@
 
                     <tr class="tituloIndicadores">
                         <td title="Qualidade e Entrega & Sistema De Manutenção" colspan="2">Qualidade e Entrega & Sistema De Manutenção</td>
@@ -737,17 +734,17 @@
                         <td title="Acompanhe a Carta de Metas no período neste Local!">                     <input type="radio" name="optradio" value="CARTA METAS">:: CARTA METAS %</td>
                     </tr>
                     @*<tr class="tituloIndicadores">
-                        <td title="Motivação" colspan="2">Motivação</td>
-                    </tr>*@
+                            <td title="Motivação" colspan="2">Motivação</td>
+                        </tr>*@
                     @*<tr>
-                        <td title="Head Count">                                                             <input type="radio" name="optradio" value="Head Count">:: Head Count</td>
-                        <td title="Rotatividade">                                                           <input type="radio" name="optradio" value="Rotatividade">:: Rotatividade %</td>
-                        <td><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</td>
-                    </tr>*@
+                            <td title="Head Count">                                                             <input type="radio" name="optradio" value="Head Count">:: Head Count</td>
+                            <td title="Rotatividade">                                                           <input type="radio" name="optradio" value="Rotatividade">:: Rotatividade %</td>
+                            <td><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</td>
+                        </tr>*@
                     @*<tr>
-                        <td title="Acompanhe o Custo com as Horas Extras no período neste Local!">          <input type="radio" name="optradio" value="Horas Extras R$">:: Horas Extras R$</td>
-                        <td title="Acompanhe a Quantidade de Horas Extras no período neste Local!">         <input type="radio" name="optradio" value="Horas Extras Nº">:: Horas Extras Nº</td>
-                    </tr>*@
+                            <td title="Acompanhe o Custo com as Horas Extras no período neste Local!">          <input type="radio" name="optradio" value="Horas Extras R$">:: Horas Extras R$</td>
+                            <td title="Acompanhe a Quantidade de Horas Extras no período neste Local!">         <input type="radio" name="optradio" value="Horas Extras Nº">:: Horas Extras Nº</td>
+                        </tr>*@
                     <tr>
                         @*<td title="Acompanhe a Quantidade de Colaboradores Ausentes no período neste Local!">       <input type="radio" name="optradio" value="Nº Colaboradores Ausentes">:: Nº Colab. Ausentes</td>*@
                         @*<td title="Acompanhe a Quantidade de Colaboradores Desligados no período neste Local!">     <input type="radio" name="optradio" value="Nº Colaboradores Desligados">:: Nº Colab. Desligados</td>*@
@@ -757,37 +754,37 @@
                         @* <td title="Acompanhe a Quantidade de Colaboradores Registrados no período neste Local!">    <input type="radio" name="optradio" value="Nº Colaboradores Registrados">:: Nº Colab. Registrados</td>*@
                     </tr>
                     @*<tr>
-                        <td title="Acompanhe a Taxa de Frequência de Acidentes no período neste Local!">            <input type="radio" name="optradio" value="Taxa de Frequência">:: Taxa de Frequência %</td>
+                            <td title="Acompanhe a Taxa de Frequência de Acidentes no período neste Local!">            <input type="radio" name="optradio" value="Taxa de Frequência">:: Taxa de Frequência %</td>
 
-                    </tr>*@
+                        </tr>*@
                     <tr class="tituloIndicadores">
                         <td title="Parâmetros De Continuidade" colspan="2">Parâmetros De Continuidade</td>
                     </tr>
                     @*<tr>
-                        <td title="Acompanhe o ScoreCard de Água no período neste Local!">                  <input type="radio" name="optradio" value="Scorecard Água">:: Scorecard Água %</td>
-                    </tr>*@
+                            <td title="Acompanhe o ScoreCard de Água no período neste Local!">                  <input type="radio" name="optradio" value="Scorecard Água">:: Scorecard Água %</td>
+                        </tr>*@
                     @*<tr>
-                        <td title="Acompanhe o ScoreCard de Aspersão no período neste Local!">              <input type="radio" name="optradio" value="Scorecard Aspersão">:: Scorecard Aspersão %</td>
-                    </tr>*@
+                            <td title="Acompanhe o ScoreCard de Aspersão no período neste Local!">              <input type="radio" name="optradio" value="Scorecard Aspersão">:: Scorecard Aspersão %</td>
+                        </tr>*@
                     @*<tr>
-                        <td title="Acompanhe o ScoreCard de Unidade no período neste Local!">               <input type="radio" name="optradio" value="Scorecard Unidade">:: Scorecard Unidade %</td>
-                    </tr>*@
+                            <td title="Acompanhe o ScoreCard de Unidade no período neste Local!">               <input type="radio" name="optradio" value="Scorecard Unidade">:: Scorecard Unidade %</td>
+                        </tr>*@
                     <tr>
                         <td title="Acompanhe o ScoreCard de Energia no período neste Local!">               <input type="radio" name="optradio" value="Scorecard Energia">:: Scorecard Energia %</td>
                     </tr>
                     @*<tr>
-                        <td title="Acompanhe o ScoreCard de Vácuo no período neste Local!">                 <input type="radio" name="optradio" value="Scorecard Vácuo">:: Scorecard Vácuo %</td>
-                    </tr>*@
+                            <td title="Acompanhe o ScoreCard de Vácuo no período neste Local!">                 <input type="radio" name="optradio" value="Scorecard Vácuo">:: Scorecard Vácuo %</td>
+                        </tr>*@
                     <tr>
                         <td title="Acompanhe o ScoreCard de Vapor no período neste Local!">                 <input type="radio" name="optradio" value="Scorecard Vapor">:: Scorecard Vapor %</td>
                     </tr>
                     @*<tr>
-                        <td><input type="radio" name="optradio" value="Devoluções %">Devoluções %</td>
-                        <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
-                    </tr>*@
+                            <td><input type="radio" name="optradio" value="Devoluções %">Devoluções %</td>
+                            <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
+                        </tr>*@
                     @*<tr>
-                        <td title="Acompanhe o ScoreCard de Meio Ambiente no período neste Local!">         <input type="radio" name="optradio" value="Scorecard M. Amb">:: Scorecard M. Amb %</td>
-                    </tr>*@
+                            <td title="Acompanhe o ScoreCard de Meio Ambiente no período neste Local!">         <input type="radio" name="optradio" value="Scorecard M. Amb">:: Scorecard M. Amb %</td>
+                        </tr>*@
                     <tr class="tituloIndicadores">
                         <td title="OBRAS" colspan="2">OBRAS</td>
                     </tr>
@@ -806,9 +803,9 @@
         </li>
 
     </ul>
-    </div>
+</div>
 
-    <!-- Menu Toggle Script -->
+<!-- Menu Toggle Script -->
 
 <script>
 
@@ -1175,7 +1172,7 @@
             },
             showGroupLevel1: function () {
                 $('#showGroupLevel1').show();
-            },  
+            },
             showTipoCEP: function () {
                 $('#showTipoCEP').show();
             },
@@ -1284,7 +1281,7 @@
             showCreateActionPlane: function () {
                 $('#showCreateActionPlane').show();
             },
-    
+
             showDimensaoData: function () {
                 $('#showDimensaoData').show();
             },
