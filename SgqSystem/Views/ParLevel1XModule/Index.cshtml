@@ -4,72 +4,103 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ParLevel1_Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ParModule_Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Points)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AddDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AlterDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EffectiveDateStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EffectiveDateEnd)
-        </th>
-        <th></th>
-    </tr>
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.module</span>
+                </li>
+            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ParLevel1_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ParModule_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Points)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AddDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AlterDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EffectiveDateStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+                                <p>
+                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ParLevel1_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ParModule_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName(Resources.Resource.points)
+                                        </th>                                  
+                                        <th>
+                                            @Html.DisplayName(Resources.Resource.is_active)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName(Resources.Resource.effective_date_start)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName(Resources.Resource.effective_date_end)
+                                        </th>
+                                        <th>
+                                            @Resources.Resource.action
+                                        </th>
+                                        <th></th>
+                                    </tr>
 
-</table>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParLevel1_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParModule_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Points)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EffectiveDateStart)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>

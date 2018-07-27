@@ -2586,4 +2586,13 @@
   <data name="do_audit" xml:space="preserve">
     <value>Faz Coleta</value>
   </data>
+  <data name="parlevel1xmodules" xml:space="preserve">
+    <value>Indicador x Modulos</value>
+  </data>
+  <data name="effective_date_end" xml:space="preserve">
+    <value>Data efetiva de termino</value>
+  </data>
+  <data name="effective_date_start" xml:space="preserve">
+    <value>Date efetiva de inicio</value>
+  </data>
 </root>

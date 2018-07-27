@@ -2592,4 +2592,13 @@
   <data name="excel_file" xml:space="preserve">
     <value>Excel File</value>
   </data>
+  <data name="parlevel1xmodules" xml:space="preserve">
+    <value>Level1 x Modules</value>
+  </data>
+  <data name="effective_date_end" xml:space="preserve">
+    <value>Effective date end</value>
+  </data>
+  <data name="effective_date_start" xml:space="preserve">
+    <value>Effective date start</value>
+  </data>
 </root>
