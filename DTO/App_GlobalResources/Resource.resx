@@ -2145,4 +2145,22 @@
   <data name="per_week" xml:space="preserve">
     <value>Per Week</value>
   </data>
+  <data name="import_format_itens" xml:space="preserve">
+    <value>Import format itens</value>
+  </data>
+  <data name="available_items" xml:space="preserve">
+    <value>Available Items</value>
+  </data>
+  <data name="import_format" xml:space="preserve">
+    <value>Import Format</value>
+  </data>
+  <data name="import_format_id" xml:space="preserve">
+    <value>Import Format Id</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="new_format" xml:space="preserve">
+    <value>New Format</value>
+  </data>
 </root>
