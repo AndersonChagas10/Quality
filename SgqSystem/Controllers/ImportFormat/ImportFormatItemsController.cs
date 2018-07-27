@@ -52,8 +52,10 @@ namespace SgqSystem.Controllers.ImportFormat
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Key,Value,AddDate,AlterDate,ImportFormat_Id")] ImportFormatItem importFormatItem)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Key,Value,ImportFormat_Id")] ImportFormatItem importFormatItem)
         {
+            importFormatItem.AddDate = DateTime.Now;
+            importFormatItem.AlterDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.ImportFormatItem.Add(importFormatItem);
@@ -84,8 +86,9 @@ namespace SgqSystem.Controllers.ImportFormat
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Key,Value,AddDate,AlterDate,ImportFormat_Id")] ImportFormatItem importFormatItem)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Key,Value,ImportFormat_Id")] ImportFormatItem importFormatItem)
         {
+            importFormatItem.AlterDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(importFormatItem).State = EntityState.Modified;

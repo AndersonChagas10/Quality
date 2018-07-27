@@ -47,8 +47,10 @@ namespace SgqSystem.Controllers.ImportFormat
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,AddDate,AlterDate,IsActive")] Dominio.ImportFormat importFormat)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Title,IsActive")] Dominio.ImportFormat importFormat)
         {
+            importFormat.AddDate = DateTime.Now;
+            importFormat.AlterDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.ImportFormat.Add(importFormat);
@@ -79,8 +81,9 @@ namespace SgqSystem.Controllers.ImportFormat
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,AddDate,AlterDate,IsActive")] Dominio.ImportFormat importFormat)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,IsActive")] Dominio.ImportFormat importFormat)
         {
+            importFormat.AlterDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(importFormat).State = EntityState.Modified;
