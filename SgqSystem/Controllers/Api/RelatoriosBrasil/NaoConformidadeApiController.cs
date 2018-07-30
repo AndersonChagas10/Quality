@@ -2607,7 +2607,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
 			SELECT 
-                Indicador as Indicador,
+                IndicadorName as Indicador,
                 MonitoramentoName as Monitoramento,
                 TarefaName as Tarefa,
                 ''Acesso - 1'' as Acesso,
