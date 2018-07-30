@@ -14,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParModules")">@Resources.Resource.module</a>
+                    <a href="@Url.Action("Index", "ParModules")">@Resources.Resource.parlevel1xmodules</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.details @Resources.Resource.module</span>
+                    <span>@Resources.Resource.details @Resources.Resource.details</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -63,7 +63,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Points)
+                                            @Html.DisplayName(Resources.Resource.points)
                                         </dt>
 
                                         <dd>
@@ -71,23 +71,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.AddDate)
-                                        </dt>
-
-                                        <dd>
-                                            @Html.DisplayFor(model => model.AddDate)
-                                        </dd>
-
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.AlterDate)
-                                        </dt>
-
-                                        <dd>
-                                            @Html.DisplayFor(model => model.AlterDate)
-                                        </dd>
-
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.IsActive)
+                                            @Html.DisplayName(Resources.Resource.is_active)
                                         </dt>
 
                                         <dd>
@@ -95,7 +79,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.EffectiveDateStart)
+                                            @Html.DisplayName(Resources.Resource.effective_date_start)
                                         </dt>
 
                                         <dd>
@@ -103,7 +87,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.EffectiveDateEnd)
+                                            @Html.DisplayName(Resources.Resource.effective_date_end)
                                         </dt>
 
                                         <dd>

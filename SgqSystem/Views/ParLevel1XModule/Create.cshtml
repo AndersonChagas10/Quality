@@ -14,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParModules")">@Resources.Resource.create</a>
+                    <a href="@Url.Action("Index", "ParModules")">@Resources.Resource.parlevel1xmodules</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.parlevel1xmodules</span>
+                    <span>@Resources.Resource.create</span>
                 </li>
             </ul>
         </div>
@@ -36,7 +36,7 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm())
+                                @using (Html.BeginForm("Create", "ParLevel1xModule", FormMethod.Post,new { @id = "form" }))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -63,7 +63,9 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control" } })
+                                                @{decimal points = Model?.Points ?? 0;}
+                                                @Html.TextBox("points", points, new { htmlAttributes = new { @class = "form-control number_decimal", @id ="pontos" } })
+                                                @Html.HiddenFor(model => model.Points)
                                                 @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -81,7 +83,7 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.effective_date_start, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.EffectiveDateStart, new { htmlAttributes = new { @class = "form-control", @id="dataInicio" } })
+                                                @Html.EditorFor(model => model.EffectiveDateStart, new { htmlAttributes = new { @class = "form-control", @id = "dataInicio" } })
                                                 @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -114,15 +116,50 @@
 </div>
 
 @section Scripts {
+
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
         $(document).ready(function () {
-            $('#dataInicio').inputmask("99/99/9999 99:99:9999");
-            $('#dataTermino').inputmask("99/99/9999 99:99:9999");
+
+            $("#form").on("submit", function () {
+                $("#points").val($("#points").val().replace(".", ""));
+            })          
+
+            $("#pontos").inputmask('decimal', {
+                radixPoint: ",",
+                groupSeparator: ".",
+                autoGroup: false,
+                digits: 2,
+                digitsOptional: false,
+                placeholder: '0',
+                rightAlign: false,
+                onBeforeMask: function (value, opts) {
+                    return value;
+                },
+            });
+
+            $('#dataInicio').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                defaultDate: null,
+                'locale': {
+                    "format": "YYYY/MM/DD",
+                }
+            });
+
+            $('#dataTermino').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                defaultDate: null,
+                'locale': {
+                    "format": "YYYY/MM/DD",
+                }
+            });
         });
-        
-      
+
+
 
     </script>
 }
