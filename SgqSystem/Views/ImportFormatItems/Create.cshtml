@@ -47,6 +47,16 @@
                                     @Html.HiddenFor(model => model.ImportFormat_Id)
 
                                     <div class="form-group">
+                                        <div class="col-md-12 alert alert-warning">
+                                            <strong>Atenção</strong><br />
+                                            Preencha corretamente o campo Valor: <br />
+                                            Digite o valor a ser considerado ou, entre chaves, informe qual o nome da coluna presente no excel, por exemplo: <strong>{coluna}</strong>.<br />
+                                            Sendo assim, se sua coluna no excel referente ao ID do Indicador se chama: Indicador então a mesma deve ser cadastrada como <strong>{Indicador}</strong><br />
+                                            Caso deseje inserir um ID fixo, com o valor <strong>1</strong>, apenas insira o valor desejado no campo, ou seja, <strong>1</strong>. <br />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         @Html.Label(Resources.Resource.available_items, htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
                                             @Html.DropDownList("Key", (SelectList)ViewBag.ItensDisponiveis, Resources.Resource.select + "...", new { @class = "form-control", @id = "key" })
