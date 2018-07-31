@@ -42,10 +42,10 @@
                                 <table class="table">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ParLevel1_Id)
+                                            @Html.DisplayName(Resources.Resource.parlevel1)
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ParModule_Id)
+                                            @Html.DisplayName(Resources.Resource.parModule)
                                         </th>
                                         <th>
                                             @Html.DisplayName(Resources.Resource.points)
@@ -69,10 +69,10 @@
                                     {
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ParLevel1_Id)
+                                                @Html.DisplayFor(modelItem => item.ParLevel1.Name)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ParModule_Id)
+                                                @Html.DisplayFor(modelItem => item.ParModule.Name)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Points)

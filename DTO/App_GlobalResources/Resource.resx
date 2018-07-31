@@ -2154,4 +2154,10 @@
   <data name="effective_date_start" xml:space="preserve">
     <value>Effective date start</value>
   </data>
+  <data name="parlevel1" xml:space="preserve">
+    <value>ParLevel 1</value>
+  </data>
+  <data name="parModule" xml:space="preserve">
+    <value>ParModule</value>
+  </data>
 </root>

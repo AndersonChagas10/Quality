@@ -36,74 +36,76 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm("Create", "ParLevel1xModule", FormMethod.Post,new { @id = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
+                                @using (Html.BeginForm("Create", "ParLevel1xModule", FormMethod.Post, new { @onsubmit = "tirarMascara()" }))
+    {
+                            @Html.AntiForgeryToken()
 
-                                    <div class="form-horizontal">
-                                        <h4> @Resources.Resource.parlevel1xmodules</h4>
-                                        <hr />
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel1_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParLevel1_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                            <div class="form-horizontal">
+                                <h4> @Resources.Resource.parlevel1xmodules</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("Indicador", new SelectList(ViewBag.Indicadores, "Id", "Name"),Resources.Resource.select, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                                        @*@Html.EditorFor(model => model.ParLevel1_Id, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ParModule_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParModule_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.parModule, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("Modulos", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                                        @*@Html.EditorFor(model => model.ParModule_Id, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @{decimal points = Model?.Points ?? 0;}
-                                                @Html.TextBox("points", points, new { htmlAttributes = new { @class = "form-control number_decimal", @id ="pontos" } })
-                                                @Html.HiddenFor(model => model.Points)
-                                                @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @{decimal points = Model?.Points ?? 0;}
+                                        @Html.TextBox("PointsText", points, new { htmlAttributes = new { @class = "form-control number_decimal", @id = "pontos" } })
+                                        @Html.HiddenFor(model => model.Points)
+                                        @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                <div class="checkbox">
-                                                    @Html.EditorFor(model => model.IsActive)
-                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.effective_date_start, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.EffectiveDateStart, new { htmlAttributes = new { @class = "form-control", @id = "dataInicio" } })
-                                                @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.EffectiveDateEnd, new { htmlAttributes = new { @class = "form-control", @id = "dataTermino" } })
-                                                @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
-                                            </div>
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <div class="checkbox">
+                                            @Html.EditorFor(model => model.IsActive)
+                                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                }
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.effective_date_start, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.EffectiveDateStart, new { htmlAttributes = new { @class = "form-control", @id = "dataInicio" } })
+                                        @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.EffectiveDateEnd, new { htmlAttributes = new { @class = "form-control", @id = "dataTermino" } })
+                                        @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
+                                        @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                    </div>
+                                </div>
+                            </div>
+}
                             </div>
 
                         </div>
@@ -118,16 +120,18 @@
 @section Scripts {
 
     <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
-    @Scripts.Render("~/bundles/jqueryval")
+
 
     <script>
+        function tirarMascara() {
+            var pontos = $("#PointsText").val().replace(".", "");
+            $("#Points").val(pontos.replace(",", "."));
+        };
         $(document).ready(function () {
+            $("#Indicador").select2()
+            $("#Modulos").select2()
 
-            $("#form").on("submit", function () {
-                $("#points").val($("#points").val().replace(".", ""));
-            })          
-
-            $("#pontos").inputmask('decimal', {
+            $("#PointsText").inputmask('decimal', {
                 radixPoint: ",",
                 groupSeparator: ".",
                 autoGroup: false,

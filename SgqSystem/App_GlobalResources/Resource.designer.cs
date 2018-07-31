@@ -4660,11 +4660,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ParLevel 1.
+        /// </summary>
+        internal static string parlevel1 {
+            get {
+                return ResourceManager.GetString("parlevel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level1 x Modules.
         /// </summary>
         internal static string parlevel1xmodules {
             get {
                 return ResourceManager.GetString("parlevel1xmodules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ParModule.
+        /// </summary>
+        internal static string parModule {
+            get {
+                return ResourceManager.GetString("parModule", resourceCulture);
             }
         }
         

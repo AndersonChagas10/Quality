@@ -37,7 +37,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                @using (Html.BeginForm(new { @id = "form" }))
+                                @using (Html.BeginForm("Edit", "ParLevel1xModule", FormMethod.Post, new { @onsubmit = "tirarMascara()" }))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -48,17 +48,17 @@
                                         @Html.HiddenFor(model => model.Id)
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel1_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParLevel1_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.DropDownListFor(model => model.ParLevel1_Id, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:210px" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParModule_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.parModule, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParModule_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.DropDownListFor(model => model.ParModule_Id, new SelectList(ViewBag.Modulos, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:210px" })
                                                 @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -66,8 +66,8 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBox("Points", null, new { htmlAttributes = new { @class = "form-control number_decimal", @id = "pontos" } })
-                                                @*@Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control", @id = "pontos" } })*@
+                                                @Html.HiddenFor(model => model.Points)
+                                                @Html.TextBox("PointsText", Model.Points, new { htmlAttributes = new { @class = "form-control number_decimal", @name = "PointsText" } })
                                                 @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -117,6 +117,8 @@
     <!-- END CONTENT BODY -->
 </div>
 @section Scripts {
+
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
     <script>
 
         $(".sidebar-toggler").removeClass("hide");
@@ -126,26 +128,28 @@
     </script>
 
     <script>
+        function tirarMascara() {
+            var pontos = $("#PointsText").val().replace(".", "");
+            $("#Points").val(pontos.replace(",", "."));
+        };
+
         $(document).ready(function () {
             closeLeftSidebar();
+            $("#ParLevel1_Id").select2()
+            $("#ParModule_Id").select2()
 
-            $("#form").on("submit", function () {
-                $("#points").val($("#points").val().replace(".", ""));
-            })          
-          
-
-            //$("#pontos").inputmask('decimal', {
-            //    radixPoint: ",",
-            //    groupSeparator: ".",
-            //    autoGroup: false,
-            //    digits: 2,
-            //    digitsOptional: false,
-            //    placeholder: '0',
-            //    rightAlign: false,
-            //    onBeforeMask: function (value, opts) {
-            //        return value;
-            //    },
-            //});
+            $("#PointsText").inputmask('decimal', {
+                radixPoint: ",",
+                groupSeparator: ".",
+                autoGroup: false,
+                digits: 2,
+                digitsOptional: false,
+                placeholder: '0',
+                rightAlign: false,
+                onBeforeMask: function (value, opts) {
+                    return value;
+                },
+            });
 
             $('#dataInicio').daterangepicker({
                 singleDatePicker: true,

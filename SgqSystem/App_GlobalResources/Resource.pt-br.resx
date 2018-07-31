@@ -2595,4 +2595,10 @@
   <data name="effective_date_start" xml:space="preserve">
     <value>Date efetiva de inicio</value>
   </data>
+  <data name="parlevel1" xml:space="preserve">
+    <value>Indicador</value>
+  </data>
+  <data name="parModule" xml:space="preserve">
+    <value>Modulo</value>
+  </data>
 </root>

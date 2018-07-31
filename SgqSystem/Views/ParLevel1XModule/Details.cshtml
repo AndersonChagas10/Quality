@@ -18,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.details @Resources.Resource.details</span>
+                    <span>@Resources.Resource.details @Resources.Resource.parlevel1xmodules</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -47,19 +47,19 @@
                                 <div>
                                     <dl class="dl-horizontal">
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.ParLevel1_Id)
+                                            @Html.DisplayName(Resources.Resource.parlevel1)
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.ParLevel1_Id)
+                                            @Html.DisplayFor(model => model.ParLevel1.Name)
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.ParModule_Id)
+                                            @Html.DisplayName(Resources.Resource.parModule)
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.ParModule_Id)
+                                            @Html.DisplayFor(model => model.ParModule.Name)
                                         </dd>
 
                                         <dt>

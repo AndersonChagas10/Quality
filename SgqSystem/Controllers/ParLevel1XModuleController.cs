@@ -39,6 +39,10 @@ namespace SgqSystem.Controllers
         // GET: ParLevel1XModule/Create
         public ActionResult Create()
         {
+            var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
+            var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            ViewBag.Indicadores = listaIndicadores;
+            ViewBag.Modulos = listaModulos;
             return View();
         }
 
@@ -73,6 +77,10 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+            var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
+            var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            ViewBag.Indicadores = listaIndicadores;
+            ViewBag.Modulos = listaModulos;
             return View(parLevel1XModule);
         }
 
