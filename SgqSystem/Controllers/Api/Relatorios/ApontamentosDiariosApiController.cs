@@ -969,7 +969,7 @@ namespace SgqSystem.Controllers.Api
                                 return mountHtmlConform();
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2).IsNotNull())
                                 return mountHtmlNumeroDefeitos();
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7).IsNotNull())
+                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9).IsNotNull())
                                 return mountHtmlIntervalos();
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4).IsNotNull())
                                 return mountHtmlCalculado();
