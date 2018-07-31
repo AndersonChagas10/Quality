@@ -23,6 +23,7 @@ namespace SgqSystem.Controllers.Api
         [Route("SalvarExcel")]
         public IHttpActionResult SalvarExcel([FromBody] List<JObject> dados, int formatoId)
         {
+            //criar um passo a passo de como criar o formato do excel e upa-lo
             try
             {
                 //busca os  itens do formato - ok
@@ -247,7 +248,7 @@ namespace SgqSystem.Controllers.Api
 
                     if (dicionarioItem.Any(i => i.Key == value))
                     {
-                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, item[dicionarioItem[value].ToUpperInvariant()].ToString());
+                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, item[dicionarioItem[value]].ToString());
                     }
                     else
                     {

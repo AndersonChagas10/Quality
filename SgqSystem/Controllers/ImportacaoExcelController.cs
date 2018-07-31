@@ -24,14 +24,6 @@ namespace SgqSystem.Controllers
             ViewBag.Formatos = new SelectList(listaDeFormatos, "Id", "Title");
             return View();
         }
-        public class Produto
-        {
-            public string Id { get; set; }
-            public string Descricao { get; set; }
-            public string Preco { get; set; }
-            public string NomeArquivo { get; set; }
-            public string Titulo { get; set; }
-        }
 
         public ActionResult Importar(HttpPostedFileBase arquivo)
         {
@@ -68,12 +60,6 @@ namespace SgqSystem.Controllers
             ViewBag.Formatos = new SelectList(listaDeFormatos, "Id", "Title");
             return View("Index", dicionarioDados);
 
-        }
-
-        [System.Web.Http.HttpGet]
-        public ActionResult SalvarExcel()
-        {
-            return null;
         }
 
         protected DataTable UploadExcelTo(HttpPostedFileBase upload)
