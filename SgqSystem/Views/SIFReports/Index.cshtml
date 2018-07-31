@@ -167,7 +167,7 @@
                             <div style="font-size:10px;">
                                 OBS - UTILIZAR PLANILHA AVULSA DE TRATAMENTO DE NÃO CONFORMIDADE (RGQ-00-GQC-126), QUANDO APLICÁVEL.
                             </div>
-                            <div class="height-fix avoid-break-page">
+                            <div class="">
                                 <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
                                     <tbody>
                                         <tr>
@@ -240,6 +240,7 @@
             formControl.showLevel1();
             //formControl.showShift();
             formControl.showUnit();
+            formControl.showTipoVisao();
 
             //$('#showLevel1 > div:nth-child(2)').hide();
             $('#showLevel1 > div:nth-child(3)').hide();
@@ -251,6 +252,10 @@
             });
 
             $('.portlet-body').hide();
+
+            $('#tipoVisao').trigger('change');
+
+            $('select').select2();
 
         });
 
@@ -427,6 +432,8 @@
             );
 
             printGRT.Imprimir();
+
+            $('#divRenderPrint').remove();
         }
 
         function cleanData() {

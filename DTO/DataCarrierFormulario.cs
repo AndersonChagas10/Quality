@@ -121,5 +121,7 @@ namespace DTO
         public string tipoCEP { get; set; }
 
         public int GroupLevel1 { get; set; }
+
+        public int tipoVisao { get; set; }
     }
 }

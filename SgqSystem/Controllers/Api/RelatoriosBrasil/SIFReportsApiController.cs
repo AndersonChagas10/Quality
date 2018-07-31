@@ -64,7 +64,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                     retorno.Dados = new List<Dado>();
 
-                    if (true)
+                    if (form.tipoVisao == 2)
                     {
 
                         for (int i = 0; i < ListaEscalaAbate.Count; i++)
