@@ -60,13 +60,16 @@
                 </li>
             </ul>
             @*<div class="page-toolbar">
-                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>
-                </div>*@
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>*@
         </div>
         <!-- END PAGE BAR -->
+
+        @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
+
         <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
@@ -83,7 +86,7 @@
                                 <div class="row">
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                                         @*@if (!GlobalConfig.Eua)
-                                            {*@
+                                        {*@
                                         <button class="btn btn-primary btn-block" id="btnNewLevel1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                         @*}*@
                                     </div>
@@ -104,7 +107,7 @@
                                                 <div id="ParLevel1">
 
                                                     @*@if (!GlobalConfig.Eua)
-                                                        {*@
+                                                    {*@
                                                     @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
                                                     @*}*@
 
@@ -227,6 +230,15 @@
 
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
+    var linkedUnitIds = @Html.Raw(ViewBag.LinkedCompanyIds);
+
+    function MostrarUnidadesAtivas(select){
+        $(select).each(function( i, o ) {
+            if($(o).val() != "-1" && !linkedUnitIds.includes(parseInt($(o).val()))){
+                $(o).remove();
+            }
+        });
+    }
 
     $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -1228,14 +1240,17 @@
                 $('#btnSaveNewLevel2').attr('disabled', false);
                 /*Libera os campos para AV AM*/
                 $('#level2_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+
+                MostrarUnidadesAtivas('#level2_AvAmostra_accordion #avAmCompany option');
+
                 //Libera campos
                 $('#level3_AvAmostra_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                $('#level3_AvAmostra_accordion #avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+
+                MostrarUnidadesAtivas('#level3_AvAmostra_accordion #avAmCompany option');
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
-                    if($(this).data().companyId != unitId)
+                    if(!linkedUnitIds.includes($(this).data().companyId))
                         $(this).find('input, select, button').attr("disabled", true);
                 });
             }else{
@@ -1272,9 +1287,11 @@
 
             if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
-
-                $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
-                $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
+                
+                MostrarUnidadesAtivas('#pesoCompany option');
+                MostrarUnidadesAtivas('#selectUnidadeParL3Value option');
+                //$('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+                //$('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
                 $('#level3_data_type_accordion').find('button').attr("disabled", true);
 
@@ -1295,7 +1312,7 @@
 
                     /*habilita Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
+                        if(!linkedUnitIds.includes($(this).data().companyId) || !($(this).data().ParCompany_Id > 0)){
                             $(this).find('input, select, button').attr("disabled", true);
                             $(this).remove();
                         }
@@ -1316,7 +1333,7 @@
                     /*Bloqueia Edicao do Tipos de dados de entrada*/
                     $('#tableLevel3Value > tbody > tr').each(function() {
                         $(this).find('input, select, button').attr("disabled", true);
-                        if($(this).data().ParCompany_Id != unitId || !($(this).data().ParCompany_Id > 0)){
+                        if(!linkedUnitIds.includes($(this).data().companyId) || !($(this).data().ParCompany_Id > 0)){
                             $(this).remove();
                         }
                     });
@@ -1329,7 +1346,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*Habilita Exclusão do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id == unitId){
+                        if(linkedUnitIds.includes($(this).data().companyId)){
                             $(this).find('button.btn-danger').attr("disabled", false);
                         }else{
                             $(this).find('button.btn-danger').attr("disabled", true);
@@ -1348,7 +1365,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*habilita Edicao do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if($(this).data().ParCompany_Id == unitId){
+                        if(linkedUnitIds.includes($(this).data().companyId)){
                             $(this).find('input, select, button.btn-success').attr("disabled", false);
                         }else{
                             $(this).find('input, select, button.btn-success').attr("disabled", true);

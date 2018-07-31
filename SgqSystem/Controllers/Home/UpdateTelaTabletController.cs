@@ -23,12 +23,19 @@ namespace SgqSystem.Controllers.Home
 
         // GET: UpdateTelaTablet
         [FormularioPesquisa(filtraUnidadePorUsuario=true)]
-        public ActionResult Index()
+        public ActionResult Index(bool isBtnAtualizar = false)
         {
             List<ParCompanyDTO> listaMinhasUnidades = (List<ParCompanyDTO>)ViewBag.UnidadeUsuario;
             ViewBag.UnidadesUsuario = listaMinhasUnidades;
             ViewBag.IdUnidadesUsuario = listaMinhasUnidades.Select(u => u.Id).ToList();
             //listaMinhasUnidades.Select(u=>u.Id);
+
+            ViewBag.IsBtnAtualizar = false;
+
+            if (isBtnAtualizar)
+            {
+                ViewBag.IsBtnAtualizar = true;
+            }
 
             return View();
         }

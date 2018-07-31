@@ -1,0 +1,38 @@
+﻿
+<style>
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.container > div > div > div > button {
+        float: right;
+    }
+
+    #alert-atualizar span {
+        line-height: 34px;
+    }
+
+    #alert-atualizar > div:after {
+        clear: both;
+        content: '';
+        display: table;
+    }
+
+</style>
+
+<div class="container">
+    <div class="col-md-12">
+        <div class="alert alert-info" style="background-color:#ffc866;color:black;" id="alert-atualizar">
+            <div>
+                <span>
+                    Por favor, atualize as parametrizações da sua unidade para surtir efeito no APP Coleta
+                </span>
+
+                <button class="btn btn-success" id="btnAtualizarTablets">Atualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#btnAtualizarTablets').click(function () {
+        window.open('@Url.Action("Index", "UpdateTelaTablet", new { isBtnAtualizar = true })', '_blank');
+    });
+</script>

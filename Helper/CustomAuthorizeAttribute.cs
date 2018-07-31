@@ -142,7 +142,8 @@ namespace Helper
 
                         filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
                         filterContext.Controller.ViewBag.UserSgqId = userId;
-                        Manutencao(filterContext);
+                        filterContext.Controller.ViewBag.LinkedCompanyIds = cookie.Values["LinkedCompanyIds"].ToString();
+                    Manutencao(filterContext);
 
                     //}
 

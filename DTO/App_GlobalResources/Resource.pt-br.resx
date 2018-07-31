@@ -2097,6 +2097,18 @@
   <data name="daily_apointments_sunday" xml:space="preserve">
     <value>Aponts. Diarios Domingo</value>
   </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>Formato de Arquivo não Suportado</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>Nenhum arquivo selecionado</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Importar Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Arquivo Excel</value>
+  </data>
   <data name="biweekly" xml:space="preserve">
     <value>Quinzenal</value>
   </data>
@@ -2123,5 +2135,23 @@
   </data>
   <data name="per_week" xml:space="preserve">
     <value>Por Semana</value>
+  </data>
+  <data name="import_format_itens" xml:space="preserve">
+    <value>Formato de itens de importação</value>
+  </data>
+  <data name="available_items" xml:space="preserve">
+    <value>Itens disponíveis</value>
+  </data>
+  <data name="import_format" xml:space="preserve">
+    <value>Formato de importação</value>
+  </data>
+  <data name="import_format_id" xml:space="preserve">
+    <value>Id do formato de importação</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>Chave</value>
+  </data>
+  <data name="new_format" xml:space="preserve">
+    <value>Novo Formato</value>
   </data>
 </root>

@@ -126,6 +126,13 @@
                                                     <input id="userSgqDto_IsActive" name="userSgqDto.IsActive" type="checkbox" value="">
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.show_all + " ("+ Resources.Resource.unit + ")", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    <input id="userSgqDto_ShowAllUnits" name="userSgqDto.ShowAllUnits" type="checkbox" value="">
+                                                </div>
+                                            </div>
                                         }
 
                                         <hr />
@@ -281,6 +288,10 @@
                 $("#userSgqDto_IsActive").attr('checked', true).trigger('change');
             }
 
+            if(object["ShowAllUnits"]){
+                $("#userSgqDto_ShowAllUnits").attr('checked', true).trigger('change');
+            }
+
             if (object["UseActiveDirectory"]) {
                 $("#userSgqDto_UseActiveDirectory").attr('checked', true).trigger('change');
             }
@@ -301,6 +312,12 @@
         $('#userSgqDto_IsActive').change(function(){
 
             $(this).is(":checked") ? $('#userSgqDto_IsActive').val(true) : $('#userSgqDto_IsActive').val(false)
+
+        });
+
+        $('#userSgqDto_ShowAllUnits').change(function(){
+
+            $(this).is(":checked") ? $('#userSgqDto_ShowAllUnits').val(true) : $('#userSgqDto_ShowAllUnits').val(false)
 
         });
     })

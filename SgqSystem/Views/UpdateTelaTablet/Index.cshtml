@@ -18,7 +18,7 @@
         <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
 
         @if (ViewBag.UnidadesUsuario != null)
-            {
+        {
             <table class="table" id="tableAllUnitTelaTablete">
 
                 <thead>
@@ -63,9 +63,15 @@
         const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
         //const refreshStatusUrl = "/SGQ/api/AppParams/GetGeneratedUnits";
         //const urlUpdateTablets = "/SGQ/api/AppParams/UpdateGetTelaThread";
+        var userUnit;
+
         $(document).ready(function() {
 
-            var things = {'ListUnits':@Html.Raw(Json.Encode(ViewBag.IdUnidadesUsuario))};
+            var things = { 'ListUnits':@Html.Raw(Json.Encode(ViewBag.IdUnidadesUsuario))};
+
+            userUnit = things.ListUnits;
+
+            var isBtnAtualizar = @Html.Raw(Json.Encode(ViewBag.IsBtnAtualizar));
 
             things = JSON.stringify(things);
 
@@ -156,6 +162,15 @@
 
             refreshStatus();
 
+            if (isBtnAtualizar)
+                setCheckTrue();
         });
+
+        function setCheckTrue() {
+
+            if (userUnit.length == 1) {
+                $('#checkAll').trigger('click');
+            }
+        }
     </script>
 }

@@ -2112,6 +2112,18 @@
   <data name="back_to_unit_of_measurement" xml:space="preserve">
     <value>Back to Units of Measurement</value>
   </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>File Format not Supported</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Import Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Excel File</value>
+  </data>
   <data name="package" xml:space="preserve">
     <value>Package</value>
   </data>
@@ -2132,5 +2144,23 @@
   </data>
   <data name="per_week" xml:space="preserve">
     <value>Per Week</value>
+  </data>
+  <data name="import_format_itens" xml:space="preserve">
+    <value>Import format itens</value>
+  </data>
+  <data name="available_items" xml:space="preserve">
+    <value>Available Items</value>
+  </data>
+  <data name="import_format" xml:space="preserve">
+    <value>Import Format</value>
+  </data>
+  <data name="import_format_id" xml:space="preserve">
+    <value>Import Format Id</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="new_format" xml:space="preserve">
+    <value>New Format</value>
   </data>
 </root>

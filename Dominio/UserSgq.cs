@@ -49,8 +49,9 @@ namespace Dominio
 
         public bool UseActiveDirectory { get; set; }
 
-        [NotMapped]
         public bool? IsActive { get; set; }
+
+        public bool? ShowAllUnits { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }

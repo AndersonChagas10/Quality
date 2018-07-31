@@ -2,6 +2,7 @@
 using DTO.Helpers;
 using Helper;
 using SgqSystem.Secirity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -47,10 +48,11 @@ namespace SgqSystem.Controllers
                 pcc1b = pcc1b.Where(VCD => VCD.ParCompany_id == id);
             }
 
-            pcc1b = pcc1b.OrderByDescending(c => c.Data);
+            // pcc1b = pcc1b.OrderByDescending(c => c.Data);
 
             if (pcc1b.Count() > 0)
-                return View(pcc1b.ToList());
+                //return View(pcc1b.ToList());
+                return View(pcc1b.OrderByDescending(c => c.Data).ToList());
             else
                 return View(new System.Collections.Generic.List<VolumePcc1b>());
         }
@@ -92,7 +94,7 @@ namespace SgqSystem.Controllers
                 //Verifica se já existe uma coleta no mesmo dia
                 if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id).ToList().Count() == 0)
                 {
-
+                    pcc1b.AddDate = DateTime.Now;
                     db.VolumePcc1b.Add(pcc1b);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -123,7 +125,7 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name", pcc1b.ParLevel1_id);
-            ViewBag.UnidadeUsuario = new SelectList(db.ParCompany.Where(c => c.Id == pcc1b.ParCompany_id), "Id", "Name", pcc1b.ParCompany_id);
+            //ViewBag.UnidadeUsuario = new SelectList(db.ParCompany.Where(c => c.Id == pcc1b.ParCompany_id), "Id", "Name", pcc1b.ParCompany_id);
             return View(pcc1b);
         }
 
@@ -140,6 +142,7 @@ namespace SgqSystem.Controllers
             {
                 if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id).ToList().Count() == 0)
                 {
+                    pcc1b.AlterDate = DateTime.Now;
                     db.Entry(pcc1b).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -153,6 +156,7 @@ namespace SgqSystem.Controllers
                     {
                         using (var db2 = new SgqDbDevEntities())
                         {
+                            pcc1b.AlterDate = DateTime.Now;
                             db2.Entry(pcc1b).State = EntityState.Modified;
                             db2.SaveChanges();
                             return RedirectToAction("Index");

@@ -80,6 +80,12 @@ namespace SgqSystem.Mail
                 var emailContent = db.EmailContent.Find(emailId);
                 if (emailContent != null)
                 {
+
+                    if (string.IsNullOrEmpty(emailContent.To))
+                    {
+                        emailContent.To = "-";
+                    }
+
                     emailContent.SendStatus = "Erro: " + error.Substring(0, error.Length > 500 ? 500 : error.Length);
                     emailContent.AlterDate = DateTime.Now;
                     db.SaveChanges();
@@ -273,6 +279,16 @@ namespace SgqSystem.Mail
                         }
 
                     }
+                }
+                catch (DbEntityValidationException e)
+                {
+                    var erro = "";
+                    foreach (var error in e.EntityValidationErrors.FirstOrDefault().ValidationErrors)
+                    {
+                        erro += error.PropertyName + ": " + error.ErrorMessage + " ";
+                    }
+                    
+                    new CreateLog(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviation] --- {erro} ---" , e));
                 }
                 catch (Exception e)
                 {
