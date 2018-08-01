@@ -2092,6 +2092,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                 { whereDepartment }
                 { whereShift }            
                 { whereCriticalLevel }
+            AND R3.IsNotEvaluate = 0
             GROUP BY IND.Id
             		,IND.Name
             	--	,MON.Id
