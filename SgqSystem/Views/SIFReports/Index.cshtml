@@ -27,11 +27,11 @@
             <div class="col-xs-12">
                 <div class="portlet light bordered">
                     @*<div class="portlet-title tabbable-line">
-                        <div class="caption">
-                            <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
-                        </div>
-                    </div>*@
+                            <div class="caption">
+                                <i class="icon-share font-dark"></i>
+                                <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
+                            </div>
+                        </div>*@
                     <div class="portlet-body" hidden>
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
@@ -167,7 +167,7 @@
                             <div style="font-size:10px;">
                                 OBS - UTILIZAR PLANILHA AVULSA DE TRATAMENTO DE NÃO CONFORMIDADE (RGQ-00-GQC-126), QUANDO APLICÁVEL.
                             </div>
-                            <div class="height-fix avoid-break-page">
+                            <div class="">
                                 <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
                                     <tbody>
                                         <tr>
@@ -240,6 +240,7 @@
             formControl.showLevel1();
             //formControl.showShift();
             formControl.showUnit();
+            formControl.showTipoVisao();
 
             //$('#showLevel1 > div:nth-child(2)').hide();
             $('#showLevel1 > div:nth-child(3)').hide();
@@ -251,6 +252,10 @@
             });
 
             $('.portlet-body').hide();
+
+            $('#tipoVisao').trigger('change');
+
+            $('select').select2();
 
         });
 
@@ -269,12 +274,12 @@
                 //    renan.push({ Numero: (i + 1) , Esquerdo: 0, Direito: 0 })
                 //}
 
-                //Leo(renan);                
+                //Leo(renan);
             }
 
         };
 
-        function GeraRelatorio(obj) {            
+        function GeraRelatorio(obj) {
 
             $('.portlet-body').hide();
 
@@ -317,13 +322,42 @@
 
                     arr2.forEach(function (item) {
 
-                        table += `<tbody>";
+                        if (item.Sequestro == 1) {
+
+                            table += `<tbody>";
                                <tr>
-                                    <th `+ fontSize+`>`+ item.Numero + `</th>
-                                    <th `+ fontSize +`>`+ item.Esquerdo + `</th>
-                                    <th `+ fontSize +`>`+ item.Direito + `</th>
+                                    <th `+ fontSize + `>` + item.Numero + `</th>
+                                    <th style="background-color:black !important"></th>
+                                    <th style="background-color:black !important"></th>
                                 </tr>
                               </tbody>`;
+
+                        } else {
+
+                            if (item.Esquerdo != null && item.Direito != null)
+                            {
+
+                                table += `<tbody>";
+                                   <tr>
+                                        <th `+ fontSize + `>` + item.Numero + `</th>
+                                        <th `+ fontSize + `>` + item.Esquerdo + `</th>
+                                        <th `+ fontSize + `>` + item.Direito + `</th>
+                                    </tr>
+                                  </tbody>`;
+
+                            } else {
+
+                                table += `<tbody>";
+                                   <tr>
+                                        <th `+ fontSize + `>` + item.Numero + `</th>
+                                        <th `+ fontSize + `></th>
+                                        <th `+ fontSize + `></th>
+                                    </tr>
+                                  </tbody>`;
+
+                            }
+
+                        }
 
                     });
 
@@ -398,6 +432,8 @@
             );
 
             printGRT.Imprimir();
+
+            $('#divRenderPrint').remove();
         }
 
         function cleanData() {
