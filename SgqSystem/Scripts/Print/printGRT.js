@@ -241,11 +241,28 @@
     },
 
     Imprimir: function () {
+        var listaDeElementosNoBody = $('body').children();
+        $(listaDeElementosNoBody).each(function (i, o) {
+            if (!$(o).hasClass('hide')) {
+                $(o).addClass('hide printGRT')
+            }
+        });
+
         var printContents = document.getElementById(this.renderDivName).innerHTML;
-        var originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
+        $('body').append(printContents)
         window.print();
-        document.body.innerHTML = originalContents;
+
+        setTimeout(function () { 
+            $('body').children(':not(.hide)').remove();
+
+            $($('body').children('.hide.printGRT')).each(function (i, o) {
+                $(o).removeClass('hide')
+            });
+        }, 100);
+
+        //var originalContents = document.body.innerHTML;
+        //document.body.innerHTML = printContents;
+        //document.body.innerHTML = originalContents;
     }
 };
 
