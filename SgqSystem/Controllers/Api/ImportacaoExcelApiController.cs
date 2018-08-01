@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 //busca os  itens do formato - ok
-                var formatos = db.ImportFormatItem.Where(x => x.ImportFormat_Id == formatoId).ToList();             
+                var formatos = db.ImportFormatItem.Where(x => x.ImportFormat_Id == formatoId).ToList();
 
                 //cria o dicionario para formatar o arquivo 
                 Dictionary<string, string> dicionarioItem = new Dictionary<string, string>();
@@ -39,28 +39,28 @@ namespace SgqSystem.Controllers.Api
                 var divjeto = "";
                 //metodo para montar o divjeto
                 divjeto = MontaDivJeto(dados);
-               
+
                 //var dicionario = new Dictionary<string, string>();
 
                 //Metodo para criar um dicionario padrão
                 var dicionarioPadrao = CriaDicionarioPadrao();
 
                 //metodo para formatar o divjeto, e preencher com os dados padroes 
-                 var divjetoPreenchido = GetUrlDivjeto(divjeto, dicionarioItem, dicionarioPadrao);
+                var divjetoPreenchido = GetUrlDivjeto(divjeto, dicionarioItem, dicionarioPadrao);
 
                 //metodo para atribuir os valores do arquivo conforme o formato escolhido
-                List<string> error = new List<string>(); 
+                List<string> error = new List<string>();
                 var divjetoFinal = GetUrlDivjetoFinal(divjetoPreenchido, dicionarioItem, dados, ref error);
-                if(error.Count > 0)
+                if (error.Count > 0)
                 {
                     return BadRequest(String.Join("-", error.ToArray()));
                 }
 
                 foreach (var item in divjetoFinal)
-                {                                    
+                {
                     new SgqSystem.Services.SyncServices().InsertJson(item, "1", "1", false);
                 }
-                return Ok();
+                return Ok("Processado com sucesso");
             }
             catch (Exception e)
             {
@@ -237,18 +237,18 @@ namespace SgqSystem.Controllers.Api
         private List<string> GetUrlDivjetoFinal(string divjetoPreenchido, Dictionary<string, string> dicionarioItem, List<JObject> dados, ref List<string> error)
         {
             var listaDivJeto = new List<string>();
-        
+
             foreach (var item in dados)
             {
-                string expRegex = "{.*?}";            
+                string expRegex = "{.*?}";
                 Match m = Regex.Match(divjetoPreenchido, expRegex);
                 while (m.Success)
                 {
                     var value = m.Value.Replace("{", "").Replace("}", "");
 
-                    if (dicionarioItem.Any(i => i.Key == value))
+                    if (item[value] != null)
                     {
-                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, item[dicionarioItem[value]].ToString());
+                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, item[value].ToString());
                     }
                     else
                     {
@@ -271,8 +271,8 @@ namespace SgqSystem.Controllers.Api
                 var value = m.Value.Replace("{", "").Replace("}", "");
 
                 if (dicionarioItem.Any(i => i.Key == value))
-                { 
-                    divjeto = divjeto.Replace(m. Value, "{" + dicionarioItem[value] + "}");
+                {
+                    divjeto = divjeto.Replace(m.Value, dicionarioItem[value]);
                 }
                 else if (dicionarioPadrao.Any(i => i.Key == value))
                 {

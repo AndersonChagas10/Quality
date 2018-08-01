@@ -69,7 +69,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-xs-12 form-group">
-                    @using (Html.BeginForm("Importar", "ImportacaoExcel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("Importar", "ImportacaoExcel", FormMethod.Post, new { enctype = "multipart/form-data", @id= "carregarArquivo"}))
                 {
                     <div class="col-xs-12 form-group">
                         <h4> <label class="">Arquivo excel</label></h4>
@@ -140,34 +140,51 @@
     <script>
         var urlExcel = '@Html.Raw(@urlExcel)';
 
+        $("#carregarArquivo").submit(function (e) {
+            if ($('input[name="arquivo"]').val().length == 0) {
+                $("#ModalErro").html("<p>Selecione um arquivo para sua importação.</p>")
+                $("#ModalErro").show();
+                e.preventDefault();
+            }
+        });
+
         $("#salvar").on('click', function () {
 
             $("#ModalConfirmacao").modal('show');
 
+            $("#modalSalvar").off('click');
             $("#modalSalvar").on('click', function () {
-                $("#ModalConfirmacao").modal('hide');
-                var dadosPreenchidos = "";
-                if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
-                    dadosPreenchidos = PreencherDadosArquivo();
-                }
-                var formatoId = $("#formato").val();
-                var dados = JSON.stringify(dadosPreenchidos);
 
-                $.ajax({
-                    type: "Post",
-                    url: urlExcel + "?formatoId=" + formatoId,
-                    dataType: "json",
-                    contentType: "application/json",
-                    data: dados,
-                    success: function (retorno) {
-                        $("#ModalInformacao").modal('show');
-                    },
-                    error: function (retorno) {
-                        $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>")
-                        $("#ModalErro").show();
-                    },
-                });
-            })
+                if ($('#formato').val() > 0) {
+                    $("#ModalConfirmacao").modal('hide');
+                    var dadosPreenchidos = "";
+                    if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
+                        dadosPreenchidos = PreencherDadosArquivo();
+                    }
+                    var formatoId = $("#formato").val();
+                    var dados = JSON.stringify(dadosPreenchidos);
+
+                    $.ajax({
+                        type: "Post",
+                        url: urlExcel + "?formatoId=" + formatoId,
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: dados,
+                        success: function (retorno) {
+                            $("#ModalErro").hide();
+                            $("#ModalInformacao").modal('show');
+                        },
+                        error: function (retorno) {
+                            $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>")
+                            $("#ModalErro").show();
+                        },
+                    });
+                } else {
+                    $("#ModalConfirmacao").modal('hide');
+                    $("#ModalErro").html("<p>Selecione qual formato deseja considerar para sua importação.</p>")
+                    $("#ModalErro").show();
+                }
+            });
 
             function PreencherDadosArquivo() {
                 var lista = [];
