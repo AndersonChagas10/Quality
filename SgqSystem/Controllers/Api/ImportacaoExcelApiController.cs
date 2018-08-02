@@ -76,7 +76,7 @@ namespace SgqSystem.Controllers.Api
             dicionarioPadrao.Add("Indicador", "42");
             dicionarioPadrao.Add("Data da Coleta", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
             dicionarioPadrao.Add("Monitoramento", "306");
-            dicionarioPadrao.Add("Unidade", "CGR");
+            dicionarioPadrao.Add("Unidade", "11");
             dicionarioPadrao.Add("Horario de Inicio", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
             dicionarioPadrao.Add("Versão App", "2.0.50");
             dicionarioPadrao.Add("Empresa", "JBS");
@@ -140,7 +140,7 @@ namespace SgqSystem.Controllers.Api
             collectionJson += "<level03>";
             collectionJson += "{Tarefa}"; //level3 1
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "{Data}";//collectionDate; //level3 2
+            collectionJson += "{Data da Coleta}";//collectionDate; //level3 2
             collectionJson += ","; //SEPARADOR LEVEL3
             collectionJson += "0"; //level3 2???
             collectionJson += ","; //SEPARADOR LEVEL3
@@ -248,7 +248,17 @@ namespace SgqSystem.Controllers.Api
 
                     if (item[value] != null)
                     {
-                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, item[value].ToString());
+                        var valor = item[value].ToString();
+
+                        if (dicionarioItem.FirstOrDefault(x => x.Key.Equals("Data da Coleta") || x.Key.Equals("Horario de Inicio")).Value == m.Value)
+                        {
+                            DateTime dataFormatada;
+                            DateTime.TryParseExact(valor, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataFormatada);
+                            if (dataFormatada > DateTime.MinValue)
+                                valor = dataFormatada.ToString("MM/dd/yyyy HH:mm:ss");
+                        }
+
+                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, valor);
                     }
                     else
                     {
