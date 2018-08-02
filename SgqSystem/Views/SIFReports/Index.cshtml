@@ -25,14 +25,17 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div class="col-xs-12">
-                <div class="portlet light bordered">
+
+                <div id="loader"></div>
+
+                <div class="portlet light bordered" hidden>
                     @*<div class="portlet-title tabbable-line">
                             <div class="caption">
                                 <i class="icon-share font-dark"></i>
                                 <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
                             </div>
                         </div>*@
-                    <div class="portlet-body" hidden>
+                    <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
@@ -104,11 +107,11 @@
 
                             <div style="clear:both"></div>
 
-                            <div style="display: table; border: 2px solid; font-size:10px; width:100%">
-                                <div style="background-color: #a2a2a2;width: 60%;float: left;padding: 10px; border-right: 2px solid;">
+                            <div style="display: table; border: 2px solid; font-size:10px; width:100%; height: 60px;">
+                                <div style="background-color: #a2a2a2;width: 60%;float: left;padding: 10px; border-right: 2px solid; height:100%;">
                                     OBS: O registro deve conter o horário e as assinaturas ou vistos dos funcionários responsáveis tanto no início quanto no término das atividades de monitoramento efetuadas.
                                 </div>
-                                <div style="width:40%;float:right;padding: 10px;">
+                                <div style="width:40%;float:right;padding: 10px; height:100%;">
                                     <div id="horaFimMonitoramento"></div>
                                     <div id="">Visto: _____________</div>
                                 </div>
@@ -125,12 +128,17 @@
 
                                 <hr />
 
-                                Número das carcaças enviadas para a câmara de seqüestro: __________________________________________________________________________
+                                <div>
+                                    Número das carcaças enviadas para a câmara de seqüestro: <strong id="nSequestro"></strong>
+                                </div>
 
                                 <hr />
 
-                                Número das carcaças destinadas para a graxaria:____________________________________________________________________________________
+                                <div>
+                                    Número das carcaças destinadas para a graxaria:____________________________________________________________________________________
+                                </div>
                             </div>
+
                             <hr />
                             <br />
                             <table style="font-size:10px;" border="2">
@@ -236,6 +244,10 @@
 
             $('#simpleCallendar input[type="text"]').val(start.format());
 
+            $('#unitId').children('option:first').remove();
+            $('#level1Id').children('option:first').remove();
+            $('#level2Id').children('option:first').remove();
+
             formControl.showSimpleDate();
             formControl.showLevel1();
             //formControl.showShift();
@@ -251,7 +263,7 @@
 
             });
 
-            $('.portlet-body').hide();
+            $('.portlet').hide();
 
             $('#tipoVisao').trigger('change');
 
@@ -266,7 +278,9 @@
 
                 $btn.button('loading');
 
-                EasyAjax(urlGet, enviar, GeraRelatorio, "load", toggle);
+                $('.portlet').hide();
+
+                EasyAjax(urlGet, enviar, GeraRelatorio, "loader", toggle);
 
                 //var renan = [];
 
@@ -281,7 +295,7 @@
 
         function GeraRelatorio(obj) {
 
-            $('.portlet-body').hide();
+            $('.portlet').hide();
 
             if (obj.Dados.length <= 0) {
 
@@ -289,7 +303,7 @@
 
             } else {
 
-                $('.portlet-body').show();
+                $('.portlet').show();
 
                 cleanData();
 
@@ -298,6 +312,8 @@
                 siglaUnidade = obj.Dados[0].Initials;
 
                 var table = "";
+
+                var nSequestro = 0;
 
                 var fontSize = 'style="font-size: 8px !important;"';
 
@@ -323,6 +339,8 @@
                     arr2.forEach(function (item) {
 
                         if (item.Sequestro == 1) {
+
+                            nSequestro++;
 
                             table += `<tbody>";
                                <tr>
@@ -366,6 +384,8 @@
                     $('#tabela' + (i + 1)).append(table);
 
                 }
+
+                $("#nSequestro").append(nSequestro);
             }
         }
 
@@ -377,21 +397,17 @@
                 GuardJs.exibirMensagemAlerta(Resources("select_the_period_first"));
                 return false;
 
-            } else if (enviar['level1Id'] == null || enviar['level1Id'] == undefined || enviar['level1Id'] == "" || enviar['level1Id'] <= 0 || enviar['level1Id'] == NaN) {
+            } else if (enviar['level1Id'] == null || enviar['level1Id'] == undefined || enviar['level1Id'] == "" || enviar['level1Id'] <= 0 || isNaN(enviar['level1Id'])) {
                 GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
                 return false;
 
-            } else if (enviar['level2Id'] == null || enviar['level2Id'] == undefined || enviar['level2Id'] == "" || enviar['level2Id'] <= 0 || enviar['level2Id'] == NaN) {
+            } else if (enviar['level2Id'] == null || enviar['level2Id'] == undefined || enviar['level2Id'] == "" || enviar['level2Id'] <= 0 || isNaN(enviar['level2Id'])) {
                 GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
                 return false;
 
             } else if (enviar['unitId'] == null || enviar['unitId'] == undefined || enviar['unitId'] == "" || enviar['unitId'] <= 0) {
                 GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
                 return false;
-
-            //} else if (enviar['shift'] == null || enviar['shift'] == undefined || enviar['shift'] == "" || enviar['shift'] <= 0) {
-            //    GuardJs.exibirMensagemAlerta(Resources("select_the_shift"));
-            //    return false;
 
             }else {
                 return true;
@@ -441,6 +457,7 @@
             $('#horaInicioMonitoramento').empty();
             $('#dianteiroOuTraseiro').empty();
             $('#horaFimMonitoramento').empty();
+            $("#nSequestro").empty();
             $('#tabela1').empty();
             $('#tabela2').empty();
             $('#tabela3').empty();
