@@ -10,8 +10,10 @@
     {
         public int Id { get; set; }
 
+        
         public int ParLevel1_Id { get; set; }
 
+    
         public int ParModule_Id { get; set; }
 
         public decimal Points { get; set; }

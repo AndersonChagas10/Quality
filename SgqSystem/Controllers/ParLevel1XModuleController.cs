@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dominio;
+using DTO.Helpers;
 
 namespace SgqSystem.Controllers
 {
@@ -55,6 +56,7 @@ namespace SgqSystem.Controllers
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;
+            ValidaIndicadoresxModulos(parLevel1XModule);
             if (ModelState.IsValid)
             {
                 db.ParLevel1XModule.Add(parLevel1XModule);
@@ -92,6 +94,8 @@ namespace SgqSystem.Controllers
         public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AlterDate = DateTime.Now;
+            
+
             if (ModelState.IsValid)
             {
                 db.Entry(parLevel1XModule).State = EntityState.Modified;
@@ -134,6 +138,16 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidaIndicadoresxModulos(ParLevel1XModule parLevel1XModule)
+        {
+            //parLevel1XModule.ParLevel1 == null && 
+            if (parLevel1XModule.ParLevel1_Id == 0)
+                ModelState.AddModelError("ParLevel1_Id", Guard.MesangemModelError("Indicador", true));
+
+            if (parLevel1XModule.ParModule_Id == 0)
+                ModelState.AddModelError("ParModule_Id", Guard.MesangemModelError("Modulos", true));
         }
     }
 }
