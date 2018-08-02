@@ -2145,6 +2145,21 @@
   <data name="per_week" xml:space="preserve">
     <value>Per Week</value>
   </data>
+  <data name="parlevel1xmodules" xml:space="preserve">
+    <value>Level1 x Modules</value>
+  </data>
+  <data name="effective_date_end" xml:space="preserve">
+    <value>Effective date end</value>
+  </data>
+  <data name="effective_date_start" xml:space="preserve">
+    <value>Effective date start</value>
+  </data>
+  <data name="parlevel1" xml:space="preserve">
+    <value>ParLevel 1</value>
+  </data>
+  <data name="parModule" xml:space="preserve">
+    <value>ParModule</value>
+  </data>
   <data name="import_format_itens" xml:space="preserve">
     <value>Import format itens</value>
   </data>
