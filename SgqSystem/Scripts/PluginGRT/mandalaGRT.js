@@ -90,6 +90,7 @@
         $('#' + this.idElemento).empty();
         $('#' + this.idElemento).css('position', 'fixed');
         $('#' + this.idElemento).css('z-index', '9999999');
+        $('#' + this.idElemento).css('height', '0px');
         $('#' + this.idElemento).css('margin', this.margemElemento);
         $(this.posicaoNaTela.split(' ')).each(function (i, o) {
             $('#' + config.idElemento).css(o, '0');
@@ -99,7 +100,7 @@
         //Elemento de centro
         if (this.elementoDeCentro.length > 0) {
             //Alinha o elemento no centro
-            this.elementoDeCentro = this.SubstituirVariaveis(this.elementoDeCentro, { Style: 'width:' + (this.margemDoCentro) + 'px;height:' + (this.margemDoCentro) + 'px;position:absolute;display:block;margin-left:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;margin-top:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;transform:translate3d(0px, 0px, 0)' });
+            this.elementoDeCentro = this.SubstituirVariaveis(this.elementoDeCentro, { Style: 'width:' + (this.margemDoCentro) + 'px;height:' + (this.margemDoCentro) + 'px;position:absolute;display:block;height:0px;margin-left:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;margin-top:-' + (this.margemDoCentro / 2 - raioElemento) + 'px;transform:translate3d(0px, 0px, 0)' });
             $('#' + this.idElemento).append(this.elementoDeCentro);
         }
         this.RenderizaElemento(this.listaDeDados, this.margemDoCentro);
