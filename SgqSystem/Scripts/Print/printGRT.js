@@ -250,7 +250,10 @@
 
         var printContents = document.getElementById(this.renderDivName).innerHTML;
         $('body').append(printContents)
-        window.print();
+
+        setTimeout(function () { 
+            window.print();
+        }, 1);
 
         setTimeout(function () { 
             $('body').children(':not(.hide)').remove();
@@ -258,7 +261,7 @@
             $($('body').children('.hide.printGRT')).each(function (i, o) {
                 $(o).removeClass('hide')
             });
-        }, 100);
+        }, 3);
 
         //var originalContents = document.body.innerHTML;
         //document.body.innerHTML = printContents;
