@@ -16,6 +16,10 @@
         @*<button class="btn btn-success" id="refreshStatus">Atualizar</button>*@
         <button class="btn btn-info" id="checkAll">@Resource.select_all</button>
         <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
+        <br />
+        <br />
+        @*Colocar aqui a mensagem obrigatório*@
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         @if (ViewBag.UnidadesUsuario != null)
         {
@@ -122,34 +126,47 @@
             };
 
             $('#updateTablets').on('click', function () {
-                $.LoadingOverlay("show");
 
                 var listId = [];
+
                 $("input:checkbox[name=unitId]:checked").each(function () {
                     listId.push($(this).val());
                 });
 
-                var data = JSON.stringify({ 'ListUnits': listId });
+                if (listId.length <= 0) {
 
-                $.ajax(
-                    {
-                        type: "POST",
-                        url: urlUpdateTablets,
-                        data: data,
-                        dataType: "JSON",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            $.LoadingOverlay("hide");
-                        }
-                    });
+                    GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
 
-                $('#updateTablets').LoadingOverlay("show");
+                } else {
 
-                setTimeout(function () {
-                    $('#updateTablets').LoadingOverlay("hide");
-                }, 8000);
+                    GuardJs.esconderMensagem();
 
-                $('.monitor-get-tela input:checkbox').prop('checked', false);
+                    $.LoadingOverlay("show");
+
+                    var data = JSON.stringify({ 'ListUnits': listId });
+
+                    $.ajax(
+                        {
+                            type: "POST",
+                            url: urlUpdateTablets,
+                            data: data,
+                            dataType: "JSON",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (response) {
+                                $.LoadingOverlay("hide");
+                            }
+                        });
+
+                    $('#updateTablets').LoadingOverlay("show");
+
+                    setTimeout(function () {
+                        $('#updateTablets').LoadingOverlay("hide");
+                    }, 8000);
+
+                    $('.monitor-get-tela input:checkbox').prop('checked', false);
+
+                }
+
             });
 
             var selectedAll = false;
@@ -172,5 +189,6 @@
                 $('#checkAll').trigger('click');
             }
         }
+
     </script>
 }
