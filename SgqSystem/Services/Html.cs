@@ -664,8 +664,8 @@ namespace SgqSystem.Services
                                     classe: "level3 row" + classe,
                                     tags: tags,
                                     outerhtml: level3 +
-                                                counters +
                                                 labels +
+                                                counters +
                                                 buttons
                                 );
 
