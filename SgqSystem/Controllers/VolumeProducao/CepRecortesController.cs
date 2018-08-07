@@ -164,6 +164,11 @@ namespace SgqSystem.Controllers
 
             if (cepRecortes.TamanhoAmostra == null)
                 ModelState.AddModelError("TamanhoAmostra", "O campo \"Tamanho de Cada Amostra\" precisa ser preenchido.");
+
+            if (cepRecortes.Id > 0 && cepRecortes.Data != null && cepRecortes.Data?.Date < DateTime.Now.Date)
+            {
+                ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            }
         }
 
         private void ReturnError()
@@ -183,6 +188,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (cepRecortes.Data != null && cepRecortes.Data?.Date < DateTime.Now.Date)
+            {
+                return RedirectToAction("Index");
+            }
+
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 23), "Id", "Name", cepRecortes.ParLevel1_id);
             return View(cepRecortes);

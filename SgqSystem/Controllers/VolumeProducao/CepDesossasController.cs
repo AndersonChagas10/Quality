@@ -153,6 +153,11 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.Amostras == null)
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
+
+            if (cepDesossa.Id > 0 && cepDesossa.Data != null && cepDesossa.Data?.Date < DateTime.Now.Date)
+            {
+                ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            }
         }
 
         private void ReturnError()
@@ -172,6 +177,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (cepDesossa.Data != null && cepDesossa.Data?.Date < DateTime.Now.Date)
+            {
+                return RedirectToAction("Index");
+            }
+
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
