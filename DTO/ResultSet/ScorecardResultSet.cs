@@ -151,10 +151,10 @@ public class ScorecardResultSet
            "\n DECLARE @ParCompany_Id INT = " + unidadeId + "                                                                                                                                                                                                                                     " +
            "\n DECLARE @DATAINICIAL DATETIME = '" + dtInicio.ToString("yyyyMMdd") + " 00:00'                                                                                                                                                                                                                    " +
            "\n DECLARE @DATAFINAL   DATETIME = '" + dtFim.ToString("yyyyMMdd") + "  23:59:59'                                                                                                                                                                                                                    " +
-
+           "\n DECLARE @ParModule_Id INT = 1" + // + unidadeId + "  
 
                // Alteração
-               "\n CREATE TABLE #AMOSTRATIPO4 ( " +
+        "\n CREATE TABLE #AMOSTRATIPO4 ( " +
 
                 "\n UNIDADE INT NULL, " +
                 "\n INDICADOR INT NULL, " +
@@ -185,11 +185,12 @@ public class ScorecardResultSet
 
                 "\n     INNER JOIN ParCompany C (nolock)  " +
                 "\n     ON C.Id = C2.UnitId " +
+                "\n     INNER JOIN ParLevel1XModule P1M with (nolock) on p1m.parlevel1_id = L1.id  and p1m.parmodule_id = @ParModule_Id and p1m.isActive = 1 and p1m.EffectiveDateStart >= @DATAINICIAL" +
                 "\n     where C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n     AND C2.UnitId = @ParCompany_Id and C2.NotEvaluatedIs = 0 " +
                 "\n     and C2.Duplicated = 0 " +
                 "\n     and L1.ParConsolidationType_Id = 4 " +
-                "\n     group by C.Id, ParLevel1_Id" +
+                "\n     group by C.Id, C2.ParLevel1_Id" +
            /*
            "\n ) TAB " +
            "\n GROUP BY UNIDADE, INDICADOR " +
@@ -327,7 +328,7 @@ public class ScorecardResultSet
            "\n              LEFT JOIN Result_Level3 C3   (nolock)                                                                                                                                                                                                                          " +
            "\n              ON C3.CollectionLevel2_Id = C2.Id                                                                                                                                                                                                                    " +
            "\n              WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                                                                                           " +
-           "\n              AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1)                                                                                                                                                                             " +
+           "\n              AND C2.ParLevel1_Id = (SELECT top 1 p1.id FROM Parlevel1 p1 with (nolock) INNER JOIN ParLevel1XModule P1M with (nolock) on p1m.parlevel1_id = p1.id  WHERE Hashkey = 1 AND ISNULL(ShowScorecard, 1) = 1 and p1m.parmodule_id = @ParModule_Id  and p1m.EffectiveDateStart >= @DATAINICIAL)                                                                                                                                                                              " +
            "\n              AND C2.UnitId = @ParCompany_Id                                                                                                                                                                                                                       " +
            "\n              AND IsNotEvaluate = 1                                                                                                                                                                                                                                " +
            "\n              GROUP BY C2.ID                                                                                                                                                                                                                                       " +
@@ -728,7 +729,7 @@ public class ScorecardResultSet
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n FROM     (SELECT * FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                             " +
+           "\n FROM     (SELECT p1.* FROM ParLevel1 p1 with (nolock) INNER JOIN ParLevel1XModule P1M with (nolock) on p1m.parlevel1_id = p1.id  WHERE ISNULL(p1.ShowScorecard, 1) = 1 and p1m.parmodule_id = @ParModule_Id and p1m.EffectiveDateStart >= @DATAINICIAL ) L1                                                                                                                                                                                                                                             " +
            "\n LEFT JOIN ConsolidationLevel1 CL1   (nolock)                                                                                                                                                                                                                                  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON L1.Id = CL1.ParLevel1_Id                                                                                                                                                                                                                                  " +
@@ -879,7 +880,7 @@ public class ScorecardResultSet
            "\n , 0  AS PontosAtingidos                                                                                                                                                                                                                                             " +
            "\n , 0  AS Scorecard                                                                                                                                                                                                                                                   " +
            "\n , ST.Name AS TipoScore                                                                                                                                                                                                                                              " +
-           "\n FROM (SELECT* FROM ParLevel1(nolock) WHERE ISNULL(ShowScorecard, 1) = 1) L1                                                                                                                                                                                                                                                " +
+           "\n FROM (SELECT p1.* FROM ParLevel1 p1 with (nolock) INNER JOIN ParLevel1XModule P1M with (nolock) on p1m.parlevel1_id = p1.id  WHERE ISNULL(ShowScorecard, 1) = 1 and p1m.parmodule_id = @ParModule_Id and p1m.EffectiveDateStart >= @DATAINICIAL) L1                                                                                                                                                                                                                                                " +
            "\n LEFT JOIN ParScoreType ST    (nolock)                                                                                                                                                                                                                                         " +
            "\n ON ST.Id = L1.ParScoreType_Id                                                                                                                                                                                                                                       " +
            "\n LEFT JOIN ParCompany C    (nolock)                                                                                                                                                                                                                                            " +

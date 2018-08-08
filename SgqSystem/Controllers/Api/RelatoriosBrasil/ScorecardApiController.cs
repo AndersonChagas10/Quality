@@ -61,9 +61,17 @@ namespace SgqSystem.Controllers.Api
 
                     foreach (var r in _list.ToList())
                     {
-                        pontosDisputados = r.PontosAtingidosIndicador.Value;
-
-                        pontosAtingidos = r.PontosAtingidos.Value;
+                        try
+                        {
+                            pontosDisputados = r.PontosAtingidosIndicador.Value;
+                        }
+                        catch { }
+                        try
+                        {
+                            pontosAtingidos = r.PontosAtingidos.Value;
+                        }
+                        catch { }
+                    
                     }
                 }
 
