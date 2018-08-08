@@ -10,6 +10,7 @@ namespace Dominio
         public SgqDbDevEntities()
             : base("name=DefaultConnection")
         {
+            this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
