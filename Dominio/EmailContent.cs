@@ -24,7 +24,7 @@ namespace Dominio
         [Column(TypeName = "datetime2")]
         public DateTime? AlterDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string To { get; set; }
 
         public string Body { get; set; }

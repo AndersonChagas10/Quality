@@ -21,13 +21,13 @@ namespace Dominio
 
         public int ParLevel3_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(200)]
         public string ParLevel3_Name { get; set; }
 
         public int ParLevel3InputType_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(200)]
         public string ParLevel3InputType_Name { get; set; }
 

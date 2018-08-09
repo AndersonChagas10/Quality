@@ -20,11 +20,11 @@ namespace Dominio
 
         public int Operacao { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public string Nome { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(20)]
         public string Amostragem { get; set; }
 

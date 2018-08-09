@@ -18,7 +18,7 @@ namespace Dominio
 
         public int Avaliacao { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(10)]
         public string Acesso { get; set; }
 

@@ -42,7 +42,7 @@ namespace Dominio
         public string Level02HeaderJson { get; set; }
 
         [Column(TypeName = "text")]
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Level03ResultJSon { get; set; }
 
         [Column(TypeName = "text")]
@@ -73,7 +73,7 @@ namespace Dominio
         [Column(TypeName = "datetime2")]
         public DateTime? AlterDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Key { get; set; }
 
         public string TTP { get; set; }

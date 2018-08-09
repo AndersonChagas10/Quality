@@ -21,11 +21,11 @@ namespace Dominio
 
         public int ParClusterGroup_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         public int? ParClusterParent_Id { get; set; }

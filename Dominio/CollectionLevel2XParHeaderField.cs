@@ -14,12 +14,12 @@ namespace Dominio
 
         public int ParHeaderField_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string ParHeaderField_Name { get; set; }
 
         public int ParFieldType_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Value { get; set; }
 
         public int? Evaluation { get; set; }

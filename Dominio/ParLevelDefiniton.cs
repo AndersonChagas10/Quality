@@ -25,7 +25,7 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(150)]
         public string Name { get; set; }
 

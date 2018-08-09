@@ -12,7 +12,7 @@ namespace Dominio
 
         public int Unidade { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public string Nome { get; set; }
 

@@ -32,11 +32,11 @@ namespace Dominio
 
         public int ParDepartment_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         public bool IsEmptyLevel3 { get; set; }

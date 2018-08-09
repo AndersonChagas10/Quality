@@ -21,7 +21,7 @@ namespace Dominio
 
         public int iBanda { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(30)]
         public string cIdentificadorTipificacao { get; set; }
 
