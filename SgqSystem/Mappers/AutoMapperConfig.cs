@@ -24,6 +24,8 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParCompanyClusterProfile>();
                 x.AddProfile<ParGoalMapperProfile>();
                 x.AddProfile<ParClusterXModuleMapperProfile>();
+                x.AddProfile<ParModuleMapperProfile>();
+
                 /*
                  * Par Level1 Mapping
                  */
