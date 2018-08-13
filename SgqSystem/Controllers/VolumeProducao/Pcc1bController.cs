@@ -123,6 +123,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
+            {
+                return RedirectToAction("Index");
+            }
+
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name", pcc1b.ParLevel1_id);
             ViewBag.UnidadeUsuario = new SelectList(db.ParCompany.Where(c => c.Id == pcc1b.ParCompany_id), "Id", "Name", pcc1b.ParCompany_id);
@@ -188,6 +194,11 @@ namespace SgqSystem.Controllers
 
             if (pcc1b.VolumeAnimais == null)
                 ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
+
+            if (pcc1b.Id > 0 && pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
+            {
+                ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            }
         }
 
         private void ReturnError()

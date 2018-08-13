@@ -145,6 +145,11 @@ namespace SgqSystem.Controllers
 
             if (vacuoGRD.Amostras == null)
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
+
+            if (vacuoGRD.Id > 0 && vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
+            {
+                ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            }
         }
 
         private void ReturnError()
@@ -164,6 +169,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
+            {
+                return RedirectToAction("Index");
+            }
+
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
