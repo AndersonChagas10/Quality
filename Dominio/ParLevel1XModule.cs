@@ -16,7 +16,7 @@
     
         public int ParModule_Id { get; set; }
 
-        public decimal Points { get; set; }
+        //public decimal Points { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime AddDate { get; set; }
