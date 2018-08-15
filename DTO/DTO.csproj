@@ -103,6 +103,7 @@
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
     <Compile Include="DTO\DefectDTO.cs" />
     <Compile Include="DTO\ItemMenuDTO.cs" />
+    <Compile Include="DTO\Params\ParModuleDTO.cs" />
     <Compile Include="DTO\ParClusterXModulesDTO.cs" />
     <Compile Include="DTO\RecravacaoSugestaoDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3EvaluationSampleDTO.cs" />

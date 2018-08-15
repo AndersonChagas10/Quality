@@ -1,0 +1,251 @@
+-- Leo (Adicionar estrutura Recravacao) 
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180813_1200_TabelasRecravacao',GetDate())
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	drop table ParLevel3Value_Outer;
+go
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoLataJson' AND xtype='U')
+	drop table RecravacaoLataJson;
+go
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoJson' AND xtype='U')
+	drop table RecravacaoJson;
+go
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoSugestao' AND xtype='U')
+	drop table RecravacaoSugestao;
+go
+
+/****** Object:  Table [dbo].[RecravacaoSugestao]    Script Date: 06/08/2018 11:09:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoSugestao' AND xtype='U')
+	CREATE TABLE [dbo].[RecravacaoSugestao](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[Text] [text] NOT NULL,
+	PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
+
+/****** Object:  Table [dbo].[RecravacaoLataJson]    Script Date: 06/08/2018 11:11:04 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoLataJson' AND xtype='U')
+	CREATE TABLE [dbo].[RecravacaoLataJson](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[RecravacaoJson_Id] [int] NOT NULL,
+		[ObjectRecravacaoJson] [nvarchar](max) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+	 CONSTRAINT [Pk_RecravacaoLataJson] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+/****** Object:  Table [dbo].[RecravacaoJson]    Script Date: 06/08/2018 11:11:18 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoJson' AND xtype='U')
+	CREATE TABLE [dbo].[RecravacaoJson](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[UserSgqId] [int] NOT NULL,
+		[ParCompany_Id] [int] NOT NULL,
+		[Linha_Id] [int] NOT NULL,
+		[ObjectRecravacaoJson] [nvarchar](max) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NULL,
+		[isValidated] [bit] NULL,
+		[ValidateLockDate] [datetime2](7) NULL,
+		[ParLevel1_Id] [int] NULL,
+		[SalvoParaInserirNovaColeta] [int] NULL,
+	 CONSTRAINT [Pk_RecravacaoJson] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
+-------------------------------------------------
+
+/****** Object:  Table [dbo].[ParLevel3Value_Outer]    Script Date: 06/08/2018 11:59:18 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	CREATE TABLE [dbo].[ParLevel3Value_Outer](
+		[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NOT NULL,
+		[ParLevel3_Id] [int] NOT NULL,
+		[ParLevel3_Name] [nvarchar](200) NOT NULL,
+		[ParLevel3InputType_Id] [int] NOT NULL,
+		[ParLevel3InputType_Name] [nvarchar](200) NOT NULL,
+		[ParCompany_Id] [int] NULL,
+		[ParCompany_Name] [nvarchar](200) NULL,
+		[ParMeasurementUnit_Id] [int] NULL,
+		[ParMeasurementUnit_Name] [nvarchar](200) NULL,
+		[OuterEmpresa_Id] [int] NULL,
+		[OuterEmpresa_Text] [nvarchar](200) NULL,
+		[OuterLevel3_Id] [int] NULL,
+		[OuterLevel3_Text] [nvarchar](200) NULL,
+		[OuterLevel3Value_Id] [int] NULL,
+		[OuterLevel3Value_Text] [nvarchar](200) NULL,
+		[OuterLevel3ValueIntervalMaxValue] [int] NULL,
+		[OuterLevel3ValueIntervalMinValue] [int] NULL,
+		[Operator] [nvarchar](200) NULL,
+		[Order] [int] NULL,
+		[UnidadeMedida_Id] [int] NULL,
+		[UnidadeMedidaText] [nvarchar](200) NULL,
+		[AceitavelEntreText] [nvarchar](200) NULL,
+		[AceitavelEntre_Id] [int] NULL,
+		[LimInferior] [decimal](18, 5) NULL,
+		[LimSuperior] [decimal](18, 5) NULL
+	) 
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoJson' AND xtype='U')
+	ALTER TABLE [dbo].[RecravacaoJson] ADD  DEFAULT (getdate()) FOR [AddDate]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoJson' AND xtype='U')
+	ALTER TABLE [dbo].[RecravacaoJson] ADD  DEFAULT ((1)) FOR [IsActive]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoJson' AND xtype='U')
+	ALTER TABLE [dbo].[RecravacaoJson] ADD  DEFAULT ((0)) FOR [isValidated]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoJson' AND xtype='U')
+	ALTER TABLE [dbo].[RecravacaoJson] ADD  DEFAULT (NULL) FOR [ValidateLockDate]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoLataJson' AND xtype='U')
+	ALTER TABLE [dbo].[RecravacaoLataJson] ADD  DEFAULT (getdate()) FOR [AddDate]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='RecravacaoLataJson' AND xtype='U')
+	ALTER TABLE [dbo].[RecravacaoLataJson]  WITH CHECK ADD FOREIGN KEY([RecravacaoJson_Id])
+	REFERENCES [dbo].[RecravacaoJson] ([Id])
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [AlterDate]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [ParCompany_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [ParCompany_Name]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [ParMeasurementUnit_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [ParMeasurementUnit_Name]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterEmpresa_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterEmpresa_Text]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterLevel3_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterLevel3_Text]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterLevel3Value_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterLevel3Value_Text]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterLevel3ValueIntervalMaxValue]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [OuterLevel3ValueIntervalMinValue]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [Operator]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [Order]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [UnidadeMedida_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [UnidadeMedidaText]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [AceitavelEntreText]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [AceitavelEntre_Id]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [LimInferior]
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3Value_Outer' AND xtype='U')
+	ALTER TABLE [dbo].[ParLevel3Value_Outer] ADD  DEFAULT (NULL) FOR [LimSuperior]
+GO
+
+
+
+-------------------------------------------------
+
+
+insert into ParLevel3InputType
+select 99, 'Calculado por outro', 'Testes', getdate(), null, 1 ,null

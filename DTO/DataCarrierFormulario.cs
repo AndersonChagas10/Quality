@@ -83,6 +83,8 @@ namespace DTO
         public int unitId { get; set; }
         public string unitName { get; set; }
 
+        public int ModuloId { get; set; }
+
         public int auditorId { get; set; }
         public string auditorName { get; set; }
 
