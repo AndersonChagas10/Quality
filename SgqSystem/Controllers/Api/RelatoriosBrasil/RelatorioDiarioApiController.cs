@@ -406,7 +406,20 @@ FROM (SELECT
 				END) THEN 1
 			ELSE 0
 		END RELATORIO_DIARIO
-	FROM (SELECT
+	FROM (
+	SELECT
+			 level1_Id
+		   ,IsRuleConformity
+		   ,Level1Name
+		   ,Unidade_Id
+		   ,Unidade
+		   ,SUM(Av) AS Av
+		   ,SUM(AvSemPeso) AS AvSemPeso
+		   ,SUM(NC) AS NC
+		   ,SUM(NCSemPeso) AS NCSemPeso
+		   ,MAX(Meta) AS Meta
+	 FROM (		
+		SELECT
 			IND.Id AS level1_Id
 		   ,IND.IsRuleConformity
 		   ,IND.Name AS Level1Name
@@ -489,6 +502,14 @@ FROM (SELECT
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		AND CL1.UnitId = @UNIDADE
         { whereCriticalLevel }
+
+        ) AGRUPAMENTO
+	GROUP BY 
+			level1_Id
+		   ,IsRuleConformity
+		   ,Level1Name
+		   ,Unidade_Id
+		   ,Unidade
         ) S1) S2
 WHERE RELATORIO_DIARIO = 1
 ORDER BY 5 DESC
@@ -602,7 +623,8 @@ SELECT
    ,NcSemPeso AS NC
    ,AvSemPeso AS Av
    ,Data AS _Data
-FROM (SELECT
+	FROM (
+		SELECT
 		*
 	   ,CASE
 			WHEN AV IS NULL OR
@@ -620,7 +642,21 @@ FROM (SELECT
 				END) THEN 1
 			ELSE 0
 		END RELATORIO_DIARIO
-	FROM (SELECT
+	FROM (	SELECT
+			 level1_Id
+		   ,IsRuleConformity
+		   ,Level1Name
+		   ,Level2Name
+		   ,Unidade_Id
+		   ,Unidade
+		   ,Data
+		   ,SUM(Av) AS Av
+		   ,SUM(AvSemPeso) AS AvSemPeso
+		   ,SUM(NC) AS NC
+		   ,SUM(NCSemPeso) AS NCSemPeso
+		   ,MAX(Meta) AS Meta
+	 FROM (	
+          SELECT
 			NOMES.A1 AS level1_Id
 			--,IND.Id AS level1_Id  
 		   ,NOMES.A2 AS Level1Name
@@ -740,7 +776,18 @@ FROM (SELECT
 			ON 1 = 1
 			AND (NOMES.A1 = CL1.ParLevel1_Id
 			AND NOMES.A4 = UNI.ID)
-			OR (IND.ID IS NULL)) S1) S2
+			OR (IND.ID IS NULL)
+			        
+        ) AGRUPAMENTO
+	GROUP BY 
+			level1_Id
+		   ,IsRuleConformity
+		   ,Level1Name
+		   ,Unidade_Id
+		   ,Unidade
+		   ,Level2Name
+		   ,Data 
+) S1) S2
 WHERE (RELATORIO_DIARIO = 1
 OR (RELATORIO_DIARIO = 0
 AND AV = 0))
