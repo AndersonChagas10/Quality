@@ -28,7 +28,7 @@
 
         public DateTime? EffectiveDateStart { get; set; }
 
-        public DateTime? EffectiveDateEnd { get; set; }
+        //public DateTime? EffectiveDateEnd { get; set; }
 
         [ForeignKey("ParModule_Id")]
         public virtual ParModule ParModule { get; set; }
