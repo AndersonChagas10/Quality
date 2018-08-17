@@ -52,11 +52,17 @@ public class ApontamentosDiariosResultSet
         var dtInit = form._dataInicio.ToString("yyyyMMdd");
         var dtF = form._dataFim.ToString("yyyyMMdd");
 
+        var sqlTurno = "";
         var sqlUnidade = "";
         var sqlLevel1 = "";
         var sqlLevel2 = "";
         var sqlLevel3 = "";
         var formatDate = "";
+
+        if (form.shift > 0)
+        {
+            sqlTurno = "\n AND [Shift] = " + form.shift;
+        }
 
         if (form.unitId > 0)
         {
@@ -111,6 +117,7 @@ public class ApontamentosDiariosResultSet
                     FROM collectionlevel2 CL2
                         WHERE 1=1
                          AND CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
+                         { sqlTurno } 
                          { sqlUnidade } 
                          { sqlLevel1 } 
                          { sqlLevel2 }
@@ -208,7 +215,6 @@ public class ApontamentosDiariosResultSet
 				 LEFT JOIN ParCluster PC
 				 ON PC.Id = C2XC.ParCluster_Id
                  WHERE 1=1 
-                  -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   { sqlLevel3 } ";
 
         return query;
