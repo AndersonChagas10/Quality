@@ -100,7 +100,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -157,6 +157,8 @@
 
             formControl.showClustRegUnitCriticalLevel123();
 
+
+
             //setTimeout(function () {
             $("#clusterGroupId").find("option").eq(0).remove();
             $("#clusterGroupId").val(8).change();
@@ -185,7 +187,12 @@
 
             enviar["departmentName"] = $('#criticalLevelId :selected').val();
 
-            enviar["shift"] = ShiftSelected;
+
+            if (@Json.Encode(GlobalConfig.Eua)) {
+                enviar["shift"] = ShiftSelected;
+            } else {
+                enviar["shift"] = $('#shiftIdV :selected').val()
+            }
 
             $('#unitIdV').change();
 
@@ -219,7 +226,11 @@
             $("#PanelFull0").hide();
             $("RGDepartamentosShiftGrafico").empty();
             enviar["unitName"] = unidade;
-            enviar["shift"] = ShiftSelected;
+            if (@Json.Encode(GlobalConfig.Eua)) {
+                enviar["shift"] = ShiftSelected;
+            } else {
+                enviar["shift"] = $('#shiftIdV :selected').val()
+            }
             console.log(enviar);
             EasyAjax(urlGraficoDepartamentos, enviar, GraficoDepartamento, "RGDepartamentosGrafico");
         }
@@ -235,7 +246,11 @@
         function GetGraficoIndicadorUnidade(unidade) {
             $("#PanelFull0").hide();
             enviar["unitName"] = unidade;
-            enviar["shift"] = ShiftSelected;
+            if (@Json.Encode(GlobalConfig.Eua)) {
+                enviar["shift"] = ShiftSelected;
+            } else {
+                enviar["shift"] = $('#shiftIdV :selected').val()
+            }
             pathDirect = 0;
             console.log(enviar);
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
@@ -256,7 +271,11 @@
             popoverMain.css("left", x);
 
             if (desdobramento == "Departamento") {
-                enviar["shift"] = ShiftSelected;
+                if (@Json.Encode(GlobalConfig.Eua)) {
+                    enviar["shift"] = ShiftSelected;
+                } else {
+                    enviar["shift"] = $('#shiftIdV :selected').val()
+                }
                 IsDepartmentShift = false;
             }
 
@@ -1291,6 +1310,6 @@
             $('#btnShift').show();
         }
 
-    </script>
+</script>
 
 }
