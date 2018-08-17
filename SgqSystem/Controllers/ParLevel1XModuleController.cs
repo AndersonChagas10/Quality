@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Create([Bind(Include = "Id,ParLevel1_Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;
@@ -91,7 +91,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AlterDate = DateTime.Now;
             

@@ -14,7 +14,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParModules")">@Resources.Resource.parlevel1xmodules</a>
+                    <a href="@Url.Action("Index", "ParLevel1xModule")">@Resources.Resource.parlevel1xmodules</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -91,14 +91,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @{string effectiveDateEnd = Model.EffectiveDateEnd?.ToString("yyyy-MM-dd") ?? "";}
                                                 @Html.TextBox("EffectiveDateEnd", effectiveDateEnd, new { @class = "", @type = "date", @style = "width:210px" })
                                                 @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
+                                        </div>*@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
