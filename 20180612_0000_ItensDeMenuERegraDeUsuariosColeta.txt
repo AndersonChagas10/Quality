@@ -2,6 +2,8 @@
 
 Insert into MigrationHistory (Name, AddDate) VALUES ('20180612_0000_ItensDeMenuERegraDeUsuariosColeta',GetDate())
 
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ItemMenu' AND xtype='U')
 create table ItemMenu (
 	Id int IDENTITY(1,1) primary key not null,
@@ -15,6 +17,8 @@ create table ItemMenu (
 	IsActive bit null
 )
 
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RoleUserSgqXItemMenu' AND xtype='U')
 create table RoleUserSgqXItemMenu (
 	Id int IDENTITY(1,1) primary key not null,
@@ -26,11 +30,17 @@ create table RoleUserSgqXItemMenu (
 	IsActive bit null
 )
 
+GO
+
 IF COL_LENGTH('RoleUserSgq','FazColeta') IS NULL
     BEGIN
 		ALTER TABLE RoleUserSgq
 		ADD FazColeta bit not null
     END
 
+GO
+
 ALTER TABLE RoleUserSgq
 ADD PRIMARY KEY (ID)
+
+GO

@@ -2,6 +2,8 @@
 
 Insert into MigrationHistory (Name, AddDate) VALUES ('20180718_1100_CriacaoFormatoImportacao',GetDate())
 
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ImportFormats' AND xtype='U')
 create table ImportFormats (
 	[Id] int IDENTITY(1,1) primary key not null,
@@ -22,3 +24,5 @@ create table ImportFormatItems (
 	[AlterDate] date null,
 	[ImportFormat_Id] int not null FOREIGN KEY REFERENCES ImportFormats(Id)
 )
+
+GO

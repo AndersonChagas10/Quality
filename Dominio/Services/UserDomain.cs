@@ -218,7 +218,7 @@ namespace Dominio.Services
                 {
                     using (var db = new SgqDbDevEntities())
                     {
-                        var RolesUserName = db.UserSgq.Find(userDto.Id).Role.Split(',');
+                        var RolesUserName = db.UserSgq.Find(isUser.Id).Role.Split(',');
 
                         if (RolesUserName.Length > 0)
                         {

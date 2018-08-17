@@ -2,8 +2,12 @@
 
 Insert into MigrationHistory (Name, AddDate) VALUES ('20180723_1600_AdicionarShowAllUnits',GetDate())
 
+GO
+
 IF COL_LENGTH('UserSgq','ShowAllUnits') IS NULL
     BEGIN
 		ALTER TABLE UserSgq
 		ADD ShowAllUnits bit null
     END
+
+GO
