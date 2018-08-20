@@ -2446,7 +2446,7 @@
     <value>Indicadores por unidade</value>
   </data>
   <data name="module" xml:space="preserve">
-    <value>Modulos</value>
+    <value>Módulos</value>
   </data>
   <data name="new" xml:space="preserve">
     <value>Novo</value>
@@ -2587,19 +2587,19 @@
     <value>Faz Coleta</value>
   </data>
   <data name="parlevel1xmodules" xml:space="preserve">
-    <value>Indicador x Modulos</value>
+    <value>Indicador x Módulos</value>
   </data>
   <data name="effective_date_end" xml:space="preserve">
-    <value>Data efetiva de termino</value>
+    <value>Data efetiva de témino</value>
   </data>
   <data name="effective_date_start" xml:space="preserve">
-    <value>Date efetiva de inicio</value>
+    <value>Data efetiva de início</value>
   </data>
   <data name="parlevel1" xml:space="preserve">
     <value>Indicador</value>
   </data>
   <data name="parModule" xml:space="preserve">
-    <value>Modulo</value>
+    <value>Módulo</value>
   </data>
   <data name="import_format_itens" xml:space="preserve">
     <value>Formato de itens de importação</value>

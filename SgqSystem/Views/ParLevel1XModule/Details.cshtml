@@ -82,8 +82,9 @@
                                             @Html.DisplayName(Resources.Resource.effective_date_start)
                                         </dt>
 
+
                                         <dd>
-                                            @Html.DisplayFor(model => model.EffectiveDateStart)
+                                            @Html.Raw(Model.EffectiveDateStart?.ToString("dd/MM/yyyy"))
                                         </dd>
 
                                         @*<dt>
