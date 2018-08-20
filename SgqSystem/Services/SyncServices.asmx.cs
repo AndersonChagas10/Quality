@@ -281,7 +281,7 @@ namespace SgqSystem.Services
 
 
                         //4 98789 1190 //98789 é a chave que separa processo de produto
-                        string parCluster_Id_parLevel1_id = result[0].Replace(quebraProcesso, "|");
+                        string parCluster_Id_parLevel1_id = result[0].Replace(quebraProcesso, "|"); //"Cluster|Indicador"
                         string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
                         string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
 
@@ -667,7 +667,7 @@ namespace SgqSystem.Services
                                                             "\n from parlevel3level2level1 p321 WITH (NOLOCK) " +
                                                             "\n inner join parlevel3level2 p32 WITH (NOLOCK) " +
                                                             "\n on p321.parlevel3level2_id = p32.id " +
-                                                            "\n where p321.parlevel1_id = " + indicadorFilho_id;
+                                                            "\n where p321.Active = 1 and p321.parlevel1_id = " + indicadorFilho_id;
 
                                 list2 = factory.SearchQuery<ResultadoUmaColuna>(monitoramentoFilho).ToList();
 
