@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers
         // GET: ParLevel1XModule
         public async Task<ActionResult> Index()
         {
-            return View(await db.ParLevel1XModule.ToListAsync());
+            return View(await db.ParLevel1XModule.Where(x => x.IsActive).ToListAsync());
         }
 
         // GET: ParLevel1XModule/Details/5
@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Create([Bind(Include = "Id,ParLevel1_Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;

@@ -44,7 +44,7 @@ namespace Dominio
 
         public decimal? Sampling { get; set; }
 
-        public bool HasPhoto { get; set; }
+        public bool? HasPhoto { get; set; }
 
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 

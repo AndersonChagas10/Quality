@@ -8,7 +8,7 @@ namespace Dominio
 
     public partial class ParLevel3Value_Outer
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public int Id { get; set; }
 
         [Column(TypeName = "datetime2")]

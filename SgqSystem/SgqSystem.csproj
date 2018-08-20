@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -491,6 +490,7 @@
     <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParModuleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
@@ -1844,7 +1844,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

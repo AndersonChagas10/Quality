@@ -2,8 +2,14 @@
 -- Plano de Ação
 Insert into MigrationHistory (Name, AddDate) VALUES ('20180615_0000_AdicionadoNovosStatus',GetDate())
 
+GO
+
 INSERT INTO pa_status (adddate, Name)
 	VALUES (GETDATE(), 'Não iniciado')
 
+GO
+
 INSERT INTO pa_status (adddate, Name)
 	VALUES (GETDATE(), 'Aberto')
+
+GO
