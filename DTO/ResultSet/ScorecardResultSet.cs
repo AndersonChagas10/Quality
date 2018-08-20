@@ -33,7 +33,7 @@ public class ScorecardResultSet
 
     public string TipoScore { get; set; }
 
-    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId) //Se tipo 0, tras pontos , se 1, tras tudo
+    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId, int shift) //Se tipo 0, tras pontos , se 1, tras tudo
     {
 
         /*
@@ -130,11 +130,18 @@ public class ScorecardResultSet
         string selectTipo = "SELECT * FROM ";
         string orderby = "ORDER BY 11, 10";
 
-        string where = "";
+        string where = " WHERE 1=1 ";
+
+        string Wshift = "";
 
         if (clusterSelected_Id > 0)
         {
-            where = " WHERE cluster = " + clusterSelected_Id;
+            where += " AND cluster = " + clusterSelected_Id;
+        }
+
+        if (shift > 0)
+        {
+            Wshift += $@" AND CL1.Shift = {shift} ";
         }
 
 
@@ -720,11 +727,11 @@ public class ScorecardResultSet
            "\n  ,                                                                                                                                                                                                                                                                  " +
            "\n  CASE                                                                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL AND G.IsActive = 1) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL AND G.IsActive = 1 ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL AND G.IsActive = 1 ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -769,8 +776,9 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                                                                                                                                                                       " +
            "\n WHERE(ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL OR L1.Id = 25)                                                                                                                                                                                          " +
-           "\n   AND(C.Id = @ParCompany_Id OR(C.Id IS NULL AND L1.Id = 25 AND @CLUSTER in (SELECT DISTINCT ParCluster_Id FROM ParLevel1xCluster where IsActive = 1 AND parlevel1_id = 25 AND EffectiveDate < @DATAINICIAL)))                                                                                                                                                                                                       " +
-           "\n GROUP BY                                                                                                                                                                                                                                                            " +
+           $@"   AND(C.Id = @ParCompany_Id OR(C.Id IS NULL AND L1.Id = 25 AND @CLUSTER in (SELECT DISTINCT ParCluster_Id FROM ParLevel1xCluster where IsActive = 1 AND parlevel1_id = 25 AND EffectiveDate < @DATAINICIAL)))                                                                                                                                                                                                       
+           { Wshift }
+            GROUP BY                                                                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n      CL.Id                                                                                                                                                                                                                                                          " +
            "\n     , CL.Name                                                                                                                                                                                                                                                       " +
@@ -869,11 +877,11 @@ public class ScorecardResultSet
            "\n , 0 AS PontosIndicador                                                                                                                                                                                                                                              " +
            "\n , ROUND(CASE                                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
+           "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL AND G.IsActive = 1) > 0 THEN                                                                                                   " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL AND G.IsActive = 1 ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                         " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     ELSE                                                                                                                                                                                                                                                            " +
-           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
+           "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = L1.id AND(G.ParCompany_id = C.id OR G.ParCompany_id IS NULL) AND G.EffectiveDate <= @DATAFINAL AND G.IsActive = 1 ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)                                                                      " +
            "\n  END,2)                                                                                                                                                                                                                                                                " +
            "\n  AS META                                                                                                                                                                                                                                                            " +
            "\n , 0 AS Real                                                                                                                                                                                                                                                         " +
@@ -934,11 +942,11 @@ public class ScorecardResultSet
 
 
 
-    public string SelectScorecardCompleto(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId) //Se 0, tras pontos , se 1, tras tudo
+    public string SelectScorecardCompleto(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId, int shift) //Se 0, tras pontos , se 1, tras tudo
     {
         string sql;
 
-        sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo, clusterSelected_Id, GroupLevel1, moduloId); //Se 0, tras pontos , se 1, tras tudo
+        sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo, clusterSelected_Id, GroupLevel1, moduloId, shift); //Se 0, tras pontos , se 1, tras tudo
 
 
         return sql;

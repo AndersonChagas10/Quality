@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers.Api
         private List<ScorecardResultSet> _mock { get; set; }
         private List<ScorecardResultSet> _list { get; set; }
 
-        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
+        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId, int shift) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
         {
 
             decimal[] pontosTotais = { 0, 0 };
@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers.Api
                     _novaDataFim = _dtFim;
                 }
 
-                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0, clusterSelected_Id, GroupLevel1, moduloId);
+                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0, clusterSelected_Id, GroupLevel1, moduloId, shift);
 
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -117,9 +117,9 @@ namespace SgqSystem.Controllers.Api
 
             CommonLog.SaveReport(form, "Report_Scorecard");
 
-            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0, form.clusterSelected_Id, form.GroupLevel1, form.ModuloId);
+            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0, form.clusterSelected_Id, form.GroupLevel1, form.ModuloId, form.shift);
 
-            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1, form.clusterSelected_Id, form.GroupLevel1, form.ModuloId);
+            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1, form.clusterSelected_Id, form.GroupLevel1, form.ModuloId, form.shift);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
