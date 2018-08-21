@@ -146,10 +146,10 @@ namespace SgqSystem.Controllers
             if (vacuoGRD.Amostras == null)
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
 
-            if (vacuoGRD.Id > 0 && vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
-            {
-                ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
-            }
+            //if (vacuoGRD.Id > 0 && vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
+            //{
+            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            //}
         }
 
         private void ReturnError()
@@ -170,10 +170,10 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            if (vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
-            {
-                return RedirectToAction("Index");
-            }
+            //if (vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
+            //{
+            //    return RedirectToAction("Index");
+            //}
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
@@ -196,6 +196,12 @@ namespace SgqSystem.Controllers
                 {
                     vacuoGRD.AlterDate = DateTime.Now;
                     db.Entry(vacuoGRD).State = EntityState.Modified;
+
+                    if (db.VolumeVacuoGRD.Where(r => r.Id == vacuoGRD.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                    {
+                        db.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
+                    }
+                   
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -210,6 +216,10 @@ namespace SgqSystem.Controllers
                         {
                             vacuoGRD.AlterDate = DateTime.Now;
                             db2.Entry(vacuoGRD).State = EntityState.Modified;
+                            if (db2.VolumeVacuoGRD.Where(r => r.Id == vacuoGRD.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                            {
+                                db2.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
+                            }
                             db2.SaveChanges();
                             return RedirectToAction("Index");
                         }
