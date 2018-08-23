@@ -411,7 +411,7 @@
         //"Maximo": tpl.max(usFmt),
         //"Primeiro": tpl.first(usFmt),
         //"Ultimo": tpl.last(usFmt),
-        "Some sobre soma": tpl.sumOverSum(usFmt),
+        "Soma sobre soma": tpl.sumOverSum(usFmt),
         //"80% Limite Superior": tpl.sumOverSumBound80(true, usFmt),
         //"80% Limite inferior": tpl.sumOverSumBound80(false, usFmt),
         //"Soma como fra&ccedil;&atilde;o do total": tpl.fractionOf(tpl.sum(), "total", usFmtPct),
