@@ -17,19 +17,19 @@ namespace Dominio
         [Key]
         public decimal nCdCaracteristica { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(50)]
         public string cNmCaracteristica { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(10)]
         public string cNrCaracteristica { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(3)]
         public string cSgCaracteristica { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(30)]
         public string cIdentificador { get; set; }
     }

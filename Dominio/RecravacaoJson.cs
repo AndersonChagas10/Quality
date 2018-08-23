@@ -17,7 +17,7 @@ namespace Dominio
 
         public int Linha_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string ObjectRecravacaoJson { get; set; }
 
         [Column(TypeName = "datetime2")]

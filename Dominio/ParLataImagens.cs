@@ -16,16 +16,16 @@ namespace Dominio
         [Column(TypeName = "datetime2")]
         public DateTime? AlterDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public byte[] Imagem { get; set; }
 
         public int ParRecravacao_TipoLata_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(500)]
         public string PathFile { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public string FileName { get; set; }
 

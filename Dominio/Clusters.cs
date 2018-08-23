@@ -17,7 +17,7 @@ namespace Dominio
 
         public int Sigla { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public string Legenda { get; set; }
 

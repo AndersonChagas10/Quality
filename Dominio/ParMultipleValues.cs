@@ -17,11 +17,11 @@ namespace Dominio
 
         public int ParHeaderField_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         public decimal PunishmentValue { get; set; }

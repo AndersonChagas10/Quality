@@ -12,11 +12,11 @@ namespace Dominio
         [Key]
         public decimal nCdUsuario { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(50)]
         public string cNmUsuario { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(20)]
         public string cSigla { get; set; }
 

@@ -37,11 +37,11 @@ namespace Dominio
 
         public int ParFrequency_Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         public bool HasSaveLevel2 { get; set; }
