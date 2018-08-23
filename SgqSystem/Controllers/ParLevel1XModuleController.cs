@@ -64,6 +64,10 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
+            var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
+            var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            ViewBag.Indicadores = listaIndicadores;
+            ViewBag.Modulos = listaModulos;
             return View(parLevel1XModule);
         }
 
@@ -144,10 +148,15 @@ namespace SgqSystem.Controllers
         {
             //parLevel1XModule.ParLevel1 == null && 
             if (parLevel1XModule.ParLevel1_Id == 0)
-                ModelState.AddModelError("ParLevel1_Id", Guard.MesangemModelError("Indicador", true));
+                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + Resources.Resource.parlevel1);
+            //ModelState.AddModelError("ParLevel1_Id", Guard.MesangemModelError("Indicador", true));
 
             if (parLevel1XModule.ParModule_Id == 0)
-                ModelState.AddModelError("ParModule_Id", Guard.MesangemModelError("Modulos", true));
+                ModelState.AddModelError("ParModule_Id", Resources.Resource.required_field + " " + Resources.Resource.parModule);
+            // ModelState.AddModelError("ParModule_Id", Guard.MesangemModelError("Modulos", true));
+
+            if (!parLevel1XModule.IsActive)
+                ModelState.AddModelError("IsActive", Resources.Resource.required_field + " " + Resources.Resource.is_active);
         }
     }
 }
