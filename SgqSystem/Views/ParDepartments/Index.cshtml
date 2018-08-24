@@ -45,34 +45,39 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table">
-                                    <tr>
-                                        <th>
-                                            @Resources.Resource.name
-                                        </th>
-                                        <th>
-                                            @Resources.Resource.description
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table" id="tabelaDepartamentos">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Description)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                            </td>
+                                            <th>
+                                                @Resources.Resource.name
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.description
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.action
+                                            </th>
+                                          
                                         </tr>
-                                    }
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
+                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -96,5 +101,12 @@
 <script>
     $(document).ready(function () {
         closeLeftSidebar();
+
+        $(document).ready(function () {
+            $('#tabelaDepartamentos').dataTable({
+                "aoPaging": true,
+                "aoSearching": true,
+            });
+        });
     });
 </script>
