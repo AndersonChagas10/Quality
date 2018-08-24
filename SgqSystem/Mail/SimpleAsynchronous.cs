@@ -371,15 +371,15 @@ namespace SgqSystem.Mail
                 if (valor2 > 0)
                 {
                     var model = new CorrectActApiController().GetCorrectiveActionById(valor2);
-                    ultimoBodyEmailContent = "<br><br><div style='color:#333'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
+                    ultimoBodyEmailContent = "<br><br><div style='color:#222'>" + model.EmailBodyCorrectiveAction + "</div><br><br>";
                 }
-                ultimoBodyEmailContent += "<div style='color:red'>" + valor1 + "</div>";
+                ultimoBodyEmailContent += "<div style='color:#666'>" + valor1 + "</div>";
                 #endregion
 
                 var newMail = new EmailContent()
                 {
                     AddDate = DateTime.Now,
-                    Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body) + "<br/><br/>" + ultimoBodyEmailContent,
+                    Body = $"<strong style='color:#000'>{ m.DeviationDate.ToShortDateString() } {m.DeviationDate.ToShortTimeString()}: { subject }<br><br>{ RemoveEspacos(body) }<strong><br/><br/>{ ultimoBodyEmailContent}",
                     IsBodyHtml = true,
                     Subject = subject,
                     Project = "SGQApp"

@@ -13,6 +13,7 @@ namespace Jobs
 {
     public class ReProcessJsonJob : IJob
     {
+        public static bool Executing { get; set; } = false;
         public void Execute(IJobExecutionContext context)
         {
             ReProcessJsonJobFunction(null);
@@ -20,25 +21,33 @@ namespace Jobs
 
         public static void ReProcessJsonJobFunction(object stateInfo)
         {
-            Thread.Sleep(40000);
+            Thread.Sleep(new Random().Next(30000, 50000));
             while (true)
             {
-                if (ConfigurationManager.AppSettings["ResendProcessJsonJob"] == "on")
-                {
-                    Task.Run(() =>
-                    {
-                        try
-                        {
-                            SimpleAsynchronous.ResendProcessJson();
-                        }
-                        catch (Exception ex)
-                        {
-                            new CreateLog(new Exception("Erro no metodo [ReProcessJsonJobFunction]", ex));
-                        }
-                    });
-                }
+                if (ReProcessJsonJob.Executing)
+                    return;
+
+                ReProcessJsonJob.Executing = true;  //iniciou a execução
+                ReProcessJsonJob.Execute();
+                ReProcessJsonJob.Executing = false;  //finalizou a execução
                 GlobalConfig.UltimaExecucaoDoJob["ResendProcessJsonJob"] = DateTime.Now;
-                Thread.Sleep(180000);
+
+                Thread.Sleep(new Random().Next(180000, 250000));
+            }
+        }
+
+        private static void Execute()
+        {
+            if (ConfigurationManager.AppSettings["ResendProcessJsonJob"] == "on")
+            {
+                try
+                {
+                    SimpleAsynchronous.ResendProcessJson();
+                }
+                catch (Exception ex)
+                {
+                    new CreateLog(new Exception("Erro no metodo [ReProcessJsonJobFunction]", ex));
+                }
             }
         }
     }
