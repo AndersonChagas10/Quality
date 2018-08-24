@@ -2272,7 +2272,7 @@ namespace SgqSystem.Services
                 string punishimentValue = result[13];
                 punishimentValue = DefaultValueReturn(punishimentValue, "0");
 
-                string defects = result[14];
+                string defects = result[14] ==  "NaN" ? "0" : result[14];
 
                 //aqui tem que mudar no bem estar animal, verificar com o gabriel
                 string evaluation = "1";
