@@ -2611,7 +2611,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 IndicadorName as Indicador,
                 MonitoramentoName as Monitoramento,
                 TarefaName as Tarefa,
-                ''Acesso - 1'' as Acesso,
+                H.*,
                 Meta as Meta,
                 AVComPeso as ''AV com Peso'',
                 nCComPeso as ''NC com Peso'',
