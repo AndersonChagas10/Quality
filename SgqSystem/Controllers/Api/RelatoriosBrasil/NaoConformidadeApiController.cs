@@ -2618,11 +2618,14 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 UnidadeName as Unidade,
                 AV as AV,
                 NC as NC
-			FROM #CUBO C
+			INTO #CUBO_ACERTO
+            FROM #CUBO C
 			LEFT JOIN #HeaderField H
 				ON C.ID = H.CollectionLevel2_Id
 
-
+            ALTER TABLE #CUBO_ACERTO DROP COLUMN CollectionLevel2_Id
+	
+			SELECT * FROM #CUBO_ACERTO
 	
 
 			';
