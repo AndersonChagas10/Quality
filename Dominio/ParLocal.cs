@@ -19,7 +19,7 @@ namespace Dominio
 
         public int Level { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
 

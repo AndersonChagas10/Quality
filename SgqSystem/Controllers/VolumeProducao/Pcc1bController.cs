@@ -124,10 +124,10 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            if (pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
-            {
-                return RedirectToAction("Index");
-            }
+            //if (pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
+            //{
+            //    return RedirectToAction("Index");
+            //}
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name", pcc1b.ParLevel1_id);
@@ -150,6 +150,10 @@ namespace SgqSystem.Controllers
                 {
                     pcc1b.AlterDate = DateTime.Now;
                     db.Entry(pcc1b).State = EntityState.Modified;
+                    if (db.VolumePcc1b.Where(r => r.Id == pcc1b.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                    {
+                        db.Entry(pcc1b).Property(x => x.Data).IsModified = false;
+                    }
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -164,6 +168,10 @@ namespace SgqSystem.Controllers
                         {
                             pcc1b.AlterDate = DateTime.Now;
                             db2.Entry(pcc1b).State = EntityState.Modified;
+                            if (db2.VolumePcc1b.Where(r => r.Id == pcc1b.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                            {
+                                db2.Entry(pcc1b).Property(x => x.Data).IsModified = false;
+                            }
                             db2.SaveChanges();
                             return RedirectToAction("Index");
                         }
@@ -196,10 +204,10 @@ namespace SgqSystem.Controllers
             if (pcc1b.VolumeAnimais == null)
                 ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
 
-            if (pcc1b.Id > 0 && pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
-            {
-                ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
-            }
+            //if (pcc1b.Id > 0 && pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
+            //{
+            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            //}
         }
 
         private void ReturnError()

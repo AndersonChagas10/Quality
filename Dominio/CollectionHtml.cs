@@ -17,7 +17,7 @@ namespace Dominio
         [Column(TypeName = "datetime2")]
         public DateTime? AlterDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Html { get; set; }
 
         public int Period { get; set; }

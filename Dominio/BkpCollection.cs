@@ -23,7 +23,7 @@ namespace Dominio
 
         public int Period { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Html { get; set; }
 
         public string Error { get; set; }

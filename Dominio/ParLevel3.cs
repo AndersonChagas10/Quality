@@ -22,11 +22,11 @@ namespace Dominio
 
         public int Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(1000)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(1000)]
         public string Description { get; set; }
 

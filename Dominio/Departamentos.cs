@@ -21,7 +21,7 @@ namespace Dominio
 
         public int? Identificador { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public string Nome { get; set; }
 

@@ -22,10 +22,10 @@ namespace Dominio
 
         public int Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Password { get; set; }
 
         public DateTime? AcessDate { get; set; }
@@ -36,7 +36,7 @@ namespace Dominio
 
         public string Role { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string FullName { get; set; }
 
         public string Email { get; set; }

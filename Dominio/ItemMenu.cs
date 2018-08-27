@@ -19,7 +19,7 @@ namespace Dominio
         [Column(TypeName = "datetime2")]
         public DateTime? AlterDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(255)]
         public string Name { get; set; }
 

@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The acceptable value should be less than.
+        ///   Looks up a localized string similar to The acceptable value should  be equal ou less than.
         /// </summary>
         internal static string acceptable_value_less_than {
             get {
@@ -637,7 +637,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluations.
         ///   Looks up a localized string similar to Available Items.
         /// </summary>
         internal static string available_items {
@@ -1989,7 +1988,6 @@ namespace Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Effective date end.
-        ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string effective_date_end {
             get {
@@ -3195,7 +3193,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It was not possible to load keys, try again..
         ///   Looks up a localized string similar to Key.
         /// </summary>
         internal static string key {
@@ -4204,7 +4201,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New group.
         ///   Looks up a localized string similar to New Format.
         /// </summary>
         internal static string new_format {
@@ -4745,7 +4741,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string password {

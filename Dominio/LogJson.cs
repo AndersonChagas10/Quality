@@ -12,7 +12,7 @@ namespace Dominio
         public Int64 Id { get; set; }
 
         [Column(TypeName = "text")]
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string result { get; set; }
 
         [Column(TypeName = "text")]

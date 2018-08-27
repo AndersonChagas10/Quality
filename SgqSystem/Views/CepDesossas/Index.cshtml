@@ -104,18 +104,16 @@
                                                 @Html.DisplayFor(modelItem => item.Amostras)
                                             </td>
                                             <td>
-                                                @if (item.Data != null && item.Data?.Date >= DateTime.Now.Date)
-                                                {
-                                                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                                }
+                                                @*@if (item.Data != null && item.Data?.Date >= DateTime.Now.Date)
+                                                    {*@
+                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                @* } *@
                                             </td>
                                         </tr>
                                     }
-
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,7 @@ namespace Dominio
         [StringLength(5)]
         public string Sigla { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public string Nome { get; set; }
 

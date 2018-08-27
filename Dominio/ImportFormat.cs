@@ -11,7 +11,7 @@
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Title { get; set; }
 
         public DateTime AddDate { get; set; }

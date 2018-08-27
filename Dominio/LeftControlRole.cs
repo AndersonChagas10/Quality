@@ -11,11 +11,11 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(50)]
         public string Controller { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(50)]
         public string Action { get; set; }
 

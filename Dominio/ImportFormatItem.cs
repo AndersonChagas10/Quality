@@ -10,17 +10,17 @@
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Key { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Value { get; set; }
 
         public DateTime AddDate { get; set; }
 
         public DateTime? AlterDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [Column("ImportFormat_Id")]
         public int ImportFormat_Id { get; set; }
 
