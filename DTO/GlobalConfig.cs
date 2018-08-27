@@ -59,7 +59,6 @@ namespace DTO
 
     public class HtmlDoTablet
     {
-        public string Html { get; set; }
         public DateTime? DataInicio { get; set; }
         public string DataInicioStr { get { return DataInicio == null ? null : DataInicio.Value.ToShortDateString() + " " + DataInicio.Value.ToShortTimeString(); } }
         public DateTime? DataFim { get; set; }
