@@ -1798,7 +1798,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
 
-            var sql = "SELECT CG.Id as id, CG.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id LEFT JOIN ParClusterGroup CG ON CG.Id = C.ParClusterGroup_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1 and CG.IsActive = 1";
+            var sql = "SELECT CG.Id as id, CG.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id LEFT JOIN ParClusterGroup CG ON CG.Id = C.ParClusterGroup_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1 and CG.IsActive = 1 group by CG.Id , CG.Name";
 
             List<Generico> lista = new List<Generico>();
             using (Factory factory = new Factory("DefaultConnection"))
