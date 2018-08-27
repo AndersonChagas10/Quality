@@ -13,6 +13,7 @@ namespace Jobs
 {
     public class MailJob : IJob
     {
+        public static bool Executing { get; set; } = false;
         public void Execute(IJobExecutionContext context)
         {
             SendMailJobFunction(null);
@@ -20,34 +21,42 @@ namespace Jobs
 
         public static void SendMailJobFunction(object stateInfo)
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(new Random().Next(1000, 5000));
             while (true)
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        if (ConfigurationManager.AppSettings["SendMailJob"] == "on")
-                        {
-                            if (GlobalConfig.Brasil)
-                            {
-                                SimpleAsynchronous.CreateMailSgqAppDeviation();
-                                Task.Delay(3000);
-                                SimpleAsynchronous.SendEmail();
-                            }
-                            else if (GlobalConfig.Eua)
-                            {
-                                SimpleAsynchronousUSA.SendMailUSA();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
-                    }
-                });
+                if (MailJob.Executing)
+                    return;
+
+                MailJob.Executing = true;  //iniciou a execução
+                MailJob.Execute();
+                MailJob.Executing = false;  //finalizou a execução
                 GlobalConfig.UltimaExecucaoDoJob["SendMailJob"] = DateTime.Now;
-                Thread.Sleep(40000);
+
+                Thread.Sleep(new Random().Next(20000, 40000));
+            }
+        }
+
+        private static void Execute()
+        {
+            try
+            {
+                if (ConfigurationManager.AppSettings["SendMailJob"] == "on")
+                {
+                    if (GlobalConfig.Brasil)
+                    {
+                        SimpleAsynchronous.CreateMailSgqAppDeviation();
+                        Thread.Sleep(new Random().Next(1000, 5000));
+                        SimpleAsynchronous.SendEmail();
+                    }
+                    else if (GlobalConfig.Eua)
+                    {
+                        SimpleAsynchronousUSA.SendMailUSA();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
             }
         }
     }

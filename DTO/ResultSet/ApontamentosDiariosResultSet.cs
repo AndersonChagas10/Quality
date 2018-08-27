@@ -180,7 +180,7 @@ public class ApontamentosDiariosResultSet
                         (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
                         when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
                         when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
-                        when CL2HF2.ParFieldType_Id = 6 then { formatDate }
+                        when CL2HF2.ParFieldType_Id = 6 then CL2HF2.Value -- { formatDate }
                         else CL2HF2.Value end)
                         FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
                         left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
