@@ -3010,6 +3010,10 @@
         $('#DataTable2_wrapper').hide();
         $('#GraficoHistoricoGeral').empty();
         $('#GraficoTarefasAcumuladas').empty();
+        if (graficoTarefasAcumuladas && graficoTarefasAcumuladas.axes) {
+            graficoTarefasAcumuladas.destroy();
+            graficoTarefasAcumuladas = null;
+        }
 
         subtitle = "";
         subtitleAux = "";
@@ -3183,7 +3187,9 @@
         //if (enviar["shift"] != "" && enviar["shift"] != undefined)
         //    subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
 
-        $('#' + selector).empty().highcharts({
+       //graficoTarefasAcumuladas
+        graficoTarefasAcumuladas = Highcharts.chart('GraficoTarefasAcumuladas', {
+        // $('#' + selector).empty().highcharts({
             credits: Chart.Credits(),
             chart: Chart.Chart('column', 'xy', 500),
             title: Chart.Titulo(GraficoTarefasAcumuladasTit),
