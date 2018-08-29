@@ -125,7 +125,7 @@ namespace SgqSystem.Secirity
                     filterContext.Controller.ViewBag.Period = Mapper.Map<List<PeriodDTO>>(db.Period.ToList());
                     filterContext.Controller.ViewBag.Shift = Mapper.Map<List<ShiftDTO>>(db.Shift.ToList());
                     filterContext.Controller.ViewBag.Department = Mapper.Map<List<ParDepartmentDTO>>(db.ParDepartment.ToList());
-                    filterContext.Controller.ViewBag.Modulos = Mapper.Map<List<ParModuleDTO>>(db.ParModule.ToList());
+                    filterContext.Controller.ViewBag.Modulos = Mapper.Map<List<ParModuleDTO>>(db.ParModule.ToList()).Where(r => r.IsActive == true);
 
                     if (!filtraUnidadePorUsuario)/*Se não filtra uNidades por Usuario*/
                     {
