@@ -3,7 +3,7 @@
 @model IEnumerable<Dominio.Equipamentos>
 
 @{
-        ViewBag.Title = Resources.Resource.equipments;
+    ViewBag.Title = Resources.Resource.equipments;
 }
 
 
@@ -25,9 +25,9 @@
             </ul>
             <div class="page-toolbar">
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -46,55 +46,57 @@
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
 
-                                    <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
+                                    @*<div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
                                         <button id="btnFilter" class="btn-info" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
                                         @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
                                         <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
 
-                                    </div>
+                                    </div>*@
 
                                     @Html.ActionLink("Novo equipamento", "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table table-condensed">
-                                    <tr>
-                                        <th>
-                                            Unidade
-                                        </th>
-                                        <th>
-                                            Nome
-                                        </th>
-                                        <th>
-                                            Tipo
-                                        </th>
-                                        <th>
-                                            Subtipo
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table table-condensed" id="tabelaEquipamentos">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParCompanyName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Nome)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Tipo)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Subtipo)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                            </td>
+                                            <th>
+                                                Unidade
+                                            </th>
+                                            <th>
+                                                Nome
+                                            </th>
+                                            <th>
+                                                Tipo
+                                            </th>
+                                            <th>
+                                                Subtipo
+                                            </th>
+                                            <th></th>
                                         </tr>
-                                    }
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParCompanyName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Nome)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Tipo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Subtipo)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                                                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -147,5 +149,10 @@
 <script>
     $(document).ready(function () {
         closeLeftSidebar();
+
+        $('#tabelaEquipamentos').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+        });
     });
 </script>
