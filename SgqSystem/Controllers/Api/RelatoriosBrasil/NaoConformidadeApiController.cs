@@ -2611,18 +2611,22 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 IndicadorName as Indicador,
                 MonitoramentoName as Monitoramento,
                 TarefaName as Tarefa,
-                ''Acesso - 1'' as Acesso,
+                HF.*,
                 Meta as Meta,
                 AVComPeso as ''AV com Peso'',
                 nCComPeso as ''NC com Peso'',
                 UnidadeName as Unidade,
                 AV as AV,
                 NC as NC
+            INTO #CUBO_ACERTO
 			FROM #CUBO C
 			LEFT JOIN #HeaderField H
 				ON C.ID = H.CollectionLevel2_Id
 
+            ALTER TABLE #CUBO_ACERTO
+            DROP COLUMN CollectionLevel2_Id
 
+            SELECT * FROM #CUBO_ACERTO
 	
 
 			';
