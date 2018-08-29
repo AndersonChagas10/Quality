@@ -3516,6 +3516,7 @@ ORDER BY 3
         private static string getQuery(FormularioParaRelatorioViewModel form, int? nivel)
         {
 
+            var Wshift = "";
             var Wunidade = "";
             var Windicador = "";
             var Wmonitoramento = "";
@@ -3523,6 +3524,14 @@ ORDER BY 3
             var Wfuncao = "";
 
             var WunidadeAcesso = GetUserUnits(form.auditorId);
+
+            // Turno
+
+            if (form.shift > 0)
+            {
+                Wshift = $@" AND CL1.shift = "+form.shift;
+            }
+
 
             // Função
 
@@ -3711,6 +3720,7 @@ FROM (SELECT
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
             AND CL1.UnitId IN ({ WunidadeAcesso }) 
+            " + Wshift + @"
             " + Wunidade + @"
             " + Wfuncao + @"
             " + Windicador + @"
@@ -4090,6 +4100,7 @@ FROM (SELECT
             WHERE 1=1 
             AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
             AND CL1.UnitId IN ({ WunidadeAcesso }) 
+            " + Wshift + @"
             " + Wunidade + @"
             " + Wfuncao + @"
             " + Windicador + @"
@@ -4474,6 +4485,7 @@ FROM (SELECT
         WHERE 1=1 
         AND CL1.ConsolidationDate BETWEEN @DATEINI AND @DATEFIM
         AND CL1.UnitId IN ({ WunidadeAcesso })
+        " + Wshift + @"
         " + Wunidade + @"
         " + Wfuncao + @"
         " + Windicador + @"

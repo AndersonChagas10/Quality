@@ -309,11 +309,18 @@ namespace SgqSystem.Controllers.Api
         {
 
             var whereCriticalLevel = "";
+            var whereShift = "";
 
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
+
+            if (form.shift > 0)
+            {
+                whereShift += $@" AND CL1.Shift = {form.shift} ";
+            }
+
 
             var queryGrafico1 = $@"
  DECLARE @DATAINICIAL DATE = '{ form._dataInicioSQL }'
@@ -502,6 +509,7 @@ FROM (SELECT
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		AND CL1.UnitId = @UNIDADE
         { whereCriticalLevel }
+        { whereShift }
 
         ) AGRUPAMENTO
 	GROUP BY 
@@ -523,10 +531,17 @@ DROP TABLE #AMOSTRATIPO4 ";
         {
 
             var whereCriticalLevel = "";
+            var whereShift = "";
 
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+
+            if (form.shift > 0)
+            {
+                whereShift += $@" AND CL1.Shift = {form.shift} ";
             }
 
             var queryGraficoTendencia = $@" 
@@ -768,6 +783,7 @@ SELECT
 				AND A4.INDICADOR = IND.ID
 			WHERE 1 = 1
             { whereCriticalLevel }
+            { whereShift }
 			GROUP BY IND.ID
 					,IND.NAME
 					,CL1.UnitId
@@ -799,10 +815,16 @@ DROP TABLE #AMOSTRATIPO4";
         internal static string QueryGrafico3(FormularioParaRelatorioViewModel form, string indicadores)
         {
             var whereCriticalLevel = "";
+            var whereShift = "";
 
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.shift > 0)
+            {
+                whereShift += $@" AND CL1.Shift = {form.shift} ";
             }
 
             var queryGrafico3 = $@"
@@ -936,6 +958,7 @@ FROM (SELECT
 	WHERE CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
 	AND CL2.UnitId = { form.unitId }
     { whereCriticalLevel }
+    { whereShift }
 --AND CL1.ParLevel1_Id IN ({ indicadores }) 
 ) S1
 WHERE NC > 0
@@ -948,10 +971,16 @@ DROP TABLE #AMOSTRATIPO4 ";
         internal static string QueryGraficoTarefasAcumuladas(FormularioParaRelatorioViewModel form, string indicadores)
         {
             var whereCriticalLevel = "";
+            var whereShift = "";
 
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.shift > 0)
+            {
+                whereShift += $@" AND CL1.Shift = {form.shift} ";
             }
 
             var queryGraficoTarefasAcumuladas = $@"
@@ -984,6 +1013,7 @@ WHERE 1 = 1 --IND.Id IN ({ indicadores })
 AND UNI.Id = { form.unitId }
 AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
 { whereCriticalLevel }
+   { whereShift }
 GROUP BY IND.Id
 		,IND.Name
 		,R3.ParLevel3_Id
@@ -1001,10 +1031,16 @@ ORDER BY 9 DESC";
         {
 
             var whereCriticalLevel = "";
+            var whereShift = "";
 
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.shift > 0)
+            {
+                whereShift += $@" AND CL1.Shift = {form.shift} ";
             }
 
             var queryGrafico4 = $@"SELECT
@@ -1033,6 +1069,7 @@ INNER JOIN ParLevel2 MON (NOLOCK)
 WHERE 1 = 1
 --IND.Id IN ({ indicadores }) 
 /* and MON.Id = 1 */
+   { whereShift }
 AND UNI.Id = { form.unitId }
 AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
 AND IND.Id IN (SELECT

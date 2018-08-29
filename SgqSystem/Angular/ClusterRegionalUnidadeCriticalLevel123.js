@@ -201,6 +201,7 @@
             }
 
             $scope.AtribuiObject = function () {
+                enviar['shift'] = $('#shiftIdV').val();
                 enviar['unitIdArr'] = $('#unitIdV').val();
                 enviar['unitId'] = document.getElementById('unitIdV').value;
                 //console.log($scope.unit);

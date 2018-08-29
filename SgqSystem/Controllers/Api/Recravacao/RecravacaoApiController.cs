@@ -119,6 +119,8 @@ namespace SgqSystem.Controllers.Api
                         foreach (string collectionJson in listaCollectionJson)
                         {
                             new SgqSystem.Services.SyncServices().InsertJson(collectionJson, "1", "1", false);
+                            //após realizado a inserção efetuar a reconsolidação por level3
+                            //1004
                         }
                     }
                 }
@@ -190,7 +192,7 @@ namespace SgqSystem.Controllers.Api
             return repo.Save(updateRecravacaoJson).Id;
         }
 
-        private void SaveLatas(int? RecravacaoJson_Id, dynamic latas)
+        private int SaveLatas(int? RecravacaoJson_Id, dynamic latas)
         {
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -198,10 +200,11 @@ namespace SgqSystem.Controllers.Api
                 foreach (dynamic lata in latas)
                 {
                     var lataStringFormatada = ToJson(lata);
-                    factory.ExecuteSql(
+                    return factory.ExecuteSql(
                         string.Format("INSERT INTO RecravacaoLataJson (RecravacaoJson_Id, AddDate, ObjectRecravacaoJson) VALUES ({0}, GETDATE(), '{1}')", RecravacaoJson_Id, lataStringFormatada));
                 }
             }
+            return 0;
         }
 
         private void UpdateRecravacaoLataJson(int RecravacaoJson_Id, string LataJson)
@@ -233,21 +236,34 @@ namespace SgqSystem.Controllers.Api
         //[Angular5]
         private List<string> MapeiaRecravacaoJsonParaCollectionJson(dynamic linha, dynamic latas)
         {
+            int parLevel1 = Convert.ToInt32(linha["ParLevel1_Id"]);
+            var dataAtual = DateTime.Now.Date;
+            int avaliacaoAtual = Convert.ToInt32(db.CollectionJson
+                .Where(x => x.Level01CollectionDate > dataAtual && x.level01_Id == parLevel1)
+                .OrderByDescending(x=>x.Evaluate)
+                .Select(x=>x.Evaluate)
+                .FirstOrDefault()
+                + 1);
             int amostraAtual = 0;
             List<string> listaCollectionJson = new List<string>();
             foreach (dynamic lata in latas)
             {
-                foreach (dynamic ContadorDeAmostras in lata["ResultValue"])
+                int contadorPontos = Convert.ToInt32(linha["TipoDeLata"]["NumberOfPoints"]);
+
+                for (int i = 0; i < contadorPontos; i++)
                 {
                     DateTime dataColetaFormatada = DateTime.MinValue;
-                    DateTime.TryParseExact(Convert.ToString(linha["AddDate"]), "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataColetaFormatada);
+                    //DateTime.TryParseExact(Convert.ToString(linha["AddDate"]), "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataColetaFormatada);
+                    DateTime.TryParseExact(DateTime.Now.ToString(), "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataColetaFormatada);
+
+                    int processo = 0; //talvez inserir no web.config
 
                     string collectionJson = "<level02>";
-                    collectionJson += "{Processo}" + "|" + linha["ParLevel1_Id"]; //[0]
+                    collectionJson += processo + "|" + parLevel1; //[0]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss"); //[1]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "{Processo}" + "|" + linha["ParLevel2_Id"]; //[2]
+                    collectionJson += processo + "|" + linha["ParLevel2_Id"]; //[2]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss"); //[3]
                     collectionJson += ";"; //SEPARADOR LEVEL2
@@ -257,7 +273,7 @@ namespace SgqSystem.Controllers.Api
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "1"; //[6]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[7]
+                    collectionJson += linha["UserValidated_Id"]; //[7] -----------------usuario que assinou a lata
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[8]
                     collectionJson += ";"; //SEPARADOR LEVEL2
@@ -265,9 +281,9 @@ namespace SgqSystem.Controllers.Api
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss"); //[10]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[11]
+                    collectionJson += avaliacaoAtual; //[11] --------------------identificador da lata
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[12]
+                    collectionJson += i; //[12]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += ""; //[13]
                     collectionJson += ";"; //SEPARADOR LEVEL2
@@ -291,57 +307,105 @@ namespace SgqSystem.Controllers.Api
                     // Início do Level03
                     foreach (dynamic Tarefa in lata["ResultValue"])
                     {
+                        int parCompany = Convert.ToInt32(linha["ParCompany_Id"]);
+                        var parLeve3Level2 = db.ParLevel3Level2.Where(t => t.ParCompany_Id == null
+                        || t.ParCompany_Id == parCompany)
+                            .OrderByDescending(t => t.ParCompany_Id).FirstOrDefault();
+                        decimal peso = parLeve3Level2.Weight;
+
                         string tarefa_id = Convert.ToString(Tarefa);
                         int primeiraAspas = tarefa_id.IndexOf("\"");
                         int segundaAspas = tarefa_id.Substring(primeiraAspas + 1).IndexOf("\"");
                         tarefa_id = tarefa_id.Substring(primeiraAspas + 1, segundaAspas - primeiraAspas);
                         int contador = 0;
-                        string valor = "";
+                        string valorDaTarefa = "";
+                        string tipo = "";
+                        string minimo = "", maximo = "";
+                        string nome = "";
+
+                        foreach (dynamic Parametrizacao in lata["ListParlevel3"])
+                        {
+                            nome = Parametrizacao["Name"];
+
+                            if (tarefa_id == Convert.ToString(Parametrizacao["Id"]))
+                            {
+                                foreach (dynamic listParlevel3 in Parametrizacao["ParLevel3Value"])
+                                {
+                                    tipo = listParlevel3["ParLevel3InputType_Id"];
+                                    minimo = listParlevel3["IntervalMin"];
+                                    maximo = listParlevel3["IntervalMax"];
+                                    break;
+                                }
+                                foreach (dynamic parLevel3Value_OuterList in Parametrizacao["ParLevel3Value_OuterList"])
+                                {
+                                    tipo = parLevel3Value_OuterList["ParLevel3InputType_Id"];
+                                    minimo = parLevel3Value_OuterList["LimInferior"];
+                                    maximo = parLevel3Value_OuterList["LimSuperior"];
+                                    break;
+                                }
+                                break;
+                            }
+                        }
+
                         foreach (dynamic valorTarefa in Tarefa)
                         {
-                            valor = valorTarefa[(amostraAtual + 1).ToString()];
+                            valorDaTarefa = valorTarefa[(amostraAtual + 1).ToString()];
                             if (contador == amostraAtual)
                             {
-                                continue;
+                                break;
                             }
                             ++contador;
                         }
+
+                        bool isConform = false;
+                        if (Convert.ToInt32(tipo) == 99 || Convert.ToInt32(tipo) == 3)
+                        {
+                            isConform = Convert.ToDecimal(minimo.Replace(".", ",")) <= Convert.ToDecimal(valorDaTarefa.Replace(".", ","))
+                                && Convert.ToDecimal(valorDaTarefa.Replace(".", ",")) <= Convert.ToDecimal(maximo.Replace(".", ","));
+                        }else
+                        {
+                            if(valorDaTarefa == "1" || valorDaTarefa == "true")
+                            {
+                                isConform = true;
+                            }
+                        }
+
                         collectionJson += "<level03>";
-                        collectionJson += tarefa_id; //level3 1
+                        collectionJson += tarefa_id; //level3 0
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss");//collectionDate; //level3 2
+                        collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss");//collectionDate; //level3 1
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 2???
+                        collectionJson += valorDaTarefa; //level3 2
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "true"; //level3 3
+                        collectionJson += isConform; //level3 3 //conforme ou não
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "1"; //level3 6
+                        collectionJson += "1"; //level3 4
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "null"; //level3 7
+                        collectionJson += "null"; //level3 5
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "undefined"; //level3 8
+                        collectionJson += valorDaTarefa; //level3 6
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "undefined"; //level3 9
+                        collectionJson += "undefined"; //level3 7
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 10
+                        collectionJson += peso.ToString().Replace(",", "."); //level3 8 -------------------------- peso da tarefa
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += ""; //level3 11
+                        collectionJson += nome; //level3 9 --------------------------- nome da tarefa
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 12
+                        collectionJson += minimo; //level3 10
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 13
+                        collectionJson += maximo; //level3 11
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 14
+                        collectionJson += "0"; //level3 12 --------------------- verificar caso que possa existir Não Avaliar
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "{Avaliacao}";//av; //level3 15
+                        collectionJson += "0";//av; //level3 13
                         collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "{Nao Conformidade}";//NC; //level3 16
+                        collectionJson += (isConform ? 0 : 1);//NC; //level3 14
+                        collectionJson += ","; //SEPARADOR LEVEL3
+                        collectionJson += "1"; //level3 15 
+                        collectionJson += ","; //SEPARADOR LEVEL3
+                        collectionJson += (isConform ? 0 : 1) * peso; //level3 16 --------------------- peso X defeito
                         collectionJson += ","; //SEPARADOR LEVEL3
                         collectionJson += "0"; //level3 17
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 17??
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 17??
                         collectionJson += "</level03>";
 
                     }
@@ -371,25 +435,25 @@ namespace SgqSystem.Controllers.Api
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "undefined"; //[33]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[35]
+                    collectionJson += "0"; //[35]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[36]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[37]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[38]
+                    collectionJson += "0"; //[38]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[39]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[40]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[41]
+                    collectionJson += "0"; //[41]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[42]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[43]
+                    collectionJson += "0"; //[43]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "1"; //[44]
+                    collectionJson += "0"; //[44]
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[45]
                     collectionJson += ";"; //SEPARADOR LEVEL2
@@ -399,12 +463,13 @@ namespace SgqSystem.Controllers.Api
                     collectionJson += ";"; //SEPARADOR LEVEL2
                     collectionJson += "0"; //[48]
                     collectionJson += ";"; //SEPARADOR LEVEL2
-                    collectionJson += "{Processo}"; //[49]
+                    collectionJson += processo; //[49]
                     collectionJson += "</level02>";
                     listaCollectionJson.Add(collectionJson);
                 }
 
                 amostraAtual++;
+                avaliacaoAtual++;
             }
 
             return listaCollectionJson;

@@ -87,7 +87,7 @@
                     return e === 'Admin';
                 });
 
-                if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || role == 'Admin') {
+                if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || RoleUser.indexOf("1885") >= 0 || role == 'Admin') {
                     regraEdit = true ;
                 }else{
                     regraEdit = false;
@@ -289,6 +289,7 @@
             formControl.showUnit();
             //formControl.showLevel2();
             formControl.showLevel1();
+            formControl.showShift();
 
             closeLeftSidebar();
             $(".sidebar-toggler").removeClass("hide");
