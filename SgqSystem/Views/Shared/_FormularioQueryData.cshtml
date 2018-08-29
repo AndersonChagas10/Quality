@@ -318,7 +318,7 @@
         <li>
             <div class="dropdown" id="showModulo" style="display:none">
                 <span class="redLabel">Modulo</span>
-                @Html.DropDownList("ModuloId", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("ModuloId", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
@@ -907,6 +907,10 @@
 
             $('#shift').on('change', function (e) {
                 enviar['shift'] = $('#shift option:selected').val();
+            });
+
+            $('#shiftIdV').on('change', function (e) {
+                enviar['shift'] = $('#shiftIdV option:selected').val();
             });
 
             $('#period').on('change', function (e) {

@@ -13,6 +13,9 @@
         <div id="formBodyContent">
 
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <div class="alert alert-warning" id="SemDados">
+                Selecionar o Módulo!
+            </div>
             <div id="load"></div>
             <div id="divTable">
 
@@ -58,8 +61,17 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                Send(true);
+
+                if (enviar.moduloId > 0) {
+                    $('#SemDados').hide();
+                    Send(true);
+                } else {
+                    $('#results').empty();
+                    $('#divTable').hide();
+                    $('#SemDados').show();
+                }
             });
+
         });
 
         function Send(toggle) {
@@ -257,6 +269,7 @@
         $(document).ready(function () {
             formControl.showFullCallendar();
             formControl.showUnit();
+            formControl.showShift();
             //formControl.showGroupLevel1();
             //formControl.showProcesso();
             formControl.showModulo();

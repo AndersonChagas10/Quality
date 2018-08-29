@@ -6,6 +6,7 @@ using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Http;
@@ -59,7 +60,8 @@ namespace SgqSystem.Controllers.Api.App
                     var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now);
                     try
                     {
-                        GlobalConfig.PaginaDoTablet.Add(i.Id, new HtmlDoTablet() { Html = atualizado, DataFim = DateTime.Now, DataInicio = DateTime.Now });
+                        this.SaveFile(i.Id, atualizado);
+                        GlobalConfig.PaginaDoTablet.Add(i.Id, new HtmlDoTablet() { /*Html = atualizado,*/ DataFim = DateTime.Now, DataInicio = DateTime.Now });
                         GlobalConfig.ParamsDisponiveis += i.Id.ToString();
                     }
                     catch (Exception e)
@@ -99,15 +101,15 @@ namespace SgqSystem.Controllers.Api.App
                 {
                     if (GlobalConfig.PaginaDoTablet[UnitId] != null)/*Se ja existir atualiza*/
                     {
-                        GlobalConfig.PaginaDoTablet[UnitId].Html = atualizado;
                         GlobalConfig.PaginaDoTablet[UnitId].DataFim = DateTime.Now;
                         GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
                     }
                     else/*Se nao existir cria*/
                     {
-                        GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() { Html = atualizado, DataFim = DateTime.Now, DataInicio = DateTime.Now, Status = HtmlDoTablet.StatusType.SUCESSO });
+                        GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() { DataFim = DateTime.Now, DataInicio = DateTime.Now, Status = HtmlDoTablet.StatusType.SUCESSO });
                         GlobalConfig.ParamsDisponiveis += UnitId.ToString();
                     }
+                    this.SaveFile(UnitId, atualizado);
                 }
                 catch (Exception e)
                 {
@@ -116,7 +118,7 @@ namespace SgqSystem.Controllers.Api.App
                 System.GC.Collect();
             }
 
-            return GetTela(UnitId);
+            return null;// GetTela(UnitId);
 
         }
 
@@ -141,25 +143,26 @@ namespace SgqSystem.Controllers.Api.App
         public RetornoParaTablet GetTela(int UnitId)
         {
             var retorno = new RetornoParaTablet();
-            if (GlobalConfig.PaginaDoTablet != null)
+            try
             {
-                if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
+                if (GlobalConfig.PaginaDoTablet != null)
                 {
-                        
-                    //retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value.Html;
+                    if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
+                    {
+                        retorno.ParteDaTela = this.GetFile(UnitId);
 
-                    var htmlAux = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId);
-                    retorno.ParteDaTela = htmlAux.Value?.Html;
-
-                    if (retorno.ParteDaTela != null )
-                    return retorno;
+                        if (retorno.ParteDaTela != null && GlobalConfig.PaginaDoTablet[UnitId]?.DataFim > DateTime.Now.Date)
+                            return retorno;
+                    }
                 }
+
+                UpdateTelaDoTablet(UnitId);
+                retorno.ParteDaTela = this.GetFile(UnitId);
             }
-
-            //throw new Exception();
-
-            UpdateTelaDoTablet(UnitId);
-            retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value.Html;
+            catch (Exception ex)
+            {
+                new CreateLog(new Exception("GetTela - "+ex.Message, ex), UnitId);
+            }
             return retorno;
         }
 
@@ -231,7 +234,7 @@ namespace SgqSystem.Controllers.Api.App
                         GlobalConfig.PaginaDoTablet.Add(temp, null);
                     }
                 }
-                return GlobalConfig.PaginaDoTablet.Select(pt => new { pt.Key, pt.Value?.DataFimStr, pt.Value?.DataInicioStr, pt.Value?.StatusStr });//.Select(t=>new {ID = t.Key, DataInicio = t.Value.DataInicio, DataFim = t.Value.DataFim, Html = t.Value.Html });
+                return GlobalConfig.PaginaDoTablet.Select(pt => new { pt.Key, pt.Value?.DataFimStr, pt.Value?.DataInicioStr, pt.Value?.StatusStr });
 
             }
             return null;
@@ -290,7 +293,6 @@ namespace SgqSystem.Controllers.Api.App
                     GlobalConfig.PaginaDoTablet[id].DataFim = DateTime.Now;
                     GlobalConfig.PaginaDoTablet[id].Status = HtmlDoTablet.StatusType.ERROR;
                     GlobalConfig.PaginaDoTablet[id].StackTrace = ex.Message + " -> " + ex.StackTrace;
-
                 }
             }
             finally
@@ -309,6 +311,33 @@ namespace SgqSystem.Controllers.Api.App
             {
                 GlobalConfig.PaginaDoTablet[id] = new HtmlDoTablet() { };
             }
+        }
+
+        private void SaveFile(int id, string html)
+        {
+            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}.txt");
+            Directory.CreateDirectory(path.Substring(0, path.LastIndexOf("\\")));
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                writer.Write(html);
+            }
+        }
+
+        private string GetFile(int id)
+        {
+            //Código para Ler o arquivo
+            string file;
+            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}.txt");
+            Directory.CreateDirectory(path.Substring(0, path.LastIndexOf("\\")));
+            try
+            {
+                file = File.ReadAllText(@path);
+            }
+            catch (Exception ex)
+            {
+                file = null;
+            }
+            return file;
         }
 
         #endregion

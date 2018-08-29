@@ -260,8 +260,11 @@
 
         //debugger;
 
-
         limpaDadosTela();
+
+
+        enviar["shift"] = $('#shiftIdV :selected').val();
+
         enviar["dimensaoData"] = $('#createDimensaoData').val()*1;
         // Verificar se é mostrar tudo e aplicar vazio
         if ($('#clusterId').prev().find('a.actived').length > 0) {
@@ -3007,6 +3010,10 @@
         $('#DataTable2_wrapper').hide();
         $('#GraficoHistoricoGeral').empty();
         $('#GraficoTarefasAcumuladas').empty();
+        if (graficoTarefasAcumuladas && graficoTarefasAcumuladas.axes) {
+            graficoTarefasAcumuladas.destroy();
+            graficoTarefasAcumuladas = null;
+        }
 
         subtitle = "";
         subtitleAux = "";
@@ -3178,9 +3185,11 @@
         //subtitle += " | " + Resources('level1') + ": " + enviar["level1Name"];
 
         //if (enviar["shift"] != "" && enviar["shift"] != undefined)
-        //    subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "A" : "B");
+        //    subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "1" : "2");
 
-        $('#' + selector).empty().highcharts({
+       //graficoTarefasAcumuladas
+        graficoTarefasAcumuladas = Highcharts.chart('GraficoTarefasAcumuladas', {
+        // $('#' + selector).empty().highcharts({
             credits: Chart.Credits(),
             chart: Chart.Chart('column', 'xy', 500),
             title: Chart.Titulo(GraficoTarefasAcumuladasTit),

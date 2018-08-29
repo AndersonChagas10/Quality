@@ -18,6 +18,7 @@ namespace SgqSystem.Jobs
         public const int JornadaDeTrabalho = 10;
         public const int Horainicio = 8;
         public const int HoraFim = 18;
+        public static bool Executing { get; set; } = false;
 
         public void Execute(IJobExecutionContext context)
         {
@@ -28,26 +29,33 @@ namespace SgqSystem.Jobs
         {
             while (true)
             {
-                if (ConfigurationManager.AppSettings["PreencherMandala"] == "on")
-                {
-                    Task.Run(() =>
-                    {
-                        PreencherListaUnidadeMandala(null);
-                        Task.Delay(2000);
-                        PreencherListaIndicadorMandala(null);
-                        Task.Delay(2000);
-                        PreencherListaMonitoramentoMandala(null);
-                    });
-                    Thread.Sleep(60000);
-                }
-                else
-                {
-                    GlobalConfig.MandalaUnidade = null;
-                    GlobalConfig.MandalaIndicador = null;
-                    GlobalConfig.MandalaMonitoramento = null;
-                    Thread.Sleep(3000000);
-                }
+                if (MandalaJob.Executing)
+                    return;
+
+                MandalaJob.Executing = true;  //iniciou a execução
+                MandalaJob.Execute();
+                MandalaJob.Executing = false;  //finalizou a execução
                 GlobalConfig.UltimaExecucaoDoJob["PreencherMandala"] = DateTime.Now;
+            }
+        }
+
+        private static void Execute()
+        {
+            if (ConfigurationManager.AppSettings["PreencherMandala"] == "on")
+            {
+                PreencherListaUnidadeMandala(null);
+                Thread.Sleep(2000);
+                PreencherListaIndicadorMandala(null);
+                Thread.Sleep(2000);
+                PreencherListaMonitoramentoMandala(null);
+                Thread.Sleep(60000);
+            }
+            else
+            {
+                GlobalConfig.MandalaUnidade = null;
+                GlobalConfig.MandalaIndicador = null;
+                GlobalConfig.MandalaMonitoramento = null;
+                Thread.Sleep(3000000);
             }
         }
 
@@ -358,7 +366,7 @@ namespace SgqSystem.Jobs
         {
             try
             {
-                
+
                 //Thread.Sleep(30000);
                 var query = $@"                
                  declare @inicio datetime = DATEADD(DAY,-1,GETDATE()) 
