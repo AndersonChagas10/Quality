@@ -40,9 +40,9 @@
                                 </p>
                                 <table class="table" id="tabelaIndicadorModulos">
                                     <tr>
-                                        <th>
+                                        @*<th>
                                             @Html.DisplayName(Resources.Resource.parlevel1)
-                                        </th>
+                                        </th>*@
                                         <th>
                                             @Html.DisplayName(Resources.Resource.parModule)
                                         </th>
@@ -55,9 +55,9 @@
                                         <th>
                                             @Html.DisplayName(Resources.Resource.effective_date_start)
                                         </th>
-                                        @*<th>
-                                                @Html.DisplayName(Resources.Resource.effective_date_end)
-                                            </th>*@
+                                        <th>
+                                            @Html.DisplayName(Resources.Resource.effective_date_end)
+                                        </th>
                                         <th>
                                             @Resources.Resource.action
                                         </th>
@@ -67,9 +67,9 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>
+                                            @*<td>
                                                 @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                            </td>
+                                            </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.ParModule.Name)
                                             </td>
@@ -82,11 +82,12 @@
                                             <td>
                                                 @Html.Raw(item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
                                             </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
-                                                </td>*@
                                             <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @Html.Raw(item.EffectiveDateEnd?.ToString("dd/MM/yyyy"))
+                                                @*@Html.DisplayFor(modelItem => item.EffectiveDateEnd)*@
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id, moduloId = item.ParModule_Id }, new { @class = "btn btn-success" })
                                                 @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
                                                 @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                             </td>
