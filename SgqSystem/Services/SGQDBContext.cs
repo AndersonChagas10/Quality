@@ -46,6 +46,8 @@ namespace SGQDBContext
         public int ParCluster_Id { get; set; }
         public int ParLevel1_Id { get; set; }
 
+        public bool? IsRecravacao { get; set; }
+
         public ParLevel1()
         {
 
