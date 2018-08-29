@@ -2620,7 +2620,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 NC as NC
             INTO #CUBO_ACERTO
 			FROM #CUBO C
-			LEFT JOIN #HeaderField H
+			LEFT JOIN #HeaderField HF
 				ON C.ID = H.CollectionLevel2_Id
 
             ALTER TABLE #CUBO_ACERTO
