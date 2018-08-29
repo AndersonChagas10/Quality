@@ -244,7 +244,7 @@ namespace SgqSystem.Services
             //ObjResultJSon = "<level02>3987891;03/30/2018 08:41:032:033;1;03/30/2018 08:41:032:072;5;1;1;1;0;false;03302018;1;1;<header>17,1,3,0,0,0,0,0,0</header>;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>16,03/30/2018 08:41:032:075,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>27,03/30/2018 08:41:032:076,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>29,03/30/2018 08:41:032:077,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;3;0;0;0;3;0;1;0;0;0;0;undefined;0;0</level02>";
 
             ObjResultJSon = ObjResultJSon.Replace("%2C", "");
-             
+
             var objObjResultJSonPuro = ObjResultJSon;
 
             string versaoApp = null;
@@ -1000,8 +1000,9 @@ namespace SgqSystem.Services
 
                         }
 
+                        var isRecravacao = new SGQDBContext.ParLevel1(db).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42)
+                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao)
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -1894,7 +1895,7 @@ namespace SgqSystem.Services
                         {
                             //Se o script não for executado corretamente, retorna zero
 
-                            int insertLog = insertLogJson(i.ToString(), "Não entrou na InsertCollectionLevel2XCluster" , "Não entrou na InsertCollectionLevel2XCluster", "Não entrou na InsertCollectionLevel2XCluster", "InsertCollectionLevel2XCluster");
+                            int insertLog = insertLogJson(i.ToString(), "Não entrou na InsertCollectionLevel2XCluster", "Não entrou na InsertCollectionLevel2XCluster", "Não entrou na InsertCollectionLevel2XCluster", "InsertCollectionLevel2XCluster");
                             return 0;
                         }
                     }
@@ -2460,7 +2461,7 @@ namespace SgqSystem.Services
             //Script de Insert
             string sql = "INSERT INTO CorrectiveAction ([AuditorId],[CollectionLevel02Id],[SlaughterId],[TechinicalId],[DateTimeSlaughter],[DateTimeTechinical],[AddDate],[AlterDate],[DateCorrectiveAction],[AuditStartTime],[DescriptionFailure],[ImmediateCorrectiveAction],[ProductDisposition],[PreventativeMeasure]) " +
                          "VALUES " +
-                         "('" + AuditorId + "','" + CollectionLevel02Id + "','" + SlaughterId + "','" + TechinicalId + "',CAST(N'" + DateTimeSlaughter + "' AS DateTime),CAST(N'" + DateTimeTechinical + "' AS DateTime),GETDATE(),NULL,CAST(N'" + DateCorrectiveAction + "' AS DateTime),CAST(N'" + AuditStartTime + "' AS DateTime),'" + DescriptionFailure.Replace("'","''") + "','" + ImmediateCorrectiveAction.Replace("'", "''") + "','" + ProductDisposition.Replace("'", "''") + "','" + PreventativeMeasure.Replace("'", "''") + "')";
+                         "('" + AuditorId + "','" + CollectionLevel02Id + "','" + SlaughterId + "','" + TechinicalId + "',CAST(N'" + DateTimeSlaughter + "' AS DateTime),CAST(N'" + DateTimeTechinical + "' AS DateTime),GETDATE(),NULL,CAST(N'" + DateCorrectiveAction + "' AS DateTime),CAST(N'" + AuditStartTime + "' AS DateTime),'" + DescriptionFailure.Replace("'", "''") + "','" + ImmediateCorrectiveAction.Replace("'", "''") + "','" + ProductDisposition.Replace("'", "''") + "','" + PreventativeMeasure.Replace("'", "''") + "')";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
             {
@@ -5653,7 +5654,7 @@ $(document).ready(function(){
 
                 //var painelLevel3HeaderListHtml = "";
 
-                
+
 
                 var tituloLabel = "Animais Avaliados";
 
