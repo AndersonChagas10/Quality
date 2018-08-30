@@ -110,20 +110,24 @@ namespace SgqSystem.Mail
             {
                 using (var db = new SgqDbDevEntities())
                 {
+                    var listDeviation = db.Deviation.AsNoTracking().Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(200).Select(r => r.EmailContent_Id).ToList();
+                    ListaDeMail = db.EmailContent.AsNoTracking().Where(r => r.SendDate == null && r.Project == "SGQApp" && listDeviation.Contains(r.Id)).Take(tamanhoDoPool).ToList();
+
                     MailSender.HandleError HandleErrorDelegate = HandleErrorMethod;
-                    for (int i = 0; i < tamanhoDoPool; i++)
+                    if (ListaDeMail != null && ListaDeMail.Count() > 0)
                     {
-                        var listDeviation = db.Deviation.Where(r => r.EmailContent_Id != null).OrderByDescending(r => r.AddDate).Take(200).Select(r => r.EmailContent_Id).ToList();
-                        var email = db.EmailContent.Where(r => r.SendDate == null && r.Project == "SGQApp" && listDeviation.Contains(r.Id)).FirstOrDefault();
-
-                        if (email == null) //se o email for nulo considera que não há mais emails e interrompe o processo
-                            break;
-
-                        //var emailContent = db.EmailContent.Find(i.Id);
-                        email.SendStatus = "Tentando Enviar";
-                        email.AlterDate = DateTime.Now;
-                        db.SaveChanges();
-                        Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true, HandleErrorDelegate));
+                        foreach (var i in ListaDeMail.Distinct().ToList())
+                        {
+                            var email = db.EmailContent.FirstOrDefault(p => p.Id == i.Id && (p.SendStatus != "Tentando Enviar" && p.SendDate == null));
+                            if (email != null)
+                            {
+                                Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true, HandleErrorDelegate));
+                                //var emailContent = db.EmailContent.Find(i.Id);
+                                email.SendStatus = "Tentando Enviar";
+                                email.AlterDate = DateTime.Now;
+                                db.SaveChanges();
+                            }
+                        }
                     }
                 }
             }
