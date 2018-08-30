@@ -179,7 +179,7 @@ public class ApontamentosDiariosResultSet
                      STUFF(   
                         (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
                         when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
-                        when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
+                        when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
                         when CL2HF2.ParFieldType_Id = 6 then CL2HF2.Value -- { formatDate }
                         else CL2HF2.Value end)
                         FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
@@ -196,6 +196,7 @@ public class ApontamentosDiariosResultSet
                     left join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
                     left join ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
                     left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
+                    
                     GROUP BY CL2HF.CollectionLevel2_Id
                  	) HF 
                  on c2.Id = HF.CollectionLevel2_Id
@@ -209,7 +210,7 @@ public class ApontamentosDiariosResultSet
 				 ON PC.Id = C2XC.ParCluster_Id
                  WHERE 1=1 
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
-                  { sqlLevel3 } ";
+                  { sqlLevel3 }   DROP TABLE #CollectionLevel2 ";
 
         return query;
     }
