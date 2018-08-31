@@ -1060,7 +1060,7 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
 
         categoriesArr.sort();
 
-        var serieArrFinal = filtraAgrupaXY(categoriesArr, seriesFilterVal, categoriesFilterVal, dados, true, id)
+        var serieArrFinal = filtraAgrupaXY(categoriesArr, seriesFilterVal, categoriesFilterVal, dados, true, id);
 
         if (order == "Asc") {
             //segue o fluxo!
@@ -1323,8 +1323,24 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (categories.length == 2) {
                     if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
                         return r;
+
                     } else {
-                        return r[categories[0]][categories[1]] == $('#valor1Panel5 option:selected').text();
+
+                        if (categories[1] == "TipoIndicador") {
+
+                            let value = $('#valor1Panel5 option:selected').text();
+
+                            if (value == Resources("no_operational_planning"))
+                                return r[categories[0]][categories[1]] == 0;
+                            else if (value == Resources("guidelines"))
+                                return r[categories[0]][categories[1]] == 1;
+                            else if (value == "Scorecard")
+                                return r[categories[0]][categories[1]] == 2;
+
+                        } else {
+
+                            return r[categories[0]][categories[1]] == $('#valor1Panel5 option:selected').text();
+                        }
                     }
                 } else {
                     if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
@@ -1352,10 +1368,28 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
             let dados2 = $.grep(dados, function (r) {
 
                 if (categories.length == 2) {
+
                     if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
                         return r;
+
                     } else {
-                        return r[categories[0]][categories[1]] == $('#valor1Panel6 option:selected').text();
+                        if (categories[1] == "TipoIndicador") {
+
+                            let value = $('#valor1Panel6 option:selected').text();
+
+                            if (value == Resources("no_operational_planning"))
+                                return r[categories[0]][categories[1]] == 0;
+
+                            else if (value == Resources("guidelines"))
+                                return r[categories[0]][categories[1]] == 1;
+
+                            else if (value == "Scorecard")
+                                return r[categories[0]][categories[1]] == 2;
+
+                        } else {
+
+                            return r[categories[0]][categories[1]] == $('#valor1Panel6 option:selected').text();
+                        }
                     }
                 } else {
                     if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
