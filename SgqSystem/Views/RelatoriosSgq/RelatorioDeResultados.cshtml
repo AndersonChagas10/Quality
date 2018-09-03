@@ -242,6 +242,7 @@
         var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';*@
 
     var graficoPeriodo;
+    var graficoTarefasAcumuladas;
     var chart;
     var chartHistorico;
     var chartHistoricoGeral;
@@ -307,6 +308,12 @@
         if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
 
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        }
+
+        if ((enviar['groupParLevel1IdArr'] != undefined) || (enviar['groupParLevel1IdArr'].length == 1)) {
+
+            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
         }
 
         if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
