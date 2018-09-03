@@ -276,6 +276,11 @@
                     enviar['unitIdArr'].push(unidade[c].id);
             })
         }
+
+        if ($('#level1Groupv').prev().find('a.actived').length > 0) {
+            enviar['groupParLevel1Id'] = 0;
+            enviar['groupParLevel1IdArr'] = [];
+        }
         if ($('#level1Idv').prev().find('a.actived').length > 0) {
             enviar['level1Id'] = 0;
             enviar['level1IdArr'] = [];
@@ -310,28 +315,35 @@
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         }
 
-        if ((enviar['groupParLevel1IdArr'] != undefined) || (enviar['groupParLevel1IdArr'].length == 1)) {
+        // Tarefas Acumuladas
+
+        //if ((enviar['groupParLevel1IdArr'] != undefined) || (enviar['groupParLevel1IdArr'].length == 1)) {
+
+        //    EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        //}
+
+        if (
+            ((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) ||
+            ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1)) ||
+            ((enviar['groupParLevel1IdArr'] != undefined) && (enviar['groupParLevel1IdArr'].length == 1))
+        ) {
 
             EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
         }
+        //else
+        //if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] == undefined) || (enviar['level1IdArr'].length == 0))) {
 
-        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+        //        EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
-            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+        //} else
 
-        } else
-        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] == undefined) || (enviar['level1IdArr'].length == 0))) {
+        //if (((enviar['unitIdArr'] == undefined) || (enviar['unitIdArr'].length == 0)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
 
-                EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+        //    EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
-        } else
-
-        if (((enviar['unitIdArr'] == undefined) || (enviar['unitIdArr'].length == 0)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
-
-            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
-
-        }
+        //}
 
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
