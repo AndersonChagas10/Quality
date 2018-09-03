@@ -15,8 +15,11 @@
         public int ParLevel1_Id { get; set; }
 
         [DisplayName("Módulo")]
-        public int ParModule_Id { get; set; }
+        public int? ParModule_Id { get; set; }
 
+        [NotMapped]
+        [DisplayName("Indicador")]
+        public IEnumerable<int> ParLevel1_IdHelper { get; set; }
         
         public decimal Points { get; set; }
 
@@ -30,13 +33,16 @@
         public bool IsActive { get; set; }
 
         [DisplayName("Data Efetiva de início")]
-        [Required]
         public DateTime? EffectiveDateStart { get; set; }
 
-        //public DateTime? EffectiveDateEnd { get; set; } 
+        [DisplayName("Data Efetiva de término")]
+        public DateTime? EffectiveDateEnd { get; set; } 
 
         [ForeignKey("ParModule_Id")]
         public virtual ParModule ParModule { get; set; }
+
+        [NotMapped]
+        public virtual List<ParLevel1> ParLevel1Helper { get; set; }
 
         [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }

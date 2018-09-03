@@ -50,7 +50,8 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParLevel1_Id, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px" })
+                                                @Html.DropDownListFor(model => model.ParLevel1_IdHelper, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
+                                                @Html.HiddenFor(model => model.ParLevel1_Id)
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -58,7 +59,8 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.parModule, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParModule_Id, new SelectList(ViewBag.Modulos, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px" })
+                                                @Html.DropDownListFor(model => model.ParModule_Id, new SelectList(ViewBag.Modulos, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
+                                                @Html.HiddenFor(model => model.ParModule_Id)
                                                 @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -91,18 +93,18 @@
                                             </div>
                                         </div>
 
-                                        @*<div class="form-group">
+                                        <div class="form-group">
                                                 @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     @{string effectiveDateEnd = Model.EffectiveDateEnd?.ToString("yyyy-MM-dd") ?? "";}
-                                                    @Html.TextBox("EffectiveDateEnd", effectiveDateEnd, new { @class = "", @type = "date", @style = "width:210px" })
+                                                    @Html.TextBox("EffectiveDateEnd", effectiveDateEnd, new { @class = "", @type = "date", @style = "width:190px" })
                                                     @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
                                                 </div>
-                                            </div>*@
+                                            </div>
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
+                                                <input type="submit" value="@Resources.Resource.save" onClick="HabilitaCampo()" class="btn btn-primary" />
                                                 @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
@@ -135,9 +137,14 @@
             // $("#Points").val(pontos.replace(",", "."));
         };
 
+        function HabilitaCampo() {
+        debugger
+            $("ParLevel1_IdHelper").removeAttr('disabled');
+        }
+
         $(document).ready(function () {
             closeLeftSidebar();
-            $("#ParLevel1_Id").select2()
+            $("#ParLevel1_IdHelper").select2()
             $("#ParModule_Id").select2()
 
             $("#PointsText").inputmask('decimal', {

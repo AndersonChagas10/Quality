@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
+using Microsoft.Ajax.Utilities;
 
 namespace SgqSystem.Controllers
 {
@@ -17,9 +18,9 @@ namespace SgqSystem.Controllers
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         // GET: ParLevel1XModule
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.ParLevel1XModule.Where(x => x.IsActive).ToListAsync());
+            return View(db.ParLevel1XModule.Where(x => x.IsActive).OrderBy(x => x.ParModule_Id).ToList());
         }
 
         // GET: ParLevel1XModule/Details/5
@@ -52,18 +53,33 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ParLevel1_Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParLevel1_IdHelper")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;
-            ValidaIndicadoresxModulos(parLevel1XModule);
-            if (ModelState.IsValid)
+            var quantSalvo = 0;
+            if (parLevel1XModule.ParLevel1_IdHelper?.Count() > 0)
             {
-                db.ParLevel1XModule.Add(parLevel1XModule);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+                foreach (var item in parLevel1XModule.ParLevel1_IdHelper)
+                {
+                    parLevel1XModule.ParLevel1_Id = item;
+                    ValidaIndicadoresxModulos(parLevel1XModule);
+                    ValidaDataEntre(parLevel1XModule);
+                    if (ModelState.IsValid)
+                    {
+                        db.ParLevel1XModule.Add(parLevel1XModule);
+                        await db.SaveChangesAsync();
+                        quantSalvo++;
 
+                    }
+                }
+                if (quantSalvo == parLevel1XModule.ParLevel1_IdHelper.Count())
+                    return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("ParLevel1_IdHelper", Resources.Resource.required_field + " " + Resources.Resource.parlevel1);
+            }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
@@ -72,7 +88,7 @@ namespace SgqSystem.Controllers
         }
 
         // GET: ParLevel1XModule/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(int? id, int? moduloId)
         {
             if (id == null)
             {
@@ -95,14 +111,14 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AlterDate = DateTime.Now;
-            
-
+            ValidaDataEntre(parLevel1XModule);
             if (ModelState.IsValid)
             {
                 db.Entry(parLevel1XModule).State = EntityState.Modified;
+                db.Entry(parLevel1XModule).Property(x => x.ParLevel1_Id).IsModified = false;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -149,14 +165,42 @@ namespace SgqSystem.Controllers
             //parLevel1XModule.ParLevel1 == null && 
             if (parLevel1XModule.ParLevel1_Id == 0)
                 ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + Resources.Resource.parlevel1);
-            //ModelState.AddModelError("ParLevel1_Id", Guard.MesangemModelError("Indicador", true));
 
-            if (parLevel1XModule.ParModule_Id == 0)
+            if (parLevel1XModule.ParModule_Id.IsNull())
                 ModelState.AddModelError("ParModule_Id", Resources.Resource.required_field + " " + Resources.Resource.parModule);
-            // ModelState.AddModelError("ParModule_Id", Guard.MesangemModelError("Modulos", true));
+
+            if (parLevel1XModule.ParLevel1_IdHelper.IsNull())
+                ModelState.AddModelError("ParLevel1_IdHelper", Resources.Resource.required_field + " " + Resources.Resource.parlevel1);
 
             if (!parLevel1XModule.IsActive)
                 ModelState.AddModelError("IsActive", Resources.Resource.required_field + " " + Resources.Resource.is_active);
+
+            if (parLevel1XModule.EffectiveDateStart.IsNull())
+                ModelState.AddModelError("EffectiveDateStart", Resources.Resource.required_field + " " + Resources.Resource.effective_date_start);
+
+            if (parLevel1XModule.EffectiveDateStart > parLevel1XModule.EffectiveDateEnd)
+                ModelState.AddModelError("EffectiveDateStart", Resources.Resource.invalid_value_for + " " + Resources.Resource.effective_date_start);
+
+        }
+        private void ValidaDataEntre(ParLevel1XModule parLevel1XModule)
+        {
+            var indicadorXmodulo = db.ParLevel1XModule
+                .Where(x => x.ParModule_Id == parLevel1XModule.ParModule_Id)
+                .Where(x => x.ParLevel1_Id == parLevel1XModule.ParLevel1_Id)
+                .Where(x => x.IsActive).FirstOrDefault();
+
+            if (parLevel1XModule.EffectiveDateStart < indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > indicadorXmodulo?.EffectiveDateEnd)
+                ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
+
+            if (parLevel1XModule.EffectiveDateStart < indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd < indicadorXmodulo?.EffectiveDateEnd)
+                ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
+
+            if (parLevel1XModule.EffectiveDateStart > indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > indicadorXmodulo?.EffectiveDateEnd)
+                ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
+
+            if (parLevel1XModule.EffectiveDateStart >= indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd <= indicadorXmodulo?.EffectiveDateEnd)
+                ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
+
         }
     }
 }

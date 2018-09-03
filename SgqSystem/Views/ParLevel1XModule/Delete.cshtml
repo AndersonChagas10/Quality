@@ -71,7 +71,7 @@
                                             @Html.DisplayFor(model => model.Points)
                                         </dd>*@
 
-                                    <dt>
+                                    @*<dt>
                                         @Html.DisplayNameFor(model => model.AddDate)
                                     </dt>
 
@@ -85,31 +85,33 @@
 
                                     <dd>
                                         @Html.DisplayFor(model => model.AlterDate)
-                                    </dd>
+                                    </dd>*@
 
                                     @*<dt>
-                                        @Html.DisplayNameFor(model => model.IsActive)
-                                    </dt>
+                                            @Html.DisplayNameFor(model => model.IsActive)
+                                        </dt>
 
-                                    <dd>
-                                        @Html.DisplayFor(model => model.IsActive)
-                                    </dd>*@
+                                        <dd>
+                                            @Html.DisplayFor(model => model.IsActive)
+                                        </dd>*@
 
                                     <dt>
                                         @Html.DisplayNameFor(model => model.EffectiveDateStart)
                                     </dt>
 
                                     <dd>
-                                        @Html.DisplayFor(model => model.EffectiveDateStart)
+                                        @*@Html.DisplayFor(model => model.EffectiveDateStart)*@
+                                        @Html.Raw(Model.EffectiveDateStart?.ToString("dd/MM/yyyy"))
                                     </dd>
 
-                                    @*<dt>
-                                            @Html.DisplayNameFor(model => model.EffectiveDateEnd)
-                                        </dt>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.EffectiveDateEnd)
+                                    </dt>
 
-                                        <dd>
-                                            @Html.DisplayFor(model => model.EffectiveDateEnd)
-                                        </dd>*@
+                                    <dd>
+                                        @Html.Raw(Model.EffectiveDateEnd?.ToString("dd/MM/yyyy"))
+                                        @*@Html.DisplayFor(model => model.EffectiveDateEnd)*@
+                                    </dd>
 
                                 </dl>
 
@@ -118,7 +120,7 @@
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-actions no-color">
-                                        <input type="submit" value="@Resources.Resource.delete" class="btn btn-danger" /> 
+                                        <input type="submit" value="@Resources.Resource.delete" class="btn btn-danger" />
                                         @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                     </div>
                                 }
