@@ -1060,7 +1060,7 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
 
         categoriesArr.sort();
 
-        var serieArrFinal = filtraAgrupaXY(categoriesArr, seriesFilterVal, categoriesFilterVal, dados, true, id)
+        var serieArrFinal = filtraAgrupaXY(categoriesArr, seriesFilterVal, categoriesFilterVal, dados, true, id);
 
         if (order == "Asc") {
             //segue o fluxo!
@@ -1174,6 +1174,9 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
         subtitle: {
             text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
         },
+        lang: {
+            noData: "Sem dados"
+        },
         xAxis: {
 
             categories: categoriesArr,
@@ -1282,8 +1285,7 @@ function MapeiaValorParaHC(array, prop, isInteger) {
                     value = "Scorecard";
                 return value;
             } else {
-                return o[propArray[0]][propArray[1]];
-
+                return o[propArray[0]][propArray[1]] == "" ? null : o[propArray[0]][propArray[1]];
             }
         } else {
             return o[prop];
@@ -1323,8 +1325,24 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
                 if (categories.length == 2) {
                     if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
                         return r;
+
                     } else {
-                        return r[categories[0]][categories[1]] == $('#valor1Panel5 option:selected').text();
+
+                        if (categories[1] == "TipoIndicador") {
+
+                            let value = $('#valor1Panel5 option:selected').text();
+
+                            if (value == Resources("no_operational_planning"))
+                                return r[categories[0]][categories[1]] == 0;
+                            else if (value == Resources("guidelines"))
+                                return r[categories[0]][categories[1]] == 1;
+                            else if (value == "Scorecard")
+                                return r[categories[0]][categories[1]] == 2;
+
+                        } else {
+
+                            return r[categories[0]][categories[1]] == $('#valor1Panel5 option:selected').text();
+                        }
                     }
                 } else {
                     if ($('#valor1Panel5 option:selected').text() == Resources("all")) {
@@ -1352,10 +1370,28 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
             let dados2 = $.grep(dados, function (r) {
 
                 if (categories.length == 2) {
+
                     if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
                         return r;
+
                     } else {
-                        return r[categories[0]][categories[1]] == $('#valor1Panel6 option:selected').text();
+                        if (categories[1] == "TipoIndicador") {
+
+                            let value = $('#valor1Panel6 option:selected').text();
+
+                            if (value == Resources("no_operational_planning"))
+                                return r[categories[0]][categories[1]] == 0;
+
+                            else if (value == Resources("guidelines"))
+                                return r[categories[0]][categories[1]] == 1;
+
+                            else if (value == "Scorecard")
+                                return r[categories[0]][categories[1]] == 2;
+
+                        } else {
+
+                            return r[categories[0]][categories[1]] == $('#valor1Panel6 option:selected').text();
+                        }
                     }
                 } else {
                     if ($('#valor1Panel6 option:selected').text() == Resources("all")) {
@@ -1918,6 +1954,9 @@ function getGraphPanel1(meuDado) {
         tooltip: {
             pointFormat: '<b>{point.percentage:.1f}%</b>'
         },
+        lang: {
+            noData: "Sem dados"
+        },
         plotOptions: {
             pie: {
                 allowPointSelect: true,
@@ -1963,6 +2002,9 @@ function getGraphPanel2(meuDado) {
         },
         title: {
             text: false,
+        },
+        lang: {
+            noData: "Sem dados"
         },
         tooltip: {
             pointFormat: '<b>{point.percentage:.1f}%</b>'
@@ -2203,6 +2245,9 @@ Highcharts.chart('panel4', {
     credits: {
         enabled: false,
     },
+    lang: {
+        noData: "Sem dados"
+    },
     xAxis: {
         tickInterval: 1,
 
@@ -2258,6 +2303,9 @@ Highcharts.chart('panel5', {
     },
     title: {
         text: false,
+    },
+    lang: {
+        noData: "Sem dados"
     },
     subtitle: {
         text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
@@ -2346,6 +2394,9 @@ Highcharts.chart('panel6', {
     },
     subtitle: {
         text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+    },
+    lang: {
+        noData: "Sem dados"
     },
     xAxis: {
         tickInterval: 1,
