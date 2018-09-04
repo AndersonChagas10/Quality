@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers.Params
             foreach (var i in equipamentos)
             {
 
-                i.ParCompanyName = companys.FirstOrDefault(r => r.Id == i.ParCompany_Id).Name;
+                i.ParCompanyName = companys.FirstOrDefault(r => r.Id == i.ParCompany_Id)?.Name;
 
                 if (parCompanyXUserSgq.Any(r => r.ParCompany_Id == i.ParCompany_Id))
                 {

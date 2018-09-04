@@ -39,46 +39,49 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table">
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.title)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.add_date)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.alter_date)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.is_active)
-                                        </th>
-                                        <th></th>
-                                    </tr>
+                                <table class="table" id="tabelaFormatos">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.title)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.add_date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.alter_date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.is_active)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                    @foreach (var item in Model)
-                                    {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Title)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.AddDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.AlterDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IsActive)
-                                            @*@Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)*@
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                            @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                                        </td>
-                                    </tr>
-                                    }
-
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Title)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AddDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AlterDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                    @*@Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)*@
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -90,3 +93,11 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
+<script>
+    $(document).ready(function () {
+        $('#tabelaFormatos').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+        });
+    });
+</script>

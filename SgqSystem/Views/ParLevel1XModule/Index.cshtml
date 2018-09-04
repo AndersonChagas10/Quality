@@ -38,61 +38,77 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table" id="tabelaIndicadorModulos">
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.parlevel1)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.parModule)
-                                        </th>
-                                        @*<th>
-                                                @Html.DisplayName(Resources.Resource.points)
-                                            </th>*@
-                                        @*<th>
-                                                @Html.DisplayName(Resources.Resource.is_active)
-                                            </th>*@
-                                        <th>
-                                            @Html.DisplayName(Resources.Resource.effective_date_start)
-                                        </th>
-                                        @*<th>
-                                                @Html.DisplayName(Resources.Resource.effective_date_end)
-                                            </th>*@
-                                        <th>
-                                            @Resources.Resource.action
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table" id="tabelaIndicadorModulo">
+                                    <thead>
                                         <tr>
+                                            @*
+                                                <th>
+                                                    @Html.DisplayName(Resources.Resource.parlevel1)
+                                                </th>*@
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.parModule)
+                                            </th>
+                                            @*
+                                                <th>
+                                                    @Html.DisplayName(Resources.Resource.points)
+                                                </th>*@
+                                            @*
+                                                <th>
+                                                    @Html.DisplayName(Resources.Resource.is_active)
+                                                </th>*@
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.effective_date_start)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.effective_date_end)
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.action
+                                            </th>
+
+                                        </tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                        <tr>
+                                            @*
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                            </td>
+                                            </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.ParModule.Name)
                                             </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.Points)
-                                                </td>*@
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                                </td>*@
+                                            @*
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Points)
+                                            </td>*@
+                                            @*
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>*@
                                             <td>
                                                 @Html.Raw(item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
                                             </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
-                                                </td>*@
+                                            <td>
+                                                @Html.Raw(item.EffectiveDateEnd?.ToString("dd/MM/yyyy"))
+                                            </td>
+                                            @*
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
+                                            </td>*@
                                             <td>
                                                 @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
                                                 @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                             </td>
                                         </tr>
-                                    }
-
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -104,18 +120,12 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
-
-@section Scripts {
-
-    <script>
+<script>
         $(document).ready(function () {
-            //$("#tabelaIndicadorModulos").dataTable();
-
-            //$('#tabelaIndicadorModulos').dataTable({
-            //    paginate: true,
-            //    scrollY: 300
-            //});
+            $('#tabelaIndicadorModulo').dataTable({
+                "aoPaging": true,
+                "aoSearching": true,
+            });
         });
 
-    </script>
-}
+</script>

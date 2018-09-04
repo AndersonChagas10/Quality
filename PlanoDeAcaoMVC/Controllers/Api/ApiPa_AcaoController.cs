@@ -123,7 +123,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public FTA SaveFTA(FTA obj)
         {
 
-            obj.Panejamento_Id = 12; //Mock do ID Tático Genérico que vinculas as Ações
+            obj.Panejamento_Id = 128; //Mock do ID Tático Genérico que vinculas as Ações
 
             try
             {
