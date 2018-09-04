@@ -65,8 +65,14 @@ namespace SgqSystem.Controllers.Api.Params
             #region GAMBIARRA LEVEL 100!
             paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion = paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberSample;
             #endregion
+            ValidaRegraNaoconformidade(paramsViewModel);
             paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
             return paramsViewModel;
+        }
+
+        private void ValidaRegraNaoconformidade(ParamsViewModel paramsViewModel)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost]
