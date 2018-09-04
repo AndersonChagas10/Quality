@@ -1174,6 +1174,9 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
         subtitle: {
             text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
         },
+        lang: {
+            noData: "Sem dados"
+        },
         xAxis: {
 
             categories: categoriesArr,
@@ -1282,8 +1285,7 @@ function MapeiaValorParaHC(array, prop, isInteger) {
                     value = "Scorecard";
                 return value;
             } else {
-                return o[propArray[0]][propArray[1]];
-
+                return o[propArray[0]][propArray[1]] == "" ? null : o[propArray[0]][propArray[1]];
             }
         } else {
             return o[prop];
@@ -1952,6 +1954,9 @@ function getGraphPanel1(meuDado) {
         tooltip: {
             pointFormat: '<b>{point.percentage:.1f}%</b>'
         },
+        lang: {
+            noData: "Sem dados"
+        },
         plotOptions: {
             pie: {
                 allowPointSelect: true,
@@ -1997,6 +2002,9 @@ function getGraphPanel2(meuDado) {
         },
         title: {
             text: false,
+        },
+        lang: {
+            noData: "Sem dados"
         },
         tooltip: {
             pointFormat: '<b>{point.percentage:.1f}%</b>'
@@ -2237,6 +2245,9 @@ Highcharts.chart('panel4', {
     credits: {
         enabled: false,
     },
+    lang: {
+        noData: "Sem dados"
+    },
     xAxis: {
         tickInterval: 1,
 
@@ -2292,6 +2303,9 @@ Highcharts.chart('panel5', {
     },
     title: {
         text: false,
+    },
+    lang: {
+        noData: "Sem dados"
     },
     subtitle: {
         text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
@@ -2380,6 +2394,9 @@ Highcharts.chart('panel6', {
     },
     subtitle: {
         text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+    },
+    lang: {
+        noData: "Sem dados"
     },
     xAxis: {
         tickInterval: 1,
