@@ -53,12 +53,30 @@ namespace SgqSystem.Controllers.Api
                 var divjetoFinal = GetUrlDivjetoFinal(divjetoPreenchido, dicionarioItem, dados, ref error);
                 if (error.Count > 0)
                 {
-                    return BadRequest(String.Join("-", error.ToArray()));
+                    return BadRequest(string.Join("-", error.ToArray()));
                 }
 
                 foreach (var item in divjetoFinal)
                 {
-                    new SgqSystem.Services.SyncServices().InsertJson(item, "1", "1", false);
+
+                    var collectionJson = item.Split(';');
+                    var monitoramentoId = Convert.ToInt32(collectionJson[2].Contains("|") ? collectionJson[2].Split('|')[1] : collectionJson[2]);
+                    var companyId = Convert.ToInt32(collectionJson[4]);
+
+                    var weight = db.ParLevel3Level2
+                        .Where(x => x.ParLevel2_Id == monitoramentoId && (x.ParCompany_Id == null || x.ParCompany_Id == companyId))
+                        .OrderByDescending(x => x.ParCompany_Id)
+                        .Select(x => x.Weight).FirstOrDefault();
+
+                    var level3 = collectionJson[22].Split(',');
+
+                    level3[8] = weight.ToString().Replace(',', '.');
+
+                    collectionJson[22] = string.Join(",", level3);
+
+                    string collectionJsonFinal = string.Join(";", collectionJson);
+
+                    new SgqSystem.Services.SyncServices().InsertJson(collectionJsonFinal, "1", "1", false);
                 }
                 return Ok("Processado com sucesso");
             }
