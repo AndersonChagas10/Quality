@@ -3900,7 +3900,9 @@
 
     function clickFiltroData(this_){
 
-        if (enviar['dimensaoData'] == 1) {
+        var data_comparar = this_.category.substr(6, 4) + "-" + this_.category.substr(3, 2) + "-" + this_.category.substr(0, 2)
+
+        if (IsDate(data_comparar) == true && this_.category.format("dd/MM/yyyy").length >= 8 ) {
             cb(this_.category.format("dd/MM/yyyy"), this_.category.format("dd/MM/yyyy"));
             Send(true);        
         }
