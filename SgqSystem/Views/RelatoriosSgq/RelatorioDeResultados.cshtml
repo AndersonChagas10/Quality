@@ -1432,8 +1432,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1467,8 +1466,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1503,8 +1501,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1742,8 +1739,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1777,8 +1773,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1813,8 +1808,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -2021,8 +2015,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2057,8 +2050,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2094,8 +2086,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2270,8 +2261,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2305,8 +2295,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2341,8 +2330,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -3909,6 +3897,15 @@
             }, "GraficoHistoricoModal")
         });
     }
+
+    function clickFiltroData(this_){
+
+        if (enviar['dimensaoData'] == 1) {
+            cb(this_.category.format("dd/MM/yyyy"), this_.category.format("dd/MM/yyyy"));
+            Send(true);        
+        }
+    }
+
     </script>
 
 }
