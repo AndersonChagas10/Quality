@@ -4,6 +4,7 @@ using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using Newtonsoft.Json.Linq;
+using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +129,7 @@ namespace SgqSystem.Controllers.Api
         /// <returns></returns>
         public HttpResponseMessage Post(JObject linha)
         {
+            try{ 
             var id = linha["Id"].ToString();
             var parlevel2_Id = linha["ParLevel2_Id"].ToString();
             var parcompany = linha["ParCompany_Id"].ToString();
@@ -223,43 +225,57 @@ namespace SgqSystem.Controllers.Api
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de linhas concluída", model = results });
+
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { resposta = ex.ToClient() });
+            }
         }
 
         #region Aux Private
 
         private void GetParLevel3VinculadosLata(string parcompany, List<ParLevel3DTO> listaLevel3, JObject vinculoLevel32)
         {
-            var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
-            var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParMeasurementUnit").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
-
-            while (level3.ParLevel3Value.Any(r => !r.IsActive))
-                level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
-
-            var level3Dto = Mapper.Map<ParLevel3DTO>(level3);
-            var pointLess = db.Database.SqlQuery<bool>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3Dto.Id)).FirstOrDefault();
-
-            var AllowNA = db.Database.SqlQuery<bool>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault();
-            level3Dto.AllowNA = AllowNA;
-
-            level3Dto.IsPointLess = pointLess;
-
-            List<ParLevel3Value_OuterListDTO> valueCampoCalcOutro = null;
-            using (Factory factory = new Factory("DefaultConnection"))
+            int row = 0;
+            try
             {
-                valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
+                var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
+                var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParMeasurementUnit").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
+
+                while (level3.ParLevel3Value.Any(r => !r.IsActive))
+                    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
+
+                var level3Dto = Mapper.Map<ParLevel3DTO>(level3);
+                var pointLess = db.Database.SqlQuery<bool?>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3Dto.Id)).FirstOrDefault() ?? false;
+
+                var AllowNA = db.Database.SqlQuery<bool?>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault() ?? false;
+                level3Dto.AllowNA = AllowNA;
+
+                level3Dto.IsPointLess = pointLess;
+
+                List<ParLevel3Value_OuterListDTO> valueCampoCalcOutro = null;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
+                }
+
+                level3Dto.ParLevel3Value_OuterList = valueCampoCalcOutro;
+                level3Dto.ParLevel3Value_OuterListGrouped = valueCampoCalcOutro.GroupBy(r => r.ParCompany_Id);
+
+                foreach (var bin in level3.ParLevel3Value)
+                {
+                    if (bin.ParLevel3BoolTrue_Id > 0 && bin.ParLevel3BoolTrue != null)
+                        level3Dto.ParLevel3Value.FirstOrDefault(r => r.Id == bin.Id).ParLevel3BoolTrue = Mapper.Map<ParLevel3BoolTrueDTO>(bin.ParLevel3BoolTrue);
+                    if (bin.ParLevel3BoolFalse_Id > 0 && bin.ParLevel3BoolFalse != null)
+                        level3Dto.ParLevel3Value.FirstOrDefault(r => r.Id == bin.Id).ParLevel3BoolFalse = Mapper.Map<ParLevel3BoolFalseDTO>(bin.ParLevel3BoolFalse);
+                }
+                listaLevel3.Add(level3Dto);
             }
-
-            level3Dto.ParLevel3Value_OuterList = valueCampoCalcOutro;
-            level3Dto.ParLevel3Value_OuterListGrouped = valueCampoCalcOutro.GroupBy(r => r.ParCompany_Id);
-
-            foreach (var bin in level3.ParLevel3Value)
+            catch(Exception ex)
             {
-                if (bin.ParLevel3BoolTrue_Id > 0 && bin.ParLevel3BoolTrue != null)
-                    level3Dto.ParLevel3Value.FirstOrDefault(r => r.Id == bin.Id).ParLevel3BoolTrue = Mapper.Map<ParLevel3BoolTrueDTO>(bin.ParLevel3BoolTrue);
-                if (bin.ParLevel3BoolFalse_Id > 0 && bin.ParLevel3BoolFalse != null)
-                    level3Dto.ParLevel3Value.FirstOrDefault(r => r.Id == bin.Id).ParLevel3BoolFalse = Mapper.Map<ParLevel3BoolFalseDTO>(bin.ParLevel3BoolFalse);
+                throw new Exception(ex.ToClient());
             }
-            listaLevel3.Add(level3Dto);
         }
 
         private void InsereParLevel3ValueNaLata(string parcompany, List<ParLevel3DTO> listaLevel3, List<JObject> hasVinculoLevel21, List<JObject> hasVinculoLevel32, List<JObject> hasVinculoLevel321)

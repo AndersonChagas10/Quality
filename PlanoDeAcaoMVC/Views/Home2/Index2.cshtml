@@ -396,7 +396,7 @@
                     <input type="text" class="form-control" name="daterange" value="01/01/2017 - 31/01/2017" />
                 </div>
                 &nbsp;
-                <select style="font-size:xx-small;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
+                <select style="font-size:xx-small;width:25% !important;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
                     <option value="">@Resources.Resource.all</option>
                     <option value="Diretoria">@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
@@ -427,7 +427,7 @@
                 </select>
                 &nbsp;
 
-                <select style="font-size:xx-small;" id="campo2Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor2Filtro');">
+                <select style="font-size:xx-small;width:25% !important;" id="campo2Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor2Filtro');">
                     <option value="">@Resources.Resource.all</option>
                     <option value="Diretoria">@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
@@ -479,7 +479,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
             <div class="defaultFilter ">
 
-                <select style="font-size:xx-small;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
+                <select style="font-size:xx-small;width:25% !important;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
                     <option value="Diretoria">@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
                     <option value="Objetivo">@Resources.Resource.guideline</option>
@@ -535,7 +535,7 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed ">
             <div class="defaultFilter">
-                <select style="font-size:xx-small;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
+                <select style="font-size:xx-small;width:25% !important;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
 
                     <option value="Diretoria" selected>@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
@@ -562,7 +562,7 @@
 
                 <select id="valor1Panel5"></select>
 
-                <select style="font-size:xx-small;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+                <select style="font-size:xx-small;width:25% !important;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
 
                     <option value="Diretoria">@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
@@ -609,7 +609,7 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv Panel6">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
             <div class="defaultFilter">
-                <select style="font-size:xx-small; width:50px;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
+                <select style="font-size:xx-small;width:25% !important;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
                     <option value="Diretoria">@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
                     <option value="Objetivo">@Resources.Resource.guideline</option>
@@ -635,7 +635,7 @@
 
                 <select id="valor1Panel6"></select>
 
-                <select style="font-size:xx-small;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
+                <select style="font-size:xx-small;width:25% !important;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
 
                     <option value="Diretoria">@Resources.Resource.directorship</option>
                     <option value="Dimensao">@Resources.Resource.dimension</option>
@@ -2500,9 +2500,9 @@
 
         function TesteRenan(r, tipo, model) {
 
-            var form = $(r); //$('#Planejamento')
+            var form = $(r); 
 
-            if (tipo == 'Tatico') { //Novo tatico
+            if (tipo == 'Tatico') { 
 
                 form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
@@ -2518,7 +2518,6 @@
                     if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
                         before = before.slice(2, before.length)
-                        //console.log(before)
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
@@ -2560,7 +2559,6 @@
                         $(c).attr('onclick', after)
                     }
                 })
-
 
                 if (IsAdmin) {
                     $('#modalLindo').find('.modal-body .content1').append(form);
@@ -2884,6 +2882,9 @@
                     credits: {
                         enabled: false
                     },
+                    lang: {
+                        noData: "Sem dados"
+                    },
                     subtitle: {
                         text: ''
                     },
@@ -2964,6 +2965,9 @@
                     },
                     credits: {
                         enabled: false
+                    },
+                    lang: {
+                        noData: "Sem dados"
                     },
                     subtitle: {
                         text: ''
@@ -3092,7 +3096,7 @@
             let renderFunction = function (data, type, row, meta) {
 
                 //Gambzinha porque quando converte a data, ela fica com um dia a menos, então tive que somar mais um dia - Renan 22/06/2018
-                let dataFormatada = new Date(data);               
+                let dataFormatada = new Date(data);
                 dataFormatada.setDate(dataFormatada.getDate() + 1);
 
                 let html = "<span style='display:none'>" + data + "</span>" + dataFormatada.toLocaleDateString();
@@ -3283,6 +3287,9 @@
                 },
                 subtitle: {
                     text: ''
+                },
+                lang: {
+                    noData: "Sem dados"
                 },
                 yAxis: {
                     title: {
