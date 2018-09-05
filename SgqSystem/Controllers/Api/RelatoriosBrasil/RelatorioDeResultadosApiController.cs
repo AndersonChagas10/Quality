@@ -4988,9 +4988,7 @@ FROM (SELECT
 
             if (form.dimensaoData == 2)
             {
-                D.queryDimensao = $@" CONCAT(
-                                      RIGHT(CONCAT(0,DATEPART(day,DATEADD(dd, -(DATEPART(dw, {nomeColuna}) - 1), {nomeColuna}))),2),'/',RIGHT(CONCAT(0,DATEPART(MONTH,{nomeColuna})),2),'/',DATEPART(YEAR,{nomeColuna}),' - '
-                                     ,RIGHT(CONCAT(0,DATEPART(day,DATEADD(dd, 7-(DATEPART(dw, {nomeColuna})), {nomeColuna}))),2),'/',RIGHT(CONCAT(0,DATEPART(MONTH,{nomeColuna})),2),'/',DATEPART(YEAR,{nomeColuna}))";
+                D.queryDimensao = $@" CONCAT(DATEPART(YEAR,{nomeColuna}),'/',RIGHT(CONCAT(0,DATEPART(WEEK,{nomeColuna})),2))  ";
                 D.nomeAlias = $@" AS [SEMANA] ";
             }
             else if (form.dimensaoData == 4)
