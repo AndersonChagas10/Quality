@@ -194,7 +194,7 @@ namespace SgqSystem.Services
 
 
 
-                        var i = 1; // Convert.ToInt32(command.ExecuteNonQuery());
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
                         {
                             return i;
@@ -6494,7 +6494,7 @@ $(document).ready(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax);
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString());
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {

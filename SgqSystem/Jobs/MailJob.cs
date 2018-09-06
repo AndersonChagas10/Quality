@@ -32,7 +32,7 @@ namespace Jobs
                 MailJob.Executing = false;  //finalizou a execução
                 GlobalConfig.UltimaExecucaoDoJob["SendMailJob"] = DateTime.Now;
 
-                Thread.Sleep(new Random().Next(20000, 40000));
+                Thread.Sleep(new Random().Next(60000, 120000));
             }
         }
 
@@ -45,7 +45,7 @@ namespace Jobs
                     if (GlobalConfig.Brasil)
                     {
                         SimpleAsynchronous.CreateMailSgqAppDeviation();
-                        Thread.Sleep(new Random().Next(1000, 5000));
+                        Thread.Sleep(new Random().Next(100, 500));
                         SimpleAsynchronous.SendEmail();
                     }
                     else if (GlobalConfig.Eua)

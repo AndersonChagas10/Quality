@@ -467,9 +467,9 @@ namespace SgqSystem.Services
             return intervalo;
         }
 
-        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null)
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null, string random = null)
         {
-            var idRandomico = "valor_range_" + new Random().Next(999999);
+            var idRandomico = random;
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "         <input type=\"range\" oninput=\"document.getElementById('" + idRandomico + "').innerHTML = this.value;\" min=\"" + Convert.ToInt32(min) + "\" max=\"" + Convert.ToInt32(max) + "\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:80%;\">     " +
                                  "         <span id=\"" + idRandomico + "\" style=\"display: block; float:right; width: 20%; text-align:center;\"></span>     " +
