@@ -739,7 +739,10 @@ namespace Data.Repositories
                 {
                     foreach (var idHeadField in removerHeadField)
                     {
-                        var objetos = db.ParLevel1XHeaderField.Where(r => r.Id == idHeadField);
+                        var objetos = db.ParLevel1XHeaderField
+                            .AsNoTracking()
+                            .Where(r => r.Id == idHeadField)
+                            .ToList();
 
                         foreach (var marcarObjetoInativo in objetos)
                         {
