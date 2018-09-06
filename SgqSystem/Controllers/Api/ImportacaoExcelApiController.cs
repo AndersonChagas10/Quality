@@ -61,7 +61,16 @@ namespace SgqSystem.Controllers.Api
 
                     var collectionJson = item.Split(';');
                     var monitoramentoId = Convert.ToInt32(collectionJson[2].Contains("|") ? collectionJson[2].Split('|')[1] : collectionJson[2]);
-                    var companyId = Convert.ToInt32(collectionJson[4]);
+                    int companyId = 0;
+                    try
+                    {
+                        companyId = Convert.ToInt32(collectionJson[4]);
+                    }
+                    catch (Exception e)
+                    {
+                        var company = collectionJson[4];
+                        companyId = db.ParCompany.Where(x => x.Initials.Equals(company)).FirstOrDefault().Id;
+                    }
 
                     var weight = db.ParLevel3Level2
                         .Where(x => x.ParLevel2_Id == monitoramentoId && (x.ParCompany_Id == null || x.ParCompany_Id == companyId))
@@ -73,6 +82,8 @@ namespace SgqSystem.Controllers.Api
                     level3[8] = weight.ToString().Replace(',', '.');
 
                     collectionJson[22] = string.Join(",", level3);
+
+                    collectionJson[4] = companyId.ToString();
 
                     string collectionJsonFinal = string.Join(";", collectionJson);
 
@@ -256,10 +267,12 @@ namespace SgqSystem.Controllers.Api
         {
             var listaDivJeto = new List<string>();
 
-            foreach (var item in dados)
+            for (int i = 0; i < dados.Count; i++)
             {
+                var item = dados[i];
                 string expRegex = "{.*?}";
                 Match m = Regex.Match(divjetoPreenchido, expRegex);
+                string divjeto = divjetoPreenchido;
                 while (m.Success)
                 {
                     var value = m.Value.Replace("{", "").Replace("}", "");
@@ -276,7 +289,7 @@ namespace SgqSystem.Controllers.Api
                                 valor = dataFormatada.ToString("MM/dd/yyyy HH:mm:ss");
                         }
 
-                        divjetoPreenchido = divjetoPreenchido.Replace(m.Value, valor);
+                        divjeto = divjeto.Replace(m.Value, valor);
                     }
                     else
                     {
@@ -284,7 +297,7 @@ namespace SgqSystem.Controllers.Api
                     }
                     m = m.NextMatch();
                 }
-                listaDivJeto.Add(divjetoPreenchido);
+                listaDivJeto.Add(divjeto);
             }
             return listaDivJeto;
         }
