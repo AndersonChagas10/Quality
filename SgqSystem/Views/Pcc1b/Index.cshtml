@@ -22,13 +22,7 @@
                     <span>Volume de @Resources.Resource.pcc1b</span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>*@
-            </div>
+            <div class="page-toolbar"></div>
         </div>
         <!-- END PAGE BAR -->
 
@@ -66,11 +60,11 @@
                                         <th>
                                             @Html.DisplayNameFor(model => model.Data)
                                         </th>
-                                        @*<th>
-                                                @Html.DisplayNameFor(model => model.ParLevel1.Name)
-                                            </th>*@
                                         <th>
                                             Unidade
+                                        </th>
+                                        <th>
+                                            @Resources.Resource.shift
                                         </th>
                                         <th>
                                             Avaliações
@@ -85,14 +79,13 @@
                                     {
                                         <tr>
                                             <td>
-                                                @*@Html.DisplayFor(modelItem => item.Data)*@
                                                 @item.Data.Value.ToString("dd/MM/yyyy")
                                             </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                                </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Shift.Description)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Avaliacoes)
@@ -101,11 +94,8 @@
                                                 @Html.DisplayFor(modelItem => item.Amostras)
                                             </td>
                                             <td>
-                                                @*@if (item.Data != null && item.Data?.Date >= DateTime.Now.Date)
-                                                    {*@
                                                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                                @*}*@
                                             </td>
                                         </tr>
                                     }
@@ -126,8 +116,9 @@
     navbarSelect("navbar7");
 
 </script>
-@*Referencing the Angular library to the page*@
+
 @Scripts.Render("~/Scripts/angular.js")
+
 <script>
 
     var enviar = {};
@@ -137,8 +128,6 @@
     navbarSelect("navbar7");
 
     $(function () {
-
-        //Start config datepickerrange full
         var start = moment();
         var end = moment();
 
@@ -161,7 +150,6 @@
                     "cancelLabel": "Cancelar",
                     "customRangeLabel": "Seleção",
                 },
-                //autoApply: false,
                 alwaysShowCalendars: true,
                 showDropdowns: true,
                 ranges: rangesCalendar,
@@ -171,7 +159,6 @@
             $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
-                //autoApply: false,
                 locale: {
                     "format": "MM/DD/YYYY",
                     "separator": " - ",
@@ -183,10 +170,6 @@
             }, cb);
         }
 
-        //cb(start, end);
-        //End config datepickerrange full
-
-        //GET UPDATE DATE CALLBACK
         if(getParameterByName("startDate") == null || getParameterByName("endDate") == null){
             $('#reportrange span').html("");
         }else{
@@ -220,10 +203,8 @@
         });
     });
 
-</script>
-
-<script>
     $(document).ready(function () {
         closeLeftSidebar();
     });
+
 </script>
