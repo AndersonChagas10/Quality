@@ -827,9 +827,6 @@
                                     </thead>
                                     <tbody></tbody>
                                 </table>
-                                <div class="alert alert-danger" id="modalErro" role="alert">
-                                    Regra de não conformidade duplicada!
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1883,6 +1880,36 @@
             if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
                 openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
                 return;
+            }
+            var regraNaoConformidade;
+            var exist = $.grep($('#tableRegraNc  tbody  tr  td:nth-child(1)'), function (o, c) {//
+                debugger
+                var count = 0;
+                if ($(o).text() == $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text()) {
+                    count++;
+                } else {
+                    count = 0;
+                }
+
+                if (count > 0) {
+                    regraNaoConformidade = $(o).text();
+                    return true;
+                }
+                return false;
+            });
+
+            debugger
+            if (false) {/*Edição*/ //!!isEdit
+
+            } else {/*Inclusão*/
+                if (exist.length) {
+                    debugger
+                    @*if (regraNaoConformidade == -1)
+                        display = "@Resources.Resource.all";*@
+                    openMessageModal(Resources('not_conformities_rules_exist') + " " + regraNaoConformidade + ".", "")
+                    return false;
+
+                }
             }
 
             /*Cria o objeto*/

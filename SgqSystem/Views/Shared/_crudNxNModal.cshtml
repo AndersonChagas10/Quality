@@ -116,7 +116,7 @@
 
         btnEdit: '<button type="button" class="btn btn-success btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
-
+            debugger
             $('#crudNxNEdit > div > div > div.modal-body').empty();
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
             var obj = $(e).parents('tr').data();
@@ -126,14 +126,39 @@
                 crudNxN.modalAlterarRegraNc(obj);
                 console.log(obj);
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {                
-                    var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
-                    console.log("clique salvar" + editado);
-                    $(e).parents('tr').removeData();
-                    $(e).parents('tr').data(editado);
-                    $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
-                    $($(e).parents('tr').find('td')[1]).html(editado.Value)
-                    $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable)
-                    $('#crudNxNEdit').modal('hide');
+
+                    var regraNaoConformidade;
+                    var count = 0;
+                    var exist = $.grep($('#tableRegraNc  tbody  tr  td:nth-child(1)'), function (o, c) {//
+                        debugger                       
+                        if ($(o).text() == $("#crudNxNEdit > div > div  #selectNotConformityRule :selected").text()) {
+                            count++;
+                        } else {
+                            count = 0;
+                        }
+                        if (count > 0) {
+                            regraNaoConformidade = $(o).text();
+                            return true;
+                        }
+                        return false;
+                    });                  
+                    debugger
+                    if (exist.length) {
+                            @*if (regraNaoConformidade == -1)
+                                display = "@Resources.Resource.all";*@
+                        openMessageModal(Resources('not_conformities_rules_exist') + " " + regraNaoConformidade + ".", "")
+                        return false;
+                    } else {
+                        var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
+                        console.log("clique salvar" + editado);
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
+                        $($(e).parents('tr').find('td')[1]).html(editado.Value);
+                        $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
+                        $('#crudNxNEdit').modal('hide');
+                    }
+
                 });
             }
                 /*Contadores*/
