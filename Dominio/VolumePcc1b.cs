@@ -50,6 +50,7 @@ namespace Dominio
 
         public int? Shift_Id { get; set; }
 
+        [ForeignKey("Shift_Id")]
         public virtual Shift Shift { get; set; }
 
         public virtual ParCompany ParCompany { get; set; }

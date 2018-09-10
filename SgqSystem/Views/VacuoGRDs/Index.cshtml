@@ -84,7 +84,14 @@
                                                 @Html.DisplayFor(modelItem => item.ParCompany.Name)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Shift.Description)
+                                                @if (item.Shift_Id == null)
+                                                {
+                                                    @Resources.Resource.all
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.Shift.Description)
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Avaliacoes)
