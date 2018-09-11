@@ -6103,6 +6103,7 @@ $(document).ready(function(){
                 StringBuilder parLevel3Group = new StringBuilder();
 
                 var parlevel3GroupByLevel2 = parlevel3List.GroupBy(p => p.ParLevel3Group_Id);
+                var listaIdParLevel3 = new List<int>();
 
                 foreach (var parLevel3GroupLevel2 in parlevel3GroupByLevel2)//LOOP4
                 {
@@ -6113,8 +6114,10 @@ $(document).ready(function(){
                     foreach (var parLevel3 in parLevel3GroupLevel2)//LOOP5
                     {
 
-                        if (Last_Id != parLevel3.Id)
+                        if (!listaIdParLevel3.Contains(parLevel3.Id))
                         {
+                            listaIdParLevel3.Add(parLevel3.Id);
+                            
 
                             if (parLevel3.ParLevel3Group_Id > 0)
                             {
