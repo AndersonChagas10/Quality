@@ -50,8 +50,8 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParLevel1_IdHelper, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
-                                                @Html.HiddenFor(model => model.ParLevel1_Id)
+                                                @Html.DropDownListFor(model => model.ParLevel1_Id, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
+                                                @*@Html.HiddenFor(model => model.ParLevel1_Id)*@
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -138,14 +138,13 @@
         };
 
         function HabilitaCampo() {
-        debugger
-            $("ParLevel1_IdHelper").removeAttr('disabled');
+            $("#ParLevel1_Id").removeAttr('disabled');
         }
 
         $(document).ready(function () {
             closeLeftSidebar();
-            $("#ParLevel1_IdHelper").select2()
-            $("#ParModule_Id").select2()
+            $("#ParLevel1_IdHelper").select2();
+            $("#ParModule_Id").select2();
 
             $("#PointsText").inputmask('decimal', {
                 radixPoint: ",",

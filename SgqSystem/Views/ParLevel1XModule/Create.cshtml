@@ -95,7 +95,7 @@
                                         <div class="form-group">
                                                 @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
-                                                    @Html.TextBox("EffectiveDateEnd", "", new { @class = "", @type = "date", @style = "width:190px" })
+                                                    @Html.TextBox("EffectiveDateEnd", "", new { @class = "form-control", @type = "date", @style = "width:190px" })
                                                     @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>

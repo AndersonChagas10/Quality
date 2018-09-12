@@ -133,6 +133,11 @@ namespace SgqSystem.Controllers
         {
             ModelState.Clear();
 
+            var totalDeVinculos = db.ParLevel1XModule.Where(x => x.ParModule_Id == parModule.Id).Count();
+
+            if (totalDeVinculos > 0)
+                ModelState.AddModelError("IsActive", Resources.Resource.module_link_indicator);
+
             if (string.IsNullOrEmpty(parModule.Name))
                 ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
         }
