@@ -111,16 +111,17 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper")] ParLevel1XModule parLevel1XModule)
+        public ActionResult Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AlterDate = DateTime.Now;
             ValidaIndicadoresxModulosEdicao(parLevel1XModule);
             ValidaDataEntre(parLevel1XModule);
+            var indicadorxModuloEditado = db.ParLevel1XModule.Where(x => x.Id == parLevel1XModule.Id).FirstOrDefault();
             if (ModelState.IsValid)
             {
-                db.Entry(parLevel1XModule).State = EntityState.Modified;
-                db.Entry(parLevel1XModule).Property(x => x.ParLevel1_Id).IsModified = false;
-                await db.SaveChangesAsync();
+                indicadorxModuloEditado.EffectiveDateEnd = parLevel1XModule.EffectiveDateEnd;
+                indicadorxModuloEditado.EffectiveDateStart = parLevel1XModule.EffectiveDateStart;               
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
@@ -140,6 +141,9 @@ namespace SgqSystem.Controllers
 
             if (parLevel1XModule.EffectiveDateStart.IsNull())
                 ModelState.AddModelError("EffectiveDateStart", Resources.Resource.required_field + " " + Resources.Resource.effective_date_start);
+
+            if (parLevel1XModule.EffectiveDateStart > parLevel1XModule.EffectiveDateEnd)
+                ModelState.AddModelError("EffectiveDateEnd", Resources.Resource.effective_date_start + " " + Resources.Resource.are_greater_than + " " + Resources.Resource.effective_date_end);
         }
 
         // GET: ParLevel1XModule/Delete/5
@@ -201,7 +205,7 @@ namespace SgqSystem.Controllers
         }
         private void ValidaDataEntre(ParLevel1XModule parLevel1XModule)
         {
-            var indicadorXmodulo = db.ParLevel1XModule
+            var indicadorXmodulo = db.ParLevel1XModule.AsNoTracking()
                 .Where(x => x.ParModule_Id == parLevel1XModule.ParModule_Id)
                 .Where(x => x.ParLevel1_Id == parLevel1XModule.ParLevel1_Id)
                 .Where(x => x.IsActive).FirstOrDefault();
@@ -212,15 +216,11 @@ namespace SgqSystem.Controllers
             if (parLevel1XModule.EffectiveDateStart < indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd < indicadorXmodulo?.EffectiveDateEnd)
                 ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
 
-            if (parLevel1XModule.EffectiveDateStart > indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > indicadorXmodulo?.EffectiveDateEnd)
-                ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
-
-            if (parLevel1XModule.EffectiveDateStart >= indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd <= indicadorXmodulo?.EffectiveDateEnd)
+            if (parLevel1XModule.EffectiveDateStart <= indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > indicadorXmodulo?.EffectiveDateEnd)
                 ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
 
             if (parLevel1XModule.EffectiveDateStart >= indicadorXmodulo?.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd == null || 
-                parLevel1XModule.EffectiveDateEnd == DateTime.MinValue || indicadorXmodulo?.EffectiveDateEnd == null || 
-                parLevel1XModule.EffectiveDateEnd < indicadorXmodulo?.EffectiveDateEnd)
+                parLevel1XModule.EffectiveDateEnd == DateTime.MinValue || parLevel1XModule.EffectiveDateEnd < indicadorXmodulo?.EffectiveDateEnd)
                 ModelState.AddModelError("EffectiveDateStart", "Já existe um vínculo no período selecionado");
 
         }
