@@ -581,7 +581,7 @@ namespace Dominio.Services
             level3.listParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSampleDTO>>(level3EvaluationSample);
             retorno.parLevel3Value = new ParLevel3ValueDTO(); // Mini Gambi....
             level3.ParLevel3Value_OuterList = Mapper.Map<List<ParLevel3Value_OuterListDTO>>(parlevel3Reencravacao);
-            level3.ParLevel3Value_OuterListGrouped = level3.ParLevel3Value_OuterList.GroupBy(r=>r.ParCompany_Id);
+            level3.ParLevel3Value_OuterListGrouped = level3.ParLevel3Value_OuterList.GroupBy(r => r.ParCompany_Id);
             #endregion
 
             #region Rn's
