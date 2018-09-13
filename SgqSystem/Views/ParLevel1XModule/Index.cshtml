@@ -124,7 +124,10 @@
         $('#tabelaIndicadorModulo').dataTable({
             "aoPaging": true,
             "aoSearching": true,
-            "order": [[1, "asc"]]
+            "order": [[1, "asc"]],
+            "language": {
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
         });
     });
 
