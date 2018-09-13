@@ -166,7 +166,7 @@ namespace SgqSystem.Controllers.Api.App
                     if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
                     {
 
-                        retorno.ParteDaTela = this.GetFile(UnitId, 1);
+                        retorno.ParteDaTela = this.GetFile(UnitId, ShiftId);
 
                         if (retorno.ParteDaTela != null && GlobalConfig.PaginaDoTablet[UnitId]?.DataFim > DateTime.Now.Date)
                             return retorno;
