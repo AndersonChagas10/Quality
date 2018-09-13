@@ -57,7 +57,8 @@ namespace SgqSystem.Controllers
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;
-            var quantSalvo = 0;         
+            var quantSalvo = 0;
+            List<int> arrayIndicadorDuplicado = new List<int>();
             if (parLevel1XModule.ParLevel1_IdHelper?.Count() > 0)
             {
                 foreach (var item in parLevel1XModule.ParLevel1_IdHelper)
@@ -82,12 +83,21 @@ namespace SgqSystem.Controllers
                         db.ParLevel1XModule.Add(objInserir);                                          
                         quantSalvo++;
                     }
+                    else
+                    {
+                        arrayIndicadorDuplicado.Add(parLevel1XModule.ParLevel1_Id);                      
+                    }
                 }
                 if (quantSalvo == parLevel1XModule.ParLevel1_IdHelper.Count())
                 {
                   
                     db.SaveChanges();
                     return RedirectToAction("Index");
+                }
+                else
+                {
+                    var ListaDeIndicadoresQueJaExistem = db.ParLevel1.Where(r => arrayIndicadorDuplicado.Contains(r.Id)).Select(r => r.Name).ToList();
+                    ModelState.AddModelError("ParLevel1_Id", string.Join(",", ListaDeIndicadoresQueJaExistem));
                 }
 
             }
@@ -128,7 +138,6 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper")] ParLevel1XModule parLevel1XModule)
         {
-            var isEdit = true;
             parLevel1XModule.AlterDate = DateTime.Now;
             ValidaIndicadoresxModulosEdicao(parLevel1XModule);
             ValidaDataEntre(parLevel1XModule, parLevel1XModule.ParLevel1_Id);
@@ -252,7 +261,7 @@ namespace SgqSystem.Controllers
 
 
             if (isNotValid)
-            {
+            {               
                 ModelState.AddModelError("ParLevel1_IdHelper", "Este indicador já possui vinculo na data vigente!");
             }         
         }
