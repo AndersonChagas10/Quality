@@ -1261,7 +1261,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             //sql += "\n   ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC , 16  DESC  ";
 
             //ORDENAR POR ORDEM ALFABÉTICA
-            sql += "\n    ORDER BY 4 ASC, 2 ASC,  15  DESC , 16  DESC  ";
+            sql += "\n    ORDER BY ISNULL(L3G.Name,'ZZZ') ASC, 2 ASC,  15  DESC , 16  DESC  ";
 
             List<ParLevel3> parLevel3List = new List<ParLevel3>();
             using (Factory factory = new Factory("DefaultConnection"))
