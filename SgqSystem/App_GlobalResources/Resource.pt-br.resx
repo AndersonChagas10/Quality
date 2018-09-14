@@ -2619,4 +2619,13 @@
   <data name="new_format" xml:space="preserve">
     <value>Novo Formato</value>
   </data>
+  <data name="are_greater_than" xml:space="preserve">
+    <value>É maior que</value>
+  </data>
+  <data name="module_link_indicator" xml:space="preserve">
+    <value>O módulo está vinculado a um ou mais indicadores, verifique antes de inativa lo</value>
+  </data>
+  <data name="update_collect_message" xml:space="preserve">
+    <value>Por favor, atualize as parametrizações da sua unidade para surtir efeito no APP Coleta.</value>
+  </data>
 </root>
