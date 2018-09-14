@@ -1271,8 +1271,8 @@
 
                                     if(!!o.ParLevel3Value && o.ParLevel3Value.length > 0){
                                         item = o.ParLevel3Value[0];
-                                        intervalMin = item.IntervalMin.toFixed(2);
-                                        intervalMax = item.IntervalMax.toFixed(2);
+                                        intervalMin = !!item.IntervalMin ? item.IntervalMin.toFixed(2) : 0;
+                                        intervalMax = !!item.IntervalMax ? item.IntervalMax.toFixed(2) : 100;
                                         measurementUnit = ((item.ParMeasurementUnit != null) ? item.ParMeasurementUnit.Name : "");
                                         limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
                                     }else if(!!o.ParLevel3Value_OuterList && o.ParLevel3Value_OuterList.length > 0){

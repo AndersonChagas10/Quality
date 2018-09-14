@@ -88,6 +88,7 @@
                         data: things,
                         dataType: "JSON",
                         contentType: "application/json; charset=utf-8",
+                        cache: false, 
                         success: function (response) {
                             getDataTable(response);
                             $('#spamLoading').LoadingOverlay("hide");
@@ -95,16 +96,17 @@
 
                             setTimeout(function () {
                                 refreshStatus();
-                            }, 3000);
+                            }, 6000);
                         }
                     });
             };
 
-
             var getDataTable = function (response) {
+
                 $('#tableAllUnitTelaTablet').empty();
 
                 var list = [];
+
                 //Gera a lista
                 $.each(response, function (index, value) {
                     var row = $('tr[data-unit-id=' + value.Key + ']').children();
@@ -170,12 +172,11 @@
             });
 
             var selectedAll = false;
+
             $('#checkAll').on('click', function () {
                 $('.monitor-get-tela input:checkbox').prop('checked', !selectedAll);
                 selectedAll = !selectedAll;
             });
-
-            //$('#refreshStatus').on('click',refreshStatus);
 
             refreshStatus();
 

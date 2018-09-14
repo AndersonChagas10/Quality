@@ -242,6 +242,7 @@
         var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';*@
 
     var graficoPeriodo;
+    var graficoTarefasAcumuladas;
     var chart;
     var chartHistorico;
     var chartHistoricoGeral;
@@ -274,6 +275,11 @@
                 unidade.forEach(function (o, c) {
                     enviar['unitIdArr'].push(unidade[c].id);
             })
+        }
+
+        if ($('#level1Groupv').prev().find('a.actived').length > 0) {
+            enviar['groupParLevel1Id'] = 0;
+            enviar['groupParLevel1IdArr'] = [];
         }
         if ($('#level1Idv').prev().find('a.actived').length > 0) {
             enviar['level1Id'] = 0;
@@ -309,22 +315,35 @@
             EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         }
 
-        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+        // Tarefas Acumuladas
 
-            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+        //if ((enviar['groupParLevel1IdArr'] != undefined) || (enviar['groupParLevel1IdArr'].length == 1)) {
 
-        } else
-        if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] == undefined) || (enviar['level1IdArr'].length == 0))) {
+        //    EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
-                EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+        //}
 
-        } else
-
-        if (((enviar['unitIdArr'] == undefined) || (enviar['unitIdArr'].length == 0)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+        if (
+            ((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) ||
+            ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1)) ||
+            ((enviar['groupParLevel1IdArr'] != undefined) && (enviar['groupParLevel1IdArr'].length == 1))
+        ) {
 
             EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
 
         }
+        //else
+        //if (((enviar['unitIdArr'] != undefined) && (enviar['unitIdArr'].length == 1)) && ((enviar['level1IdArr'] == undefined) || (enviar['level1IdArr'].length == 0))) {
+
+        //        EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        //} else
+
+        //if (((enviar['unitIdArr'] == undefined) || (enviar['unitIdArr'].length == 0)) && ((enviar['level1IdArr'] != undefined) && (enviar['level1IdArr'].length == 1))) {
+
+        //    EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+
+        //}
 
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
@@ -1413,8 +1432,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1448,8 +1466,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1484,8 +1501,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1723,8 +1739,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1758,8 +1773,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -1794,8 +1808,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                     //FTA2(enviar, this)
                                 }
                             }
@@ -2002,8 +2015,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                    Send(true);
+                                    clickFiltroData(this);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2038,8 +2050,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2075,8 +2086,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -2251,8 +2261,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2286,8 +2295,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -2322,8 +2330,7 @@
                     point: {
                         events: {
                             click: function () {
-                                cb(this.category.format("dd/MM/yyyy"), this.category.format("dd/MM/yyyy"));
-                                Send(true);
+                                clickFiltroData(this);
                                 //FTA2(enviar, this)
                             }
                         }
@@ -3890,6 +3897,17 @@
             }, "GraficoHistoricoModal")
         });
     }
+
+    function clickFiltroData(this_){
+
+        var data_comparar = this_.category.substr(6, 4) + "-" + this_.category.substr(3, 2) + "-" + this_.category.substr(0, 2)
+
+        if (IsDate(data_comparar) == true && this_.category.format("dd/MM/yyyy").length >= 8 ) {
+            cb(this_.category.format("dd/MM/yyyy"), this_.category.format("dd/MM/yyyy"));
+            Send(true);        
+        }
+    }
+
     </script>
 
 }

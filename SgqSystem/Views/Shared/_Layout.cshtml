@@ -631,6 +631,24 @@
             document.documentElement.scrollTop = 0;
         }
 
+        // IsDate =: é uma data?
+
+        function IsDate(Data) {
+
+            var resposta = new Date(Data)
+
+            var IsDateBool = false;
+
+            if (resposta == 'Invalid Date'){
+                IsDateBool = false;
+            } else
+            {
+                IsDateBool = true;
+            }
+
+            return IsDateBool;
+        }
+
         $(document).ready(function () {
 
             $.validator.methods.range = function (value, element, param) {

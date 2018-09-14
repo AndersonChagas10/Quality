@@ -2625,4 +2625,13 @@
   <data name="new_format" xml:space="preserve">
     <value>New Format</value>
   </data>
+  <data name="are_greater_than" xml:space="preserve">
+    <value>Are greater than</value>
+  </data>
+  <data name="module_link_indicator" xml:space="preserve">
+    <value>The module is linked to one or more indicators, check before inactive</value>
+  </data>
+  <data name="update_collect_message" xml:space="preserve">
+    <value>Please update the settings of your unit to have an effect on APP Collect</value>
+  </data>
 </root>
