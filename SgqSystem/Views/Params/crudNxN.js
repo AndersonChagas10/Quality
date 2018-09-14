@@ -1,7 +1,7 @@
 ﻿var crudNxN = {
 
     adiciona: function (o, idTable, tdsName) {
-
+        debugger
         var tr = "";
         var objData = {};
 
@@ -68,8 +68,7 @@
     },
     btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers alterar" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
     funcEdit: function (e) {
-        debugger
-        console.log("OLA");
+
         $('#crudNxNEdit > div > div > div.modal-body').empty();
         $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
         var obj = $(e).parents('tr').data();
