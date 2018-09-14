@@ -529,6 +529,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are greater than.
+        /// </summary>
+        internal static string are_greater_than {
+            get {
+                return ResourceManager.GetString("are_greater_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attach.
         /// </summary>
         internal static string attach {
@@ -3985,6 +3994,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The module is linked to one or more indicators, check before inactive.
+        /// </summary>
+        internal static string module_link_indicator {
+            get {
+                return ResourceManager.GetString("module_link_indicator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monitoring.
         /// </summary>
         internal static string monitoring {
@@ -7086,6 +7104,15 @@ namespace Resources {
         internal static string update_all_tablet_message {
             get {
                 return ResourceManager.GetString("update_all_tablet_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please update the settings of your unit to have an effect on APP Collect.
+        /// </summary>
+        internal static string update_collect_message {
+            get {
+                return ResourceManager.GetString("update_collect_message", resourceCulture);
             }
         }
         
