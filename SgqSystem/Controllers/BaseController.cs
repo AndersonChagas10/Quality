@@ -30,11 +30,11 @@ namespace SgqSystem.Controllers
             using (var db = new SgqDbDevEntities())
             {
 
-                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));
+                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive));
 
-                ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive == true));
+                ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive));
 
-                //ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null));
+                ViewBag.ShiftVolume = Mapper.Map<IEnumerable<ShiftDTO>>(db.Shift.OrderBy(r => r.Description));
             }
 
             var listaURLPA = GetWebConfigList("URL_PA");
@@ -194,15 +194,6 @@ namespace SgqSystem.Controllers
         public static string[] GetWebConfigList(string key)
         {
             var list = GetWebConfigSettings(key).Split(';');
-            //Dictionary<string, string> dict = new Dictionary<string, string>();
-            //foreach (var o in list)
-            //{
-            //    if (o.Length >= 3)
-            //    {
-            //        var obj = o.Split('>');
-            //        dict.Add(obj[0], obj[1]);
-            //    }
-            //}
             return list;
         }
 

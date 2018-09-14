@@ -52,23 +52,28 @@ namespace SgqSystem.Controllers.Api.App
                 GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
 
             var units = db.ParCompany.Where(r => r.IsActive).ToList();
+
+            var shifts = db.Shift.ToList();
+
             using (var service = new SyncServices())
             {
-                foreach (var i in units)
+                foreach (var shift in shifts)
                 {
-
-                    var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now);
-                    try
+                    foreach (var i in units)
                     {
-                        this.SaveFile(i.Id, atualizado);
-                        GlobalConfig.PaginaDoTablet.Add(i.Id, new HtmlDoTablet() { /*Html = atualizado,*/ DataFim = DateTime.Now, DataInicio = DateTime.Now });
-                        GlobalConfig.ParamsDisponiveis += i.Id.ToString();
-                    }
-                    catch (Exception e)
-                    {
-                        new CreateLog(e, i);
-                    }
+                        var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now, shift.Id);
+                        try
+                        {
+                            this.SaveFile(i.Id, atualizado, shift.Id);
+                            GlobalConfig.PaginaDoTablet.Add(i.Id, new HtmlDoTablet() { /*Html = atualizado,*/ DataFim = DateTime.Now, DataInicio = DateTime.Now });
+                            GlobalConfig.ParamsDisponiveis += i.Id.ToString();
+                        }
+                        catch (Exception e)
+                        {
+                            new CreateLog(e, i);
+                        }
 
+                    }
                 }
             }
 
@@ -94,28 +99,36 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.PROCESSANDO;
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
+            var shifts = db.Shift.ToList();
+
             using (var service = new SyncServices())
             {
-                var atualizado = service.getAPPLevels(56, UnitId, DateTime.Now);/*Cria tela atualizada*/
-                try
+                foreach (var shift in shifts)
                 {
-                    if (GlobalConfig.PaginaDoTablet[UnitId] != null)/*Se ja existir atualiza*/
+                    var atualizado = service.getAPPLevels(56, UnitId, DateTime.Now, shift.Id);/*Cria tela atualizada*/
+
+                    try
                     {
-                        GlobalConfig.PaginaDoTablet[UnitId].DataFim = DateTime.Now;
-                        GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
+                        if (GlobalConfig.PaginaDoTablet[UnitId] != null)/*Se ja existir atualiza*/
+                        {
+                            GlobalConfig.PaginaDoTablet[UnitId].DataFim = DateTime.Now;
+                            GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
+                        }
+                        else/*Se nao existir cria*/
+                        {
+                            GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() { DataFim = DateTime.Now, DataInicio = DateTime.Now, Status = HtmlDoTablet.StatusType.SUCESSO });
+                            GlobalConfig.ParamsDisponiveis += UnitId.ToString();
+                        }
+
+                        this.SaveFile(UnitId, atualizado, shift.Id);
                     }
-                    else/*Se nao existir cria*/
+                    catch (Exception e)
                     {
-                        GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() { DataFim = DateTime.Now, DataInicio = DateTime.Now, Status = HtmlDoTablet.StatusType.SUCESSO });
-                        GlobalConfig.ParamsDisponiveis += UnitId.ToString();
+                        new CreateLog(e, UnitId);
                     }
-                    this.SaveFile(UnitId, atualizado);
+
+                    System.GC.Collect();
                 }
-                catch (Exception e)
-                {
-                    new CreateLog(e, UnitId);
-                }
-                System.GC.Collect();
             }
 
             return null;// GetTela(UnitId);
@@ -139,17 +152,21 @@ namespace SgqSystem.Controllers.Api.App
         /// <param name="UnitId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetTela/{UnitId}")]
-        public RetornoParaTablet GetTela(int UnitId)
+        [Route("GetTela/{UnitId}/{ShiftId}")]
+        public RetornoParaTablet GetTela(int UnitId, int ShiftId)
         {
             var retorno = new RetornoParaTablet();
+
+            var shifts = db.Shift.ToList();
+
             try
             {
                 if (GlobalConfig.PaginaDoTablet != null)
                 {
                     if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
                     {
-                        retorno.ParteDaTela = this.GetFile(UnitId);
+
+                        retorno.ParteDaTela = this.GetFile(UnitId, ShiftId);
 
                         if (retorno.ParteDaTela != null && GlobalConfig.PaginaDoTablet[UnitId]?.DataFim > DateTime.Now.Date)
                             return retorno;
@@ -157,11 +174,15 @@ namespace SgqSystem.Controllers.Api.App
                 }
 
                 UpdateTelaDoTablet(UnitId);
-                retorno.ParteDaTela = this.GetFile(UnitId);
+
+                //foreach (var shift in shifts)
+                //{
+                retorno.ParteDaTela = this.GetFile(UnitId, ShiftId);
+                //}
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("GetTela - "+ex.Message, ex), UnitId);
+                new CreateLog(new Exception("GetTela - " + ex.Message, ex), UnitId);
             }
             return retorno;
         }
@@ -176,7 +197,7 @@ namespace SgqSystem.Controllers.Api.App
             using (var dbADO = new Factory(unidade.IPServer, unidade.DBServer, pass, user))
             {
                 //var listaDeUsuarios = UpdateListaDeUsuarios(UnitId);
-                var tela = GetTela(UnitId);
+                var tela = GetTela(UnitId, 1);
                 dbADO.InsertUpdateData(tela);
 
             }
@@ -313,9 +334,9 @@ namespace SgqSystem.Controllers.Api.App
             }
         }
 
-        private void SaveFile(int id, string html)
+        private void SaveFile(int id, string html, int Shift_Id)
         {
-            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}.txt");
+            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt");
             Directory.CreateDirectory(path.Substring(0, path.LastIndexOf("\\")));
             using (StreamWriter writer = new StreamWriter(path))
             {
@@ -323,11 +344,11 @@ namespace SgqSystem.Controllers.Api.App
             }
         }
 
-        private string GetFile(int id)
+        private string GetFile(int id, int Shift_Id)
         {
             //Código para Ler o arquivo
             string file;
-            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}.txt");
+            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt");
             Directory.CreateDirectory(path.Substring(0, path.LastIndexOf("\\")));
             try
             {

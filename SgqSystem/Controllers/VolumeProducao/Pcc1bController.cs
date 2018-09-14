@@ -23,7 +23,6 @@ namespace SgqSystem.Controllers
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
             var pcc1b = db.VolumePcc1b.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1);
-            //var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1).OrderByDescending(p => p.Data);
 
             //Date filter
             if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
@@ -48,10 +47,7 @@ namespace SgqSystem.Controllers
                 pcc1b = pcc1b.Where(VCD => VCD.ParCompany_id == id);
             }
 
-            // pcc1b = pcc1b.OrderByDescending(c => c.Data);
-
             if (pcc1b.Count() > 0)
-                //return View(pcc1b.ToList());
                 return View(pcc1b.OrderByDescending(c => c.Data).ToList());
             else
                 return View(new System.Collections.Generic.List<VolumePcc1b>());
@@ -76,7 +72,7 @@ namespace SgqSystem.Controllers
         public ActionResult Create()
         {
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name");
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name");            
             return View();
         }
 
@@ -85,14 +81,14 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumePcc1b pcc1b)
         {
             ValidaPcc1B(pcc1b);
 
             if (ModelState.IsValid)
             {
                 //Verifica se já existe uma coleta no mesmo dia
-                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id && r.Shift_Id == pcc1b.Shift_Id).ToList().Count() == 0)
                 {
                     pcc1b.AddDate = DateTime.Now;
                     db.VolumePcc1b.Add(pcc1b);
@@ -102,7 +98,6 @@ namespace SgqSystem.Controllers
                 else
                 {
                     ReturnError();
-                    //return View(pcc1b);
                 }
             }
 
@@ -124,11 +119,6 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            //if (pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name", pcc1b.ParLevel1_id);
             ViewBag.UnidadeUsuario = new SelectList(db.ParCompany.Where(c => c.Id == pcc1b.ParCompany_id), "Id", "Name", pcc1b.ParCompany_id);
@@ -140,13 +130,13 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumePcc1b pcc1b)
         {
             ValidaPcc1B(pcc1b);
 
             if (ModelState.IsValid)
             {
-                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id && r.Shift_Id == pcc1b.Shift_Id).ToList().Count() == 0)
                 {
                     pcc1b.AlterDate = DateTime.Now;
                     db.Entry(pcc1b).State = EntityState.Modified;
@@ -180,7 +170,6 @@ namespace SgqSystem.Controllers
                     else
                     {
                         ReturnError();
-                        //return View(pcc1b);
                     }
                 }
             }
@@ -203,16 +192,11 @@ namespace SgqSystem.Controllers
 
             if (pcc1b.VolumeAnimais == null)
                 ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
-
-            //if (pcc1b.Id > 0 && pcc1b.Data != null && pcc1b.Data?.Date < DateTime.Now.Date)
-            //{
-            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
-            //}
         }
 
         private void ReturnError()
         {
-            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade e turno!");
         }
 
         // GET: Pcc1b/Delete/5

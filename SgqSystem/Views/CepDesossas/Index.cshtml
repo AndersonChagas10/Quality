@@ -22,12 +22,7 @@
                     <span>Volume de @Resources.Resource.cep_desossa</span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>*@
-            </div>
+            <div class="page-toolbar"></div>
         </div>
         <!-- END PAGE BAR -->
 
@@ -66,11 +61,11 @@
                                         <th>
                                             @Html.DisplayNameFor(model => model.Data)
                                         </th>
-                                        @*<th>
-                                                @Html.DisplayNameFor(model => model.ParLevel1.Name)
-                                            </th>*@
                                         <th>
                                             Unidade
+                                        </th>
+                                        <th>
+                                            @Resources.Resource.shift
                                         </th>
                                         <th>
                                             Avaliações
@@ -85,17 +80,20 @@
                                     {
                                         <tr>
                                             <td>
-
-                                                @*@Html.DisplayFor(modelItem => item.Data.Value)*@
-
                                                 @item.Data.Value.ToString("dd/MM/yyyy")
-
                                             </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                                </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                            </td>
+                                            <td>
+                                                @if (item.Shift_Id == null)
+                                                {
+                                                    @Resources.Resource.all
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.Shift.Description)
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Avaliacoes)
@@ -104,11 +102,8 @@
                                                 @Html.DisplayFor(modelItem => item.Amostras)
                                             </td>
                                             <td>
-                                                @*@if (item.Data != null && item.Data?.Date >= DateTime.Now.Date)
-                                                    {*@
                                                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                                @* } *@
                                             </td>
                                         </tr>
                                     }
@@ -123,8 +118,8 @@
     <!-- END CONTENT BODY -->
 </div>
 
-@*Referencing the Angular library to the page*@
 @Scripts.Render("~/Scripts/angular.js")
+
 <script>
 
     $(document).ready(function () {
@@ -139,18 +134,21 @@
 
     $(function () {
 
-        //Start config datepickerrange full
         var start = moment();
         var end = moment();
 
         function cb(start, end) {
+
             $('#reportrange span').html(start.format() + ' - ' + end.format());
             enviar['startDate'] = start.format();
             enviar['endDate'] = end.format();
         }
+
         var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
         var configCallendar = {};
-        if(configQueryData){
+
+        if (configQueryData) {
+
             $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
@@ -162,17 +160,17 @@
                     "cancelLabel": "Cancelar",
                     "customRangeLabel": "Seleção",
                 },
-                //autoApply: false,
                 alwaysShowCalendars: true,
                 showDropdowns: true,
                 ranges: rangesCalendar,
                 linkedCalendars: false
             }, cb);
-        }else{
+
+        } else {
+
             $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
-                //autoApply: false,
                 locale: {
                     "format": "MM/DD/YYYY",
                     "separator": " - ",
@@ -184,27 +182,31 @@
             }, cb);
         }
 
-        //cb(start, end);
-        //End config datepickerrange full
+        if (getParameterByName("startDate") == null || getParameterByName("endDate") == null) {
 
-        //GET UPDATE DATE CALLBACK
-        if(getParameterByName("startDate") == null || getParameterByName("endDate") == null){
             $('#reportrange span').html("");
-        }else{
+
+        } else {
+
             $('#reportrange span').html(getParameterByName("startDate") + ' - ' + getParameterByName("endDate"));
             enviar['startDate'] = getParameterByName("startDate");
             enviar['endDate'] = getParameterByName("endDate");
         }
 
-        if(getParameterByName("ParCompany_id") != null){
-            $('#ParCompany_id option[value="'+getParameterByName("ParCompany_id")+'"]').prop('selected', true);
+        if (getParameterByName("ParCompany_id") != null) {
+
+            $('#ParCompany_id option[value="' + getParameterByName("ParCompany_id") + '"]').prop('selected', true);
+
         }
 
         function getParameterByName(name, url) {
+
             if (!url) {
                 url = window.location.href;
             }
+
             name = name.replace(/[\[\]]/g, "\\$&");
+
             var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
                 results = regex.exec(url);
             if (!results) return null;
@@ -212,11 +214,11 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
 
-        $("#btnFilter").on('click',function(){
-            var filterUrlCall = "@Url.Action("Index", "CepDesossas")?"+
-                ((enviar['startDate']!= null)?"startDate="+enviar['startDate']+"&":"")+
-                ((enviar['endDate']!= null)?"endDate="+enviar['endDate']+"&":"")+
-                (($('#ParCompany_id').val() > 0)?"ParCompany_id="+$('#ParCompany_id').val()+"&":"");
+        $("#btnFilter").on('click', function () {
+            var filterUrlCall = "@Url.Action("Index", "CepDesossas")?" +
+                ((enviar['startDate'] != null) ? "startDate=" + enviar['startDate'] + "&" : "") +
+                ((enviar['endDate'] != null) ? "endDate=" + enviar['endDate'] + "&" : "") +
+                (($('#ParCompany_id').val() > 0) ? "ParCompany_id=" + $('#ParCompany_id').val() + "&" : "");
             window.location = filterUrlCall;
         });
     });

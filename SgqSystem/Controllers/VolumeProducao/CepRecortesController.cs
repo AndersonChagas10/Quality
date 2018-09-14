@@ -46,7 +46,6 @@ namespace SgqSystem.Controllers
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
             var cepRecortes = db.VolumeCepRecortes.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1);
-            //var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
 
             //Date filter
             if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
@@ -107,16 +106,14 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeCepRecortes cepRecortes)
         {
-            //if (cepRecortes.Id > 0)
-            //    Edit(cepRecortes);
 
             ValidaCepRecortes(cepRecortes);
 
             if (ModelState.IsValid)
             {
-                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id && r.Shift_Id == cepRecortes.Shift_Id).ToList().Count() == 0)
                 {
 
                     cepRecortes.AddDate = DateTime.Now;
@@ -127,7 +124,6 @@ namespace SgqSystem.Controllers
                 else
                 {
                     ReturnError();
-                    //return View(cepRecortes);
                 }
             }
 
@@ -165,15 +161,11 @@ namespace SgqSystem.Controllers
             if (cepRecortes.TamanhoAmostra == null)
                 ModelState.AddModelError("TamanhoAmostra", "O campo \"Tamanho de Cada Amostra\" precisa ser preenchido.");
 
-            //if (cepRecortes.Id > 0 && cepRecortes.Data != null && cepRecortes.Data?.Date < DateTime.Now.Date)
-            //{
-            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
-            //}
         }
 
         private void ReturnError()
         {
-            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade e turno!");
         }
 
         // GET: CepRecortes/Edit/5
@@ -188,11 +180,6 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-
-            //if (cepRecortes.Data != null && cepRecortes.Data?.Date < DateTime.Now.Date)
-            //{
-            //    return RedirectToAction("Index");
-            //}
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 23), "Id", "Name", cepRecortes.ParLevel1_id);
@@ -210,7 +197,7 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id && r.Shift_Id == cepRecortes.Shift_Id).ToList().Count() == 0)
                 {
                     cepRecortes.AlterDate = DateTime.Now;
                     db.Entry(cepRecortes).State = EntityState.Modified;
@@ -244,7 +231,6 @@ namespace SgqSystem.Controllers
                     else
                     {
                         ReturnError();
-                        //return View(cepRecortes);
                     }
                 }
             }
@@ -287,8 +273,5 @@ namespace SgqSystem.Controllers
             }
             base.Dispose(disposing);
         }
-
-
-
     }
 }
