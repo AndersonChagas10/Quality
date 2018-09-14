@@ -68,11 +68,11 @@
     },
     btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers alterar" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
     funcEdit: function (e) {
-
+        debugger
+        console.log("OLA");
         $('#crudNxNEdit > div > div > div.modal-body').empty();
         $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
         var obj = $(e).parents('tr').data();
-
         /*RegraNc*/
         if ($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length) {
             crudNxN.modalAlterarRegraNc(obj);
@@ -112,9 +112,10 @@
             });
         }
         else if ($(e).parents('#level1_cluster_accordion').length) {
+          
             crudNxN.modalAlterarCluster(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-
+                
                 /*Valida se pode criar o objeto*/
                 if (ClusterL1.veifyAdd('crudNxNEdit')) {
                     var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
@@ -157,8 +158,8 @@
 
     },
     retornaObjetoAlteradoRegraNc: function (obj) {
+        /*Valida se pode criar o objeto*/      
 
-        /*Valida se pode criar o objeto*/
         if ($('#crudNxNEdit #selectNotConformityRule :selected').val() <= 0) {
             alert("Por favor Selecione Regra de Não conformidade.");
             return;
