@@ -110,7 +110,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                     whereCluster = "AND PC.Id = " + model.Cluster;
                 }
                 else
-                if (model.ClusterArr.Length > 0)
+                if (model.ClusterArr != null && model.ClusterArr.Length > 0)
                 {
                     whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
                 }
