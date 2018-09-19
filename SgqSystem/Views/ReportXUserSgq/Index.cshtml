@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Dominio.ReportXUserSgq>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "ReportXUserSgq")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Elaborador e Editor de Relatórios</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Elaborador e Editor de Relatórios</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink("Novo", "Create")
+                                </p>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Editor_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Elaborador_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ItemMenu_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ParCompany_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ParLevel1_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.IsActive)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Editor.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Elaborador.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ItemMenu.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParLevel1.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

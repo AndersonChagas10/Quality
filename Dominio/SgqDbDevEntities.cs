@@ -146,6 +146,7 @@ namespace Dominio
         public virtual DbSet<ParLevel1XModule> ParLevel1XModule { get; set; }
         public virtual DbSet<ImportFormat> ImportFormat { get; set; }
         public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
+        public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

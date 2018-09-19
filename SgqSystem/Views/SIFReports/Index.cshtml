@@ -250,11 +250,9 @@
 
             formControl.showSimpleDate();
             formControl.showLevel1();
-            //formControl.showShift();
             formControl.showUnit();
             formControl.showTipoVisao();
 
-            //$('#showLevel1 > div:nth-child(2)').hide();
             $('#showLevel1 > div:nth-child(3)').hide();
 
             $("#btnSend").click(function (e) {
@@ -282,13 +280,6 @@
 
                 EasyAjax(urlGet, enviar, GeraRelatorio, "loader", toggle);
 
-                //var renan = [];
-
-                //for (var i = 0; i < 200; i++) {
-                //    renan.push({ Numero: (i + 1) , Esquerdo: 0, Direito: 0 })
-                //}
-
-                //Leo(renan);
             }
 
         };
@@ -338,13 +329,13 @@
 
                     arr2.forEach(function (item) {
 
-                        if (item.Sequestro == 1) {
+                        if (item.Sequestro == 1) { //Sequestro
 
                             nSequestro++;
 
                             table += `<tbody>";
                                <tr>
-                                    <th `+ fontSize + `>` + item.Numero + `</th>
+                                    <th style="font-size: 8px !important;">` + item.Numero + `</th>
                                     <th style="background-color:black !important"></th>
                                     <th style="background-color:black !important"></th>
                                 </tr>
@@ -352,24 +343,27 @@
 
                         } else {
 
-                            if (item.Esquerdo != null && item.Direito != null)
+                            if (item.Esquerdo != null && item.Direito != null) //Monitorados
                             {
+
+                                let colorEsquerdo = item.Esquerdo == 1 ? "background-color:#BCBBBB !important" : "";
+                                let colorDireito = item.Direito == 1 ? "background-color:#BCBBBB !important" : "";
 
                                 table += `<tbody>";
                                    <tr>
-                                        <th `+ fontSize + `>` + item.Numero + `</th>
-                                        <th `+ fontSize + `>` + item.Esquerdo + `</th>
-                                        <th `+ fontSize + `>` + item.Direito + `</th>
+                                        <th style="font-size: 8px !important;">` + item.Numero + `</th>
+                                        <th style="font-size: 8px !important;`+ colorEsquerdo +`">` + item.Esquerdo + `</th>
+                                        <th style="font-size: 8px !important;`+ colorDireito +`">` + item.Direito + `</th>
                                     </tr>
                                   </tbody>`;
 
-                            } else {
+                            } else { //Não Possui volume
 
                                 table += `<tbody>";
                                    <tr>
-                                        <th `+ fontSize + `>` + item.Numero + `</th>
-                                        <th `+ fontSize + `></th>
-                                        <th `+ fontSize + `></th>
+                                        <th style="font-size: 8px !important;">` + item.Numero + `</th>
+                                        <th style="font-size: 8px !important;">0</th>
+                                        <th style="font-size: 8px !important;">0</th>
                                     </tr>
                                   </tbody>`;
 
@@ -416,10 +410,15 @@
         }
 
         $('body').on('click', '#btnPrint', function () {
+
+            //Precisa retornar o elaborador e aprovador das unidades (Ainda não sei como pegar esses dados)
+            let elaborador = "";
+            let aprovador = "";
+
             PrepararImpressao(
-                'PCC 1B - MONITORAMENTO DE CONTAMINAÇÃO FECAL E/OU INDIGESTA',
-                "Leonardo Matheus Trench" + " - " + "GQU/" + siglaUnidade,
-                "Gabriel Nunes" + " - " + "GQU/" + siglaUnidade,
+                'PCC 1B - MONITORAMENTO DE CONTAMINAÇÃO FECAL E/OU INGESTA',
+                elaborador + " - " + "GQU/" + siglaUnidade,
+                aprovador + " - " + "GQU/" + siglaUnidade,
                 "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
                 'contentBody',
                 "../Imagens/logo-jbs.png",
