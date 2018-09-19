@@ -2169,4 +2169,10 @@
   <data name="new_format" xml:space="preserve">
     <value>Novo Formato</value>
   </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>Este Indicador já possui uma Regra de Alerta!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>Este Monitoramento já possui uma Regra de Alerta!</value>
+  </data>
 </root>

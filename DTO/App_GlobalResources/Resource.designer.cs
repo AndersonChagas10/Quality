@@ -583,7 +583,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluations.
         ///   Looks up a localized string similar to Available Items.
         /// </summary>
         internal static string available_items {
@@ -1719,7 +1718,6 @@ namespace Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Effective date end.
-        ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string effective_date_end {
             get {
@@ -2484,6 +2482,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator alredy have a alert rule!.
+        /// </summary>
+        internal static string indicador_used {
+            get {
+                return ResourceManager.GetString("indicador_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Indicators by Units.
         /// </summary>
         internal static string indicators_by_units {
@@ -2700,7 +2707,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It was not possible to load keys, try again..
         ///   Looks up a localized string similar to Key.
         /// </summary>
         internal static string key {
@@ -3295,6 +3301,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Monitoring alredy have a alert rule!.
+        /// </summary>
+        internal static string monitoring_used {
+            get {
+                return ResourceManager.GetString("monitoring_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You still have monitorings to do.
         /// </summary>
         internal static string mornitorings_pedding {
@@ -3430,7 +3445,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New group.
         ///   Looks up a localized string similar to New Format.
         /// </summary>
         internal static string new_format {
@@ -3872,7 +3886,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string password {

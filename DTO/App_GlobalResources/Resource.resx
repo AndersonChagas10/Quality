@@ -2178,4 +2178,10 @@
   <data name="new_format" xml:space="preserve">
     <value>New Format</value>
   </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>This Indicator alredy have a alert rule!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>This Monitoring alredy have a alert rule!</value>
+  </data>
 </root>
