@@ -116,7 +116,6 @@
 
         btnEdit: '<button type="button" class="btn btn-success btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
-
             $('#crudNxNEdit > div > div > div.modal-body').empty();
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
             var obj = $(e).parents('tr').data();

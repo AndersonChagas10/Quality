@@ -386,7 +386,7 @@ namespace SgqSystem.Mail
             var newMail = new EmailContent()
             {
                 AddDate = DateTime.Now,
-                Body = $"<strong style='color:#000'>{ m.DeviationDate.ToShortDateString() } {m.DeviationDate.ToShortTimeString()}: { subject }<br><br>{ RemoveEspacos(body) }<strong><br/><br/>{ ultimoBodyEmailContent}",
+                Body = $"<span style='color:#000'>{ m.DeviationDate.ToShortDateString() } {m.DeviationDate.ToShortTimeString()}: { subject }<br><br>{ RemoveEspacos(body) }<span><br/><br/>{ ultimoBodyEmailContent}",
                 IsBodyHtml = true,
                 Subject = subject,
                 Project = "SGQApp"

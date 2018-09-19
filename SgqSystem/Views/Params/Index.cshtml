@@ -60,11 +60,11 @@
                 </li>
             </ul>
             @*<div class="page-toolbar">
-                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>
-            </div>*@
+                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>
+                </div>*@
         </div>
         <!-- END PAGE BAR -->
 
@@ -86,7 +86,7 @@
                                 <div class="row">
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                                         @*@if (!GlobalConfig.Eua)
-                                        {*@
+                                            {*@
                                         <button class="btn btn-primary btn-block" id="btnNewLevel1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                         @*}*@
                                     </div>
@@ -107,7 +107,7 @@
                                                 <div id="ParLevel1">
 
                                                     @*@if (!GlobalConfig.Eua)
-                                                    {*@
+                                                        {*@
                                                     @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
                                                     @*}*@
 
@@ -1287,7 +1287,7 @@
 
             if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
-                
+
                 MostrarUnidadesAtivas('#pesoCompany option');
                 MostrarUnidadesAtivas('#selectUnidadeParL3Value option');
                 //$('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
@@ -1494,7 +1494,9 @@
             });
         }
     }
+
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
+
     function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
         idpar = idpH;
         idfieldType = idFT;
@@ -1515,7 +1517,9 @@
         $('#Fechar').show();
         $('#Salvar').hide();
     }
+
     var controle = 0;
+
     function addValores() {
         var divAdd = '<div class="row" id="row' + controle + '">';
         divAdd += '<div class="col-md-4">';
@@ -1533,6 +1537,7 @@
         $('#multiplaEscolha').append(divAdd);
         controle++;
     }
+
     function removeCampoNovo(idCampo){
         $('#row'+idCampo).remove();
         while(idCampo < controle){
@@ -1546,32 +1551,3 @@
     }
 
 </script>
-
-
-
-@if (GlobalConfig.Brasil)
-{
-    <script>
-        function ConverterData(idTabela, coluna) {
-            //debugger
-            $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
-                if ($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
-                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("DD/MM/YYYY"))
-            });
-        }
-    </script>
-}
-
-
-@if (GlobalConfig.Eua)
-{
-    <script>
-        function ConverterData(idTabela, coluna) {
-            //debugger
-            $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
-                if ($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
-                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("YYYY-MM-DD"))
-            });
-        }
-    </script>
-}

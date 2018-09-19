@@ -638,11 +638,13 @@
         },
         /*Fim Setup*/
         adiciona: function (e) {
+            debugger
             if (level3Value.veifyAdd()) {
                 var object = level3Value.getObjAdd();
 
                 if(object.DynamicValue != null){
                     object.AcceptableValueBetween_Name = object.DynamicValue;
+                    object.AcceptableValueBetween_Name = $("#parIntervalosType option:selected").text();
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
@@ -652,7 +654,8 @@
 
                 $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
                 $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
-                $("#avAmCompany").val($("#avAmCompany option:first").val());
+                $("#avAmCompany").val($("#avAmCompany option:first").val()); 
+                
 
                 $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
                 $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());

@@ -1,4 +1,5 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using DTO
 @using SgqSystem.Helpers
 
 @{
@@ -106,6 +107,25 @@
 <script>
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+
+    var isBrasil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+    var isUSA = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    function ConverterData(idTabela, coluna) {
+
+        $(idTabela + ' > tbody > tr td:nth-child(' + coluna + ')').each(function (i, o) {
+            if (isBrasil) {
+                if ($(o).html().length > 9 && $(o).html().indexOf("-") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("DD/MM/YYYY"));
+
+            } else if (isUSA) {
+                if ($(o).html().length > 9 && $(o).html().indexOf("/") > 0)
+                    $(o).html(moment(new Date($(o).html())).add(1, 'days').format("YYYY-MM-DD"))
+            }
+        });
+    }
+
     function atribuiLevelDivCluster (){
 
         var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
@@ -341,8 +361,5 @@
             }
         };
     }
-
-
-
 
 </script>
