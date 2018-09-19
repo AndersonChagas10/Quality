@@ -240,6 +240,8 @@ namespace SgqSystem.Controllers.Api
             int row = 0;
             try
             {
+                var level2_id = int.Parse(vinculoLevel32["ParLevel2_Id"].ToString());
+
                 var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
                 var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParMeasurementUnit").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
 
