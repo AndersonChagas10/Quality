@@ -72,41 +72,41 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                        <tr>
-                                            @*
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                            </td>*@
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParModule.Name)
-                                            </td>
-                                            @*
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Points)
-                                            </td>*@
-                                            @*
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsActive)
-                                            </td>*@
-                                            <td>
-                                                @Html.Raw(item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.EffectiveDateEnd?.ToString("dd/MM/yyyy"))
-                                            </td>
-                                            @*
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
-                                            </td>*@
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                @*
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ParLevel1.Name)
+                                                    </td>*@
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParModule.Name)
+                                                </td>
+                                                @*
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Points)
+                                                    </td>*@
+                                                @*
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.IsActive)
+                                                    </td>*@
+                                                <td>
+                                                    @Html.Raw(item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.EffectiveDateEnd?.ToString("dd/MM/yyyy"))
+                                                </td>
+                                                @*
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.EffectiveDateStart?.ToString("dd/MM/yyyy"))
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
+                                                    </td>*@
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
+                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -121,11 +121,23 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-        $(document).ready(function () {
-            $('#tabelaIndicadorModulo').dataTable({
-                "aoPaging": true,
-                "aoSearching": true,
-            });
+
+    $(document).ready(function () {
+        $('#tabelaIndicadorModulo').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            },
         });
+    });
 
 </script>
