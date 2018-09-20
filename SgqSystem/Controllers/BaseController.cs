@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers
             base.Initialize(requestContext);
         }
 
-        protected override void EndExecute(IAsyncResult asyncResult)
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
 
@@ -108,11 +108,17 @@ namespace SgqSystem.Controllers
                     if (webControlCookie != null && webControlCookie.Values["userId"] != null)
                     {
                         var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.ItensMenu;
-                        if (!itensMenu.Any(i => i.Url != null && i.Url.Contains(controller + "/" + action)))
+                        ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
+                        if (ViewBag.itemMenu == null)
                             throw new Exception("Acesso Negado!");
                     }
             }
 
+            base.OnActionExecuting(filterContext);
+        }
+
+        protected override void EndExecute(IAsyncResult asyncResult)
+        {
             base.EndExecute(asyncResult);
         }
 

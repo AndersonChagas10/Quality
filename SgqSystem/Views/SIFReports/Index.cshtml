@@ -29,12 +29,6 @@
                 <div id="loader"></div>
 
                 <div class="portlet light bordered" hidden>
-                    @*<div class="portlet-title tabbable-line">
-                            <div class="caption">
-                                <i class="icon-share font-dark"></i>
-                                <span class="caption-subject font-dark bold uppercase">@Resources.Resource.module</span>
-                            </div>
-                        </div>*@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
@@ -234,6 +228,8 @@
         var urlGet = '@Html.Raw(Url.Action("Get", "api/SIFReports"))';
         var siglaUnidade = "";
         exibeTodosLevels = false; //Variavel global para não exibir os monitoramentos sem que selecione o indicador
+        let elaborador = "";
+        let aprovador = "";
 
         $(document).ready(function () {
 
@@ -247,6 +243,16 @@
             $('#unitId').children('option:first').remove();
             $('#level1Id').children('option:first').remove();
             $('#level2Id').children('option:first').remove();
+
+
+            $('#level1Id').prop("disabled", true);
+            $('#level1Id').select2("destroy");
+
+            setTimeout(function () {
+                $('#level1Id option[value="number:3"]').attr('selected', 'selected'); 
+                $('#level1Id').trigger("change");
+                $('select').select2();
+            }, 2000);         
 
             formControl.showSimpleDate();
             formControl.showLevel1();
@@ -265,7 +271,7 @@
 
             $('#tipoVisao').trigger('change');
 
-            $('select').select2();
+            //$('select').select2();
 
         });
 
@@ -278,11 +284,12 @@
 
                 $('.portlet').hide();
 
+                $('#level1Id').trigger("change");
+
                 EasyAjax(urlGet, enviar, GeraRelatorio, "loader", toggle);
 
             }
-
-        };
+        }
 
         function GeraRelatorio(obj) {
 
@@ -309,6 +316,10 @@
                 var fontSize = 'style="font-size: 8px !important;"';
 
                 var dividir = Math.ceil(obj.Dados.length / 9);
+
+                elaborador = obj.Elaborador;
+
+                aprovador = obj.Aprovador;
 
                 for (var i = 0; i < 9; i++) {
 
@@ -412,9 +423,6 @@
         $('body').on('click', '#btnPrint', function () {
 
             //Precisa retornar o elaborador e aprovador das unidades (Ainda não sei como pegar esses dados)
-            let elaborador = "";
-            let aprovador = "";
-
             PrepararImpressao(
                 'PCC 1B - MONITORAMENTO DE CONTAMINAÇÃO FECAL E/OU INGESTA',
                 elaborador + " - " + "GQU/" + siglaUnidade,
@@ -478,9 +486,7 @@
 
             $('#horaFimMonitoramento').append("Horário de Fim do Monitoramento: " + new Date(item.FinalTime).toLocaleTimeString());
 
-            horaFimMonitoramento
         }
-
 
     </script>
 }

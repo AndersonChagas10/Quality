@@ -22,8 +22,8 @@ namespace Dominio
         public int ItemMenu_Id { get; set; }
         [Display(Name = "Elaborador")]
         public int Elaborador_Id { get; set; }
-        [Display(Name = "Editor")]
-        public int Editor_Id { get; set; }
+        [Display(Name = "Aprovador")]
+        public int Aprovador_Id { get; set; }
         [Display(Name = "Indicador")]
         public int ParLevel1_Id { get; set; }
         [Display(Name = "Unidade")]
@@ -37,8 +37,8 @@ namespace Dominio
         [ForeignKey("Elaborador_Id")]
         public UserSgq Elaborador { get; set; }
 
-        [ForeignKey("Editor_Id")]
-        public UserSgq Editor { get; set; }
+        [ForeignKey("Aprovador_Id")]
+        public UserSgq Aprovador { get; set; }
 
         [ForeignKey("ParLevel1_Id")]
         public ParLevel1 ParLevel1 { get; set; }

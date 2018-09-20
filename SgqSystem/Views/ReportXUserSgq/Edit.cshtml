@@ -56,10 +56,10 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Editor_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Aprovador_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownList("Editor_Id", null, htmlAttributes: new { @class = "form-control select2" })
-                                                @Html.ValidationMessageFor(model => model.Editor_Id, "", new { @class = "text-danger" })
+                                                @Html.DropDownList("Aprovador_Id", null, htmlAttributes: new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(model => model.Aprovador_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
@@ -76,16 +76,6 @@
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParCompany_Id", null, htmlAttributes: new { @class = "form-control select2" })
                                                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                <div class="checkbox">
-                                                    @Html.EditorFor(model => model.IsActive)
-                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                                </div>
                                             </div>
                                         </div>
 
