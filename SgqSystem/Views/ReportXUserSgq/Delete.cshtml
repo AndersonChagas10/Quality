@@ -60,7 +60,14 @@
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.ParCompany.Name)
+                                            @if (Model.ParCompany_Id == null)
+                                            {
+                                                @Resources.Resource.all;
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(model => model.ParCompany.Name)
+                                            }
                                         </dd>
 
                                         <dt>
