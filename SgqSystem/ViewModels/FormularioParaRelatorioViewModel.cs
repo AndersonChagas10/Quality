@@ -8,24 +8,11 @@ namespace SgqSystem.ViewModels
 {
     public class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
-        
 
-        #region Contrutor
-
-        //private readonly IBaseApp<Dominio.Unit, UnitDTO> _Unit;
-        //public FormularioParaRelatorioViewModel(IBaseApp<Dominio.Unit, UnitDTO> Unit
-        //    )
-        //{
-        //    _Unit = Unit;
-
-
-        //}
         public FormularioParaRelatorioViewModel()
         {
 
-        } 
-
-        #endregion
+        }
 
         #region Retorno
 
@@ -33,7 +20,7 @@ namespace SgqSystem.ViewModels
         public ResultSetGetCorrectiveAction resultSetGetCorrectiveAction { get; set; }
 
         #endregion
-        
+
         #region SelectListItem
 
         public IEnumerable<SelectListItem> level01DTOSelectList { get; set; }
@@ -86,7 +73,7 @@ namespace SgqSystem.ViewModels
 
         }
 
-        private List<SelectListItem> CriaSelectList<T>(IEnumerable<T> enumerable) 
+        private List<SelectListItem> CriaSelectList<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
             var counter = 0;

@@ -2491,6 +2491,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator alredy have a alert rule!.
+        /// </summary>
+        internal static string indicador_used {
+            get {
+                return ResourceManager.GetString("indicador_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Indicators by Units.
         /// </summary>
         internal static string indicators_by_units {
@@ -3306,6 +3315,15 @@ namespace Resources {
         internal static string monitoring_task_linked_indicator_successfully {
             get {
                 return ResourceManager.GetString("monitoring_task_linked_indicator_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Monitoring alredy have a alert rule!.
+        /// </summary>
+        internal static string monitoring_used {
+            get {
+                return ResourceManager.GetString("monitoring_used", resourceCulture);
             }
         }
         

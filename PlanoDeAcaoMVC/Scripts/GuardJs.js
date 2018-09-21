@@ -106,7 +106,9 @@ function InitiMasksDefaults() {
 
     /*Select 2*/
     $('.select2ddl').each(function (index) {
-        $(this).select2();
+        $(this).select2({
+            matcher: matchCustom
+        });
     });
 
     /*FIM Select 2*/
@@ -325,10 +327,30 @@ function MapeiaValorParaHC(array, prop) {
 function loadSelect2() {
     $.fn.select2.defaults.set("theme", "classic");
     $('.select2').css("max-height", "400px");
-    //$('.select2').select2({ matcher: modelMatcher });
     $('.select2-container .select2-selection--single').css('height', '34px');
     $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
     $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
+}
+
+
+function matchCustom(params, data) {
+
+    if ($.trim(params.term) === '') {
+        return data;
+    }
+
+    if (typeof data.text === 'undefined') {
+        return null;
+    }
+
+    if (data.text.toUpperCase().search(params.term.toUpperCase()) === 0) {
+        var modifiedData = $.extend({}, data, true);
+        //modifiedData.text += ' (matched)';
+
+        return modifiedData;
+    }
+
+    return null;
 }
 
 //Auxiliares para abas de bootstrap e divs em geral.

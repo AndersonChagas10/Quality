@@ -143,6 +143,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecravacaoJson.cs" />
     <Compile Include="Regionais.cs" />
+    <Compile Include="ReportXUserSgq.cs" />
     <Compile Include="ResultLevel2HeaderField.cs" />
     <Compile Include="Result_Level3.cs" />
     <Compile Include="Result_Level3_Photos.cs" />

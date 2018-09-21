@@ -120,14 +120,22 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
+
     $(document).ready(function () {
         $('#tabelaIndicadorModulo').dataTable({
             "aoPaging": true,
             "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                { "bSearchable": false }
+            ],
             "order": [[1, "asc"]],
             "language": {
                 "emptyTable": "@Resources.Resource.no_data_to_show"
-            }
+            },
         });
     });
 

@@ -1,8 +1,4 @@
-﻿//var urlGetPlanejamentoAcaoRange = 'http://192.168.25.200/PlanoAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-//var urlGetPlanejamentoAcaoRange = 'http://mtzsvmqsc/PlanoDeAcao/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-//var urlGetPlanejamentoAcaoRange = 'http://localhost:59907/api/Pa_Planejamento/GetPlanejamentoAcaoRange';
-
-var table;
+﻿var table;
 var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp' + Resources('details') + '</button> ';
 var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp' + Resources('new_tactic') + '</button>';
 var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp' + Resources('new_action') + '</button> ';
@@ -29,17 +25,28 @@ var ColvisarrayProjVisaoAtual_hide = [];
 var atrasadaColor = '#FF0000';
 var concluidoColor = '#0000FF';
 var andamentoColor = '#008000';
-var concluidoAtrasoColor = '#FFA500'
-var canceladoColor = '#000000'
-var retornoColor = '#8B4513'
-var finalizadaColor = '#00008B'
-var finalizadaComAtrasoColor = '#FF4500'
-var naoIniciadoColor = '#E0EEEE'
+var concluidoAtrasoColor = '#FFA500';
+var canceladoColor = '#000000';
+var retornoColor = '#8B4513';
+var finalizadaColor = '#00008B';
+var finalizadaComAtrasoColor = '#FF4500';
+var naoIniciadoColor = '#E0EEEE';
 
 var dataInicio;
 var dataFim;
-
 var categories2 = ['Camila', 'Miriã', 'Ana', 'Adão', 'Diego'];
+var categories4 = [];
+var categories5 = [];
+var data5 = [];
+var categories6 = [];
+var data6 = [];
+var enviar = {};
+var start = moment();
+var end = moment();
+var btnOrderFilter = "";
+var option = "";
+var campo1Panel5Selected = "";
+var filtrosDeColunas = [];
 
 var data2 = [{
     name: Resources("completed"),
@@ -93,8 +100,6 @@ var data3 = [{
     value: 3
 }];
 
-var categories4 = [];
-
 var data4 = [{
     type: 'column',
     name: Resources("open"),
@@ -116,14 +121,6 @@ var data4 = [{
         fillColor: atrasadaColor
     }
 }];
-
-var categories5 = []; //['Qualidade', 'Operação', 'Industria'];
-
-var data5 = [];
-
-var categories6 = []; //categories2
-
-var data6 = [];
 
 var json = FiltraColunas(dados, [Resources("directorship"),
 Resources("mission"),
@@ -162,34 +159,21 @@ Resources("how_much"),
 Resources("status"),
 Resources("term")]);
 
-var enviar = {};
-var start = moment();
-var end = moment();
-var btnOrderFilter = "";
-var option = "";
-var campo1Panel5Selected = "";
-
-var filtrosDeColunas = [];
-
 function GetDataTable(campo, filtro, campo2, filtro2) {
 
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
         dados = r;
 
-        //dados = $.grep(dados, function (a, b) { return a.Acao._Quem != 'gabrielnunes-mtz' }); //tira gabriel
-
         dadosfilter = dados;
 
-        //https://grtsolucoes.atlassian.net/browse/JBS-110
-        let usuarioIscorporativo = false//getRole("Admin");
+        let usuarioIscorporativo = false;
 
         if (usuarioIscorporativo) {
             dados = $.grep(dados, function (a, b) { return a.Acao.TipoIndicador == 2 });
             $('.optionAlternativeRole').remove();
         }
 
-        //fim https://grtsolucoes.atlassian.net/browse/JBS-110
         //Regras para o primeiro filtro geral
         if (campo == "") {
             campo = "Todos";
@@ -222,15 +206,10 @@ function GetDataTable(campo, filtro, campo2, filtro2) {
 
         graficoEstoque();
 
-        //celso
-
-        //$('#btnFiltroPie2').click();
         $('#btnpanel5').click();
         $('#btnpanel6').click();
 
         json = dados;
-
-        //MountDataTable(json);
 
         //Recupera colunas visíveis do usuário -- Não está em funçao pois dava loop infinito (16/01/2018 - Renan)
         if (getCookie('webControlCookie')) {
@@ -268,14 +247,11 @@ function GetDataTable(campo, filtro, campo2, filtro2) {
 
                 //Monta a tabela
                 MountDataTable(json);
-                //MountDataTablePlanejamento(json);
 
             });
         }
 
         $('#spanSubTable').text(Resources("all_tasks_filter"));
-
-        //$('#example_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
         distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
 
@@ -287,7 +263,7 @@ function objectToArr(myObj) {
         return [value];
     });
 
-    return array
+    return array;
 }
 
 function MountDataTable(json) {
@@ -304,9 +280,6 @@ function MountDataTable(json) {
     }
 
     table = null;
-
-    //console.log(ColvisarrayVisaoAtual_show);
-    //console.log(ColvisarrayVisaoAtual_hide);
 
     table = $('#example').DataTable({
         destroy: true,
@@ -481,8 +454,6 @@ function MountDataTable(json) {
             {
                 extend: 'colvisGroup',
                 text: Resources("initial_view"),
-                //show: [4, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 39, 40],
-                //hide: [0, 1, 2, 3, 5, 6, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]                
                 show: [3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
                 hide: [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
             },
@@ -547,25 +518,8 @@ function MountDataTable(json) {
                 action: function (e, dt, node, config) {
                     let Tabela = "Acao"
                     SaveUserColVis(Tabela);
-                },
-            },
-            //novaAcao: {
-            //    text: 'Nova Ação',
-            //    action: function (e, dt, node, config) {
-            //        Clicked(isTaticoClicked, isNovaAcao);
-
-            //        $('#modalLindo').modal();
-            //        $('#modalLindo').find('.modal-body').empty();
-            //        $('#Header').html("Planejamento Operacional");
-
-            //        $.get(PlanejamentoDetalhes, { id: 1040 }, function (r) {
-            //            $('#modalLindo').find('.modal-body').empty().append(r);
-            //            $('#NovaAcao').show();
-            //            $('#NovaAcao').click();
-            //        });
-            //    },
-            //}
-            //}
+                }
+            }
         ],
         fixedColumns: {
             leftColumns: 0,
@@ -582,93 +536,47 @@ function MountDataTable(json) {
         createdRow: function (row, data, index) {
 
             try {
-                var bgColorStatus = ""
-                var bgColorPrazo = ""
-                /*Status*/
-                //console.log(data.Acao.Status);
+                var bgColorStatus = "";
+                var bgColorPrazo = "";
+
                 if (data.Acao.Status == 2) {
                     bgColorStatus = "grey";
                     bgColorPrazo = "rgb(126, 194, 253)";
                 } else if (data.Acao.Status == 5) {
                     bgColorStatus = "#ADD8E6";
                 } else if (data.Acao.Status == 5 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
-                    bgColorStatus = "#458fa8"
-                } else if (data.Acao.Status == 3/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
+                    bgColorStatus = "#458fa8";
+                } else if (data.Acao.Status == 3) {
                     bgColorPrazo = "rgb(126, 194, 253)";
-                    bgColorStatus = "cyan"
+                    bgColorStatus = "cyan";
                 } else if (data.Acao.Status == 4) {
                     bgColorPrazo = "rgb(126, 194, 253)";
-                    bgColorStatus = "steelblue"
+                    bgColorStatus = "steelblue";
                 } else if (data.Acao.Status == 9) {
                     bgColorStatus = "#E0EEEE";
                 }
 
-                //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
-                //    bgColorStatus = "yellow"
-                //}
-
                 $(row.cells[38]).css("background", bgColorStatus);
 
                 /*Prazo*/
-                if (data.Acao.Status == 2) {
+                if (data.Acao._Prazo.match(/\d+/g)) {
+                    let numero = data.Acao._Prazo.split(" ")[0];
 
-                } else if (data.Acao.Status == 3) {
-
-                    //} else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
-                } else if (data.Acao._Prazo.match(/\d+/g)) {
-                    let numero = data.Acao._Prazo.split(" ")[0]
-                    //console.log(numero)
                     if (numero == 0) {
-                        bgColorPrazo = "rgba(253, 245, 154, 0.67)"
+                        bgColorPrazo = "rgba(253, 245, 154, 0.67)";
                     } else if (isPositiveInteger(numero)) {
                         bgColorPrazo = "#90EE90"
                     } else {
-                        bgColorPrazo = "rgb(250, 128, 114)"
+                        bgColorPrazo = "rgb(250, 128, 114)";
                     }
                 }
                 else if (data.Acao._Prazo.indexOf('-') > -1 && data.Acao._Prazo.indexOf(' Dias') > -1) {
-                    bgColorPrazo = "rgb(250, 128, 114)"
+                    bgColorPrazo = "rgb(250, 128, 114)";
                 }
 
                 $(row.cells[39]).css("background", bgColorPrazo);
 
-                //    if (data.Tatico_Id > 0) { // possui plan tatico
-                //        $(row.cells[38]).find('.btnNovoOperacional').show();
-                //    } else {
-                //        $(row.cells[38]).find('.btnNovoOperacional').hide();
-                //    }
-
-                //    if (data.Id > 0) { // Possui plan Estrat
-                //        $(row.cells[38]).find('.btnNovoTatico').show();
-                //    } else {
-                //        $(row.cells[38]).find('.btnNovoTatico').hide();
-                //    }
-
-                //    if (data.Acao.Id > 0) { // Possui plan Operac
-                //        $(row.cells[38]).find('.btnAcompanhamento').show();
-                //    } else {
-                //        $(row.cells[38]).find('.btnAcompanhamento').hide();
-                //    }
-
             } catch (e) { }
-
-            //if (data.Tatico_Id > 0) { // possui plan tatico
-            //    $(row.cells[38]).find('.btnNovoOperacional').show();
-            //} else {
-            //    $(row.cells[38]).find('.btnNovoOperacional').hide();
-            //}
-
-            //if (data.Id > 0) { // Possui plan Estrat
-            //    $(row.cells[38]).find('.btnNovoTatico').show();
-            //} else {
-            //    $(row.cells[38]).find('.btnNovoTatico').hide();
-            //}
-
-            //if (data.Acao.Id > 0) { // Possui plan Operac
-            //    $(row.cells[38]).find('.btnAcompanhamento').show();
-            //} else {
-            //    $(row.cells[38]).find('.btnAcompanhamento').hide();
-            //}
 
         },
         "language": {
@@ -713,7 +621,6 @@ function MountDataTable(json) {
 
     $('#virtualBody').css('width', '100%');
 
-    //Filtros por coluna
 
     $('#example_wrapper .dataTable:not(.DTFC_Cloned) thead th').each(function (i) {
         //$('.dataTable thead th').each(function (i) {
@@ -780,7 +687,7 @@ function MountDataTable(json) {
 
 }
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function () {
 
     var data = table.row($(this).parents('tr')).data();
 
@@ -796,7 +703,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (
 
 });
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function () {
 
     var data = table.row($(this).parents('tr')).data();
 
@@ -820,7 +727,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', funct
 
 });
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function () {
 
     var data = table.row($(this).parents('tr')).data();
 
@@ -832,7 +739,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', functi
 
 });
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function () {
 
     $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
 
@@ -873,7 +780,7 @@ function FiltraColunas(array, arrFiltro) {
 
             if (cc == "TipoIndocador") {
                 if (objt.TipoIndicador == 1) {
-                    $('')
+                    $('');
                 }
             }
         });
@@ -887,7 +794,7 @@ function FiltraColunas(array, arrFiltro) {
 
 function FiltraLinhas(array, arrColuna, arrValue) {
 
-    let novoArr = []
+    let novoArr = [];
 
     array.forEach(function (o, c) {
 
@@ -897,17 +804,14 @@ function FiltraLinhas(array, arrColuna, arrValue) {
             || arrColuna == "UnidadeName" || arrColuna == "_StatusName" || arrColuna == "Regional"
             || arrColuna == "Level1Name" || arrColuna == "Level2Name" || arrColuna == "Level3Name" || arrColuna == "Acao.TipoIndicador") {
 
-            if (arrColuna == "Acao.TipoIndicador" && arrValue != "Todos") {
-
-
-
+            if (arrColuna == "Acao.TipoIndicador" && arrValue[0] != "Todos") {
                 arrValueAux = [];
-                if (arrValue == "Diretrizes")
+                if (arrValue[0] == "Diretrizes")
                     arrValueAux.push(1);
-                else if (arrValue == "Scorecard")
+                else if (arrValue[0] == "Scorecard")
                     arrValueAux.push(2);
-
-
+                else if (arrValue[0] === "Sem planejamento operacional")
+                    arrValueAux.push(0);
 
                 arrColuna.forEach(function (oo, cc) {
 
@@ -917,7 +821,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                 });
 
                 if (flag) {
-                    novoArr.push(o)
+                    novoArr.push(o);
                 }
 
             } else {
@@ -929,7 +833,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                 });
 
                 if (flag) {
-                    novoArr.push(o)
+                    novoArr.push(o);
                 }
             }
 
@@ -949,7 +853,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
                 });
 
                 if (flag) {
-                    novoArr.push(o)
+                    novoArr.push(o);
                 }
             }
         }
@@ -960,7 +864,7 @@ function FiltraLinhas(array, arrColuna, arrValue) {
 
 function FiltraLinhasComTodos(array, arrColuna, arrValue) {
 
-    let novoArr = []
+    let novoArr = [];
 
     array.forEach(function (o, c) {
         var flag = true;
@@ -1001,7 +905,7 @@ function FiltraLinhasComTodos(array, arrColuna, arrValue) {
             }
         }
         if (flag) {
-            novoArr.push(o)
+            novoArr.push(o);
         }
     });
 
@@ -1012,7 +916,7 @@ function isPositiveInteger(n) {
     return n == "0" || ((n | 0) > 0 && n % 1 == 0);
 }
 
-function getDateRange(campo) { //$("input[name='daterange']").val()
+function getDateRange(campo) {
     var datas = campo.split(' - ');
     var dataPTInicio = datas[0].split("/");
     var dataPTFim = datas[1].split("/");
@@ -1021,7 +925,7 @@ function getDateRange(campo) { //$("input[name='daterange']").val()
     dataFim = new Date(dataPTFim[2] + ' ' + dataPTFim[1] + ' ' + dataPTFim[0]);
 }
 
-function getDateUSA(campo) { //$("input[name='daterange']").val()
+function getDateUSA(campo) {
     var dataPTInicio = campo.split("/");
     data = new Date(dataPTInicio[2] + ' ' + dataPTInicio[1] + ' ' + dataPTInicio[0]);
     if (data != 'Invalid Date') {
@@ -1106,6 +1010,7 @@ function filtraDadosParaGerarGraficoPanel5Panel6(categoriesFilterVal, seriesFilt
     } else
         makeChart(id, categoriesArr, serieArrFinal, 'bar', categoriesFilterVal)
 }
+
 //Agrupa o arr dados por mes, devolve um Objeto, se mapped = true devolve um array
 function agrupaPorMes() {
     var groups = _.groupBy(dados, function (o) {
@@ -1113,18 +1018,21 @@ function agrupaPorMes() {
     });
     return groups
 }
+
 //Busca no arr de dados registros concluídos, filtro = return
 function getRegistrosConcluidos(arr) {
     return _.filter(arr, function (o) {
         return o.Acao._StatusName && (o.Acao._StatusName.indexOf(Resources('completed')) >= 0 || o.Acao._StatusName.indexOf(Resources('finished'))) >= 0;
     });
 }
+
 //Busca no arr de dados registros não concluídos, filtro = return
 function getRegistrosNaoConcluidos(arr) {
     return _.filter(arr, function (o) {
         return !(o.Acao._StatusName && (o.Acao._StatusName.indexOf(Resources('completed')) >= 0 || o.Acao._StatusName.indexOf(Resources('finished'))) >= 0 && o.Acao._StatusName.indexOf(Resources('cancel')) < 0);
     });
 }
+
 //Instancia HighCharts em um grafico padrão, aceita options para sobrescrita
 function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
 
@@ -1169,10 +1077,10 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
             zoomType: 'xy'
         },
         title: {
-            text: false,
+            text: false
         },
         subtitle: {
-            text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+            text: false
         },
         lang: {
             noData: "Sem dados"
@@ -1194,8 +1102,6 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
             allowDecimals: false
         },
         yAxis: {
-            //min: 0,
-            //max: 30,
             allowDecimals: false,
             title: {
                 text: GetPropertyRealName(yAxisTitle),
@@ -1248,24 +1154,20 @@ function makeChart(id, categoriesArr, seriesArr, type, yAxisTitle, optionsDef) {
         credits: {
             enabled: false
         },
-        /*
-            {name: 'Concluídas', y: 56.33, color: concluidoColor },
-            {name: 'Atrasadas', y: 10.38, color: atrasadaColor },
-            {name: 'Em Andamento', y: 4.77, color: andamentoColor },
-            */
+
         series: seriesArr
-    }
+    };
 
     if (optionsDef)
         Object.assign(options, optionsDef);
 
     Highcharts.chart(id, options);
 }
-//Distinct usage: MapeiaValorParaHC(dados, seriesFilter).filter(onlyUnique)
+
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
-//Desc pendente
+
 function MapeiaValorParaHC(array, prop, isInteger) {
     var arrayRetorno = $.map(array, function (o, c) {
         if (isInteger) {
@@ -1293,7 +1195,7 @@ function MapeiaValorParaHC(array, prop, isInteger) {
     });
     return arrayRetorno;
 }
-//Desc pendente
+
 function orderArray(array) {
 
     array.sort(function (a, b) {
@@ -1309,7 +1211,7 @@ function orderArray(array) {
 
     return array;
 }
-//Desc pendente
+
 function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, verifyStatus, id) {
 
     var filtroEixoX = [];
@@ -1492,10 +1394,11 @@ function filtraAgrupaXY(categoriesArr, seriesFilter, categoriesFilter, dados, ve
     });
 
     if (verifyStatus)
-        pintaStatus(seriesFilter, serieArrFinal)
-    return serieArrFinal
+        pintaStatus(seriesFilter, serieArrFinal);
+
+    return serieArrFinal;
 }
-//Desc pendente
+
 function pintaStatus(seriesFilter, serieArrFinal) {
     if (seriesFilter == 'Status' && serieArrFinal != '') {
 
@@ -1520,7 +1423,9 @@ function pintaStatus(seriesFilter, serieArrFinal) {
                 serie.push(listaVazia);
             }
         }
-        return serie
+
+        return serie;
+
     } else {
 
         serieArrFinal.forEach(function (c, o) {
@@ -1545,7 +1450,7 @@ function pintaStatus(seriesFilter, serieArrFinal) {
             }
         });
 
-        return serieArrFinal
+        return serieArrFinal;
     }
 }
 
@@ -1558,7 +1463,7 @@ $(function () {
         'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
         'Este mês': [moment().startOf('month'), moment().endOf('month')],
         'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
+    };
 
     moment.locale("Pt-Br");
     moment.defaultFormat = "DD/MM/YYYY";
@@ -1594,29 +1499,24 @@ $(function () {
             Resources("oct2"),
             Resources("nov2"),
             Resources("dec2")
-        ],
-        //"firstDay": 0
+        ]
     });
 
     rangesCalendar = rangesBR;
 
     $.fn.daterangepicker('ranges', rangesCalendar);
 
-    //Start config datepickerrange full
-
     function cb(start, end) {
         $('#reportrange span').html(start.format() + ' - ' + end.format());
         enviar['startDate'] = start.format();
         enviar['endDate'] = end.format();
     }
-    var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
+    var configQueryData = true;
     var configCallendar = {};
     if (configQueryData) {
         $('input[name="daterange"]').daterangepicker({
             startDate: start,
             endDate: end,
-            //opens: "left",
-            //autoApply: false,
             locale: {
                 "format": "DD/MM/YYYY",
                 "separator": " - ",
@@ -1633,7 +1533,6 @@ $(function () {
         $('input[name="daterange"]').daterangepicker({
             startDate: start,
             endDate: end,
-            //autoApply: false,
             locale: {
                 "format": "MM/DD/YYYY",
                 "separator": " - ",
@@ -1646,12 +1545,9 @@ $(function () {
     }
 
     cb(start, end);
-    //End config datepickerrange full
 
     enviar['startDate'] = moment().add('month', -1).format();
     enviar['endDate'] = moment().format();
-
-    //$('input[name="daterange"]').daterangepicker();
 
 });
 
@@ -1712,45 +1608,28 @@ function distinctFilter(lista, filtro, selectId) {
     var l = [];
     var retorno = [];
 
-    jQuery.each(lista, function (i, val) {
-
-
-        l.push(lista[i][filtro]);
-
-
-    })
+    jQuery.each(lista, function (i) {
+        if (lista[i][filtro] !== undefined && lista[i][filtro] !== null && lista[i][filtro] !== "")
+            l.push(lista[i][filtro]);
+    });
 
     l.sort();
 
-    jQuery.each(l, function (i, val) {
-
-        if (l[0] == undefined) {
-            retorno.push(l[i]);
-        } else if (retorno[retorno.length - 1] == l[i]) {
-
-        } else {
-            retorno.push(l[i]);
-        }
-    });
+    retorno = l.filter(onlyUnique);
 
     $('#' + selectId).children('option').remove();
 
     $('#' + selectId).append($("<option></option>").attr("value", 0).text(Resources("all")));
 
-    //$('#valor2Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
-    //$('#valor1FiltroPie2').append($("<option></option>").attr("value", 0).text("Todos"));
-    //$('#valor1Panel5').append($("<option></option>").attr("value", 0).text("Todos"));
-    //$('#valor1Panel6').append($("<option></option>").attr("value", 0).text("Todos"));
-    //$('#valor2Panel6').append($("<option></option>").attr("value", 0).text("Todos"));
-
-
     $.each(retorno, function (key, value) {
-        if ($('#campo1Filtro option:selected').val() == "Acao.TipoIndicador" ||
-            $('#campo1FiltroPie2 option:selected').val() == "Acao.TipoIndicador" ||
-            $('#campo1Panel5 option:selected').val() == "Acao.TipoIndicador" ||
-            $('#campo2Panel5 option:selected').val() == "Acao.TipoIndicador" ||
-            $('#campo1Panel6 option:selected').val() == "Acao.TipoIndicador" ||
-            $('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador"
+        if (
+            //$('#campo1Filtro option:selected').val() == "Acao.TipoIndicador" ||
+            //$('#campo1FiltroPie2 option:selected').val() == "Acao.TipoIndicador" ||
+            //$('#campo1Panel5 option:selected').val() == "Acao.TipoIndicador" ||
+            //$('#campo2Panel5 option:selected').val() == "Acao.TipoIndicador" ||
+            //$('#campo1Panel6 option:selected').val() == "Acao.TipoIndicador" ||
+            //$('#campo2Panel6 option:selected').val() == "Acao.TipoIndicador" ||
+            filtro == "TipoIndicador"
         ) {
             if (value == 0)
                 value = Resources("no_operational_planning");
@@ -1761,18 +1640,12 @@ function distinctFilter(lista, filtro, selectId) {
         }
         if (value != null && value != "0") {
 
-            $('#' + selectId)
-
-                .append($("<option></option>")
-
-                    .attr("value", key)
-
-                    .text(value));
+            $('#' + selectId).append($("<option></option>").attr("value", key).text(value));
         }
 
     });
 
-    $('#' + selectId).trigger('change');//selectpicker('refresh');
+    $('#' + selectId).trigger('change');
 
 }
 
@@ -1783,10 +1656,6 @@ function geraData1() {
     dados.sort(function (a, b) {
         return a.Acao.Status - b.Acao.Status;
     });
-
-    //jQuery.each(dados, function (i, val) {
-    //    console.log(dados[i].Acao.Status);
-    //});
 
     jQuery.each(dados, function (i, val) {
 
@@ -1843,16 +1712,15 @@ function geraData1() {
 
         if (data1[0] == undefined) {
             if (dados[i].Acao.Status != 0) {
-                data1.push({ name: campo, y: 1, color: cor })
+                data1.push({ name: campo, y: 1, color: cor });
             }
         } else if (data1[data1.length - 1].name == campo) {
             data1[data1.length - 1].y = data1[data1.length - 1].y + 1;
         } else if (dados[i].Acao.Status != 0) {
-            data1.push({ name: campo, y: 1, color: cor })
+            data1.push({ name: campo, y: 1, color: cor });
         }
     });
 
-    //getGraphPanel1(data1);
 }
 
 function geraData2(dadosFiltrados) {
@@ -1919,12 +1787,12 @@ function geraData2(dadosFiltrados) {
 
         if (data1[0] == undefined) {
             if (dadosFiltrados[i].Acao.Status != 0) {
-                data1.push({ name: campo, y: 1, color: cor })
+                data1.push({ name: campo, y: 1, color: cor });
             }
         } else if (data1[data1.length - 1].name == campo) {
             data1[data1.length - 1].y = data1[data1.length - 1].y + 1;
         } else if (dadosFiltrados[i].Acao.Status != 0) {
-            data1.push({ name: campo, y: 1, color: cor })
+            data1.push({ name: campo, y: 1, color: cor });
         }
     });
 
@@ -1946,10 +1814,10 @@ function getGraphPanel1(meuDado) {
             type: 'pie'
         },
         credits: {
-            enabled: false,
+            enabled: false
         },
         title: {
-            text: false,
+            text: false
         },
         tooltip: {
             pointFormat: '<b>{point.percentage:.1f}%</b>'
@@ -1968,7 +1836,7 @@ function getGraphPanel1(meuDado) {
                     style: {
                         //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'white',
                         color: 'black',
-                        fontSize: '10px',
+                        fontSize: '10px'
                     },
                     connectorColor: 'silver'
                 }
@@ -1998,10 +1866,10 @@ function getGraphPanel2(meuDado) {
             type: 'pie'
         },
         credits: {
-            enabled: false,
+            enabled: false
         },
         title: {
-            text: false,
+            text: false
         },
         lang: {
             noData: "Sem dados"
@@ -2020,7 +1888,7 @@ function getGraphPanel2(meuDado) {
                     style: {
                         //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'white',
                         color: 'black',
-                        fontSize: '10px',
+                        fontSize: '10px'
                     },
                     connectorColor: 'silver'
                 }
@@ -2029,7 +1897,7 @@ function getGraphPanel2(meuDado) {
                 cursor: 'pointer',
                 events: {
                     click: function (event) {
-                        filterPie2ForDataTable(event.point.name)
+                        filterPie2ForDataTable(event.point.name);
                     }
                 }
             }
@@ -2062,12 +1930,9 @@ function filterPie2ForDataTable(name) {
 
     }
 
-
     MountDataTable(arrayfilter);
 
     $('#spanSubTable').text(retorno);
-
-
 
 }
 
@@ -2109,14 +1974,17 @@ function FiltraColunasOfClickPie(array, Atribute, name) {
 
 function filterBar1ForDataTable(name, category, idPanel) {
     var retorno = '';
+
+    var arrayfilter;
+
     if (idPanel == 'panel5') {
-        var arrayfilter = FilterColumnOfClickBar(dados, $('#campo1Panel5 option:selected').val().replace("Acao.", ""), ($('#campo2Panel5 option:selected').val()).replace("Acao.", ""), category, name);
+        arrayfilter = FilterColumnOfClickBar(dados, $('#campo1Panel5 option:selected').val().replace("Acao.", ""), ($('#campo2Panel5 option:selected').val()).replace("Acao.", ""), category, name);
         retorno = $('#campo1Panel5 option:selected').text() + ': ' + category + ' | ' + $('#campo2Panel5 option:selected').text() + ': ' + name;
     } else if (idPanel == 'panel6') {
-        var arrayfilter = FilterColumnOfClickBar(dados, $('#campo1Panel6 option:selected').val().replace("Acao.", ""), ($('#campo2Panel6 option:selected').val()).replace("Acao.", ""), category, name);
+        arrayfilter = FilterColumnOfClickBar(dados, $('#campo1Panel6 option:selected').val().replace("Acao.", ""), ($('#campo2Panel6 option:selected').val()).replace("Acao.", ""), category, name);
         retorno = $('#campo1Panel6 option:selected').text() + ': ' + category + ' | ' + $('#campo2Panel6 option:selected').text() + ': ' + name;
     } else if (idPanel == 'panel4') {
-        var arrayfilter = FilterColumnOfClickBar(dados, "", "", "", name);
+        arrayfilter = FilterColumnOfClickBar(dados, "", "", "", name);
         retorno = $('#campo1Panel6 option:selected').text() + ': ' + category + ' | ' + $('#campo2Panel6 option:selected').text() + ': ' + name;
     }
     MountDataTable(arrayfilter);
@@ -2156,7 +2024,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         || categoryY == "Level1Name" || categoryY == "Level2Name" || categoryY == "Level3Name" || categoryY == "TipoIndicador") {
 
 
-                        var valueY = o.Acao[categoryY];
+                        let valueY = o.Acao[categoryY];
 
                         if (categoryY == "TipoIndicador") {
 
@@ -2187,7 +2055,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
                         || categoryY == "Level1Name" || categoryY == "Level2Name" || categoryY == "Level3Name" || categoryY == "TipoIndicador") {
 
 
-                        var valueY = o.Acao[categoryY];
+                        let valueY = o.Acao[categoryY];
 
                         if (categoryY == "TipoIndicador") {
 
@@ -2232,7 +2100,7 @@ function FilterColumnOfClickBar(array, categoryY, categoryX, Atribute, name) {
 
 Highcharts.chart('panel4', {
     title: {
-        text: false,
+        text: false
     },
     legend: {
         enabled: true,
@@ -2243,14 +2111,13 @@ Highcharts.chart('panel4', {
         }
     },
     credits: {
-        enabled: false,
+        enabled: false
     },
     lang: {
         noData: "Sem dados"
     },
     xAxis: {
         tickInterval: 1,
-
         categories: categories4,
         labels: {
 
@@ -2289,11 +2156,6 @@ Highcharts.chart('panel4', {
             }
         }
     },
-    /*
-    { name: 'Concluídas', y: 56.33, color: concluidoColor },
-    { name: 'Atrasadas', y: 10.38, color: atrasadaColor },
-    { name: 'Em Andamento', y: 4.77, color: andamentoColor },
-    */
     series: data4
 });
 
@@ -2302,13 +2164,13 @@ Highcharts.chart('panel5', {
         type: 'bar'
     },
     title: {
-        text: false,
+        text: false
     },
     lang: {
         noData: "Sem dados"
     },
     subtitle: {
-        text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+        text: false
     },
     xAxis: {
         tickInterval: 1,
@@ -2377,11 +2239,7 @@ Highcharts.chart('panel5', {
     credits: {
         enabled: false
     },
-    /*
-        { name: 'Concluídas', y: 56.33, color: concluidoColor },
-        { name: 'Atrasadas', y: 10.38, color: atrasadaColor },
-        { name: 'Em Andamento', y: 4.77, color: andamentoColor },
-        */
+
     series: data5
 });
 
@@ -2390,10 +2248,10 @@ Highcharts.chart('panel6', {
         type: 'bar'
     },
     title: {
-        text: false,
+        text: false
     },
     subtitle: {
-        text: false, //'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+        text: false
     },
     lang: {
         noData: "Sem dados"
@@ -2459,21 +2317,9 @@ Highcharts.chart('panel6', {
     credits: {
         enabled: false
     },
-    /*
-        { name: 'Concluídas', y: 56.33, color: concluidoColor },
-        { name: 'Atrasadas', y: 10.38, color: atrasadaColor },
-        { name: 'Em Andamento', y: 4.77, color: andamentoColor },
-        */
+
     series: data6
 });
-
-$('#btnpanel5').click(function () {
-    //alert($('#campo1Panel5').val() + '|' + $('#valor1Panel5').val() + '|' + $('#campo2Panel5').val() + '|' + $('#valor2Panel5').val());
-})
-
-$('#btnpanel6').click(function () {
-    // alert($('#campo1Panel6').val() + '|' + $('#valor1Panel6').val() + '|' + $('#campo2Panel6').val() + '|' + $('#valor2Panel6').val());
-})
 
 $('#btnTop').click(function () {
     dadosPie2 = "";
@@ -2484,9 +2330,7 @@ $('#btnTop').click(function () {
         $('#valor1Filtro option:selected').text(),
         $('#campo2Filtro option:selected').val(),
         $('#valor2Filtro option:selected').text());
-
-    //GetDataTablePlanejamento($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text());
-})
+});
 
 $('#btnFiltroPie2').click(function () {
     var arrayColuna = [];
@@ -2501,7 +2345,7 @@ $('#btnFiltroPie2').click(function () {
 
     geraData2(dadosPie2);
     $('#spanPie2').html($('#campo1FiltroPie2 option:selected').text());
-})
+});
 
 $('#btnpanel5').off('click').on('click', function () {
 
@@ -2513,13 +2357,13 @@ $('#btnpanel5').off('click').on('click', function () {
     filtraDadosParaGerarGraficoPanel5Panel6($('#campo1Panel5 option:selected').val(), $('#campo2Panel5 option:selected').val(), nameY, 'panel5')
     $('#FirstParamPanel5').html($('#campo1Panel5 option:selected').text());
     $('#LastParamPanel5').html($('#campo2Panel5 option:selected').text());
-})
+});
 
 $('#btnpanel6').off('click').on('click', function () {
     filtraDadosParaGerarGraficoPanel5Panel6($('#campo1Panel6 option:selected').val(), $('#campo2Panel6 option:selected').val(), [], 'panel6');
     $('#FirstParamPanel6').html($('#campo1Panel6 option:selected').text());
     $('#LastParamPanel6').html($('#campo2Panel6 option:selected').text());
-})
+});
 
 function setArrayColvisAtual() {
 
@@ -2607,12 +2451,12 @@ function SaveUserColVis(tabela) {
             "ColVisHide": ColvisarrayVisaoAtual_hide.toString(),
             "Pa_Quem_Id": Pa_Quem_Id,
             "Tabela": tabela
-        }
+        };
 
         ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
         ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
 
-    } else if ("Planejamento") { //Tabela Projetos
+    } else if (tabela == "Planejamento") {
 
         ColvisarrayProjVisaoAtual_show = $.grep(ColvisarrayProjVisaoAtual_show, function (arr) {
             return (arr != 21 && arr != 22);
@@ -2629,7 +2473,7 @@ function SaveUserColVis(tabela) {
             "ColVisProjHide": ColvisarrayProjVisaoAtual_hide.toString(),
             "Pa_Quem_Id": Pa_Quem_Id,
             "Tabela": tabela
-        }
+        };
 
         ColvisarrayProjVisaoUsuario_show = ColvisarrayProjVisaoAtual_show;
         ColvisarrayProjVisaoUsuario_hide = ColvisarrayProjVisaoAtual_hide;

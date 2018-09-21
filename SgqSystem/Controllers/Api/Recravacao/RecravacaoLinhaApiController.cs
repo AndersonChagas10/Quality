@@ -240,11 +240,16 @@ namespace SgqSystem.Controllers.Api
             int row = 0;
             try
             {
+                var level2_id = int.Parse(vinculoLevel32["ParLevel2_Id"].ToString());
+
                 var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
                 var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParMeasurementUnit").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
 
-                while (level3.ParLevel3Value.Any(r => !r.IsActive))
-                    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
+                //while (level3.ParLevel3Value.Any(r => !r.IsActive))
+                //    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
+
+                while (level3.ParLevel3Value.Any(r => !r.IsActive || r.ParLevel2_Id != level2_id))
+                    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive || r.ParLevel2_Id != level2_id));
 
                 var level3Dto = Mapper.Map<ParLevel3DTO>(level3);
                 var pointLess = db.Database.SqlQuery<bool?>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3Dto.Id)).FirstOrDefault() ?? false;

@@ -295,9 +295,11 @@
                 $scope.items.push($scope.count);
 
                 setTimeout(function () {
-                    $('select').select2();
+                    $('select').select2({
+                        matcher: matchCustom
+                    });
                 }, 500);
-                
+
             };
 
             $scope.RemoverFTA = function (item) {
@@ -502,11 +504,11 @@
 
             InitDatePiker();
             HabilitaBotaoSalvar();
-            //$('#Assinatura1').select2();
-            //$('#Assinatura2').select2();
-            $('select').select2();
+            $('select').select2({
+                matcher: matchCustom
+            });
 
-        });
+        });      
 
         var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
