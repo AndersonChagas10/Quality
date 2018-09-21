@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
 using Microsoft.Ajax.Utilities;
+using System.Text;
 
 namespace SgqSystem.Controllers
 {
@@ -65,7 +66,7 @@ namespace SgqSystem.Controllers
                 {
                     parLevel1XModule.ParLevel1_Id = item;
                     ValidaIndicadoresxModulos(parLevel1XModule);
-                    ValidaDataEntre(parLevel1XModule, item);
+                    var listaErros = ValidaDataEntre(parLevel1XModule, item);
 
                     if (ModelState.IsValid)
                     {
@@ -80,24 +81,36 @@ namespace SgqSystem.Controllers
                             AddDate = DateTime.Now,
                             AlterDate = DateTime.Now
                         };
-                        db.ParLevel1XModule.Add(objInserir);                                          
+                        db.ParLevel1XModule.Add(objInserir);
                         quantSalvo++;
                     }
                     else
                     {
-                        arrayIndicadorDuplicado.Add(parLevel1XModule.ParLevel1_Id);                      
+                        //arrayIndicadorDuplicado.Add(parLevel1XModule.ParLevel1_Id);
+                        arrayIndicadorDuplicado.Add(listaErros);
                     }
                 }
                 if (quantSalvo == parLevel1XModule.ParLevel1_IdHelper.Count())
                 {
-                  
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
                     var ListaDeIndicadoresQueJaExistem = db.ParLevel1.Where(r => arrayIndicadorDuplicado.Contains(r.Id)).Select(r => r.Name).ToList();
-                    ModelState.AddModelError("ParLevel1_Id", string.Join(",", ListaDeIndicadoresQueJaExistem));
+                    if (ListaDeIndicadoresQueJaExistem.Count() > 0)
+                    {
+                        var mensagemErro = new StringBuilder();
+                        foreach (var item in ListaDeIndicadoresQueJaExistem)
+                        {
+                            if(mensagemErro.Length > 0) 
+                                mensagemErro.Append(", ");
+                            mensagemErro.Append(item);
+                        }
+                        ModelState.AddModelError("ParLevel1_Id", "Estes Indicadores já possuem vinculos na data vingente:" + mensagemErro);
+                    }
+
                 }
 
             }
@@ -228,7 +241,7 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("EffectiveDateEnd", Resources.Resource.effective_date_start + " " + Resources.Resource.are_greater_than + " " + Resources.Resource.effective_date_end);
 
         }
-        private void ValidaDataEntre(ParLevel1XModule parLevel1XModule, int indicadorId)
+        private int ValidaDataEntre(ParLevel1XModule parLevel1XModule, int indicadorId)
         {
             var isNotValid = true;
 
@@ -253,17 +266,26 @@ namespace SgqSystem.Controllers
             else
             {
 
+                //isNotValid = db.ParLevel1XModule
+                //    .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId
+                //    && (x.EffectiveDateStart < parLevel1XModule.EffectiveDateStart
+                //    && x.EffectiveDateEnd < parLevel1XModule.EffectiveDateStart) && x.Id != parLevel1XModule.Id);
+
+                //nova verificação
                 isNotValid = db.ParLevel1XModule
                     .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId
-                    && (x.EffectiveDateStart > parLevel1XModule.EffectiveDateStart
-                    && x.EffectiveDateEnd > parLevel1XModule.EffectiveDateStart) && x.Id != parLevel1XModule.Id);
+                    && ((x.EffectiveDateStart < parLevel1XModule.EffectiveDateStart && x.EffectiveDateEnd > x.EffectiveDateStart)
+                    || (x.EffectiveDateStart < parLevel1XModule.EffectiveDateEnd && x.EffectiveDateEnd > parLevel1XModule.EffectiveDateEnd)
+                    || (parLevel1XModule.EffectiveDateStart < x.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > x.EffectiveDateStart)));
             }
 
-
             if (isNotValid)
-            {               
-                ModelState.AddModelError("ParLevel1_IdHelper", "Este indicador já possui vinculo na data vigente!");
-            }         
+            {
+                ModelState.AddModelError("ParLevel1_IdHelper", "Erro!");
+                return parLevel1XModule.ParLevel1_Id;
+            }
+
+            return 0;
         }
     }
 }

@@ -2626,7 +2626,7 @@
     <value>Este Monitoramento já possui uma Regra de Alerta!</value>
   </data>
   <data name="are_greater_than" xml:space="preserve">
-    <value>É maior que</value>
+    <value>é maior que</value>
   </data>
   <data name="module_link_indicator" xml:space="preserve">
     <value>O módulo está vinculado a um ou mais indicadores, verifique antes de inativa lo</value>
