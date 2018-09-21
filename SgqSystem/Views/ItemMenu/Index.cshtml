@@ -3,7 +3,12 @@
 @{
     ViewBag.Title = Resources.Resource.item_menu;
 }
-
+<style>
+    #setup_tab {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+</style>
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="page-bar">
@@ -30,12 +35,11 @@
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
-
-                            <div class="tab-pane active" id="setup_tab">
+                            <div class="tab-pane active" id="setup_tab" >
                                 <p>
                                     @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table tableIndex">
+                                <table class="table" id="tabelaMenu">
                                     <thead>
                                         <tr>
                                             <th>
@@ -62,7 +66,7 @@
                                             <th>
                                                 @Html.DisplayName(Resources.Resource.is_active)
                                             </th>
-                                            <th></th>
+                                            <th> @Html.DisplayName(Resources.Resource.action)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -114,10 +118,17 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar15");
 
+
+    $(document).ready(function () {
+        $('#tabelaMenu').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "order": [[1, "asc"]],
+            "language": {
+            "emptyTable": "@Resources.Resource.no_data_to_show"
+             }
+        });
+    });
+
 </script>
 
-<script>
-    $(document).ready(function () {
-        closeLeftSidebar();
-    });
-</script>
