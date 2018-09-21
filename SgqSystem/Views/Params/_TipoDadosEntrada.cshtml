@@ -311,7 +311,7 @@
                 parLevel3Value_DynamicValue = "";
             }
 
-            if (selectTipoInput == eTipoDado_IntervaloMinutos) {
+            @*if (selectTipoInput == eTipoDado_IntervaloMinutos) {
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
@@ -320,7 +320,7 @@
                 selectUnidadeDeMedidas = "";
                 parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
                 parLevel3Value_DynamicValue = "";
-            }
+            }*@
 
             if (selectTipoInput == eTipoDado_IntervaloMinutos) {
                 selectUnidadeDeMedidasName = "";
@@ -552,7 +552,6 @@
                         o["ParLevel2_Name"] = "@Resources.Resource.all";
                     //console.log(o["ParLevel2_Name"]);
                     //console.log(o["ParLevel1_Name"]);
-
                     if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto) {
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
                         o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
@@ -642,9 +641,13 @@
             if (level3Value.veifyAdd()) {
                 var object = level3Value.getObjAdd();
 
-                if(object.DynamicValue != null){
-                    object.AcceptableValueBetween_Name = object.DynamicValue;
-                    object.AcceptableValueBetween_Name = $("#parIntervalosType option:selected").text();
+                if (object.DynamicValue != null) {
+
+                    if (object.AcceptableValueBetween_Name == "") {
+                        object.AcceptableValueBetween_Name = object.DynamicValue;
+                        object.AcceptableValueBetween_Name = $("#parIntervalosType option:selected").text();
+                    }
+                
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
