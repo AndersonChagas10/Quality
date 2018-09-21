@@ -98,8 +98,21 @@
 <script>
     navbarSelect("navbar3");
 
-    $('#tabelaProcessos').dataTable({
-        "aoPaging": true,
-        "aoSearching": true,
+     $(document).ready(function () {
+        closeLeftSidebar();
+         $('#tabelaProcessos').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null, 
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
+        });
     });
 </script>

@@ -98,6 +98,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         retorno.InitialTime = getInitialTime(form, dbSgq);
 
                         retorno.FinalTime = getFinalTime(form, dbSgq);
+
+                        retorno.Aprovador = getAprovadorName(form, dbSgq);
+
+                        retorno.Elaborador = getElaboradorName(form, dbSgq);
                     }
                 }
 
@@ -177,6 +181,36 @@ ORDER BY em_coluna.Sequential";
             return query;
         }
 
+        private string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+        Aprovador.Fullname as Aprovador
+        FROM ReportXUserSgq RXU
+        INNER JOIN UserSgq Elaborador ON Elaborador.Id = RXU.Elaborador_Id
+        INNER JOIN UserSgq Aprovador ON Aprovador.Id = RXU.Aprovador_Id
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
+        private string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	Elaborador.FullName as Elaborador
+        FROM ReportXUserSgq RXU
+        INNER JOIN UserSgq Elaborador ON Elaborador.Id = RXU.Elaborador_Id
+        INNER JOIN UserSgq Aprovador ON Aprovador.Id = RXU.Aprovador_Id
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
     }
 
     public class Retorno
@@ -184,6 +218,8 @@ ORDER BY em_coluna.Sequential";
         public List<Dado> Dados { get; set; }
         public DateTime InitialTime { get; set; }
         public DateTime FinalTime { get; set; }
+        public string Elaborador { get; set; }
+        public string Aprovador { get; set; }
     }
 
     public class EscalaAbate

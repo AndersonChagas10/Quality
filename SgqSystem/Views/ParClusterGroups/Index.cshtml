@@ -125,6 +125,15 @@
         $('#tabelaGrupoProcessos').dataTable({
             "aoPaging": true,
             "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,               
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
         });
     });
 </script>
