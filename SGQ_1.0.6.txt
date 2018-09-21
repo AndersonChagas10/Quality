@@ -1,3 +1,6 @@
+Elaborador e Aprovador Por Relatorio -- Feitor por: Renan Santini -- Data: 20/09/2018 -- DEV-267
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
 create table ReportXUserSgq(
 	Id int not null identity primary key,
 	AddDate Date not null,
@@ -9,3 +12,5 @@ create table ReportXUserSgq(
 	ParCompany_Id int FOREIGN key REFERENCES UserSGQ(Id),
 	IsActive bit not null
 )
+
+GO
