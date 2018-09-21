@@ -1180,6 +1180,12 @@
             if(!$('#unitId').attr('multiple'))
                 setTimeout(function(){$('#unitId').trigger('change');},500);
 
+            let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
+
+            if (ItemMenu) {
+
+                enviar["ItemMenu_Id"] = ItemMenu.Id;
+            }
 
         });
 

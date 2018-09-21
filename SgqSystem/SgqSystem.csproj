@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -417,6 +418,7 @@
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
+    <Compile Include="Controllers\ReportXUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
@@ -1751,6 +1753,11 @@
     <Content Include="Views\ImportFormatItems\Edit.cshtml" />
     <Content Include="Views\ImportFormatItems\Index.cshtml" />
     <Content Include="Views\SIFReports\Index.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Create.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Delete.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Details.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Edit.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
