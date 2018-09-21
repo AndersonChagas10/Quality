@@ -107,13 +107,23 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-
-        $(document).ready(function () {
-            $('#tabelaModuloProcesso').dataTable({
-                "aoPaging": true,
-                "aoSearching": true,
-            });
+     $(document).ready(function () {
+        closeLeftSidebar();
+         $('#tabelaModuloProcesso').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                null, 
+                null,
+                null, 
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
         });
     });
 
