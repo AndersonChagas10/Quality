@@ -15,7 +15,7 @@ using ADOFactory;
 namespace SgqSystem.Controllers.Recravacao
 {
     [CustomAuthorize]
-    public class RecravacaoTipoLataController : Controller
+    public class RecravacaoTipoLataController : BaseController
     {
         private SgqDbDevEntities db;
         public RecravacaoTipoLataController()
