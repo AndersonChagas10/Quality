@@ -6,7 +6,6 @@ namespace DTO
 {
     public class DataCarrierFormulario
     {
-        //private DateTime _dtvalueInicio, _dtvalueFim;
         public bool hasErros;
       
         public DateTime _dataInicio
@@ -15,8 +14,6 @@ namespace DTO
             {
                 if (startDate != null)
                 {
-                    //Guard.ParseDateToSql(startDate, ref _dtvalueInicio);
-                    //return _dtvalueInicio;
                     return Guard.ParseDateToSqlV2(startDate);
                     
                 }
@@ -44,8 +41,6 @@ namespace DTO
             {
                 if (endDate != null)
                 {
-                    //Guard.ParseDateToSql(endDate, ref _dtvalueFim);
-                    //return _dtvalueFim;
                     return Guard.ParseDateToSqlV2(endDate);
                 }
                 return DateTime.Now;
@@ -125,5 +120,7 @@ namespace DTO
         public int GroupLevel1 { get; set; }
 
         public int tipoVisao { get; set; }
+
+        public int ItemMenu_Id { get; set; }
     }
 }

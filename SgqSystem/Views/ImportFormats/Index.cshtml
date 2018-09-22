@@ -94,10 +94,22 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-    $(document).ready(function () {
-        $('#tabelaFormatos').dataTable({
+       $(document).ready(function () {
+        closeLeftSidebar();
+           $('#tabelaFormatos').dataTable({
             "aoPaging": true,
             "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                null, 
+                null, 
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
         });
     });
 </script>

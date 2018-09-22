@@ -6,50 +6,50 @@
     var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
 }
 
+<style>
+    .dataTables_scroll {
+        font-size: small;
+    }
+
+    table.dataTable {
+        margin: 0px !important;
+    }
+
+        table.dataTable thead th, table.dataTable thead td {
+            padding: 2px 12px !important;
+        }
+
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 2px !important;
+        }
+
+    .dataTables_scrollBody {
+        border-bottom: 0px !important;
+    }
+</style>
+
 <div class="page-content-wrapper">
     <div class="page-content">
+
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
         <div id="formBodyContent">
 
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-            <div class="alert alert-warning" id="SemDados">
-                Selecionar o Módulo!
-            </div>
+
             <div id="load"></div>
+
             <div id="divTable">
 
-                <style>
-                    .dataTables_scroll {
-                        font-size: small;
-                    }
-
-                    table.dataTable {
-                        margin: 0px !important;
-                    }
-
-                        table.dataTable thead th, table.dataTable thead td {
-                            padding: 2px 12px !important;
-                        }
-
-
-                        table.dataTable tbody th, table.dataTable tbody td {
-                            padding: 2px !important;
-                        }
-
-                    .dataTables_scrollBody {
-                        border-bottom: 0px !important;
-                    }
-                </style>
-
                 <table id="results" class="display" cellspacing="0" style="width:100% !important;"></table>
+
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-
 
     <script type="text/javascript">
 
@@ -61,22 +61,17 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-
-                if (enviar.moduloId > 0) {
-                    $('#SemDados').hide();
-                    Send(true);
-                } else {
-                    $('#results').empty();
-                    $('#divTable').hide();
-                    $('#SemDados').show();
-                }
+                Send(true);
             });
-
         });
 
         function Send(toggle) {
+
             $btn.button('loading');
             $('#results').empty();
+            $('#results').empty();
+            $('#divTable').hide();
+            $('#SemDados').show();
 
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
@@ -87,7 +82,7 @@
 
             enviar["auditorId"] = GetUsuarioId();
 
-            EasyAjax(url1, enviar, GerarTabela, "load", toggle);//AJAX
+            EasyAjax(url1, enviar, GerarTabela, "load", toggle);
         };
 
         var limitesMid = @Html.Raw(Json.Encode(ViewBag.PercentValueMid));
@@ -112,6 +107,7 @@
         })
 
         function GerarTabela(retornoArray) {
+
             $('#divTable').show();
 
             var table = $('#results').empty().DataTable({
@@ -133,20 +129,6 @@
                     { title: "@Resources.Resource.scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
-                /*
-                fixedHeader: {
-                    header: true,
-                    footer: true
-                },
-                */
-                //columnDefs: visibilidadeDefault,
-                //stateSave: true,
-                //stateSaveCallback: function(settings,data) {
-                //    localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
-                //},
-                //stateLoadCallback: function(settings) {
-                //    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
-                //},
                 scrollX: true,
                 paginate: false,
                 paging: false,
@@ -177,41 +159,22 @@
                         $('td', row).eq(14).css("background-color", 'yellow');
                     }
 
-                },
-                fnDrawCallback: function (data, d, o) {
-
-
-
                 }
             });
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
-                     {
-                         extend: 'colvisGroup',
-                         text: '@Resources.Resource.synthetic',
-
-                         //show: [3, 4, 5, 6, 9, 10, 12],
-                         show: arrSintShow,
-                         //hide: [0, 1, 2, 7, 8, 11]
-                         hide: arrSintHide
-                     },
+                    {
+                        extend: 'colvisGroup',
+                        text: '@Resources.Resource.synthetic',
+                        show: arrSintShow,
+                        hide: arrSintHide
+                    },
                     {
                         extend: 'colvisGroup',
                         text: '@Resources.Resource.analytical',
                         show: ':hidden'
                     },
-                    //{
-                    //    extend: 'print',
-                    //    customize: function (win) {
-                    //        $(win.document.body).find('table')
-                    //            .addClass('compact')
-                    //            .css('font-size', 'inherit');
-                    //    },
-                    //    exportOptions: {
-                    //        columns: ':visible'
-                    //    }
-                    //},
                     {
                         extend: 'excelHtml5',
 
@@ -219,18 +182,14 @@
                             columns: ':visible'
                         }
                     },
-                    //'pdf',
                 ]
             });
-
-
 
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
 
             //Filtros por coluna
-
             $('.dataTable thead th').each(function (i) {
                 var title = $('.dataTable thead th').eq($(this).index()).text();
                 $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
@@ -252,15 +211,23 @@
         }
 
         function ValidaDadosParaEnvio() {
+
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-            /*Especifico*/
+
             if (!($('#unitId :selected').val() > 0)) {
                 GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
                 return false;
             }
+
+            if (!enviar.moduloId > 0) {
+                GuardJs.exibirMensagemAlerta("Selecione o Módulo");
+                return false;
+            }
+
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
+
             GuardJs.esconderMensagem();
 
             return true;
@@ -270,15 +237,15 @@
             formControl.showFullCallendar();
             formControl.showUnit();
             formControl.showShift();
-            //formControl.showGroupLevel1();
-            //formControl.showProcesso();
             formControl.showModulo();
             closeLeftSidebar();
-            $("#unitId").find("option").eq(0).remove();
 
+            $("#unitId").find("option").eq(0).remove();
+            $("#ModuloId").find("option").eq(0).remove();
             $(".sidebar-toggler").removeClass("hide");
             $(".page-sidebar-wrapper").removeClass("hide");
-            $('button.refresh-btn-right-top').removeClass("hide");
+            $('button.refresh-btn-right-top').removeClass("hide");           
+            $('#ModuloId').change();
         });
     </script>
 

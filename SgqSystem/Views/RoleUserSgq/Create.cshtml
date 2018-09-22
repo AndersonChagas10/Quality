@@ -16,7 +16,14 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource._novo</span>
+                    @if (Model?.Id == 0 || Model?.Id == null)
+                    {
+                        <span>@Resources.Resource._novo</span>
+                    }
+                    else
+                    {
+                        <span>@Resources.Resource.edit</span>
+                    }
                 </li>
             </ul>
             <div class="page-toolbar">

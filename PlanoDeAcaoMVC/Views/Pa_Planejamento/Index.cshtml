@@ -296,6 +296,8 @@
 <script>
     $(document).ready(function () {
 
-        $('#modalLindo select').select2();
+        $('#modalLindo select').select2({
+            matcher: matchCustom
+        });
     });
 </script>

@@ -1,20 +1,12 @@
-﻿@*@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel*@
-@{
+﻿@{
     ViewBag.Title = Resources.Resource.corrective_action_reports;
     var url = Url.Action("Index", "Home");
     var urlTabelaRelatorio = Url.Action("GetCorrectiveAction", "api/CorrectiveAction");
-    //var urlTabelaRelatorio = Url.Action("Teste", "api/CorrectiveAction");
     var urlGetCa = Url.Action("GetCorrectiveActionById", "api/CorrectiveAction");
 }
 
-@*@Styles.Render("~/Content/Tables")*@
-@*<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />*@
-
 <div class="page-content-wrapper">
     <div class="page-content">
-
-        @*@Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")*@
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
         <div id="formBodyContent">
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -29,9 +21,6 @@
 
 @section Scripts {
 
-    @*@Scripts.Render("~/Scripts/GuardJs.js")
-        @Scripts.Render("~/bundles/ScriptTables")*@
-
     <script type="text/javascript">
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -42,8 +31,7 @@
         var $btn = $('#btnSend');
 
         var $wrapper = $($('style')[1]);
-        var $placeholder = $('<span style="display: none;" />').insertAfter($wrapper)
-        //$wrapper.detach();
+        var $placeholder = $('<span style="display: none;" />').insertAfter($wrapper);
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
@@ -62,31 +50,7 @@
 
             $('#divTable').hide();
             EasyAjax(url1, enviar, GerarTabela, "load", toggle);
-        };
-
-        //function Send() {
-        //    try {
-        //        $btn.button('loading');
-        //        $('#results').empty();
-        //        GuardJs.resetForValidation();
-        //        GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-        //        if (!GuardJs.isValid) { return; }
-        //        GuardJs.esconderMensagem();
-        //        $.post(url1, enviar, function (r) {
-        //            CriaTable(r.Retorno);
-        //        });
-        //    } catch (err) {
-        //        console.log(e);
-        //    } finally {
-        //        $btn.button('reset');
-        //        //setTimeout(function (e) {
-        //        //    var oTable = $('#results').dataTable();
-        //        //    if (oTable.length > 0) {
-        //        //        oTable.fnAdjustColumnSizing();
-        //        //    }
-        //        //}, 500);
-        //    }
-        //};
+        }
 
         function GerarTabela(retornoArray) {
             
@@ -106,9 +70,7 @@
                    { title: "@Resources.Resource.date", mData: "DateCorrectiveActionFormatadoShort" },
                    { title: "@Resources.Resource.start_time", mData: "StartTimeFormatado" },
                    { title: "@Resources.Resource.slaughter", mData: "NameSlaugtherAndDate" },
-                   //{ title: "Date Slaughter", mData: "DateTimeSlaughterFarmatado" },
                    { title: "@Resources.Resource.technical", mData: "NameTechinicalAndDate" },
-                   //{ title: "Date Techinical", mData: "DateTimeTechinicalFarmatado" },
                    { title: "@Resources.Resource.level1", mData: "level01Name" },
                    { title: "@Resources.Resource.level2", mData: "level02Name" },
                    { title: "@Resources.Resource.audit_start_time", mData: "StartTimeFormatado" },
@@ -116,7 +78,6 @@
                    { title: "@Resources.Resource.immediate_corrective_action", mData: "ImmediateCorrectiveAction" },
                    { title: "@Resources.Resource.preventative_measure", mData: "PreventativeMeasure" },
                    { title: "@Resources.Resource.product_disposition", mData: "ProductDisposition" },
-                   //{ title: "Auditor", mData: "Id" }
                 ],
                 "columnDefs": [
                    { "className": "dt-center", "targets": "_all" }
@@ -130,7 +91,7 @@
                 aplicarResponsividade: true,
                 initComplete: function () {
                     $('#loading').hide();
-                    $('#results tbody').on('click', 'button[data-action="read"]', function (data, a, b) {
+                    $('#results tbody').on('click', 'button[data-action="read"]', function () {
                         var data = table.row($(this).parents('tr')).data();
                         $.post(url2, { "": data.Id }, function (r, x, e) {
 
@@ -176,7 +137,7 @@
                             $('#correctiveActionModal').show();
                         });
                     });
-                    $('#results tbody').on('click', 'button[data-action="edit"]', function (data, a, b) {
+                    $('#results tbody').on('click', 'button[data-action="edit"]', function () {
                         var data = table.row($(this).parents('tr')).data();
                         $.post(url2, { "": data.Id }, function (r, x, e) {
 
@@ -223,38 +184,14 @@
                             $('#correctiveActionModal').show();
                         });
                     });
-                },
+                }
             });
-            table.f
+            table.f;
             if (!$('.dataTables_empty').length) {
                 $('#menu-toggle').click();
             }
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
-                    @*{
-                        extend: 'print',
-                        text: '@Resources.Resource.print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact').addClass('printable!important')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },*@
-                    //{
-                    //    //extend: 'excelHtml5',
-                    //    //exportOptions: {
-                    //    //    columns: ':visible'
-                    //    //}
-                    //},
-                    //'pdf',
-                    @*{
-                        extend: 'colvis',
-                        text: '@Resources.Resource.visible_columns',
-                    }*@
-
                 ]
             });
 
@@ -270,17 +207,10 @@
             var modThis = document.querySelector("#printSection .modifyMe");
             modThis.appendChild(document.createTextNode(" "));
 
-            //var w = window.open();
-            //var html = $("#toNewWindow").html();
-
-            //$(w.document.body).html(html);
-            //w.print();
-
             window.print();
-            //$wrapper.detach();
             $('#printSection').remove();
 
-        }
+        };
 
         function printElement(elem, append, delimiter) {
             var domClone = elem.cloneNode(true);
@@ -321,11 +251,7 @@
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-            /*Especifico*/
-            @*if (!($('#unitId :selected').val() > 0)) {
-                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
-                return false;
-            }*@
+
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();

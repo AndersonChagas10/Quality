@@ -876,17 +876,19 @@ AUTHOR: GABRIEL CRUZ NUNES
             //    //        }
             //    //    }
             //    //},
-        })
+        });
 
         $('select:not(#valor1Filtro)').select2({
             dropdownAutoWidth: true,
-            width: '140px'
-        })
+            width: '140px',
+            matcher: matchCustom
+        });
 
         $('select#valor1Filtro').select2({
             dropdownAutoWidth: true,
             width: '250px'
-        })
+            matcher: matchCustom,
+        });
 
     }
 
