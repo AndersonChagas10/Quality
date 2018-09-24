@@ -32,19 +32,19 @@
                                 <div>
                                     <dl class="dl-horizontal">
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Aprovador_Id)
+                                            @Html.DisplayNameFor(model => model.Aprovador)
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.Aprovador.Name)
+                                            @Html.DisplayFor(model => model.Aprovador)
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Elaborador_Id)
+                                            @Html.DisplayNameFor(model => model.Elaborador)
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.Elaborador.Name)
+                                            @Html.DisplayFor(model => model.Elaborador)
                                         </dd>
 
                                         <dt>
@@ -78,6 +78,14 @@
                                             @Html.DisplayFor(model => model.ParLevel1.Name)
                                         </dd>
 
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.CodigoRelatorio)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.CodigoRelatorio)
+                                        </dd>
+
                                     </dl>
 
                                     @using (Html.BeginForm())
@@ -85,8 +93,8 @@
                                         @Html.AntiForgeryToken()
 
                                         <div class="form-actions no-color">
-                                            <input type="submit" value="Excluir" class="btn btn-default" /> |
-                                            @Html.ActionLink("Voltar", "Index")
+                                            <input type="submit" value="Excluir" class="btn btn-danger" /> 
+                                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
                                         </div>
                                     }
 

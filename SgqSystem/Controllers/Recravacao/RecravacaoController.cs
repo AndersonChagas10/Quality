@@ -33,7 +33,7 @@ namespace SgqSystem.Controllers.Recravacao
                 var itemMenu = (ItemMenuDTO)ViewBag.itemMenu;
                 if (itemMenu != null)
                 {
-                    ViewBag.ReportXUserSgq = db.ReportXUserSgq.Include("Elaborador").Include("Aprovador")
+                    ViewBag.ReportXUserSgq = db.ReportXUserSgq
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
                 }
                 ViewBag.IndicadorId = indicadorId;
@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers.Recravacao
                 var itemMenu = (ItemMenuDTO)ViewBag.itemMenu;
                 if (itemMenu != null)
                 {
-                    ViewBag.ReportXUserSgq = db.ReportXUserSgq.Include("Elaborador").Include("Aprovador")
+                    ViewBag.ReportXUserSgq = db.ReportXUserSgq
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
                 }
                 ViewBag.IndicadorId = indicadorId;

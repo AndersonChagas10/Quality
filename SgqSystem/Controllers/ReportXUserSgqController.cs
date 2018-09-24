@@ -17,15 +17,13 @@ namespace SgqSystem.Controllers
         // GET: ReportXUserSgqs
         public ActionResult Index()
         {
-            var reportXUserSgq = db.ReportXUserSgq.Include(r => r.Aprovador).Include(r => r.Elaborador).Include(r => r.ItemMenu).Include(r => r.ParCompany).Include(r => r.ParLevel1);
+            var reportXUserSgq = db.ReportXUserSgq.Include(r => r.ItemMenu).Include(r => r.ParCompany).Include(r => r.ParLevel1);
             return View(reportXUserSgq.ToList());
         }
 
         // GET: ReportXUserSgqs/Create
         public ActionResult Create()
         {
-            ViewBag.Aprovador_Id = new SelectList(db.UserSgq, "Id", "Name");
-            ViewBag.Elaborador_Id = new SelectList(db.UserSgq, "Id", "Name");
             ViewBag.ItemMenu_Id = new SelectList(db.ItemMenu, "Id", "Name");
             ViewBag.ParCompany_Id = new SelectList(db.ParCompany, "Id", "Name");
             ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name");
@@ -37,7 +35,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AddDate,AlterData,ItemMenu_Id,Elaborador_Id,Aprovador_Id,ParLevel1_Id,ParCompany_Id,IsActive")] ReportXUserSgq reportXUserSgq)
+        public ActionResult Create([Bind(Include = "Id,AddDate,AlterData,ItemMenu_Id,Elaborador,Aprovador,ParLevel1_Id,ParCompany_Id,IsActive,CodigoRelatorio")] ReportXUserSgq reportXUserSgq)
         {
 
             if (db.ReportXUserSgq.Any(r => r.ItemMenu_Id == reportXUserSgq.ItemMenu_Id && 
@@ -56,8 +54,6 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Aprovador_Id = new SelectList(db.UserSgq, "Id", "Name", reportXUserSgq.Aprovador_Id);
-            ViewBag.Elaborador_Id = new SelectList(db.UserSgq, "Id", "Name", reportXUserSgq.Elaborador_Id);
             ViewBag.ItemMenu_Id = new SelectList(db.ItemMenu, "Id", "Name", reportXUserSgq.ItemMenu_Id);
             ViewBag.ParCompany_Id = new SelectList(db.ParCompany, "Id", "Name", reportXUserSgq.ParCompany_Id);
             ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", reportXUserSgq.ParLevel1_Id);
@@ -79,8 +75,6 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.Aprovador_Id = new SelectList(db.UserSgq, "Id", "Name", reportXUserSgq.Aprovador_Id);
-            ViewBag.Elaborador_Id = new SelectList(db.UserSgq, "Id", "Name", reportXUserSgq.Elaborador_Id);
             ViewBag.ItemMenu_Id = new SelectList(db.ItemMenu, "Id", "Name", reportXUserSgq.ItemMenu_Id);
             ViewBag.ParCompany_Id = new SelectList(db.ParCompany, "Id", "Name", reportXUserSgq.ParCompany_Id);
             ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", reportXUserSgq.ParLevel1_Id);
@@ -92,7 +86,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterData,ItemMenu_Id,Elaborador_Id,Aprovador_Id,ParLevel1_Id,ParCompany_Id,IsActive")] ReportXUserSgq reportXUserSgq)
+        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterData,ItemMenu_Id,Elaborador,Aprovador,ParLevel1_Id,ParCompany_Id,IsActive,CodigoRelatorio")] ReportXUserSgq reportXUserSgq)
         {
 
             if (db.ReportXUserSgq.Any(r => r.ItemMenu_Id == reportXUserSgq.ItemMenu_Id &&
@@ -109,8 +103,6 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Aprovador_Id = new SelectList(db.UserSgq, "Id", "Name", reportXUserSgq.Aprovador_Id);
-            ViewBag.Elaborador_Id = new SelectList(db.UserSgq, "Id", "Name", reportXUserSgq.Elaborador_Id);
             ViewBag.ItemMenu_Id = new SelectList(db.ItemMenu, "Id", "Name", reportXUserSgq.ItemMenu_Id);
             ViewBag.ParCompany_Id = new SelectList(db.ParCompany, "Id", "Name", reportXUserSgq.ParCompany_Id);
             ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", reportXUserSgq.ParLevel1_Id);
@@ -124,7 +116,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var reportXUserSgq = db.ReportXUserSgq.Include(r => r.Aprovador).Include(r => r.Elaborador).Include(r => r.ItemMenu).Include(r => r.ParCompany).Include(r => r.ParLevel1).Where(r => r.Id == id).FirstOrDefault();
+            var reportXUserSgq = db.ReportXUserSgq.Include(r => r.ItemMenu).Include(r => r.ParCompany).Include(r => r.ParLevel1).Where(r => r.Id == id).FirstOrDefault();
             if (reportXUserSgq == null)
             {
                 return HttpNotFound();

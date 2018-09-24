@@ -429,10 +429,10 @@
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador.FullName) {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
                     </tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador.FullName) {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
                     </tr>
                 </table>
             </div>
@@ -754,6 +754,7 @@
                         </tr>
                     </table>
                 </div>
+                <span>@Html.Raw(ViewBag.ReportXUserSgq.CodigoRelatorio)</span>
             </div>
 
         </div>
