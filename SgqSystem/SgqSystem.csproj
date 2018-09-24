@@ -1686,8 +1686,6 @@
     <Content Include="Views\RecravacaoLinhas\Index.cshtml" />
     <Content Include="Views\RecravacaoLinhas\Create.cshtml" />
     <Content Include="Views\RecravacaoLinhas\Details.cshtml" />
-    <Content Include="Views\Recravacao\Print.cshtml" />
-    <Content Include="Views\Recravacao\Print2.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
@@ -1758,6 +1756,7 @@
     <Content Include="Views\ReportXUserSgq\Details.cshtml" />
     <Content Include="Views\ReportXUserSgq\Edit.cshtml" />
     <Content Include="Views\ReportXUserSgq\Index.cshtml" />
+    <Content Include="Views\Recravacao\PrintAcaoCorretiva.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
