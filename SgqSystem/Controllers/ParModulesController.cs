@@ -135,7 +135,7 @@ namespace SgqSystem.Controllers
 
             var totalDeVinculos = db.ParLevel1XModule.Where(x => x.ParModule_Id == parModule.Id).Count();
 
-            if (totalDeVinculos > 0)
+            if (totalDeVinculos > 0 && parModule.IsActive == false) 
                 ModelState.AddModelError("IsActive", Resources.Resource.module_link_indicator);
 
             if (string.IsNullOrEmpty(parModule.Name))
