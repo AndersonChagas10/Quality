@@ -107,7 +107,7 @@ namespace SgqSystem.Controllers
 
                     if (webControlCookie != null && webControlCookie.Values["userId"] != null)
                     {
-                        var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.ItensMenu;
+                        var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.TodosItensMenu;
                         ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
                         if (ViewBag.itemMenu == null)
                             throw new Exception("Acesso Negado!");
@@ -236,6 +236,7 @@ namespace SgqSystem.Controllers
 
                         var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
 
+                        ViewBag.TodosItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && ItensDeMenuUsuarioIds.Contains(r.Id)));
                         ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));
                     }
                 }

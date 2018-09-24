@@ -1873,31 +1873,37 @@
         level: 'ParLevel1',
         listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
         tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
-        adiciona: function() {
+        adiciona: function () {
+            debugger
             /*Valida se pode criar o objeto*/
-            if($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0){
-                openMessageModal("@Resources.Resource.select_not_conformity_rule");
-                return;
-            }
+            if ($("#tableRegraNc").find('td:first').text() == "") {
+                if ($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0) {
+                    openMessageModal("@Resources.Resource.select_not_conformity_rule");
+                    return;
+                }
 
-            if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
-                return;
-            }
+                if ($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == "") {
+                    openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
+                    return;
+                }
 
-            /*Cria o objeto*/
-            var object = {/*Objeto*/
-                ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
-                ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
-                Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
-                IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n",
-                IsActive: true,
-                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
-            }
+                /*Cria o objeto*/
+                var object = {/*Objeto*/
+                    ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
+                    ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
+                    Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                    IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                    IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n",
+                    IsActive: true,
+                    //btn: crudNxN.btnRemove + crudNxN.btnEdit,
+                }
 
-            /*Conclui*/
-            crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+                /*Conclui*/
+                crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+            } else {
+                openMessageModal("@Resources.Resource.indicador_used");
+            }
+           
         },
         incluiNoObjetoParaSubmit: function(dados){
 
@@ -2099,7 +2105,7 @@
             Group_Id: '',
             ParLevel1_Id: 0
         },
-        Add: function(idHeader, button){
+        Add: function (idHeader, button) {
             HeaderLevel1.object.Id = idHeader;
 
             $.post(urlHeaderLevel1, HeaderLevel1.object, function(r){
@@ -2108,9 +2114,11 @@
                 if (classeSpan) {
                     span.removeClass('fa fa-copy');
                     span.addClass('glyphicon glyphicon-duplicate')
+                    span.attr("title", "Clonar cabeçalho - Ativado")    
                 } else {
                     span.removeClass('glyphicon glyphicon-duplicate');
                     span.addClass('fa fa-copy')
+                    span.attr("title", "Clonar cabeçalho - Inativado")  
                 }
             });
         },

@@ -136,7 +136,7 @@ namespace Dominio.Services
                     #region HARDCODE - Verifica se o usuario tem identificador 366 e atribui a Role para 'backdate'
                     try
                     {
-                        var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id && r.Role == "366");
+                        var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id && (r.Role == "366" || r.Role == "529" || r.Role == "1885"));
 
                         using (var db = new SgqDbDevEntities())
                         {

@@ -55,7 +55,7 @@ namespace SgqSystem.Controllers.Api
                         on TL.Id = RL.ParRecravacao_TypeLata_Id
                         WHERE RL.ParCompany_Id = {0} 
                         and TL.isActive = 1
-                        and RL.ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1)", companyId, level1Id);
+                        and RL.ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1) order by 2 asc", companyId, level1Id);
                 var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
 
                 foreach (var linha in listLinhasDoLevel1)
@@ -240,11 +240,16 @@ namespace SgqSystem.Controllers.Api
             int row = 0;
             try
             {
+                var level2_id = int.Parse(vinculoLevel32["ParLevel2_Id"].ToString());
+
                 var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
                 var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParMeasurementUnit").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
 
-                while (level3.ParLevel3Value.Any(r => !r.IsActive))
-                    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
+                //while (level3.ParLevel3Value.Any(r => !r.IsActive))
+                //    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
+
+                while (level3.ParLevel3Value.Any(r => !r.IsActive || ( r.ParLevel2_Id != level2_id && r.ParLevel2_Id != null)))  // não pode ser inativo E não pode ser de um monitoramento diferente OU deve ser NULO)
+                    level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive || (r.ParLevel2_Id != level2_id && r.ParLevel2_Id != null)));
 
                 var level3Dto = Mapper.Map<ParLevel3DTO>(level3);
                 var pointLess = db.Database.SqlQuery<bool?>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3Dto.Id)).FirstOrDefault() ?? false;
@@ -257,7 +262,13 @@ namespace SgqSystem.Controllers.Api
                 List<ParLevel3Value_OuterListDTO> valueCampoCalcOutro = null;
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
+                    //Foi utilizado o campo ParMeasurementUnit_Id para colocar o id do monitoramento vinculado
+                    valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1) and ParMeasurementUnit_Id = {2}", level3.Id, parcompany, level2_id)).ToList();
+                    if (valueCampoCalcOutro.Count == 0)
+                        valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1) and ParMeasurementUnit_Id = 0", level3.Id, parcompany)).ToList();
+
+                    //valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
+
                 }
 
                 level3Dto.ParLevel3Value_OuterList = valueCampoCalcOutro;
@@ -270,7 +281,9 @@ namespace SgqSystem.Controllers.Api
                     if (bin.ParLevel3BoolFalse_Id > 0 && bin.ParLevel3BoolFalse != null)
                         level3Dto.ParLevel3Value.FirstOrDefault(r => r.Id == bin.Id).ParLevel3BoolFalse = Mapper.Map<ParLevel3BoolFalseDTO>(bin.ParLevel3BoolFalse);
                 }
-                listaLevel3.Add(level3Dto);
+                
+                if (level3.ParLevel3Value.Count > 0 || valueCampoCalcOutro.Count > 0)
+                    listaLevel3.Add(level3Dto);
             }
             catch(Exception ex)
             {
@@ -319,7 +332,7 @@ namespace SgqSystem.Controllers.Api
         {
             queryVinculoLevel21 = $@"SELECT * FROM ParLevel2Level1 WHERE ParLevel1_Id in ({level1Ids}) AND ParLevel2_Id = {parlevel2_Id} AND ParCompany_Id = {parcompany} AND IsActive = 1";
             queryVinculoLevel32 = $@"SELECT * FROM ParLevel3Level2 WHERE ParLevel2_Id = {parlevel2_Id} AND ParCompany_Id = {parcompany} AND IsActive = 1";
-            queryVinculoLevel321 = $@"SELECT * FROM parlevel3level2Level1 WHERE ParLevel1_Id in ({level1Ids}) AND ParLevel3Level2_Id IN (select Id from ParLevel3Level2 WHERE ParLevel2_Id = {parlevel2_Id} AND ParCompany_Id = {parcompany} AND IsActive = 1)";
+            queryVinculoLevel321 = $@"SELECT * FROM parlevel3level2Level1 WHERE ParLevel1_Id in ({level1Ids}) AND ParLevel3Level2_Id IN (select Id from ParLevel3Level2 WHERE ParLevel2_Id = {parlevel2_Id} AND ParCompany_Id = {parcompany} AND IsActive = 1) AND Active = 1";
             hasVinculoLevel21 = QueryNinja(db, queryVinculoLevel21);
             hasVinculoLevel32 = QueryNinja(db, queryVinculoLevel32);
             hasVinculoLevel321 = QueryNinja(db, queryVinculoLevel321);

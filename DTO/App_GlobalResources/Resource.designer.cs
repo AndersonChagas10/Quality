@@ -2491,6 +2491,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator alredy have a alert rule!.
+        /// </summary>
+        internal static string indicador_used {
+            get {
+                return ResourceManager.GetString("indicador_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Indicators by Units.
         /// </summary>
         internal static string indicators_by_units {
@@ -2514,6 +2523,15 @@ namespace Resources {
         internal static string indicators_evolution {
             get {
                 return ResourceManager.GetString("indicators_evolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These Indicators already have links on the selected date..
+        /// </summary>
+        internal static string indicator_alredy_used {
+            get {
+                return ResourceManager.GetString("indicator_alredy_used", resourceCulture);
             }
         }
         
@@ -3306,6 +3324,15 @@ namespace Resources {
         internal static string monitoring_task_linked_indicator_successfully {
             get {
                 return ResourceManager.GetString("monitoring_task_linked_indicator_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Monitoring alredy have a alert rule!.
+        /// </summary>
+        internal static string monitoring_used {
+            get {
+                return ResourceManager.GetString("monitoring_used", resourceCulture);
             }
         }
         
@@ -5871,6 +5898,15 @@ namespace Resources {
         internal static string unvalued {
             get {
                 return ResourceManager.GetString("unvalued", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string update {
+            get {
+                return ResourceManager.GetString("update", resourceCulture);
             }
         }
         

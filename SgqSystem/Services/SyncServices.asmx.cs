@@ -334,7 +334,7 @@ namespace SgqSystem.Services
 
                         var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
 
-                        string indicadorPai = "SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                               "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                               "\n  on p321.ParLevel1_Id = p1.id " +
                                               "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
@@ -342,7 +342,8 @@ namespace SgqSystem.Services
                                               "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
                                               "\n  and p1.isActive = 1 " +
                                               "\n  and p321.Active = 1 " +
-                                              "\n  and p32.IsActive = 1";
+                                              "\n  and p32.IsActive = 1" +
+                                              "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
 
 
                         List<ResultadoUmaColuna> list;
@@ -400,7 +401,7 @@ namespace SgqSystem.Services
 
                         if (level01Id == "0")
                         {
-                            string p1Undefined = "SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                            string p1Undefined = "    SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                                  "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                                  "\n  on p321.ParLevel1_Id = p1.id " +
                                                  "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
@@ -645,7 +646,7 @@ namespace SgqSystem.Services
                             {
 
                                 //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                string indicadorFilho = "SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
+                                string indicadorFilho = " SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
                                                       "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
                                                       "\n  on p321.ParLevel1_Id = p1.id " +
                                                       "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
@@ -4517,6 +4518,9 @@ $(document).ready(function(){
                     {
                         tipoTela = variableList[0].Name;
                     }
+
+                    var ParLevel2DB = new SGQDBContext.ParLevel2(db);
+                    var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
 
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);

@@ -2625,6 +2625,12 @@
   <data name="new_format" xml:space="preserve">
     <value>New Format</value>
   </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>This Indicator alredy have a alert rule!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>This Monitoring alredy have a alert rule!</value>
+  </data>
   <data name="are_greater_than" xml:space="preserve">
     <value>Are greater than</value>
   </data>
@@ -2633,5 +2639,11 @@
   </data>
   <data name="update_collect_message" xml:space="preserve">
     <value>Please update the settings of your unit to have an effect on APP Collect</value>
+  </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>These Indicators already have links on the selected date.</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

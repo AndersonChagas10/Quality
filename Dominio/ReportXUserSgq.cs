@@ -21,9 +21,9 @@ namespace Dominio
         [Display(Name = "Relatorio")]
         public int ItemMenu_Id { get; set; }
         [Display(Name = "Elaborador")]
-        public int Elaborador_Id { get; set; }
+        public string Elaborador { get; set; }
         [Display(Name = "Aprovador")]
-        public int Aprovador_Id { get; set; }
+        public string Aprovador { get; set; }
         [Display(Name = "Indicador")]
         public int ParLevel1_Id { get; set; }
         [Display(Name = "Unidade")]
@@ -34,17 +34,14 @@ namespace Dominio
         [ForeignKey("ItemMenu_Id")]
         public ItemMenu ItemMenu { get; set; }
 
-        [ForeignKey("Elaborador_Id")]
-        public UserSgq Elaborador { get; set; }
-
-        [ForeignKey("Aprovador_Id")]
-        public UserSgq Aprovador { get; set; }
-
         [ForeignKey("ParLevel1_Id")]
         public ParLevel1 ParLevel1 { get; set; }
 
         [ForeignKey("ParCompany_Id")]
         public ParCompany ParCompany { get; set; }
+
+        [Display(Name = "Codigo do Relatório")]
+        public string CodigoRelatorio { get; set; }
 
     }
 }

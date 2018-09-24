@@ -1250,7 +1250,7 @@
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
-                    if(!linkedUnitIds.includes($(this).data().companyId))
+                    if (!linkedUnitIds.includes($(this).data().Parcompany_Id))
                         $(this).find('input, select, button').attr("disabled", true);
                 });
             }else{
@@ -1302,7 +1302,7 @@
 
                     /*Libera os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                    $('#selectTipoInput').on('change', function() {
+                    $('#selectTipoInput').on('change', function () {
                         $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                     });
 
@@ -1322,7 +1322,7 @@
 
                     /*Bloqueia os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
-                    $('#selectTipoInput').on('change', function() {
+                    $('#selectTipoInput').on('change', function () {
                         $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
                     });
 
@@ -1365,7 +1365,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*habilita Edicao do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if(linkedUnitIds.includes($(this).data().companyId)){
+                        if (linkedUnitIds.includes($(this).data().Parcompany_Id)){
                             $(this).find('input, select, button.btn-success').attr("disabled", false);
                         }else{
                             $(this).find('input, select, button.btn-success').attr("disabled", true);
@@ -1377,6 +1377,8 @@
                         $(this).find('input, select, button.btn-success').attr("disabled", true);
                     });
                 }
+
+            
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
@@ -1404,6 +1406,18 @@
             if ($('#tableLevel3Value > tbody > tr').length == 0)
                 $('#tableLevel3Value').css('display', 'none');
 
+            $('#tableLevel3Value > tbody > tr').each(function () {
+                if (!linkedUnitIds.includes($(this).data().ParCompany_Id) || !($(this).data().ParCompany_Id > 0)) {
+                    $(this).find('input, select, button').attr("disabled", true);
+                    $(this).remove();
+                }
+            });
+
+            $('#tablePeso > tbody > tr').each(function () {
+                if (!linkedUnitIds.includes($(this).data().ParCompany_Id)) {
+                    $(this).addClass('hide');
+                }
+            });
         });
 
 

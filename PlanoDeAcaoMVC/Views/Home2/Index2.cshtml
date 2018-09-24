@@ -1259,17 +1259,18 @@
 
             }
 
-            makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {
-            })
+            makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {});
 
             $('select:not(#valor1Filtro)').select2({
                 dropdownAutoWidth: true,
-                width: '140px'
+                width: '140px',
+                matcher: matchCustom
             })
 
             $('select#valor1Filtro').select2({
                 dropdownAutoWidth: true,
-                width: '250px'
+                width: '250px',
+                matcher: matchCustom
             })
 
         }
@@ -1794,7 +1795,9 @@
                             } catch (e) {
                             }
                             finally {
-                                $('#modalLindo select').select2();
+                                $('#modalLindo select').select2({
+                                    matcher: matchCustom
+                                });
                             }
 
                         });
@@ -1820,7 +1823,9 @@
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
                     childrenEl.remove();
-                    $(idChildren).select2();
+                    $(idChildren).select2({
+                        matcher: matchCustom
+                    });
 
                     if (masterCB)
                         masterCB()
@@ -1874,11 +1879,15 @@
                 setTimeout(function () {
                     header.find("select.select2-hidden-accessible").next('.select2').remove();
                     header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
-                    header.find("select:visible").select2();
+                    header.find("select:visible").select2({
+                        matcher: matchCustom
+                    });
                     $('.UnidadeMedida').change();
 
                     $('[name="TipoIndicador"]').each(function () {
-                        $(this).select2();
+                        $(this).select2({
+                            matcher: matchCustom
+                        });
                     });
 
                 }, 1);
@@ -2112,11 +2121,15 @@
                     form.find('.IndicadorOutros').show();
                     form.find('.ProbDesv').hide();
                     form.find('.ProbDesv').val("");
-                    form.find('.IndicadorOutros select').select2();
+                    form.find('.IndicadorOutros select').select2({
+                        matcher: matchCustom
+                    });
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
                     form.find('.ProbDesv').show();
-                    form.find('.IndicadorSgq select').select2();
+                    form.find('.IndicadorSgq select').select2({
+                        matcher: matchCustom
+                    });
                 }
             });
 
@@ -2126,17 +2139,23 @@
                 if (valor) {
                     $.get(GETGrupoCausa, { id: valor }, function (r) {
                         form.find('#GrupoCausa').empty().html(r);
-                        $('.showAsEstrategy select').select2();
+                        $('.showAsEstrategy select').select2({
+                            matcher: matchCustom
+                        });
                     });
                     $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
                         form.find('#ContramedidaGenerica').empty().html(rr);
-                        $('.showAsEstrategy select').select2();
+                        $('.showAsEstrategy select').select2({
+                            matcher: matchCustom
+                        });
                     });
                 }
                 else {
                     form.find('#GrupoCausa_Id').empty().attr('disabled', true);
                     form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-                    $('.showAsEstrategy select').select2();
+                    $('.showAsEstrategy select').select2({
+                        matcher: matchCustom
+                    });
                 }
             });
         } /*Causa Medida Etc...*/
@@ -2364,7 +2383,9 @@
                         $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
                         $(tempInput).select2('destroy');
                         $(tempInput).val(r.Id).trigger('change');
-                        $(tempInput).select2();
+                        $(tempInput).select2({
+                            matcher: matchCustom
+                        });
 
                     } else {
                         $(tempInput).find('option:first').prop('selected', true);
@@ -2654,8 +2675,12 @@
                 });
 
                 setTimeout(function () {
-                    $('#MailTo').select2();
-                    $('#Status_Id').select2();
+                    $('#MailTo').select2({
+                        matcher: matchCustom
+                    });
+                    $('#Status_Id').select2({
+                        matcher: matchCustom
+                    });
                 }, 1000);
             })
         }
@@ -2755,7 +2780,9 @@
 
                     $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
 
-                    $('#formEditTatico #IndicadoresDeProjeto_Id').select2();
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').select2({
+                        matcher: matchCustom
+                    });
 
                     $('#formEditTatico #IndicadoresDeProjeto_Id').change();
                 });
@@ -2776,7 +2803,9 @@
 
                     $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
 
-                    $('#formEditTatico #ObjetivoGerencial_Id').select2();
+                    $('#formEditTatico #ObjetivoGerencial_Id').select2({
+                        matcher: matchCustom
+                    });
                 });
             });
         }
@@ -2801,7 +2830,9 @@
 
                 setTimeout(function () {
                     $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
-                    $('.content3 select').select2();
+                    $('.content3 select').select2({
+                        matcher: matchCustom
+                    });
                     $('.UnidadeMedida').change();
 
                     InitDatePiker();

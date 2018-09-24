@@ -1,11 +1,17 @@
+Elaborador e Aprovador Por Relatorio -- Feitor por: Renan Santini -- Data: 20/09/2018 -- DEV-267
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
 create table ReportXUserSgq(
 	Id int not null identity primary key,
 	AddDate Date not null,
 	AlterDate Date,
 	ItemMenu_Id int not null FOREIGN KEY REFERENCES ItemMenu(Id),
-	Elaborador_Id int not null FOREIGN key REFERENCES UserSGQ(Id),
-	Aprovador_Id int not null FOREIGN key REFERENCES UserSGQ(Id),
+	Elaborador varchar(100) null,
+	Aprovador varchar(100) null,
+	CodigoRelatorio varchar(100) null,
 	ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
 	ParCompany_Id int FOREIGN key REFERENCES UserSGQ(Id),
 	IsActive bit not null
 )
+
+GO
