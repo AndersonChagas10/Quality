@@ -125,6 +125,7 @@
         $('#tabelaIndicadorModulo').dataTable({
             "aoPaging": true,
             "aoSearching": true,
+            
             "aoColumns": [
                 null,
                 null,
@@ -134,7 +135,9 @@
             ],
             "order": [[1, "asc"]],
             "language": {
-                "emptyTable": "@Resources.Resource.no_data_to_show"
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "@Resources.Resource.no_data_to_show",
+                "info": "Página _PAGE_ de _PAGES_"
             },
         });
     });

@@ -1,5 +1,9 @@
 Elaborador e Aprovador Por Relatorio -- Feitor por: Renan Santini -- Data: 20/09/2018 -- DEV-267
 
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.6_InsercaoReportXUserSgq',GetDate());
+
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
 create table ReportXUserSgq(
 	Id int not null identity primary key,
