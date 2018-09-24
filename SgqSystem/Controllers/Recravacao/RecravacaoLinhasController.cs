@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers.Recravacao
 {
     [CustomAuthorize]
-    public class RecravacaoLinhasController : Controller
+    public class RecravacaoLinhasController : BaseController
     {
         private SgqDbDevEntities db;
 

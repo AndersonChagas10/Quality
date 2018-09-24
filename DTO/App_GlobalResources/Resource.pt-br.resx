@@ -2184,4 +2184,10 @@
   <data name="update_collect_message" xml:space="preserve">
     <value>Por favor, atualize as parametrizações da sua unidade para surtir efeito no APP Coleta.</value>
   </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>Estes Indicadores já possuem vinculos na data vingente.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
 </root>
