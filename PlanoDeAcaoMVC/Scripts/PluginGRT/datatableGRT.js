@@ -13,7 +13,7 @@
         "infoFiltered": "(Filtrado de _MAX_ registros)",
         "paginate": {
             "previous": 'Anterior',
-            "next": 'Proximo',
+            "next": 'Proximo'
         }
     },
     buttons: {
