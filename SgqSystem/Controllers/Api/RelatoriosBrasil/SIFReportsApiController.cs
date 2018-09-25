@@ -115,7 +115,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
-        private DateTime getInitialTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        private DateTime? getInitialTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
 
             var query = $@"SELECT
@@ -128,11 +128,11 @@ AND ParLevel2_Id = { form.level2Id }
 AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
-            return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
+            return dbSgq.Database.SqlQuery<DateTime?>(query).FirstOrDefault();
 
         }
 
-        private DateTime getFinalTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        private DateTime? getFinalTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
             var query = $@"SELECT
 	MAX(CollectionDate)
@@ -144,7 +144,7 @@ AND ParLevel2_Id = { form.level2Id }
 AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
-            return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
+            return dbSgq.Database.SqlQuery<DateTime?>(query).FirstOrDefault();
         }
 
         private string getQuery1(FormularioParaRelatorioViewModel form)
@@ -212,8 +212,8 @@ ORDER BY em_coluna.Sequential";
     public class Retorno
     {
         public List<Dado> Dados { get; set; }
-        public DateTime InitialTime { get; set; }
-        public DateTime FinalTime { get; set; }
+        public DateTime? InitialTime { get; set; }
+        public DateTime? FinalTime { get; set; }
         public string Elaborador { get; set; }
         public string Aprovador { get; set; }
     }
