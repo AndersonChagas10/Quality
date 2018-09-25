@@ -104,7 +104,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         retorno.Elaborador = getElaboradorName(form, dbSgq);
                     }
                 }
-
             }
             catch (Exception)
             {

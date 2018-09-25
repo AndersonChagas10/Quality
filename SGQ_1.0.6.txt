@@ -4,6 +4,11 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.6_InsercaoReportXU
 
 GO
 
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+drop table ReportXUserSgq
+
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
 create table ReportXUserSgq(
 	Id int not null identity primary key,
@@ -14,7 +19,7 @@ create table ReportXUserSgq(
 	Aprovador varchar(100) null,
 	CodigoRelatorio varchar(100) null,
 	ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
-	ParCompany_Id int FOREIGN key REFERENCES UserSGQ(Id),
+	ParCompany_Id int FOREIGN key REFERENCES ParCompany(Id),
 	IsActive bit not null
 )
 
