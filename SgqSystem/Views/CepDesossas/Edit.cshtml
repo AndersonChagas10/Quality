@@ -248,6 +248,8 @@
     function applyMath() {
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
         //$('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        if (("" + $('#Amostras').val()).length <= 0) $('#Amostras').val(0);
+        if ((""+$('#amostraHidden').val()).length <= 0) $('#amostraHidden').val(0);
     }
 
     $(document).ready(function () {

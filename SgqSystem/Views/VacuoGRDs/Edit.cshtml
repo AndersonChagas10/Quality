@@ -52,6 +52,7 @@
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         @Html.HiddenFor(model => model.Id)
                                         @Html.HiddenFor(model => model.AddDate)
+                                        @Html.HiddenFor(model => model.Data)
 
                                         @*<div class="form-group">
                                                 @Html.LabelFor(model => model.Indicador, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -170,7 +171,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                }
+                                            }
 
                             </div>
                         </div>
@@ -207,7 +208,7 @@
 
         $('#Avaliacoes').attr('disabled', false)
         $('#Amostras').attr('disabled', false)
-        $('#Data').attr('disabled', false)
+        $('input[id=Data]').attr('disabled', false)
     }
 
     $(".sidebar-toggler").removeClass("hide");
@@ -229,7 +230,7 @@
         $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0 , max: 24});
         $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false });
 
-        $('#Data').daterangepicker({
+        $('input[id=Data]').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
             'locale': {
@@ -240,13 +241,15 @@
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
 
         var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
-        $('#Data').val(data);
+        $('input[id=Data]').val(data);
     });
 
     //TASK FORCE
     function applyMath() {
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
         $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        if (("" + $('#Amostras').val()).length <= 0) $('#Amostras').val(0);
+        if ((""+$('#amostraHidden').val()).length <= 0) $('#amostraHidden').val(0);
     }
 
 </script>
