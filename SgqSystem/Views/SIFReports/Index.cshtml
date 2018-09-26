@@ -296,7 +296,7 @@
 
             $('.portlet').hide();
 
-            if (obj.Dados.length <= 0) {
+            if (obj.Dados === null || obj.Dados.length <= 0) {
 
                 GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
 
