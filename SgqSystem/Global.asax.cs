@@ -63,6 +63,7 @@ namespace SgqSystem
         private static void SetGlobalConfigAmbient()
         {
             GlobalConfig.Ambient = System.Configuration.ConfigurationManager.AppSettings["BuildEm"];
+            GlobalConfig.Producao = System.Configuration.ConfigurationManager.AppSettings["Producao"] == "SIM";
         }
 
         /// <summary>
