@@ -115,7 +115,7 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    ReturnError();
+                    ReturnError(cepDesossa);
                     //return View(cepDesossa);
                 }             
             }
@@ -160,9 +160,10 @@ namespace SgqSystem.Controllers
             //}
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumeCepDesossa obj)
         {
-            ModelState.AddModelError("Data","Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: CepDesossas/Edit/5
@@ -235,7 +236,7 @@ namespace SgqSystem.Controllers
                    }
                     else
                     {
-                        ReturnError();
+                        ReturnError(cepDesossa);
                         //return View(cepDesossa);
                     }
                 }                   

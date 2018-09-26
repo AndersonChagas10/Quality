@@ -52,7 +52,6 @@
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         @Html.HiddenFor(model => model.Id)
                                         @Html.HiddenFor(model => model.AddDate)
-                                        @Html.HiddenFor(model => model.Data)
 
                                         @*<div class="form-group">
                                                 @Html.LabelFor(model => model.Indicador, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -75,7 +74,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Data, new { htmlAttributes = Model.Data?.Date < DateTime.Now.Date ? (object)new { @class = "form-control", @disabled = "disable" } : new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model.Data, new { htmlAttributes = Model.Data?.Date < DateTime.Now.Date ? (object)new { @class = "form-control", @readonly = "readonly" } : new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -208,7 +207,7 @@
 
         $('#Avaliacoes').attr('disabled', false)
         $('#Amostras').attr('disabled', false)
-        $('input[id=Data]').attr('disabled', false)
+        $('#Data').attr('disabled', false)
     }
 
     $(".sidebar-toggler").removeClass("hide");
@@ -225,23 +224,24 @@
         applyMath();
     });
 
-
     $(document).ready(function () {
         $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0 , max: 24});
         $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false });
 
-        $('input[id=Data]').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            'locale': {
-                "format": "DD/MM/YYYY",
-            }
-        })
+        if(!$('#Data').attr('readonly')){
+            $('#Data').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                'locale': {
+                    "format": "DD/MM/YYYY",
+                }
+            })
+        }
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
 
         var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
-        $('input[id=Data]').val(data);
+        $('#Data').val(data);
     });
 
     //TASK FORCE
