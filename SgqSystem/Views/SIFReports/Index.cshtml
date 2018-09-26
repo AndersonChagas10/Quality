@@ -423,8 +423,6 @@
 
         $('body').on('click', '#btnPrint', function () {
 
-            //Precisa retornar o elaborador e aprovador das unidades (Ainda não sei como pegar esses dados)
-
             if (elaborador == null) {
                 elaborador = "";
             }
@@ -490,12 +488,15 @@
 
             $('#data').append("Data: " + enviar.startDate);
 
-            $('#horaInicioMonitoramento').append("Início do Monitoramento: " + new Date(item.InitialTime).toLocaleTimeString());
+            if (item.InitialTime !== null) {
+                $('#horaInicioMonitoramento').append("Início do Monitoramento: " + new Date(item.InitialTime).toLocaleTimeString());
+            }
 
             $('#dianteiroOuTraseiro').append($('#level2Id :selected').text().toUpperCase());
 
-            $('#horaFimMonitoramento').append("Horário de Fim do Monitoramento: " + new Date(item.FinalTime).toLocaleTimeString());
-
+            if (item.FinalTime !== null) {
+                $('#horaFimMonitoramento').append("Horário de Fim do Monitoramento: " + new Date(item.FinalTime).toLocaleTimeString());
+            }
         }
 
     </script>
