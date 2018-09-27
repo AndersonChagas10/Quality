@@ -1,74 +1,81 @@
 ﻿@{
+    ViewBag.Title = "Recravação: Impressão";
     Layout = null;
 }
 
-
 <style type="text/css">
+    .level3NameDestacado td:first-child {
+        color: red !important;
+        border: 1px solid #e43a45 !important;
+        padding: 1px !important;
+        font-weight: bold !important;
+    }
+
+    .nav.navbar-nav {
+        display: none;
+    }
+
+    .jbsLogo {
+    }
+
+    .lataPtImg {
+        display: block;
+        height: 118px;
+        padding-top: 5px;
+        width: 16%;
+        padding-bottom: 5px;
+    }
+
+    .tableFirstLeft td,
+    .tableFirstLeft th {
+        text-align: left;
+    }
+
+    table.footerCA {
+        width: 100%;
+    }
+
+    .border {
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    .border-rounded {
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 50px !important;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    table.headerCA {
+        width: 100%;
+    }
+
+        table.headerCA td {
+            text-align: left;
+            border: 1px solid black;
+            width: 100%;
+        }
+
     a.active {
         background-color: rgba(128, 128, 128, 0.17);
     }
 
-    .bgRed {
-        background-color: rgba(248, 2, 2, 0.29);
-        ;
-    }
-
-    .bgGreen {
-        background-color: rgba(0, 128, 0, 0.23);
-        ;
-    }
-
-    .bgYellow {
-        background-color: rgba(233, 248, 2, 0.29);
-        ;
-    }
-
-    .bgWhite {
-        background-color: white;
-        ;
-    }
-
-    .floatinBottonButton {
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        z-index: 9996;
-        display: block;
-        visibility: visible;
-        margin-top: 70px;
-    }
-
     td {
-        position: relative;
         text-align: center;
-        font-size: 7px;
+        font-size: 10px;
     }
-
-        td > span.label {
-            position: absolute;
-            top: 1px;
-            bottom: 1px;
-            left: 1px;
-            right: 1px;
-            color: black;
-        }
-
-            td > span.label:after {
-                content: '';
-                height: 100%;
-                display: inline-block;
-                vertical-align: middle;
-                color: black;
-            }
 
     .redDot {
         color: red;
     }
 
     img {
-        width: 100px;
-        height: 100px;
+        width: 50px;
+        height: 50px;
         text-align: center;
     }
 
@@ -80,18 +87,18 @@
         .tg td {
             font-family: Arial, sans-serif;
             font-size: 7px;
-            padding: 10px 5px;
             border-style: solid;
             border-width: 1px;
             overflow: hidden;
             word-break: normal;
+            text-align: left;
         }
 
         .tg th {
             font-family: Arial, sans-serif;
             font-size: 7px;
             font-weight: normal;
-            padding: 10px 5px;
+            padding: 0px 1px;
             border-style: solid;
             border-width: 1px;
             overflow: hidden;
@@ -100,61 +107,44 @@
 
         .tg .tg-s6z2 {
             text-align: center;
+            font-size: 11px;
         }
 
-        .tg .tg-baqh {
-            text-align: center;
-            vertical-align: top;
-        }
+    p {
+        text-align: left !important;
+    }
 
-        .tg .tg-yw4l {
-            vertical-align: top;
-        }
-
-    .recravacao {
-        margin-bottom: 0;
+    .tg .tg-baqh {
+        text-align: center;
+        vertical-align: top;
     }
 
     #rcorners2 {
+        position: absolute;
+        bottom: 3px;
+        width: 100%;
+        left: 0;
         border-radius: 25px;
         border: 2px solid #000000;
-        padding: 10px;
-        width: 100%;
-        height: 190px;
+        padding: 12px;
+        width: 99%;
+        height: 40px;
         display: inline-block;
     }
 
     body {
         width: 100%;
         height: 100%;
-        margin: 0;
-        padding: 0;
         background-color: #FAFAFA;
-        font: 6pt Georgia, "Times New Roman", Times, serif !important;
-        line-height: 1.3;
+        font-family: Georgia, ‘Times New Roman’, serif;
+        font-size: 8pt;
+        line-height: 1.0;
+        background: rgb(204,204,204);
     }
 
     * {
         box-sizing: border-box;
         -moz-box-sizing: border-box;
-    }
-
-    .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .subpage {
-        padding: 1cm;
-        border: 5px red solid;
-        height: 257mm;
-        outline: 2cm #FFEAEA solid;
     }
 
     ul {
@@ -165,113 +155,250 @@
         content: "» ";
     }
 
-
-    body {
-        background: rgb(204,204,204);
+    page {
+        background: white;
+        display: block;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     }
 
     page {
         background: white;
         display: block;
-        margin: 0 auto;
-        margin-bottom: 0.5cm;
         box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     }
 
-        page[size="A4"] {
-            width: 21cm;
-            height: 29.7cm;
-            margin: 0;
-        }
-
-            page[size="A4"][layout="portrait"] {
-                width: 29.7cm;
-                height: 21cm;
-            }
-
-        page[size="A3"] {
-            width: 29.7cm;
-            height: 42cm;
-        }
-
-            page[size="A3"][layout="portrait"] {
-                width: 42cm;
-                height: 29.7cm;
-            }
-
-        page[size="A5"] {
-            width: 14.8cm;
-            height: 21cm;
-        }
-
-            page[size="A5"][layout="portrait"] {
-                width: 21cm;
-                height: 14.8cm;
-            }
-
     @@media print {
-        body, page {
-            margin: 0;
-            box-shadow: 0;
+        table {
+            page-break-after: auto;
         }
 
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
 
-        .page {
-            margin: 0;
-            border: initial;
-            border-radius: initial;
-            width: initial;
-            min-height: initial;
-            box-shadow: initial;
-            background: initial;
-            page-break-after: always;
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
+
+        table.divFooter {
+            position: fixed;
+            bottom: 0px;
+        }
+
+        body, page {
+            page-break-after: avoid;
+            page-break-before: avoid;
+            box-shadow: 0;
         }
     }
 
-    .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    @@page {
+        size: auto;
+        page-break-after: avoid;
+        page-break-before: avoid;
+    }
+
+    div.divided {
+        width: 50%;
+        float: left;
+        padding-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    div.divided33 {
+        width: 33%;
+        float: left;
+        padding-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    .divLabel {
+        font-weight: bold;
+        font-size: 8px;
+    }
+
+    .assinaturaValidacao {
+        text-align: left;
+        padding-top: 3px;
+        position: absolute;
+        bottom: 46px;
+        width: 100%;
+        left: 5px;
+        padding: -4px;
+        width: 98%;
+        height: 17px;
+        display: inline-block;
+    }
+
+    .formulas {
+        position: absolute;
+        bottom: 2px;
+        width: 100%;
+    }
+
+        .formulas td {
+            text-align: left;
+            font-size: 8px;
+        }
+
+    .table-footer {
+        border-radius: 25px;
+    }
+
+    /*Tabela de formulário*/
+    .tableForm {
+        margin-top: 4px;
+        margin-bottom: 7px;
+        float: left;
+    }
+
+        .tableForm td {
+            font-family: verdana, arial, sans-serif;
+            /*font-size: 12px;*/
+            text-align: left;
+        }
+
+            .tableForm td.title {
+                font-weight: bold;
+            }
+
+        .tableForm th,
+        .tableForm td {
+            padding: 4px 4px 4px 4px;
+        }
+
+        .tableForm th {
+            border-bottom: 2px solid #333333;
+        }
+
+        .tableForm td {
+            border-bottom: 1px dotted #999999;
+        }
+
+        .tableForm tfoot td {
+            border-bottom-width: 0px;
+            border-top: 2px solid #333333;
+            padding-top: 20px;
+        }
+
+    /*Tabela Pontos*/
+    .tablePontos {
+        width: 100%;
+    }
+
+        .tablePontos td.pontosLabel {
+            border: 1px solid #cccccc;
+            text-align: right;
+            font-weight: bold;
+            width: 110px;
+        }
+
+        .tablePontos td.pontoIndex {
+            border: 1px solid #cccccc;
+            text-align: center;
+            font-weight: bold;
+            background-color: #dddddd;
+        }
+
+        .tablePontos td {
+            line-height: 7px;
+        }
+
+    .divTableCorrectiveAction {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .tableCorrectiveAction {
+        margin-top: 4px;
+        margin-bottom: 7px;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .tableCorrectiveAction td,
+        .tableCorrectiveAction th {
+            font-family: verdana, arial, sans-serif;
+            font-size: 10px;
+            text-align: left;
+        }
+
+        .tableCorrectiveAction th {
+            border-bottom: 2px solid #333333;
+        }
+
+        .tableCorrectiveAction td.title {
+            font-weight: bold;
+        }
+
+
+        .tableCorrectiveAction td {
+            border-bottom: 1px dotted #999999;
+            border-width: 1px;
+            border-style: dotted;
+        }
+
+        .tableCorrectiveAction tfoot td {
+            border-bottom-width: 0px;
+            border-top: 2px solid #333333;
+        }
+
+        .tableCorrectiveAction td.tbodyTd {
+            height: 35px;
+        }
+
+    .bgRed {
+        background-color: rgba(248, 2, 2, 0.29) !important;
+        display: block;
+    }
+
+    .bgGreen {
+        background-color: white !important;
+        display: block;
+    }
+
+    .bgYellow {
+        background-color: rgba(233, 248, 2, 0.29) !important;
+        display: block;
+    }
+
+    .bgWhite {
+        background-color: white !important;
+    }
+
+    td > span.label {
+        position: absolute;
     }
 </style>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="">
 <head>
     <title>Print Recravação</title>
-    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">*@
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/toastr.min.css" rel="stylesheet" />
-    <link href="~/Content/select2.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
 
-    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
-    <script src="~/Scripts/inputmask/jquery.inputmask.bundle.js"></script>
-    <script src="~/Scripts/angular.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/select2.min.js"></script>
-    <script src="~/Scripts/moment-with-locales.min.js"></script>
-    <script src="~/Scripts/toastr.min.js"></script>
-    <script src="~/Scripts/loadingoverlay.min.js"></script>
+    @Styles.Render("~/bundles/RecravacaoPrintCss")
+    @Scripts.Render("~/bundles/RecravacaoPrintJs")
+
 </head>
 <body ng-app="sgqSystem">
     <div ng-controller="reencravationCtrl as r">
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
+        <div class="hide collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
                     <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
                         <span class="" aria-hidden="true"></span> {{indicador.Name}}
                     </a>
                 </li>
-            </ul>
-
-            <ul class="nav navbar-nav">
                 <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'">
                     <a href="#" ng-class="{active: seletedLinha.Name == item.Name}">
                         <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
@@ -281,304 +408,273 @@
                     </a>
                 </li>
             </ul>
+        </div>
+
+        <div id="content" style="display: none;">
+
+            <div id="contentHeader">
+                <table class="tg">
+                    <colgroup>
+                        <col style="width: 41px">
+                        <col style="width: 75px;">
+                        <col style="width: 561px;">
+                        <col style="width: 75px;">
+                    </colgroup>
+                    <tr>
+                        <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /> </th>
+                        <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}}</strong> - {{seletedLinha.Name}} ({{seletedLinha.Description}})</th>
+                        <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="contentBody">
+                <div>
+                    <div class="">
+                        <table class="tableForm" style="width: 75%;">
+                            <tbody>
+                                <tr class="red">
+                                    <td class="title">Linha</td>
+                                    <td colspan="3">{{seletedLinha.Name}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Produto</td>
+                                    <td>{{seletedLinha.form.ProdutoName}}</td>
+                                    <td class="title">Código da formulação</td>
+                                    <td>{{seletedLinha.form.CodProduto}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Hora do início da Produção</td>
+                                    <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
+                                    <td class="title">Hora do final da Produção</td>
+                                    <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Fornecedor da Lata</td>
+                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                                    <td class="title">Data do recebimento das latas</td>
+                                    <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Fornecedor das tampas/fundos das latas</td>
+                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                                    <td class="title">Data do recebimento das tampas/fundos das latas</td>
+                                    <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">Tipo da Lata</td>
+                                    <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="border">
+                        <p>
+                            ORIENTAÇÕES PARA PREENCHIMENTO DAS AÇÕES - ITENS NÃO CONFORMES
+                            <br />- Identificar o desvio e eliminá-lo:
+                            <br />"Descrever o horário da ocorrência (1) e relatar a deficiência identificando o local, equipamento/estrutura e produtos envolvidos (2).
+                            <br />No caso do PPHO, se não houver produto envolvido, identificar como ""Não há produto envolvido"".  "
+                        </p>
+
+                        <p>
+                            - Assegurar a apropriada disposição do produto que possa estar contaminado:
+                            <br />Em caso de produto envolvido, assegurar a segregação para avaliação e posterior destino.
+                            <br />- Restabelecer as condições sanitárias:
+                            <br />Descrever a ação tomada para restabelecer as condições sanitárias imediatas (3). Registrar o horário de liberação do local/produto, quando aplicável (4). Sugestões de ações corretivas podem ser consultadas em seus respectivos programas.
+                        </p>
+
+                        <p>
+                            - Prevenir a recorrência de contaminação direta ou adulteração do produto:
+                            <br />O supervisor da área deverá analisar o desvio para definir uma ação preventiva (5) para que o desvio não volte a ocorrer. Sugestões de ações preventivas podem ser consultadas em seus respectivos programas.  Vale ressaltar que o supervisor do setor (que assina a planilha) é o responsável por tratar corretivamente e preventivamente a anomalia em questão. Caso tenha mais de um supervisor responsável pelas ações, ambos devem vistar e assinar a planilha.
+                        </p>
+                    </div>
+
+                    <div class="divTableCorrectiveAction" style="padding-top: 20px;">
+
+                        <table class="tableCorrectiveAction">
+                            <colgroup>
+                                <col style="width: 15%">
+                                <col style="width: 28.3%;">
+                                <col style="width: 28.3%;">
+                                <col style="width: 28.3%;">
+                            </colgroup>
+                            <tr>
+                                <th>Hora (1)</th>
+                                <th>DEFICIÊNCIA (2)</th>
+                                <th>AÇÃO CORRETIVA (3)</th>
+                                <th>AÇÃO PREVENTIVA (4)</th>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="divTableCorrectiveAction" ng-repeat="lata in seletedLinha.latas track by $index">
+                        <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
+
+                            <table class="tableCorrectiveAction">
+                                <colgroup>
+                                    <col style="width: 15%">
+                                    <col style="width: 28.3%;">
+                                    <col style="width: 28.3%;">
+                                    <col style="width: 28.3%;">
+                                </colgroup>
+                                @*<tr>
+                                        <th>Hora (1)</th>
+                                        <th>DEFICIÊNCIA (2)</th>
+                                        <th>AÇÃO CORRETIVA (3)</th>
+                                        <th>AÇÃO PREVENTIVA (4)</th>
+                                    </tr>*@
+                                <tr>
+                                    <td class="tbodyTd">
+                                        {{acoes.AddDate}}
+                                    </td>
+                                    <td class="tbodyTd">
+                                        {{acoes.correctiveAction.DescriptionFailure}}
+                                    </td>
+                                    <td class="tbodyTd">
+                                        {{acoes.correctiveAction.ImmediateCorrectiveAction}}
+                                    </td>
+                                    <td class="tbodyTd">
+                                        {{acoes.PreventiveAction.PreventativeMeasure}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>VISTO</strong>
+                                    </td>
+                                    <td>
+                                        {{acoes.correctiveAction.Assinatura.Name}}
+                                    </td>
+                                    <td>
+                                        <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{lata.correctiveAction.HorarioDeLiberacao}}
+                                    </td>
+                                    <td>
+                                        <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
+                                    </td>
+                                </tr>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                    <table class="footerCA">
+                        <tr>
+                            <td height="20px;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                                    <tbody>
+                                        <tr style="height: 100px;">
+                                            <td height="20px" width="5%" align="center"></td>
+                                            <td width="25%" align="center" style="border-bottom:1px solid black"></td>
+                                            <td width="5%" align="center"></td>
+                                            <td width="25%" align="center" style="border-bottom:1px solid black"></td>
+                                            <td width="5%" align="center"></td>
+                                            <td width="25%" align="center" style="border-bottom:1px solid black"></td>
+                                            <td width="5%" align="center"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="20px" width="5%" align="center"></td>
+                                            <td width="25%" align="center">Monitor</td>
+                                            <td width="5%" align="center"></td>
+                                            <td width="25%" align="center">Resp. Setor Enlatamento</td>
+                                            <td width="5%" align="center"></td>
+                                            <td width="25%" align="center">Garantia de Qualidade</td>
+                                            <td width="5%" align="center"></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="contentFooter">
+                <div class="border-rounded">
+                    <table class="table-footer">
+                        <tr>
+                            <td>
+                                <small>
+                                    <b>Espaço Livre: </b>{{ seletedLinha.ParLevel3Interval['limite_Espaço Livre'] }}<br>
+                                    <b>Escareação: </b>{{ seletedLinha.ParLevel3Interval['limite_Escareação'] }}<br>
+                                    <b>Altura: </b>{{ seletedLinha.ParLevel3Interval['limite_Altura'] }}<br>
+                                    <b>Gancho Corpo: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Corpo'] }}<br>
+                                </small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>Gancho Tampa: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Tampa'] }}<br>
+                                    <b>Junção: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Tampa'] }}<br>
+                                    <b><i>Teste de ar: </b>Ausência (0% de Vazamento) </i><br>
+                                    <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
+                                </small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>GC Butting</b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    x 100=% <br>
+                                    <u>&nbsp;&nbsp; GC - 1.1 EC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>
+                                    ALT - (2,2 ET + 1,1 EC)<br>
+                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_% GC Butting'] }}{{ seletedLinha.ParLevel3Interval['unidade_% GC Butting'] }}
+                                </small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>Procentagem Overlap </b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    x 100 = % <br>
+                                    <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp; </u><br>
+                                    ALT - (2,2 ET + 1,1 EC) <br>
+                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_% Overlap'] }}{{ seletedLinha.ParLevel3Interval['unidade_% Overlap'] }}
+                                </small>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <small>
+                                    <b>Overlap Calculado </b> </br>
+                                    <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp;</u> <br>
+                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_Overlap'] }}{{ seletedLinha.ParLevel3Interval['unidade_Overlap'] }}
+                                </small>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
         </div>
 
-        <section size="A4">
-
-
-            <table class="tg" style="undefined;table-layout: fixed; width: 100%">
-                <colgroup>
-                    <col style="width: 41px">
-                    <col style="width: 41px">
-                    <col style="width: 646px">
-                    <col style="width: 88px">
-                </colgroup>
-                <tr>
-                    <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /></th>
-                    <th class="tg-s6z2" rowspan="2"><strong>PCC <p class="recravacao">3B Recravação</p></strong></th>
-                    <th class="tg-baqh" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
-                </tr>
-                <tr></tr>
-                <tr>
-                    <td class="tg-031e"><strong>Elaborador:</strong> Jaquelina Garcia Menezes -  GQU/BTS</td>
-                </tr>
-                <tr>
-                    <td class="tg-yw4l"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
-                </tr>
-            </table>
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Produto</td>
-                        <td>{{seletedLinha.form.Produto}}</td>
-                        <td>Hora do início da Produção</td>
-                        <td>{{seletedLinha.form.HoraInicioProducao}}</td>
-                        <td>Hora do final da Produção</td>
-                        <td>{{seletedLinha.form.HoraFimProducao}}</td>
-                    </tr>
-                    <tr>
-                        <td>Código do produto</td>
-                        <td>{{seletedLinha.form.CodProduto}}</td>
-                        <td>Data do recebimento das latas</td>
-                        <td>{{seletedLinha.form.DataRecebimentoLatas}}</td>
-                        <td>Fornecedor da Lata</td>
-                        <td>@*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorLata track by item.Id">{{item.Name}}</span>*@</td>
-                    </tr>
-                    <tr>
-                        <td>Data do recebimento das tampas/fundos das latas</td>
-                        <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas}}</td>
-                        <td>Fornecedor das tampas/fundos das latas</td>
-                        <td>@*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorTampaFundoLata track by item.Id">{{item.Name}}</span>*@</td>
-                        <td>Tipo da Lata</td>
-                        <td></td>
-                    </tr>
-
-                </tbody>
-            </table>
-            <div ng-show="false" class="col-lg-3 col-md-3 col-sm-3">
-                <form role="form" class="ng-pristine ng-valid">
-                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
-                        <label for="" class="">Produto: {{seletedLinha.form.Produto}}</label>
-                        <br />
-                        <span for="" class="">{{seletedLinha.form.Produto}}</span>
-                    </div>
-                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
-                        <label for="">Hora do início da Produção: {{seletedLinha.form.HoraInicioProducao}}</label>
-                        <br />
-                        <span for="" class=""></span>
-                    </div>
-                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
-                        <label for="">Hora do final da Produção: @*{{seletedLinha.form.HoraFimProducao | date: "DD/MM/YYYY"}}*@</label>
-                        <br />
-                        <span for="" class=""></span>
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
-                        <label for="" class="">Código do produto</label>
-                        <br />
-                        <span for="" class="">{{seletedLinha.form.CodProduto}}</span>
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Data do recebimento das latas</label>
-                        <br />
-                        <span for="" class="">{{seletedLinha.form.DataRecebimentoLatas}}</span>
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Fornecedor da Lata</label>
-                        <br />
-                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorLata track by item.Id">{{item.Name}}</span>*@
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Data do recebimento das tampas/fundos das latas</label>
-                        <br />
-                        <span for="" class="">{{seletedLinha.form.DataRecebimentoTampasFundosLatas}}</span>
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Fornecedor das tampas/fundos das latas</label>
-                        <br />
-                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorTampaFundoLata track by item.Id">{{item.Name}}</span>*@
-                    </div>
-                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                        <label for="">Tipo da Lata</label>
-                        <br />
-                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.TipoDeLata track by item.Id">{{item.Name}}</span>*@
-                    </div>
-
-                    <div ng-show="false" class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-
-                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                            <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
-                            </button>
-                            <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
-                            &nbsp;
-                            <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
-                        </div>
-
-                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="seletedLinha.finalizado">
-                            <button ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
-                            </button>
-                            <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
-                            &nbsp;
-                            <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-lg-12 col-md-12 col-sm-12"
-                 @*ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}"*@
-                 ng-init="seletedLinha.IsStoped = false">
-                <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index" tables>
-                    <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata}}</span></div>
-
-                    <div ng-show="false" style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
-
-                        <button id="correctiveActionBtn"
-                                type="button" class="btn btn-danger btn-sm"
-                                data-toggle="modal"
-                                data-target="#modalCorrectiveAction"
-                                title="Gerar Ação Corretiva para {{item.Name}}"
-                                ng-show="item.showCorrectiveAction"
-                                ng-click="selectLata($index, selectedLata.haveErrors);  newCorrectiveAction()">
-                            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                        </button>
-                        <button title="Modo Somente Visualização"
-                                type="button"
-                                class="btn btn-info btn-sm"
-                                data-toggle="modal"
-                                data-target="#myModal"
-                                ng-show="item.finalizado">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                        </button>
-
-                        <button type="button"
-                                class="btn btn-warning btn-sm"
-                                data-toggle="modal"
-                                title="Editar {{item.Name}}"
-                                ng-show="!item.finalizado"
-                                ng-click="executeDocReady(); selectLata($index)"
-                                data-target="#editModal">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm" title="Remover {{item.Name}}"
-                                ng-show="!item.finalizado"
-                                ng-click="deleteLata(seletedLinha, $index)">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </button>
-                        <button class="btn btn-success btn-sm"
-                                data-toggle="modal"
-                                data-target="#modalAssinaturaFinalizaLata"
-                                title="Assinar {{item.Name}}"
-                                type="button"
-                                ng-show="item.liberaAssinaturaLata && !item.finalizado"
-                                ng-click="selectLata($index)">
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        </button>
-                    </div>
-
-                    <table name="visualizacao" style="width: 100%">
-                        <tbody>
-
-                            <tr>
-                                <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
-                            </tr>
-
-                            <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
-                                <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
-                                    ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
-                                    ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                    colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
-
-                                    @*1 Binário ok
-                                        2   Número de defeitos ok
-                                        3   Intervalos ok
-                                        4   Calculado
-                                        5   Texto
-                                        99  NOVO CALCULADO POR OUTRO*@
-
-                                    @*1 Binário*@
-                                    <span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
-                                          ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
-                                        <span>
-                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
-                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                                            </span>
-                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
-                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-                                            </span>
-                                        </span>
-                                    </span>
-                                    @*2 Número de defeitos*@
-                                    <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                        <span>{{item.ResultValue[ParLevel3.Name][($index +1)] || "0"}}</span>
-                                    </span>
-                                    @*3 Intervalos*@
-                                    <span class="label validate"
-                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')"
-                                          ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
-                                        <span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
-                                    </span>
-                                    @*4 Calculado*@
-                                    @*<span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
-                                            <span>
-                                                <span class="validate">
-                                                    {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
-                                                </span>
-                                                <span ng-if="ParLevel3.ResultValue[('Ponto' + ($index +1)] > 0">
-                                                    x10^
-                                                </span>
-                                                <span class="validate">
-                                                    {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
-                                                </span>
-                                            </span>
-                                        </span>*@
-                                    @*5 Texto*@
-                                    <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                        @*<span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>*@
-                                        {{item.ResultValue[ParLevel3.Name][($index +1)]}}
-                                    </label>
-                                    @*99 NOVO CALCULADO POR OUTRO*@
-                                    <span class="label validate"
-                                          ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
-                                          ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                        <span>{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-                    <div style="text-align: left; padding-top: 5px; height:40px;">
-                        <div style="float:left;">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{item.userValidacao.Name}}
-                        </div>
-                        <div style="float:right;">
-                            <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{item.dataUserValidacao}}
-                        </div>
-                    </div>
-
-                </div>
-
-                <br />
-                <div ng-show="false">
-                    <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" type="button" ng-click="newLata(seletedLinha); executeDocReady(true)" style="margin: 35px;" class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
-                    </button>
-                    <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
-                        Atualizar Parametrização / Nova Coleta
-                    </button>
-                </div>
-            </div>
-
-            <br />
-            <br />
-            <br />
-            <br />
-            <div id="rcorners2">
-                <p><label>Espaço Livre</label></p><br />
-                <p><label>Escareação</label></p><br />
-                <p><label>Altura</label></p><br />
-                <p><label>Gancho Corpo</label></p><br />
-                <p><label>Gancho Tampa</label></p><br />
-                <p><label>Junção</label></p><br />
-                <p><label>Teste de ar</label></p>
-            </div>
-        </section>
     </div>
 </body>
 </html>
 
 
+<script src="~/Scripts/lodash/lodash.js"></script>
 <script src="~/Scripts/toastr.min.js"></script>
 <script src="~/Scripts/Math/math.js"></script>
+<script src="~/Scripts/Print/print.js"></script>
 
 <script>
+
+    var indicadorId = @Html.Raw(Json.Encode(ViewBag.IndicadorId));
+    var linhaId = @Html.Raw(Json.Encode(ViewBag.linhaId));
 
     var app = angular.module('sgqSystem', []);
     function GetUsuarioId() {
@@ -645,22 +741,31 @@
         app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
             function ($scope, $http, $timeout) {
                 let vm = $scope
+                vm.dev = true
+                vm.jbsBrasil = false
+                //vm.dev = false
+                //vm.jbsBrasil = true
 
-                //$scope.timerRunning = true;
+                vm.limit = 999
+                vm.begins = [0, 6, 12, 18, 24, 30, 36, 42]
+                $scope.getNumber = function(num) {
+                    if(vm.seletedLinha)
+                        if(vm.seletedLinha.latas)
+                            if(vm.seletedLinha.latas.length)
+                                return new Array(Math.round(parseFloat(vm.seletedLinha.latas.length/vm.limit)));
 
-                //$scope.startTimer = function () {
-                //    $scope.$broadcast('timer-start');
-                //    $scope.timerRunning = true;
-                //};
+                    return new Array(0);
+                }
 
-                //$scope.stopTimer = function () {
-                //    $scope.$broadcast('timer-stop');
-                //    $scope.timerRunning = false;
-                //};
-
-                //$scope.$on('timer-stopped', function (event, data) {
-                //    console.log('Timer Stopped - data = ', data);
-                //});
+                vm.mercado = 1
+                vm.limInferiorEspessura
+                vm.limSuperiorEspessura
+                vm.valorEt
+                vm.valorEc
+                //vm.idEC = 3320
+                //vm.idET = 3319
+                //vm.idEspessura = 3314
+                //vm.idOVERLAP = 3327
 
                 vm.linhas = [{}]
                 vm.produtos = [{}]
@@ -691,7 +796,7 @@
 
                 vm.findWithAttr = function (array, attr, value) {
                     for (var i = 0; i < array.length; i += 1) {
-                        if (array[i][attr] === value) {
+                        if (array[i][attr] == value) {
                             return i
                         }
                     }
@@ -699,7 +804,7 @@
                 }
 
                 vm.carregaIndicadores = function (showMensagem) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0" })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0&linhaId=0" })
                           .then(function (r) {
                               if (r.data.errors) {
                                   r.data.errors.forEach(function (o) {
@@ -707,46 +812,63 @@
                                   })
                               } else {
                                   if (showMensagem)
-                                      toastr.success('Indicadores carregados')
-                                  vm.indicadores = r.data.model
+                                      //toastr.success('Indicadores carregados')
+                                      vm.indicadores = r.data.model
+
+                                  vm.init()
                               }
                           });
                 }
 
 
-                vm.selectIndicador = function (item) {
-                    vm.indicadorSelecionado = item
+                vm.selectIndicador = function (item, id) {
+                    if (id && indicadorId > 0){
+                        vm.indicadorSelecionado = vm.findWithAttr(vm.indicadores, 'Id', indicadorId)
+                        vm.indicadorSelecionado = vm.indicadores[vm.indicadorSelecionado]
+                    }
+                    else
+                        vm.indicadorSelecionado = item
+
                     vm.seletedLinha = {}
-                    vm.getParametrizacaoLinhas(item.Id)
+                    vm.getParametrizacaoLinhas(vm.indicadorSelecionado.Id, true)
                 }
 
                 //vm.company = GetUnidadeUsuario()
-                vm.getAllLinha = function (index, needFindIndex, showMensagem) {
+                vm.getAllLinha = function (index, needFindIndex, showMensagem, loadLinha) {
                     //vm.seletedLinha = vm.linhas[index]
                     //vm.activeInLine = vm.seletedLinha.Id
                     //if (needFindIndex)
                     //    index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+
                     vm.linhas.forEach(function (o, c) {
-                        $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: o })
-                           .then(function (r) {
-                               if (r.data.errors) {
-                                   r.data.errors.forEach(function (o) {
-                                       toastr.error(o)
-                                   })
-                               } else {
-                                   //toastr.success(r.data.resposta)
-                                   //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                                   if (showMensagem)
-                                       toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
-                                   vm.linhas[c] = r.data.model[0]
-                                   vm.linhas[c]["latas"] = []
-                                   vm.activeInLine = vm.linhas[c].Id
-                                   //vm.executeDocReady(true)
-                                   //vm.seletedLinha = { Id: 0 }
-                                   //vm.getState()
-                               }
-                           });
-                    })
+                        if(o.Id == linhaId){
+                            $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: o })
+                               .then(function (r) {
+                                   if (r.data.errors) {
+                                       r.data.errors.forEach(function (o) {
+                                           toastr.error(o)
+                                       })
+                                   } else {
+                                       //toastr.success(r.data.resposta)
+                                       //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                       if (showMensagem)
+                                           toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                                       vm.linhas[c] = r.data.model[0]
+                                       vm.linhas[c]["latas"] = []
+                                       vm.activeInLine = vm.linhas[c].Id
+                                       //vm.executeDocReady(true)
+                                       //vm.seletedLinha = { Id: 0 }
+                                       //vm.getState()
+
+                                       //if (c == (vm.linhas.length -1))
+                                       if (loadLinha) {
+                                           vm.activeInLine = linhaId
+                                           vm.getLinha(null, linhaId, false)
+                                       }
+                                   }
+                               });
+                        }
+                    });
 
                     //vm.executeDocReady(true)
                     //vm.$apply()
@@ -783,6 +905,7 @@
                                     toastr.success('Recuperada linha parametrizada \n da base de dados')
                                 vm.linhas[index] = r.data.model[0]
                                 vm.linhas[index]["latas"] = []
+
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
                                 vm.saveState(undefined, undefined, novaLinha)
@@ -799,9 +922,11 @@
                     //$.LoadingOverlay("show");
                     if (needFindIndex)
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
-
                     vm.seletedLinha = vm.linhas[index]
-                    vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
+
+                    if (vm.seletedLinha['StartAuditTime'])
+                        vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
+
                     vm.activeInLine = vm.seletedLinha.Id
 
                     //vm.executeDocReady(true)
@@ -958,45 +1083,38 @@
 
                 /*GET Todas as linhas cadastradas*/
 
-                vm.getParametrizacaoLinhas = function (idLevel1) {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
+                vm.getParametrizacaoLinhas = function (idLevel1, loadLinha) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
                                     toastr.error(o)
                                 })
                             } else {
-                                toastr.success(r.data.resposta)
-                                //toastr.success('Recuperada coleta persistida \n na Base de Dados')
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 vm.linhas = r.data.model
                                 vm.linhas.forEach(function (o, c) {
                                     o["latas"] = []
                                 })
-                                //vm.executeDocReady(true)
-                                vm.getAllLinha()
-                                //vm.getState()
+
+                                vm.getAllLinha(null,null, false, loadLinha)
+
                             }
                         });
                 }
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: vm.saveStateUrl + "?Company=" + vm.company })
+                    $http({ method: 'GET', url: `${vm.saveStateUrl}?companyId=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
                                     toastr.error(o)
                                 })
                             } else {
-                                toastr.success(r.data.resposta)
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                                let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                let linhasSalvas = r.data.model
                                 let novaLinha = []
-                                //vm.linhas.forEach(function (o, c) {
                                 let o = vm.seletedLinha
 
-                                /*Recebe objeto salvo no banco de dados compara se é ativo na parametrização e subistiu caso seja ativo.*/
                                 var objetoSalvo = linhasSalvas.filter(function (objArr) {
                                     let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
                                     if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
@@ -1010,11 +1128,15 @@
                                     novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
                                 else
                                     novaLinha.push(JSON.parse(JSON.stringify(o)))
-                                //})
-
-                                /**/
 
                                 vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
+
+                                vm.seletedLinha.latas = []
+                                if (r.data.latasId) {
+                                    r.data.latasId.forEach(function (o) {
+                                        vm.getLata(o.Id);
+                                    });
+                                }
 
                                 if (vm.seletedLinha.form) {
                                     if (vm.seletedLinha.form.HoraInicioProducao)
@@ -1036,8 +1158,87 @@
                                 vm.seletedLinha = vm.linhas[index]
                                 vm.activeInLine = vm.seletedLinha.Id
 
+                                /*------Montagem Rodapé------*/
+                                //Criação de lista de par level3 com intervalos minimo e maximo
+                                var parLevel3 = [];
+                                $.each(vm.seletedLinha.ListParlevel3, function(i,o){
+                                    var nameParLevel3 = o.Name;
+
+                                    var item = {};
+                                    var intervalMin = 0;
+                                    var intervalMax = 0;
+                                    var measurementUnit = "";
+                                    var limitesParLevel3 = "";
+
+                                    if(!!o.ParLevel3Value && o.ParLevel3Value.length > 0){
+                                        item = o.ParLevel3Value[0];
+                                        intervalMin = !!item.IntervalMin ? item.IntervalMin.toFixed(2) : 0;
+                                        intervalMax = !!item.IntervalMax ? item.IntervalMax.toFixed(2) : 100;
+                                        measurementUnit = ((item.ParMeasurementUnit != null) ? item.ParMeasurementUnit.Name : "");
+                                        limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
+                                    }else if(!!o.ParLevel3Value_OuterList && o.ParLevel3Value_OuterList.length > 0){
+                                        item = o.ParLevel3Value_OuterList[0];
+                                        intervalMin = item.LimInferior.toFixed(2);
+                                        intervalMax = item.LimSuperior.toFixed(2);
+                                        measurementUnit = ((item.UnidadeMedidaText != null) ? item.UnidadeMedidaText : "");
+                                        limitesParLevel3 = intervalMin +" - "+ intervalMax + " " + measurementUnit;
+                                    }
+
+                                    if(item != {}){
+                                        var exist = $.grep(parLevel3, function(ig,og){
+                                            return og['Name'] == nameParLevel3;
+                                        });
+
+                                        if(!(!!exist && exist.length > 0)){
+                                            parLevel3['min_'+nameParLevel3] = intervalMin;
+                                            parLevel3['max_'+nameParLevel3] = intervalMax;
+                                            parLevel3['unidade_'+nameParLevel3] = measurementUnit;
+                                            parLevel3['limite_'+nameParLevel3] = limitesParLevel3;
+                                        }
+                                    }
+                                });
+
+                                vm.seletedLinha['ParLevel3Interval'] = parLevel3;
+
+                                debugger
+
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
+                                setTimeout(function () {
+                                    jsPOH.Inicializar(
+                                        {
+                                            headerHtml: document.getElementById('contentHeader').innerHTML,
+                                            bodyHtml: document.getElementById('contentBody').innerHTML,
+                                            footerHtml: document.getElementById('contentFooter').innerHTML,
+                                            numberMarginRight: 25,
+                                            numberMarginBottom: 25,
+                                            renderTableMargin: 0,
+                                            pageMarginHeader: "25 25 10 25",
+                                            pageMarginFooter: "10 25 25 25",
+                                            pageMarginBody: "0 25 0 25"
+                                        }
+                                    );
+                                    jsPOH.Imprimir();
+                                }, 1000)
+                            }
+                        });
+                }
+
+                vm.getLata = function (id) {
+                    $http({ method: 'GET', url: `${vm.saveStateUrl}?recravacaoLataJsonId=${id}` })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                let o = JSON.parse(JSON.stringify(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)));
+                                o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
+                                if (o.HoraDaRetiradaDaLata == 'Invalid Date')
+                                    o.HoraDaRetiradaDaLata = '';
+                                vm.seletedLinha.latas.push(o);
+
+                                vm.seletedLinha.latas = _.orderBy(vm.seletedLinha.latas, ['counter'], ['asc']);
                             }
                         });
                 }
@@ -1126,44 +1327,6 @@
                     vm.saveState()
                     return true
 
-                    //for (var i = 0; i < vmItem.ListParlevel3.length; i++) {
-                    //    if (vmItem.ListParlevel3[i].ResultValue) {
-                    //        //existe
-                    //        let pontosPreenchidos = $.map(vmItem.ListParlevel3[i].ResultValue, function (obj) { return obj })
-                    //        if (!vmItem.ListParlevel3[i].IsPointLess) {
-                    //            if (typeof (pontosPreenchidos[0]) === "string") {
-                    //            } else if (isNaN(pontosPreenchidos[0])) {
-                    //                vmItem["liberaAssinaturaLata"] = false
-                    //                vm.saveState()
-                    //                return false
-                    //            }
-                    //            if (pontosPreenchidos[0].length) {
-                    //                vmItem["liberaAssinaturaLata"] = true
-                    //            } else {
-                    //                vmItem["liberaAssinaturaLata"] = false
-                    //                vm.saveState()
-                    //                return false
-                    //            }
-                    //        } else if (vmItem.ListParlevel3[i].IsPointLess) {
-                    //            for (var j = 0; j < pontosPreenchidos.length; j++) {
-                    //                if (typeof (pontosPreenchidos[j]) === "string") {
-                    //                } else if (isNaN(pontosPreenchidos[j])) {
-                    //                    vmItem["liberaAssinaturaLata"] = false
-                    //                    vm.saveState()
-                    //                    return false
-                    //                }
-                    //            }
-                    //            if ((/*(numeroDePontos + 1)*/ (numeroDePontos) <= pontosPreenchidos.length)) {
-                    //                vmItem["liberaAssinaturaLata"] = true
-                    //            } else {
-                    //                vmItem["liberaAssinaturaLata"] = false
-                    //                vm.saveState()
-                    //                return false
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
                     item = vmItem
                     vm.saveState()
                     return true
@@ -1250,41 +1413,41 @@
                 }
 
                 vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
-                    $('select').select2({ allowClear: true })
-                    $('.decimal').each(function (index) {
-                        $(this).inputmask("decimal", {
-                            rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
-                            oncomplete: function (e) {
-                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
-                                if (currVal.length == 4) {
-                                    //$(this).next('.inputs').focus().select();
-                                    $(this).closest('td').next().find('input').focus().select();
-                                }
-                            }
-                        });
-                    })
+                    //$('select').select2({ allowClear: true })
+                    //$('.decimal').each(function (index) {
+                    //    $(this).inputmask("decimal", {
+                    //        rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                    //        oncomplete: function (e) {
+                    //            var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                    //            if (currVal.length == 4) {
+                    //                //$(this).next('.inputs').focus().select();
+                    //                $(this).closest('td').next().find('input').focus().select();
+                    //            }
+                    //        }
+                    //    });
+                    //})
 
-                    $('.percentage').each(function (index) {
-                        $(this).val($(this).val().replace(',', '.'));
-                        $(this).inputmask('Regex', {
-                            regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
-                            oncomplete: function (e) {
-                                //var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
-                                //if (currVal <= 100currVal.length == 2) {
-                                //    //$(this).next('.inputs').focus().select();
-                                //    $(this).closest('td').next().find('input').focus().select();
-                                //}else if (currVal.length == 3)
-                                //    $(this).closest('td').next().find('input').focus().select();
-                            }
-                        });
-                    })
+                    //$('.percentage').each(function (index) {
+                    //    $(this).val($(this).val().replace(',', '.'));
+                    //    $(this).inputmask('Regex', {
+                    //        regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
+                    //        oncomplete: function (e) {
+                    //            //var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                    //            //if (currVal <= 100currVal.length == 2) {
+                    //            //    //$(this).next('.inputs').focus().select();
+                    //            //    $(this).closest('td').next().find('input').focus().select();
+                    //            //}else if (currVal.length == 3)
+                    //            //    $(this).closest('td').next().find('input').focus().select();
+                    //        }
+                    //    });
+                    //})
 
-                    $(".time").inputmask({
-                        alias: 'hh:mm t',
-                        showMaskOnHover: false,
-                        showMaskOnFocus: false,
-                        //oncomplete: function(){  },
-                    })
+                    //$(".time").inputmask({
+                    //    alias: 'hh:mm t',
+                    //    showMaskOnHover: false,
+                    //    showMaskOnFocus: false,
+                    //    //oncomplete: function(){  },
+                    //})
 
                     if (executaVerificacaoParaAcao) {
                         vm.seletedLinha.HaveCorrectiveAction = false
@@ -1360,7 +1523,6 @@
                                     prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                                 }
                             }
-                            //$(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                         });
                     });
 
@@ -1480,10 +1642,27 @@
                 }
 
                 /*Não utilizado*/
-                vm.$on('$viewContentLoaded', function () {
-                    //Here your view content is fully loaded !!
-                    //vm.executeDocReady()
-                });
+                vm.init = function () {
+                    // check if there is query in url
+                    // and fire search in case its value is not empty
+                    vm.selectIndicador(null, true)
+                };
+
+                function init() {
+
+                    if (vm.dev) {
+                        vm.idEC = 1263
+                        vm.idET = 1264
+                        vm.idEspessura = 1254
+                        vm.idOVERLAP = 1262
+                    } if (vm.jbsBrasil) {
+                        vm.idEC = 3320
+                        vm.idET = 3319
+                        vm.idEspessura = 3314
+                        vm.idOVERLAP = 3327
+                    }
+                }
+                init();
 
                 vm.$watch('$viewContentLoaded',
                     function () {
@@ -1570,6 +1749,101 @@
                     }
                 };
             }])
+            .directive('correctiveaction', function () {
+                return {
+                    scope: {
+                        ca: '=lataca'
+                    },
+                    template: `<div class="alert alert-warning {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
+                                <strong>Ação Corretiva</strong>
+                                <div>
+                                    <label>Ação Corretiva: </label><span ng-show="!(ca.ImmediateCorrectiveAction)" class="redDot">* Campo Obrigatório</span>
+                                    <label ng-show="$parent.seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada: </label>
+                                    <textarea ng-disabled="ca.IsAssinada"
+                                              ng-model="ca.ImmediateCorrectiveAction"
+                                              class="form-control custom-control"
+                                              rows="3"
+                                              style="resize:none; overflow-x: hidden"></textarea>
+                                </div>
+                                <div>
+                                    <div ng-show="ca.IsAssinada">
+                                        <button type="button"
+                                                style="margin-top: 67px;"
+                                                class="btn btn-primary"
+                                                ng-click="ca.IsAssinada = false">
+                                            Editar Ação Corretiva
+                                        </button>
+                                    </div>
+                                    <div ng-hide="ca.IsAssinada">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Nome de Usuário"
+                                               ng-model="ca.Assinatura.Name" />
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Senha"
+                                               ng-model="ca.Assinatura.Password" />
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                title="Preencha o campo Ação Corretiva para liberar a Assinatura"
+                                                ng-disabled="(!(ca.ImmediateCorrectiveAction))"
+                                                ng-click="$parent.AssinaCorrectiveAction1(ca)">
+                                            Assinar Ação Corretiva
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>`
+                }
+            })
+            .directive('preventiveaction', function () {
+                return {
+                    scope: {
+                        pa: '=latapa'
+                    },
+                    template: `<div class="alert alert-success {{$parent.formDefault6}}" style="min-height: 284px;padding-top: 0px !important;">
+                                <h3>Ação Preventiva</h3>
+                                <div>
+                                    <label>Acão Preventiva:</label>
+                                    <textarea ng-disabled="pa.IsAssinada"
+                                              ng-model="pa.PreventativeMeasure"
+                                              class="form-control custom-control"
+                                              rows="3"
+                                              style="resize:none; overflow-x: hidden"></textarea>
+                                </div>
+                                <div>
+                                    <div ng-show="pa.IsAssinada">
+                                        <button type="button"
+                                                style="margin-top: 67px;"
+                                                class="btn btn-primary"
+                                                ng-click="pa.IsAssinada = false">
+                                            Editar Ação Preventiva
+                                        </button>
+                                    </div>
+                                    <div ng-show="!pa.IsAssinada">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Nome de Usuário"
+                                               ng-model="pa.Assinatura.Name" />
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Senha"
+                                               ng-model="pa.Assinatura.Password" />
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                title="Preencha o campo Ação Preventiva para liberar a Assinatura"
+                                                ng-disabled="(pa.IsAssinada || !pa.PreventativeMeasure)"
+                                                ng-click="$parent.AssinaPreventiveAction()">
+                                            Assinar Ação Preventiva
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>`
+                }
+            })
 
     })();
 </script>

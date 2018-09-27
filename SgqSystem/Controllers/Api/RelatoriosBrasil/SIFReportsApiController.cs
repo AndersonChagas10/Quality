@@ -104,7 +104,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         retorno.Elaborador = getElaboradorName(form, dbSgq);
                     }
                 }
-
             }
             catch (Exception)
             {
@@ -115,7 +114,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
-        private DateTime getInitialTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        private DateTime? getInitialTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
 
             var query = $@"SELECT
@@ -128,11 +127,11 @@ AND ParLevel2_Id = { form.level2Id }
 AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
-            return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
+            return dbSgq.Database.SqlQuery<DateTime?>(query).FirstOrDefault();
 
         }
 
-        private DateTime getFinalTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        private DateTime? getFinalTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
             var query = $@"SELECT
 	MAX(CollectionDate)
@@ -144,7 +143,7 @@ AND ParLevel2_Id = { form.level2Id }
 AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
-            return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
+            return dbSgq.Database.SqlQuery<DateTime?>(query).FirstOrDefault();
         }
 
         private string getQuery1(FormularioParaRelatorioViewModel form)
@@ -184,10 +183,8 @@ ORDER BY em_coluna.Sequential";
         private string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
             var SQL = $@"SELECT top 1
-        Aprovador.Fullname as Aprovador
-        FROM ReportXUserSgq RXU
-        INNER JOIN UserSgq Elaborador ON Elaborador.Id = RXU.Elaborador_Id
-        INNER JOIN UserSgq Aprovador ON Aprovador.Id = RXU.Aprovador_Id
+        Aprovador
+        FROM ReportXUserSgq RXU      
         WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
         AND RXU.ParLevel1_Id = {form.level1Id}
         AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
@@ -199,10 +196,8 @@ ORDER BY em_coluna.Sequential";
         private string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
             var SQL = $@"SELECT top 1
-    	Elaborador.FullName as Elaborador
+    	Elaborador
         FROM ReportXUserSgq RXU
-        INNER JOIN UserSgq Elaborador ON Elaborador.Id = RXU.Elaborador_Id
-        INNER JOIN UserSgq Aprovador ON Aprovador.Id = RXU.Aprovador_Id
         WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
         AND RXU.ParLevel1_Id = {form.level1Id}
         AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
@@ -216,8 +211,8 @@ ORDER BY em_coluna.Sequential";
     public class Retorno
     {
         public List<Dado> Dados { get; set; }
-        public DateTime InitialTime { get; set; }
-        public DateTime FinalTime { get; set; }
+        public DateTime? InitialTime { get; set; }
+        public DateTime? FinalTime { get; set; }
         public string Elaborador { get; set; }
         public string Aprovador { get; set; }
     }

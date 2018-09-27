@@ -2527,6 +2527,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to These Indicators already have links on the selected date..
+        /// </summary>
+        internal static string indicator_alredy_used {
+            get {
+                return ResourceManager.GetString("indicator_alredy_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         internal static string info {
@@ -5889,6 +5898,15 @@ namespace Resources {
         internal static string unvalued {
             get {
                 return ResourceManager.GetString("unvalued", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string update {
+            get {
+                return ResourceManager.GetString("update", resourceCulture);
             }
         }
         

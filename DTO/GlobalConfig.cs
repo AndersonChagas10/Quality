@@ -93,6 +93,7 @@ namespace DTO
 
     public static class GlobalConfig
     {
+        public static bool Producao { get; set; }
         private static Semaphore _poolSemaphore;
         public static Semaphore PoolSemaphore { get { if (_poolSemaphore == null) _poolSemaphore = new Semaphore(5, 5); return _poolSemaphore; } }
         public static Dictionary<int, HtmlDoTablet> PaginaDoTablet { get; set; }

@@ -108,7 +108,7 @@ namespace SgqSystem.Controllers
                                 mensagemErro.Append(", ");
                             mensagemErro.Append(item);
                         }
-                        ModelState.AddModelError("ParLevel1_Id", "Estes Indicadores já possuem vinculos na data vingente:" + mensagemErro);
+                        ModelState.AddModelError("ParLevel1_Id", Resources.Resource.indicator_alredy_used + mensagemErro);
                     }
 
                 }
@@ -281,7 +281,7 @@ namespace SgqSystem.Controllers
 
             if (isNotValid)
             {
-                ModelState.AddModelError("ParLevel1_IdHelper", "Erro!");
+                ModelState.AddModelError("ParLevel1_IdHelper", "Alerta!");
                 return parLevel1XModule.ParLevel1_Id;
             }
 

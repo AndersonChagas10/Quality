@@ -79,7 +79,7 @@
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacao", @onchange = "getLevel3ReencravacaoInputCalcOutro($('#empresaRecravacao option:selected').val())" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row reencravacaoL3">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione a tarefa"), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row reencravacaoL3">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
@@ -692,15 +692,18 @@
 
     });
 
-    function changeCombo(){
+    function changeCombo() {
         //se os dois campos estão nulos
         parIntervalosTypeCreate();
         CorrigirLarguraColunas();
+
     }
+
     function changeComboEdit(){
         //se os dois campos estão nulos
         parIntervalosTypeCreateEdit();
     }
+
     function level03ValueIntervalWriter(valueMin, valueMax) {
         return Resources('acceptable_value_less_than') + " " + valueMin + " " + Resources('and_greater_than') + " " + valueMax;
     }
@@ -824,6 +827,7 @@
     }
 
     $('#selectTipoInput').change(function () {
+
         var tipoSelecionado = $("#selectTipoInput option:selected").val();
 
         $('.reencravacaoL3').hide();
@@ -961,23 +965,27 @@
             let vinculados = $('#parLevel3Select2 option:selected').closest('optgroup')[0].children
             let companyesVinculadas = $('#tablePeso > tbody > tr > td:nth-child(1)')
 
-            $('#parlevel3Recravacao option').hide()
+            $('#parlevel3Recravacao option').hide();
+
             $(vinculados).each(function (c, o) {
                 let value = $(o).val()
-                $('#parlevel3Recravacao option[value="'+value+'"]').show()
-            })
+                $('#parlevel3Recravacao option[value="' + value + '"]').show()
+            });
+
             $('#parlevel3Recravacao option[value="-1"]').show()
 
-            $('#empresaRecravacao option').hide()
-            companyesVinculadas.each(function(c,o){
-                if($(o).text() == 'Todas'){
+            //$('#empresaRecravacao option').hide();
+
+            companyesVinculadas.each(function (c, o) {
+                if ($(o).text() == 'Todas') {
                 }
-                else{
+                else {
                     $('#empresaRecravacao option').filter(function () { return $(this).html() == $(o).text() }).show()
                 }
-            })
-            $('#empresaRecravacao option[value="-1"]').show()
-            $('#empresaRecravacao').parents('td').hide()
+            });
+
+            $('#empresaRecravacao option[value="-1"]').show();
+            //$('#empresaRecravacao').parents('td').hide();
 
             resetaParIntervalos();
             resetaParBinarios();
@@ -991,7 +999,7 @@
             $('.ParBinarios').hide();
             //$('.reencravacaoL3').hide();
             $('.ParIntervalos').fadeIn();
-            $('#companyValueL3 > td').hide()
+            $('#companyValueL3 > td').hide();
         }
 
         //Resultado
@@ -1095,5 +1103,9 @@
             $(o).css('width',tdWidth+"%");
         });
     }
+
+    $(document).ready(function () {
+        $('#empresaRecravacao option:first').text("Todos");
+    });
 
 </script>

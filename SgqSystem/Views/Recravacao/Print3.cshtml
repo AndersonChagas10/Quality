@@ -364,7 +364,7 @@
     }
 
     .bgGreen {
-        background-color: rgba(0, 128, 0, 0.23) !important;
+        background-color: white !important;
         display: block;
     }
 
@@ -429,10 +429,10 @@
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Elaborador:</strong> {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
                     </tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Aprovador:</strong> {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
                     </tr>
                 </table>
             </div>
@@ -443,15 +443,13 @@
                         <table class="tableForm" style="width: 75%;">
                             <tbody>
                                 <tr class="red">
-                                    <td class="title">Data de Criação</td>
-                                    <td> {{ seletedLinha.StartAuditTime }}</td>
                                     <td class="title">Linha</td>
-                                    <td>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}}</td>
+                                    <td colspan="3">{{seletedLinha.Name}}</td>
                                 </tr>
                                 <tr>
                                     <td class="title">Produto</td>
                                     <td>{{seletedLinha.form.ProdutoName}}</td>
-                                    <td class="title">Código do produto</td>
+                                    <td class="title">Código da formulação</td>
                                     <td>{{seletedLinha.form.CodProduto}}</td>
                                 </tr>
                                 <tr>
@@ -554,7 +552,7 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="height-fix">
-                    <div class="border">
+                    <!--<div class="border">
                         <p>AÇÃO CORRETIVA : Ações corretivas adotadas conforme CRF 9 Part 417.3</p>
                         <p>1. Identificar o desvio e eliminá-lo: <u>Caso o overlap esteja abaixo de 1,02mm</u> paralisando e solicitando ajuste do equipamento de recravação ao responsável pelo processo. Se o defeito for causado pela lata de segregar o lote de latas vazias para análise e pos</p>
                         <p>2. Assegurar que o PCC estará sob controle após a ação corretiva: verificar a eficácia da ação corretiva adotada monitorando novamente o PCC previamente ao reinicio da operação;</p>
@@ -629,7 +627,7 @@
 
 
                         </div>
-                    </div>
+                    </div>-->
 
                     <div ng-if="seletedLinha.ObservacoesList.length > 0" class="divTableCorrectiveAction" style="padding-top: 20px;">
 
@@ -756,6 +754,7 @@
                         </tr>
                     </table>
                 </div>
+                <span>@Html.Raw(ViewBag.ReportXUserSgq.CodigoRelatorio)</span>
             </div>
 
         </div>

@@ -29,59 +29,65 @@
 
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink("Novo", "Create")
+                                    @Html.ActionLink(Resources.Resource._new, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Aprovador_Id)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Elaborador_Id)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.ItemMenu_Id)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.ParCompany_Id)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.ParLevel1_Id)
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                            
+                                <table class="table table-striped" id="tabelaElaboradorEditor">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Aprovador.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Elaborador.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ItemMenu.Name)
-                                            </td>
-                                            <td>
-                                                @if (item.ParCompany_Id == null) {
-                                                    @Resources.Resource.all;
-                                                }
-                                                else
-                                                {
-                                                    @Html.DisplayFor(modelItem => item.ParCompany.Name)
-                                                }
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
-                                            </td>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Aprovador)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Elaborador)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ItemMenu_Id)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ParCompany_Id)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ParLevel1_Id)
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.action
+                                            </th>
                                         </tr>
-                                    }
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Aprovador)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Elaborador)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ItemMenu.Name)
+                                                </td>
+                                                <td>
+                                                    @if (item.ParCompany_Id == null)
+                                                    {
+                                                        @Resources.Resource.all;
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParLevel1.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -91,5 +97,27 @@
         </div>
     </div>
 </div>
+<script>
 
+    $(document).ready(function () {
+        $('#tabelaElaboradorEditor').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            },
+        });
+    });
+
+</script>
 
