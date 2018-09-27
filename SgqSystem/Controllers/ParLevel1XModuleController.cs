@@ -44,8 +44,10 @@ namespace SgqSystem.Controllers
         {
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View();
         }
 
@@ -54,7 +56,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParLevel1_IdHelper")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParLevel1_IdHelper,ParCluster_Id")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;
@@ -76,6 +78,7 @@ namespace SgqSystem.Controllers
                             EffectiveDateEnd = parLevel1XModule.EffectiveDateEnd,
                             EffectiveDateStart = parLevel1XModule.EffectiveDateStart,
                             ParModule_Id = parLevel1XModule.ParModule_Id,
+                            ParCluster_Id = parLevel1XModule.ParCluster_Id,
                             Points = parLevel1XModule.Points,
                             IsActive = parLevel1XModule.IsActive,
                             AddDate = DateTime.Now,
@@ -120,8 +123,10 @@ namespace SgqSystem.Controllers
             }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View(parLevel1XModule);
         }
 
@@ -139,8 +144,10 @@ namespace SgqSystem.Controllers
             }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View(parLevel1XModule);
         }
 
@@ -149,7 +156,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper")] ParLevel1XModule parLevel1XModule)
+        public ActionResult Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParCluster_Id")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AlterDate = DateTime.Now;
             ValidaIndicadoresxModulosEdicao(parLevel1XModule);
@@ -157,6 +164,7 @@ namespace SgqSystem.Controllers
             var indicadorxModuloEditado = db.ParLevel1XModule.Where(x => x.Id == parLevel1XModule.Id).FirstOrDefault();
             if (ModelState.IsValid)
             {
+                indicadorxModuloEditado.ParCluster_Id = parLevel1XModule.ParCluster_Id;
                 indicadorxModuloEditado.EffectiveDateEnd = parLevel1XModule.EffectiveDateEnd;
                 indicadorxModuloEditado.EffectiveDateStart = parLevel1XModule.EffectiveDateStart;
                 db.SaveChanges();
@@ -164,8 +172,10 @@ namespace SgqSystem.Controllers
             }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View(parLevel1XModule);
         }
 

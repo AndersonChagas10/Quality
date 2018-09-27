@@ -41,78 +41,89 @@
                                 {
                                     @Html.AntiForgeryToken()
 
-                                    <div class="form-horizontal">
-                                        <h4>@Resources.Resource.parlevel1xmodules</h4>
-                                        <hr />
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.HiddenFor(model => model.Id)
+                                <div class="form-horizontal">
+                                    <h4>@Resources.Resource.parlevel1xmodules</h4>
+                                    <hr />
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Id)
 
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParLevel1_Id, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
-                                                @*@Html.HiddenFor(model => model.ParLevel1_Id)*@
-                                            </div>
-                                            <div class="col-md-10 col-md-offset-2">
-                                                @Html.ValidationMessageFor(model => model.ParLevel1_IdHelper, "", new { @class = "text-danger" })
-                                            </div>
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.ParLevel1_Id, new SelectList(ViewBag.Indicadores, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
+                                            @*@Html.HiddenFor(model => model.ParLevel1_Id)*@
                                         </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.parModule, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParModule_Id, new SelectList(ViewBag.Modulos, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
-                                            </div>
-                                            <div class="col-md-10 col-md-offset-2">
-                                                @Html.HiddenFor(model => model.ParModule_Id)
-                                                @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
-                                            </div>
+                                        <div class="col-md-10 col-md-offset-2">
+                                            @Html.ValidationMessageFor(model => model.ParLevel1_IdHelper, "", new { @class = "text-danger" })
                                         </div>
+                                    </div>
 
-                                        @*<div class="form-group">
-                                                @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.HiddenFor(model => model.Points)
-                                                    @Html.TextBox("PointsText", Model.Points, new { htmlAttributes = new { @class = "form-control number_decimal", @name = "PointsText" } })
-                                                    @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.effective_date_start, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @{string effectiveDateStart = Model.EffectiveDateStart?.ToString("yyyy-MM-dd") ?? "";}
-                                                @Html.TextBox("EffectiveDateStart", effectiveDateStart, new { @class = "", @type = "date", @style = "width:190px" })
-                                                @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
-                                            </div>
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.parModule, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.ParModule_Id, new SelectList(ViewBag.Modulos, "Id", "Name"), htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
                                         </div>
-
-                                        <div class="form-group hidden">
-                                            @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                <div class="checkbox">
-                                                    @Html.EditorFor(model => model.IsActive)
-                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
+                                        <div class="col-md-10 col-md-offset-2">
+                                            @Html.HiddenFor(model => model.ParModule_Id)
+                                            @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
                                         </div>
+                                    </div>
 
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @{string effectiveDateEnd = Model.EffectiveDateEnd?.ToString("yyyy-MM-dd") ?? "";}
-                                                @Html.TextBox("EffectiveDateEnd", effectiveDateEnd, new { @class = "", @type = "date", @style = "width:190px" })
-                                                @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
-                                            </div>
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.clusters, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.ParCluster_Id, new SelectList(ViewBag.Clusters, "Id", "Name"), Resources.Resource.select , htmlAttributes: new { @class = "form-control  select2", @style = "width:275px" })
                                         </div>
+                                        <div class="col-md-10 col-md-offset-2">
+                                            @Html.HiddenFor(model => model.ParCluster_Id)
+                                            @Html.ValidationMessageFor(model => model.ParCluster_Id, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.save" onClick="HabilitaCampo()" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                    @*<div class="form-group">
+            @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.Points)
+                @Html.TextBox("PointsText", Model.Points, new { htmlAttributes = new { @class = "form-control number_decimal", @name = "PointsText" } })
+                @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.effective_date_start, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @{string effectiveDateStart = Model.EffectiveDateStart?.ToString("yyyy-MM-dd") ?? "";}
+                                            @Html.TextBox("EffectiveDateStart", effectiveDateStart, new { @class = "", @type = "date", @style = "width:190px" })
+                                            @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group hidden">
+                                        @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.IsActive)
+                                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @{string effectiveDateEnd = Model.EffectiveDateEnd?.ToString("yyyy-MM-dd") ?? "";}
+                                            @Html.TextBox("EffectiveDateEnd", effectiveDateEnd, new { @class = "", @type = "date", @style = "width:190px" })
+                                            @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="@Resources.Resource.save" onClick="HabilitaCampo()" class="btn btn-primary" />
+                                            @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                        </div>
+                                    </div>
+                                </div>
                                 }
                             </div>
 
