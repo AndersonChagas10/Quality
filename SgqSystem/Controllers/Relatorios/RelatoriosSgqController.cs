@@ -50,12 +50,19 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult ParametrizacaoGeral()
+        {
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Scorecard()
         {
 
             GetMetaAtualScorecard();
             return View(form);
         }
+
 
         private void GetMetaAtualScorecard()
         {
