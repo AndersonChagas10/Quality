@@ -23,6 +23,9 @@
         
         public decimal Points { get; set; }
 
+        public int? ParCluster_Id { get; set; }
+        
+
         [Column(TypeName = "datetime2")]
         public DateTime AddDate { get; set; }
 
@@ -40,6 +43,9 @@
 
         [ForeignKey("ParModule_Id")]
         public virtual ParModule ParModule { get; set; }
+
+        [ForeignKey("ParCluster_Id")]
+        public virtual ParCluster ParCluster { get; set; }
 
         [NotMapped]
         public virtual List<ParLevel1> ParLevel1Helper { get; set; }
