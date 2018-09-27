@@ -259,6 +259,8 @@
                         <div class="panel panel-default">
                             <button class="btn btn-default" ng-class="{active:linhaSelecionada.Name == item.Name}" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                 {{item.Name}} <strong>{{timerLinha(item, $index).text}}</strong>
+                                <br/>
+                                <small>({{item.NomeTipoLata}})</small>
                             </button>
                         </div>
                     </div>
