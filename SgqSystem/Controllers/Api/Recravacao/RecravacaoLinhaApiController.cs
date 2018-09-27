@@ -50,7 +50,7 @@ namespace SgqSystem.Controllers.Api
             }
             else
             {
-                var query = string.Format(@"SELECT RL.* FROM ParRecravacao_Linhas RL
+                var query = string.Format(@"SELECT RL.*, TL.Name as NomeTipoLata FROM ParRecravacao_Linhas RL
                         left join ParRecravacao_TipoLata TL
                         on TL.Id = RL.ParRecravacao_TypeLata_Id
                         WHERE RL.ParCompany_Id = {0} 
@@ -141,7 +141,10 @@ namespace SgqSystem.Controllers.Api
             }
 
             var level1Ids = string.Join(",", listParLevel1DTO);
-            var queryLinhaPorCompanyELevel2 = string.Format(" SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0} AND ParLevel2_Id is not null AND Id  = {1}", parcompany, id);
+            var queryLinhaPorCompanyELevel2 = string.Format(@"SELECT RL.*, TL.Name as NomeTipoLata FROM ParRecravacao_Linhas RL
+                                                            left join ParRecravacao_TipoLata TL
+                                                            on TL.Id = RL.ParRecravacao_TypeLata_Id 
+                                                            WHERE RL.ParCompany_Id = {0} AND RL.ParLevel2_Id is not null AND RL.Id  = {1}", parcompany, id);
             var queryTipoLataPorparRecravacao_TypeLata_Id = "SELECT * FROM ParRecravacao_TipoLata WHERE Id = {0} AND IsActive = 1";
             var results = QueryNinja(db, queryLinhaPorCompanyELevel2).ToList();
 
