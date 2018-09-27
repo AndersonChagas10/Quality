@@ -11,15 +11,10 @@
 
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">
             @Resources.Resource.family
         </h1>
-        <!-- END PAGE TITLE-->
-        <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
@@ -30,12 +25,7 @@
                     <span>@Resources.Resource.family</span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
-            </div>
+            <div class="page-toolbar"></div>
         </div>
 
         <div class="row">
@@ -91,9 +81,7 @@
 
                                         </tbody>
                                     </table>
-
                                 </div>
-
                                 <hr />
                             </div>
                         </div>
@@ -101,30 +89,34 @@
                 </div>
             </div>
         </div>
-
-
     </div>
-    <!-- END CONTENT BODY -->
 </div>
 
 
 @if (HttpContext.Current.Request.Cookies["webControlCookie"].Values["roles"].ToString().ToLower().Contains("admin"))
 {
     <script>
+
         function selectLevel2() {
-            var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;          
+
+            var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
             var data = $('#datafamilia').val();
-            $.post(urlChangeLevel2, { "id": id, "dataInit" : data }, function (r) {
+
+            $.post(urlChangeLevel2, { "id": id, "dataInit": data }, function (r) {
                 $('#level2Number').val('');
                 $('#tblFamilia > tbody > tr')[3].remove();
                 $('#tblFamilia > tbody > tr')[3].remove();
                 $($('#tblFamilia > tbody > tr')[3]).prev().after(r)
             });
         }
+
         $(document).ready(function () {
+
             $('#company').parents('tr').hide();
             $('#level2SelecionadoPorCompany').parents('tr').hide();
+
         });
+
     </script>
 }
 else
@@ -136,12 +128,15 @@ else
             var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
             var idComp = $('#company :selected').val() > 0 ? $('#company :selected').val() : 0;
             var data = $('#datafamilia').val();
-            $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp, "dataInit" : data }, function (r) {
+
+            $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp, "dataInit": data }, function (r) {
+
                 $('#MonEmpresa').remove();
-                $(r).insertAfter($($('#tblFamilia > tbody > tr')[2]).closest('tr'));''
-                var id2 = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;                
+                $(r).insertAfter($($('#tblFamilia > tbody > tr')[2]).closest('tr')); ''
+                var id2 = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
                 var data = $('#datafamilia').val();
-                $.post(urlChangeLevel2, { "id": id2, "dataInit" : data }, function (rr) {
+
+                $.post(urlChangeLevel2, { "id": id2, "dataInit": data }, function (rr) {
                     $('#level2Number').val('');
                     $('#monCorpAtivo').remove();
                     $('#numeroFamilias').remove();
@@ -162,8 +157,8 @@ else
         $(document).ready(function () {
             $('#level2').parents('tr').hide();
             $('#level2Number').parents('tr').hide();
-            //$('#level2Number').attr("disabled", true);
         });
+
     </script>
 }
 
@@ -171,8 +166,8 @@ else
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
+
     var $btn = $('#send');
-    navbarSelect("navbar1");
 
     var formOriginal = $('#tblFamilia > tbody').clone();
     var urlSend = '@Html.Raw(@urlSend)';
@@ -183,6 +178,7 @@ else
     $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
     function send() {
+
         var data = {};
         data["listLevel2Corporativos"] = $('#level2').val();
         data["Id"] = $('#level1 :selected').val();
@@ -190,14 +186,17 @@ else
         data["level2PorCompany"] = $('#level2SelecionadoPorCompany').val();
         data["CompanyControl_Id"] = $('#company :selected').val();
         data["DataInit"] = $('#datafamilia').val();
+
         if (data["Id"] == undefined)
             data["Id"] = $("#company :selected").val();
 
         $btn.button('loading');
+
         $.post(urlSend, data, function (r) {
             $btn.button('reset');
             openMessageModal('Feito!', '');
         });
+
     }
 
     function selectData(){
@@ -231,8 +230,6 @@ else
             showDropdowns: true,
             startDate: start,
             endDate: end,
-            //opens: "left",
-            //"locale": localCultureRangePicker,
             locale: {
                 cancelLabel: 'Clear'
             }
@@ -254,6 +251,10 @@ else
         $('input[name="datefilter"]').val('@ViewBag.dataInit.ToString("dd/MM/yyyy")');
         //End config datepickerrange simple
 
+        closeLeftSidebar();
+
+        closeLoader();
+
     })
 
     $(document).ajaxStart(function () {
@@ -261,32 +262,17 @@ else
     });
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+
         $btn.button('reset');
         closeLoader();
+
         try {
             console.log(xhr.responseJSON.Message)
         } catch (e) {
 
         }
-        @*openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');*@
+
         openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
     });
 
-    $(document).ajaxStop(function () {
-        closeLoader();
-    });
-
-</script>
-<script>
-
-    $(".sidebar-toggler").removeClass("hide");
-    $(".page-sidebar-wrapper").removeClass("hide");
-    navbarSelect("navbar6");
-
-</script>
-
-<script>
-    $(document).ready(function () {
-        closeLeftSidebar();
-    });
 </script>
