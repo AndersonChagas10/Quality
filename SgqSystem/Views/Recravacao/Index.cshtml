@@ -1989,7 +1989,8 @@
                                 vm.linhas[index] = vm.linhaSelecionada
 
                                 vm.linhaSelecionada = vm.linhas[index];
-                                vm.linhaSelecionada.TipoDeLataImagens = objetoSalvo[0].TipoDeLataImagens;
+                                if (objetoSalvo[0])
+                                    vm.linhaSelecionada.TipoDeLataImagens = objetoSalvo[0].TipoDeLataImagens;
 
                                 if (vm.linhaSelecionada.ObservacoesList == undefined)
                                     vm.linhaSelecionada.ObservacoesList = [];
