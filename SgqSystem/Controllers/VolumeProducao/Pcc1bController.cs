@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    ReturnError();
+                    ReturnError(pcc1b);
                     //return View(pcc1b);
                 }
             }
@@ -179,7 +179,7 @@ namespace SgqSystem.Controllers
                     }
                     else
                     {
-                        ReturnError();
+                        ReturnError(pcc1b);
                         //return View(pcc1b);
                     }
                 }
@@ -210,9 +210,10 @@ namespace SgqSystem.Controllers
             //}
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumePcc1b obj)
         {
-            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: Pcc1b/Delete/5
