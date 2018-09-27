@@ -54,6 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180723_1600_AdicionarShowAllUnits.txt = 20180723_1600_AdicionarShowAllUnits.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 		SGQ_1.0.6.txt = SGQ_1.0.6.txt
+		SGQ_1.0.7.txt = SGQ_1.0.7.txt
 	EndProjectSection
 EndProject
 Global

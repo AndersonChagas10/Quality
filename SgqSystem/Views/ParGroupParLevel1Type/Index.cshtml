@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Dominio.ParGroupParLevel1Type>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Grupo de  Indicador</span>
+                </li>
+            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Lista de Tipo de Grupo de  Indicador</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table" id="tabelaTipoGrupo">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Name)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsActive)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#tabelaTipoGrupo').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "@Resources.Resource.no_data_to_show",
+                "info": "Página _PAGE_ de _PAGES_"
+            },
+        });
+    });
+
+</script>

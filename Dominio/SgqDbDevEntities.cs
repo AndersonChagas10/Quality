@@ -4,6 +4,8 @@ namespace Dominio
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using System.Threading.Tasks;
+    using System.Threading;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -11,6 +13,35 @@ namespace Dominio
             : base("name=DefaultConnection")
         {
             this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+        }
+        public override int SaveChanges()
+        {
+            AddTimestamps();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            AddTimestamps();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void AddTimestamps()
+        {
+            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseModel && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            foreach (var entity in entities)
+            {
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseModel)entity.Entity).AddDate = DateTime.Now;
+                }
+                else
+                {
+                    this.Entry(((BaseModel)entity.Entity)).Property(x => x.AddDate).IsModified = false;
+                    ((BaseModel)entity.Entity).AlterDate = DateTime.Now;
+                }
+            }
         }
 
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
@@ -147,6 +178,9 @@ namespace Dominio
         public virtual DbSet<ImportFormat> ImportFormat { get; set; }
         public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
         public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1> ParGroupParLevel1 { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1Type> ParGroupParLevel1Type { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel1> ParGroupParLevel1XParLevel1 { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -1345,5 +1379,7 @@ namespace Dominio
                 .Property(e => e.Role)
                 .IsFixedLength();
         }
+
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel3> ParGroupParLevel1XParLevel3 { get; set; }
     }
 }

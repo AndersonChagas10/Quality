@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AreasParticipantes.cs" />
+    <Compile Include="BaseModel.cs" />
     <Compile Include="BkpCollection.cs" />
     <Compile Include="CaracteristicaTipificacao.cs" />
     <Compile Include="ClusterDepartamentos.cs" />
@@ -100,6 +101,10 @@
     <Compile Include="ParFrequency.cs" />
     <Compile Include="ParGoal.cs" />
     <Compile Include="ParGoalScorecard.cs" />
+    <Compile Include="ParGroupParLevel1.cs" />
+    <Compile Include="ParGroupParLevel1Type.cs" />
+    <Compile Include="ParGroupParLevel1XParLevel1.cs" />
+    <Compile Include="ParGroupParLevel1XParLevel3.cs" />
     <Compile Include="ParHeaderField.cs" />
     <Compile Include="ParLataImagens.cs" />
     <Compile Include="ParLevel1.cs" />

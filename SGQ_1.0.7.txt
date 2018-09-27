@@ -1,0 +1,20 @@
+Elaborador e Aprovador Por Relatorio -- Feitor por: Marcos Augusto -- Data: 27/09/2018 -- DEV-302
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.t_InsercaoParGroupParLevel1XParLevel3',GetDate());
+
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParGroupParLevel1XParLevel3' AND xtype='U')
+create table ParGroupParLevel1XParLevel3(
+	Id int not null identity primary key,
+	ParGroupParLevel1Type_Id int NOT NULL,
+	Name varchar(max) NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime,
+	ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
+	ParLevel3_Id int FOREIGN key REFERENCES ParLevel3(Id),
+	IsActive bit not null
+)
+
+GO
