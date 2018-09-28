@@ -86,59 +86,59 @@
             </div>
         </div>
         <!-- Modal -->
-                    <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog  modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header modal-header-gray">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputPositive" />
-                                        </div>
-                                        <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputNegative" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                                    <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
-                                </div>
+        <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-gray">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.positive_value</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputPositive" />
+                            </div>
+                            <div class="col-xs-12">@Resources.Resource.negative_value</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputNegative" />
                             </div>
                         </div>
                     </div>
-                    @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                        <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
-                    <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog  modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header modal-header-gray">
-                                    <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputMeasurementUnit" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                                    <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
-                                </div>
+        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-gray">
+                        <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                        <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    }
+    }
 
 </div>
 <script>
@@ -407,12 +407,13 @@
             let text = ''
             let val = 1
             let defaultSelected = false;
-            let nowSelected     = false;
+            let nowSelected = false;
 
             $('#parlevel3RecravacaoValue').empty();
             $('#parlevel3RecravacaoValue').append(new Option('Selecione...', -1, defaultSelected, nowSelected));
+
             r.forEach(function (o, c) {
-                if(o.ParLevel3InputType_Id == 3){
+                if (o.ParLevel3InputType_Id == 3) {
                     if (o.AcceptableValueBetween) {
                         val = o.Id
                         text = 'Valor não está entre: Min. ' + o.IntervalMin + ' - Máx. ' + o.IntervalMax + o.ParMeasurementUnit.Name;
@@ -429,7 +430,8 @@
                         $('#parlevel3RecravacaoValue').append(option);
                     }
                 }
-            })
+            });
+
             if ($('#parlevel3RecravacaoValue option:first').length < 3)
                 $('#parlevel3RecravacaoValue').val($('#parlevel3RecravacaoValue option:first').next().val()).change();
         })

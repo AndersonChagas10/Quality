@@ -276,7 +276,9 @@ namespace SgqSystem.Controllers.Api
                 }
 
                 level3Dto.ParLevel3Value_OuterList = valueCampoCalcOutro;
-                level3Dto.ParLevel3Value_OuterListGrouped = valueCampoCalcOutro.GroupBy(r => r.ParMeasurementUnit_Name);
+                level3Dto.ParLevel3Value_OuterListGrouped = valueCampoCalcOutro
+                 .GroupBy(r => new { r.ParMeasurementUnit_Name, r.ParCompany_Id, r.ParMeasurementUnit_Id })
+                 .Select(r => r.ToList()).ToList();
 
                 foreach (var bin in level3.ParLevel3Value)
                 {
