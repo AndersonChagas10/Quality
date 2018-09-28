@@ -41,7 +41,7 @@ namespace DTO.DTO.Params
         public List<ParLevel3EvaluationSampleDTO> listParLevel3EvaluationSample { get; set; }
 
         public List<ParLevel3Value_OuterListDTO> ParLevel3Value_OuterList { get; set; }
-        public IEnumerable<IGrouping<int, ParLevel3Value_OuterListDTO>> ParLevel3Value_OuterListGrouped { get; set; }
+        public IEnumerable<IGrouping<string, ParLevel3Value_OuterListDTO>> ParLevel3Value_OuterListGrouped { get; set; }
         public bool AllowNA { get; set; }
     }
 }

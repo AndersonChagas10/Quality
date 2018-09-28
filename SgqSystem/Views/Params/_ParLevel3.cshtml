@@ -86,59 +86,59 @@
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog  modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header modal-header-gray">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                            <div class="col-xs-12">
-                                <input class="form-control input-sm" id="modalInputPositive" />
-                            </div>
-                            <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                            <div class="col-xs-12">
-                                <input class="form-control input-sm" id="modalInputNegative" />
+                    <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog  modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header modal-header-gray">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">@Resources.Resource.positive_value</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputPositive" />
+                                        </div>
+                                        <div class="col-xs-12">@Resources.Resource.negative_value</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputNegative" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                                    <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                        <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
+                    @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
-        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog  modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header modal-header-gray">
-                        <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                            <div class="col-xs-12">
-                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
+                    <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog  modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header modal-header-gray">
+                                    <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputMeasurementUnit" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                                    <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                        <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-    }
+                    }
 
 </div>
 <script>
@@ -359,13 +359,17 @@
         }
 
         var list = $.grep($('#tableLevel3Value tbody tr'), function (o) {
-            return $(o).data('ParLevel3Value_OuterList')[0].ParCompany_Id == ParCompany_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Id == ParLevel1_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Name == ParLevel2_Id
+            var list = $.grep($('#tableLevel3Value tbody tr'), function (o) {
+                if ($(o).data('ParLevel3Value_OuterList')) {
+                    return $(o).data('ParLevel3Value_OuterList')[0].ParCompany_Id == ParCompany_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Id == ParLevel1_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Name == ParLevel2_Id
+                }
+            });
         });
 
 
         if (list.length > 0) {
             return false;
-        } 
+        }
 
         return true;
     }
@@ -453,13 +457,13 @@
                 expressaoArr = o;
                 updateLogicExpression(true);
 
-                let tipo = reencravacoes[0].ParLevel3InputType_Name;
-                let unidade = reencravacoes[0].ParCompany_Name;
+                let tipo = expressaoArr[0].ParLevel3InputType_Name;
+                let unidade = expressaoArr[0].ParCompany_Name;
                 let expressao = updateLogicExpression(true);
-                let UnidadeMedidaText = reencravacoes[0].UnidadeMedidaText;
-                let AceitavelEntreText = reencravacoes[0].AceitavelEntreText;
-                let LimInferior = reencravacoes[0].LimInferior;
-                let LimSuperior = reencravacoes[0].LimSuperior;
+                let UnidadeMedidaText = expressaoArr[0].UnidadeMedidaText;
+                let AceitavelEntreText = expressaoArr[0].AceitavelEntreText;
+                let LimInferior = expressaoArr[0].LimInferior;
+                let LimSuperior = expressaoArr[0].LimSuperior;
                 let level1 = $('#parLevel1Select2 option[value="' + expressaoArr[0].ParMeasurementUnit_Id +'"]').text();
                 let level2 = $('#parLevel2Select2 option[value="' + expressaoArr[0].ParMeasurementUnit_Name +'"]').text();
 
