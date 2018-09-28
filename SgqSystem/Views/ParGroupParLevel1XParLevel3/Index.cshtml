@@ -41,13 +41,13 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.ParGroupParLevel1Type.Name) Grupo tipo indicador
+                                                @Html.DisplayNameFor(model => model.ParGroupParLevel1Type.Name) 
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.ParLevel1.Name) indicador
+                                                @Html.DisplayNameFor(model => model.ParLevel1.Name)
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.ParLevel3.Name) tarefa
+                                                @Html.DisplayNameFor(model => model.ParLevel3.Name)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.Name)
@@ -101,6 +101,7 @@
         $('#tabelaGrupoIndicadorMonitoramento').dataTable({
             "aoPaging": true,
             "aoSearching": true,
+            "scrollX": true,
             "aoColumns": [
                 null,
                 null,
