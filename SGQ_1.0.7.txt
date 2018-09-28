@@ -18,3 +18,21 @@ create table ParGroupParLevel1XParLevel3(
 )
 
 GO
+
+
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDeTabelaDeLogDeBanco',GetDate());
+
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DatabaseLog' AND xtype='U')
+create table DatabaseLog(
+	Id bigint not null identity primary key,
+	Tabela varchar(200) NOT NULL,
+	Json varchar(max) NOT NULL,
+	Operacao int NOT NULL,
+	AddDate datetime not null
+)
+
+GO

@@ -11,6 +11,8 @@ using System.Globalization;
 using System.Threading;
 using Jobs;
 using SgqSystem.Jobs;
+using SgqSystem.Helpers;
+using System.Web.Http;
 
 namespace SgqSystem
 {
@@ -30,6 +32,13 @@ namespace SgqSystem
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
             GlobalConfig.VerifyConfig("DefaultConnection");
+
+            #region LOG
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            {
+                //new Business.ErrorLogBusiness().Save(eventArgs.Exception.ToClient());
+            };
+            #endregion
 
             SetGlobalConfigAmbient();
 

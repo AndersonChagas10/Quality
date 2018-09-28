@@ -6,6 +6,7 @@ namespace Dominio
     using System.Linq;
     using System.Threading.Tasks;
     using System.Threading;
+    using Newtonsoft.Json;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -17,12 +18,14 @@ namespace Dominio
         public override int SaveChanges()
         {
             AddTimestamps();
+            AddDatabaseLog();
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             AddTimestamps();
+            AddDatabaseLog();
             return base.SaveChangesAsync(cancellationToken);
         }
 
@@ -43,6 +46,45 @@ namespace Dominio
                 }
             }
         }
+
+        private void AddDatabaseLog()
+        {
+            var entities = ChangeTracker.Entries().Where(x =>
+            !(x.Entity is DatabaseLog)
+            && !(x.Entity is Result_Level3)
+            && !(x.Entity is LogJson)
+            && !(x.Entity is LogSgqGlobal)
+            && !(x.Entity is LogAlteracoes)
+            && !(x.Entity is CollectionJson)
+            && !(x.Entity is CollectionLevel2)
+            && !(x.Entity is ConsolidationLevel2)
+            && !(x.Entity is ConsolidationLevel1)
+            && !(x.Entity is CollectionLevel2XParHeaderField)
+            && !(x.Entity is RecravacaoJson)
+            && !(x.Entity is EmailContent)
+            && !(x.Entity is Deviation)
+            && !(x.State == EntityState.Detached || x.State == EntityState.Unchanged)
+            ).ToList();
+            foreach (var entity in entities)
+            {
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity.Entity, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                this.DatabaseLog.Add(
+                    new DatabaseLog()
+                    {
+                        AddDate = DateTime.Now,
+                        Json = json,
+                        Operacao = (int)entity.State,
+                        Tabela = entity.Entity.GetType().ToString()
+                    }
+                 );
+                base.SaveChanges();
+            }
+        }
+
+        public virtual DbSet<DatabaseLog> DatabaseLog { get; set; }
 
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
