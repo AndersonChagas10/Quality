@@ -33,8 +33,10 @@ namespace SgqSystem.Controllers.Recravacao
                 var itemMenu = (ItemMenuDTO)ViewBag.itemMenu;
                 if (itemMenu != null)
                 {
-                    ViewBag.ReportXUserSgq = db.ReportXUserSgq
+                    var reportXUserSgq = db.ReportXUserSgq
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
+                    reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
+                    ViewBag.ReportXUserSgq = reportXUserSgq;
                 }
                 ViewBag.IndicadorId = indicadorId;
                 ViewBag.LinhaId = linhaId;
@@ -49,8 +51,10 @@ namespace SgqSystem.Controllers.Recravacao
                 var itemMenu = (ItemMenuDTO)ViewBag.itemMenu;
                 if (itemMenu != null)
                 {
-                    ViewBag.ReportXUserSgq = db.ReportXUserSgq
+                    var reportXUserSgq = db.ReportXUserSgq
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
+                    reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
+                    ViewBag.ReportXUserSgq = reportXUserSgq;
                 }
                 ViewBag.IndicadorId = indicadorId;
                 ViewBag.LinhaId = linhaId;
