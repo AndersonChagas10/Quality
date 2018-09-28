@@ -12,7 +12,7 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [DisplayName("Nome")]
+        [DisplayName("Grupo de Indicador")]
         public string Name { get; set; }
 
         [DisplayName("Grupo de Tipo de Indicador")]

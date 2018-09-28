@@ -41,13 +41,13 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.ParGroupParLevel1Type.Name)
+                                                @Html.DisplayNameFor(model => model.ParGroupParLevel1Type.Name) Grupo tipo indicador
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.ParLevel1.Name)
+                                                @Html.DisplayNameFor(model => model.ParLevel1.Name) indicador
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.ParLevel3.Name)
+                                                @Html.DisplayNameFor(model => model.ParLevel3.Name) tarefa
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.Name)
@@ -78,8 +78,8 @@
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                                 </td>
                                             </tr>
                                         }

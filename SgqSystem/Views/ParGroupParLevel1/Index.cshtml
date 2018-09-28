@@ -66,8 +66,8 @@
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })                         
-                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })                         
+                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                                 </td>
                                             </tr>
                                         }

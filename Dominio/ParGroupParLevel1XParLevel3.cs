@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [DisplayName("Nome")]
+        [DisplayName("Vinculo Grupo Indicador x Tarefa")]
         public string Name { get; set; }
 
         [DisplayName("Grupo de Tipo de Indicador")]

@@ -82,7 +82,7 @@ namespace SgqSystem.Controllers
             ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
             return View(parGroupParLevel1XParLevel3);
         }
-
+ 
         // POST: ParGroupParLevel1XParLevel3/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
