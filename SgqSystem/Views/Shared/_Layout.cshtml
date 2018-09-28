@@ -720,6 +720,19 @@
 
             console.log(localStorage.top);
             console.log(localStorage.left);
+
+
+
+            $('.singleDatePicker').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                'locale': {
+                    "format": "DD/MM/YYYY"
+                }
+            })
+            $('.singleDatePicker').attr("type","datetime")
+
+
         });
     </script>
 
